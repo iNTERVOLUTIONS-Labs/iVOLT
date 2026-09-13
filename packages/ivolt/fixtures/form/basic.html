@@ -1,0 +1,36 @@
+<form class="iv-stack" style="max-width: 28rem" action="#" method="get" onsubmit="return false" aria-describedby="demo-form-note">
+  <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0" id="demo-form-note">Demo form: nothing is submitted.</p>
+  <div class="iv-field">
+    <label class="iv-label" for="f-name">Full name <span class="iv-label__required" aria-hidden="true">*</span></label>
+    <input class="iv-input" id="f-name" name="name" type="text" required autocomplete="name" aria-describedby="f-name-help">
+    <p class="iv-field__help iv-u-m-0" id="f-name-help">As it should appear on the invoice.</p>
+  </div>
+  <div class="iv-field">
+    <label class="iv-label" for="f-plan">Plan</label>
+    <select class="iv-select" id="f-plan" name="plan">
+      <option>Starter</option><option>Team</option><option>Enterprise</option>
+    </select>
+  </div>
+  <div class="iv-field">
+    <label class="iv-label" for="f-notes">Notes</label>
+    <textarea class="iv-input" id="f-notes" name="notes" rows="3"></textarea>
+  </div>
+  <fieldset class="iv-fieldset">
+    <legend class="iv-fieldset__legend">Notifications</legend>
+    <div class="iv-checks">
+      <label class="iv-check"><input type="checkbox" name="n" value="product" checked> Product updates</label>
+      <label class="iv-check"><input type="checkbox" name="n" value="security"> Security alerts</label>
+    </div>
+  </fieldset>
+  <fieldset class="iv-fieldset">
+    <legend class="iv-fieldset__legend">Billing</legend>
+    <div class="iv-checks iv-checks--inline">
+      <label class="iv-check"><input type="radio" name="billing" value="monthly" checked> Monthly</label>
+      <label class="iv-check"><input type="radio" name="billing" value="yearly"> Yearly</label>
+    </div>
+  </fieldset>
+  <div class="iv-cluster">
+    <button class="iv-button iv-button--primary" type="submit">Save (demo)</button>
+    <button class="iv-button iv-button--ghost" type="reset">Reset</button>
+  </div>
+</form>

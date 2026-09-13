@@ -1,0 +1,222 @@
+/* iVOLT — components/button
+ *
+ * `.iv-button` WITHOUT a variant modifier is NOT equivalent to
+ * `--secondary`: it is the neutral button (`surface-raised` background,
+ * `text` foreground, `border-strong` border), the default look of a
+ * secondary form action. `--secondary` is the brand outline (transparent
+ * background, accent text and accent border on hover). Variants only
+ * reassign the block's local variables; no variant rule sets box
+ * properties.
+ *
+ * Locals: --iv-button-bg --iv-button-fg --iv-button-border
+ *         --iv-button-bg-hover --iv-button-border-hover --iv-button-bg-active
+ *         --iv-button-radius --iv-button-px --iv-button-py
+ *
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-button {
+  --iv-button-bg: var(--iv-color-surface-raised);
+  --iv-button-fg: var(--iv-color-text);
+  --iv-button-border: var(--iv-color-border-strong);
+  --iv-button-bg-hover: var(--iv-color-surface);
+  --iv-button-border-hover: var(--iv-color-border-strong);
+  --iv-button-bg-active: var(--iv-color-surface);
+  --iv-button-radius: var(--iv-radius-md);
+  --iv-button-px: var(--iv-space-4);
+  --iv-button-py: var(--iv-space-2);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--iv-space-2);
+  min-block-size: 2.5rem;
+  padding-block: var(--iv-button-py);
+  padding-inline: var(--iv-button-px);
+  font-family: inherit;
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-medium);
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  color: var(--iv-button-fg);
+  background-color: var(--iv-button-bg);
+  border: var(--iv-border-width) solid var(--iv-button-border);
+  border-radius: var(--iv-button-radius);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition:
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    border-color var(--iv-motion-fast) var(--iv-ease-out),
+    color var(--iv-motion-fast) var(--iv-ease-out),
+    transform var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* Variants ----------------------------------------------------------- */
+
+.iv-button--primary {
+  --iv-button-bg: var(--iv-color-primary);
+  --iv-button-fg: var(--iv-color-on-primary);
+  --iv-button-border: var(--iv-color-primary);
+  --iv-button-bg-hover: var(--iv-color-primary-hover);
+  --iv-button-border-hover: var(--iv-color-primary-hover);
+  --iv-button-bg-active: var(--iv-color-primary-active);
+}
+
+.iv-button--secondary {
+  --iv-button-bg: transparent;
+  --iv-button-fg: var(--iv-color-primary);
+  --iv-button-border: var(--iv-color-border-strong);
+  --iv-button-bg-hover: var(--iv-color-surface);
+  --iv-button-border-hover: var(--iv-color-primary);
+  --iv-button-bg-active: var(--iv-color-surface);
+}
+
+.iv-button--ghost {
+  --iv-button-bg: transparent;
+  --iv-button-fg: var(--iv-color-text);
+  --iv-button-border: transparent;
+  --iv-button-bg-hover: var(--iv-color-surface);
+  --iv-button-border-hover: transparent;
+  --iv-button-bg-active: var(--iv-color-surface);
+}
+
+/* There are no `danger-hover` / `danger-active` tokens: they are derived
+   from the semantic token itself so no loose color is introduced (see
+   "Proposals"). */
+.iv-button--danger {
+  --iv-button-bg: var(--iv-color-danger);
+  --iv-button-fg: var(--iv-color-on-danger);
+  --iv-button-border: var(--iv-color-danger);
+  --iv-button-bg-hover: color-mix(in oklab, var(--iv-color-danger) 88%, var(--iv-color-text));
+  --iv-button-border-hover: color-mix(in oklab, var(--iv-color-danger) 88%, var(--iv-color-text));
+  --iv-button-bg-active: color-mix(in oklab, var(--iv-color-danger) 76%, var(--iv-color-text));
+}
+
+/* Sizes -------------------------------------------------------------- */
+
+.iv-button--sm {
+  --iv-button-px: var(--iv-space-3);
+  --iv-button-py: var(--iv-space-1);
+  min-block-size: 2rem;
+  font-size: var(--iv-text-sm);
+}
+
+.iv-button--lg {
+  --iv-button-px: var(--iv-space-6);
+  --iv-button-py: var(--iv-space-3);
+  min-block-size: 3rem;
+  font-size: var(--iv-text-lg);
+}
+
+/* Icon only: square box, never below the 24px target size. */
+.iv-button--icon {
+  --iv-button-px: var(--iv-button-py);
+  aspect-ratio: 1;
+  min-inline-size: 2.5rem;
+}
+
+.iv-button--icon.iv-button--sm {
+  min-inline-size: 2rem;
+}
+
+.iv-button--icon.iv-button--lg {
+  min-inline-size: 3rem;
+}
+
+/* States ------------------------------------------------------------- */
+
+@media (hover: hover) {
+  .iv-button:hover {
+    background-color: var(--iv-button-bg-hover);
+    border-color: var(--iv-button-border-hover);
+  }
+}
+
+.iv-button:active {
+  background-color: var(--iv-button-bg-active);
+  transform: translateY(1px);
+}
+
+.iv-button:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+/* The background does not change: text contrast is preserved. */
+.iv-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.iv-button[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}
+
+/* Busy: the label is preserved and a 1em spinner is prepended. */
+.iv-button[aria-busy="true"] {
+  cursor: progress;
+  pointer-events: none;
+}
+
+.iv-button[aria-busy="true"]::before {
+  content: "";
+  flex: none;
+  inline-size: 1em;
+  block-size: 1em;
+  border: 2px solid currentColor;
+  border-block-start-color: transparent;
+  border-radius: var(--iv-radius-full);
+  animation: iv-spin 600ms linear infinite;
+}
+
+@keyframes iv-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-button[aria-busy="true"]::before {
+    animation: none;
+    border-style: dotted;
+    border-block-start-color: currentColor;
+  }
+}
+
+/* Group -------------------------------------------------------------- */
+
+.iv-button-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
+
+.iv-button-group > * {
+  position: relative;
+  border-radius: 0;
+  margin-inline-start: calc(var(--iv-border-width) * -1);
+}
+
+.iv-button-group > :first-child {
+  margin-inline-start: 0;
+  border-start-start-radius: var(--iv-radius-md);
+  border-end-start-radius: var(--iv-radius-md);
+}
+
+.iv-button-group > :last-child {
+  border-start-end-radius: var(--iv-radius-md);
+  border-end-end-radius: var(--iv-radius-md);
+}
+
+/* The focused or pressed button is brought forward so its border and its
+   outline are not clipped by the next sibling. */
+.iv-button-group > :focus-visible,
+.iv-button-group > :active {
+  z-index: 1;
+}

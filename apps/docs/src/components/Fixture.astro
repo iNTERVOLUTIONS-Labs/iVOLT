@@ -1,0 +1,23 @@
+---
+// Renders a package fixture as a live preview plus its copyable HTML. Same source for docs, tests and starters.
+import { readFileSync, existsSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+const { name, title = name, minHeight } = Astro.props;
+// Locate the repository root from the working directory (Astro's prerender chunks move import.meta.url).
+let dir = process.cwd();
+while (!existsSync(resolve(dir, "packages/ivolt/fixtures")) && dirname(dir) !== dir) dir = dirname(dir);
+const html = readFileSync(resolve(dir, "packages/ivolt/fixtures", `${name}.html`), "utf8").trim();
+const id = `fx-${name.replace(/\W+/g, "-")}`;
+---
+<figure class="docs-fixture" id={id}>
+  <figcaption class="docs-fixture__caption">
+    <span class="docs-fixture__title">{title}</span>
+    <span class="docs-fixture__path">fixtures/{name}.html</span>
+    <button class="iv-button iv-button--secondary iv-button--sm docs-copy" type="button" data-copy-target={`${id}-code`} aria-describedby={`${id}-status`}>Copy HTML</button>
+    <span class="iv-u-sr-only" id={`${id}-status`} role="status" aria-live="polite"></span>
+  </figcaption>
+  <div class="docs-fixture__preview" style={minHeight ? `min-height:${minHeight}` : undefined} set:html={html}></div>
+  <div class="docs-fixture__code">
+    <pre tabindex="0" aria-label={`HTML for ${title}`}><code id={`${id}-code`}>{html}</code></pre>
+  </div>
+</figure>

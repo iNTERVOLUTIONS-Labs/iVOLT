@@ -1,0 +1,55 @@
+// npm pack → install the tarball in a temporary external consumer → import, bundle, resolve CSS.
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, writeFileSync, readFileSync, existsSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { build } from "esbuild";
+
+const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
+const pkgDir = join(root, "packages/ivolt");
+const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, stdio: ["ignore", "pipe", "inherit"] }).toString();
+
+const tmp = mkdtempSync(join(tmpdir(), "ivolt-consumer-"));
+try {
+  const packOut = JSON.parse(run("npm", ["pack", "--json", "--pack-destination", tmp], pkgDir));
+  const tarball = join(tmp, packOut[0].filename);
+  const files = packOut[0].files.map((f) => f.path);
+  for (const must of ["dist/css/ivolt.css", "dist/css/ivolt.min.css", "dist/css/core.min.css", "dist/js/index.js", "dist/js/auto.js", "dist/js/ivolt.iife.min.js", "dist/types/index.d.ts", "dist/tokens/tokens.json", "LICENSE", "README.md"]) {
+    if (!files.includes(must)) throw new Error(`tarball missing ${must}`);
+  }
+  if (files.some((f) => f.startsWith("src/") || f.startsWith("fixtures/"))) throw new Error("tarball must not ship src/ or fixtures/");
+
+  writeFileSync(join(tmp, "package.json"), JSON.stringify({ name: "consumer", private: true, type: "module" }));
+  run("npm", ["install", "--no-audit", "--no-fund", "--loglevel=error", tarball], tmp);
+
+  // 1) Node/SSR import of the real exports.
+  writeFileSync(join(tmp, "ssr.mjs"), `
+    const m = await import("@intervolutions/ivolt");
+    const d = await import("@intervolutions/ivolt/dialog");
+    const t = await import("@intervolutions/ivolt/theme");
+    await import("@intervolutions/ivolt/auto");
+    if (typeof m.init !== "function" || typeof m.destroy !== "function" || d.Dialog !== m.Dialog || typeof t.setTheme !== "function") throw new Error("exports mismatch");
+    const css = import.meta.resolve("@intervolutions/ivolt/css/ivolt.css");
+    console.log(JSON.stringify({ ok: true, version: m.version, css }));
+  `);
+  const ssr = JSON.parse(run(process.execPath, ["ssr.mjs"], tmp));
+  if (!ssr.css.endsWith("/dist/css/ivolt.css")) throw new Error("css export did not resolve");
+
+  // 2) Tree-shaking: theme-only bundle must not contain dialog code; unused bundle must be near-empty.
+  const bundle = async (code) => { const r = await build({ stdin: { contents: code, resolveDir: tmp, loader: "js" }, bundle: true, minify: true, format: "esm", write: false, logLevel: "error" }); return r.outputFiles[0].text; };
+  const themeOnly = await bundle(`import { setTheme } from "@intervolutions/ivolt/theme"; setTheme("dark");`);
+  if (/showModal/.test(themeOnly)) throw new Error("theme bundle pulled in Dialog");
+  const unused = await bundle(`import "@intervolutions/ivolt";`);
+  if (unused.length > 200) throw new Error(`side-effect free import produced ${unused.length} bytes`);
+  const dialogOnly = await bundle(`import { Dialog } from "@intervolutions/ivolt/dialog"; new Dialog(document.querySelector("dialog"));`);
+  if (/themechange/.test(dialogOnly)) throw new Error("dialog bundle pulled in theme");
+
+  // 3) IIFE global.
+  const iife = readFileSync(join(tmp, "node_modules/@intervolutions/ivolt/dist/js/ivolt.iife.min.js"), "utf8");
+  if (!/var IVOLT\s*=/.test(iife)) throw new Error("IIFE global IVOLT missing");
+
+  console.log(`pack-smoke: ok (${packOut[0].filename}, ${files.length} files, theme-only ${themeOnly.length} B, dialog-only ${dialogOnly.length} B, unused ${unused.length} B)`);
+} finally {
+  rmSync(tmp, { recursive: true, force: true });
+}

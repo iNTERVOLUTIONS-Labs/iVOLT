@@ -1,0 +1,45 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+import tokens from "@intervolutions/ivolt/tokens.json";
+const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color-") && !k.startsWith("--iv-palette"));
+---
+<Base title="Tokens and themes" description="iVOLT design tokens: primitive palette, semantic colours, spacing, type, radius, shadow, focus, motion and breakpoints, with light, dark and system themes.">
+  <article class="docs-prose">
+    <h1>Tokens and themes</h1>
+    <p>Every visual decision is a custom property prefixed <code>--iv-</code>, generated from one JSON source. Override any of them on <code>:root</code> or on a scope; nothing needs recompiling.</p>
+<pre><code>:root &#123;
+  --iv-color-primary: #4338CA;      /* your brand */
+  --iv-color-on-primary: #FFFFFF;
+  --iv-radius-md: 0.25rem;
+&#125;
+.checkout &#123; --iv-button-radius: var(--iv-radius-full); &#125;  /* component-local */</code></pre>
+
+    <h2>Themes</h2>
+    <p><code>data-iv-theme</code> accepts <code>light</code> (default when absent), <code>dark</code> and <code>system</code>. Scopes nest and the nearest explicit value wins; <code>system</code> follows <code>prefers-color-scheme</code> without JavaScript or storage.</p>
+    <Fixture name="theme/nested" title="Nested scopes" />
+    <p>The optional <code>theme</code> module adds <code>getTheme()</code>, <code>setTheme(theme, &#123; persist &#125;)</code>, <code>resolveTheme()</code> and <code>restoreTheme()</code>, and dispatches <code>iv:themechange</code> on <code>document</code>. Persistence is opt-in. To avoid a flash before the stored theme applies, add a tiny inline script in <code>&lt;head&gt;</code>; with a strict CSP allow it by hash or nonce.</p>
+
+    <h2>Semantic colours</h2>
+    <table>
+      <thead><tr><th>Token</th><th>Light</th><th>Dark</th></tr></thead>
+      <tbody>{semantic.map(([k, v]) => <tr><td><code>{k}</code></td><td><code>{v.value.light}</code></td><td><code>{v.value.dark}</code></td></tr>)}</tbody>
+    </table>
+    <p>Contrast targets: text 4.5:1, controls and focus 3:1 on their surfaces. The values above were checked against the WCAG formula; results are re-measured on each release.</p>
+
+    <h2>Scales</h2>
+    <table>
+      <thead><tr><th>Family</th><th>Tokens</th></tr></thead>
+      <tbody>
+        <tr><td>Space</td><td><code>--iv-space-0 … 16</code> (0.25rem steps up to 1.5rem, then 2, 2.5, 3, 4rem)</td></tr>
+        <tr><td>Type</td><td><code>--iv-text-xs … 4xl</code>, <code>--iv-leading-*</code>, <code>--iv-weight-*</code>, <code>--iv-font-sans|mono</code></td></tr>
+        <tr><td>Shape</td><td><code>--iv-radius-sm|md|lg|full</code>, <code>--iv-border-width</code>, <code>--iv-shadow-1|2|3</code></td></tr>
+        <tr><td>Focus</td><td><code>--iv-focus-width</code>, <code>--iv-focus-offset</code>, <code>--iv-color-focus</code></td></tr>
+        <tr><td>Motion</td><td><code>--iv-motion-fast|base|slow</code> (120/180/220 ms; 0 ms under reduced motion), <code>--iv-ease-out</code></td></tr>
+        <tr><td>Layers</td><td><code>--iv-z-dropdown|drawer|dialog|toast</code></td></tr>
+        <tr><td>Measures</td><td><code>--iv-measure</code> (68ch), <code>--iv-container-max</code> (75rem), <code>--iv-content-max</code> (90rem)</td></tr>
+        <tr><td>Breakpoints</td><td>sm 30em · md 48em · lg 64em · xl 80em · 2xl 90em. Resolved at build time; not available as custom properties inside media queries.</td></tr>
+      </tbody>
+    </table>
+  </article>
+</Base>

@@ -1,0 +1,35 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Layout" description="iVOLT layout primitives: container, stack, cluster and grid, plus the finite utility matrix for display, flex, grid, gap, spacing, width and text.">
+  <article class="docs-prose">
+    <h1>Layout</h1>
+    <p>Four primitives cover most pages. Each exposes a local custom property, and the finite utilities adjust columns, gaps and alignment per breakpoint.</p>
+    <h2>Container</h2>
+    <p><code>iv-container</code> centres content with fluid gutters. <code>--narrow</code> uses the reading measure, <code>--wide</code> allows 1440px.</p>
+    <Fixture name="layout/container" />
+    <h2>Stack and cluster</h2>
+    <p><code>iv-stack</code> lays children vertically with <code>--iv-stack-gap</code>; <code>iv-cluster</code> wraps inline items with <code>--iv-cluster-gap</code>.</p>
+    <Fixture name="layout/stack-cluster" />
+    <h2>Grid</h2>
+    <p><code>iv-grid</code> is a CSS grid with one column by default. Set columns with <code>iv-u-grid-cols-N</code> and responsive prefixes, or use <code>iv-grid--auto</code> with <code>--iv-grid-min</code> for auto-fit columns.</p>
+    <Fixture name="layout/grid" />
+    <h2>Utilities</h2>
+    <p>The matrix is finite and generated; no arbitrary values, scanner or purge step. Responsive prefixes exist only for <code>sm md lg xl</code> and only on the groups marked below.</p>
+    <table>
+      <thead><tr><th>Group</th><th>Classes</th><th>Responsive</th></tr></thead>
+      <tbody>
+        <tr><td>Display</td><td><code>iv-u-block inline inline-block flex inline-flex grid hidden</code></td><td>yes</td></tr>
+        <tr><td>Flex</td><td><code>iv-u-flex-row|col</code>, <code>flex-wrap|nowrap</code>, <code>items-*</code>, <code>justify-*</code>, <code>grow</code>, <code>shrink-0</code></td><td>direction only</td></tr>
+        <tr><td>Grid</td><td><code>iv-u-grid-cols-1…6,12</code>, <code>col-span-1…6,12,full</code></td><td>yes</td></tr>
+        <tr><td>Gap</td><td><code>iv-u-gap-0…12</code>, <code>gap-x-*</code>, <code>gap-y-*</code></td><td>gap only</td></tr>
+        <tr><td>Spacing</td><td><code>iv-u-m|mt|mb|ms|me|mx|my-0…12,auto</code>, <code>p|pt|pb|ps|pe|px|py-0…12</code> (logical sides)</td><td>no</td></tr>
+        <tr><td>Width</td><td><code>iv-u-w-full w-auto max-w-measure max-w-content</code></td><td>no</td></tr>
+        <tr><td>Text</td><td><code>iv-u-text-start|center|end</code>, <code>text-xs…2xl</code>, <code>font-normal…bold</code>, <code>text-muted</code>, <code>truncate</code></td><td>alignment only</td></tr>
+        <tr><td>Visibility</td><td><code>iv-u-sr-only</code>, <code>iv-u-sr-only-focusable</code></td><td>no</td></tr>
+      </tbody>
+    </table>
+    <p>Utilities are emitted with a doubled selector (specificity 0,2,0) and loaded last, so they win over component modifiers in both the layered and the flat stylesheet.</p>
+  </article>
+</Base>

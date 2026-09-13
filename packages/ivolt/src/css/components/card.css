@@ -1,0 +1,63 @@
+/* iVOLT — components/card
+ * Content container: optional `__media`, a `__body` that grows and a
+ * `__footer` for actions. Composes with `iv-grid` / `iv-stack`.
+ * Locals: --iv-card-bg --iv-card-radius --iv-card-padding
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,1,1).
+ */
+
+.iv-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--iv-card-bg, var(--iv-color-surface-raised));
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-card-radius, var(--iv-radius-lg));
+  box-shadow: var(--iv-shadow-1);
+  overflow: hidden;
+}
+
+.iv-card--flat {
+  box-shadow: none;
+}
+
+/* Media -------------------------------------------------------------- */
+
+.iv-card__media {
+  aspect-ratio: 16 / 9;
+  background-color: var(--iv-color-surface);
+  overflow: hidden;
+}
+
+.iv-card__media img,
+.iv-card__media video {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* Body --------------------------------------------------------------- */
+
+.iv-card__body {
+  flex: 1;
+  padding: var(--iv-card-padding, var(--iv-space-5));
+}
+
+.iv-card__title {
+  margin-block: 0 var(--iv-space-2);
+  font-size: var(--iv-text-lg);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+/* Footer ------------------------------------------------------------- */
+
+.iv-card__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-3);
+  justify-content: flex-end;
+  align-items: center;
+  padding-block: var(--iv-space-4);
+  padding-inline: var(--iv-space-5);
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}

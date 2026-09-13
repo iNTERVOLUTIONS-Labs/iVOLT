@@ -1,0 +1,41 @@
+---
+import Base from "../layouts/Base.astro";
+import Fixture from "../components/Fixture.astro";
+---
+<Base title="The interface starts here" description="iVOLT is a hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript. Alpha." sidebar={false}>
+  <section class="docs-hero">
+    <div>
+      <span class="docs-alpha">v0.1 alpha</span>
+      <h1>The interface starts here.</h1>
+      <p class="iv-u-text-lg iv-u-text-muted">Semantic components as the fast path, a finite set of utilities for composition, tokens as the visual contract and optional JavaScript for behaviour. No runtime dependencies. Works from a plain <code>&lt;link&gt;</code>, WordPress, Astro or any bundler.</p>
+      <div class="iv-cluster">
+        <a class="iv-button iv-button--primary iv-button--lg" href="/getting-started">Get started</a>
+        <a class="iv-button iv-button--secondary iv-button--lg" href="/components/button">Components</a>
+      </div>
+    </div>
+    <Fixture name="dialog/basic" title="Live: dialog with a form" />
+  </section>
+
+  <section class="docs-prose">
+    <h2>Quick start (local files, no build)</h2>
+    <p>The package is not published yet. Build it from the repository, copy <code>dist/</code> next to your page and link two files. The plain HTML starter in <code>examples/plain-html</code> is exactly this.</p>
+<pre><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
+  &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
+  &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
+    <p><code>auto.js</code> is the only entry that initialises components on load. Import <code>index.js</code> instead when you want to call <code>init()</code> yourself.</p>
+
+    <h2>What is in this alpha</h2>
+    <ul>
+      <li><strong>Foundations:</strong> <a href="/foundations/tokens-and-themes">tokens, light/dark/system themes</a>, scoped base styles, <a href="/foundations/layout">container, stack, cluster and grid</a>, a finite utility matrix.</li>
+      <li><strong>Components:</strong> <a href="/components/button">button</a>, <a href="/components/card">card</a>, <a href="/components/form">form controls</a> and <a href="/components/dialog">dialog</a>. Badges, alerts, tables, navigation, tabs, drawer, dropdown and toast follow in the next milestone.</li>
+      <li><strong>Distribution:</strong> layered and flat CSS, per-component CSS, ES modules with real <code>exports</code>, an IIFE with a single <code>IVOLT</code> global and type declarations.</li>
+    </ul>
+
+    <h2>Themes</h2>
+    <p>Set <code>data-iv-theme</code> to <code>light</code>, <code>dark</code> or <code>system</code> on any element. Explicit choices win over the system preference, scopes nest, and nothing requires JavaScript or storage.</p>
+    <Fixture name="theme/nested" title="Nested theme scopes" />
+
+    <h2>Status and honesty</h2>
+    <p>Alpha: APIs may change before 0.1.0. Sizes, browser support and accessibility results are only published with their method, version and commit. There are no benchmarks against other frameworks.</p>
+  </section>
+</Base>

@@ -1,0 +1,13 @@
+/* iVOLT — layout/cluster
+ * Horizontal group that wraps: action bars, tag lists, dialog footers.
+ * Spacing via `--iv-cluster-gap` or `iv-u-gap-*`, cross-axis alignment via
+ * `--iv-cluster-align`.
+ * Declares no @layer and imports nothing: the entry point does that.
+ */
+
+.iv-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-cluster-gap, var(--iv-space-3));
+  align-items: var(--iv-cluster-align, center);
+}

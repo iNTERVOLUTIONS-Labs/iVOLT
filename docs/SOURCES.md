@@ -30,7 +30,7 @@ Las páginas del proveedor de modelos sobre esfuerzo, prompting, costes y subage
 | pagefind | 1.5.2 | búsqueda local docs |
 | esbuild | 0.28.2 | build JS |
 | lightningcss / lightningcss-cli | 1.33.0 | build CSS |
-| typescript | 7.0.2 | tipos desde JSDoc (verificar; fallback 5.x) |
+| typescript | 7.0.2 observada; 5.9.3 instalada | tipos desde JSDoc (emisión verificada con 5.9.3) |
 | vitest | 5.0.0 | unitarias y contratos |
 | @playwright/test | 1.63.0 | navegador |
 | axe-core / @axe-core/playwright | 4.13.0 | accesibilidad automática |

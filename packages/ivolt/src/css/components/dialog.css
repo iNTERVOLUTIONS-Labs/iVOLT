@@ -1,0 +1,97 @@
+/* iVOLT — components/dialog
+ * Applied to the native `<dialog>`: the modal is opened by `showModal()`
+ * and the browser provides top layer, focus trapping and Esc. `__panel` is
+ * usually the `<form method="dialog">`.
+ * Local: --iv-dialog-width
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0), except the no-JS fallback at the end.
+ */
+
+.iv-dialog {
+  margin: auto;
+  padding: 0;
+  border: 0;
+  inline-size: min(var(--iv-dialog-width, 32rem), calc(100% - 2rem));
+  max-block-size: calc(100vh - 2rem);
+  max-block-size: calc(100dvh - 2rem);
+  overflow: auto;
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface-raised);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: var(--iv-shadow-3);
+}
+
+.iv-dialog::backdrop {
+  background-color: var(--iv-color-overlay);
+}
+
+.iv-dialog[open] {
+  animation: iv-dialog-in var(--iv-motion-base) var(--iv-ease-out);
+}
+
+@keyframes iv-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-dialog[open] {
+    animation: none;
+  }
+}
+
+/* Inner structure ---------------------------------------------------- */
+
+.iv-dialog__panel {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+  margin: 0;
+}
+
+.iv-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--iv-space-4);
+  padding-block: var(--iv-space-4);
+  padding-inline: var(--iv-space-6);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-dialog__title {
+  margin: 0;
+  font-size: var(--iv-text-xl);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-dialog__body {
+  padding: var(--iv-space-6);
+  overflow-y: auto;
+}
+
+.iv-dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-3);
+  justify-content: flex-end;
+  align-items: center;
+  padding-block: var(--iv-space-4);
+  padding-inline: var(--iv-space-6);
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* No-JS fallback --------------------------------------------------------
+ * A `<dialog>` without `open` is hidden by the UA. When the `href="#id"`
+ * link is the only route (JS not loaded or disabled) it is shown as a
+ * static, non-modal block with its `href="#"` close link.
+ * Single, deliberate exception to the (0,2,0) specificity ceiling: this
+ * selector is (0,3,0). See "Proposals" in the phase 1 report.
+ */
+.iv-dialog:target:not([open]) {
+  display: block;
+  position: static;
+}

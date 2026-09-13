@@ -1,0 +1,24 @@
+/* iVOLT — layout/container
+ * Centers content and applies the system gutters.
+ * `--iv-container-max` is both the semantic token (75rem) and the block's
+ * override point: it is set inline or on an ancestor and is not redeclared
+ * here (a redeclaration under the same name would be a cycle).
+ * Declares no @layer and imports nothing: the entry point does that.
+ */
+
+.iv-container {
+  inline-size: 100%;
+  max-inline-size: var(--iv-container-max);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 4rem);
+}
+
+/* Reading measure: long-form text, documentation. */
+.iv-container--narrow {
+  max-inline-size: var(--iv-measure);
+}
+
+/* Landing width: up to 1440px. */
+.iv-container--wide {
+  max-inline-size: var(--iv-content-max);
+}

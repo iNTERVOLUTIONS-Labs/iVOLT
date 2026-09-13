@@ -110,7 +110,7 @@ class Dialog {
 - `init` es idempotente: elementos ya instanciados se omiten; nunca se duplican listeners. Se comprueba con test de conteo de listeners y de eventos.
 - Registro: `WeakMap<Element, Map<name, instance>>`. Sin `MutationObserver` global; contenido dinámico se monta llamando `init(fragment)` o `new X(el)`.
 - Precedencia de opciones: `defaults < data-iv-* < options JS`. Coerción de atributos: `"true"/"false"` → boolean, numérico → number, resto string. Sin JSON ni expresiones.
-- Errores: `IvError` con `code` (`instance-exists`, `missing-target`, `invalid-option`). Sin `console.*` en producción salvo `warn` una vez por opción inválida.
+- Errores: `IvError` con `code` (`instance-exists`, `missing-target`, `invalid-option`, `invalid-element`). Sin `console.*` en producción salvo `warn` una vez por opción inválida y `warn` cuando un disparador declarativo apunta a un destino inexistente (dentro de un handler no se lanza).
 - Dependencias entre componentes: `Drawer` y `Dropdown` reutilizan `core/focus.js`; ningún componente importa a otro.
 - `init` marca `document.documentElement` con `data-iv-js=""` la primera vez que se ejecuta (si existe `document`); los fallbacks CSS sin JS se acotan con `:root:not([data-iv-js])`. `destroy` no lo retira.
 - Mejora progresiva: el HTML servido es funcional sin roles ARIA de widget; `init` los añade (tabs, dropdown) y `destroy` los retira. Los atributos que el autor ya escribió se respetan y no se eliminan.
@@ -121,7 +121,7 @@ class Dialog {
 |---|---|---|
 | `Disclosure` | `open() close() toggle() destroy()`; `isOpen` | `exclusive` (false; en un `iv-accordion` cierra los hermanos), `closeOnOutside` (false) |
 | `Tabs` | `select(idOrElement) next() prev() destroy()`; `activeTab` | `activation` (`automatic`\|`manual`, por defecto `automatic`), `orientation` (`horizontal`\|`vertical`) |
-| `Dialog` | `open({ trigger }) close(reason) toggle() destroy()`; `isOpen`, `returnValue` | `closeOnBackdrop` (true), `closeOnEscape` (true), `initialFocus` (selector, null), `returnFocus` (true) |
+| `Dialog` | `open({ trigger }) close(reason, returnValue) toggle() destroy()`; `isOpen`, `returnValue` | `closeOnBackdrop` (true), `closeOnEscape` (true), `initialFocus` (selector, null), `returnFocus` (true) |
 | `Drawer` | como `Dialog` más `placement` de solo lectura | `placement` (`start`\|`end`, por defecto `start`), `closeOnBackdrop` (true), `closeOnEscape` (true), `returnFocus` (true), `staticFrom` (`lg`) |
 | `Dropdown` | `open() close() toggle() destroy()`; `isOpen` | `placement` (`bottom-start`\|`bottom-end`), `closeOnSelect` (true) |
 | `Toast` (por región) | `show({ message, variant, timeout, dismissible }) → ToastItem` (`dismiss()`), `clear() destroy()` | región: `placement` (`bottom-end`), `max` (3, los excedentes esperan en cola sin perderse); item: `variant` (`info`\|`success`\|`warning`\|`danger`), `timeout` (6000 ms; `0` = sin autocierre, obligatorio en `danger`), `dismissible` (true) |
@@ -136,7 +136,7 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 |---|---|---|---|
 | `iv:init` / `iv:destroy` | no | tras crear / antes de liberar | — |
 | `iv:open` → `iv:opened` | sí / no | antes / después de abrir (dialog, drawer, dropdown, disclosure, toast) | `trigger`, `reason` |
-| `iv:close` → `iv:closed` | sí / no | antes / después de cerrar | `reason: "escape"\|"backdrop"\|"trigger"\|"api"\|"timeout"` |
+| `iv:close` → `iv:closed` | sí / no | antes / después de cerrar | `reason: "escape"\|"backdrop"\|"trigger"\|"form"\|"api"\|"external"\|"viewport"\|"timeout"`, `returnValue` |
 | `iv:change` → `iv:changed` | sí / no | tabs y disclosure en modo acordeón | `tab`, `panel`, `previousTab` |
 | `iv:themechange` | no | en `document` | `theme`, `resolved: "light"\|"dark"` |
 
@@ -144,7 +144,7 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 
 ### 5.4 Disparadores declarativos (`auto.js` e `init`)
 
-`data-iv-open="id"`, `data-iv-toggle="id"` y `data-iv-close` (sin valor: cierra el componente ancestro) se resuelven por delegación en el `root` de `init`; los elementos apuntados deben tener un componente instanciado. Un enlace `<a href="#id" data-iv-open="id">` conserva el fallback `:target` sin JS; con JS, el delegador llama a `preventDefault()` y el hash no cambia (los diálogos no admiten enlace profundo en v0.1; el fallback CSS se acota con `:root:not([data-iv-js])`).
+`data-iv-open="id"`, `data-iv-toggle="id"` y `data-iv-close` (sin valor: cierra el componente ancestro; con valor: cierra ese id; razón `trigger`) se resuelven por delegación en el `root` de `init`; los elementos apuntados deben tener un componente instanciado. Un enlace `<a href="#id" data-iv-open="id">` conserva el fallback `:target` sin JS; con JS, el delegador llama a `preventDefault()` y el hash no cambia (los diálogos no admiten enlace profundo en v0.1; el fallback CSS se acota con `:root:not([data-iv-js])`).
 
 ## 6. Teclado y ARIA por componente (resumen; patrón APG referenciado)
 
@@ -170,7 +170,7 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 <div class="iv-button-group" role="group" aria-label="View">…</div>
 ```
 
-Variantes: `--primary --secondary --ghost --danger`; tamaños `--sm --lg`; `--icon`. Estados vía `:hover`, `:active`, `:focus-visible`, `:disabled`/`[aria-disabled="true"]`, `[aria-busy="true"]` (bloquea clic, muestra spinner CSS, respeta reduced-motion). Locales: `--iv-button-bg --iv-button-fg --iv-button-border --iv-button-radius --iv-button-px --iv-button-py`.
+Variantes: `--primary --secondary --ghost --danger`; tamaños `--sm --lg`; `--icon`. Estados vía `:hover`, `:active`, `:focus-visible`, `:disabled`/`[aria-disabled="true"]`, `[aria-busy="true"]` (bloquea clic, muestra spinner CSS, respeta reduced-motion). Locales: `--iv-button-bg --iv-button-fg --iv-button-border --iv-button-radius --iv-button-px --iv-button-py` y, para que las variantes solo reasignen locales, `--iv-button-bg-hover --iv-button-border-hover --iv-button-bg-active`. El botón sin variante es neutro (surface-raised / text / border-strong); `--secondary` es el contorno con texto primary.
 
 ### Grid
 
@@ -230,4 +230,4 @@ dialog.element.addEventListener("iv:close", (e) => { if (e.detail.reason === "ba
 dialog.open({ trigger: button });
 ```
 
-Opciones: `closeOnBackdrop` (true), `closeOnEscape` (true), `initialFocus` (selector, por defecto primer foco tabulable o el panel), `returnFocus` (true). Los botones del `form[method="dialog"]` cierran a través de `iv:close` (cancelable) con `reason: "form"` y `detail.returnValue`. Sin JS, `:root:not([data-iv-js]) .iv-dialog:target { display:block }` lo muestra como bloque estático no modal con su enlace de cierre `href="#"`; la documentación exige que el contenido esencial tenga también una página o sección propia.
+Opciones: `closeOnBackdrop` (true), `closeOnEscape` (true), `initialFocus` (selector, por defecto primer foco tabulable o el panel), `returnFocus` (true). Local: `--iv-dialog-width` (32rem). Los botones del `form[method="dialog"]` cierran a través de `iv:close` (cancelable) con `reason: "form"` y `detail.returnValue`. Sin JS, `.iv-dialog:target:not([open]) { display:block }` (excepción de especificidad registrada en ADR-023) lo muestra como bloque estático no modal con su enlace de cierre `href="#"`; la documentación exige que el contenido esencial tenga también una página o sección propia.
