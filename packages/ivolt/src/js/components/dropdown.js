@@ -422,7 +422,9 @@ export class Dropdown extends IvComponent {
       return;
     }
     if (key === KEY_TAB) {
-      // Focus is never trapped: the menu closes and the browser moves on.
+      // Focus is never trapped: park focus on the summary so the browser's default Tab / Shift+Tab
+      // continues from the button instead of from <body>, then close the menu.
+      this._focusSummary();
       this.close("external");
       return;
     }

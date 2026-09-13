@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>iVOLT recipe — Admin dashboard</title>
   <meta name="description" content="Sample admin dashboard built only with iVOLT: a drawer that becomes a static sidebar, KPI cards, a stacked orders table, a demo form and toasts.">
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="../ivolt/css/ivolt.min.css">
   <script type="module" src="../ivolt/js/auto.js"></script>
   <script type="module" src="admin.js"></script>
@@ -20,15 +21,18 @@
     }
 
     @media (min-width: 64em) {
+      /* Fixed sidebar column (drawer width) reserved in CSS, so the layout does not shift
+         when the script marks the drawer static after first paint. */
       .ra-shell {
-        display: flex;
-        align-items: flex-start;
+        display: grid;
+        grid-template-columns: var(--iv-drawer-width, 20rem) minmax(0, 1fr);
+        align-items: start;
         gap: var(--iv-space-8);
       }
 
-      .ra-main {
-        flex: 1 1 auto;
-      }
+      /* Explicit placement: main always occupies the second column, even while the drawer is hidden. */
+      .ra-shell > .iv-drawer { grid-column: 1; }
+      .ra-main { grid-column: 2; }
     }
 
     .ra-rule {

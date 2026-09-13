@@ -54,3 +54,17 @@ Objetivo WCAG 2.2 AA en los ejemplos evaluados: contraste de texto 4.5:1, compon
 ## 6. Compromisos de honestidad en docs
 
 Ninguna cifra de peso, puntuación o compatibilidad aparece en la web sin su método, versión y commit. Sin comparativas frente a otros frameworks en v0.1. Formularios demo indican que no envían datos. Datos de paneles marcados como ficticios.
+
+## 7. Resultados registrados (fase 4, 2026-09-13)
+
+| Evidencia | Dónde |
+|---|---|
+| Lighthouse 13.4.1, 4 rutas × móvil/escritorio, entorno de laboratorio y remedición tras correcciones | `LIGHTHOUSE.md` |
+| Revisión de teclado y semántica en Chromium y Firefox, forced-colors, lista de lector de pantalla **no ejecutada** | `A11Y_REVIEW.md` |
+| Regresiones visuales selectivas (17 líneas base Chromium, light y dark) | `tests/browser/visual.spec.js` y `tests/browser/__snapshots__/` |
+| Tamaños por artefacto con método | `npm run sizes` → `packages/ivolt/dist/SIZES.md` |
+| Tarball en consumidor externo + starter servido fuera del monorepo | `npm run pack-smoke` |
+| Terceros y atribuciones | `THIRD_PARTY.md` |
+| Pasos de publicación (no ejecutados) | `RELEASE.md` |
+
+Correcciones derivadas de estas revisiones: `aria-live` en la región de toast y retorno de foco al descartar; foco tras cerrar el dropdown con Tab; pestaña activa visible en `forced-colors`; foco inicial explícito en la fixture de diálogo; CLS de la receta admin (columna reservada con colocación explícita); favicon en recetas y starter; nombres accesibles del enlace de marca y del botón de menú.

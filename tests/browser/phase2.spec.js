@@ -70,6 +70,14 @@ test.describe("Dropdown", () => {
     await expect(summary).toHaveAttribute("aria-expanded", "true");
     await page.mouse.click(5, 5);
     await expect(summary).toHaveAttribute("aria-expanded", "false");
+    // Tab closes the menu and focus continues from the button to the next tabbable, never from <body>.
+    await page.evaluate(() => { const b = document.createElement("button"); b.id = "after"; b.textContent = "After"; document.getElementById("fixture").append(b); });
+    await summary.focus();
+    await page.keyboard.press("Enter");
+    await expect(items.first()).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(summary).toHaveAttribute("aria-expanded", "false");
+    await expect(page.locator("#after")).toBeFocused();
   });
 });
 
@@ -112,9 +120,14 @@ test.describe("Toast", () => {
     expect(res.remaining[0]).toContain("Failed");
     expect(res.role).toBe("alert");
     expect(res.closed.filter((r) => r === "timeout").length).toBe(4);
-    const toast = page.locator(".iv-toast--danger");
-    await toast.locator(".iv-toast__dismiss").focus();
+    await expect(page.locator(".iv-toast-region")).toHaveAttribute("aria-live", "polite");
+    // Focus returns to where it came from after dismissing the last toast with Escape.
+    await page.evaluate(() => { const b = document.createElement("button"); b.id = "origin"; b.textContent = "Origin"; document.getElementById("fixture").prepend(b); });
+    await page.locator("#origin").focus();
+    await page.keyboard.press("Tab");
+    await expect(page.locator(".iv-toast--danger")).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(page.locator(".iv-toast")).toHaveCount(0);
+    await expect(page.locator("#origin")).toBeFocused();
   });
 });

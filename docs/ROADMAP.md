@@ -8,7 +8,7 @@
 | 1 Corte vertical (hecha 2026-09-13) | `IMPLEMENT_PHASE_1` | monorepo, build, tokens, temas, base, layout, button, card, form, dialog; home inicial y docs de esos elementos; starter HTML; pack-smoke | 0 |
 | 2 Alcance v0.1 (hecha 2026-09-13) | `IMPLEMENT_PHASE_2` | badges, alerts, tables, breadcrumbs, pagination, progress, skeleton, disclosure, tabs, drawer, dropdown, toast, utilidades, tres recetas; docs y pruebas por familia | 1 |
 | 3 Web y DX (hecha 2026-09-13) | `IMPLEMENT_PHASE_3` | web completa, búsqueda, playground acotado, starters descargables, changelog, contributing | 2 |
-| 4 Release candidate | `IMPLEMENT_PHASE_4` | gates completos, Lighthouse, licencias, notas alpha, pasos de publicación (sin publicar) | 3 |
+| 4 Release candidate (hecha 2026-09-13; sin publicar) | `IMPLEMENT_PHASE_4` | gates completos, Lighthouse, licencias, notas alpha, pasos de publicación (sin publicar) | 3 |
 
 ### Fase 1 en detalle (plan mínimo de alto valor)
 
