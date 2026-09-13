@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-iv-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iVOLT — Brand board (phase 0, provisional)</title>
+  <meta name="description" content="Single visual direction for iVOLT: wordmark, palette, type, button, input, card and hero sketch. Provisional; not the framework.">
+  <link rel="stylesheet" href="brand-board.css">
+</head>
+<body>
+  <a class="sr-only" href="#main">Skip to content</a>
+  <header class="board-header wrap">
+    <svg viewBox="0 0 320 96" role="img" aria-label="iVOLT CSS by iNTERVOLUTIONS (temporary wordmark)">
+      <path d="M44 6 L76 24 L76 60 L44 78 L12 60 L12 40" fill="none" stroke="#29F59A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M50 16 L30 46 L44 46 L38 70 L60 38 L46 38 Z" fill="#29F59A"/>
+      <text x="96" y="58" font-family="system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="46" font-weight="700" letter-spacing="2" fill="currentColor">iVOLT</text>
+      <text x="240" y="58" font-family="system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="3" fill="#29F59A">CSS</text>
+      <text x="97" y="82" font-family="system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11" font-weight="500" letter-spacing="3" fill="#90A49E">BY iNTERVOLUTIONS</text>
+    </svg>
+    <div class="theme-switch" role="group" aria-label="Theme">
+      <button type="button" data-theme="light" aria-pressed="false">Light</button>
+      <button type="button" data-theme="dark" aria-pressed="true">Dark</button>
+      <button type="button" data-theme="system" aria-pressed="false">System</button>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <!-- 1. Hero sketch -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <span class="alpha">v0.1 alpha · design board</span>
+        <h1 id="hero-title">The interface starts here.</h1>
+        <p class="lead">Semantic components, a finite set of utilities and tokens you can override from one stylesheet. Optional JavaScript, no runtime dependencies.</p>
+        <div class="cluster">
+          <a class="btn btn--lg" href="#components">See components</a>
+          <a class="btn btn--secondary btn--lg" href="#palette">Explore tokens</a>
+        </div>
+      </div>
+      <div class="demo" tabindex="0" aria-label="Live example: a card with a form, and its HTML">
+        <div class="demo__live">
+          <div class="field">
+            <label for="demo-email">Work email</label>
+            <input id="demo-email" type="email" placeholder="you@company.com" aria-describedby="demo-help">
+            <span class="field__help" id="demo-help">Demo only. Nothing is sent.</span>
+          </div>
+          <div class="cluster">
+            <button class="btn" type="button">Request access</button>
+            <button class="btn btn--ghost" type="button">Learn more</button>
+            <span class="badge">Alpha</span>
+          </div>
+        </div>
+<pre class="demo__code" tabindex="0" aria-label="HTML for the example"><code>&lt;<span class="tag">div</span> <span class="attr">class</span>=<span class="str">"iv-field"</span>&gt;
+  &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="str">"email"</span>&gt;Work email&lt;/<span class="tag">label</span>&gt;
+  &lt;<span class="tag">input</span> <span class="attr">id</span>=<span class="str">"email"</span> <span class="attr">type</span>=<span class="str">"email"</span>&gt;
+&lt;/<span class="tag">div</span>&gt;
+&lt;<span class="tag">button</span> <span class="attr">class</span>=<span class="str">"iv-button iv-button--primary"</span>&gt;Request access&lt;/<span class="tag">button</span>&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 2. Palette -->
+    <section class="section" id="palette" aria-labelledby="palette-title">
+      <h2 id="palette-title">Palette <small>semantic tokens · current theme</small></h2>
+      <div class="grid">
+        <div class="swatch"><div class="swatch__color" style="background:var(--bg);color:var(--text)">--iv-color-bg</div><div class="swatch__meta"><b>Background</b><span>text 16.8 / 17.8</span></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:var(--surface);color:var(--text)">--iv-color-surface</div><div class="swatch__meta"><b>Surface</b><span>muted 5.5 / 6.4</span></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:var(--primary);color:var(--on-primary)">--iv-color-primary</div><div class="swatch__meta"><b>Primary</b><span>on-primary 6.7 / 13.2</span></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:var(--accent);color:var(--on-accent)">--iv-color-accent</div><div class="swatch__meta"><b>Accent (brand green)</b><span>on-accent 13.2</span></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:var(--bg);color:var(--muted)">--iv-color-text-muted</div><div class="swatch__meta"><b>Muted text</b><span>5.9 / 7.2</span></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:var(--bg);border-bottom:2px solid var(--border-strong);color:var(--muted)">--iv-color-border-strong</div><div class="swatch__meta"><b>Control border</b><span>4.0 / 4.7</span></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:var(--danger-subtle);color:var(--danger)">--iv-color-danger</div><div class="swatch__meta"><b>Danger</b><span>6.6 / 7.5</span></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:var(--warning-subtle);color:var(--warning)">--iv-color-warning</div><div class="swatch__meta"><b>Warning</b><span>6.4 / 11.0</span></div></div>
+        <div class="swatch"><div class="swatch__color" style="background:var(--info-subtle);color:var(--info)">--iv-color-info</div><div class="swatch__meta"><b>Info</b><span>6.2 / 8.6</span></div></div>
+      </div>
+      <p class="note" style="margin-top:1rem">Ratios: light / dark, WCAG 2.x formula computed on the hex values in DESIGN_SYSTEM.md. Re-measured on emitted CSS in phase 1.</p>
+      <h3 style="margin-top:1.5rem">Primitives</h3>
+      <p class="note">green 50→950</p>
+      <div class="scale" aria-hidden="true">
+        <div data-step="50" style="background:#E8FDF3"></div><div data-step="100" style="background:#C6F9E1"></div><div data-step="200" style="background:#93F3C6"></div><div data-step="300" style="background:#5CF0AE"></div><div data-step="400" style="background:#29F59A"></div><div data-step="500" style="background:#14D882"></div><div data-step="600" style="background:#0FB56C"></div><div data-step="700" style="background:#0B8A55"></div><div data-step="800" style="background:#0A6A43"></div><div data-step="900" style="background:#084D32"></div><div data-step="950" style="background:#04301F"></div>
+      </div>
+      <p class="note" style="margin-top:.75rem">neutral 50→950</p>
+      <div class="scale" aria-hidden="true">
+        <div data-step="50" style="background:#F3FAF6"></div><div data-step="100" style="background:#E4EDE8"></div><div data-step="200" style="background:#CBD8D1"></div><div data-step="300" style="background:#A9B9B1"></div><div data-step="400" style="background:#90A49E"></div><div data-step="500" style="background:#6E837B"></div><div data-step="600" style="background:#56695F"></div><div data-step="700" style="background:#3F4F47"></div><div data-step="800" style="background:#263129"></div><div data-step="900" style="background:#12201A"></div><div data-step="950" style="background:#081310"></div>
+      </div>
+    </section>
+
+    <!-- 3. Type -->
+    <section class="section" aria-labelledby="type-title">
+      <h2 id="type-title">Typography <small>system-ui · mono for code</small></h2>
+      <div class="type-row"><code>text-4xl</code><span style="font-size:clamp(2.25rem,1.5rem + 2.5vw,3.5rem);font-weight:600;line-height:1.1;letter-spacing:-.02em">Build once, ship anywhere</span></div>
+      <div class="type-row"><code>text-3xl</code><span style="font-size:clamp(1.75rem,1.2rem + 1.5vw,2.25rem);font-weight:600;line-height:1.15">Section heading</span></div>
+      <div class="type-row"><code>text-xl</code><span style="font-size:1.25rem;font-weight:600">Card or panel title</span></div>
+      <div class="type-row"><code>text-md</code><span>Body copy at 1rem with 1.5 line-height, readable up to 68ch. Links use the primary color and keep an underline.</span></div>
+      <div class="type-row"><code>text-sm</code><span style="font-size:.875rem;color:var(--muted)">Helper text and metadata at 0.875rem in muted color.</span></div>
+      <div class="type-row"><code>mono</code><span style="font-family:var(--font-mono);font-size:.875rem">--iv-color-primary: var(--iv-palette-green-800);</span></div>
+    </section>
+
+    <!-- 4. Buttons -->
+    <section class="section" id="components" aria-labelledby="btn-title">
+      <h2 id="btn-title">Button <small>variants · sizes · states</small></h2>
+      <div class="stack">
+        <div class="cluster">
+          <button class="btn" type="button">Primary</button>
+          <button class="btn btn--secondary" type="button">Secondary</button>
+          <button class="btn btn--ghost" type="button">Ghost</button>
+          <button class="btn btn--danger" type="button">Danger</button>
+          <button class="btn btn--accent" type="button">Brand accent</button>
+        </div>
+        <div class="cluster">
+          <button class="btn btn--sm" type="button">Small</button>
+          <button class="btn" type="button">Default</button>
+          <button class="btn btn--lg" type="button">Large</button>
+          <span class="btn-group" role="group" aria-label="View"><button class="btn btn--secondary btn--sm" type="button">List</button><button class="btn btn--secondary btn--sm" type="button">Grid</button></span>
+        </div>
+        <div class="cluster">
+          <button class="btn" type="button" disabled>Disabled</button>
+          <button class="btn" type="button" aria-busy="true">Saving…</button>
+          <button class="btn btn--secondary" type="button">Focus-visible (press Tab)</button>
+        </div>
+        <p class="note">Hover and active are live. 40px default height, 32px small: targets stay ≥ 24×24.</p>
+      </div>
+    </section>
+
+    <!-- 5. Input -->
+    <section class="section" aria-labelledby="input-title">
+      <h2 id="input-title">Field <small>default · error · disabled</small></h2>
+      <div class="grid">
+        <div class="field"><label for="f1">Company</label><input id="f1" type="text" placeholder="Tombatossals Softworks"><span class="field__help">Shown on invoices.</span></div>
+        <div class="field"><label for="f2">Email</label><input id="f2" type="email" value="dave@" aria-invalid="true" aria-describedby="f2-err"><span class="field__error" id="f2-err">Enter a complete email address.</span></div>
+        <div class="field"><label for="f3">Plan</label><input id="f3" type="text" value="Team (locked)" disabled></div>
+      </div>
+    </section>
+
+    <!-- 6. Card + motion -->
+    <section class="section" aria-labelledby="card-title">
+      <h2 id="card-title">Card <small>and motion tokens</small></h2>
+      <div class="grid">
+        <article class="card">
+          <div class="card__media" aria-hidden="true">placeholder 16:9</div>
+          <div class="card__body"><span class="badge">New</span><h3 style="margin-top:.5rem">Editorial catalogue</h3><p class="note">Cards, filters and a detail page built from the same primitives as this board.</p></div>
+          <div class="card__footer"><a class="btn btn--ghost btn--sm" href="#main">Preview</a><a class="btn btn--sm" href="#main">Open recipe</a></div>
+        </article>
+        <article class="card">
+          <div class="card__body"><h3>Motion</h3><p class="note">120 / 180 / 220 ms with ease-out. Hover the squares. Reduced motion removes transitions and the light pulse.</p><div class="motion" aria-hidden="true"><span></span><span></span><span></span></div></div>
+        </article>
+        <article class="card">
+          <div class="card__body"><h3>Light pulse</h3><p class="note">Hover or focus the hero demo: a 120px glow crosses its top edge once. It never loops and only exists on the hero demo.</p></div>
+          <div class="card__footer"><a class="btn btn--secondary btn--sm" href="#hero-title">Back to hero</a></div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="section" style="border:0">
+      <p class="note">Provisional board for review (phase 0). CSS in this folder is not the framework; the production site consumes packages/ivolt. Official logo pending: temporary wordmark in use.</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var buttons = document.querySelectorAll('.theme-switch button');
+      buttons.forEach(function (b) {
+        b.addEventListener('click', function () {
+          root.setAttribute('data-iv-theme', b.getAttribute('data-theme'));
+          buttons.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
