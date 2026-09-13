@@ -4,7 +4,7 @@ Estado: contrato de fase 0. Los valores aquí definidos pasan a `tokens/tokens.j
 
 ## 1. Marca y arte
 
-- Logo: `ivolt-logo.svg` (rayo verde, marco hexagonal abierto, firma BY iNTERVOLUTIONS) **no está en el repositorio**. Se usa un wordmark temporal `docs/design/assets/ivolt-wordmark-temp.svg`, sustituible sin tocar CSS. Asset pendiente registrado en [PROJECT_STATE.md](../PROJECT_STATE.md).
+- Logo: isotipo = «O» partida con el rayo verde dentro; wordmark iVOLT CSS y firma BY iNTERVOLUTIONS. El archivo oficial **aún no está en el repositorio**: debe dejarse en `assets/brand/ivolt-logo.svg` (ver `assets/brand/README.md`); hasta entonces la web usa un wordmark temporal con ese concepto (`apps/docs/src/brand.js`) y la imagen OG lo marca como provisional. Asset pendiente registrado en [PROJECT_STATE.md](../PROJECT_STATE.md).
 - Carácter: potente, técnico, cuidado. Líneas finas, mucho aire, jerarquía fuerte, verde reservado para acción y acento. Nada de vídeo de fondo, partículas, WebGL, cursor propio ni ruido bajo texto.
 - Mensaje: «The interface starts here.» seguido de un ejemplo real con su código, nunca de una lista de promesas.
 - El framework no obliga a ser oscuro ni verde: el tema light es el predeterminado del paquete; la web de marca usa el dark.

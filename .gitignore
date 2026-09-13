@@ -11,3 +11,4 @@ examples/recipes/ivolt/
 node_modules/
 playwright-report/
 test-results/
+apps/docs/public/favicon.svg

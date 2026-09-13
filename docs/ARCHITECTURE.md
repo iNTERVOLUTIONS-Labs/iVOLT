@@ -22,6 +22,7 @@ iVOLT/
 ├─ package.json                # workspaces + scripts raíz (propietario: integrador)
 ├─ package-lock.json           # único lockfile
 ├─ guía raíz de agentes · PROJECT_STATE.md · README.md · LICENSE
+├─ assets/brand/               # logo oficial (ivolt-logo.svg, ivolt-mark.svg); la web lo toma en build
 ├─ docs/                       # biblia, contratos, ADR, diseño (docs/design/)
 ├─ packages/ivolt/
 │  ├─ package.json             # exports, sideEffects, files
