@@ -1,6 +1,6 @@
 // npm pack → install the tarball in a temporary external consumer → import, bundle, resolve CSS.
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, writeFileSync, readFileSync, existsSync, rmSync } from "node:fs";
+import { mkdtempSync, writeFileSync, readFileSync, existsSync, rmSync, cpSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -49,7 +49,37 @@ try {
   const iife = readFileSync(join(tmp, "node_modules/@intervolutions/ivolt/dist/js/ivolt.iife.min.js"), "utf8");
   if (!/var IVOLT\s*=/.test(iife)) throw new Error("IIFE global IVOLT missing");
 
-  console.log(`pack-smoke: ok (${packOut[0].filename}, ${files.length} files, theme-only ${themeOnly.length} B, dialog-only ${dialogOnly.length} B, unused ${unused.length} B)`);
+  // 4) Plain HTML starter copied outside the monorepo, served statically and driven in Chromium.
+  const starterSrc = join(root, "examples/plain-html");
+  if (!existsSync(join(starterSrc, "ivolt/css/ivolt.min.css"))) throw new Error("run node scripts/sync-examples.mjs before pack-smoke");
+  const starter = join(tmp, "starter");
+  cpSync(starterSrc, starter, { recursive: true });
+  const { createServer } = await import("node:http");
+  const { readFile: rf } = await import("node:fs/promises");
+  const { extname } = await import("node:path");
+  const types = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".map": "application/json" };
+  const server = createServer(async (req, res) => {
+    try { const f = join(starter, decodeURIComponent(new URL(req.url, "http://x").pathname).replace(/\/$/, "/index.html")); res.writeHead(200, { "content-type": types[extname(f)] || "application/octet-stream" }); res.end(await rf(f)); }
+    catch { res.writeHead(404); res.end(); }
+  });
+  await new Promise((r) => server.listen(0, "127.0.0.1", r));
+  const port = server.address().port;
+  const { chromium } = await import("@playwright/test");
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  const errors = [];
+  page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto(`http://127.0.0.1:${port}/index.html`);
+  await page.locator("[data-iv-open=signup]").first().click();
+  const open = await page.locator("#signup").getAttribute("open");
+  await page.keyboard.press("Escape");
+  const closed = await page.locator("#signup").getAttribute("open");
+  await browser.close();
+  server.close();
+  if (open === null || closed !== null || errors.length) throw new Error(`starter smoke failed: open=${open} closed=${closed} errors=${errors.join(" | ")}`);
+
+  console.log(`pack-smoke: ok (${packOut[0].filename}, ${files.length} files, theme-only ${themeOnly.length} B, dialog-only ${dialogOnly.length} B, unused ${unused.length} B; starter served from ${starter} works)`);
 } finally {
   rmSync(tmp, { recursive: true, force: true });
 }

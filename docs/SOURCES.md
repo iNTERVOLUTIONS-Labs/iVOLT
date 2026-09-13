@@ -43,4 +43,4 @@ Entorno local verificado: Node 22.23.2, npm 10.9.8, Chromium disponible (`/usr/b
 
 ## 3. Código y assets externos reutilizados
 
-Ninguno en fase 0. El wordmark temporal y la lámina de diseño son originales. Cualquier incorporación futura (fuente OFL, iconos) se registra aquí con licencia y atribución.
+Ninguno en el paquete (fases 0–4). El wordmark temporal, los SVG de iconos, el favicon y la imagen OG son originales. La web de documentación distribuye Pagefind (MIT) para la búsqueda; detalle y atribuciones en `THIRD_PARTY.md`.

@@ -127,3 +127,18 @@
   font-size: var(--iv-text-lg);
   font-weight: var(--iv-weight-semibold);
 }
+
+/* Forced colours (Windows high contrast): the indicator's background is removed by the UA, so the
+   selected tab also gets an underline, and the indicator uses the system Highlight colour. */
+@media (forced-colors: active) {
+  .iv-tabs__tab[aria-selected="true"] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+  }
+
+  .iv-tabs__tab[aria-selected="true"]::after {
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+}

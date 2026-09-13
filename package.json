@@ -15,7 +15,7 @@
     "check-examples": "node scripts/check-examples.mjs",
     "dev:docs": "npm run dev -w docs",
     "build:docs": "npm run build -w docs",
-    "verify": "npm run build && npm test && npm run test:browser && npm run sizes && npm run pack-smoke && npm run check-examples"
+    "verify": "npm run build && npm test && IVOLT_ALL_BROWSERS=1 npm run test:browser && npm run sizes && npm run pack-smoke && npm run build:docs && npm run check-examples"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
@@ -23,6 +23,7 @@
     "browserslist": "^4.28.9",
     "esbuild": "^0.28.2",
     "jsdom": "^30.0.1",
+    "lighthouse": "^13.4.1",
     "lightningcss": "^1.33.0",
     "typescript": "^5.9.3",
     "vitest": "^5.0.0"

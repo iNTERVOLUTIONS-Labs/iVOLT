@@ -89,6 +89,8 @@ export class ToastItem {
     this._open = false;
     /** @type {boolean} Whether the item has already been dismissed or dropped. */
     this._done = false;
+    /** @type {HTMLElement | null} Element focus came from before entering this toast (restored on dismiss). */
+    this._returnTo = null;
     /** @type {ReturnType<typeof setTimeout>|null} */
     this._timerId = null;
     /** @type {number} Milliseconds left before auto-dismiss. */
@@ -209,6 +211,8 @@ export class Toast extends IvComponent {
     this._queue = [];
     /** @type {boolean} Whether this instance added role="region" to the element. */
     this._addedRole = this._addedRole ?? false;
+    /** @type {boolean} Whether this instance added aria-live to the region. */
+    this._addedLive = this._addedLive ?? false;
   }
 
   /**
@@ -239,6 +243,13 @@ export class Toast extends IvComponent {
       this._element.setAttribute("role", "region");
       /** @type {boolean} Whether this instance added role="region". */
       this._addedRole = true;
+    }
+    // The region is a polite live region: items are inserted fully formed, and additions inside an
+    // existing live region are announced. Danger items carry role="alert" for assertive announcement.
+    if (!this._element.hasAttribute("aria-live")) {
+      this._element.setAttribute("aria-live", "polite");
+      /** @type {boolean} Whether this instance added aria-live. */
+      this._addedLive = true;
     }
   }
 
@@ -369,7 +380,15 @@ export class Toast extends IvComponent {
     const listeners = [
       { type: "mouseenter", handler: () => this._pauseTimer(item) },
       { type: "mouseleave", handler: () => this._resumeTimer(item) },
-      { type: "focusin", handler: () => this._pauseTimer(item) },
+      {
+        type: "focusin",
+        handler: (event) => {
+          // Remember where focus came from (outside the region) to restore it after a dismissal.
+          const from = /** @type {FocusEvent} */ (event).relatedTarget;
+          if (from instanceof HTMLElement && !this._element.contains(from)) item._returnTo = from;
+          this._pauseTimer(item);
+        },
+      },
       { type: "focusout", handler: () => this._resumeTimer(item) },
       {
         type: "keydown",
@@ -481,9 +500,16 @@ export class Toast extends IvComponent {
     const index = this._items.indexOf(item);
     if (index !== -1) this._items.splice(index, 1);
 
+    const hadFocus = item.element.contains(document.activeElement);
     emit(item.element, "closed", { instance: this, item, reason });
     item.element.remove();
     this._flushQueue();
+    if (hadFocus) {
+      // Keep keyboard users oriented: next remaining toast, else the element focus came from.
+      const next = this._items[Math.min(index === -1 ? 0 : index, this._items.length - 1)];
+      const target = next ? next.element : item._returnTo && item._returnTo.isConnected ? item._returnTo : null;
+      if (target) target.focus();
+    }
   }
 
   /**
@@ -519,6 +545,10 @@ export class Toast extends IvComponent {
     if (this._addedRole) {
       this._element.removeAttribute("role");
       this._addedRole = false;
+    }
+    if (this._addedLive) {
+      this._element.removeAttribute("aria-live");
+      this._addedLive = false;
     }
     for (const item of [...this._items]) {
       this._pauseTimer(item);
