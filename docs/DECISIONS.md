@@ -50,8 +50,8 @@ La composición se apoya en capas y variables locales. Excepción única documen
 ## ADR-016 Política de modelos: Fable lidera y revisa; Opus 5 implementa; sin delegación recursiva (A)
 Ver WORKFLOW. Rechazado: Fable en todas las tareas (coste), agentes subordinados Fable.
 
-## ADR-017 Logo pendiente: wordmark temporal propio (A)
-`ivolt-logo.svg` no está en el repositorio; se usa un SVG de texto provisional y se registra el asset pendiente. No bloquea arquitectura.
+## ADR-017 Logo pendiente: wordmark temporal propio (A, resuelto 2026-09-13)
+Mientras no existía el logo se usó un SVG provisional. Resuelto: los archivos oficiales viven en `assets/brand/` y `apps/docs/src/brand.js` los transforma para cada uso (tema, favicon, OG) sin modificar el original; el wordmark temporal permanece solo como fallback para que un checkout sin assets construya.
 
 ## ADR-018 Pruebas: Vitest + Playwright + axe-core; sin Jest ni Cypress (A)
 Un runner unitario y uno de navegador con tres motores. Rechazado: Storybook en v0.1 (las fixtures de docs cumplen ese papel).

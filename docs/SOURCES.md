@@ -43,4 +43,4 @@ Entorno local verificado: Node 22.23.2, npm 10.9.8, Chromium disponible (`/usr/b
 
 ## 3. Código y assets externos reutilizados
 
-Ninguno en el paquete (fases 0–4). El wordmark temporal, los SVG de iconos, el favicon y la imagen OG son originales. La web de documentación distribuye Pagefind (MIT) para la búsqueda; detalle y atribuciones en `THIRD_PARTY.md`.
+Ninguno en el paquete (fases 0–4). El logo oficial, los SVG de iconos, el favicon y la imagen OG derivada son obra propia de iNTERVOLUTIONS. La web de documentación distribuye Pagefind (MIT) para la búsqueda; detalle y atribuciones en `THIRD_PARTY.md`.
