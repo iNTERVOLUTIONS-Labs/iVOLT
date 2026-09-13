@@ -81,5 +81,8 @@
     "components",
     "design-tokens",
     "accessibility"
-  ]
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  }
 }

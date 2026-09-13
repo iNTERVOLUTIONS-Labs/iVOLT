@@ -21,7 +21,7 @@ npm test                 # unit + contract tests
 npm run test:browser     # Playwright (Chromium; IVOLT_ALL_BROWSERS=1 adds Firefox and WebKit)
 npm run sizes            # min+gzip per artifact against budgets
 npm run pack-smoke       # npm pack → external consumer
-npm run dev:docs         # documentation site
+npm run dev:docs         # documentation site (builds the package first when dist/ is missing)
 npm run verify           # everything above plus examples and the docs build
 ```
 

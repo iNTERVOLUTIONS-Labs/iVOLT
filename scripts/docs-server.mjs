@@ -7,7 +7,7 @@ import { preview } from "astro";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const port = Number(process.env.DOCS_PORT || 4321);
-if (!process.env.DOCS_SKIP_BUILD) execFileSync("npm", ["run", "build", "-w", "docs"], { cwd: root, stdio: "inherit" });
+if (!process.env.DOCS_SKIP_BUILD) execFileSync(process.platform === "win32" ? "npm.cmd" : "npm", ["run", "build", "-w", "docs"], { cwd: root, stdio: "inherit", shell: process.platform === "win32" });
 const server = await preview({ root: resolve(root, "apps/docs"), server: { port, host: "127.0.0.1" }, logLevel: "warn" });
 console.log(`docs-server: http://127.0.0.1:${port}/`);
 const stop = async () => { await server.stop(); process.exit(0); };

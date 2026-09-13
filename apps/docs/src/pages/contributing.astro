@@ -11,7 +11,7 @@ import Base from "../layouts/Base.astro";
 cd iVOLT
 npm ci                 # install from the single lockfile, never `npm install` in CI
 npm run build          # generate packages/ivolt/dist
-npm run dev:docs       # Astro dev server for apps/docs</code></pre>
+npm run dev:docs   # builds the package first when dist/ is missing       # Astro dev server for apps/docs</code></pre>
     <p>The repository is an npm workspace with one lockfile at the root. <code>dist/</code> is generated and not versioned, so build before running the browser suite, the size report or the pack smoke test.</p>
 
     <h2>Commands</h2>
