@@ -27,10 +27,14 @@ const inlineable = (svg) => svg
   .replace(/<!--[\s\S]*?-->/g, "")
   .replace(/<svg[^>]*>/, (tag) => tag.replace(/\s(role|aria-labelledby|width|height)="[^"]*"/g, "").replace(/<svg/, '<svg aria-hidden="true" focusable="false"'));
 
-/** Header variant: theme-aware colours and no signature line (illegible below ~120px wide). */
+/** Header variant: theme-aware colours and no signature line (illegible below ~120px wide).
+ *  Ivory → currentColor (text), electric green → --iv-color-primary (stays #29F59A in dark, #0A6A43 in light),
+ *  tag glyphs → --iv-color-on-primary. */
 const forHeader = (svg) => inlineable(svg)
   .replace(/<g fill="#90A49E">[\s\S]*?<\/g>/, "")
   .replace(/#F3FAF6/gi, "currentColor")
+  .replace(/#29F59A/gi, "var(--iv-color-primary)")
+  .replace(/#071510/gi, "var(--iv-color-on-primary)")
   .replace(/viewBox="0 0 1120 320"/, 'viewBox="20 40 1070 240"');
 
 const TEMP_WORDMARK = `<svg viewBox="0 0 340 96" aria-hidden="true" focusable="false">

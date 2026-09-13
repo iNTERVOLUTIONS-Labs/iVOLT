@@ -4,7 +4,7 @@ Estado: contrato de fase 0. Los valores aquí definidos pasan a `tokens/tokens.j
 
 ## 1. Marca y arte
 
-- Logo oficial en `assets/brand/`: `ivolt-logo-balanced.svg` (isotipo «O» partida con el rayo, wordmark iVOLT en trazados, etiqueta CSS y firma BY iNTERVOLUTIONS; marfil sobre transparente, pensado para fondos oscuros) e `ivolt-isotipo.svg`. Uso: cabecera de docs con marfil → `currentColor` y sin firma (ilegible por debajo de ~120 px), favicon con el isotipo sobre placa `#081310`, imagen OG con el lockup íntegro. Ver `assets/brand/README.md`.
+- Logo oficial en `assets/brand/`: `ivolt-logo-balanced.svg` (isotipo «O» partida con el rayo, wordmark iVOLT en trazados, etiqueta CSS y firma BY iNTERVOLUTIONS; marfil sobre transparente, pensado para fondos oscuros) e `ivolt-isotipo.svg`. Uso: cabecera de docs con marfil → `currentColor`, verde eléctrico → `--iv-color-primary` (sigue `#29F59A` en oscuro y pasa a `#0A6A43` en claro) y glifos de la etiqueta → `--iv-color-on-primary`, sin firma (ilegible por debajo de ~120 px), favicon con el isotipo sobre placa `#081310`, imagen OG con el lockup íntegro. Ver `assets/brand/README.md`.
 - Carácter: potente, técnico, cuidado. Líneas finas, mucho aire, jerarquía fuerte, verde reservado para acción y acento. Nada de vídeo de fondo, partículas, WebGL, cursor propio ni ruido bajo texto.
 - Mensaje: «The interface starts here.» seguido de un ejemplo real con su código, nunca de una lista de promesas.
 - El framework no obliga a ser oscuro ni verde: el tema light es el predeterminado del paquete; la web de marca usa el dark.
