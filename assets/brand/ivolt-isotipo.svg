@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="544" height="432" viewBox="23 52 272 216" role="img" aria-labelledby="ivolt-title ivolt-desc">
+  <title id="ivolt-title">iVOLT — Isotipo</title>
+  <desc id="ivolt-desc">O partida con un rayo verde eléctrico, aperturas uniformes y fondo transparente.</desc>
+  <!-- Open hexagonal frame: a compact mark that also works on its own. -->
+  <!-- Both halves move outward; the full-height lightning aligns with the frame. -->
+  <!-- Four parallel frame cuts maintain equal perpendicular clearance around the lightning. -->
+  <g fill="#29F59A">
+    <path d="M83 64H154.104916L140.872773 90H94L63 121V199L94 230H125.897317L120.047317 256H83L35 208V112Z"/>
+    <path d="M218 64H235L283 112V208L235 256H141.696291L159.156750 230H224L255 199V121L224 90H204.159483Z"/>
+    <path d="M165 64H207L169 135.384615H211L130 256L148 176H108Z"/>
+  </g>
+</svg>
