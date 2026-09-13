@@ -35,7 +35,7 @@
 
 - Lector de pantalla (NVDA, VoiceOver): lista preparada, no ejecutada.
 - `forced-colors` real en Windows, dispositivos físicos, datos de campo: no disponibles; solo laboratorio.
-- Logo oficial `ivolt-logo.svg` pendiente: sustituir wordmark temporal y regenerar `og.png` antes de desplegar.
+- Logo oficial pendiente de recibir: dejar `assets/brand/ivolt-logo.svg` (isotipo: O partida con el rayo) y el build lo aplica a cabecera, favicon y `og.png` (`apps/docs/src/brand.js`). Mientras tanto, wordmark temporal con ese concepto, marcado como provisional en la imagen OG.
 - Publicación npm, despliegue web y `SITE_URL`: requieren autorización explícita (`docs/RELEASE.md` §3).
 
 ## Fallos abiertos

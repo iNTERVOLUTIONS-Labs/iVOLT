@@ -18,7 +18,7 @@ Limitaciones conocidas: API sujeta a cambios antes de 0.1.0; sin pruebas con lec
 2. Versión: `npm version 0.1.0-alpha.0 --no-git-tag-version -w @intervolutions/ivolt` (ya es la versión actual); crear etiqueta `v0.1.0-alpha.0` tras el commit de release.
 3. Tarball de revisión: `cd packages/ivolt && npm pack` → adjuntar a la revisión; `npm run pack-smoke` debe pasar sobre ese mismo tarball.
 4. Publicación: `npm publish --access public --tag alpha` desde `packages/ivolt` con 2FA. Etiqueta `alpha`, nunca `latest`, hasta 0.1.0.
-5. Web: definir `SITE_URL` real (activa sitemap y canonical) y desplegar `apps/docs/dist` en el hosting elegido. Antes, sustituir el wordmark temporal por `ivolt-logo.svg` y regenerar `og.png`.
+5. Web: definir `SITE_URL` real (activa sitemap y canonical) y desplegar `apps/docs/dist` en el hosting elegido. Antes, colocar el logo oficial en `assets/brand/ivolt-logo.svg` (y opcionalmente `ivolt-mark.svg`): el build lo usa en cabecera, favicon y `og.png` sin más cambios (`apps/docs/src/brand.js`).
 6. Tras publicar: actualizar getting started con `npm install @intervolutions/ivolt` (hoy oculto por `check-examples`), README del paquete y `CHANGELOG.md`; crear la release en GitHub con las notas de §1 y el tarball.
 
 ## 4. Lo que una release candidate no implica

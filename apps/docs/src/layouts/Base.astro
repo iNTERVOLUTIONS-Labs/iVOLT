@@ -3,11 +3,12 @@ import "@intervolutions/ivolt/css/ivolt.css";
 import "../styles/docs.css";
 import { t, nav } from "../i18n/en.js";
 import { themeSnippet } from "../theme-snippet.js";
+import { wordmark as brandSvg } from "../brand.js";
 const { title, description, sidebar = true } = Astro.props;
 const path = Astro.url.pathname.replace(/\.html$/, "");
 const canonical = Astro.site ? new URL(path, Astro.site).href : undefined;
 const og = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
-const wordmark = `<svg viewBox="0 0 320 96" height="36" aria-hidden="true"><path d="M44 6 L76 24 L76 60 L44 78 L12 60 L12 40" fill="none" stroke="var(--iv-color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 16 L30 46 L44 46 L38 70 L60 38 L46 38 Z" fill="var(--iv-color-accent)"/><text x="96" y="58" font-family="system-ui, sans-serif" font-size="46" font-weight="700" letter-spacing="2" fill="currentColor">iVOLT</text><text x="240" y="58" font-family="system-ui, sans-serif" font-size="22" font-weight="500" letter-spacing="3" fill="var(--iv-color-accent)">CSS</text></svg>`;
+const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
 ---
 <!DOCTYPE html>
 <html lang="en" class="iv-root" data-iv-theme="system">
