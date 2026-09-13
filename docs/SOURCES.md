@@ -26,8 +26,8 @@ Las páginas del proveedor de modelos sobre esfuerzo, prompting, costes y subage
 | Paquete | Versión | Uso previsto |
 |---|---|---|
 | astro | 7.3.2 | apps/docs |
-| @astrojs/sitemap | 3.7.4 | sitemap solo con base URL real |
-| pagefind | 1.5.2 | búsqueda local docs |
+| @astrojs/sitemap | 3.7.4 (instalada) | sitemap solo con `SITE_URL` definida |
+| pagefind | 1.5.2 (instalada) | búsqueda local docs; índice estático servido desde el propio sitio |
 | esbuild | 0.28.2 | build JS |
 | lightningcss / lightningcss-cli | 1.33.0 | build CSS |
 | typescript | 7.0.2 observada; 5.9.3 instalada | tipos desde JSDoc (emisión verificada con 5.9.3) |

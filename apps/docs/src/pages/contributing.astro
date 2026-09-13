@@ -1,0 +1,120 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Contributing" description="How to build, test and extend iVOLT: the commands, the repository layout, the rules a change has to follow, the contract tests that enforce them, and the licence.">
+  <article class="docs-prose">
+    <h1>Contributing</h1>
+    <p>iVOLT is a small codebase with strict rules. Most of the rules exist because a design system breaks slowly: one unprefixed class, one <code>!important</code>, one component documented with markup that no test ever renders. The contract tests below encode those rules so a pull request fails fast instead of drifting.</p>
+
+    <h2>Setting up</h2>
+<pre><code>git clone https://github.com/iNTERVOLUTIONS-Labs/iVOLT
+cd iVOLT
+npm ci                 # install from the single lockfile, never `npm install` in CI
+npm run build          # generate packages/ivolt/dist
+npm run dev:docs       # Astro dev server for apps/docs</code></pre>
+    <p>The repository is an npm workspace with one lockfile at the root. <code>dist/</code> is generated and not versioned, so build before running the browser suite, the size report or the pack smoke test.</p>
+
+    <h2>Commands</h2>
+    <table>
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>npm run build</code></td><td>Builds the package: tokens and utilities are generated first, then CSS and JS are written to <code>packages/ivolt/dist</code>.</td></tr>
+        <tr><td><code>npm test</code></td><td>Vitest: unit tests for the JS components and the contract tests over the CSS sources and the documented snippets.</td></tr>
+        <tr><td><code>npm run test:browser</code></td><td>Playwright. Chromium only by default; <code>IVOLT_ALL_BROWSERS=1 npm run test:browser</code> runs Chromium, Firefox and WebKit. Covers behaviour, axe, overflow from 320 to 1920px, RTL, themes, docs pages and recipes.</td></tr>
+        <tr><td><code>npm run sizes</code></td><td>Reports the size of each built artefact. A change that moves these numbers noticeably should say why.</td></tr>
+        <tr><td><code>npm run pack-smoke</code></td><td>Packs the package with <code>npm pack</code>, installs the tarball into a scratch project and checks that the exports resolve and that unused components are tree-shaken.</td></tr>
+        <tr><td><code>npm run check-examples</code></td><td>Loads the example pages and recipes and asserts they still work against the current build.</td></tr>
+        <tr><td><code>npm run build:docs</code></td><td>Builds the static documentation site.</td></tr>
+        <tr><td><code>npm run verify</code></td><td>Everything above in sequence. This is the gate before a phase closes.</td></tr>
+      </tbody>
+    </table>
+    <p>Playwright needs its browsers installed once (<code>npx playwright install</code>); the axe checks run through <code>@axe-core/playwright</code>.</p>
+
+    <h2>Repository layout</h2>
+<pre><code>iVOLT/
+├─ package.json              # workspaces + root scripts
+├─ package-lock.json         # the only lockfile
+├─ docs/                     # contracts, design system, quality bar, ADRs, roadmap
+├─ packages/ivolt/
+│  ├─ tokens/tokens.json     # single source of truth for tokens
+│  ├─ fixtures/&lt;family&gt;/*.html   # one source for docs, tests and starters
+│  ├─ src/css/               # reset, tokens (generated), base, layout/, components/,
+│  │                         # utilities (generated), core.css, ivolt.css, ivolt.flat.css
+│  ├─ src/js/                # core/ (registry, options, events, focus, keys),
+│  │                         # components/, theme.js, index.js, auto.js, iife.js
+│  ├─ scripts/               # build-tokens, build-utilities, build-css, build-js, sizes
+│  └─ dist/                  # generated, not versioned
+├─ apps/docs/                # Astro static site
+├─ examples/                 # plain-html, vite, recipes/
+├─ tests/                    # unit, browser, contracts, integration
+└─ scripts/                  # pack-smoke, check-examples, sync-examples</code></pre>
+    <p>Two files are generated and must never be edited by hand: <code>src/css/tokens.css</code> (from <code>tokens/tokens.json</code>) and <code>src/css/utilities.css</code> (from the utilities config). Change the source and rebuild. The same goes for <code>custom-media.css</code>, <code>reset.layer.css</code> and <code>core/breakpoints.js</code>.</p>
+
+    <h2>Rules for a change</h2>
+
+    <h3>CSS</h3>
+    <ul>
+      <li><strong>Prefix everything.</strong> Classes <code>iv-</code>, utilities <code>iv-u-</code>, custom properties <code>--iv-</code>, data attributes <code>data-iv-</code>.</li>
+      <li><strong>No <code>!important</code>.</strong> The single exception is <code>.iv-u-sr-only</code>, and it is documented as such.</li>
+      <li><strong>Specificity at or below <code>(0,2,0)</code></strong> for component selectors, so a utility — emitted with a doubled selector at exactly <code>(0,2,0)</code> and loaded last — always wins. The documented <code>:target</code> fallbacks for dialog and drawer are the only allowances.</li>
+      <li><strong>Element selectors only inside <code>.iv-root</code>.</strong> Nothing in the package may style a bare element globally.</li>
+      <li><strong>Modules declare no <code>@layer</code> and import nothing.</strong> Entries assign layers at import time, and each module is imported exactly once per entry.</li>
+      <li><strong>Breakpoints through <code>@custom-media</code> names</strong> — never <code>var()</code> inside a media query, which does not work.</li>
+      <li><strong>Colours come from semantic tokens.</strong> A raw hex in a component file is a bug; it will not follow the themes.</li>
+    </ul>
+
+    <h3>Fixtures are the single source</h3>
+    <p>A fixture in <code>packages/ivolt/fixtures/&lt;family&gt;/&lt;case&gt;.html</code> is simultaneously the preview on the docs page, the copyable snippet, and the markup the tests render. Do not write example markup inline in a docs page for a component, and do not write test markup inside a spec file. If the documented snippet and the tested markup can diverge, eventually they will.</p>
+
+    <h3>A family is finished when</h3>
+    <p>Counting variants does not widen the scope. A component family is done only when it has all five:</p>
+    <ol>
+      <li>States: default, hover, focus, active, disabled, and any loading or error state it needs.</li>
+      <li>Keyboard behaviour, documented key by key.</li>
+      <li>A fallback for when JavaScript does not run.</li>
+      <li>Documentation with fixtures.</li>
+      <li>Tests: unit for behaviour, browser for rendering, axe in both themes.</li>
+    </ol>
+
+    <h3>JavaScript</h3>
+    <ul>
+      <li>No top-level access to <code>document</code>, <code>window</code>, <code>navigator</code> or <code>matchMedia</code>; SSR imports must not throw.</li>
+      <li>No <code>eval</code>, no <code>new Function</code>, no <code>innerHTML</code> with external data, no <code>on*</code> attributes. The package must run under <code>script-src 'self'</code>.</li>
+      <li>No dependencies, no network requests, no telemetry.</li>
+      <li><code>init()</code> is idempotent; <code>destroy()</code> restores the DOM to the attributes it found, which is tested.</li>
+      <li>Events are prefixed <code>iv:</code> and are part of the contract — adding or renaming one is a contract change.</li>
+    </ul>
+
+    <h3>Contract changes need an ADR</h3>
+    <p>Anything that changes a public surface — a class name, a token name, an option, an event, an export, the layer order — needs an entry in <code>docs/DECISIONS.md</code> recording the decision, the alternatives considered and the evidence. The ADR is part of the pull request, not a follow-up.</p>
+
+    <h2>The contract tests</h2>
+    <p>These run in <code>npm test</code> and fail loudly if a rule above is broken:</p>
+    <table>
+      <thead><tr><th>Check</th><th>Fails when</th></tr></thead>
+      <tbody>
+        <tr><td>Modules declare no layer and import nothing</td><td>A source module adds <code>@layer</code> or an <code>@import</code></td></tr>
+        <tr><td>No <code>!important</code> outside the sr-only utilities</td><td>Any other declaration uses it</td></tr>
+        <tr><td>Prefixes on classes and custom properties</td><td>An unprefixed name appears in the sources</td></tr>
+        <tr><td>Element selectors scoped to <code>.iv-root</code></td><td>A bare element selector escapes the scope in <code>base.css</code></td></tr>
+        <tr><td>Specificity ceiling <code>(0,2,0)</code></td><td>A component selector goes above it, outside the documented fallbacks</td></tr>
+        <tr><td>Breakpoints via <code>@custom-media</code></td><td>A media query reads a custom property</td></tr>
+        <tr><td>Utilities match the declared matrix exactly</td><td>The generated file gains or loses a class relative to the contract</td></tr>
+        <tr><td>Entries import each module once and declare the layer order</td><td>A duplicate import silently drops a layer assignment</td></tr>
+        <tr><td>Snippets match the distribution</td><td>Documented markup stops matching what the package actually ships</td></tr>
+      </tbody>
+    </table>
+    <p>If a contract test blocks a change you believe is right, the fix is an ADR that moves the contract, not an exception in the test.</p>
+
+    <h2>Pull requests</h2>
+    <ul>
+      <li>Run <code>npm run verify</code> before opening one, and say in the description which checks you ran and which you could not.</li>
+      <li>Keep the change focused on one family or one concern; mixed refactors are hard to review against a contract.</li>
+      <li>Report accessibility bugs and browser bugs with the fixture name, the engine and the steps — the fixture makes it reproducible in one command.</li>
+      <li>The project is alpha. A change that is right but breaking is acceptable with an ADR; a change that is convenient but unrecorded is not.</li>
+    </ul>
+
+    <h2>Licence</h2>
+    <p>MIT, Copyright (c) 2026 iNTERVOLUTIONS. See <code>LICENSE</code> in the repository root. Contributions are accepted under the same licence.</p>
+  </article>
+</Base>

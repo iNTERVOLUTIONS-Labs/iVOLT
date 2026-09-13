@@ -24,12 +24,24 @@ import Fixture from "../components/Fixture.astro";
   &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
     <p><code>auto.js</code> is the only entry that initialises components on load. Import <code>index.js</code> instead when you want to call <code>init()</code> yourself.</p>
 
-    <h2>What is in this alpha</h2>
+    <h2>Components in v0.1</h2>
+    <p>Seven content families that need no JavaScript and six interactive ones that enhance real HTML. Each page has a live preview, the copyable HTML, options, events, keyboard behaviour and the no-JS fallback.</p>
+    <nav class="docs-components" aria-label="Components">
+      {["button", "card", "form", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dialog", "drawer", "dropdown", "toast"].map((c) => <a href={`/components/${c}`}>{c[0].toUpperCase() + c.slice(1)}</a>)}
+    </nav>
+
+    <h2>Foundations</h2>
     <ul>
-      <li><strong>Foundations:</strong> <a href="/foundations/tokens-and-themes">tokens, light/dark/system themes</a>, scoped base styles, <a href="/foundations/layout">container, stack, cluster and grid</a>, a finite utility matrix.</li>
-      <li><strong>Components:</strong> <a href="/components/button">button</a>, <a href="/components/card">card</a>, <a href="/components/form">form controls</a> and <a href="/components/dialog">dialog</a>. Badges, alerts, tables, navigation, tabs, drawer, dropdown and toast follow in the next milestone.</li>
-      <li><strong>Distribution:</strong> layered and flat CSS, per-component CSS, ES modules with real <code>exports</code>, an IIFE with a single <code>IVOLT</code> global and type declarations.</li>
+      <li><a href="/foundations/tokens-and-themes">Tokens and themes</a>: every visual decision as a <code>--iv-*</code> custom property, light/dark/system scopes without JavaScript.</li>
+      <li><a href="/foundations/layout">Layout and utilities</a>: container, stack, cluster, grid and a finite, generated utility matrix.</li>
+      <li><a href="/foundations/typography">Typography</a>, <a href="/foundations/accessibility">accessibility</a> and <a href="/foundations/coexistence">coexisting with existing CSS</a>.</li>
     </ul>
+
+    <h2>Recipes</h2>
+    <p>Three complete pages built only with the package: a <a href="/examples/landing/index.html">business landing</a>, an <a href="/examples/catalog/index.html">editorial catalogue</a> with working filters, and a <a href="/examples/admin/index.html">static admin panel</a>. <a href="/examples">Open or download them</a>, or try the <a href="/playground">playground</a> to generate snippets.</p>
+
+    <h2>Distribution</h2>
+    <p>Layered and flat CSS, one CSS file per component, ES modules with real <code>exports</code>, an IIFE with a single <code>IVOLT</code> global, type declarations and the token JSON. Sizes are measured per artifact and published with their method in the repository.</p>
 
     <h2>Themes</h2>
     <p>Set <code>data-iv-theme</code> to <code>light</code>, <code>dark</code> or <code>system</code> on any element. Explicit choices win over the system preference, scopes nest, and nothing requires JavaScript or storage.</p>

@@ -1,0 +1,53 @@
+// UI strings of the documentation shell. A second locale would add es.js with the same keys
+// and pages under src/pages/es/; page content itself is authored per locale.
+export const t = {
+  skip: "Skip to content",
+  home: "iVOLT home",
+  menu: "Menu",
+  openNav: "Open navigation",
+  search: "Search",
+  searchLabel: "Search the documentation",
+  searchHint: "Type to search. Press Escape to close.",
+  searchUnavailable: "Search works in the built site (npm run build:docs); it is not available in dev mode.",
+  searchNone: "No results.",
+  searchResults: (n) => `${n} result${n === 1 ? "" : "s"}`,
+  theme: "Theme",
+  light: "Light",
+  dark: "Dark",
+  system: "System",
+  docs: "Docs",
+  components: "Components",
+  source: "Source",
+  navigate: "Navigate",
+  close: "Close",
+  primaryNav: "Primary",
+  docsNav: "Documentation",
+  footer: "iVOLT v0.1 alpha · MIT · by iNTERVOLUTIONS",
+  alpha: "Alpha software: APIs may change before 0.1.0.",
+  anchor: "Link to this section",
+  copy: "Copy HTML",
+  copied: "Copied",
+  copiedStatus: "HTML copied to clipboard",
+  selected: "Selected — press Ctrl+C",
+  selectedStatus: "Clipboard unavailable; code selected for manual copy",
+};
+export const nav = [
+  { group: "Start", items: [
+    { href: "/getting-started", label: "Getting started" },
+    { href: "/playground", label: "Playground" },
+    { href: "/examples", label: "Examples" },
+  ] },
+  { group: "Foundations", items: [
+    { href: "/foundations/tokens-and-themes", label: "Tokens & themes" },
+    { href: "/foundations/typography", label: "Typography" },
+    { href: "/foundations/layout", label: "Layout & utilities" },
+    { href: "/foundations/accessibility", label: "Accessibility" },
+    { href: "/foundations/coexistence", label: "Coexisting with CSS" },
+  ] },
+  { group: "Components", items: ["button", "card", "form", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
+  { group: "Project", items: [
+    { href: "/changelog", label: "Changelog" },
+    { href: "/roadmap", label: "Roadmap" },
+    { href: "/contributing", label: "Contributing" },
+  ] },
+];

@@ -1,0 +1,128 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+<Base title="Typography" description="The iVOLT type scale, the element styles .iv-root applies, the reading measure, the text utilities, and how to change the typeface through tokens without loading a remote font.">
+  <article class="docs-prose">
+    <h1>Typography</h1>
+    <p>Typography is made of tokens, a small set of element styles scoped to <code>.iv-root</code>, and eight text utilities. There is no typographic plugin and no prose class: text inside <code>.iv-root</code> is styled by its own tags.</p>
+
+    <h2>Type scale</h2>
+    <p>Eight steps. The two largest are fluid: they interpolate with the viewport through <code>clamp()</code>, so a page title shrinks on a phone without a media query.</p>
+    <table>
+      <thead><tr><th>Token</th><th>Value</th><th>Used by</th></tr></thead>
+      <tbody>
+        <tr><td><code>--iv-text-xs</code></td><td><code>0.75rem</code></td><td><code>iv-u-text-xs</code>, small print in components</td></tr>
+        <tr><td><code>--iv-text-sm</code></td><td><code>0.875rem</code></td><td><code>&lt;small&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;figcaption&gt;</code>, <code>&lt;kbd&gt;</code>, <code>iv-u-text-sm</code></td></tr>
+        <tr><td><code>--iv-text-md</code></td><td><code>1rem</code></td><td>Body text on <code>.iv-root</code>, <code>&lt;h6&gt;</code>, <code>iv-u-text-md</code></td></tr>
+        <tr><td><code>--iv-text-lg</code></td><td><code>1.125rem</code></td><td><code>&lt;h5&gt;</code>, <code>iv-u-text-lg</code></td></tr>
+        <tr><td><code>--iv-text-xl</code></td><td><code>1.25rem</code></td><td><code>&lt;h4&gt;</code>, <code>iv-u-text-xl</code></td></tr>
+        <tr><td><code>--iv-text-2xl</code></td><td><code>1.5rem</code></td><td><code>&lt;h3&gt;</code>, <code>iv-u-text-2xl</code></td></tr>
+        <tr><td><code>--iv-text-3xl</code></td><td><code>clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)</code></td><td><code>&lt;h2&gt;</code> — no utility</td></tr>
+        <tr><td><code>--iv-text-4xl</code></td><td><code>clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)</code></td><td><code>&lt;h1&gt;</code> — no utility</td></tr>
+      </tbody>
+    </table>
+    <p>The utility matrix stops at <code>2xl</code> on purpose: the two fluid steps belong to page headings, and a page should not have several of them. Apply them with <code>&lt;h1&gt;</code> and <code>&lt;h2&gt;</code>, or by reading the token directly in your own CSS.</p>
+
+    <h3>The scale rendered</h3>
+    <p>Each row below is real markup using the text utilities, so it renders with the same tokens as your pages.</p>
+    <div class="iv-stack iv-u-gap-2 iv-u-my-6">
+      <p class="iv-u-text-xs">xs — 0.75rem · footnotes, metadata</p>
+      <p class="iv-u-text-sm">sm — 0.875rem · captions, helper text</p>
+      <p class="iv-u-text-md">md — 1rem · body copy, the default</p>
+      <p class="iv-u-text-lg">lg — 1.125rem · lead paragraph</p>
+      <p class="iv-u-text-xl">xl — 1.25rem · section subtitle</p>
+      <p class="iv-u-text-2xl">2xl — 1.5rem · card and section titles</p>
+    </div>
+
+    <h2>Line height, weight and family</h2>
+    <table>
+      <thead><tr><th>Token</th><th>Value</th><th>Applied to</th></tr></thead>
+      <tbody>
+        <tr><td><code>--iv-leading-tight</code></td><td><code>1.1</code></td><td>All headings <code>h1</code>–<code>h6</code> receive it; <code>h4</code>–<code>h6</code> then override with <code>snug</code></td></tr>
+        <tr><td><code>--iv-leading-snug</code></td><td><code>1.25</code></td><td><code>h4</code>, <code>h5</code>, <code>h6</code>, <code>&lt;pre&gt;</code></td></tr>
+        <tr><td><code>--iv-leading-normal</code></td><td><code>1.5</code></td><td><code>.iv-root</code>, inherited by body text</td></tr>
+        <tr><td><code>--iv-leading-relaxed</code></td><td><code>1.65</code></td><td>Available for long-form columns; not applied by default</td></tr>
+        <tr><td><code>--iv-weight-normal</code></td><td><code>400</code></td><td>Body text, <code>iv-u-font-normal</code></td></tr>
+        <tr><td><code>--iv-weight-medium</code></td><td><code>500</code></td><td><code>iv-u-font-medium</code></td></tr>
+        <tr><td><code>--iv-weight-semibold</code></td><td><code>600</code></td><td><code>h3</code>–<code>h6</code>, <code>&lt;strong&gt;</code>, <code>&lt;b&gt;</code>, <code>iv-u-font-semibold</code></td></tr>
+        <tr><td><code>--iv-weight-bold</code></td><td><code>700</code></td><td><code>h1</code>, <code>h2</code>, <code>iv-u-font-bold</code></td></tr>
+        <tr><td><code>--iv-font-sans</code></td><td><code>system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code></td><td><code>.iv-root</code></td></tr>
+        <tr><td><code>--iv-font-mono</code></td><td><code>ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace</code></td><td><code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;samp&gt;</code>, <code>&lt;pre&gt;</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>What .iv-root applies</h2>
+    <p>Element styles live in <code>base.css</code> and every selector starts with <code>.iv-root</code>. Outside that scope iVOLT styles no element, which is what makes it safe to drop into an existing page.</p>
+
+    <h3>Headings</h3>
+    <table>
+      <thead><tr><th>Element</th><th>Size</th><th>Weight</th><th>Line height</th></tr></thead>
+      <tbody>
+        <tr><td><code>h1</code></td><td><code>--iv-text-4xl</code></td><td>bold</td><td>tight</td></tr>
+        <tr><td><code>h2</code></td><td><code>--iv-text-3xl</code></td><td>bold</td><td>tight</td></tr>
+        <tr><td><code>h3</code></td><td><code>--iv-text-2xl</code></td><td>semibold</td><td>tight</td></tr>
+        <tr><td><code>h4</code></td><td><code>--iv-text-xl</code></td><td>semibold</td><td>snug</td></tr>
+        <tr><td><code>h5</code></td><td><code>--iv-text-lg</code></td><td>semibold</td><td>snug</td></tr>
+        <tr><td><code>h6</code></td><td><code>--iv-text-md</code></td><td>semibold</td><td>snug</td></tr>
+      </tbody>
+    </table>
+    <p>All headings get <code>margin-block: 0</code> and <code>text-wrap: balance</code>. The zero margin is deliberate: vertical rhythm comes from a layout primitive, normally <code>iv-stack</code>, not from collapsing margins you have to fight. Size is presentation; choose the heading level by document structure and change its size with a utility or your own rule if you need to.</p>
+
+    <h3>Flow content</h3>
+    <ul>
+      <li><code>&lt;p&gt;</code>: <code>margin-block: 0</code> and <code>text-wrap: pretty</code>.</li>
+      <li><code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>: no block margin, <code>padding-inline-start: var(--iv-space-6)</code>; list items get a small top margin (<code>--iv-space-1</code>).</li>
+      <li><code>&lt;a&gt;</code>: <code>--iv-color-primary</code>, underlined with <code>text-underline-offset: 0.15em</code>, moving to <code>--iv-color-primary-hover</code> only inside <code>@media (hover: hover)</code>, so touch devices do not get a stuck hover colour.</li>
+      <li><code>&lt;strong&gt;</code> and <code>&lt;b&gt;</code>: semibold. <code>&lt;small&gt;</code>: <code>--iv-text-sm</code>.</li>
+      <li><code>&lt;blockquote&gt;</code>: muted text with a 2px inline-start border in <code>--iv-color-border-strong</code>.</li>
+      <li><code>&lt;hr&gt;</code>: a single border line in <code>--iv-color-border</code> with <code>--iv-space-8</code> above and below.</li>
+    </ul>
+
+    <h3>Code</h3>
+    <p><code>code</code>, <code>kbd</code>, <code>samp</code> and <code>pre</code> switch to <code>--iv-font-mono</code> at <code>0.9375em</code>, which keeps monospace text optically level with the surrounding size instead of jumping. Inline <code>code</code> and <code>kbd</code> sit on <code>--iv-color-surface</code> with <code>--iv-radius-sm</code> and a little inline padding; <code>kbd</code> adds a border. <code>pre</code> is a padded surface block with <code>overflow-x: auto</code> and snug leading, and <code>pre code</code> drops the background and padding so nested code does not double up.</p>
+
+    <h3>Tables and media</h3>
+    <p>Content tables — plain <code>&lt;table&gt;</code>, not the <code>iv-table</code> component — get <code>border-collapse: collapse</code>, full inline size and start-aligned text; <code>&lt;caption&gt;</code> is small, muted and start-aligned. <code>img</code>, <code>svg</code> and <code>video</code> are capped at <code>max-inline-size: 100%</code>; <code>figure</code> loses its default margins and <code>figcaption</code> is small and muted.</p>
+
+    <h2>Reading measure</h2>
+    <p>Long lines are hard to track back. <code>--iv-measure</code> is <code>68ch</code>, and because <code>ch</code> is relative to the current font, the measure follows whatever typeface and size you set. Three ways to use it:</p>
+<pre><code>&lt;div class="iv-container iv-container--narrow"&gt;…&lt;/div&gt;   &lt;!-- container capped at the measure --&gt;
+&lt;article class="iv-u-max-w-measure"&gt;…&lt;/article&gt;          &lt;!-- utility on any block --&gt;
+
+.my-article &#123; max-inline-size: var(--iv-measure); &#125;      /* your own CSS, reading the token */</code></pre>
+    <p>Body copy is the case for the measure. Tables, code blocks and dashboards usually want the full container; do not wrap them in a narrow container out of habit.</p>
+
+    <h2>Text utilities</h2>
+    <p>From the finite matrix. Only alignment has responsive prefixes (<code>sm md lg xl</code>); the size, weight and colour utilities do not, because a size that changes per breakpoint is normally the fluid heading scale in disguise.</p>
+    <table>
+      <thead><tr><th>Utility</th><th>Effect</th><th>Responsive</th></tr></thead>
+      <tbody>
+        <tr><td><code>iv-u-text-start|center|end</code></td><td>Logical text alignment, so it follows RTL</td><td>yes</td></tr>
+        <tr><td><code>iv-u-text-xs|sm|md|lg|xl|2xl</code></td><td>Sets <code>font-size</code> from the scale</td><td>no</td></tr>
+        <tr><td><code>iv-u-font-normal|medium|semibold|bold</code></td><td>Sets <code>font-weight</code></td><td>no</td></tr>
+        <tr><td><code>iv-u-text-muted</code></td><td><code>--iv-color-text-muted</code> — secondary text, never the only carrier of meaning</td><td>no</td></tr>
+        <tr><td><code>iv-u-truncate</code></td><td>One line with an ellipsis; keep the full text reachable elsewhere</td><td>no</td></tr>
+      </tbody>
+    </table>
+    <p>Utilities are emitted with a doubled selector, specificity <code>(0,2,0)</code>, and loaded last, so they beat component modifiers in both the layered and the flat stylesheet. Anything outside the matrix does not exist in v0.1 — there is no arbitrary-value syntax and no class scanner.</p>
+
+    <h2>Changing the typeface</h2>
+    <p>Redefine the family tokens after the iVOLT stylesheet. Every element style and component reads the token, so one declaration moves the whole system.</p>
+<pre><code>/* your-theme.css, loaded after ivolt.css */
+.iv-root &#123;
+  --iv-font-sans: "Your Sans", system-ui, sans-serif;
+  --iv-font-mono: "Your Mono", ui-monospace, monospace;
+&#125;</code></pre>
+    <p>Two things to keep in mind. First, <code>--iv-measure</code> is in <code>ch</code>: a wider typeface makes the column physically wider at the same 68 characters, which is the intended behaviour but worth checking. Second, if you self-host a webfont, declare <code>@font-face</code> in your own stylesheet with a <code>font-display</code> you have chosen, and keep a real system fallback in the stack so text is readable before the file arrives.</p>
+    <p>You can also rescale without touching the families. <code>--iv-text-*</code> are plain custom properties, so a compact variant is a handful of overrides in the same block.</p>
+
+    <h2>Why system-ui</h2>
+    <p>The package ships no font files and requests none. The default stack starts at <code>system-ui</code> and falls back through <code>-apple-system</code>, <code>Segoe UI</code> and <code>Roboto</code>, so every platform renders in a face it already has. The reasons are concrete:</p>
+    <ul>
+      <li>No network request, so no flash of unstyled or invisible text and no layout shift while a file downloads.</li>
+      <li>No third-party origin in the critical path, which matters when a site runs a strict Content-Security-Policy or has to state where its assets come from.</li>
+      <li>Nothing to bundle or serve: the CSS works from a file system, a WordPress theme folder or a CDN of your own without extra assets.</li>
+    </ul>
+    <p>The trade-off is real and we do not hide it: the same page does not look identical on macOS, Windows and Android, because it is not the same typeface. If your brand needs one face everywhere, self-host it and override the token as shown above — the rest of the system does not change.</p>
+  </article>
+</Base>

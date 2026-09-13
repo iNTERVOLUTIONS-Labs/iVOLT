@@ -33,7 +33,7 @@ Sin IE, sin Safari 15. `popover` y `text-wrap: balance` solo como mejora progres
 | Accesibilidad automática | `@axe-core/playwright` 4.13 | fixtures de cada componente y las tres recetas; cero hallazgos critical/serious | cierre de familia |
 | Layout | Playwright screenshots + `document.documentElement.scrollWidth <= innerWidth` | 320, 390, 768, 1024, 1366 (y 1366×610), 1920 | cierre de hito |
 | Integración | `scripts/pack-smoke.mjs` | `npm pack` → instalar en `os.tmpdir()` → HTML plano + build esbuild consumiendo `exports`; comprobar que `dialog` no arrastra `tabs` | cierre de hito y fase 4 |
-| Docs | script de enlaces + Playwright | enlaces internos válidos, snippets iguales a fixtures, sin errores de consola en rutas clave | fase 3 |
+| Docs | Playwright (`tests/browser/docs.spec.js`, `recipes.spec.js`) + Vitest (`tests/contracts/snippets.test.js`) | enlaces internos válidos, un `h1` por ruta, sin errores de consola, búsqueda, anclas, tema, copia, menú móvil, recetas (axe, overflow, interacción); toda clase `iv-*` usada en fixtures, recetas, starter y páginas existe en `dist/css/ivolt.css` | cada cierre desde fase 3 |
 | Lighthouse | `lighthouse` CLI sobre `astro preview` | rutas home, getting-started, un componente, una receta; registrar versión, entorno y puntuaciones reales | fase 4 |
 
 Las pruebas prueban lógica y contratos visibles; no se escriben tests que repitan constantes. Durante un cambio se ejecutan las pruebas afectadas; la suite completa se reserva para cierre de hito y cambios transversales.
