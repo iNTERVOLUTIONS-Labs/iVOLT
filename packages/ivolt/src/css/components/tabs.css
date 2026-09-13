@@ -120,3 +120,10 @@
   flex: 1;
   padding-block-start: 0;
 }
+
+/* Served heading of each panel. Visible without JavaScript (panels stacked); `init` hides it with iv-u-sr-only. */
+.iv-tabs__heading {
+  margin: 0 0 var(--iv-space-2);
+  font-size: var(--iv-text-lg);
+  font-weight: var(--iv-weight-semibold);
+}

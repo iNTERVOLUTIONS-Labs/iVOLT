@@ -1,0 +1,106 @@
+---
+import Base from "../../layouts/Base.astro";
+import { createHash } from "node:crypto";
+import { themeSnippet } from "../../theme-snippet.js";
+const cspHash = "sha256-" + createHash("sha256").update(themeSnippet).digest("base64");
+---
+<Base title="Coexistence" description="Dropping iVOLT into a site that already has CSS: the .iv-root scope, prefixes, the exact cascade-layer rules, the flat build, WordPress and PHP, Astro and Vite, and Content-Security-Policy.">
+  <article class="docs-prose">
+    <h1>Coexistence with existing CSS</h1>
+    <p>Most pages that adopt a framework are not empty. There is a theme, a legacy stylesheet, a plugin that styles <code>button</code>, and a deadline. This page is about that situation: what iVOLT does to stay out of the way, what it does not do, and the exact rules that decide who wins when two stylesheets disagree.</p>
+    <p>The short version: <code>.iv-root</code> limits where element styles apply, prefixes prevent name collisions, and cascade layers order iVOLT's own rules. Layers <em>do not</em> isolate the framework from your CSS, and it is important to understand why before you debug a surprise.</p>
+
+    <h2>Scope and prefixes</h2>
+    <p>Every element selector in <code>base.css</code> starts with <code>.iv-root</code>. Outside that class iVOLT styles no <code>h1</code>, no <code>a</code>, no <code>input</code>. You choose the scope:</p>
+<pre><code>&lt;!-- whole page --&gt;
+&lt;html lang="en" class="iv-root" data-iv-theme="system"&gt;
+
+&lt;!-- one region of an existing site --&gt;
+&lt;div class="iv-root" data-iv-theme="light"&gt;
+  &lt;!-- iVOLT markup here; the surrounding page is untouched --&gt;
+&lt;/div&gt;</code></pre>
+    <p>Everything else is prefixed and a contract test enforces it: classes start with <code>iv-</code> (<code>iv-button</code>, <code>iv-card</code>), utilities with <code>iv-u-</code>, custom properties with <code>--iv-</code>, data attributes with <code>data-iv-</code>, and the IIFE build exposes exactly one global, <code>IVOLT</code>. A collision with your own <code>.button</code> or <code>--color-primary</code> is therefore not possible by construction.</p>
+    <p>Two caveats. <code>.iv-root</code> also sets <code>box-sizing: border-box</code> on itself and all its descendants, so third-party widgets inside the scope inherit that; and the theme scope re-applies <code>color</code> and <code>background-color</code> on any element carrying <code>data-iv-theme</code>, which is what lets a dark island sit inside a light page.</p>
+
+    <h2>The cascade-layer rules, exactly</h2>
+    <p>The layered entry declares its order up front and assigns a layer at import time:</p>
+<pre><code>@layer iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides;
+@import url("./tokens.css") layer(iv.tokens);
+@import url("./base.css") layer(iv.base);
+/* … */</code></pre>
+    <p>Source modules declare no layer of their own, which is what lets the same file serve the layered build, the flat build and a per-component import. Three rules follow, and the third one is the one that bites:</p>
+    <ol>
+      <li><strong>Inside layers, later wins.</strong> <code>iv.utilities</code> beats <code>iv.components</code> even with lower specificity. That is why <code>iv-u-gap-4</code> reliably overrides a component modifier.</li>
+      <li><strong>Any normal (non-<code>!important</code>) unlayered declaration beats every normal layered declaration, at any specificity.</strong> A single <code>button &#123; background: red &#125;</code> in a legacy theme overrides <code>.iv-button</code> in <code>ivolt.css</code>. This is not a bug in iVOLT or in your browser; it is how the cascade orders unlayered rules — as if they were in a final, implicit layer.</li>
+      <li><strong>Among <code>!important</code> declarations the order reverses completely.</strong> Early layers win and unlayered declarations become the weakest. Consequence: <code>.iv-u-sr-only</code>, the one rule in the package that uses <code>!important</code>, cannot be overridden from your unlayered CSS in <code>ivolt.css</code> — while in <code>ivolt.flat.css</code> it can.</li>
+    </ol>
+    <p>So layers order iVOLT internally and make it easy for you to override; they do not defend it. Say it out loud once and the debugging gets much shorter.</p>
+
+    <h3>Choosing a strategy</h3>
+    <table>
+      <thead><tr><th>Your situation</th><th>Use</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>New page, you control the CSS</td><td><code>css/ivolt.css</code></td><td>Layered order, easy overrides from your own unlayered rules</td></tr>
+        <tr><td>Legacy stylesheet you cannot edit</td><td><code>css/ivolt.flat.css</code></td><td>No <code>@layer</code>: it competes by specificity and source order like any other sheet</td></tr>
+        <tr><td>Legacy stylesheet you can import</td><td><code>ivolt.css</code> + wrap the legacy sheet in a layer</td><td>Puts the old CSS under iVOLT's precedence without rewriting it</td></tr>
+      </tbody>
+    </table>
+    <p>The wrapping trick, with the layer order declared before iVOLT's so the legacy rules sit underneath:</p>
+<pre><code>@layer legacy, iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides;
+@import url("legacy-theme.css") layer(legacy);
+@import url("ivolt/css/ivolt.css");</code></pre>
+    <p>Once the legacy sheet is in a layer, its unlayered privilege is gone and iVOLT's components win. Your own new rules, written unlayered, still win over both — which is usually what you want.</p>
+    <p>To override deliberately inside the layered build, the <code>iv.overrides</code> layer exists for exactly that and is declared last:</p>
+<pre><code>@layer iv.overrides &#123;
+  .iv-button &#123; border-radius: 0; &#125;
+&#125;</code></pre>
+    <p>No rule in the package uses <code>!important</code> apart from <code>.iv-u-sr-only</code>, and component selectors stay at or below specificity <code>(0,2,0)</code> — both enforced by contract tests — so a plain class of your own is enough to win when the layering allows it.</p>
+
+    <h2>The optional reset</h2>
+    <p><code>css/reset.css</code> ships unlayered on purpose. Linked as-is it would sit outside every layer and, by rule 2 above, beat the components it is supposed to sit underneath. Use one of the two supported forms:</p>
+<pre><code>@import url("ivolt/css/reset.css") layer(iv.reset);   /* assign the layer yourself */
+&lt;link rel="stylesheet" href="ivolt/css/reset.layer.css"&gt;  &lt;!-- already wrapped --&gt;</code></pre>
+    <p>On an existing site you usually want no reset at all: the site already has one, and a second normalisation is how unexplained spacing changes start. The base styles do not depend on it — <code>.iv-root</code> sets its own <code>box-sizing</code> so the guarantee holds either way.</p>
+
+    <h2>WordPress and other PHP sites</h2>
+    <p>There is no build step to add. Copy <code>packages/ivolt/dist</code> into the theme (for example <code>assets/ivolt/</code>) and enqueue the files.</p>
+<pre><code>function theme_ivolt_assets() &#123;
+  $base = get_template_directory_uri() . '/assets/ivolt';
+  wp_enqueue_style('ivolt', $base . '/css/ivolt.flat.css', array(), '0.1.0-alpha');
+  wp_enqueue_script('ivolt', $base . '/js/auto.js', array(), '0.1.0-alpha', true);
+&#125;
+add_action('wp_enqueue_scripts', 'theme_ivolt_assets');</code></pre>
+    <p>Notes specific to this environment:</p>
+    <ul>
+      <li><strong>Prefer the flat build.</strong> Themes and plugins almost never use layers, so under <code>ivolt.css</code> their unlayered element rules would override iVOLT everywhere.</li>
+      <li><strong>Put <code>iv-root</code> on a container, not on <code>&lt;html&gt;</code>,</strong> unless you are converting the whole theme. A wrapper around the content area lets the admin bar, the plugin widgets and the old templates keep their styles.</li>
+      <li><strong>Register the script as a module</strong> if you use <code>auto.js</code> (WordPress needs <code>type="module"</code>, which recent versions support through script strategies or a <code>script_loader_tag</code> filter). If that is inconvenient, enqueue <code>js/ivolt.iife.min.js</code> instead and call <code>IVOLT.init()</code> yourself — it initialises nothing on load.</li>
+      <li><strong>There is no class scanner and no purge step.</strong> The utility matrix is finite and fully generated, so classes written inside PHP templates, shortcodes, the block editor or a database field all work. Nothing has to see your markup at build time.</li>
+      <li><strong>Editor content.</strong> If post content is rendered inside <code>.iv-root</code>, headings, lists, tables and code in that content get the base styles. That is usually desirable; if it is not, put <code>iv-root</code> on the chrome rather than on the entry body.</li>
+    </ul>
+
+    <h2>Astro, Vite and other bundlers</h2>
+    <p>Install the tarball produced by <code>npm pack</code> inside <code>packages/ivolt</code> and import through the package exports. Deep paths into <code>dist/</code> are not part of the API and may move.</p>
+<pre><code>import "@intervolutions/ivolt/css/ivolt.css";
+import &#123; init &#125; from "@intervolutions/ivolt";
+
+if (typeof document !== "undefined") init(document);</code></pre>
+    <p>What matters when a framework renders on the server:</p>
+    <ul>
+      <li><strong>No module touches <code>document</code>, <code>window</code>, <code>navigator</code> or <code>matchMedia</code> at import time</strong>, so importing the package during SSR does not throw. A unit test asserts this in a Node environment.</li>
+      <li><strong>Importing <code>@intervolutions/ivolt</code> has no side effects.</strong> Only <code>@intervolutions/ivolt/auto</code> initialises on load, and it checks for a document first. Prefer the explicit <code>init()</code> in a client script when the framework controls hydration.</li>
+      <li><strong><code>init()</code> is idempotent</strong> and only upgrades elements marked with <code>data-iv-component</code>, so calling it again after a client-side navigation or a partial re-render is safe. When you tear down a region, call <code>destroy()</code> so attributes are restored.</li>
+      <li><strong>The package is side-effect annotated</strong>, so a bundler tree-shakes the components you never import; the pack smoke test verifies that.</li>
+      <li><strong>Islands.</strong> Markup rendered by a component that is never hydrated still works for the CSS-only families, and keeps the <code>&lt;details&gt;</code> and <code>:target</code> fallbacks for the interactive ones.</li>
+    </ul>
+
+    <h2>Content-Security-Policy</h2>
+    <p>The package runs under <code>script-src 'self'</code>. It contains no <code>eval</code>, no <code>new Function</code>, no <code>innerHTML</code> with external data and no <code>on*</code> attributes, and it makes no network requests, loads no remote fonts and sends no telemetry.</p>
+    <p>One exception is worth planning for. If you use the theme pre-read snippet — the tiny inline script that reads the stored preference before first paint, so the page does not flash the wrong theme — it is inline by necessity, and a strict policy needs its hash or a nonce:</p>
+<pre><code>&lt;script&gt;{themeSnippet}&lt;/script&gt;</code></pre>
+<pre><code>Content-Security-Policy: default-src 'self'; script-src 'self' '{cspHash}'; style-src 'self'</code></pre>
+    <p>The hash above is computed at build time from the exact snippet this site injects (<code id="csp-hash">{cspHash}</code>), so the two cannot drift apart.</p>
+    <p>This documentation publishes the hash for the snippet it ships. If you modify the snippet by one character, the hash changes — regenerate it, or serve the script with a nonce instead. Skipping the snippet entirely is also a valid choice: the theme then applies after the stylesheet and the script have run.</p>
+    <p>The only dynamic styling the package does is setting custom properties through <code>style.setProperty</code>, which counts as an inline style attribute. If your <code>style-src</code> forbids those, that is the thing to test.</p>
+  </article>
+</Base>

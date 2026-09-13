@@ -1,0 +1,73 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base title="Playground" description="A bounded snippet generator for iVOLT: pick a component, a variant, a size and a panel theme, then copy the resulting HTML.">
+  <article class="docs-prose">
+    <h1>Playground</h1>
+    <p>
+      This is a <strong>snippet generator</strong>, not an editor. You choose a component, a
+      variant, a size where it applies, a theme for the preview panel and one of a few sample
+      strings; the page builds the markup from fixed templates and shows you the HTML to copy.
+      There is no free-form input and no code is executed, so what you copy is always valid
+      iVOLT markup. Nothing is stored: reload the page and you are back to the defaults.
+    </p>
+    <noscript>
+      <div class="iv-alert iv-alert--info" role="status">
+        <p class="iv-alert__title">The playground needs JavaScript</p>
+        <div class="iv-alert__body">
+          <p>Every component page carries the same markup as a static fixture with a copy button,
+          so you can take the snippets from there instead.</p>
+        </div>
+      </div>
+    </noscript>
+  </article>
+
+  <section aria-labelledby="pg-heading" class="iv-stack iv-u-gap-6">
+    <h2 id="pg-heading" class="iv-u-sr-only">Snippet generator</h2>
+
+    <form class="iv-grid iv-u-gap-4 iv-u-grid-cols-1 iv-u-md-grid-cols-3" id="pg-form" novalidate>
+      <div class="iv-field">
+        <label class="iv-label" for="pg-component">Component</label>
+        <select class="iv-select" id="pg-component" name="component"></select>
+      </div>
+      <div class="iv-field">
+        <label class="iv-label" for="pg-variant">Variant</label>
+        <select class="iv-select" id="pg-variant" name="variant"></select>
+      </div>
+      <div class="iv-field" id="pg-size-field">
+        <label class="iv-label" for="pg-size">Size</label>
+        <select class="iv-select" id="pg-size" name="size"></select>
+      </div>
+      <div class="iv-field">
+        <label class="iv-label" for="pg-text">Sample text</label>
+        <select class="iv-select" id="pg-text" name="text"></select>
+        <p class="iv-field__help iv-u-m-0" id="pg-text-help">Closed list: the playground never inserts text you type.</p>
+      </div>
+      <fieldset class="iv-fieldset">
+        <legend class="iv-fieldset__legend">Preview theme</legend>
+        <div class="iv-checks iv-checks--inline">
+          <label class="iv-check"><input type="radio" name="pg-theme" value="light" checked> Light</label>
+          <label class="iv-check"><input type="radio" name="pg-theme" value="dark"> Dark</label>
+          <label class="iv-check"><input type="radio" name="pg-theme" value="system"> System</label>
+        </div>
+      </fieldset>
+    </form>
+
+    <figure class="docs-fixture" id="pg-fixture">
+      <figcaption class="docs-fixture__caption">
+        <span class="docs-fixture__title">Generated snippet</span>
+        <span class="docs-fixture__path">playground</span>
+        <button class="iv-button iv-button--secondary iv-button--sm docs-copy" type="button" data-copy-target="pg-code" aria-describedby="pg-status">Copy HTML</button>
+        <span class="iv-u-sr-only" id="pg-status" role="status" aria-live="polite"></span>
+      </figcaption>
+      <div class="docs-fixture__preview" id="pg-preview" data-iv-theme="light" role="group" aria-label="Live preview"></div>
+      <div class="docs-fixture__code">
+        <pre tabindex="0" aria-label="Generated HTML"><code id="pg-code"></code></pre>
+      </div>
+    </figure>
+
+    <p class="iv-u-m-0"><a id="pg-doc-link" href="/components/button">Open the Button component page</a></p>
+  </section>
+
+  <script src="../scripts/playground.js"></script>
+</Base>

@@ -6,7 +6,7 @@ const recipes = [
   { slug: "admin", title: "Admin panel", text: "Sidebar drawer, forms, a responsive table, alerts, progress and toasts. Fictional data, no backend." },
 ];
 ---
-<Base title="Examples" description="Three complete recipes built only with iVOLT: a business landing page, an editorial catalogue and a static admin panel. Open them or copy the folders.">
+<Base title="Examples" description="Three complete recipes built only with iVOLT: a business landing page, an editorial catalogue and a static admin panel. Open them, download them as a zip or copy the folders.">
   <article class="docs-prose">
     <h1>Examples</h1>
     <p>Three complete pages that share the framework but not the composition. Each recipe is a standalone HTML file that links the prebuilt assets from a sibling <code>ivolt/</code> folder, exactly like the plain HTML starter. Data and forms are demos: nothing is sent anywhere.</p>
@@ -14,10 +14,27 @@ const recipes = [
       {recipes.map((r) => (
         <article class="iv-card">
           <div class="iv-card__body"><h2 class="iv-card__title">{r.title}</h2><p class="iv-u-m-0">{r.text}</p></div>
-          <div class="iv-card__footer"><a class="iv-button iv-button--primary iv-button--sm" href={`/examples/${r.slug}/index.html`}>Open</a></div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--primary iv-button--sm" href={`/examples/${r.slug}/index.html`}>Open</a>
+            <a class="iv-button iv-button--secondary iv-button--sm" href={`/downloads/ivolt-recipe-${r.slug}.zip`} download>Download .zip</a>
+          </div>
         </article>
       ))}
     </div>
+    <h2>Downloads</h2>
+    <p>Every archive is generated during the site build from the same sources as the pages above, so it always matches this version. Each recipe zip carries its own copy of the <code>ivolt/</code> assets: unzip it and open <code>index.html</code>, no build step and no network needed.</p>
+    <div class="iv-stack iv-u-gap-3">
+      <div class="iv-cluster iv-u-gap-3">
+        <a class="iv-button iv-button--secondary iv-button--sm" href="/downloads/ivolt-starter-plain-html.zip" download>Download the plain HTML starter</a>
+        <span class="iv-u-text-sm iv-u-text-muted"><code>index.html</code>, <code>README.md</code> and <code>ivolt/</code>.</span>
+      </div>
+      <div class="iv-cluster iv-u-gap-3">
+        <a class="iv-button iv-button--secondary iv-button--sm" href="/downloads/ivolt-dist.zip" download>Download the built package</a>
+        <span class="iv-u-text-sm iv-u-text-muted">The whole <code>dist/</code> (CSS and JS), plus <code>LICENSE</code> and <code>README.md</code>.</span>
+      </div>
+    </div>
+    <p class="iv-u-text-sm iv-u-text-muted">Sizes and file lists are listed in <a href="/downloads/manifest.json">manifest.json</a>.</p>
+
     <h2>Copy a recipe</h2>
     <p>Each recipe lives in <code>examples/recipes/&lt;name&gt;/index.html</code> in the repository. Copy that folder together with <code>examples/recipes/ivolt/</code> (created by <code>node scripts/sync-examples.mjs</code> after a build) and open the page. The plain starter in <code>examples/plain-html</code> is the smallest possible version of the same setup.</p>
   </article>

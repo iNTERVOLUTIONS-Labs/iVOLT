@@ -191,6 +191,12 @@
   color: var(--iv-color-text);
   background-color: var(--iv-color-bg);
 }
+/* Higher contrast preference: decorative borders become control-strength borders. */
+@media (prefers-contrast: more) {
+  :root, [data-iv-theme] {
+    --iv-color-border: var(--iv-color-border-strong);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   :root {
     --iv-motion-fast: 0ms;
