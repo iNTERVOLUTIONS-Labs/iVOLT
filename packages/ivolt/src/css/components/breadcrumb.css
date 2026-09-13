@@ -1,0 +1,73 @@
+/* iVOLT — components/breadcrumb
+ * The separator is a masked inline SVG on `::before`, never text: it is not
+ * announced, and `background-color: currentColor` makes it follow the theme.
+ * It is never applied to the first item (adjacent-sibling selector).
+ * Locals: --iv-breadcrumb-gap --iv-breadcrumb-separator-size
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-breadcrumb {
+  --iv-breadcrumb-gap: var(--iv-space-2);
+  --iv-breadcrumb-separator-size: 0.5rem;
+
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+}
+
+.iv-breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--iv-breadcrumb-gap);
+  padding: 0;
+  margin-block: 0;
+  list-style: none;
+}
+
+.iv-breadcrumb__item {
+  display: flex;
+  align-items: center;
+  gap: var(--iv-breadcrumb-gap);
+  min-block-size: 1.5rem;
+}
+
+.iv-breadcrumb__item + .iv-breadcrumb__item::before {
+  content: "";
+  flex: none;
+  inline-size: var(--iv-breadcrumb-separator-size);
+  block-size: var(--iv-breadcrumb-separator-size);
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath d='M2 1 L5.5 4 L2 7' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath d='M2 1 L5.5 4 L2 7' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  -webkit-mask-size: contain;
+}
+
+.iv-breadcrumb a {
+  color: var(--iv-color-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  border-radius: var(--iv-radius-sm);
+}
+
+@media (hover: hover) {
+  .iv-breadcrumb a:hover {
+    color: var(--iv-color-primary-hover);
+  }
+}
+
+.iv-breadcrumb a:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+/* The current page is plain text inside `li[aria-current="page"]`. */
+.iv-breadcrumb__item[aria-current="page"] {
+  color: var(--iv-color-text);
+  font-weight: var(--iv-weight-medium);
+}

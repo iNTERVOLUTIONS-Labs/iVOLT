@@ -9,10 +9,20 @@ import { IvComponent } from "./core/component.js";
 import { IvError } from "./core/registry.js";
 import { initComponents, destroyComponents } from "./core/lifecycle.js";
 import { Dialog } from "./components/dialog.js";
+import { Disclosure } from "./components/disclosure.js";
+import { Tabs } from "./components/tabs.js";
+import { Dropdown } from "./components/dropdown.js";
+import { Drawer } from "./components/drawer.js";
+import { Toast } from "./components/toast.js";
 
 export { IvComponent } from "./core/component.js";
 export { IvError } from "./core/registry.js";
 export { Dialog } from "./components/dialog.js";
+export { Disclosure } from "./components/disclosure.js";
+export { Tabs } from "./components/tabs.js";
+export { Dropdown } from "./components/dropdown.js";
+export { Drawer } from "./components/drawer.js";
+export { Toast, ToastItem } from "./components/toast.js";
 export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
@@ -24,7 +34,7 @@ export const version = "0.1.0-alpha.0";
  *
  * @type {ReadonlyArray<typeof IvComponent>}
  */
-export const components = Object.freeze([Dialog]);
+export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast]);
 
 /**
  * Instantiates every iVOLT component found inside `root` and wires the

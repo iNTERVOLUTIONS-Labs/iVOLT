@@ -1,0 +1,22 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Disclosure" description="iVOLT disclosure and accordion: native details/summary with optional JavaScript for cancelable events and exclusive accordions.">
+  <article class="docs-prose">
+    <h1>Disclosure and accordion</h1>
+    <p>Built on <code>&lt;details&gt;</code>, so it works without JavaScript. The optional component adds cancelable events and the <code>exclusive</code> accordion behaviour.</p>
+    <p><strong>CSS:</strong> <code>css/components/disclosure.css</code>. <strong>JS (optional):</strong> <code>@intervolutions/ivolt/disclosure</code> or <code>auto.js</code>.</p>
+    <Fixture name="disclosure/basic" />
+    <h2>Accordion</h2>
+    <p>Several disclosures inside <code>iv-accordion</code>. With <code>data-iv-exclusive="true"</code> opening one closes its siblings.</p>
+    <Fixture name="disclosure/accordion" />
+    <h2>Options, methods, events</h2>
+    <table><thead><tr><th>Option</th><th>Attribute</th><th>Default</th></tr></thead><tbody><tr><td><code>exclusive</code></td><td><code>data-iv-exclusive</code></td><td><code>false</code></td></tr></tbody></table>
+    <p><code>open()</code>, <code>close()</code>, <code>toggle()</code>, <code>isOpen</code>, <code>destroy()</code>. Events: <code>iv:open</code> and <code>iv:close</code> (cancelable), then <code>iv:opened</code> / <code>iv:closed</code>. Cancelling a user-initiated toggle restores the previous state.</p>
+    <h2>Keyboard</h2>
+    <p>Enter or Space on the summary toggles it (native behaviour).</p>
+    <h2>Common mistakes</h2>
+    <ul><li>Hiding essential content in a closed disclosure with no other way to reach it, such as prices or legal text.</li><li>Nesting interactive controls inside <code>&lt;summary&gt;</code>.</li></ul>
+  </article>
+</Base>

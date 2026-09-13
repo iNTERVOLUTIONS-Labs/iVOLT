@@ -1,0 +1,70 @@
+/* iVOLT — components/skeleton
+ * Purely decorative placeholder: every `.iv-skeleton` is `aria-hidden` and the
+ * container that is waiting carries `aria-busy="true"`, so assistive
+ * technology hears the state, not the boxes.
+ * Locals: --iv-skeleton-bg --iv-skeleton-highlight --iv-skeleton-radius
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,1,0).
+ */
+
+.iv-skeleton {
+  --iv-skeleton-bg: var(--iv-color-surface);
+  --iv-skeleton-highlight: var(--iv-color-border);
+  --iv-skeleton-radius: var(--iv-radius-sm);
+
+  display: block;
+  inline-size: 100%;
+  block-size: 1em;
+  background-color: var(--iv-skeleton-bg);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--iv-skeleton-highlight) 50%,
+    transparent 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 50% 100%;
+  border-radius: var(--iv-skeleton-radius);
+  animation: iv-shimmer 1600ms linear infinite;
+}
+
+/* Shapes --------------------------------------------------------------- */
+
+.iv-skeleton--text {
+  block-size: 1em;
+  inline-size: 100%;
+}
+
+.iv-skeleton--title {
+  block-size: 1.5em;
+  inline-size: 60%;
+}
+
+.iv-skeleton--circle {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: var(--iv-radius-full);
+}
+
+.iv-skeleton--rect {
+  block-size: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--iv-radius-md);
+}
+
+@keyframes iv-shimmer {
+  from {
+    background-position: -50% 0;
+  }
+
+  to {
+    background-position: 150% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-skeleton {
+    background-image: none;
+    animation: none;
+  }
+}

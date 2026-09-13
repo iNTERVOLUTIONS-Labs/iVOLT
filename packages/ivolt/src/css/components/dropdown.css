@@ -1,0 +1,104 @@
+/* iVOLT — components/dropdown
+ * Actions menu on a native `<details>`. The menu is absolutely positioned
+ * under the summary, which keeps the no-JS fallback working. `--end` (added by
+ * the author or by `placement: "bottom-end"`) aligns it to the inline end.
+ * Locals: --iv-dropdown-min-width --iv-dropdown-offset
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-dropdown {
+  --iv-dropdown-min-width: 12rem;
+  --iv-dropdown-offset: var(--iv-space-1);
+
+  position: relative;
+  display: inline-block;
+}
+
+.iv-dropdown > summary {
+  list-style: none;
+}
+
+.iv-dropdown > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Menu --------------------------------------------------------------- */
+
+.iv-dropdown__menu {
+  position: absolute;
+  inset-block-start: calc(100% + var(--iv-dropdown-offset));
+  inset-inline-start: 0;
+  z-index: var(--iv-z-dropdown);
+  min-inline-size: var(--iv-dropdown-min-width);
+  padding-block: var(--iv-space-1);
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-md);
+  box-shadow: var(--iv-shadow-2);
+  animation: iv-dropdown-in var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-dropdown--end .iv-dropdown__menu {
+  inset-inline: auto 0;
+}
+
+@keyframes iv-dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-dropdown__menu {
+    animation: none;
+  }
+}
+
+/* Items -------------------------------------------------------------- */
+
+.iv-dropdown__item {
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-2);
+  inline-size: 100%;
+  min-block-size: 2.5rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-4);
+  font-family: inherit;
+  font-size: var(--iv-text-md);
+  line-height: 1.2;
+  text-align: start;
+  text-decoration: none;
+  color: var(--iv-color-text);
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.iv-dropdown__item:focus-visible {
+  background-color: var(--iv-color-surface);
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: calc(-1 * var(--iv-focus-offset));
+}
+
+.iv-dropdown__item[aria-disabled="true"] {
+  color: var(--iv-color-text-muted);
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .iv-dropdown__item:hover {
+    background-color: var(--iv-color-surface);
+  }
+}
+
+/* Separator ---------------------------------------------------------- */
+
+.iv-dropdown__separator {
+  margin-block: var(--iv-space-1);
+  margin-inline: 0;
+  border: 0;
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}

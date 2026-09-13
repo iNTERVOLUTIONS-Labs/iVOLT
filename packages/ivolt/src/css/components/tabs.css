@@ -1,0 +1,122 @@
+/* iVOLT — components/tabs
+ * Served as anchor links plus sections; `init` promotes them to the APG tabs
+ * pattern. The active indicator is an `::after` bar so that the horizontal and
+ * vertical variants share the same selected-state rule.
+ * Locals: --iv-tabs-indicator --iv-tabs-gap
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-tabs {
+  --iv-tabs-indicator: 2px;
+  --iv-tabs-gap: var(--iv-space-5);
+
+  display: block;
+}
+
+/* List --------------------------------------------------------------- */
+
+.iv-tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--iv-space-1);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 2.5rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-4);
+  font-family: inherit;
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-medium);
+  line-height: 1.2;
+  color: var(--iv-color-text-muted);
+  text-decoration: none;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-tabs__tab::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(-1 * var(--iv-border-width));
+  block-size: var(--iv-tabs-indicator);
+  background-color: transparent;
+}
+
+.iv-tabs__tab[aria-selected="true"] {
+  color: var(--iv-color-primary);
+}
+
+.iv-tabs__tab[aria-selected="true"]::after {
+  background-color: var(--iv-color-primary);
+}
+
+.iv-tabs__tab:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: calc(-1 * var(--iv-focus-offset));
+}
+
+@media (hover: hover) {
+  .iv-tabs__tab:hover {
+    color: var(--iv-color-text);
+  }
+}
+
+/* Panels ------------------------------------------------------------- */
+
+.iv-tabs__panel {
+  padding-block-start: var(--iv-space-4);
+}
+
+.iv-tabs__panel[hidden] {
+  display: none;
+}
+
+.iv-tabs__panel:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+/* Vertical ----------------------------------------------------------- */
+
+.iv-tabs--vertical {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--iv-tabs-gap);
+}
+
+.iv-tabs--vertical .iv-tabs__list {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex: none;
+  min-inline-size: 12rem;
+  border-block-end: 0;
+  border-inline-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-tabs--vertical .iv-tabs__tab {
+  justify-content: flex-start;
+  text-align: start;
+}
+
+.iv-tabs--vertical .iv-tabs__tab::after {
+  inset-inline: auto calc(-1 * var(--iv-border-width));
+  inset-block: 0;
+  inline-size: var(--iv-tabs-indicator);
+  block-size: auto;
+}
+
+.iv-tabs--vertical .iv-tabs__panel {
+  flex: 1;
+  padding-block-start: 0;
+}

@@ -1,0 +1,133 @@
+/* iVOLT — components/drawer
+ * Applied to the native `<dialog class="iv-drawer">`. Below `staticFrom` the
+ * drawer is a modal opened with `showModal()`; from that breakpoint upwards the
+ * component adds `data-iv-static` and the same element becomes a static side
+ * panel, out of the top layer (ADR-021).
+ * Local: --iv-drawer-width
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0), except the no-JS fallback at the end.
+ */
+
+.iv-drawer {
+  --iv-drawer-from: -100%;
+
+  margin: 0;
+  padding: 0;
+  border: 0;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  block-size: 100vh;
+  block-size: 100dvh;
+  max-block-size: none;
+  inline-size: min(var(--iv-drawer-width, 20rem), 100%);
+  max-inline-size: 100%;
+  overflow: hidden;
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface-raised);
+  box-shadow: var(--iv-shadow-3);
+}
+
+.iv-drawer::backdrop {
+  background-color: var(--iv-color-overlay);
+}
+
+.iv-drawer--end {
+  --iv-drawer-from: 100%;
+
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+}
+
+.iv-drawer[open] {
+  animation: iv-drawer-in var(--iv-motion-base) var(--iv-ease-out);
+}
+
+@keyframes iv-drawer-in {
+  from {
+    transform: translateX(var(--iv-drawer-from));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-drawer[open] {
+    animation: none;
+  }
+}
+
+/* Inner structure ---------------------------------------------------- */
+
+.iv-drawer__panel {
+  display: flex;
+  flex-direction: column;
+  block-size: 100%;
+  min-block-size: 0;
+  margin: 0;
+}
+
+.iv-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--iv-space-4);
+  padding-block: var(--iv-space-4);
+  padding-inline: var(--iv-space-5);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-drawer__title {
+  margin: 0;
+  font-size: var(--iv-text-lg);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-drawer__body {
+  flex: 1;
+  min-block-size: 0;
+  padding-block: var(--iv-space-4);
+  padding-inline: var(--iv-space-5);
+  overflow-y: auto;
+}
+
+.iv-drawer__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--iv-space-3);
+  padding-block: var(--iv-space-4);
+  padding-inline: var(--iv-space-5);
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* Static panel -------------------------------------------------------
+ * Added by the component from `staticFrom` upwards: the element leaves the
+ * top layer and flows with the page, so the navigation is always visible.
+ */
+
+.iv-drawer[data-iv-static] {
+  display: block;
+  position: static;
+  block-size: auto;
+  inline-size: var(--iv-drawer-width, 20rem);
+  max-inline-size: 100%;
+  box-shadow: none;
+  border-inline-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-drawer--end[data-iv-static] {
+  border-inline-start: var(--iv-border-width) solid var(--iv-color-border);
+  border-inline-end: 0;
+}
+
+/* No-JS fallback --------------------------------------------------------
+ * A `<dialog>` without `open` is hidden by the UA. When the `href="#id"` link
+ * is the only route (JS not loaded or disabled) the drawer is shown as a
+ * static, non-modal block with its `href="#"` close link. Same deliberate
+ * (0,3,0) exception as `.iv-dialog:target:not([open])` (ADR-023); with JS the
+ * delegated trigger cancels the anchor, so `:target` never matches.
+ */
+.iv-drawer:target:not([open]) {
+  display: block;
+  position: static;
+}

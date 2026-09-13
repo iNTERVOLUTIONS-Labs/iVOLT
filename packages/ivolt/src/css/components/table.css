@@ -1,0 +1,175 @@
+/* iVOLT — components/table
+ * `.iv-table-wrap` is the labelled, focusable scroll region; the table only
+ * paints itself. `--stack` is mobile first: rows are stacked by default and
+ * the real table layout is restored from `md` upwards, so no negated media
+ * query is needed. In stacked mode the author keeps the table semantics with
+ * explicit ARIA roles, since `display: block` removes the implicit ones.
+ * Locals: --iv-table-cell-px --iv-table-cell-py --iv-table-border
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-table-wrap {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-md);
+}
+
+.iv-table-wrap:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+.iv-table {
+  --iv-table-cell-px: var(--iv-space-4);
+  --iv-table-cell-py: var(--iv-space-3);
+  --iv-table-border: var(--iv-color-border);
+
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-normal);
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface-raised);
+}
+
+.iv-table caption {
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-space-4);
+  text-align: start;
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+}
+
+.iv-table th,
+.iv-table td {
+  padding-block: var(--iv-table-cell-py);
+  padding-inline: var(--iv-table-cell-px);
+  text-align: start;
+  vertical-align: top;
+  border-block-end: var(--iv-border-width) solid var(--iv-table-border);
+}
+
+.iv-table th {
+  font-weight: var(--iv-weight-semibold);
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface);
+}
+
+.iv-table tbody tr:last-child td {
+  border-block-end: 0;
+}
+
+/* Modifiers ----------------------------------------------------------- */
+
+.iv-table--striped tbody tr:nth-child(even) {
+  background-color: var(--iv-color-surface);
+}
+
+.iv-table--compact {
+  --iv-table-cell-px: var(--iv-space-3);
+  --iv-table-cell-py: var(--iv-space-2);
+}
+
+.iv-table--bordered th,
+.iv-table--bordered td {
+  border: var(--iv-border-width) solid var(--iv-table-border);
+}
+
+/* Stacked (below md) --------------------------------------------------- */
+
+.iv-table--stack,
+.iv-table--stack tbody,
+.iv-table--stack tr {
+  display: block;
+}
+
+/* The head is kept in the accessibility tree, only visually removed. */
+.iv-table--stack thead {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.iv-table--stack tr {
+  padding-inline: var(--iv-space-4);
+  padding-block: var(--iv-space-2);
+  border-block-end: var(--iv-border-width) solid var(--iv-table-border);
+}
+
+.iv-table--stack tbody tr:last-child {
+  border-block-end: 0;
+}
+
+.iv-table--stack td,
+.iv-table--stack tbody th {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-2);
+  justify-content: space-between;
+  align-items: baseline;
+  padding-block: var(--iv-space-1);
+  text-align: start;
+  overflow-wrap: anywhere;
+  border-block-end: 0;
+}
+
+.iv-table--stack td::before,
+.iv-table--stack tbody th::before {
+  content: attr(data-iv-label);
+  font-weight: var(--iv-weight-semibold);
+  color: var(--iv-color-text-muted);
+}
+
+@media (--iv-md) {
+  .iv-table--stack {
+    display: table;
+  }
+
+  .iv-table--stack thead {
+    position: static;
+    display: table-header-group;
+    inline-size: auto;
+    block-size: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+
+  .iv-table--stack tbody {
+    display: table-row-group;
+  }
+
+  .iv-table--stack tr {
+    display: table-row;
+    padding-inline: 0;
+    padding-block: 0;
+    border-block-end: 0;
+  }
+
+  .iv-table--stack td,
+  .iv-table--stack tbody th {
+    display: table-cell;
+    padding-block: var(--iv-table-cell-py);
+    border-block-end: var(--iv-border-width) solid var(--iv-table-border);
+  }
+
+  .iv-table--stack td::before,
+  .iv-table--stack tbody th::before {
+    content: none;
+  }
+
+  .iv-table--stack tbody tr:last-child td,
+  .iv-table--stack tbody tr:last-child th {
+    border-block-end: 0;
+  }
+}

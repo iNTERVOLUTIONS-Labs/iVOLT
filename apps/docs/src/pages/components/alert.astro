@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Alert" description="iVOLT alert: info, success, warning and danger messages with title, body and actions, using role=status or role=alert. CSS only.">
+  <article class="docs-prose">
+    <h1>Alert</h1>
+    <p>A message the user should notice. Use <code>role="status"</code> for informative or success messages and <code>role="alert"</code> only for urgent ones that need immediate announcement. No JavaScript: to dismiss, remove the node.</p>
+    <p><strong>CSS:</strong> <code>css/components/alert.css</code> (in <code>ivolt.css</code>).</p>
+    <Fixture name="alert/variants" />
+    <h2>Anatomy</h2>
+    <p><code>iv-alert</code> (<code>--info</code> default, <code>--success --warning --danger</code>) with optional <code>iv-alert__icon</code> (<code>aria-hidden</code>), <code>iv-alert__title</code>, <code>iv-alert__body</code> and <code>iv-alert__actions</code>.</p>
+    <h2>Common mistakes</h2>
+    <ul><li><code>role="alert"</code> on every message: screen readers interrupt the user each time.</li><li>Alerts rendered on page load for content that is not an alert.</li></ul>
+  </article>
+</Base>

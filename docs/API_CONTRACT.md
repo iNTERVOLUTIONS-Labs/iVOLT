@@ -33,7 +33,7 @@ Tres niveles, un origen (`tokens/tokens.json`), alias resueltos en build.
 | Semántico | `--iv-color-*`, `--iv-space-*`, `--iv-text-*`, `--iv-font-*`, `--iv-weight-*`, `--iv-leading-*`, `--iv-radius-*`, `--iv-border-*`, `--iv-shadow-*`, `--iv-focus-*`, `--iv-z-*`, `--iv-motion-*`, `--iv-ease-*`, `--iv-measure`, `--iv-content-max` | `:root` y bloques de tema | `--iv-color-primary: var(--iv-palette-green-800)` |
 | Local de componente | `--iv-<bloque>-<prop>` | en el selector del bloque, con fallback semántico | `.iv-button { --iv-button-bg: var(--iv-color-primary) }` |
 
-Familias semánticas de color (cada una existe en light y dark): `bg`, `surface`, `surface-raised`, `text`, `text-muted`, `border`, `border-strong` (≥ 3:1, para controles), `primary`, `on-primary`, `primary-hover`, `primary-active`, `accent`, `on-accent`, `success`, `on-success`, `success-subtle`, `warning`, `warning-subtle`, `danger`, `on-danger`, `danger-subtle`, `info`, `info-subtle`, `focus`, `overlay`.
+Familias semánticas de color (cada una existe en light y dark): `bg`, `surface`, `surface-raised`, `text`, `text-muted`, `border`, `border-strong` (≥ 3:1, para controles), `primary`, `on-primary`, `primary-hover`, `primary-active`, `primary-subtle`, `accent`, `on-accent`, `success`, `on-success`, `success-subtle`, `warning`, `warning-subtle`, `danger`, `on-danger`, `danger-subtle`, `info`, `info-subtle`, `focus`, `overlay`.
 
 Breakpoints: `sm 30em · md 48em · lg 64em · xl 80em · 2xl 90em`, emitidos como `@custom-media --iv-md (min-width: 48em)` y resueltos en build. Nunca `var(--iv-bp-*)` dentro de `@media`. JS los importa de `core/breakpoints.js`, generado del mismo JSON. `2xl` existe para `iv-container--wide` y docs; las utilidades responsive solo usan `sm md lg xl` (decisión de tamaño). `--iv-space-16` existe como token de layout y no genera utilidades. Medidas: `--iv-measure`, `--iv-content-max`, `--iv-container-max`.
 
@@ -119,8 +119,8 @@ class Dialog {
 
 | Componente | Métodos de instancia | Opciones (`data-iv-*`) y valor por defecto |
 |---|---|---|
-| `Disclosure` | `open() close() toggle() destroy()`; `isOpen` | `exclusive` (false; en un `iv-accordion` cierra los hermanos), `closeOnOutside` (false) |
-| `Tabs` | `select(idOrElement) next() prev() destroy()`; `activeTab` | `activation` (`automatic`\|`manual`, por defecto `automatic`), `orientation` (`horizontal`\|`vertical`) |
+| `Disclosure` | `open() close() toggle() destroy()`; `isOpen` | `exclusive` (false; en un `iv-accordion` cierra los hermanos, que emiten `iv:closed` con `reason: "external"`), `closeOnOutside` (false) |
+| `Tabs` | `select(idOrElement) next() prev() destroy()`; `activeTab` | `activation` (`automatic`\|`manual`, por defecto `automatic`), `orientation` (`horizontal`\|`vertical`; el autor añade además la clase `iv-tabs--vertical`, el JS no toca clases de layout) |
 | `Dialog` | `open({ trigger }) close(reason, returnValue) toggle() destroy()`; `isOpen`, `returnValue` | `closeOnBackdrop` (true), `closeOnEscape` (true), `initialFocus` (selector, null), `returnFocus` (true) |
 | `Drawer` | como `Dialog` más `placement` de solo lectura | `placement` (`start`\|`end`, por defecto `start`), `closeOnBackdrop` (true), `closeOnEscape` (true), `returnFocus` (true), `staticFrom` (`lg`) |
 | `Dropdown` | `open() close() toggle() destroy()`; `isOpen` | `placement` (`bottom-start`\|`bottom-end`), `closeOnSelect` (true) |
@@ -136,7 +136,7 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 |---|---|---|---|
 | `iv:init` / `iv:destroy` | no | tras crear / antes de liberar | — |
 | `iv:open` → `iv:opened` | sí / no | antes / después de abrir (dialog, drawer, dropdown, disclosure, toast) | `trigger`, `reason` |
-| `iv:close` → `iv:closed` | sí / no | antes / después de cerrar | `reason: "escape"\|"backdrop"\|"trigger"\|"form"\|"api"\|"external"\|"viewport"\|"timeout"`, `returnValue` |
+| `iv:close` → `iv:closed` | sí / no | antes / después de cerrar | `reason: "escape"\|"backdrop"\|"trigger"\|"form"\|"api"\|"external"\|"viewport"\|"timeout"`, `returnValue`. `external` cubre también cierre por clic fuera o por Tab en dropdown y el cierre de hermanos en un acordeón exclusivo |
 | `iv:change` → `iv:changed` | sí / no | tabs y disclosure en modo acordeón | `tab`, `panel`, `previousTab` |
 | `iv:themechange` | no | en `document` | `theme`, `resolved: "light"\|"dark"` |
 
@@ -231,3 +231,27 @@ dialog.open({ trigger: button });
 ```
 
 Opciones: `closeOnBackdrop` (true), `closeOnEscape` (true), `initialFocus` (selector, por defecto primer foco tabulable o el panel), `returnFocus` (true). Local: `--iv-dialog-width` (32rem). Los botones del `form[method="dialog"]` cierran a través de `iv:close` (cancelable) con `reason: "form"` y `detail.returnValue`. Sin JS, `.iv-dialog:target:not([open]) { display:block }` (excepción de especificidad registrada en ADR-023) lo muestra como bloque estático no modal con su enlace de cierre `href="#"`; la documentación exige que el contenido esencial tenga también una página o sección propia.
+
+## 8. Familias de fase 2 (congelado 2026-09-13)
+
+### 8.1 CSS sin JS
+
+| Familia | Marcado y clases | Modificadores / estados |
+|---|---|---|
+| Badge | `<span class="iv-badge">` | `--primary --success --warning --danger --info` (fondo `*-subtle`, texto `*`); `--solid` (fondo `*`, texto `on-*`); sin variante: `surface` + `border` + `text` |
+| Alert | `<div class="iv-alert" role="status\|alert">` con `__icon` (opcional, `aria-hidden`), `__title`, `__body`, `__actions` | `--info` (por defecto) `--success --warning --danger`; borde inline-start de 3px en color de estado, fondo `*-subtle`. Sin botón de cierre en v0.1 (el consumidor retira el nodo) |
+| Table | `<div class="iv-table-wrap" role="region" aria-labelledby tabindex="0"><table class="iv-table">` | `--striped --compact --bordered`; `--stack` apila filas por debajo de `md` mostrando `td::before { content: attr(data-iv-label) }`; `<caption>` estilizado; `th[scope]` obligatorio en fixtures; celdas numéricas `iv-u-text-end` |
+| Breadcrumb | `<nav class="iv-breadcrumb" aria-label="Breadcrumb"><ol class="iv-breadcrumb__list"><li class="iv-breadcrumb__item"><a>…</a></li>` último `<li aria-current="page">` | separador como `::before` con `content: ""` y máscara SVG (no texto, para que no se lea); nunca en el primer elemento |
+| Pagination | `<nav class="iv-pagination" aria-label="Pagination"><ul class="iv-pagination__list"><li><a class="iv-pagination__link" href>` | `[aria-current="page"]`, `[aria-disabled="true"]` (anterior/siguiente sin destino usan `<span>`), `iv-pagination__ellipsis`; objetivos ≥ 2.5rem |
+| Progress | `<progress class="iv-progress" value max>` con etiqueta visible (`<label for>`) o `aria-label`; sin `value` = indeterminado | `--sm`; `--success --warning --danger` (color de la barra); indeterminado con animación desactivada bajo reduced-motion (barra estática al 100 % en `*-subtle`) |
+| Skeleton | `<div class="iv-skeleton" aria-hidden="true">`; el contenedor que espera lleva `aria-busy="true"` | `--text` (alto 1em, ancho 100 %), `--title` (1.5em, 60 %), `--circle`, `--rect` (aspect 16/9); shimmer con `@keyframes iv-shimmer`, estático bajo reduced-motion |
+
+### 8.2 Interactivos
+
+| Familia | HTML servido | Tras `init` | Opciones (`data-iv-*`) y métodos |
+|---|---|---|---|
+| Disclosure | `<details class="iv-disclosure" data-iv-component="disclosure"><summary class="iv-disclosure__summary">…</summary><div class="iv-disclosure__content">…</div></details>`; acordeón = varios dentro de `<div class="iv-accordion">` | escucha `toggle`; emite `iv:open/opened/close/closed` (el `iv:open`/`iv:close` cancelable revierte `open` si se cancela) | `exclusive` (false): al abrir cierra los `details` hermanos del mismo `.iv-accordion`; `open() close() toggle() isOpen` |
+| Tabs | ver §7 (enlaces de ancla + secciones con `iv-tabs__heading`) | roles `tablist/tab/tabpanel`, `aria-selected`, roving `tabindex`, `hidden`, `aria-controls/labelledby`; el `iv-tabs__heading` recibe `iv-u-sr-only` | `activation` (`automatic`), `orientation` (`horizontal`); `select(idOrEl) next() prev() activeTab`; teclado ← → (↑ ↓ en vertical) Home End; `iv:change` (cancelable, `tab`, `panel`, `previousTab`) → `iv:changed` |
+| Dropdown | `<details class="iv-dropdown" data-iv-component="dropdown"><summary class="iv-button iv-button--secondary">Actions</summary><div class="iv-dropdown__menu"><button class="iv-dropdown__item">…</button><a class="iv-dropdown__item" href>…</a><hr class="iv-dropdown__separator"></div></details>` | `summary`: `aria-haspopup="menu"`, `aria-expanded`; `__menu`: `role="menu"`; `__item`: `role="menuitem"`, `tabindex="-1"`; foco al primer item al abrir con teclado | `placement` (`bottom-start`\|`bottom-end`), `closeOnSelect` (true); `open() close() toggle() isOpen`; teclado ↑ ↓ Home End, Esc cierra y devuelve foco, Tab cierra, clic fuera cierra; `iv:open/opened/close/closed` |
+| Drawer | `<dialog class="iv-drawer" id data-iv-component="drawer" aria-label>` con `__panel`, `__header`, `__title`, `__body`, `__footer`; disparador `data-iv-open` | como Dialog; en ≥ `staticFrom` (`lg`) el CSS lo muestra como panel estático (`display:block; position: static`) y un `matchMedia` cierra el modal al cruzar (`reason: "viewport"`) | `placement` (`start`\|`end`), `staticFrom` (`lg`; `none` = siempre modal), `closeOnBackdrop closeOnEscape returnFocus`; `open({trigger}) close(reason) toggle() isOpen`; `.iv-drawer--end` para colocación por CSS |
+| Toast | región `<div class="iv-toast-region" role="region" data-iv-component="toast" aria-label="Notifications">` (el rol es obligatorio: `aria-label` sin rol es un fallo de axe; `init` lo añade si falta); los items se crean por API: `<div class="iv-toast iv-toast--success" role="status\|alert">` con `__body`, `__dismiss` (botón, `aria-label`) | `show({ message, title?, variant, timeout, dismissible })` crea el nodo con `textContent` (nunca HTML); `danger` usa `role="alert"` y `timeout: 0`; máximo `max` visibles, resto en cola; pausa de temporizador con hover/focus; Esc en un toast enfocado lo descarta | región: `placement` (`bottom-end`\|`bottom-start`\|`top-end`\|`top-start`), `max` (3); item: `variant` (`info`), `timeout` (6000), `dismissible` (true); `ToastItem.dismiss()`; `clear()`; `iv:open/opened/close/closed` en cada item con `reason: "timeout"\|"trigger"\|"api"\|"escape"` |

@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Progress" description="iVOLT progress: styled native <progress> with determinate and indeterminate states, sizes and status colours, respecting reduced motion.">
+  <article class="docs-prose">
+    <h1>Progress</h1>
+    <p>The native <code>&lt;progress&gt;</code> element, styled. Give it a visible label with <code>&lt;label for&gt;</code> or an <code>aria-label</code>. Without <code>value</code> it is indeterminate and animates; under reduced motion the animation stops.</p>
+    <p><strong>CSS:</strong> <code>css/components/progress.css</code> (in <code>ivolt.css</code>).</p>
+    <Fixture name="progress/basic" />
+    <h2>Modifiers</h2>
+    <p><code>--sm</code>; <code>--success --warning --danger</code> for the bar colour.</p>
+    <h2>Common mistakes</h2>
+    <ul><li>A <code>div</code> with a background instead of the native element.</li><li>Progress without a label or without <code>max</code>.</li></ul>
+  </article>
+</Base>

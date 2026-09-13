@@ -1,0 +1,88 @@
+/* iVOLT — components/alert
+ * Inline message. `role="status"` (polite) or `role="alert"` (assertive) is
+ * written by the author; the CSS never conveys the severity on its own, the
+ * title text does. No dismiss button in v0.1.
+ * Locals: --iv-alert-tone --iv-alert-bg --iv-alert-radius --iv-alert-padding
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,1,1).
+ */
+
+.iv-alert {
+  --iv-alert-tone: var(--iv-color-info);
+  --iv-alert-bg: var(--iv-color-info-subtle);
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--iv-space-1) var(--iv-space-3);
+  padding: var(--iv-alert-padding, var(--iv-space-4));
+  color: var(--iv-color-text);
+  background-color: var(--iv-alert-bg);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-inline-start: var(--iv-border-width-strong) solid var(--iv-alert-tone);
+  border-radius: var(--iv-alert-radius, var(--iv-radius-md));
+}
+
+/* Tones --------------------------------------------------------------- */
+
+.iv-alert--info {
+  --iv-alert-tone: var(--iv-color-info);
+  --iv-alert-bg: var(--iv-color-info-subtle);
+}
+
+.iv-alert--success {
+  --iv-alert-tone: var(--iv-color-success);
+  --iv-alert-bg: var(--iv-color-success-subtle);
+}
+
+.iv-alert--warning {
+  --iv-alert-tone: var(--iv-color-warning);
+  --iv-alert-bg: var(--iv-color-warning-subtle);
+}
+
+.iv-alert--danger {
+  --iv-alert-tone: var(--iv-color-danger);
+  --iv-alert-bg: var(--iv-color-danger-subtle);
+}
+
+/* Parts --------------------------------------------------------------- */
+
+/* Decorative only (`aria-hidden`): the meaning lives in the text. */
+.iv-alert__icon {
+  grid-row: 1 / span 2;
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  color: var(--iv-alert-tone);
+}
+
+.iv-alert__icon svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.iv-alert__title {
+  grid-column: 2;
+  margin-block: 0;
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-alert__body {
+  grid-column: 2;
+  margin-block: 0;
+  font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-normal);
+}
+
+.iv-alert__body p {
+  margin-block: 0;
+}
+
+.iv-alert__actions {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-2);
+  margin-block-start: var(--iv-space-2);
+}

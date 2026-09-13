@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Pagination" description="iVOLT pagination: page links in a labelled nav with current page, disabled previous/next and ellipsis. CSS only, navigation only.">
+  <article class="docs-prose">
+    <h1>Pagination</h1>
+    <p>Navigation between pages of results. Every page is a real link; the current one carries <code>aria-current="page"</code>. Unavailable previous/next controls are plain text with <code>aria-disabled="true"</code>, not links.</p>
+    <p><strong>CSS:</strong> <code>css/components/pagination.css</code> (in <code>ivolt.css</code>).</p>
+    <Fixture name="pagination/basic" />
+    <h2>Markup</h2>
+    <p><code>nav.iv-pagination[aria-label]</code> → <code>ul.iv-pagination__list</code> → <code>li</code> → <code>a.iv-pagination__link</code>. Ellipsis: <code>span.iv-pagination__ellipsis</code>. Targets are at least 2.5rem.</p>
+    <h2>Common mistakes</h2>
+    <ul><li>Buttons instead of links when each page has a URL.</li><li>Icon-only previous/next without an accessible name.</li></ul>
+  </article>
+</Base>

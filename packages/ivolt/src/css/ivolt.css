@@ -11,4 +11,16 @@
 @import url("./components/card.css") layer(iv.components);
 @import url("./components/form.css") layer(iv.components);
 @import url("./components/dialog.css") layer(iv.components);
+@import url("./components/badge.css") layer(iv.components);
+@import url("./components/alert.css") layer(iv.components);
+@import url("./components/table.css") layer(iv.components);
+@import url("./components/breadcrumb.css") layer(iv.components);
+@import url("./components/pagination.css") layer(iv.components);
+@import url("./components/progress.css") layer(iv.components);
+@import url("./components/skeleton.css") layer(iv.components);
+@import url("./components/disclosure.css") layer(iv.components);
+@import url("./components/tabs.css") layer(iv.components);
+@import url("./components/dropdown.css") layer(iv.components);
+@import url("./components/drawer.css") layer(iv.components);
+@import url("./components/toast.css") layer(iv.components);
 @import url("./utilities.css") layer(iv.utilities);

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" class="iv-root" data-iv-theme="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iVOLT recipe — Product catalogue</title>
+  <meta name="description" content="Sample catalogue built only with iVOLT: breadcrumb, client-side filters, a nine card grid, pagination states and a tabbed product detail.">
+  <link rel="stylesheet" href="../ivolt/css/ivolt.min.css">
+  <script type="module" src="../ivolt/js/auto.js"></script>
+  <script type="module" src="catalog.js"></script>
+  <style>
+    /* Recipe-only layout: placeholder cover art. Components keep their package styles. */
+    .rc-cover {
+      display: grid;
+      place-items: center;
+      font-size: var(--iv-text-sm);
+      color: var(--iv-color-text-muted);
+      text-align: center;
+    }
+
+    .rc-rule {
+      border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+    }
+
+    .rc-section {
+      padding-block: var(--iv-space-8);
+    }
+  </style>
+</head>
+<body>
+  <a class="iv-u-sr-only-focusable" href="#main">Skip to content</a>
+
+  <header id="top" class="rc-rule">
+    <div class="iv-container iv-container--wide iv-cluster iv-u-justify-between iv-u-items-center iv-u-py-4">
+      <a class="iv-u-font-semibold iv-u-text-lg" href="#top">Northwind Supply</a>
+      <nav class="iv-cluster iv-u-items-center" aria-label="Primary">
+        <a href="#products">Products</a>
+        <a href="#detail">Product detail</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1" class="iv-container iv-container--wide">
+    <div class="rc-section iv-stack iv-u-gap-4">
+      <nav class="iv-breadcrumb" aria-label="Breadcrumb">
+        <ol class="iv-breadcrumb__list">
+          <li class="iv-breadcrumb__item"><a href="#top">Home</a></li>
+          <li class="iv-breadcrumb__item"><a href="#top">Workspace</a></li>
+          <li class="iv-breadcrumb__item" aria-current="page">Catalogue</li>
+        </ol>
+      </nav>
+      <h1 class="iv-u-m-0">Catalogue</h1>
+      <div class="iv-alert iv-alert--info" role="status">
+        <p class="iv-alert__title">Sample data</p>
+        <div class="iv-alert__body">
+          <p class="iv-u-m-0">Nine invented products with example prices. Covers are placeholder blocks, not photographs, and nothing can be ordered from this page.</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="rc-section iv-stack iv-u-gap-4" aria-labelledby="filters-title">
+      <h2 class="iv-u-m-0" id="filters-title">Filters</h2>
+      <form class="iv-stack iv-u-gap-4" id="catalog-filters" action="#" method="get" aria-describedby="filters-note">
+        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0" id="filters-note">Filters run in this page and apply as soon as you change them; nothing is submitted.</p>
+        <fieldset class="iv-fieldset">
+          <legend class="iv-fieldset__legend">Category</legend>
+          <div class="iv-checks iv-checks--inline">
+            <label class="iv-check"><input type="checkbox" name="category" value="desks" checked> Desks</label>
+            <label class="iv-check"><input type="checkbox" name="category" value="seating" checked> Seating</label>
+            <label class="iv-check"><input type="checkbox" name="category" value="lighting" checked> Lighting</label>
+          </div>
+        </fieldset>
+        <div class="iv-field" style="max-width: 20rem">
+          <label class="iv-label" for="catalog-sort">Sort by</label>
+          <select class="iv-select" id="catalog-sort" name="sort">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+          </select>
+        </div>
+        <div class="iv-cluster iv-u-items-center iv-u-gap-4">
+          <button class="iv-button iv-button--secondary" type="reset">Reset filters</button>
+          <p class="iv-u-m-0 iv-u-text-sm" id="catalog-status" role="status">9 of 9 shown</p>
+        </div>
+      </form>
+    </section>
+
+    <section id="products" class="rc-section iv-stack iv-u-gap-4" aria-labelledby="products-title">
+      <h2 class="iv-u-m-0" id="products-title">Products</h2>
+      <div class="iv-grid iv-u-gap-4 iv-u-grid-cols-1 iv-u-md-grid-cols-2 iv-u-lg-grid-cols-3" id="catalog-grid">
+        <article class="iv-card" data-category="desks" data-price="249">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Aurora standing desk</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--info">Desks</span></p>
+            <p class="iv-u-m-0"><strong>249 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+        <article class="iv-card" data-category="desks" data-price="189">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Beacon writing desk</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--info">Desks</span></p>
+            <p class="iv-u-m-0"><strong>189 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+        <article class="iv-card" data-category="desks" data-price="320">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Corner studio desk</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--info">Desks</span></p>
+            <p class="iv-u-m-0"><strong>320 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+        <article class="iv-card" data-category="seating" data-price="410">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Delta task chair</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--primary">Seating</span></p>
+            <p class="iv-u-m-0"><strong>410 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+        <article class="iv-card" data-category="seating" data-price="129">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Echo meeting stool</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--primary">Seating</span></p>
+            <p class="iv-u-m-0"><strong>129 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+        <article class="iv-card" data-category="seating" data-price="275">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Fjord lounge chair</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--primary">Seating</span></p>
+            <p class="iv-u-m-0"><strong>275 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+        <article class="iv-card" data-category="lighting" data-price="89">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Glow desk lamp</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--success">Lighting</span></p>
+            <p class="iv-u-m-0"><strong>89 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+        <article class="iv-card" data-category="lighting" data-price="145">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Halo floor light</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--success">Lighting</span></p>
+            <p class="iv-u-m-0"><strong>145 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+        <article class="iv-card" data-category="lighting" data-price="64">
+          <div class="iv-card__media rc-cover">Placeholder cover</div>
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <h3 class="iv-card__title">Inlet clamp light</h3>
+            <p class="iv-u-m-0"><span class="iv-badge iv-badge--success">Lighting</span></p>
+            <p class="iv-u-m-0"><strong>64 €</strong> <span class="iv-u-text-sm iv-u-text-muted">example pricing</span></p>
+          </div>
+          <div class="iv-card__footer">
+            <a class="iv-button iv-button--secondary iv-button--sm" href="#detail">Details</a>
+          </div>
+        </article>
+      </div>
+
+      <nav class="iv-pagination" aria-label="Pagination">
+        <ul class="iv-pagination__list">
+          <li><span class="iv-pagination__link" aria-disabled="true">Previous</span></li>
+          <li><a class="iv-pagination__link" href="#top" aria-current="page" aria-label="Page 1, current page">1</a></li>
+          <li><a class="iv-pagination__link" href="#top" aria-label="Page 2, demo only, returns to the top of this page">2</a></li>
+          <li><a class="iv-pagination__link" href="#top" aria-label="Page 3, demo only, returns to the top of this page">3</a></li>
+          <li><a class="iv-pagination__link" href="#top" aria-label="Next page, demo only, returns to the top of this page">Next</a></li>
+        </ul>
+      </nav>
+      <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Demo: only page 1 exists. Pages 2, 3 and Next scroll back to the top of this page instead of pretending to load more products.</p>
+    </section>
+
+    <section id="detail" class="rc-section iv-stack iv-u-gap-4" aria-labelledby="detail-title">
+      <h2 class="iv-u-m-0" id="detail-title">Product detail — Aurora standing desk</h2>
+      <p class="iv-u-text-muted iv-u-m-0 iv-u-max-w-measure">One detail panel stands in for every card above, so the Details buttons lead somewhere real on this page.</p>
+      <div class="iv-tabs" data-iv-component="tabs" data-iv-activation="automatic">
+        <div class="iv-tabs__list" aria-label="Aurora standing desk">
+          <a class="iv-tabs__tab" href="#panel-description" id="tab-description">Description</a>
+          <a class="iv-tabs__tab" href="#panel-specs" id="tab-specs">Specs</a>
+          <a class="iv-tabs__tab" href="#panel-shipping" id="tab-shipping">Shipping</a>
+        </div>
+        <section class="iv-tabs__panel" id="panel-description">
+          <h3 class="iv-tabs__heading">Description</h3>
+          <p>An invented sit-stand desk used to fill this demo. The copy describes nothing that exists: a motorised frame, a linoleum top and a cable tray, all imaginary.</p>
+        </section>
+        <section class="iv-tabs__panel" id="panel-specs">
+          <h3 class="iv-tabs__heading">Specs</h3>
+          <ul>
+            <li>Top: 140 × 70 cm (sample figure)</li>
+            <li>Height range: 65–128 cm (sample figure)</li>
+            <li>Load: 70 kg (sample figure)</li>
+          </ul>
+        </section>
+        <section class="iv-tabs__panel" id="panel-shipping">
+          <h3 class="iv-tabs__heading">Shipping</h3>
+          <p>Sample data: a made-up two week lead time and kerbside delivery. No order can be placed here and no shipping is arranged.</p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rc-rule">
+    <div class="iv-container iv-container--wide iv-u-py-8 iv-stack iv-u-gap-2">
+      <nav aria-labelledby="foot-nav">
+        <h2 class="iv-u-text-sm iv-u-font-semibold iv-u-m-0" id="foot-nav">On this page</h2>
+        <ul class="iv-cluster iv-u-gap-4">
+          <li><a href="#top">Top</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#detail">Product detail</a></li>
+        </ul>
+      </nav>
+      <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Sample site built with iVOLT. Products, prices and figures are fictitious.</p>
+    </div>
+  </footer>
+</body>
+</html>
