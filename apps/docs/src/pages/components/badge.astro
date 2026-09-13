@@ -1,0 +1,16 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Badge" description="iVOLT badge: small status labels with subtle and solid colour variants. CSS only.">
+  <article class="docs-prose">
+    <h1>Badge</h1>
+    <p>A compact label for status or counts. Badges are not interactive; if the label matters to assistive technology, keep it as real text, not colour alone.</p>
+    <p><strong>CSS:</strong> <code>css/components/badge.css</code> (in <code>ivolt.css</code>).</p>
+    <Fixture name="badge/variants" />
+    <h2>Classes</h2>
+    <p><code>iv-badge</code> plus <code>--primary --success --warning --danger --info</code> (subtle background, coloured text) and <code>--solid</code> (filled). Without a variant the badge is neutral.</p>
+    <h2>Common mistakes</h2>
+    <ul><li>Using a badge as a button; use <code>iv-button--sm</code> instead.</li><li>Conveying state by colour only: include a word such as “Paid”.</li></ul>
+  </article>
+</Base>

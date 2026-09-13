@@ -40,6 +40,7 @@ Estado: `red-600 #B2262D`, `red-300 #FF7A80`, `amber-700 #8A5200`, `amber-300 #F
 | `border-strong` (controles) | `#6E837B` | `#6E837B` | 4.0 / 4.7 (≥ 3:1) |
 | `primary` | `#0A6A43` | `#29F59A` | como texto sobre bg: 6.7 / 13.2 |
 | `on-primary` | `#FFFFFF` | `#081310` | 6.7 / 13.2 |
+| `primary-subtle` | `#E8FDF3` | `rgb(41 245 154 / .12)` | primary sobre subtle 6.3 / 10.2 |
 | `primary-hover` | `#084D32` | `#5CF0AE` | 9.9 / 13.1 |
 | `primary-active` | `#04301F` | `#14D882` | — / 10.1 |
 | `accent` / `on-accent` | `#29F59A` / `#081310` | igual | 13.2 (botón de marca, no texto pequeño sobre blanco) |
@@ -70,7 +71,7 @@ Descartados con evidencia: `green-700 #0B8A55` como primario light (4.4:1 con bl
 | Peso (`--iv-weight-*`) | `normal medium semibold bold` | `400 500 600 700` |
 | Fuentes (`--iv-font-*`) | `sans mono` | `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` · `ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace` |
 | Radio (`--iv-radius-*`) | `sm md lg full` | `.25 .5 .75 999` rem |
-| Borde (`--iv-border-width`) | — | `1px` |
+| Borde (`--iv-border-width`, `--iv-border-width-strong`) | — | `1px`, `3px` (acento de alert y toast) |
 | Sombra (`--iv-shadow-*`) | `1 2 3` | light: `0 1px 2px rgb(8 19 16/.06)` … `0 12px 32px rgb(8 19 16/.14)`; dark: misma geometría con borde `surface-raised` y opacidad .4 |
 | Foco | `--iv-focus-width 2px`, `--iv-focus-offset 2px`, `--iv-color-focus` | `outline: var(--iv-focus-width) solid var(--iv-color-focus); outline-offset: var(--iv-focus-offset)` solo en `:focus-visible` |
 | Z-index (`--iv-z-*`) | `dropdown drawer dialog toast` | `100 200 300 400` (dialog nativo usa top layer; el token ordena los fallbacks) |

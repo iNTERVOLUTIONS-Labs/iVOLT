@@ -54,8 +54,8 @@ describe("CSS module contracts", () => {
   it("element selectors in base.css are scoped to .iv-root", () => {
     for (const sel of selectors(read("base.css"))) expect(sel, sel).toMatch(/^\.iv-root(\b|$)|^:root|^\.iv-/);
   });
-  it("component selectors stay at or below (0,2,0), except the documented dialog :target fallback", () => {
-    const allow = [/^\.iv-dialog:target:not\(\[open\]\)$/];
+  it("component selectors stay at or below (0,2,0), except the documented dialog/drawer :target fallbacks", () => {
+    const allow = [/^\.iv-dialog:target:not\(\[open\]\)$/, /^\.iv-drawer:target:not\(\[open\]\)$/]; // ADR-023
     for (const rel of modules.filter((m) => m !== "reset.css")) {
       for (const sel of selectors(read(rel))) {
         if (allow.some((re) => re.test(sel))) continue;

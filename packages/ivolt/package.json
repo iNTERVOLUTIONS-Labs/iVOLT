@@ -4,15 +4,55 @@
   "description": "A hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript.",
   "license": "MIT",
   "type": "module",
-  "files": ["dist", "LICENSE", "README.md"],
-  "sideEffects": ["**/*.css", "./dist/js/auto.js", "./dist/js/ivolt.iife.min.js"],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": [
+    "**/*.css",
+    "./dist/js/auto.js",
+    "./dist/js/ivolt.iife.min.js"
+  ],
   "exports": {
-    ".":            { "types": "./dist/types/index.d.ts", "default": "./dist/js/index.js" },
-    "./auto":       { "types": "./dist/types/auto.d.ts",  "default": "./dist/js/auto.js" },
-    "./theme":      { "types": "./dist/types/theme.d.ts", "default": "./dist/js/theme.js" },
-    "./dialog":     { "types": "./dist/types/components/dialog.d.ts", "default": "./dist/js/components/dialog.js" },
-    "./iife":       "./dist/js/ivolt.iife.min.js",
-    "./css/*":      "./dist/css/*",
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/js/index.js"
+    },
+    "./auto": {
+      "types": "./dist/types/auto.d.ts",
+      "default": "./dist/js/auto.js"
+    },
+    "./theme": {
+      "types": "./dist/types/theme.d.ts",
+      "default": "./dist/js/theme.js"
+    },
+    "./dialog": {
+      "types": "./dist/types/components/dialog.d.ts",
+      "default": "./dist/js/components/dialog.js"
+    },
+    "./disclosure": {
+      "types": "./dist/types/components/disclosure.d.ts",
+      "default": "./dist/js/components/disclosure.js"
+    },
+    "./tabs": {
+      "types": "./dist/types/components/tabs.d.ts",
+      "default": "./dist/js/components/tabs.js"
+    },
+    "./dropdown": {
+      "types": "./dist/types/components/dropdown.d.ts",
+      "default": "./dist/js/components/dropdown.js"
+    },
+    "./drawer": {
+      "types": "./dist/types/components/drawer.d.ts",
+      "default": "./dist/js/components/drawer.js"
+    },
+    "./toast": {
+      "types": "./dist/types/components/toast.d.ts",
+      "default": "./dist/js/components/toast.js"
+    },
+    "./iife": "./dist/js/ivolt.iife.min.js",
+    "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",
     "./package.json": "./package.json"
   },
@@ -23,7 +63,23 @@
     "build:js": "node scripts/build-js.mjs && node scripts/build-types.mjs",
     "sizes": "node scripts/sizes.mjs"
   },
-  "browserslist": ["chrome >= 111", "edge >= 111", "firefox >= 113", "safari >= 16.4", "ios_saf >= 16.4", "samsung >= 22"],
-  "repository": { "type": "git", "url": "https://github.com/iNTERVOLUTIONS-Labs/iVOLT" },
-  "keywords": ["css", "framework", "components", "design-tokens", "accessibility"]
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 113",
+    "safari >= 16.4",
+    "ios_saf >= 16.4",
+    "samsung >= 22"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iNTERVOLUTIONS-Labs/iVOLT"
+  },
+  "keywords": [
+    "css",
+    "framework",
+    "components",
+    "design-tokens",
+    "accessibility"
+  ]
 }

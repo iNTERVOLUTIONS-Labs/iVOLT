@@ -67,6 +67,7 @@
   --iv-radius-lg: 0.75rem;
   --iv-radius-full: 999rem;
   --iv-border-width: 1px;
+  --iv-border-width-strong: 3px;
   --iv-focus-width: 2px;
   --iv-focus-offset: 2px;
   --iv-z-dropdown: 100;
@@ -94,6 +95,7 @@
   --iv-color-on-primary: #FFFFFF;
   --iv-color-primary-hover: #084D32;
   --iv-color-primary-active: #04301F;
+  --iv-color-primary-subtle: #E8FDF3;
   --iv-color-accent: #29F59A;
   --iv-color-on-accent: #081310;
   --iv-color-success: #0A6A43;
@@ -127,6 +129,7 @@
   --iv-color-on-primary: #081310;
   --iv-color-primary-hover: #5CF0AE;
   --iv-color-primary-active: #14D882;
+  --iv-color-primary-subtle: rgb(41 245 154 / 0.12);
   --iv-color-accent: #29F59A;
   --iv-color-on-accent: #081310;
   --iv-color-success: #29F59A;
@@ -161,6 +164,7 @@
     --iv-color-on-primary: #081310;
     --iv-color-primary-hover: #5CF0AE;
     --iv-color-primary-active: #14D882;
+    --iv-color-primary-subtle: rgb(41 245 154 / 0.12);
     --iv-color-accent: #29F59A;
     --iv-color-on-accent: #081310;
     --iv-color-success: #29F59A;

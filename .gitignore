@@ -6,3 +6,5 @@ playwright-report/
 *.tgz
 .tmp/
 examples/*/ivolt/
+examples/recipes/ivolt/
+apps/docs/public/examples/

@@ -1,0 +1,123 @@
+/* iVOLT — components/toast
+ * A fixed region holding transient messages. The region itself never captures
+ * pointer events, only the items do, so the page stays usable underneath.
+ * Items are created by the component, never written by the author.
+ * Locals: --iv-toast-tone --iv-toast-gap --iv-toast-inset
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-toast-region {
+  position: fixed;
+  inset-block-end: var(--iv-toast-inset, var(--iv-space-4));
+  inset-inline-end: var(--iv-toast-inset, var(--iv-space-4));
+  z-index: var(--iv-z-toast);
+  display: grid;
+  gap: var(--iv-toast-gap, var(--iv-space-3));
+  inline-size: min(22rem, calc(100% - 2rem));
+  pointer-events: none;
+}
+
+/* Placements ---------------------------------------------------------- */
+
+.iv-toast-region--bottom-end {
+  inset-block: auto var(--iv-toast-inset, var(--iv-space-4));
+  inset-inline: auto var(--iv-toast-inset, var(--iv-space-4));
+}
+
+.iv-toast-region--bottom-start {
+  inset-block: auto var(--iv-toast-inset, var(--iv-space-4));
+  inset-inline: var(--iv-toast-inset, var(--iv-space-4)) auto;
+}
+
+.iv-toast-region--top-end {
+  inset-block: var(--iv-toast-inset, var(--iv-space-4)) auto;
+  inset-inline: auto var(--iv-toast-inset, var(--iv-space-4));
+}
+
+.iv-toast-region--top-start {
+  inset-block: var(--iv-toast-inset, var(--iv-space-4)) auto;
+  inset-inline: var(--iv-toast-inset, var(--iv-space-4)) auto;
+}
+
+/* Item ---------------------------------------------------------------- */
+
+.iv-toast {
+  --iv-toast-tone: var(--iv-color-info);
+
+  display: flex;
+  align-items: flex-start;
+  gap: var(--iv-space-3);
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-space-4);
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-inline-start: var(--iv-border-width-strong) solid var(--iv-toast-tone);
+  border-radius: var(--iv-radius-md);
+  box-shadow: var(--iv-shadow-2);
+  pointer-events: auto;
+  animation: iv-toast-in var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-toast:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+@keyframes iv-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-toast {
+    animation: none;
+  }
+}
+
+/* Tones --------------------------------------------------------------- */
+
+.iv-toast--info {
+  --iv-toast-tone: var(--iv-color-info);
+}
+
+.iv-toast--success {
+  --iv-toast-tone: var(--iv-color-success);
+}
+
+.iv-toast--warning {
+  --iv-toast-tone: var(--iv-color-warning);
+}
+
+.iv-toast--danger {
+  --iv-toast-tone: var(--iv-color-danger);
+}
+
+/* Parts --------------------------------------------------------------- */
+
+.iv-toast__body {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.iv-toast__title {
+  display: block;
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-toast__message {
+  margin-block: 0;
+  font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-normal);
+}
+
+.iv-toast__dismiss {
+  flex: none;
+  margin-block-start: calc(var(--iv-space-1) * -1);
+  margin-inline-end: calc(var(--iv-space-2) * -1);
+}

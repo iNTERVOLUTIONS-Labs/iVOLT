@@ -1,0 +1,70 @@
+/* iVOLT — components/badge
+ * Short status label. A variant only reassigns the tone locals; `--solid`
+ * only swaps background and foreground, so `--solid` composes with any
+ * variant without a three-class selector.
+ * Locals: --iv-badge-tone --iv-badge-tone-subtle --iv-badge-on-tone
+ *         --iv-badge-bg --iv-badge-fg --iv-badge-border --iv-badge-radius
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,1,0).
+ */
+
+.iv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-1);
+  padding-block: var(--iv-space-1);
+  padding-inline: var(--iv-space-2);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-medium);
+  line-height: var(--iv-leading-tight);
+  white-space: nowrap;
+  color: var(--iv-badge-fg, var(--iv-badge-tone, var(--iv-color-text)));
+  background-color: var(--iv-badge-bg, var(--iv-badge-tone-subtle, var(--iv-color-surface)));
+  border: var(--iv-border-width) solid var(--iv-badge-border, var(--iv-color-border));
+  border-radius: var(--iv-badge-radius, var(--iv-radius-full));
+}
+
+/* Tones --------------------------------------------------------------- */
+
+.iv-badge--primary {
+  --iv-badge-tone: var(--iv-color-primary);
+  --iv-badge-tone-subtle: var(--iv-color-primary-subtle);
+  --iv-badge-on-tone: var(--iv-color-on-primary);
+  --iv-badge-border: transparent;
+}
+
+.iv-badge--success {
+  --iv-badge-tone: var(--iv-color-success);
+  --iv-badge-tone-subtle: var(--iv-color-success-subtle);
+  --iv-badge-on-tone: var(--iv-color-on-success);
+  --iv-badge-border: transparent;
+}
+
+.iv-badge--warning {
+  --iv-badge-tone: var(--iv-color-warning);
+  --iv-badge-tone-subtle: var(--iv-color-warning-subtle);
+  --iv-badge-on-tone: var(--iv-color-on-warning);
+  --iv-badge-border: transparent;
+}
+
+.iv-badge--danger {
+  --iv-badge-tone: var(--iv-color-danger);
+  --iv-badge-tone-subtle: var(--iv-color-danger-subtle);
+  --iv-badge-on-tone: var(--iv-color-on-danger);
+  --iv-badge-border: transparent;
+}
+
+.iv-badge--info {
+  --iv-badge-tone: var(--iv-color-info);
+  --iv-badge-tone-subtle: var(--iv-color-info-subtle);
+  --iv-badge-on-tone: var(--iv-color-on-info);
+  --iv-badge-border: transparent;
+}
+
+/* Solid: filled with the tone itself. Without a tone variant it falls back
+   to the neutral text colour, so `--solid` alone is still legible. */
+.iv-badge--solid {
+  --iv-badge-bg: var(--iv-badge-tone, var(--iv-color-text));
+  --iv-badge-fg: var(--iv-badge-on-tone, var(--iv-color-bg));
+  --iv-badge-border: transparent;
+}

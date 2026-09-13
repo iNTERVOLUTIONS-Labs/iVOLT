@@ -1,0 +1,21 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Table" description="iVOLT table: scrollable wrapper, striped, compact and bordered modifiers, and a stacked layout for narrow screens. No data engine.">
+  <article class="docs-prose">
+    <h1>Table</h1>
+    <p>Styles for real <code>&lt;table&gt;</code> markup: caption, header cells with <code>scope</code>, and a wrapper that scrolls horizontally when the table is wider than its container. There is no sorting, filtering or data engine.</p>
+    <p><strong>CSS:</strong> <code>css/components/table.css</code> (in <code>ivolt.css</code>).</p>
+    <h2>Scrollable wrapper</h2>
+    <p><code>iv-table-wrap</code> is a labelled, focusable region (<code>role="region"</code>, <code>tabindex="0"</code>) so keyboard users can scroll it.</p>
+    <Fixture name="table/basic" />
+    <h2>Stacked on small screens</h2>
+    <p><code>iv-table--stack</code> turns each row into a block below the <code>md</code> breakpoint and prints <code>data-iv-label</code> before each cell.</p>
+    <Fixture name="table/stack" />
+    <h2>Modifiers</h2>
+    <p><code>--striped</code>, <code>--compact</code>, <code>--bordered</code>, <code>--stack</code>. Numeric columns use <code>iv-u-text-end</code>.</p>
+    <h2>Common mistakes</h2>
+    <ul><li>Tables used for layout.</li><li>Header cells without <code>scope</code>.</li><li>Stacked tables without <code>data-iv-label</code> on cells.</li></ul>
+  </article>
+</Base>

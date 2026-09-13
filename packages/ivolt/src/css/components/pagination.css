@@ -1,0 +1,76 @@
+/* iVOLT — components/pagination
+ * Links are real links; the current page carries `aria-current="page"` and a
+ * disabled previous/next is a `<span>` (or a link with `aria-disabled`), never
+ * a link to nowhere. Targets are at least 2.5rem in both axes.
+ * Locals: --iv-pagination-gap --iv-pagination-size --iv-pagination-radius
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-pagination {
+  --iv-pagination-gap: var(--iv-space-1);
+  --iv-pagination-size: 2.5rem;
+  --iv-pagination-radius: var(--iv-radius-md);
+
+  font-size: var(--iv-text-sm);
+}
+
+.iv-pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--iv-pagination-gap);
+  padding: 0;
+  margin-block: 0;
+  list-style: none;
+}
+
+.iv-pagination__link,
+.iv-pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--iv-pagination-size);
+  min-block-size: var(--iv-pagination-size);
+  padding-inline: var(--iv-space-2);
+  font-weight: var(--iv-weight-medium);
+  line-height: 1.2;
+  text-decoration: none;
+  border-radius: var(--iv-pagination-radius);
+}
+
+.iv-pagination__link {
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-pagination__ellipsis {
+  color: var(--iv-color-text-muted);
+}
+
+@media (hover: hover) {
+  .iv-pagination__link:hover {
+    background-color: var(--iv-color-surface);
+    border-color: var(--iv-color-border-strong);
+  }
+}
+
+.iv-pagination__link:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+.iv-pagination__link[aria-current="page"] {
+  color: var(--iv-color-on-primary);
+  background-color: var(--iv-color-primary);
+  border-color: var(--iv-color-primary);
+}
+
+/* Rendered as a `<span>`: no pointer-events rule is needed, and the colour
+   keeps 4.5:1 against the surface. */
+.iv-pagination__link[aria-disabled="true"] {
+  color: var(--iv-color-text-muted);
+  background-color: transparent;
+  cursor: not-allowed;
+}

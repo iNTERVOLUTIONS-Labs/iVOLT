@@ -68,7 +68,7 @@ Un `<dialog>` cerrado se muestra con `display:block` en ≥ lg sin `open` (conte
 ## ADR-022 Cierre de `<dialog>` siempre interceptado para mantener `iv:close` cancelable (A)
 `submit` de `form[method=dialog]`, `cancel` (Esc) y clic en backdrop se interceptan antes del cierre nativo. Los cierres externos directos emiten solo `iv:closed` con `reason: "external"`. Los enlaces con `data-iv-open` hacen `preventDefault()` con JS; no hay enlace profundo a diálogos en v0.1.
 
-## ADR-023 Excepción única de especificidad: `.iv-dialog:target:not([open])` (0,3,0) (A)
+## ADR-023 Excepción única de especificidad: `.iv-dialog:target:not([open])` y `.iv-drawer:target:not([open])` (0,3,0) (A)
 El fallback sin JS del diálogo necesita `:target` y excluir el estado abierto con JS; acotarlo con `:root:not([data-iv-js])` costaría (0,4,0). Se registra como única excepción al techo (0,2,0) y el test de contrato la lista explícitamente. Con JS, el delegador cancela la navegación del ancla, así que `:target` nunca se activa.
 
 ## ADR-024 `box-sizing: border-box` acotado a `.iv-root` en `base.css` (A)

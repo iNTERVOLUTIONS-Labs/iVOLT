@@ -1,0 +1,55 @@
+<div class="iv-stack iv-u-gap-4">
+  <div class="iv-alert iv-alert--info" role="status">
+    <span class="iv-alert__icon" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9" y="8.5" width="2" height="6" rx="1"/><circle cx="10" cy="5.75" r="1.25"/></svg>
+    </span>
+    <p class="iv-alert__title">Scheduled maintenance</p>
+    <div class="iv-alert__body">
+      <p>The build service is read-only on Sunday between 02:00 and 04:00 UTC.</p>
+    </div>
+  </div>
+
+  <div class="iv-alert iv-alert--success" role="status">
+    <span class="iv-alert__icon" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10" cy="10" r="9"/><path d="M6 10.5 9 13.5 14.5 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    <p class="iv-alert__title">Settings saved</p>
+    <div class="iv-alert__body">
+      <p>Your notification preferences now apply to every project in this workspace.</p>
+    </div>
+  </div>
+
+  <div class="iv-alert iv-alert--warning" role="status">
+    <span class="iv-alert__icon" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5 19 17.5H1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><rect x="9" y="7" width="2" height="6" rx="1"/><circle cx="10" cy="15" r="1.1"/></svg>
+    </span>
+    <p class="iv-alert__title">Warning: token expires in three days</p>
+    <div class="iv-alert__body">
+      <p>Deployments will stop once the access token expires. Rotate it from the project settings.</p>
+    </div>
+    <div class="iv-alert__actions">
+      <button class="iv-button iv-button--secondary iv-button--sm" type="button">Rotate token</button>
+      <button class="iv-button iv-button--ghost iv-button--sm" type="button">Remind me later</button>
+    </div>
+  </div>
+
+  <div class="iv-alert iv-alert--danger" role="alert">
+    <span class="iv-alert__icon" aria-hidden="true">
+      <svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9" y="5" width="2" height="7" rx="1"/><circle cx="10" cy="14.5" r="1.1"/></svg>
+    </span>
+    <p class="iv-alert__title">Error: the file could not be uploaded</p>
+    <div class="iv-alert__body">
+      <p>The archive exceeds the 25 MB limit. Split it or upload the files individually.</p>
+    </div>
+    <div class="iv-alert__actions">
+      <button class="iv-button iv-button--danger iv-button--sm" type="button">Try again</button>
+    </div>
+  </div>
+
+  <div class="iv-alert" role="status">
+    <p class="iv-alert__title">Without an icon</p>
+    <div class="iv-alert__body">
+      <p>The icon is optional and always decorative; the severity is stated in the text.</p>
+    </div>
+  </div>
+</div>

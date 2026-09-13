@@ -1,0 +1,25 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Tabs" description="iVOLT tabs: anchor links and sections served as plain HTML, promoted to the ARIA tabs pattern by JavaScript with automatic or manual activation.">
+  <article class="docs-prose">
+    <h1>Tabs</h1>
+    <p>The server sends anchor links and sections with headings, which work as in-page navigation without JavaScript. On <code>init</code> the component promotes them to the ARIA tabs pattern and hides inactive panels; <code>destroy</code> restores the served HTML.</p>
+    <p><strong>CSS:</strong> <code>css/components/tabs.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/tabs</code> or <code>auto.js</code>.</p>
+    <Fixture name="tabs/basic" />
+    <h2>Options</h2>
+    <table><thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead><tbody>
+      <tr><td><code>activation</code></td><td><code>data-iv-activation</code></td><td><code>automatic</code></td><td><code>automatic</code> selects on arrow-key focus; <code>manual</code> waits for Enter or Space.</td></tr>
+      <tr><td><code>orientation</code></td><td><code>data-iv-orientation</code></td><td><code>horizontal</code></td><td><code>vertical</code> uses Up/Down and the <code>iv-tabs--vertical</code> layout.</td></tr>
+    </tbody></table>
+    <h2>Methods and events</h2>
+    <p><code>select(idOrElement)</code>, <code>next()</code>, <code>prev()</code>, <code>activeTab</code>, <code>destroy()</code>. <code>iv:change</code> (cancelable, <code>detail.tab</code>, <code>panel</code>, <code>previousTab</code>) then <code>iv:changed</code>.</p>
+    <h2>Keyboard</h2>
+    <p>Left/Right (or Up/Down when vertical) move between tabs with wrap-around, Home and End jump to the first and last; Tab moves into the panel.</p>
+    <h2>Without JavaScript</h2>
+    <p>All panels stay visible with their headings; the links scroll to each section. Essential content therefore never depends on the script.</p>
+    <h2>Common mistakes</h2>
+    <ul><li>Putting <code>role="tab"</code> in the served HTML: without the script it announces a widget that does not work.</li><li>Tabs for sequential steps; use a form flow.</li></ul>
+  </article>
+</Base>

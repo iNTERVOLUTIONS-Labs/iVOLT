@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 const widths = [320, 390, 768, 1024, 1366, 1920];
-const fixtures = ["layout/grid", "layout/stack-cluster", "layout/container", "form/basic", "card/media", "button/variants"];
+const fixtures = ["layout/grid", "layout/stack-cluster", "layout/container", "form/basic", "card/media", "button/variants", "table/basic", "table/stack", "breadcrumb/basic", "pagination/basic", "alert/variants", "tabs/basic", "disclosure/accordion"];
 
 for (const w of widths) {
   test(`no horizontal overflow at ${w}px`, async ({ page }) => {

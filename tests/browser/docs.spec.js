@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 const DOCS = "http://127.0.0.1:4321";
-const routes = ["/", "/getting-started", "/foundations/tokens-and-themes", "/foundations/layout", "/components/button", "/components/card", "/components/form", "/components/dialog", "/404"];
+const routes = ["/", "/getting-started", "/foundations/tokens-and-themes", "/foundations/layout", "/examples", "/404", ...["button", "card", "form", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => `/components/${c}`)];
 
 test.describe("Docs site", () => {
   test("key routes render without console errors and with one h1", async ({ page }) => {
@@ -56,4 +56,11 @@ test.describe("Docs site", () => {
     const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(over).toBeLessThanOrEqual(0);
   });
+});
+
+test("toast demo on the docs page shows a toast", async ({ page }) => {
+  await page.goto(DOCS + "/components/toast");
+  await page.locator("[data-toast-variant=success]").click();
+  await expect(page.locator(".iv-toast--success")).toBeVisible();
+  await expect(page.locator(".iv-toast-region")).toHaveAttribute("role", "region");
 });
