@@ -1,50 +1,60 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-13 · Fase actual: **0 (Blueprint) cerrada** · Siguiente disparador: `IMPLEMENT_PHASE_1`
+Última actualización: 2026-09-13 · Fase actual: **1 (corte vertical) cerrada** · Siguiente disparador: `IMPLEMENT_PHASE_2`
 
 ## Estado por fase
 
 | Fase | Estado | Evidencia |
 |---|---|---|
-| 0 Blueprint | hecha | archivos de `docs/`, la guía raíz de agentes, este archivo; capturas de la lámina revisadas a 1366×610, 1366×900, 390×844 y 320×700 |
-| 1 Corte vertical | prevista | `docs/ROADMAP.md` §1 |
-| 2–4 | previstas | — |
+| 0 Blueprint | hecha | `docs/`, lámina `docs/design/brand-board.html` |
+| 1 Corte vertical | hecha | build reproducible, 58 pruebas unitarias/contrato, 39 pruebas de navegador × 3 motores, pack-smoke, tamaños, docs y starter (ver abajo) |
+| 2 Alcance v0.1 | prevista | `docs/ROADMAP.md` |
+| 3–4 | previstas | — |
 
-## Archivos entregados en fase 0
+## Implementado en fase 1
 
-`docs/IVOLT_BIBLE.md`, `docs/ARCHITECTURE.md`, `docs/API_CONTRACT.md`, `docs/DESIGN_SYSTEM.md`, `docs/QUALITY.md`, `docs/WORKFLOW.md`, `docs/ROADMAP.md`, `docs/DECISIONS.md`, `docs/SOURCES.md`, `docs/design/brand-board.html`, `docs/design/brand-board.css`, `docs/design/assets/ivolt-wordmark-temp.svg`, la guía raíz de agentes, `PROJECT_STATE.md`.
+- Monorepo npm workspaces con un lockfile; cadena esbuild + lightningcss + scripts Node; tipos por `tsc` desde JSDoc (TypeScript 5.9.3, no 7.x: ver «Decisiones»).
+- `packages/ivolt`: `tokens/tokens.json` → `tokens.css`, `custom-media.css`, `core/breakpoints.js`, `dist/tokens/tokens.json` (115 tokens); `reset.css`, `base.css` (acotado a `.iv-root`), `layout/{container,stack,cluster,grid}.css`, `components/{button,card,form,dialog}.css`, `utilities.css` generado (234 base + 148 responsive); entradas `core.css`, `ivolt.css`, `ivolt.flat.css`, `reset.layer.css`; JS `core/*`, `components/dialog.js`, `theme.js`, `index.js`, `auto.js`, IIFE `IVOLT`; `exports` reales; 13 fixtures en `packages/ivolt/fixtures`.
+- `apps/docs` (Astro 7): home con demo viva, getting started, tokens y temas, layout, button, card, form, dialog, 404; conmutador de tema persistente, copia con feedback accesible y fallback de selección, menú móvil sobre el propio Dialog.
+- `examples/plain-html` + `scripts/sync-examples.mjs` (copia `dist/`), `scripts/check-examples.mjs`.
+- `scripts/pack-smoke.mjs`: `npm pack` → consumidor externo en tmp → import SSR, `exports`, resolución de CSS, tree-shaking (theme-only 926 B sin Dialog; dialog-only sin theme; import sin uso 0 B), global IIFE.
 
-## Verificaciones ejecutadas en fase 0
+## Verificaciones ejecutadas (cierre de fase 1)
 
-- Contrastes WCAG calculados por script sobre los hex de `DESIGN_SYSTEM.md` (previsto; se remiden sobre CSS emitido en fase 1).
-- Versiones npm observadas y nombres de paquete comprobados (404) — `docs/SOURCES.md`.
-- Lámina renderizada con Chromium headless en cuatro viewports; el hero muestra el demo completo a 1366×610; sin overflow horizontal visible a 320/390.
-- Revisión puntual por Opus 5 (modelo confirmado por el agente) de `API_CONTRACT`, `ARCHITECTURE` y `DESIGN_SYSTEM`: 12 hallazgos, todos aplicados. Los materiales: precedencia distinta entre `ivolt.css` y `ivolt.flat.css` (ADR-019), API sin definir para cinco componentes (§5.2b), `system` anidado bajo `dark` heredaba dark (emisión corregida), `iv:close` no cancelable con `<dialog>` nativo (ADR-022), tokens `on-*`/`*-subtle` sin valores (añadidos con contraste), tabs y dropdown servidos con roles que no funcionan sin JS (ADR-020), drawer con dos elementos (ADR-021), `reset.css` sin capa, `exports` sin `default`, wording de `!important` y CSP del snippet inline.
-- Gasto/tokens de la fase: no disponible en el entorno.
+| Check | Resultado |
+|---|---|
+| `npm run build` | ok (tokens, utilidades, CSS, JS, tipos) |
+| `npm test` (Vitest: unitarias + contratos CSS) | 58/58 |
+| `IVOLT_ALL_BROWSERS=1 npx playwright test` (Chromium, Firefox, WebKit) | 117/117: dialog (teclado, Esc, retorno de foco, backdrop, form, cancelación, idempotencia, destroy, fallback `:target`), temas anidados × preferencia del SO, overflow a 320/390/768/1024/1366/1920, RTL, axe sin hallazgos critical/serious en 10 fixtures × 2 temas + diálogo abierto, docs (consola limpia, enlaces, tema, copia, menú móvil) |
+| `npm run sizes` (gzip nivel 9, commit de cierre) | core.min.css 2.34 KiB / 8; ivolt.min.css 7.26 KiB / 30; ivolt.flat.min.css 7.20 KiB / 30; JS agrupado 3.38 KiB / 18; IIFE 3.62 KiB / 18 |
+| `npm run pack-smoke` | ok (54 archivos en el tarball, sin `src/` ni `fixtures/`) |
+| `npm run build:docs`, `check-examples` | ok |
+| Revisión visual | capturas de home (1366×610 dark, 1366×900 light), página dialog a 390 px y starter |
+| Gasto/tokens | no disponible en el entorno |
 
 ## No verificado / pendiente
 
-- Emisión de `.d.ts` desde JSDoc con TypeScript 7.x (fallback 5.x) — fase 1.
-- `@import … layer()` agrupado por lightningcss con `@custom-media` — fase 1, primer paso del integrador.
-- Propiedad del scope npm `@intervolutions` — fase 4.
-- Asset pendiente: `ivolt-logo.svg` oficial (rayo verde, hexágono abierto, firma BY iNTERVOLUTIONS). Sustituir `docs/design/assets/ivolt-wordmark-temp.svg` y el SVG inline de la lámina cuando exista.
-- Fuente geométrica libre para titulares de docs (candidata Space Grotesk, OFL): decisión y archivos en fase 3.
-- Lector de pantalla: sin ejecutar; lista pendiente en `docs/QUALITY.md` §4.
+- Lector de pantalla (NVDA/VoiceOver): sin ejecutar.
+- Lighthouse: fase 4.
+- Dispositivos físicos: solo motores Playwright.
+- Asset pendiente: logo oficial `ivolt-logo.svg` (wordmark temporal en docs y lámina).
+- Propiedad del scope npm `@intervolutions`: fase 4.
+- WebKit en este entorno necesitó `playwright install-deps webkit` (paquetes del sistema instalados con sudo en la VM de desarrollo).
 
 ## Fallos abiertos
 
-Ninguno de código (no hay código de producto todavía). Incidencia de fase 0 resuelta: un `autofocus` en la lámina dejaba las capturas headless en blanco; eliminado.
+Ninguno. Incidencias resueltas en fase 1: overflow por `box-sizing` sin reset (ADR-024), contraste en ámbitos de tema anidados (ADR-025), rutas de fixtures en el prerender de Astro, llaves en bloques de código `.astro`.
 
 ## Siguiente acción
 
-`IMPLEMENT_PHASE_1` siguiendo `docs/ROADMAP.md` §1 (orden: raíz y lockfile → tokens → CSS base/layout/button/card/form → JS core + dialog → pruebas, pack-smoke, tamaños → docs mínimas → starter HTML). Integrador único para manifiestos, lockfile, `tokens.json`, entradas y contratos.
+`IMPLEMENT_PHASE_2` según `docs/ROADMAP.md`: badges, alerts, tables, breadcrumbs, pagination, progress, skeleton (CSS); disclosure, tabs, drawer, dropdown, toast (JS, contrato §5.2b y §6, ADR-020/021); tres recetas; docs y pruebas por familia; añadir cada componente a `exports`, entradas CSS/JS y `components` de `index.js` (integrador).
 
 ## Decisiones que no deben perderse
 
-- Gramática congelada en `docs/API_CONTRACT.md`; cambios solo con ADR.
-- Primario light `#0A6A43` (no `#0B8A55`, 4.4:1 insuficiente); dark `#29F59A` con texto `#081310`.
-- Módulos CSS sin capa; las entradas asignan `@layer`; existe `ivolt.flat.css` para CSS legado.
-- Estados JS reflejados en atributos nativos/ARIA, nunca clases `is-*`.
-- Sin autoarranque salvo `auto.js`; sin `MutationObserver` global; sin efectos de importación.
-- Matriz de navegadores: Chrome/Edge 111, Firefox 113, Safari 16.4, Samsung 22.
-- El CSS de `docs/design/` es provisional y no se copia al paquete.
+- TypeScript fijado en 5.9.3 para emitir `.d.ts` desde JSDoc; 7.x no se probó en fase 1 (ADR-010: verificar solo si hace falta).
+- Fixtures viven en `packages/ivolt/fixtures/<familia>/<nombre>.html`; docs, pruebas (`/fixture/<familia>/<nombre>` en `scripts/serve.mjs`) y starters las consumen.
+- Utilidades con selector doblado (ADR-019); única excepción de especificidad `.iv-dialog:target:not([open])` (ADR-023).
+- `[data-iv-theme]` reaplica `color` y `background-color` (ADR-025); `box-sizing` acotado en `base.css` (ADR-024).
+- `data-iv-close` acepta id; razones de cierre `trigger|escape|backdrop|form|api|external`.
+- Subagentes: `model: "opus"`; la autodeclaración del modelo no es fiable (WORKFLOW §7).
+- El CSS de `apps/docs/src/styles/docs.css` solo maqueta la web; los componentes vienen del paquete.

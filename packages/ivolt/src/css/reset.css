@@ -1,0 +1,70 @@
+/* iVOLT — reset
+ * Minimal modern normalization. This is the only module without the
+ * `.iv-root` scope: it is imported opt-in from the matching entry point.
+ * Declares no @layer and imports nothing: the entry point does that.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+img,
+svg,
+video,
+canvas,
+picture {
+  display: block;
+  max-inline-size: 100%;
+}
+
+img,
+video {
+  block-size: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* A class on a list means component or layout markup: it is neutralized.
+   Content lists keep the browser's markers and indentation. */
+ul[class],
+ol[class] {
+  list-style: none;
+  margin-block: 0;
+  padding-inline-start: 0;
+}
+
+[hidden] {
+  display: none;
+}

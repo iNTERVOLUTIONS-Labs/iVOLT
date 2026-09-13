@@ -1,0 +1,105 @@
+---
+import "@intervolutions/ivolt/css/ivolt.css";
+import "../styles/docs.css";
+const { title, description, sidebar = true } = Astro.props;
+const nav = [
+  { href: "/getting-started", label: "Getting started" },
+  { href: "/foundations/tokens-and-themes", label: "Tokens & themes" },
+  { href: "/foundations/layout", label: "Layout" },
+  { href: "/components/button", label: "Button" },
+  { href: "/components/card", label: "Card" },
+  { href: "/components/form", label: "Form" },
+  { href: "/components/dialog", label: "Dialog" },
+];
+const path = Astro.url.pathname.replace(/\.html$/, "");
+const canonical = Astro.site ? new URL(path, Astro.site).href : undefined;
+---
+<!DOCTYPE html>
+<html lang="en" class="iv-root" data-iv-theme="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title} · iVOLT</title>
+  <meta name="description" content={description}>
+  {canonical && <link rel="canonical" href={canonical}>}
+  <meta property="og:title" content={`${title} · iVOLT`}>
+  <meta property="og:description" content={description}>
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <script is:inline>try{var t=localStorage.getItem("iv-theme");if(t==="light"||t==="dark"||t==="system")document.documentElement.setAttribute("data-iv-theme",t)}catch(e){}</script>
+</head>
+<body class="docs">
+  <a class="iv-u-sr-only-focusable iv-button iv-button--primary docs-skip" href="#main">Skip to content</a>
+  <header class="docs-header">
+    <div class="iv-container iv-container--wide docs-header__inner">
+      <a class="docs-brand" href="/" aria-label="iVOLT home">
+        <svg viewBox="0 0 320 96" height="36" aria-hidden="true"><path d="M44 6 L76 24 L76 60 L44 78 L12 60 L12 40" fill="none" stroke="var(--iv-color-accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 16 L30 46 L44 46 L38 70 L60 38 L46 38 Z" fill="var(--iv-color-accent)"/><text x="96" y="58" font-family="system-ui, sans-serif" font-size="46" font-weight="700" letter-spacing="2" fill="currentColor">iVOLT</text><text x="240" y="58" font-family="system-ui, sans-serif" font-size="22" font-weight="500" letter-spacing="3" fill="var(--iv-color-accent)">CSS</text></svg>
+      </a>
+      <button class="iv-button iv-button--ghost iv-button--sm docs-menu-toggle" type="button" data-iv-open="docs-nav" aria-label="Open navigation">Menu</button>
+      <nav class="docs-nav" aria-label="Primary">
+        <a href="/getting-started">Docs</a>
+        <a href="/components/button">Components</a>
+        <a href="https://github.com/iNTERVOLUTIONS-Labs/iVOLT" rel="noopener">Source</a>
+      </nav>
+      <div class="docs-theme" role="group" aria-label="Theme">
+        <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="light" aria-pressed="false">Light</button>
+        <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="dark" aria-pressed="false">Dark</button>
+        <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="system" aria-pressed="false">System</button>
+      </div>
+    </div>
+  </header>
+
+  <dialog class="iv-dialog docs-nav-dialog" id="docs-nav" data-iv-component="dialog" aria-label="Navigation">
+    <div class="iv-dialog__panel">
+      <header class="iv-dialog__header"><h2 class="iv-dialog__title">Navigate</h2><button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label="Close">×</button></header>
+      <nav class="iv-dialog__body" aria-label="Documentation">
+        <ul class="docs-sidebar__list">{nav.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}>{n.label}</a></li>)}</ul>
+      </nav>
+    </div>
+  </dialog>
+
+  <div class={`iv-container iv-container--wide docs-shell ${sidebar ? "docs-shell--sidebar" : ""}`}>
+    {sidebar && (
+      <aside class="docs-sidebar">
+        <nav aria-label="Documentation">
+          <ul class="docs-sidebar__list">{nav.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}>{n.label}</a></li>)}</ul>
+        </nav>
+      </aside>
+    )}
+    <main id="main" class="docs-main" tabindex="-1">
+      <slot />
+    </main>
+  </div>
+
+  <footer class="docs-footer">
+    <div class="iv-container iv-container--wide iv-cluster iv-u-justify-between">
+      <span>iVOLT v0.1 alpha · MIT · by iNTERVOLUTIONS</span>
+      <span class="iv-u-text-muted">Alpha software: APIs may change before 0.1.0.</span>
+    </div>
+  </footer>
+  <script>
+    import "@intervolutions/ivolt/auto";
+    import { setTheme, getTheme } from "@intervolutions/ivolt/theme";
+    const buttons = document.querySelectorAll("[data-set-theme]");
+    const paint = () => buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setTheme === getTheme())));
+    buttons.forEach((b) => b.addEventListener("click", () => { setTheme(b.dataset.setTheme, { persist: true }); paint(); }));
+    paint();
+    document.querySelectorAll(".docs-copy").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const code = document.getElementById(btn.dataset.copyTarget);
+        const status = document.getElementById(btn.getAttribute("aria-describedby"));
+        try {
+          if (!navigator.clipboard) throw new Error("no clipboard");
+          await navigator.clipboard.writeText(code.textContent);
+          btn.textContent = "Copied"; status.textContent = "HTML copied to clipboard";
+        } catch {
+          const range = document.createRange(); range.selectNodeContents(code);
+          const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+          btn.textContent = "Selected — press Ctrl+C"; status.textContent = "Clipboard unavailable; code selected for manual copy";
+        }
+        setTimeout(() => { btn.textContent = "Copy HTML"; status.textContent = ""; }, 2000);
+      });
+    });
+  </script>
+</body>
+</html>

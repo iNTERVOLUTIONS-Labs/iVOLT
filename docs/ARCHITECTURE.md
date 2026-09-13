@@ -26,6 +26,7 @@ iVOLT/
 ├─ packages/ivolt/
 │  ├─ package.json             # exports, sideEffects, files
 │  ├─ tokens/tokens.json       # ÚNICA fuente de verdad de tokens
+│  ├─ fixtures/<familia>/*.html # fragmentos HTML: misma fuente para docs, pruebas y starters
 │  ├─ src/css/
 │  │  ├─ reset.css             # opcional, nunca importado por defecto
 │  │  ├─ tokens.css            # GENERADO desde tokens.json
@@ -160,4 +161,4 @@ Formato: objeto con `$type` (`color`, `dimension`, `fontFamily`, `duration`, `sh
 
 ## 9. Docs (Astro)
 
-Astro 7.3.2 observada, salida `static`. Componentes `.astro` sin framework de UI. El CSS editorial de la web vive en `apps/docs/src/styles/docs.css` y se limita a maquetación de páginas, prosa y navegación de docs; botones, formularios, cards y diálogos vienen del paquete. Búsqueda local con `pagefind` (1.5.2 observada), que indexa la salida estática y se sirve desde el propio sitio. Demos en la página se renderizan inline desde fixtures compartidas (`apps/docs/src/fixtures/*.html`), la misma fuente del snippet copiable y de las pruebas.
+Astro 7.3.2 observada, salida `static`. Componentes `.astro` sin framework de UI. El CSS editorial de la web vive en `apps/docs/src/styles/docs.css` y se limita a maquetación de páginas, prosa y navegación de docs; botones, formularios, cards y diálogos vienen del paquete. Búsqueda local con `pagefind` (1.5.2 observada), que indexa la salida estática y se sirve desde el propio sitio. Demos en la página se renderizan inline desde las fixtures del paquete (`packages/ivolt/fixtures/<familia>/<nombre>.html`), la misma fuente del snippet copiable, de las pruebas de navegador (servidas por `scripts/serve.mjs` en `/fixture/<familia>/<nombre>`) y de los starters.

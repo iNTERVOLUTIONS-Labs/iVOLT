@@ -1,0 +1,21 @@
+/* iVOLT — layout/stack
+ * Vertical flow with uniform spacing. Spacing is adjusted with
+ * `--iv-stack-gap` or with the `iv-u-gap-*` utilities.
+ * Declares no @layer and imports nothing: the entry point does that.
+ */
+
+.iv-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-stack-gap, var(--iv-space-4));
+}
+
+/* Child margins are zeroed because `gap` is the single source of spacing;
+   that way a <p> or an <h2> outside `.iv-root` cannot break the rhythm. */
+.iv-stack > * {
+  margin-block: 0;
+}
+
+.iv-stack--center {
+  align-items: center;
+}

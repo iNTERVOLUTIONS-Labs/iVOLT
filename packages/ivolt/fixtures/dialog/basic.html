@@ -1,0 +1,23 @@
+<a class="iv-button iv-button--primary" href="#signup" data-iv-open="signup">Create account</a>
+
+<dialog class="iv-dialog" id="signup" data-iv-component="dialog" aria-labelledby="signup-title">
+  <form method="dialog" class="iv-dialog__panel">
+    <header class="iv-dialog__header">
+      <h2 class="iv-dialog__title" id="signup-title">Create account</h2>
+      <button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <div class="iv-dialog__body iv-stack">
+      <p class="iv-u-m-0">Demo dialog. Nothing is sent anywhere.</p>
+      <div class="iv-field">
+        <label class="iv-label" for="signup-email">Work email</label>
+        <input class="iv-input" id="signup-email" type="email" autocomplete="email">
+      </div>
+    </div>
+    <footer class="iv-dialog__footer">
+      <a class="iv-button iv-button--ghost" href="#" data-iv-close>Cancel</a>
+      <button class="iv-button iv-button--primary" value="confirm">Continue</button>
+    </footer>
+  </form>
+</dialog>

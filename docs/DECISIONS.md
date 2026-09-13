@@ -30,7 +30,7 @@ La matriz de navegadores (Safari ≥ 16.4) lo soporta; el navegador aporta top l
 Determinada por `color-mix()`, `@layer`, container queries, `:has()`, `<dialog>`, `inert`. Rechazado: soportar Safari 15 (sin `dialog` fiable ni `inert`); IE.
 
 ## ADR-010 JS en ES modules con JSDoc; tipos emitidos por `tsc`; sin TypeScript fuente (A)
-El consumidor recibe JS legible igual al fuente; el tipado se comprueba en CI. Riesgo: TypeScript 7.x (nuevo compilador) puede no emitir declaraciones desde JS igual que 5.x; fase 1 lo verifica y fija 5.x si falla. Rechazado: TS fuente (paso de compilación para todo el paquete).
+El consumidor recibe JS legible igual al fuente; el tipado se comprueba en CI. Riesgo: TypeScript 7.x (nuevo compilador) puede no emitir declaraciones desde JS igual que 5.x; fase 1 fijó 5.9.3 directamente (emisión verificada) y deja 7.x para cuando aporte algo. Rechazado: TS fuente (paso de compilación para todo el paquete).
 
 ## ADR-011 Web de docs con Astro estático, sin framework de UI, búsqueda con Pagefind (A)
 HTML y CSS del propio paquete; JS mínimo por página. Pagefind indexa la salida estática y se sirve local (sin peticiones externas). Rechazado: Starlight (impone su diseño y componentes), React/Vue (innecesarios), búsqueda remota.
@@ -67,3 +67,15 @@ Un `<dialog>` cerrado se muestra con `display:block` en ≥ lg sin `open` (conte
 
 ## ADR-022 Cierre de `<dialog>` siempre interceptado para mantener `iv:close` cancelable (A)
 `submit` de `form[method=dialog]`, `cancel` (Esc) y clic en backdrop se interceptan antes del cierre nativo. Los cierres externos directos emiten solo `iv:closed` con `reason: "external"`. Los enlaces con `data-iv-open` hacen `preventDefault()` con JS; no hay enlace profundo a diálogos en v0.1.
+
+## ADR-023 Excepción única de especificidad: `.iv-dialog:target:not([open])` (0,3,0) (A)
+El fallback sin JS del diálogo necesita `:target` y excluir el estado abierto con JS; acotarlo con `:root:not([data-iv-js])` costaría (0,4,0). Se registra como única excepción al techo (0,2,0) y el test de contrato la lista explícitamente. Con JS, el delegador cancela la navegación del ancla, así que `:target` nunca se activa.
+
+## ADR-024 `box-sizing: border-box` acotado a `.iv-root` en `base.css` (A)
+El reset es opcional; sin `border-box`, `iv-container` e `iv-input` (width 100% + padding) desbordan. `base.css` lo aplica a `.iv-root` y descendientes (especificidad ≤ (0,1,0) + universal). Detectado por la prueba de overflow a 320–1920 px en fase 1.
+
+## ADR-025 Un ámbito `[data-iv-theme]` reaplica `color` y `background-color` (A)
+Los tokens cambian por ámbito, pero `color` heredado ya está calculado en el padre: una sección `dark` dentro de una página `light` mostraba texto claro solo en los elementos que declaraban color. `tokens.css` emite `[data-iv-theme] { color: var(--iv-color-text); background-color: var(--iv-color-bg); }` en la capa `iv.tokens`; componentes y utilidades lo sobrescriben. Detectado por axe (contraste 1.14:1) en la fixture de temas anidados.
+
+## ADR-026 `danger-hover`/`danger-active` derivados con `color-mix()` en vez de tokens nuevos (A)
+`button.css` deriva los estados del botón `--danger` con `color-mix(in oklab, …)` sobre `--iv-color-danger` y `--iv-color-text`, correcto en ambos temas y dentro de la matriz de navegadores. Se reconsidera como token si otra familia lo necesita.

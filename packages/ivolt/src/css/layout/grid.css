@@ -1,0 +1,17 @@
+/* iVOLT — layout/grid
+ * Grid of equal columns. The column count is set with `--iv-grid-cols` or
+ * with the `iv-u-grid-cols-*` / `iv-u-md-grid-cols-*` utilities; `--auto`
+ * distributes by minimum width (`--iv-grid-min`).
+ * Declares no @layer and imports nothing: the entry point does that.
+ */
+
+.iv-grid {
+  display: grid;
+  gap: var(--iv-grid-gap, var(--iv-space-4));
+  grid-template-columns: repeat(var(--iv-grid-cols, 1), minmax(0, 1fr));
+}
+
+/* `min()` keeps the minimum from overflowing on narrow screens. */
+.iv-grid--auto {
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--iv-grid-min, 16rem), 100%), 1fr));
+}

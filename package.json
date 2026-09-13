@@ -1,0 +1,30 @@
+{
+  "name": "ivolt-monorepo",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @intervolutions/ivolt",
+    "test": "vitest run",
+    "test:browser": "playwright test",
+    "sizes": "node packages/ivolt/scripts/sizes.mjs",
+    "pack-smoke": "node scripts/pack-smoke.mjs",
+    "check-examples": "node scripts/check-examples.mjs",
+    "dev:docs": "npm run dev -w docs",
+    "build:docs": "npm run build -w docs",
+    "verify": "npm run build && npm test && npm run test:browser && npm run sizes && npm run pack-smoke && npm run check-examples"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "browserslist": "^4.28.9",
+    "esbuild": "^0.28.2",
+    "jsdom": "^30.0.1",
+    "lightningcss": "^1.33.0",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.0"
+  }
+}

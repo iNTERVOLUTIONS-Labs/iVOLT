@@ -1,0 +1,41 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Dialog" description="iVOLT dialog: native <dialog> with showModal, focus management, Escape, backdrop and form closing, cancelable events, no-JS fallback and options.">
+  <article class="docs-prose">
+    <h1>Dialog</h1>
+    <p>A modal built on the native <code>&lt;dialog&gt;</code> element. The browser provides the top layer, inert background and Escape; iVOLT adds focus placement, focus return, backdrop closing, declarative triggers and cancelable events.</p>
+    <p><strong>CSS:</strong> <code>css/components/dialog.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/dialog</code> or <code>auto.js</code>.</p>
+    <Fixture name="dialog/basic" />
+    <h2>Markup</h2>
+    <p>Give the dialog <code>data-iv-component="dialog"</code>, an <code>id</code> and an accessible name (<code>aria-labelledby</code>). Triggers use <code>data-iv-open="id"</code>; anything inside with <code>data-iv-close</code> closes it. A <code>&lt;form method="dialog"&gt;</code> makes buttons close the dialog with their <code>value</code> as return value.</p>
+    <h2>JavaScript</h2>
+<pre><code>import &#123; Dialog &#125; from "@intervolutions/ivolt/dialog";
+const dialog = Dialog.getOrCreate(document.getElementById("signup"), &#123; closeOnBackdrop: false &#125;);
+dialog.open(&#123; trigger: button &#125;);
+dialog.element.addEventListener("iv:close", (e) => &#123; if (e.detail.reason === "escape" && dirty) e.preventDefault(); &#125;);</code></pre>
+    <h3>Options (defaults &lt; <code>data-iv-*</code> &lt; JS)</h3>
+    <table>
+      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>closeOnBackdrop</code></td><td><code>data-iv-close-on-backdrop</code></td><td><code>true</code></td><td>Click outside the panel closes.</td></tr>
+        <tr><td><code>closeOnEscape</code></td><td><code>data-iv-close-on-escape</code></td><td><code>true</code></td><td>Escape closes (the native cancel is always intercepted so the event stays cancelable).</td></tr>
+        <tr><td><code>initialFocus</code></td><td><code>data-iv-initial-focus</code></td><td><code>null</code></td><td>Selector to focus on open; otherwise the first focusable element, else the dialog.</td></tr>
+        <tr><td><code>returnFocus</code></td><td><code>data-iv-return-focus</code></td><td><code>true</code></td><td>Focus goes back to the trigger on close.</td></tr>
+      </tbody>
+    </table>
+    <h3>Methods and events</h3>
+    <p><code>open(&#123; trigger &#125;)</code>, <code>close(reason, returnValue)</code>, <code>toggle()</code>, <code>destroy()</code>, <code>isOpen</code>, <code>returnValue</code>. Events bubble from the dialog element: <code>iv:open</code> and <code>iv:close</code> are cancelable; <code>iv:opened</code> and <code>iv:closed</code> follow. <code>detail.reason</code> is one of <code>trigger</code>, <code>escape</code>, <code>backdrop</code>, <code>form</code>, <code>api</code>, <code>external</code>.</p>
+    <h2>Keyboard</h2>
+    <p>Tab and Shift+Tab stay inside the modal (browser behaviour of <code>showModal</code>); Escape closes; Enter in the form submits and closes. Focus returns to the trigger.</p>
+    <h2>Without JavaScript</h2>
+    <p>The trigger is a link to the dialog's <code>id</code>. With JavaScript the link is intercepted and the URL does not change. Without it, <code>.iv-dialog:target</code> shows the dialog as a static block with its close link. Keep essential content reachable elsewhere too; a dialog is not a page.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>Calling <code>dialog.close()</code> on the element directly: it works, but <code>iv:close</code> cannot cancel it and the reason is <code>external</code>.</li>
+      <li>Trigger inside the dialog pointing to itself.</li>
+      <li>No accessible name (<code>aria-labelledby</code> or <code>aria-label</code>).</li>
+    </ul>
+  </article>
+</Base>

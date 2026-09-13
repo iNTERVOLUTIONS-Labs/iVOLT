@@ -53,3 +53,7 @@ Límites iniciales: revisión ≤ 8 turnos, implementación ≤ 20 turnos. Una t
 ## 6. Reanudación de una fase
 
 Al recibir `IMPLEMENT_PHASE_N`: leer la guía raíz de agentes, `PROJECT_STATE.md` y la sección N de `ROADMAP.md`; ejecutar `npm ci && npm test` (desde fase 1) para confirmar la línea base; no reinvestigar ni reescribir la biblia. Si un requisito nuevo contradice un ADR, exponer el cambio, añadir ADR y aplicar solo lo necesario. Ejecutar íntegramente la fase pedida con sus verificaciones y detenerse.
+
+## 7. Nota sobre la verificación del modelo (fase 1)
+
+La herramienta de agentes selecciona el nivel Opus con `model: "opus"`, que el entorno documenta como Opus 5. La autoidentificación de los agentes no es fiable: en fase 1 uno respondió «Opus 5» y otro «Opus 4.5» con la misma configuración. Se registra la configuración usada, no la autodeclaración.

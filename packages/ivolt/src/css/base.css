@@ -1,0 +1,225 @@
+/* iVOLT — base (element styles)
+ * Everything is scoped to `.iv-root`, which the consumer puts on <html>,
+ * <body> or on a container. Outside `.iv-root` iVOLT touches no element.
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-root {
+  font-family: var(--iv-font-sans);
+  font-size: var(--iv-text-md);
+  line-height: var(--iv-leading-normal);
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-bg);
+  accent-color: var(--iv-color-primary);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Border-box sizing inside the root, so containers and controls with padding never overflow.
+   The optional reset applies it globally; this keeps the guarantee when the reset is not used. */
+.iv-root,
+.iv-root *,
+.iv-root *::before,
+.iv-root *::after {
+  box-sizing: border-box;
+}
+
+/* Headings ----------------------------------------------------------- */
+
+.iv-root h1,
+.iv-root h2,
+.iv-root h3,
+.iv-root h4,
+.iv-root h5,
+.iv-root h6 {
+  margin-block: 0;
+  text-wrap: balance;
+  line-height: var(--iv-leading-tight);
+}
+
+.iv-root h1 {
+  font-size: var(--iv-text-4xl);
+  font-weight: var(--iv-weight-bold);
+}
+
+.iv-root h2 {
+  font-size: var(--iv-text-3xl);
+  font-weight: var(--iv-weight-bold);
+}
+
+.iv-root h3 {
+  font-size: var(--iv-text-2xl);
+  font-weight: var(--iv-weight-semibold);
+}
+
+.iv-root h4 {
+  font-size: var(--iv-text-xl);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-root h5 {
+  font-size: var(--iv-text-lg);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-root h6 {
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+/* Flow text ---------------------------------------------------------- */
+
+.iv-root p {
+  margin-block: 0;
+  text-wrap: pretty;
+}
+
+.iv-root ul,
+.iv-root ol {
+  margin-block: 0;
+  padding-inline-start: var(--iv-space-6);
+}
+
+.iv-root li {
+  margin-block-start: var(--iv-space-1);
+}
+
+.iv-root a {
+  color: var(--iv-color-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transition: color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-root a:hover {
+    color: var(--iv-color-primary-hover);
+  }
+}
+
+.iv-root strong,
+.iv-root b {
+  font-weight: var(--iv-weight-semibold);
+}
+
+.iv-root small {
+  font-size: var(--iv-text-sm);
+}
+
+/* Code --------------------------------------------------------------- */
+
+.iv-root code,
+.iv-root kbd,
+.iv-root samp,
+.iv-root pre {
+  font-family: var(--iv-font-mono);
+  font-size: 0.9375em;
+}
+
+.iv-root code,
+.iv-root kbd {
+  background-color: var(--iv-color-surface);
+  border-radius: var(--iv-radius-sm);
+  padding-block: 0.125em;
+  padding-inline: 0.3em;
+}
+
+.iv-root kbd {
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  font-size: var(--iv-text-sm);
+}
+
+.iv-root pre {
+  margin-block: 0;
+  background-color: var(--iv-color-surface);
+  border-radius: var(--iv-radius-sm);
+  padding-block: var(--iv-space-4);
+  padding-inline: var(--iv-space-4);
+  overflow-x: auto;
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-root pre code {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* Rules and quotes --------------------------------------------------- */
+
+.iv-root hr {
+  border: 0;
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+  margin-block: var(--iv-space-8);
+}
+
+.iv-root blockquote {
+  margin-block: 0;
+  margin-inline: 0;
+  border-inline-start: 2px solid var(--iv-color-border-strong);
+  padding-inline-start: var(--iv-space-4);
+  color: var(--iv-color-text-muted);
+}
+
+/* Media -------------------------------------------------------------- */
+
+.iv-root img,
+.iv-root svg,
+.iv-root video {
+  max-inline-size: 100%;
+}
+
+.iv-root figure {
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+.iv-root figcaption {
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+  margin-block-start: var(--iv-space-2);
+}
+
+/* Content tables (not the `iv-table` component) ---------------------- */
+
+.iv-root table {
+  border-collapse: collapse;
+  inline-size: 100%;
+  text-align: start;
+}
+
+.iv-root caption {
+  text-align: start;
+  color: var(--iv-color-text-muted);
+  font-size: var(--iv-text-sm);
+  padding-block-end: var(--iv-space-2);
+}
+
+.iv-root th,
+.iv-root td {
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-3);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.iv-root th {
+  font-weight: var(--iv-weight-semibold);
+}
+
+/* Element utility and focus ------------------------------------------ */
+
+.iv-root [hidden] {
+  display: none;
+}
+
+.iv-root :focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
