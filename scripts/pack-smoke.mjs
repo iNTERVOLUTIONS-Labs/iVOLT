@@ -8,7 +8,8 @@ import { build } from "esbuild";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const pkgDir = join(root, "packages/ivolt");
-const run = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, stdio: ["ignore", "pipe", "inherit"] }).toString();
+const win = process.platform === "win32";
+const run = (cmd, args, cwd) => execFileSync(cmd === "npm" && win ? "npm.cmd" : cmd, args, { cwd, stdio: ["ignore", "pipe", "inherit"], shell: win }).toString();
 
 const tmp = mkdtempSync(join(tmpdir(), "ivolt-consumer-"));
 try {
