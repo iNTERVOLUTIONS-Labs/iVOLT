@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-13 · Fase actual: **4 (release candidate) cerrada** · Estado: candidato v0.1.0-alpha.0 listo para revisión; **no publicado**
+Última actualización: 2026-09-13 · Fase actual: **4 (release candidate) cerrada** · Logo oficial integrado · Estado: candidato v0.1.0-alpha.0 listo para revisión; **no publicado**
 
 ## Estado por fase
 
@@ -35,7 +35,7 @@
 
 - Lector de pantalla (NVDA, VoiceOver): lista preparada, no ejecutada.
 - `forced-colors` real en Windows, dispositivos físicos, datos de campo: no disponibles; solo laboratorio.
-- Logo oficial pendiente de recibir: dejar `assets/brand/ivolt-logo.svg` (isotipo: O partida con el rayo) y el build lo aplica a cabecera, favicon y `og.png` (`apps/docs/src/brand.js`). Mientras tanto, wordmark temporal con ese concepto, marcado como provisional en la imagen OG.
+- Logo oficial integrado (2026-09-13): `assets/brand/ivolt-logo-balanced.svg` e `ivolt-isotipo.svg` alimentan cabecera (copia con colores mapeados a tokens, sin firma), favicon (isotipo sobre placa oscura) y `og.png`. Verificado con capturas en claro y oscuro. El wordmark temporal queda solo como fallback de build.
 - Publicación npm, despliegue web y `SITE_URL`: requieren autorización explícita (`docs/RELEASE.md` §3).
 
 ## Fallos abiertos

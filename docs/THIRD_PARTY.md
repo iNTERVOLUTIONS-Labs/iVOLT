@@ -6,7 +6,7 @@ Fecha: 2026-09-13. Estado al cierre de la fase 4.
 
 - Licencia: MIT (`LICENSE`, © 2026 iNTERVOLUTIONS).
 - Dependencias de ejecución: **ninguna**. El tarball contiene solo CSS, JS, tipos y tokens generados desde el propio repositorio.
-- Código o assets externos incorporados en el paquete: ninguno. Los SVG (chevrones, spinner, wordmark provisional, favicon, imagen OG) son originales.
+- Código o assets externos incorporados en el paquete: ninguno. Los SVG de la interfaz (chevrones, spinner) son originales; el logo e isotipo de `assets/brand/` son obra de iNTERVOLUTIONS (wordmark en trazados, sin fuentes de terceros).
 - Fuentes: `system-ui` y pila de monoespaciadas del sistema; sin archivos de fuente.
 
 ## Web de documentación (`apps/docs`, salida estática)

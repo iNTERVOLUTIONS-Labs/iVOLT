@@ -1,10 +1,10 @@
 # Brand assets
 
-Drop the official files here; the docs build picks them up automatically (`apps/docs/src/brand.js`):
+Official artwork, provided by iNTERVOLUTIONS. Source files are never modified by the build.
 
-| File | Used for | Requirements |
+| File | Contents | Used for |
 |---|---|---|
-| `ivolt-logo.svg` | header wordmark in the docs, Open Graph image, favicon derivation | SVG with a `viewBox`; text as paths preferred; colours may use `currentColor` for the wordmark so it follows the theme; the bolt/accent in `#29F59A` |
-| `ivolt-mark.svg` (optional) | favicon and compact uses (the split O with the bolt inside) | square `viewBox` |
+| `ivolt-logo-balanced.svg` | full lockup: isotype, iVOLT wordmark, CSS tag and "BY iNTERVOLUTIONS" signature; ivory on transparent, designed for dark surfaces | Open Graph image (as is); docs header (copy with ivory → `currentColor`, signature omitted, so it follows the theme) |
+| `ivolt-isotipo.svg` | split O with the bolt inside | favicon (on a dark rounded plate), compact uses |
 
-Until they exist, the build falls back to the temporary wordmark in `apps/docs/src/brand.js` and logs a warning. Nothing else in the repository references the temporary artwork.
+Consumers: `apps/docs/src/brand.js` (header), `scripts/build-og.mjs` (OG image and favicon), `docs/design/brand-board.html` (reference sheet). Without these files the build falls back to a temporary wordmark and marks the OG image as temporary.
