@@ -81,7 +81,8 @@
 .docs-panel__meta small { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); letter-spacing: .1em; text-transform: uppercase; }
 .docs-panel { position: relative; }
 @media (min-width: 64em) {
-  .docs-cabinet { block-size: 280vh; }
+  /* The pinned block holds the heading and the sticky viewport; the families list follows it, never over it. */
+  .docs-cabinet__pin { block-size: 280vh; }
   .docs-cabinet__sticky { position: sticky; inset-block-start: 0; block-size: 100svh; display: flex; flex-direction: column; justify-content: center; gap: clamp(1.5rem, 4vh, 3rem); overflow: hidden; scroll-snap-type: none; padding-block: 0; }
   .docs-cabinet__track { transform: translateX(calc(var(--docs-cab, 0) * (-100% + 100vw))); }
   .docs-panel { inline-size: min(38vw, 32rem); }
@@ -89,8 +90,11 @@
 }
 @supports (animation-timeline: view()) {
   @media (min-width: 64em) {
-    .docs-cabinet { view-timeline-name: --docs-cab-tl; view-timeline-axis: block; }
-    .docs-cabinet__track { animation: docs-cab linear both; animation-timeline: --docs-cab-tl; animation-range: contain 0% contain 100%; }
+    .docs-cabinet__pin { view-timeline-name: --docs-cab-tl; view-timeline-axis: block; }
+    /* Longhands on purpose, timeline in its own rule: a minifier that folds them into the `animation`
+       shorthand produces a declaration browsers reject, and the whole animation is lost. */
+    .docs-cabinet__track { animation-name: docs-cab; animation-timing-function: linear; animation-fill-mode: both; animation-range: contain 0% contain 100%; }
+    .docs-cabinet__sticky .docs-cabinet__track { animation-timeline: --docs-cab-tl; }
   }
 }
 @keyframes docs-cab { from { transform: translateX(0); } to { transform: translateX(calc(-100% + 100vw)); } }

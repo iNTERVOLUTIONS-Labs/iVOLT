@@ -57,7 +57,7 @@
 
 ## Fallos abiertos
 
-Ninguno conocido.
+Ninguno conocido. Corregido tras el cierre (2026-09-14, aviso del propietario con captura): la lista de familias de la home se pintaba encima del gabinete pegajoso (estaba dentro del bloque de 280vh) y el desplazamiento horizontal nativo no funcionaba porque el minificador de CSS fundía `animation-timeline` en el atajo `animation`, declaración que Chrome descarta. Ahora el bloque fijado (`.docs-cabinet__pin`) contiene solo cabecera y viewport pegajoso, la lista va después, `animation-timeline` vive en una regla aparte y el respaldo JS se activa cuando no hay una `ViewTimeline` real (Firefox); verificado en Chromium, Firefox y WebKit midiendo la transformación del carril a lo largo del recorrido.
 
 ## Siguiente acción
 
@@ -68,3 +68,4 @@ Revisión humana: abrir la web (`npm run build && npm run dev:docs`), juzgar el 
 - ADR-028 (sin rejillas; ronda 2 por implementador Opus; hito beta) y ADR-029 (arquitectura de la web: hojas por ámbito, `bleed`, cabecera derivada, i18n por prefijo `/es`, selector con recarga completa).
 - Combobox: `options` = opciones resueltas (§5.2); las filas son `optionElements`. DataTable: `reset()` emite solo los eventos posteriores; `filter()` por API escribe en el input; índice de columna por `cellIndex`.
 - Versión `0.2.0-beta.0` en `packages/ivolt/package.json`, `index.js` y lockfile; la home lee la versión del manifiesto en el build.
+- Web: nunca declarar `animation-timeline` junto al atajo `animation` en la misma regla (el minificador los funde y el navegador descarta la animación); comprobar la animación real con `getAnimations()` antes de confiar en `CSS.supports`.

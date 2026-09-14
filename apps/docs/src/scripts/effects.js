@@ -14,8 +14,11 @@ export function mountEffects(doc = document) {
   const root = doc.documentElement;
 
   /* ---- scroll progress: one variable feeds the voltage meter and the table of contents ---- */
-  const cabinet = doc.querySelector(".docs-cabinet");
-  const nativeTimeline = CSS.supports("animation-timeline", "view()");
+  const cabinet = doc.querySelector(".docs-cabinet__pin");
+  // Native only counts when an animation with a view timeline is actually driving the track;
+  // support alone is not enough (a build step can still break the declaration).
+  const track = doc.querySelector(".docs-cabinet__track");
+  const nativeTimeline = !!(track && track.getAnimations && track.getAnimations().some((a) => a.timeline && typeof ViewTimeline !== "undefined" && a.timeline instanceof ViewTimeline));
   let ticking = false;
   const measure = () => {
     ticking = false;
