@@ -6,6 +6,8 @@ const enRoutes = ["/", "/getting-started", "/foundations/tokens-and-themes", "/f
 const routes = [...enRoutes, ...enRoutes.filter((r) => r !== "/").map((r) => `/es${r}`)];
 
 test.describe("Docs site", () => {
+  // Seventy routes per test: WebKit under a full three-engine run needs more than the default 30 s.
+  test.setTimeout(180_000);
   test("key routes render without console errors and with one h1", async ({ page }) => {
     const errors = [];
     page.on("console", (m) => { if (m.type() === "error") errors.push(`${page.url()}: ${m.text()}`); });

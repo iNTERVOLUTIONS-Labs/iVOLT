@@ -6,6 +6,9 @@ const fixtures = ["button/variants", "button/sizes", "button/states", "button/gr
 for (const theme of ["light", "dark"]) {
   for (const f of fixtures) {
     test(`axe ${f} (${theme})`, async ({ page }) => {
+      // Entrance animations (rise, reveal) fade text in over time and axe folds element opacity into the
+      // foreground colour; the audited state is the settled one, which is what reduced motion renders at once.
+      await page.emulateMedia({ reducedMotion: "reduce" });
       await page.goto(`/fixture/${f}?theme=${theme}`);
       const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
       const serious = results.violations.filter((v) => ["critical", "serious"].includes(v.impact));
