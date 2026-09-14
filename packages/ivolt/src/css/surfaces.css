@@ -1,0 +1,241 @@
+/* iVOLT — surfaces
+ * Expressive surface layer: glass, grain, gradient mesh, aurora, glowing
+ * border, gradient text, shine sweep and hover elevation.
+ * Precondition: this module is imported AFTER the components and BEFORE the
+ * utilities, so a surface class beats a component background at the same
+ * specificity (0,1,0) by source order alone.
+ * Locals: --iv-glass-blur --iv-mesh-1 --iv-mesh-2 --iv-mesh-3 --iv-mesh-size
+ *         --iv-shine-color --iv-glow-angle --iv-elevate-lift
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+/* Glass --------------------------------------------------------------- */
+
+.iv-glass {
+  --iv-glass-blur: var(--iv-blur-md);
+
+  background-color: var(--iv-glass-bg);
+  border: var(--iv-border-width) solid var(--iv-glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--iv-glass-highlight),
+    var(--iv-shadow-2);
+  -webkit-backdrop-filter: blur(var(--iv-glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--iv-glass-blur)) saturate(140%);
+}
+
+.iv-glass--strong {
+  --iv-glass-blur: var(--iv-blur-lg);
+
+  background-color: var(--iv-glass-bg-strong);
+}
+
+/* No backdrop-filter: fall back to an opaque surface so text keeps its
+ * contrast instead of sitting on a translucent background. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .iv-glass {
+    background-color: var(--iv-color-surface-raised);
+  }
+}
+
+/* Grain --------------------------------------------------------------- */
+
+.iv-texture-grain {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Film grain: inline feTurbulence, no remote asset, no bitmap in the package.
+ * The overlay sits at z-index 0; content with `position: relative` paints
+ * above it. */
+.iv-texture-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url%28%23g%29'/%3E%3C/svg%3E");
+  background-size: 140px 140px;
+  border-radius: inherit;
+  opacity: var(--iv-texture-grain-opacity);
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+/* Mesh and aurora ------------------------------------------------------ */
+
+.iv-texture-mesh,
+.iv-texture-aurora {
+  --iv-mesh-1: color-mix(in oklab, var(--iv-color-primary) 46%, var(--iv-color-bg));
+  --iv-mesh-2: color-mix(in oklab, var(--iv-glow-secondary) 88%, var(--iv-color-bg));
+  --iv-mesh-3: color-mix(in oklab, var(--iv-color-accent) 40%, var(--iv-color-bg));
+
+  background-color: var(--iv-color-bg);
+  background-image:
+    radial-gradient(78% 86% at 10% 8%, var(--iv-mesh-1) 0 10%, transparent 72%),
+    radial-gradient(66% 74% at 94% 2%, var(--iv-mesh-2) 0 12%, transparent 70%),
+    radial-gradient(80% 88% at 72% 108%, var(--iv-mesh-3) 0 10%, transparent 74%);
+  background-repeat: no-repeat;
+}
+
+.iv-texture-aurora {
+  --iv-mesh-size: 200% 200%;
+
+  background-size: var(--iv-mesh-size);
+  animation: iv-aurora 18s ease-in-out infinite alternate;
+}
+
+@keyframes iv-aurora {
+  from {
+    background-position:
+      0% 40%,
+      100% 0%,
+      50% 100%;
+  }
+
+  to {
+    background-position:
+      100% 60%,
+      0% 100%,
+      40% 0%;
+  }
+}
+
+/* Glowing border ------------------------------------------------------- */
+
+@property --iv-glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* `overflow: visible` keeps the ring from being clipped by containers that
+ * hide their overflow, such as `.iv-card`. */
+.iv-glow {
+  position: relative;
+  overflow: visible;
+  transition: box-shadow var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+.iv-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--iv-glow-angle, 0deg),
+    var(--iv-color-accent),
+    var(--iv-glow-secondary),
+    var(--iv-color-accent)
+  );
+  border-radius: inherit;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.iv-glow:hover,
+.iv-glow:focus-within {
+  box-shadow: 0 0 24px var(--iv-glow-primary);
+}
+
+/* Without @property the custom property is not animatable and the ring stays
+ * at its static angle. */
+.iv-glow:hover::before,
+.iv-glow:focus-within::before {
+  animation: iv-glow-spin 6s linear infinite;
+}
+
+@keyframes iv-glow-spin {
+  to {
+    --iv-glow-angle: 360deg;
+  }
+}
+
+/* Gradient text -------------------------------------------------------- */
+
+.iv-gradient-text {
+  background-image: linear-gradient(
+    100deg,
+    var(--iv-color-primary),
+    var(--iv-color-info) 48%,
+    color-mix(in oklab, var(--iv-color-accent) 42%, var(--iv-color-primary))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Shine ---------------------------------------------------------------- */
+
+.iv-shine {
+  --iv-shine-color: var(--iv-glass-highlight);
+
+  position: relative;
+  overflow: hidden;
+}
+
+.iv-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    100deg,
+    transparent 34%,
+    var(--iv-shine-color) 50%,
+    transparent 66%
+  );
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+
+/* The transition lives on the hover state only, so the sweep runs once on
+ * enter and resets instantly on leave. */
+.iv-shine:hover::after,
+.iv-shine:focus-visible::after {
+  transform: translateX(120%);
+  transition: transform 700ms var(--iv-ease-out);
+}
+
+/* Elevation ------------------------------------------------------------ */
+
+.iv-elevate {
+  --iv-elevate-lift: -4px;
+
+  transition:
+    transform var(--iv-motion-slow) var(--iv-ease-out),
+    box-shadow var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+.iv-elevate:hover,
+.iv-elevate:focus-within {
+  transform: translateY(var(--iv-elevate-lift));
+  box-shadow: var(--iv-shadow-3);
+}
+
+/* Reduced motion ------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-texture-aurora {
+    animation: none;
+  }
+
+  .iv-glow:hover::before,
+  .iv-glow:focus-within::before {
+    animation: none;
+  }
+
+  .iv-shine::after {
+    content: none;
+  }
+
+  .iv-elevate {
+    --iv-elevate-lift: 0px;
+  }
+}

@@ -1,0 +1,39 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Superficies y texturas" description="Superficies de iVOLT: paneles de cristal con desenfoque y fallback sólido, grano, mallas de gradiente, aurora animada, bordes luminosos, texto degradado, barrido y elevación, todo gobernado por tokens y seguro con movimiento reducido.">
+  <article class="docs-prose">
+    <h1>Superficies y texturas (surfaces)</h1>
+    <p>Un módulo solo CSS que da profundidad y luz a cualquier bloque. Añade una clase a una tarjeta, al panel de un diálogo, a un panel lateral, a un menú, a un aviso, a un selector o a un control del carrusel y toma la superficie; todos los efectos se gobiernan con los tokens <code>--iv-glass-*</code>, <code>--iv-blur-*</code>, <code>--iv-glow-*</code> y <code>--iv-texture-*</code>, así que los temas y las personalizaciones siguen funcionando. Los efectos animados se detienen con <code>prefers-reduced-motion</code>; los navegadores sin <code>backdrop-filter</code> reciben una superficie sólida elevada.</p>
+    <p><strong>CSS:</strong> <code>css/surfaces.css</code> (en <code>ivolt.css</code>, después de los componentes). Sin JavaScript. Añadido en la v0.3.</p>
+    <h2>Cristal</h2>
+    <p><code>iv-glass</code> e <code>iv-glass--strong</code>: fondo translúcido, desenfoque y saturación de lo que hay detrás, borde claro y brillo en el borde superior. El texto mantiene contraste AA en ambos temas; la fixture coloca los paneles sobre una malla para que el efecto se vea.</p>
+    <Fixture name="surfaces/glass" />
+    <h2>Texturas</h2>
+    <p><code>iv-texture-grain</code> extiende una película fina de ruido sobre el bloque, nunca sobre el texto. <code>iv-texture-mesh</code> pinta una malla de gradiente con los colores de la marca; cámbiala con <code>--iv-mesh-1</code>, <code>--iv-mesh-2</code> y <code>--iv-mesh-3</code>. <code>iv-texture-aurora</code> es la misma malla derivando despacio.</p>
+    <Fixture name="surfaces/textures" />
+    <h2>Luz, texto degradado, barrido y elevación</h2>
+    <p><code>iv-glow</code> dibuja un borde de gradiente cónico que gira al pasar el puntero o enfocar y proyecta un halo suave. <code>iv-gradient-text</code> rellena un titular con el degradado de la marca. <code>iv-shine</code> barre una luz sobre un botón o una tarjeta una vez al pasar el puntero. <code>iv-elevate</code> eleva un bloque al pasar el puntero.</p>
+    <Fixture name="surfaces/glow" />
+    <h2>Tokens</h2>
+    <table>
+      <thead><tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Lo usa</th></tr></thead>
+      <tbody>
+        <tr><td><code>--iv-glass-bg</code>, <code>--iv-glass-bg-strong</code></td><td>blanco al 55 % y 78 %</td><td>carbón al 45 % y 72 %</td><td><code>iv-glass</code></td></tr>
+        <tr><td><code>--iv-glass-border</code>, <code>--iv-glass-highlight</code></td><td>blanco al 65 % y 90 %</td><td>blanco al 12 % y 20 %</td><td><code>iv-glass</code></td></tr>
+        <tr><td><code>--iv-blur-sm/md/lg</code></td><td colspan="2">8px, 16px, 28px</td><td><code>iv-glass</code></td></tr>
+        <tr><td><code>--iv-glow-primary</code>, <code>--iv-glow-secondary</code></td><td>verde profundo al 35 %, azul al 25 %</td><td>verde eléctrico al 45 %, azul al 35 %</td><td><code>iv-glow</code>, halos de foco, mallas</td></tr>
+        <tr><td><code>--iv-texture-grain-opacity</code></td><td>0,05</td><td>0,09</td><td><code>iv-texture-grain</code></td></tr>
+      </tbody>
+    </table>
+    <h2>Errores frecuentes</h2>
+    <ul>
+      <li>Cristal sobre un fondo plano de un solo color: no se transparenta nada. Ponlo sobre medios, una malla o contenido.</li>
+      <li>Texto atenuado sobre cristal: cae por debajo del contraste AA. Usa el color de texto normal sobre <code>iv-glass</code>.</li>
+      <li><code>iv-glow</code> en una tarjeta con <code>iv-card__media</code>: el anillo necesita <code>overflow: visible</code>, así que se pierde el redondeo exterior del medio. Úsalo en tarjetas sin medio.</li>
+      <li>Grano en bloques de texto pequeños: resérvalo para zonas de portada y superficies grandes.</li>
+      <li>Varios bloques aurora en una página: uno es un ambiente, cinco son una carga.</li>
+    </ul>
+  </article>
+</Base>

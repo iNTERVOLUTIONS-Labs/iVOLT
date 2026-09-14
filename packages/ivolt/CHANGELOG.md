@@ -7,6 +7,7 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 ### Added
 - `Carousel` (`iv-carousel`, export `./carousel`): a scroll-snap slideshow that works without JavaScript and becomes an APG tabbed carousel with `slide` (parallax captions), `fade` and `cinema` (Ken Burns) effects, autoplay with a progress bar and a large counter, play/pause, swipe, thumbnails, and no autoplay under reduced motion.
 - `Picker` (`iv-picker`, export `./picker`): a native `<select>` promoted to a searchable selector with chips for multiple values, option groups, a maximum number of items, a clear button, full keyboard support and two-way synchronisation with the native element; `iv-picker--glass` variant.
+- `surfaces.css` (in `ivolt.css` after the components): `iv-glass` and `iv-glass--strong` with a solid fallback, `iv-texture-grain`, `iv-texture-mesh`, `iv-texture-aurora`, `iv-glow`, `iv-gradient-text`, `iv-shine` and `iv-elevate`, all driven by the new tokens and static under reduced motion.
 - Tokens `glass`, `blur`, `glow` and `texture` for the expressive layer (ADR-030).
 
 ### Changed

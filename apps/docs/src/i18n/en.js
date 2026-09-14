@@ -50,6 +50,7 @@ export const nav = [
     { href: "/foundations/layout", label: "Layout & utilities" },
     { href: "/foundations/accessibility", label: "Accessibility" },
     { href: "/foundations/coexistence", label: "Coexisting with CSS" },
+    { href: "/foundations/surfaces", label: "Surfaces & textures" },
   ] },
   { group: "Components", items: ["button", "card", "form", "combobox", "datatable", "picker", "carousel", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Project", items: [

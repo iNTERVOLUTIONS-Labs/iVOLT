@@ -1,0 +1,16 @@
+<div class="iv-stack iv-u-gap-6" id="surfaces-textures">
+  <section class="iv-texture-grain" style="padding: var(--iv-space-6); background-color: var(--iv-color-surface-raised); border: var(--iv-border-width) solid var(--iv-color-border); border-radius: var(--iv-radius-lg)">
+    <div style="position: relative">
+      <h3 class="iv-u-mt-0">Grain on a raised surface</h3>
+      <p class="iv-u-m-0">A single inline SVG turbulence tile, repeated and blended in soft light at <code>--iv-texture-grain-opacity</code>. No bitmap and no remote asset: the texture ships inside the stylesheet.</p>
+    </div>
+  </section>
+  <section class="iv-texture-mesh" style="--iv-mesh-1: #1D5FB8; --iv-mesh-2: #6FB3FF; --iv-mesh-3: #29F59A; padding: var(--iv-space-6); border-radius: var(--iv-radius-lg)">
+    <h3 class="iv-u-mt-0">Gradient mesh, custom colours</h3>
+    <p class="iv-u-m-0">Three radial gradients driven by <code>--iv-mesh-1</code>, <code>--iv-mesh-2</code> and <code>--iv-mesh-3</code>. This block overrides the three locals inline with fixed sample values, so it keeps the same colours in both themes.</p>
+  </section>
+  <section class="iv-texture-aurora" style="padding: var(--iv-space-6); border-radius: var(--iv-radius-lg)">
+    <h3 class="iv-u-mt-0">Aurora</h3>
+    <p class="iv-u-m-0">The same mesh at 200% size, drifting for 18 seconds in alternate directions. Under <code>prefers-reduced-motion: reduce</code> the animation is dropped and the mesh stays still.</p>
+  </section>
+</div>
