@@ -106,14 +106,14 @@ Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus 
 | 2 | Efectos de borde y proximidad: `iv-edge-glint`, `iv-edge-near` + `Proximity`, `iv-scan`, `iv-spark`, `iv-pulse-glow`, `Reveal` | §8.10 | hecho (2026-09-14) |
 | 3 | Hero (`iv-hero` y modificadores `--center/--split/--cinematic/--terminal`) | §8.11 | hecho (2026-09-14) |
 | 4 | Web: páginas (megamenu, effects, hero) en dos idiomas, megamenú en la cabecera de la web, marcos de la home con proximidad; la home conserva su hero propio (identidad del sitio; `iv-hero` se muestra en su página) | — | hecho (2026-09-14) |
-| 5 | Cierre: `verify`, Lighthouse, changelog `0.4.0-beta.0`, estado | — | pendiente |
+| 5 | Cierre: `verify`, Lighthouse, changelog `0.4.0-beta.0`, estado | — | hecho junto con v0.5 (un único gate y una única versión, `0.5.0-beta.0`) |
 
 ### v0.5 «Time & help» → `0.5.0-beta.0` (contratos por escribir al abrir el ciclo)
 
 | Orden | Elemento | Notas |
 |---|---|---|
 | 1 | Datepicker (`datepicker`) sobre `<input type="date">`: calendario en popover, teclado por rejilla, `min`/`max`, locale por `lang` | §8.12; hecho (2026-09-14) |
-| 2 | Tooltip y popover (`tooltip`, `popover`): `data-iv-tooltip`, atributo `popover` nativo como base, posicionamiento por espacio real (como el picker) | §8.13; en curso |
-| 3 | Command palette (`command`): búsqueda de acciones con `/` o `Ctrl+K`, como en brokenufo.com; en la web convive con la búsqueda Pagefind (contenido) | §8.14; pendiente |
+| 2 | Tooltip y popover (`tooltip`, `popover`): `data-iv-tooltip`, atributo `popover` nativo como base, posicionamiento por espacio real (como el picker) | §8.13; hecho (2026-09-14) |
+| 3 | Command palette (`command`): búsqueda de acciones con `/` o `Ctrl+K`, como en brokenufo.com; en la web convive con la búsqueda Pagefind (contenido) | §8.14; hecho (2026-09-14, ADR-038) |
 | 4 | Constructor de temas en la web: editar tokens y exportar `tokens.css` | hecho (2026-09-14): `/foundations/theme-builder` en dos idiomas, previsualización viva sobre fixtures reales, CSS de personalización para copiar |
-| 5 | Cierre `0.5.0-beta.0` | — |
+| 5 | Cierre `0.5.0-beta.0` | en curso: gate completo en ejecución, Lighthouse y estado al terminar |
