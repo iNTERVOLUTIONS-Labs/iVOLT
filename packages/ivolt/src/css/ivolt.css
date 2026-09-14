@@ -24,4 +24,5 @@
 @import url("./components/drawer.css") layer(iv.components);
 @import url("./components/toast.css") layer(iv.components);
 @import url("./components/combobox.css") layer(iv.components);
+@import url("./components/datatable.css") layer(iv.components);
 @import url("./utilities.css") layer(iv.utilities);

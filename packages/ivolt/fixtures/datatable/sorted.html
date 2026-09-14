@@ -1,0 +1,46 @@
+<div class="iv-datatable" data-iv-component="datatable" data-iv-status-text="Showing {visible} of {total} builds">
+  <div class="iv-table-wrap" role="region" aria-labelledby="dt-builds-caption" tabindex="0">
+    <table class="iv-table iv-table--striped">
+      <caption id="dt-builds-caption">Made-up build report, sorted by duration on load. The last row has no duration on purpose: rows without a value sort to the end in both directions.</caption>
+      <thead>
+        <tr>
+          <th scope="col" data-iv-sort>Job</th>
+          <th scope="col" class="iv-u-text-end" data-iv-sort="number" data-iv-sorted="desc">Duration</th>
+          <th scope="col" data-iv-sort="text">Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">bundle-css</th>
+          <td class="iv-u-text-end" data-iv-value="42.5">42.5 s</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <th scope="row">bundle-js</th>
+          <td class="iv-u-text-end" data-iv-value="18">18 s</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <th scope="row">unit-tests</th>
+          <td class="iv-u-text-end" data-iv-value="126.75">2 min 6.75 s</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <th scope="row">browser-tests</th>
+          <td class="iv-u-text-end" data-iv-value="394">6 min 34 s</td>
+          <td>Failed</td>
+        </tr>
+        <tr>
+          <th scope="row">size-report</th>
+          <td class="iv-u-text-end" data-iv-value="7.25">7.25 s</td>
+          <td>Passed</td>
+        </tr>
+        <tr>
+          <th scope="row">pack-smoke</th>
+          <td class="iv-u-text-end"></td>
+          <td>Skipped</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

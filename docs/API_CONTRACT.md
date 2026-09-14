@@ -126,6 +126,7 @@ class Dialog {
 | `Dropdown` | `open() close() toggle() destroy()`; `isOpen` | `placement` (`bottom-start`\|`bottom-end`), `closeOnSelect` (true) |
 | `Toast` (por región) | `show({ message, variant, timeout, dismissible }) → ToastItem` (`dismiss()`), `clear() destroy()` | región: `placement` (`bottom-end`), `max` (3, los excedentes esperan en cola sin perderse); item: `variant` (`info`\|`success`\|`warning`\|`danger`), `timeout` (6000 ms; `0` = sin autocierre, obligatorio en `danger`), `dismissible` (true) |
 | `Combobox` | `open() close() select(valueOrOption) clear() destroy()`; `isOpen`, `value` (confirmado), `optionElements`, `input` | `filter` (`contains`\|`starts`), `minChars` (0), `strict` (false), `autoselect` (false), `emptyText` («No matches»); ver §8.3 |
+| `DataTable` | `sort(columnIndexOrTh, direction?) filter(query) clearFilter() reset() destroy()`; `sortColumn`, `sortDirection`, `rows`, `visibleRows`, `query` | `filterDelay` (150), `emptyText` («No rows match»), `statusText` («{visible} of {total} rows»), `locale` (`lang` del documento); ver §8.4 |
 
 Toda opción se puede fijar por atributo con su nombre en kebab-case (`data-iv-close-on-select="false"`).
 
@@ -139,6 +140,8 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 | `iv:open` → `iv:opened` | sí / no | antes / después de abrir (dialog, drawer, dropdown, disclosure, toast) | `trigger`, `reason` |
 | `iv:close` → `iv:closed` | sí / no | antes / después de cerrar | `reason: "escape"\|"backdrop"\|"trigger"\|"form"\|"api"\|"external"\|"viewport"\|"timeout"`, `returnValue`. `external` cubre también cierre por clic fuera o por Tab en dropdown y el cierre de hermanos en un acordeón exclusivo |
 | `iv:change` → `iv:changed` | sí / no | tabs y disclosure en modo acordeón; combobox al confirmar un valor | `tab`, `panel`, `previousTab` (tabs/disclosure); `value`, `option`, `previousValue` (combobox) |
+| `iv:sort` → `iv:sorted` | sí / no | data table, antes / después de ordenar (`reset()` emite solo `iv:sorted` con `column: -1`) | `column`, `direction`, `previousColumn`, `previousDirection` |
+| `iv:filter` → `iv:filtered` | sí / no | data table, antes / después de filtrar | previo: `query`, `previousQuery`; posterior: `query`, `visible`, `total` |
 | `iv:themechange` | no | en `document` | `theme`, `resolved: "light"\|"dark"` |
 
 `preventDefault()` en el evento previo aborta la acción y no se emite el posterior. Para que esto sea cierto con `<dialog>` nativo, `Dialog` intercepta las tres vías de cierre antes de que el navegador actúe: `submit` de `form[method="dialog"]` (se cancela y se llama a `close(value)` tras `iv:close`), el evento nativo `cancel` (Esc) y el clic en backdrop (`event.target === dialog` y punto fuera del rect de `iv-dialog__panel`). Un cierre externo no interceptable (por ejemplo `dialog.close()` directo del consumidor) emite solo `iv:closed` con `reason: "external"`.

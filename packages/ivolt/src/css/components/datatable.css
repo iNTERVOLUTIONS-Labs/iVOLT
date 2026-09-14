@@ -1,0 +1,86 @@
+/* iVOLT — components/datatable
+ * Sorting and filtering on top of the `table.css` family, which this file
+ * never redefines. The filter block is hidden until `init` marks the document
+ * with `data-iv-js`, so the served page never shows a control that does
+ * nothing. The sort direction is painted here, in `::after`, and never written
+ * into the button: the accessible name of the button stays the header text and
+ * `aria-sort` carries the state.
+ * Locals: --iv-datatable-gap
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-datatable {
+  --iv-datatable-gap: var(--iv-space-3);
+
+  display: block;
+}
+
+/* Filter --------------------------------------------------------------- */
+
+.iv-datatable__filter {
+  display: none;
+  margin-block-end: var(--iv-datatable-gap);
+}
+
+/* `init` sets `data-iv-js` on the root element the first time it runs. */
+[data-iv-js] .iv-datatable__filter {
+  display: block;
+}
+
+/* Sort button ---------------------------------------------------------- */
+
+.iv-datatable__sort {
+  display: inline-flex;
+  gap: var(--iv-space-1);
+  align-items: center;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Decorative: the state is announced by `aria-sort` on the header cell. */
+.iv-datatable__sort::after {
+  content: "↕";
+  color: var(--iv-color-text-muted);
+}
+
+[aria-sort="ascending"] .iv-datatable__sort::after {
+  content: "↑";
+  color: var(--iv-color-primary);
+}
+
+[aria-sort="descending"] .iv-datatable__sort::after {
+  content: "↓";
+  color: var(--iv-color-primary);
+}
+
+/* Empty row ------------------------------------------------------------ */
+
+.iv-datatable__empty td {
+  color: var(--iv-color-text-muted);
+  text-align: center;
+}
+
+/* `--stack` turns rows and cells into blocks, which would outweigh the
+   `[hidden]` rule of the base layer; the filtered rows are hidden again here. */
+.iv-table--stack tr[hidden] {
+  display: none;
+}
+
+.iv-table--stack .iv-datatable__empty td {
+  justify-content: center;
+}
+
+/* Status --------------------------------------------------------------- */
+
+.iv-datatable__status {
+  margin-block-start: var(--iv-space-2);
+  margin-block-end: 0;
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+}

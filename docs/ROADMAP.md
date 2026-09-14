@@ -59,9 +59,9 @@ Tras cerrar v0.1 (fases 0–4) y el rediseño de la web (ADR-027), el trabajo co
 | Orden | Elemento | Estado | Notas |
 |---|---|---|---|
 | 1 | Combobox/autocomplete accesible | hecho (2026-09-14) | contrato en `API_CONTRACT.md` §8.3; fallback nativo `<datalist>`; implementador Opus 5, docs y pruebas del integrador; 3 motores en verde |
-| 2 | Estructura i18n de docs y traducción al español | pendiente | cadenas ya en `apps/docs/src/i18n/en.js`; páginas `src/pages/es/` |
+| 2 | Estructura i18n de docs y traducción al español | en curso | implementador Opus 5 sobre `src/pages/es/` y `src/i18n/es.js`; `Base.astro` (lang, hreflang, selector) por el integrador |
 | 3 | Lector de pantalla (NVDA, VoiceOver) | bloqueado en este entorno | lista en `A11Y_REVIEW.md` §6, requiere una persona con AT |
-| 4 | Data table con ordenación y filtro | en curso | contrato §8.4; sin virtualización |
+| 4 | Data table con ordenación y filtro | hecho (2026-09-14) | contrato §8.4; sin virtualización; implementador Opus 5; 3 motores en verde |
 
 ## 5. Hito beta: `0.2.0-beta.0` (definido 2026-09-14)
 
@@ -71,8 +71,8 @@ Beta significa: alcance v0.2 completo, contratos congelados, gates verdes en tre
 |---|---|---|
 | 1 | Combobox integrado (entrada, `exports`, `index.js`, flat), documentado y probado en Chromium, Firefox y WebKit | hecho |
 | 2 | Rediseño de la web, ronda 2 (`docs/design/DIRECTION_R2.md`), sin rejillas, Lighthouse ≥ 95 rendimiento y 100 accesibilidad en la home, capturas revisadas | en curso |
-| 3 | Data table con ordenación y filtro sin virtualización, mejora progresiva sobre `<table>`, contrato en `API_CONTRACT.md` §8.4, docs y pruebas | en curso |
-| 4 | Docs en español: estructura i18n (`src/pages/es/`, cadenas `src/i18n/es.js`), selector de idioma, `hreflang`, búsqueda por idioma | pendiente |
+| 3 | Data table con ordenación y filtro sin virtualización, mejora progresiva sobre `<table>`, contrato en `API_CONTRACT.md` §8.4, docs y pruebas | hecho |
+| 4 | Docs en español: estructura i18n (`src/pages/es/`, cadenas `src/i18n/es.js`), selector de idioma, `hreflang`, búsqueda por idioma | en curso |
 | 5 | Presupuestos de tamaño revisados con los módulos nuevos (`docs/QUALITY.md` §1) y `npm run verify` verde | pendiente |
 | 6 | `CHANGELOG.md` 0.2.0-beta.0, `docs/RELEASE.md` actualizado, versión en `package.json`, `PROJECT_STATE.md` cerrado | pendiente |
 
