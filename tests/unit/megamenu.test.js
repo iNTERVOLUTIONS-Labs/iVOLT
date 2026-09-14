@@ -366,6 +366,7 @@ describe("Megamenu", () => {
       vi.useFakeTimers();
       const { mm } = setup();
       byId("item-a").dispatchEvent(new Event("pointerenter"));
+      byId("item-a").dispatchEvent(new Event("pointermove"));
       vi.advanceTimersByTime(119);
       expect(mm.openItem).toBe(null);
       vi.advanceTimersByTime(1);
@@ -382,6 +383,7 @@ describe("Megamenu", () => {
       vi.useFakeTimers();
       const { mm } = setup();
       byId("item-a").dispatchEvent(new Event("pointerenter"));
+      byId("item-a").dispatchEvent(new Event("pointermove"));
       vi.advanceTimersByTime(60);
       byId("item-a").dispatchEvent(new Event("pointerleave"));
       vi.advanceTimersByTime(400);
@@ -413,6 +415,7 @@ describe("Megamenu", () => {
       vi.useFakeTimers();
       const { mm } = setup({ hover: false });
       byId("item-a").dispatchEvent(new Event("pointerenter"));
+      byId("item-a").dispatchEvent(new Event("pointermove"));
       vi.advanceTimersByTime(1000);
       expect(mm.openItem).toBe(null);
     });
@@ -423,6 +426,7 @@ describe("Megamenu", () => {
       vi.useFakeTimers();
       const { mm } = setup();
       byId("item-a").dispatchEvent(new Event("pointerenter"));
+      byId("item-a").dispatchEvent(new Event("pointermove"));
       vi.advanceTimersByTime(1000);
       expect(mm.openItem).toBe(null);
     });
@@ -431,6 +435,7 @@ describe("Megamenu", () => {
       vi.useFakeTimers();
       const { mm } = setup();
       byId("item-a").dispatchEvent(new Event("pointerenter"));
+      byId("item-a").dispatchEvent(new Event("pointermove"));
       mm.destroy();
       vi.advanceTimersByTime(1000);
       expect(byId("item-a").hasAttribute("data-iv-open")).toBe(false);
@@ -457,6 +462,7 @@ describe("Megamenu", () => {
       vi.useFakeTimers();
       const { mm } = setup();
       byId("item-a").dispatchEvent(new Event("pointerenter"));
+      byId("item-a").dispatchEvent(new Event("pointermove"));
       vi.advanceTimersByTime(1000);
       expect(mm.openItem).toBe(null);
     });
@@ -548,6 +554,7 @@ describe("Megamenu", () => {
       expect(overlay()).toBe(null);
       vi.useFakeTimers();
       byId("item-a").dispatchEvent(new Event("pointerenter"));
+      byId("item-a").dispatchEvent(new Event("pointermove"));
       vi.advanceTimersByTime(40);
       expect(mm.openItem).toBe(byId("item-a"));
     });
@@ -558,6 +565,7 @@ describe("Megamenu", () => {
       expect(mm.options.hover).toBe(false);
       vi.useFakeTimers();
       byId("item-a").dispatchEvent(new Event("pointerenter"));
+      byId("item-a").dispatchEvent(new Event("pointermove"));
       vi.advanceTimersByTime(1000);
       expect(mm.openItem).toBe(null);
     });

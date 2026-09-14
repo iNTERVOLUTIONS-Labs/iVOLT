@@ -87,6 +87,10 @@
       "types": "./dist/types/components/reveal.d.ts",
       "default": "./dist/js/components/reveal.js"
     },
+    "./datepicker": {
+      "types": "./dist/types/components/datepicker.d.ts",
+      "default": "./dist/js/components/datepicker.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",

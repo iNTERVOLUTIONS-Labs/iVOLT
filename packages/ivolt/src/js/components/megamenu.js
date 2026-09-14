@@ -53,6 +53,7 @@ import {
  * @property {HTMLElement|null} link Its `__link`, when it has one.
  * @property {HTMLElement|null} toggle Its `__toggle`, when it has one.
  * @property {HTMLElement|null} panel Its `__panel`, when it has one.
+ * @property {boolean} [armed] Whether the next pointer movement may open the panel by hover.
  */
 
 const LIST_SELECTOR = ".iv-megamenu__list";
@@ -263,6 +264,7 @@ export class Megamenu extends IvComponent {
         link: this._ownPart(item, LINK_SELECTOR),
         toggle: this._ownPart(item, TOGGLE_SELECTOR),
         panel: this._ownPart(item, PANEL_SELECTOR),
+        armed: false,
       };
       this._entries.push(entry);
       const { toggle, panel } = entry;
@@ -280,8 +282,20 @@ export class Megamenu extends IvComponent {
       this._remember(item, OPEN_ATTR);
       item.removeAttribute(OPEN_ATTR);
 
-      this._listen(item, "pointerenter", () => this._hoverOpen(entry));
-      this._listen(item, "pointerleave", () => this._hoverClose());
+      // Hover intent needs real movement: a pointer that merely rests on the item after a page
+      // swap or a scroll must not open the panel. `pointerenter` arms, the first `pointermove` fires.
+      this._listen(item, "pointerenter", () => {
+        entry.armed = true;
+      });
+      this._listen(item, "pointermove", () => {
+        if (!entry.armed) return;
+        entry.armed = false;
+        this._hoverOpen(entry);
+      });
+      this._listen(item, "pointerleave", () => {
+        entry.armed = false;
+        this._hoverClose();
+      });
       // The panel sits below the bar with a gap: entering it must cancel the
       // pending close even though the pointer left the item on the way.
       this._listen(panel, "pointerenter", () => this._hoverOpen(entry));

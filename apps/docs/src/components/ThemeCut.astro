@@ -9,7 +9,7 @@ let dir = process.cwd();
 while (!existsSync(resolve(dir, "packages/ivolt/fixtures")) && dirname(dir) !== dir) dir = dirname(dir);
 const html = readFileSync(resolve(dir, "packages/ivolt/fixtures", `${name}.html`), "utf8").trim();
 ---
-<div class="docs-cut" style="--docs-cut:50%">
+<div class="docs-cut iv-edge-near" style="--docs-cut:50%">
   <div class="docs-cut__layer" data-iv-theme="dark" inert aria-hidden="true" set:html={html}></div>
   <div class="docs-cut__layer docs-cut__layer--top" data-iv-theme="light" inert aria-hidden="true" set:html={html}></div>
   <span class="docs-cut__tag docs-cut__tag--l" aria-hidden="true">{lightLabel}</span>

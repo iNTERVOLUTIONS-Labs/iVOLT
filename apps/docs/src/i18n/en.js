@@ -32,6 +32,11 @@ export const t = {
   onThisPage: "On this page",
   langSwitch: "Español",
   brandHome: "iVOLT CSS, home",
+  openComponents: "Open the components menu",
+  mmContent: "Content families",
+  mmInteractive: "Interactive",
+  mmBrowse: "Browse all components",
+  mmCount: (n) => `${n} families, one grammar`,
   fixtureHtml: (title) => `HTML for ${title}`,
   copied: "Copied",
   copiedStatus: "HTML copied to clipboard",
@@ -53,7 +58,7 @@ export const nav = [
     { href: "/foundations/surfaces", label: "Surfaces & textures" },
     { href: "/foundations/effects", label: "Light & motion" },
   ] },
-  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datatable", "picker", "carousel", "megamenu", "hero", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
+  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "megamenu", "hero", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Project", items: [
     { href: "/changelog", label: "Changelog" },
     { href: "/roadmap", label: "Roadmap" },
@@ -62,4 +67,4 @@ export const nav = [
 ];
 
 // Family of each component page (css-only or progressively enhanced with JS). Single source for the eyebrow and the home.
-export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datatable: "js", picker: "js", carousel: "js", megamenu: "js", hero: "css", badge: "css", alert: "css", table: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dialog: "js", drawer: "js", dropdown: "js", toast: "js" };
+export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datepicker: "js", datatable: "js", picker: "js", carousel: "js", megamenu: "js", hero: "css", badge: "css", alert: "css", table: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dialog: "js", drawer: "js", dropdown: "js", toast: "js" };

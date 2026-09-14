@@ -2,6 +2,11 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 0.5.0-beta.0 (unreleased)
+
+### Added
+- `Datepicker` (`iv-datepicker`, export `./datepicker`): a native date input gains an accessible calendar dialog with a keyboard grid, month and year navigation, today and clear, `min`, `max` and `step`, localised names through `Intl` and a first day of the week that follows the locale; the native picker stays on coarse pointers.
+
 ## 0.4.0-beta.0 (unreleased)
 
 ### Added

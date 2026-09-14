@@ -27,6 +27,14 @@ const slug = bare.startsWith("/components/") ? bare.split("/").pop() : null;
 const family = slug ? families[slug] : null;
 const items = nav.flatMap((g) => g.items);
 const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
+// Component list for the header megamenu (labels per language, kind from the shared families map).
+const labelOf = (slug) => (lang === "es" && es.componentLabels && es.componentLabels[slug]) || slug[0].toUpperCase() + slug.slice(1);
+const componentList = Object.entries(families).map(([slug, kind]) => ({ slug, kind, label: labelOf(slug), href: `${base}/components/${slug}` }));
+const highlights = [
+  { slug: "carousel", label: labelOf("carousel"), meta: lang === "es" ? "Efectos cinema, autoplay, miniaturas" : "Cinema effect, autoplay, thumbnails", href: `${base}/components/carousel` },
+  { slug: "hero", label: labelOf("hero"), meta: lang === "es" ? "Portadas de borde a borde" : "Full-bleed openings", href: `${base}/components/hero` },
+  { slug: "megamenu", label: labelOf("megamenu"), meta: lang === "es" ? "Este mismo menú" : "This very menu", href: `${base}/components/megamenu` },
+];
 const other = lang === "es" ? "en" : "es";
 // The switch and the alternates point at the twin page only when it exists; otherwise at the other home.
 import { existsSync } from "node:fs";
@@ -69,18 +77,50 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
   <header class="docs-header" data-pagefind-ignore>
     <div class="iv-container iv-container--wide docs-header__inner">
       <a class="docs-brand" href={base || "/"} aria-label={t.brandHome} set:html={wordmark}></a>
-      <nav class="docs-nav" aria-label={t.primaryNav}>
-        {[
-          { href: `${base}/getting-started`, label: t.docs, current: bare === "/getting-started" },
-          { href: `${base}/components/button`, label: t.components, current: bare.startsWith("/components/") },
-          { href: `${base}/examples`, label: t.examples, current: bare === "/examples" },
-          { href: `${base}/playground`, label: t.playground, current: bare === "/playground" },
-          { href: "https://github.com/iNTERVOLUTIONS-Labs/iVOLT", label: t.source, rel: "noopener" },
-        ].map((l) => (
-          <a href={l.href} rel={l.rel} aria-current={l.current ? "page" : undefined}>
-            <span class="docs-roll"><span class="docs-roll__a">{l.label}</span><span class="docs-roll__b" aria-hidden="true">{l.label}</span></span>
-          </a>
-        ))}
+      <nav class="iv-megamenu docs-nav" data-iv-component="megamenu" aria-label={t.primaryNav}>
+        <ul class="iv-megamenu__list">
+          {[
+            { href: `${base}/getting-started`, label: t.docs, current: bare === "/getting-started" },
+            { href: `${base}/components/button`, label: t.components, current: bare.startsWith("/components/"), panel: true },
+            { href: `${base}/examples`, label: t.examples, current: bare === "/examples" },
+            { href: `${base}/playground`, label: t.playground, current: bare === "/playground" },
+            { href: "https://github.com/iNTERVOLUTIONS-Labs/iVOLT", label: t.source, rel: "noopener" },
+          ].map((l) => (
+            <li class="iv-megamenu__item">
+              <a class="iv-megamenu__link" href={l.href} rel={l.rel} aria-current={l.current ? "page" : undefined}>
+                <span class="docs-roll"><span class="docs-roll__a">{l.label}</span><span class="docs-roll__b" aria-hidden="true">{l.label}</span></span>
+              </a>
+              {l.panel && <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="docs-mm-components" hidden><span class="iv-u-sr-only">{t.openComponents}</span></button>}
+              {l.panel && (
+                <div class="iv-megamenu__panel docs-mm" id="docs-mm-components">
+                  <div class="iv-megamenu__inner">
+                    <section class="iv-megamenu__group">
+                      <h3 class="iv-megamenu__heading">{t.mmContent}</h3>
+                      <ul class="iv-megamenu__links">{componentList.filter((c) => c.kind === "css").map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
+                    </section>
+                    <section class="iv-megamenu__group">
+                      <h3 class="iv-megamenu__heading">{t.mmInteractive}</h3>
+                      <ul class="iv-megamenu__links">{componentList.filter((c) => c.kind === "js").map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
+                    </section>
+                    <div class="iv-megamenu__cards" style="--iv-megamenu-card-span: 2">
+                      {highlights.map((h) => (
+                        <a class="iv-megamenu__card iv-edge-near" href={h.href}>
+                          <span class={`iv-megamenu__art docs-mm__art docs-mm__art--${h.slug}`} aria-hidden="true"></span>
+                          <span class="iv-megamenu__name">{h.label}</span>
+                          <span class="iv-megamenu__meta">{h.meta}</span>
+                        </a>
+                      ))}
+                    </div>
+                    <footer class="iv-megamenu__bottom">
+                      <span>{t.mmCount(componentList.length)}</span>
+                      <a class="iv-button iv-button--primary iv-button--sm" href={`${base}/components/button`}>{t.mmBrowse}</a>
+                    </footer>
+                  </div>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
       </nav>
       <button class="iv-button iv-button--secondary iv-button--sm docs-search-open" type="button" data-iv-open="docs-search" aria-keyshortcuts="/ Control+K" aria-label={t.search}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="docs-search-text">{t.search}</span><kbd class="docs-kbd" aria-hidden="true">/</kbd></button>
       <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>

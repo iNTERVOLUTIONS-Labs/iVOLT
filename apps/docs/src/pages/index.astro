@@ -139,7 +139,7 @@ const recipes = [
     <div class="docs-recipes" style="margin-block-start:clamp(3rem,7vh,5rem)">
       {recipes.map((r, i) => (
         <a class="docs-recipe docs-reveal" href={`/examples/${r.slug}/index.html`}>
-          <div class="docs-recipe__frame"><iframe src={`/examples/${r.slug}/index.html`} title={`${r.title} recipe preview`} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin"></iframe></div>
+          <div class="docs-recipe__frame iv-edge-near"><iframe src={`/examples/${r.slug}/index.html`} title={`${r.title} recipe preview`} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin"></iframe></div>
           <div class="docs-recipe__body">
             <h3>{r.title}</h3>
             <p>{r.text}</p>

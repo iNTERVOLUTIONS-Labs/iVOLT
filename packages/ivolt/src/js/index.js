@@ -23,6 +23,7 @@ import { Counter } from "./components/counter.js";
 import { Megamenu } from "./components/megamenu.js";
 import { Proximity } from "./components/proximity.js";
 import { Reveal } from "./components/reveal.js";
+import { Datepicker } from "./components/datepicker.js";
 
 export { IvComponent } from "./core/component.js";
 export { IvError } from "./core/registry.js";
@@ -41,6 +42,7 @@ export { Counter } from "./components/counter.js";
 export { Megamenu } from "./components/megamenu.js";
 export { Proximity } from "./components/proximity.js";
 export { Reveal } from "./components/reveal.js";
+export { Datepicker } from "./components/datepicker.js";
 export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
@@ -52,7 +54,7 @@ export const version = "0.3.0-beta.0";
  *
  * @type {ReadonlyArray<typeof IvComponent>}
  */
-export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel, Form, Counter, Megamenu, Proximity, Reveal]);
+export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel, Form, Counter, Megamenu, Proximity, Reveal, Datepicker]);
 
 /**
  * Instantiates every iVOLT component found inside `root` and wires the

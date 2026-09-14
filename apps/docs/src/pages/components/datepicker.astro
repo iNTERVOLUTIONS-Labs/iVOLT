@@ -1,0 +1,37 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Datepicker" description="iVOLT datepicker: a native date input that gains an accessible calendar dialog with a keyboard grid, min and max, localised month and weekday names and a first day of the week that follows the locale.">
+  <article class="docs-prose">
+    <h1>Datepicker</h1>
+    <p>A calendar on top of a native date input. The server sends <code>&lt;input type="date"&gt;</code>, which already has its own picker and submits an ISO value; on <code>init</code> a button opens a calendar dialog with a grid you can drive from the keyboard, month and year navigation, today and clear actions, and the limits from <code>min</code> and <code>max</code>. Month and weekday names come from the browser's locale data, so the same markup reads right in any language. On coarse pointers the native picker stays, because it is the better tool there.</p>
+    <p><strong>CSS:</strong> <code>css/components/datepicker.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/datepicker</code> or <code>auto.js</code>. Added in v0.5.</p>
+    <Fixture name="datepicker/basic" minHeight="28rem" />
+    <h2>Locale and first day of the week</h2>
+    <p><code>data-iv-locale</code> picks the language of the names and <code>data-iv-first-day</code> the first column; by default both follow the document language. The button labels are options, so they can be translated too.</p>
+    <Fixture name="datepicker/locale" minHeight="28rem" />
+    <h2>Options</h2>
+    <table>
+      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>native</code></td><td><code>data-iv-native</code></td><td><code>auto</code></td><td><code>auto</code> keeps the native picker on coarse pointers; <code>on</code> always; <code>off</code> always shows the calendar.</td></tr>
+        <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>document language</td><td>BCP 47 tag for month and weekday names.</td></tr>
+        <tr><td><code>firstDay</code></td><td><code>data-iv-first-day</code></td><td><code>-1</code></td><td>0 (Sunday) to 6; <code>-1</code> follows the locale, or Monday when the browser cannot tell.</td></tr>
+        <tr><td><code>openText</code>, <code>prevText</code>, <code>nextText</code>, <code>todayText</code>, <code>clearText</code>, <code>dialogText</code></td><td><code>data-iv-open-text</code> …</td><td>English labels</td><td>Accessible names and button texts.</td></tr>
+      </tbody>
+    </table>
+    <h2>Methods and events</h2>
+    <p><code>open()</code>, <code>close()</code>, <code>setValue(iso)</code>, <code>clear()</code>, <code>destroy()</code>; read <code>value</code>, <code>date</code> and <code>isOpen</code>. Events: <code>iv:open</code>/<code>iv:close</code> (cancelable) then <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>previousValue</code>, <code>date</code>) then <code>iv:changed</code>. The input also receives <code>input</code> and <code>change</code>.</p>
+    <h2>Keyboard and assistive technology</h2>
+    <p>Left and Right move a day, Up and Down a week, Home and End to the ends of the week, Page Up and Page Down a month, with Shift a year; Enter or Space selects and closes; Escape closes and returns focus to the button. The grid is a real table with one tab stop, the dialog is non-modal and labelled, disabled days are real disabled buttons and the month title is announced when it changes.</p>
+    <h2>Without JavaScript</h2>
+    <p>The native date input does everything: typing, the browser's own picker, <code>min</code>, <code>max</code> and form submission in ISO format.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>Reading or writing the value in a display format: the input value is always <code>YYYY-MM-DD</code>.</li>
+      <li>Forcing the custom calendar on phones: the native one is faster and localised by the system.</li>
+      <li>Ranges or times: out of scope; use two fields or a time input.</li>
+    </ul>
+  </article>
+</Base>

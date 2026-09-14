@@ -1,0 +1,313 @@
+/* iVOLT — components/datepicker
+ * Calendar dialog on top of a native `<input type="date">`. Without
+ * JavaScript nothing here applies beyond the room left for the toggle: the
+ * input is a plain `.iv-input` and the browser shows its own picker.
+ * `__control` is the positioning context of the toggle and the popover, so
+ * the calendar hangs from the input and not from the label or the help text
+ * of the field. State that has to reach a descendant travels as an attribute
+ * (`data-iv-enhanced`, `data-iv-placement`) or as a custom property
+ * (`--iv-datepicker-max-height`), which keeps every selector at or below
+ * (0,2,0).
+ * Locals: --iv-datepicker-max-height --iv-datepicker-offset
+ *         --iv-datepicker-cell --iv-datepicker-enter
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-datepicker {
+  --iv-datepicker-offset: var(--iv-space-1);
+  --iv-datepicker-cell: 2.5rem;
+  --iv-datepicker-max-height: none;
+
+  position: relative;
+}
+
+/* Control -------------------------------------------------------------
+   The generated box around the input: the toggle sits at its inline end and
+   the popover hangs from its bottom edge. */
+
+.iv-datepicker__control {
+  position: relative;
+  display: block;
+}
+
+/* Room for the toggle. The contract keeps this on the input itself, so the
+   metrics of `.iv-input` stay in one place. */
+.iv-datepicker .iv-input {
+  padding-inline-end: 2.75rem;
+}
+
+/* With the calendar in charge the browser indicator would open a second
+   picker over the first one. It stays untouched in native mode. */
+[data-iv-enhanced] .iv-input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.iv-datepicker__toggle {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--iv-space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  padding: 0;
+  color: var(--iv-color-text-muted);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-md);
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition:
+    color var(--iv-motion-fast) var(--iv-ease-out),
+    background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-datepicker__toggle:hover {
+    color: var(--iv-color-text);
+    background-color: var(--iv-color-surface);
+  }
+}
+
+.iv-datepicker__toggle:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 1px;
+  color: var(--iv-color-text);
+}
+
+.iv-datepicker__icon {
+  flex: none;
+  pointer-events: none;
+}
+
+/* Popover -------------------------------------------------------------- */
+
+.iv-datepicker__popover {
+  --iv-datepicker-enter: 0.5rem;
+
+  position: absolute;
+  inset-block-start: calc(100% + var(--iv-datepicker-offset));
+  inset-inline-start: 0;
+  z-index: var(--iv-z-dropdown);
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-space-2);
+  inline-size: 20rem;
+  max-inline-size: calc(100vw - var(--iv-space-4));
+  max-block-size: var(--iv-datepicker-max-height);
+  padding: var(--iv-space-2);
+  overflow: auto;
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: var(--iv-shadow-3);
+  animation: iv-datepicker-pop-in var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-datepicker__popover[data-iv-placement="top"] {
+  --iv-datepicker-enter: -0.5rem;
+
+  inset-block-start: auto;
+  inset-block-end: calc(100% + var(--iv-datepicker-offset));
+}
+
+.iv-datepicker__popover[hidden] {
+  display: none;
+}
+
+@keyframes iv-datepicker-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--iv-datepicker-enter));
+  }
+}
+
+/* Header --------------------------------------------------------------- */
+
+.iv-datepicker__header {
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-1);
+}
+
+/* The heading and the table also have to beat the element rules of `base.css`
+   in the sheet without layers, where order alone would not be enough: the
+   element name keeps them at (0,1,1), like `textarea.iv-input` in form.css. */
+h2.iv-datepicker__title {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+  text-align: center;
+}
+
+.iv-datepicker__nav {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  padding: 0;
+  color: var(--iv-color-text);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-md);
+  cursor: pointer;
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-datepicker__nav:hover {
+    background-color: var(--iv-color-surface);
+  }
+}
+
+.iv-datepicker__nav:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 1px;
+}
+
+.iv-datepicker__nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Grid ----------------------------------------------------------------- */
+
+table.iv-datepicker__grid {
+  inline-size: 100%;
+  margin: 0;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 2px;
+}
+
+/* Content tables get padding and a rule under every row; a calendar wants
+   neither. */
+.iv-datepicker__grid th,
+.iv-datepicker__grid td {
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+  border: 0;
+}
+
+th.iv-datepicker__weekday {
+  padding-block: var(--iv-space-1);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-medium);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
+/* A day is a 2.5rem square: the pointer target of the contract, and the cell
+   size the popover width is built on. */
+.iv-datepicker__day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  min-inline-size: var(--iv-datepicker-cell);
+  block-size: var(--iv-datepicker-cell);
+  padding: 0;
+  font: inherit;
+  font-size: var(--iv-text-sm);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--iv-leading-snug);
+  color: var(--iv-color-text);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-md);
+  cursor: pointer;
+  transition:
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* Days that belong to the neighbouring months: still selectable, quieter. */
+.iv-datepicker__day--outside {
+  color: var(--iv-color-text-muted);
+}
+
+@media (hover: hover) {
+  .iv-datepicker__day:hover {
+    background-color: var(--iv-color-surface);
+  }
+}
+
+/* Today is an accent ring, so it survives next to the selected day. */
+.iv-datepicker__day--today {
+  box-shadow: inset 0 0 0 2px var(--iv-color-accent);
+}
+
+[aria-selected="true"] > .iv-datepicker__day {
+  font-weight: var(--iv-weight-semibold);
+  color: var(--iv-color-on-primary);
+  background-color: var(--iv-color-primary);
+}
+
+.iv-datepicker__day:disabled {
+  color: var(--iv-color-text-muted);
+  background-color: transparent;
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* The roving tab stop is the only day the keyboard can reach, so its ring
+   has to read at a glance. */
+.iv-datepicker__day:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 1px;
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+}
+
+/* Footer --------------------------------------------------------------- */
+
+.iv-datepicker__footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-2);
+  align-items: center;
+  justify-content: space-between;
+  padding-block-start: var(--iv-space-1);
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* Forced colours -------------------------------------------------------
+   System colours are the only ones that survive here; without them the
+   selected day and today would melt into the grid. */
+
+@media (forced-colors: active) {
+  [aria-selected="true"] > .iv-datepicker__day {
+    color: HighlightText;
+    background-color: Highlight;
+  }
+
+  .iv-datepicker__day--today {
+    box-shadow: inset 0 0 0 2px CanvasText;
+  }
+
+  .iv-datepicker__day:disabled {
+    color: GrayText;
+    opacity: 1;
+  }
+}
+
+/* Motion ---------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-datepicker__popover {
+    animation: none;
+  }
+
+  .iv-datepicker__day,
+  .iv-datepicker__nav,
+  .iv-datepicker__toggle {
+    transition: none;
+  }
+}

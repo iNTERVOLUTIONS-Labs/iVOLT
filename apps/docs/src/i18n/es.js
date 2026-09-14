@@ -32,6 +32,11 @@ export const t = {
   onThisPage: "En esta página",
   langSwitch: "English",
   brandHome: "iVOLT CSS, inicio",
+  openComponents: "Abrir el menú de componentes",
+  mmContent: "Familias de contenido",
+  mmInteractive: "Interactivas",
+  mmBrowse: "Ver todos los componentes",
+  mmCount: (n) => `${n} familias, una gramática`,
   fixtureHtml: (title) => `HTML de ${title}`,
   copied: "Copiado",
   copiedStatus: "HTML copiado al portapapeles",
@@ -42,7 +47,8 @@ export const t = {
 // la barra lateral y la portada; las claves son las mismas que las de `families` en en.js.
 export const componentLabels = {
   button: "Botón", card: "Tarjeta", form: "Formulario",
-  validation: "Validación", combobox: "Combobox",
+  validation: "Validación",
+  datepicker: "Selector de fecha", combobox: "Combobox",
   datatable: "Tabla de datos",
   picker: "Selector",
   carousel: "Carrusel",

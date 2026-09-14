@@ -26,16 +26,16 @@
 .docs-brand { color: var(--iv-color-text); display: inline-flex; }
 .docs-brand svg { height: 2.1rem; width: auto; }
 .docs-nav { display: none; gap: var(--iv-space-1); margin-inline-start: auto; }
-.docs-nav > a { --docs-nav-pad: var(--iv-space-2); color: var(--iv-color-text); text-decoration: none; font-weight: var(--iv-weight-medium); font-family: var(--docs-display); padding: var(--iv-space-2) var(--docs-nav-pad); border-radius: var(--iv-radius-md); position: relative; }
-.docs-nav > a::after { content: ""; position: absolute; inset-inline: var(--docs-nav-pad); inset-block-end: 6px; block-size: 2px; background: var(--iv-color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--iv-motion-base) var(--docs-ease); }
-.docs-nav > a:hover::after, .docs-nav > a[aria-current="page"]::after { transform: scaleX(1); }
+.docs-nav .iv-megamenu__link { --docs-nav-pad: var(--iv-space-2); color: var(--iv-color-text); text-decoration: none; font-weight: var(--iv-weight-medium); font-family: var(--docs-display); padding: var(--iv-space-2) var(--docs-nav-pad); border-radius: var(--iv-radius-md); position: relative; }
+.docs-nav .iv-megamenu__link::after { content: ""; position: absolute; inset-inline: var(--docs-nav-pad); inset-block-end: 6px; block-size: 2px; background: var(--iv-color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--iv-motion-base) var(--docs-ease); }
+.docs-nav .iv-megamenu__link:hover::after, .docs-nav .iv-megamenu__link[aria-current="page"]::after { transform: scaleX(1); }
 /* letter roller: the label rides up, its twin rides in */
 .docs-roll { display: block; position: relative; overflow: hidden; }
 .docs-roll__b { position: absolute; inset-block-start: 0; inset-inline-start: 0; color: var(--iv-color-primary); }
 .docs-roll__a, .docs-roll__b { display: block; transition: transform 420ms var(--docs-ease-out); }
 .docs-roll__b { transform: translateY(100%); }
-.docs-nav > a:hover .docs-roll__a, .docs-nav > a:focus-visible .docs-roll__a { transform: translateY(-100%); }
-.docs-nav > a:hover .docs-roll__b, .docs-nav > a:focus-visible .docs-roll__b { transform: translateY(0); }
+.docs-nav .iv-megamenu__link:hover .docs-roll__a, .docs-nav .iv-megamenu__link:focus-visible .docs-roll__a { transform: translateY(-100%); }
+.docs-nav .iv-megamenu__link:hover .docs-roll__b, .docs-nav .iv-megamenu__link:focus-visible .docs-roll__b { transform: translateY(0); }
 .docs-search-open { margin-inline-start: auto; }
 .docs-search-text { display: none; }
 @media (min-width: 48em) { .docs-search-text { display: inline; } }
@@ -56,7 +56,7 @@
   .docs-search-open { margin-inline-start: 0; }
   .docs-menu-toggle { display: none; }
 }
-@media (min-width: 90em) { .docs-nav > a { --docs-nav-pad: var(--iv-space-3); } }
+@media (min-width: 90em) { .docs-nav .iv-megamenu__link { --docs-nav-pad: var(--iv-space-3); } }
 .docs-header__inner > .docs-search-open { margin-inline-start: auto; }
 
 /* ---------- shell, sidebar, toc ---------- */
@@ -133,3 +133,13 @@
 .docs-lang:hover, .docs-lang:focus-visible { color: var(--iv-color-text); background: var(--iv-color-surface); }
 .docs-nav-dialog .docs-lang { display: inline-flex; }
 @media (min-width: 64em) { .docs-header .docs-lang { display: inline-flex; } }
+
+/* ---------- header megamenu (the component, dressed for the docs) ---------- */
+.docs-nav .iv-megamenu__list { gap: var(--iv-space-1); }
+.docs-nav .iv-megamenu__item { position: static; }
+.docs-nav .iv-megamenu__link { display: block; }
+.docs-mm { --iv-megamenu-width: min(56rem, 100vw - 2rem); }
+.docs-mm__art { display: block; aspect-ratio: 4 / 3; border-radius: var(--iv-radius-md); background: radial-gradient(120% 90% at 20% 10%, var(--iv-color-primary-subtle), transparent 60%), radial-gradient(80% 80% at 90% 90%, var(--iv-glow-secondary), transparent 65%), var(--iv-color-surface); }
+.docs-mm__art--carousel { background-image: linear-gradient(120deg, transparent 40%, var(--iv-glow-primary) 41%, transparent 60%), radial-gradient(80% 80% at 90% 90%, var(--iv-glow-secondary), transparent 65%); }
+.docs-mm__art--hero { background-image: linear-gradient(0deg, var(--iv-color-bg), transparent 70%), radial-gradient(120% 90% at 50% 0%, var(--iv-glow-primary), transparent 60%); }
+.docs-mm__art--megamenu { background-image: repeating-linear-gradient(0deg, transparent 0 22%, var(--iv-color-primary-subtle) 22% 26%), radial-gradient(80% 80% at 10% 100%, var(--iv-glow-secondary), transparent 65%); }
