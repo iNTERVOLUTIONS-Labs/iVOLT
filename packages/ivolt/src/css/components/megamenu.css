@@ -447,3 +447,13 @@
     animation: none;
   }
 }
+
+/* Bridge: while a panel is open, the gap between the bar and the panel counts as panel, so the pointer can
+   cross it without triggering the close delay. */
+:where(.iv-megamenu__item[data-iv-open]) > .iv-megamenu__panel::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 100%;
+  block-size: var(--iv-megamenu-offset);
+}

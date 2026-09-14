@@ -26,3 +26,7 @@ esbuild, lightningcss, browserslist, TypeScript, Vitest, jsdom, Playwright, axe-
 ## Marca
 
 «iVOLT» y «iNTERVOLUTIONS» son nombres de Tombatossals Softworks LLC. El nombre del paquete y el scope npm son provisionales hasta comprobar disponibilidad y propiedad (`docs/RELEASE.md`).
+
+## Fotografías de la documentación (2026-09-14)
+
+Doce fotografías en `apps/docs/public/photos/` obtenidas de Lorem Picsum (`picsum.photos/id/<id>`), que sirve fotografías publicadas en Unsplash bajo la Unsplash License (uso libre comercial y no comercial, sin permiso previo; la atribución se agradece y se incluye). Autores y enlaces en `apps/docs/public/photos/README.md`. Solo se usan en la web; el paquete npm no incluye mapas de bits.

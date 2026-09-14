@@ -39,6 +39,7 @@
 
   position: relative;
   overflow: visible;
+  transition: box-shadow var(--iv-motion-slow) var(--iv-ease-out);
 }
 
 .iv-edge-glint::before {
@@ -101,6 +102,8 @@
 
   position: relative;
   overflow: visible;
+  /* A soft halo around the whole block grows with proximity; the masked ring above marks the edge itself. */
+  box-shadow: 0 0 calc(var(--iv-near, 0) * 32px) calc(var(--iv-near, 0) * 2px) var(--iv-glow-primary);
 }
 
 .iv-edge-near::after {
@@ -342,4 +345,11 @@
     transform: none;
     transition: none;
   }
+}
+
+/* The travelling light is thin by design; a soft halo makes the moment readable from across the room. */
+.iv-edge-glint:hover,
+.iv-edge-glint:focus-within,
+.iv-edge-glint[data-iv-inview] {
+  box-shadow: 0 0 28px var(--iv-glow-primary);
 }

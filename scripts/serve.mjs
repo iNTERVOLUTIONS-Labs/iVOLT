@@ -29,12 +29,15 @@ createServer(async (req, res) => {
   try {
     const m = url.pathname.match(/^\/fixture\/([\w-]+)\/([\w-]+)$/);
     if (m) {
-      const body = await readFile(join(root, "packages/ivolt/fixtures", m[1], `${m[2]}.html`), "utf8");
+      // Package fixtures first; documentation-only fixtures (photographs, site-specific demos) live in apps/docs/fixtures.
+      const body = await readFile(join(root, "packages/ivolt/fixtures", m[1], `${m[2]}.html`), "utf8").catch(() => readFile(join(root, "apps/docs/fixtures", m[1], `${m[2]}.html`), "utf8"));
       res.writeHead(200, { "content-type": types[".html"] });
       res.end(page(body, { theme: url.searchParams.get("theme") || "light", nojs: url.searchParams.has("nojs"), title: `${m[1]}/${m[2]}` }));
       return;
     }
-    let file = normalize(join(root, decodeURIComponent(url.pathname)));
+    // The documentation site serves /photos from its public folder; fixtures reference the same paths.
+    const pathname = url.pathname.startsWith("/photos/") ? "/apps/docs/public" + url.pathname : url.pathname;
+    let file = normalize(join(root, decodeURIComponent(pathname)));
     if (!file.startsWith(root)) throw Object.assign(new Error("forbidden"), { code: "EACCES" });
     if ((await stat(file)).isDirectory()) file = join(file, "index.html");
     const data = await readFile(file);

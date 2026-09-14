@@ -373,7 +373,7 @@ describe("Megamenu", () => {
       expect(mm.openItem).toBe(byId("item-a"));
 
       byId("item-a").dispatchEvent(new Event("pointerleave"));
-      vi.advanceTimersByTime(199);
+      vi.advanceTimersByTime(319);
       expect(mm.openItem).toBe(byId("item-a"));
       vi.advanceTimersByTime(1);
       expect(mm.openItem).toBe(null);

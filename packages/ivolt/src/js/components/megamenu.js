@@ -138,7 +138,7 @@ export class Megamenu extends IvComponent {
   static defaults = Object.freeze({
     hover: true,
     openDelay: 120,
-    closeDelay: 200,
+    closeDelay: 320,
     staticFrom: "lg",
     overlay: true,
     closeOthers: true,
@@ -455,6 +455,8 @@ export class Megamenu extends IvComponent {
    */
   _hoverOpen(entry) {
     if (!this._hoverEnabled()) return;
+    // An item without a panel is a plain link: hovering it on the way to an open panel must not close it.
+    if (!entry.panel) return;
     if (this._closeTimer) {
       clearTimeout(this._closeTimer);
       this._closeTimer = 0;

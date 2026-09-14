@@ -62,8 +62,8 @@
 /* ---------- shell, sidebar, toc ---------- */
 .docs-shell { padding-block: var(--iv-space-10) var(--iv-space-16); }
 .docs-shell--sidebar { display: grid; gap: var(--iv-space-8); }
-@media (min-width: 64em) { .docs-shell--sidebar { grid-template-columns: 15rem minmax(0, 1fr); gap: var(--iv-space-10); } }
-@media (min-width: 80em) { .docs-shell--sidebar { grid-template-columns: 15rem minmax(0, 1fr) 13rem; } }
+@media (min-width: 64em) { .docs-shell--sidebar { grid-template-columns: 14rem minmax(0, 1fr); gap: var(--iv-space-12); } }
+@media (min-width: 80em) { .docs-shell--sidebar { grid-template-columns: 14rem minmax(0, 1fr) 12rem; gap: var(--iv-space-12); } }
 .docs-sidebar { display: none; }
 @media (min-width: 64em) { .docs-sidebar { display: block; position: sticky; inset-block-start: 5.5rem; align-self: start; max-block-size: calc(100dvh - 7rem); overflow-y: auto; padding-inline-end: var(--iv-space-2); } }
 .docs-sidebar nav { position: relative; }

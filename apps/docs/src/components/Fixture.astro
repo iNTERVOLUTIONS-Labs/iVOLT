@@ -9,7 +9,9 @@ const t = Astro.url.pathname === "/es" || Astro.url.pathname.startsWith("/es/") 
 // Locate the repository root from the working directory (Astro's prerender chunks move import.meta.url).
 let dir = process.cwd();
 while (!existsSync(resolve(dir, "packages/ivolt/fixtures")) && dirname(dir) !== dir) dir = dirname(dir);
-const html = readFileSync(resolve(dir, "packages/ivolt/fixtures", `${name}.html`), "utf8").trim();
+const packaged = resolve(dir, "packages/ivolt/fixtures", `${name}.html`);
+// Documentation-only fixtures (photographs, site demos) live next to the site, never in the package.
+const html = readFileSync(existsSync(packaged) ? packaged : resolve(dir, "apps/docs/fixtures", `${name}.html`), "utf8").trim();
 const id = `fx-${name.replace(/\W+/g, "-")}`;
 ---
 <figure class="docs-fixture" id={id}>

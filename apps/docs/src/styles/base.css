@@ -91,12 +91,12 @@
 .docs-js .is-in .docs-mask > span, .docs-js .docs-mask.is-in > span { transform: none; }
 
 /* ---------- prose ---------- */
-.docs-prose { max-inline-size: var(--iv-measure); counter-reset: docs-h2; }
-.docs-prose > * + * { margin-block-start: var(--iv-space-4); }
+.docs-prose { max-inline-size: 72rem; counter-reset: docs-h2; }
+.docs-prose > p, .docs-prose > ul, .docs-prose > ol { max-inline-size: 72ch; }
+.docs-prose > * + * { margin-block-start: var(--iv-space-5); }
 .docs-prose > .docs-fixture:first-of-type, .docs-prose > form { margin-block-start: var(--iv-space-8); }
 .docs-prose h1 { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95; margin: 0; letter-spacing: -0.045em; font-weight: 500; overflow-wrap: break-word; }
 .docs-prose h1 + p { font-size: 1.25rem; line-height: var(--iv-leading-snug); color: var(--iv-color-text-muted); max-inline-size: 46ch; margin-block-start: var(--iv-space-5); position: relative; }
-.docs-prose h1 + p::before { content: ""; position: absolute; inset-block-start: calc(var(--iv-space-5) * -1 + -0.7rem); inset-inline-start: 0; inline-size: min(100%, 16rem); block-size: 2px; background: linear-gradient(90deg, var(--iv-color-accent), transparent); transform-origin: left; animation: docs-grow 900ms var(--docs-ease-out) 120ms both; }
 @keyframes docs-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 .docs-prose h2 { margin-block-start: var(--iv-space-12); font-size: clamp(1.65rem, 2.6vw, 2.25rem); line-height: 1.1; counter-increment: docs-h2; position: relative; padding-block-start: var(--iv-space-5); }
 .docs-prose h2::before { content: counter(docs-h2, decimal-leading-zero); position: absolute; inset-block-start: 0; inset-inline-start: 0; font-size: var(--iv-text-xs); letter-spacing: 0.18em; color: var(--iv-color-primary); font-family: var(--iv-font-mono); }
