@@ -10,6 +10,8 @@ Estado: criterios de aceptación de fase 0. Nada de lo listado está medido toda
 | `ivolt.min.css` | ≤ 30 KiB | ídem |
 | `index.js` agrupado y minificado (todos los componentes, sin docs) | ≤ 18 KiB | esbuild bundle temporal solo para medir; `ivolt.iife.min.js` se mide aparte |
 
+Nota v0.2 (2026-09-14): con Combobox el JS agrupado pasa de 7,65 a 10,02 KiB gzip y la data table se añade en el mismo ciclo; los presupuestos no cambian (≤ 18 KiB JS, ≤ 30 KiB CSS) y `npm run sizes` sigue siendo la única fuente de cifras.
+
 Reglas: se mide cada artefacto por separado; el tarball tiene otra cifra. No se cumple un presupuesto eliminando estados accesibles ni excluyendo archivos necesarios. Si un objetivo es inviable, el informe muestra el coste por módulo, propone decisión y se registra la desviación en `DECISIONS.md`; el umbral no cambia en silencio.
 
 ## 2. Matriz de navegadores (congelada)
