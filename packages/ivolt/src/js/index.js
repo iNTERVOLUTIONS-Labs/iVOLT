@@ -29,6 +29,9 @@ import { Popover } from "./components/popover.js";
 import { Command } from "./components/command.js";
 import { Navbar } from "./components/navbar.js";
 import { Stepper } from "./components/stepper.js";
+import { Lightbox } from "./components/lightbox.js";
+import { ScrollMotion } from "./components/scroll-motion.js";
+import { Countup } from "./components/countup.js";
 
 export { IvComponent } from "./core/component.js";
 export { IvError } from "./core/registry.js";
@@ -53,18 +56,21 @@ export { Popover } from "./components/popover.js";
 export { Command } from "./components/command.js";
 export { Navbar } from "./components/navbar.js";
 export { Stepper } from "./components/stepper.js";
+export { Lightbox } from "./components/lightbox.js";
+export { ScrollMotion } from "./components/scroll-motion.js";
+export { Countup } from "./components/countup.js";
 export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
 /** Package version, kept in sync with `package.json`. */
-export const version = "0.6.0-beta.0";
+export const version = "0.7.0-beta.0";
 
 /**
  * Component classes initialised by `init` when no explicit list is given.
  *
  * @type {ReadonlyArray<typeof IvComponent>}
  */
-export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel, Form, Counter, Megamenu, Proximity, Reveal, Datepicker, Tooltip, Popover, Command, Navbar, Stepper]);
+export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel, Form, Counter, Megamenu, Proximity, Reveal, Datepicker, Tooltip, Popover, Command, Navbar, Stepper, Lightbox, ScrollMotion, Countup]);
 
 /**
  * Instantiates every iVOLT component found inside `root` and wires the

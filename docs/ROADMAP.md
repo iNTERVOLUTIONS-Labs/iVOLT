@@ -146,12 +146,13 @@ Petición del propietario: «sigue trabajando hasta 0.7». Lo que falta para mon
 | 6 | Web: páginas en inglés y español (navbar, stepper, timeline, stat, avatar; toast y progress actualizadas), barra lateral agrupada por familia, `families` | — | implementador de docs | hecho (2026-09-14; 94 páginas) |
 | 7 | Cierre `0.6.0-beta.0`: `verify` en tres motores, líneas base, Lighthouse, changelog, estado | — | integrador | hecho (2026-09-14) |
 
-## 10. Ciclo v0.7 «Media & motion» (previsto; contratos al abrir el ciclo) → `0.7.0-beta.0`
+## 10. Ciclo v0.7 «Media & motion» (abierto 2026-09-14; contratos congelados en §8.20–§8.23) → `0.7.0-beta.0`
 
-| Orden | Elemento | Notas |
-|---|---|---|
-| 1 | Lightbox (`lightbox`) sobre `Dialog`: galería de imágenes con teclado, gestos, zoom, pies y precarga | las fotografías libres de la web como material |
-| 2 | Movimiento por scroll (`motion.css` + `ScrollMotion`): `iv-parallax`, `iv-scroll-progress`, `iv-marquee`, `iv-stack` con `animation-timeline` y fallback JS | todo estático con reduced motion |
-| 3 | Texto (`text.css`) y contador (`Countup`): `iv-text-reveal`, `iv-text-glow`, `iv-text-outline`, cifras que cuentan al entrar | el contador viene de la home de la web |
-| 4 | Web: páginas nuevas y receta «showcase» que compone hero, navbar, parallax, galería, cifras y línea de tiempo | cuarta receta en `examples/recipes` |
-| 5 | Cierre `0.7.0-beta.0` | mismo gate |
+| Orden | Elemento | Contrato | Responsable | Estado |
+|---|---|---|---|---|
+| 1 | Lightbox (`lightbox`) sobre `Dialog`: galería de imágenes con teclado, gestos, zoom, pies y precarga | §8.20 | implementador A | abierto |
+| 2 | Contador (`countup`): cifras servidas que cuentan al entrar en el viewport | §8.22 | implementador A | abierto |
+| 3 | Movimiento por scroll (`motion.css` + `ScrollMotion`): `iv-parallax`, `iv-scroll-progress`, `iv-marquee`, `iv-stack-cards` con `animation-timeline` y fallback JS | §8.21 | implementador B | abierto |
+| 4 | Texto (`text.css`): `iv-text-reveal`, `iv-text-glow`, `iv-text-outline`, `iv-text-shimmer` | §8.22 | implementador B | abierto |
+| 5 | Web: páginas nuevas (lightbox, motion, text, countup) en dos idiomas y receta «showcase» (cuarta receta en `examples/recipes`, fotos ya acreditadas en su carpeta) | §8.23 | implementador de docs | abierto |
+| 6 | Cierre `0.7.0-beta.0`: `verify` en tres motores, líneas base, Lighthouse, changelog, estado | — | integrador | abierto |

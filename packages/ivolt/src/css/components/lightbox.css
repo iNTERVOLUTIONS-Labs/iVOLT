@@ -1,0 +1,11 @@
+/* iVOLT — components/lightbox
+ * Image gallery that opens a full-screen viewer composed on the dialog (API_CONTRACT §8.20). Registered stub for v0.7: the entries build
+ * while the module is written in this cycle.
+ * Local: --iv-gallery-min
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-gallery {
+  display: block;
+}

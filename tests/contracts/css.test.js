@@ -6,7 +6,7 @@ import { utilities, responsiveBreakpoints } from "../../packages/ivolt/scripts/u
 const pkg = resolve(__dirname, "../../packages/ivolt");
 const src = join(pkg, "src/css");
 const dist = join(pkg, "dist/css");
-const modules = ["base.css", "reset.css", "surfaces.css", "effects.css", ...readdirSync(join(src, "layout")).map((f) => `layout/${f}`), ...readdirSync(join(src, "components")).map((f) => `components/${f}`)];
+const modules = ["base.css", "reset.css", "surfaces.css", "effects.css", "motion.css", "text.css", ...readdirSync(join(src, "layout")).map((f) => `layout/${f}`), ...readdirSync(join(src, "components")).map((f) => `components/${f}`)];
 const read = (rel) => readFileSync(join(src, rel), "utf8");
 const stripComments = (css) => css.replace(/\/\*[\s\S]*?\*\//g, "");
 
