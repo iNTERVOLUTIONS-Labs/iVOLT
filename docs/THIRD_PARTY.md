@@ -14,7 +14,8 @@ Fecha: 2026-09-13. Estado al cierre de la fase 4.
 | Componente distribuido con el sitio | Licencia | Uso |
 |---|---|---|
 | Pagefind 1.5.2 (`/pagefind/*.js`, `*.wasm`, índice) | MIT | búsqueda local; generado en build y servido desde el propio sitio |
-| Astro 7 (HTML/CSS/JS generados) | MIT | generador estático; su código de cliente solo aparece si una página lo necesita |
+| Astro 7 (HTML/CSS/JS generados, incluido el router de transiciones de vista) | MIT | generador estático; su código de cliente solo aparece si una página lo necesita |
+| Space Grotesk (variable, subconjunto latino, `apps/docs/public/fonts/SpaceGrotesk-latin.woff2`, 22 KB) | SIL Open Font License 1.1 (`apps/docs/public/fonts/SpaceGrotesk-OFL.txt`) | tipografía de titulares, navegación y botones de la web de documentación; servida en local, sin peticiones a terceros; el paquete no la usa |
 
 Los avisos de licencia de Pagefind y Astro se conservan en `node_modules` y no se eliminan de los artefactos que los incluyan. La interfaz de búsqueda es propia; no se usa la UI de Pagefind.
 

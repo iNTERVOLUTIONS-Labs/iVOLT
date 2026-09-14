@@ -12,6 +12,10 @@
 | 3 Web y DX | hecha | merge `869d6da` |
 | 4 Release candidate | hecha | `npm run verify` completo, `docs/LIGHTHOUSE.md`, `docs/A11Y_REVIEW.md`, `docs/THIRD_PARTY.md`, `docs/RELEASE.md`, regresiones visuales |
 
+## Rediseño de la web (2026-09-14, ADR-027)
+
+Listón de diseño de nivel de premio escrito en `docs/DECISIONS.md` (ADR-027), `docs/DESIGN_SYSTEM.md` §8 y la biblia. Rediseño ejecutado directamente por el líder: tema oscuro por defecto, campo eléctrico animado, Space Grotesk local (OFL, 22 KB), hero con entrada palabra a palabra, demo con inclinación 3D y chips flotantes, marquesina, revelados al hacer scroll, tarjetas con foco de luz, marcos de recetas, CTA, pie con marca fantasma, transiciones de vista (Astro ClientRouter), TOC «On this page» con scrollspy. Reduced-motion deja la composición completa. Verificado: Lighthouse 100/100/100/100 en la home (móvil y escritorio), 201 unitarias, suite de navegador completa en tres motores, capturas a 1366×610, 1440, 390 y tema claro. Ajustes derivados: elementos de rejilla con `min-width: 0` (los `pre` de las fixtures ensanchaban las columnas), enlaces de resultados de búsqueda con `data-astro-reload` (WebKit no navegaba desde el diálogo modal con transición de vista).
+
 ## Hecho en fase 4
 
 - Gates completos con `npm run verify`: build, 201 pruebas unitarias/contrato, navegador en Chromium, Firefox y WebKit (266 superadas; las 17 visuales solo en Chromium), tamaños, pack-smoke (tarball en consumidor externo + starter servido fuera del monorepo en Chromium), build de docs (29 páginas indexadas), ejemplos.

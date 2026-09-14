@@ -1,17 +1,18 @@
 ---
 import "@intervolutions/ivolt/css/ivolt.css";
 import "../styles/docs.css";
+import { ClientRouter } from "astro:transitions";
 import { t, nav } from "../i18n/en.js";
 import { themeSnippet } from "../theme-snippet.js";
 import { wordmark as brandSvg } from "../brand.js";
-const { title, description, sidebar = true } = Astro.props;
+const { title, description, sidebar = true, toc = sidebar, wide = false } = Astro.props;
 const path = Astro.url.pathname.replace(/\.html$/, "");
 const canonical = Astro.site ? new URL(path, Astro.site).href : undefined;
 const og = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
 const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
 ---
 <!DOCTYPE html>
-<html lang="en" class="iv-root" data-iv-theme="system">
+<html lang="en" class="iv-root" data-iv-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,18 +26,23 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#081310">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <script is:inline set:html={themeSnippet}></script>
+  <link rel="preload" href="/fonts/SpaceGrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script is:inline data-astro-rerun set:html={themeSnippet}></script>
+  <ClientRouter />
 </head>
 <body class="docs">
+  <div class="docs-field" aria-hidden="true"><div class="docs-field__grid"></div><div class="docs-field__glow docs-field__glow--a"></div><div class="docs-field__glow docs-field__glow--b"></div></div>
   <a class="iv-u-sr-only-focusable iv-button iv-button--primary docs-skip" href="#main">{t.skip}</a>
   <header class="docs-header" data-pagefind-ignore>
     <div class="iv-container iv-container--wide docs-header__inner">
       <a class="docs-brand" href="/" aria-label="iVOLT CSS, home" set:html={wordmark}></a>
       <nav class="docs-nav" aria-label={t.primaryNav}>
-        <a href="/getting-started">{t.docs}</a>
-        <a href="/components/button">{t.components}</a>
-        <a href="/examples">Examples</a>
+        <a href="/getting-started" aria-current={path === "/getting-started" ? "page" : undefined}>{t.docs}</a>
+        <a href="/components/button" aria-current={path.startsWith("/components/") ? "page" : undefined}>{t.components}</a>
+        <a href="/examples" aria-current={path === "/examples" ? "page" : undefined}>Examples</a>
+        <a href="/playground" aria-current={path === "/playground" ? "page" : undefined}>Playground</a>
         <a href="https://github.com/iNTERVOLUTIONS-Labs/iVOLT" rel="noopener">{t.source}</a>
       </nav>
       <button class="iv-button iv-button--secondary iv-button--sm docs-search-open" type="button" data-iv-open="docs-search" aria-keyshortcuts="/ Control+K" aria-label={t.search}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="docs-search-text">{t.search}</span><kbd class="docs-kbd" aria-hidden="true">/</kbd></button>
@@ -79,7 +85,7 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
     </div>
   </dialog>
 
-  <div class={`iv-container iv-container--wide docs-shell ${sidebar ? "docs-shell--sidebar" : ""}`}>
+  <div class={`iv-container ${wide ? "iv-container--wide" : "iv-container--wide"} docs-shell ${sidebar ? "docs-shell--sidebar" : ""}`}>
     {sidebar && (
       <aside class="docs-sidebar" data-pagefind-ignore>
         <nav aria-label={t.docsNav}>
@@ -90,110 +96,175 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
     <main id="main" class="docs-main" tabindex="-1" data-pagefind-body>
       <slot />
     </main>
+    {sidebar && toc && (
+      <nav class="docs-toc" aria-label="On this page" data-pagefind-ignore hidden>
+        <p class="docs-toc__title">On this page</p>
+        <ol id="docs-toc-list"></ol>
+      </nav>
+    )}
   </div>
 
   <footer class="docs-footer" data-pagefind-ignore>
-    <div class="iv-container iv-container--wide iv-cluster iv-u-justify-between">
+    <div class="docs-footer__ghost" aria-hidden="true">iVOLT</div>
+    <div class="iv-container iv-container--wide docs-footer__inner">
       <span>{t.footer}</span>
+      <ul class="docs-footer__links">
+        <li><a href="/getting-started">Getting started</a></li>
+        <li><a href="/components/button">Components</a></li>
+        <li><a href="/examples">Examples</a></li>
+        <li><a href="/changelog">Changelog</a></li>
+        <li><a href="/roadmap">Roadmap</a></li>
+        <li><a href="/contributing">Contributing</a></li>
+      </ul>
       <span class="iv-u-text-muted">{t.alpha}</span>
     </div>
   </footer>
   <script>
     import "@intervolutions/ivolt/auto";
+    import { init } from "@intervolutions/ivolt";
     import { setTheme, getTheme } from "@intervolutions/ivolt/theme";
     import { Dialog } from "@intervolutions/ivolt/dialog";
     import { t } from "../i18n/en.js";
 
-    // Theme switch (persisted opt-in).
-    const buttons = document.querySelectorAll("[data-set-theme]");
-    const paint = () => buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setTheme === getTheme())));
-    buttons.forEach((b) => b.addEventListener("click", () => { setTheme(b.dataset.setTheme, { persist: true }); paint(); }));
-    paint();
+    const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = () => matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-    // Copy buttons with accessible feedback and a manual fallback.
-    document.querySelectorAll(".docs-copy").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const code = document.getElementById(btn.dataset.copyTarget);
-        const status = document.getElementById(btn.getAttribute("aria-describedby"));
-        try {
-          if (!navigator.clipboard) throw new Error("no clipboard");
-          await navigator.clipboard.writeText(code.textContent);
-          btn.textContent = t.copied; status.textContent = t.copiedStatus;
-        } catch {
-          const range = document.createRange(); range.selectNodeContents(code);
-          const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
-          btn.textContent = t.selected; status.textContent = t.selectedStatus;
+    function setup() {
+      init(document); // idempotent: instances survive, new page nodes get theirs
+
+      // Theme switch (persisted opt-in), both header and nav dialog groups.
+      const buttons = document.querySelectorAll("[data-set-theme]");
+      const paint = () => buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setTheme === getTheme())));
+      buttons.forEach((b) => b.addEventListener("click", () => { setTheme(b.dataset.setTheme, { persist: true }); paint(); }));
+      paint();
+
+      // Copy buttons with accessible feedback and a manual fallback.
+      document.querySelectorAll(".docs-copy").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const code = document.getElementById(btn.dataset.copyTarget);
+          const status = document.getElementById(btn.getAttribute("aria-describedby"));
+          try {
+            if (!navigator.clipboard) throw new Error("no clipboard");
+            await navigator.clipboard.writeText(code.textContent);
+            btn.textContent = t.copied; status.textContent = t.copiedStatus;
+          } catch {
+            const range = document.createRange(); range.selectNodeContents(code);
+            const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+            btn.textContent = t.selected; status.textContent = t.selectedStatus;
+          }
+          setTimeout(() => { btn.textContent = t.copy; status.textContent = ""; }, 2000);
+        });
+      });
+
+      // Heading anchors + "On this page" table of contents.
+      const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+      const seen = new Set();
+      const headings = [...document.querySelectorAll(".docs-prose h2, .docs-prose h3")];
+      headings.forEach((h) => {
+        if (!h.id) { let id = slug(h.textContent) || "section"; let n = 2; while (seen.has(id) || document.getElementById(id)) id = `${slug(h.textContent)}-${n++}`; h.id = id; }
+        seen.add(h.id);
+        if (!h.querySelector(".docs-anchor")) {
+          const a = document.createElement("a"); a.className = "docs-anchor"; a.href = `#${h.id}`; a.textContent = "#"; a.setAttribute("aria-label", t.anchor);
+          h.append(" ", a);
         }
-        setTimeout(() => { btn.textContent = t.copy; status.textContent = ""; }, 2000);
       });
-    });
-
-    // Heading anchors for h2/h3 in prose.
-    const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    const seen = new Set();
-    document.querySelectorAll(".docs-prose h2, .docs-prose h3").forEach((h) => {
-      if (!h.id) { let id = slug(h.textContent) || "section"; let n = 2; while (seen.has(id) || document.getElementById(id)) id = `${slug(h.textContent)}-${n++}`; h.id = id; }
-      seen.add(h.id);
-      const a = document.createElement("a"); a.className = "docs-anchor"; a.href = `#${h.id}`; a.textContent = "#"; a.setAttribute("aria-label", t.anchor);
-      h.append(" ", a);
-    });
-
-    // Local search on top of the Pagefind index built with the site.
-    const searchEl = document.getElementById("docs-search");
-    const input = document.getElementById("docs-search-input");
-    const results = document.getElementById("docs-search-results");
-    const status = document.getElementById("docs-search-status");
-    let pagefind = null, loadFailed = false, timer = 0;
-    async function ensureIndex() {
-      if (pagefind || loadFailed) return pagefind;
-      try {
-        // The index only exists in the built site; build the URL at runtime so Vite does not try to resolve it in dev.
-        const url = new URL("/pagefind/pagefind.js", location.origin).href;
-        pagefind = await import(/* @vite-ignore */ url);
-        await pagefind.init();
+      const toc = document.querySelector(".docs-toc"), tocList = document.getElementById("docs-toc-list");
+      if (toc && tocList) {
+        const h2s = headings.filter((h) => h.tagName === "H2");
+        if (h2s.length >= 2) {
+          toc.hidden = false;
+          h2s.forEach((h) => { const li = document.createElement("li"); li.dataset.depth = "2"; const a = document.createElement("a"); a.href = `#${h.id}`; a.textContent = h.childNodes[0].textContent.trim(); li.append(a); tocList.append(li); });
+          const links = [...tocList.querySelectorAll("a")];
+          const spy = new IntersectionObserver((entries) => {
+            entries.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === `#${e.target.id}` ? "true" : "false")); });
+          }, { rootMargin: "-20% 0px -70% 0px" });
+          h2s.forEach((h) => spy.observe(h));
+        }
       }
-      catch { loadFailed = true; status.textContent = t.searchUnavailable; }
-      return pagefind;
-    }
-    function renderExcerpt(li, html) {
-      // Pagefind excerpts contain <mark> only; rebuild them as nodes instead of injecting HTML.
-      const p = document.createElement("p"); p.className = "docs-search__excerpt";
-      const decode = (s) => new DOMParser().parseFromString(s.replace(/<[^>]+>/g, ""), "text/html").documentElement.textContent || "";
-      html.split(/(<mark>.*?<\/mark>)/g).forEach((part) => {
-        const m = part.match(/^<mark>(.*?)<\/mark>$/);
-        if (m) { const mark = document.createElement("mark"); mark.textContent = decode(m[1]); p.append(mark); }
-        else if (part) p.append(document.createTextNode(decode(part)));
+
+      // Scroll reveals (skipped under reduced motion: CSS already shows everything).
+      const reveals = document.querySelectorAll(".docs-reveal");
+      if (reveals.length) {
+        if (reduced() || !("IntersectionObserver" in window)) reveals.forEach((el) => el.classList.add("is-in"));
+        else {
+          const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -10% 0px", threshold: 0.1 });
+          reveals.forEach((el) => io.observe(el));
+        }
+      }
+
+      // Pointer spotlight on cards and 3D tilt on the hero stage (fine pointers only, never under reduced motion).
+      if (finePointer() && !reduced()) {
+        document.querySelectorAll(".docs-spot").forEach((card) => {
+          card.addEventListener("pointermove", (e) => { const r = card.getBoundingClientRect(); card.style.setProperty("--mx", `${e.clientX - r.left}px`); card.style.setProperty("--my", `${e.clientY - r.top}px`); });
+        });
+        document.querySelectorAll(".docs-stage").forEach((stage) => {
+          const tilt = stage.querySelector(".docs-tilt"); if (!tilt) return;
+          stage.addEventListener("pointermove", (e) => { const r = stage.getBoundingClientRect(); const x = (e.clientX - r.left) / r.width - 0.5; const y = (e.clientY - r.top) / r.height - 0.5; tilt.style.setProperty("--rx", `${(x * 8).toFixed(2)}deg`); tilt.style.setProperty("--ry", `${(-y * 8).toFixed(2)}deg`); });
+          stage.addEventListener("pointerleave", () => { tilt.style.setProperty("--rx", "0deg"); tilt.style.setProperty("--ry", "0deg"); });
+        });
+      }
+
+      // Local search on top of the Pagefind index built with the site.
+      const searchEl = document.getElementById("docs-search");
+      const input = document.getElementById("docs-search-input");
+      const results = document.getElementById("docs-search-results");
+      const status = document.getElementById("docs-search-status");
+      let timer = 0;
+      async function ensureIndex() {
+        if (window.__pagefind || window.__pagefindFailed) return window.__pagefind;
+        try { const url = new URL("/pagefind/pagefind.js", location.origin).href; window.__pagefind = await import(/* @vite-ignore */ url); await window.__pagefind.init(); }
+        catch { window.__pagefindFailed = true; status.textContent = t.searchUnavailable; }
+        return window.__pagefind;
+      }
+      function renderExcerpt(li, html) {
+        const p = document.createElement("p"); p.className = "docs-search__excerpt";
+        const decode = (s) => new DOMParser().parseFromString(s.replace(/<[^>]+>/g, ""), "text/html").documentElement.textContent || "";
+        html.split(/(<mark>.*?<\/mark>)/g).forEach((part) => {
+          const m = part.match(/^<mark>(.*?)<\/mark>$/);
+          if (m) { const mark = document.createElement("mark"); mark.textContent = decode(m[1]); p.append(mark); }
+          else if (part) p.append(document.createTextNode(decode(part)));
+        });
+        li.append(p);
+      }
+      async function runSearch() {
+        const q = input.value.trim();
+        results.replaceChildren();
+        if (!q) { status.textContent = t.searchHint; return; }
+        const pf = await ensureIndex();
+        if (!pf) return;
+        const res = await pf.search(q);
+        const top = await Promise.all(res.results.slice(0, 8).map((r) => r.data()));
+        status.textContent = top.length ? t.searchResults(top.length) : t.searchNone;
+        for (const d of top) {
+          const li = document.createElement("li");
+          const a = document.createElement("a"); a.href = d.url.replace(/\.html$/, ""); a.className = "docs-search__link";
+          a.setAttribute("data-astro-reload", ""); // full navigation: the result lives inside a modal dialog, skip the view transition
+          const strong = document.createElement("strong"); strong.textContent = d.meta?.title || d.url; a.append(strong);
+          li.append(a); renderExcerpt(li, d.excerpt || ""); results.append(li);
+        }
+      }
+      input?.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(runSearch, 150); });
+      results?.addEventListener("keydown", (e) => {
+        const links = [...results.querySelectorAll("a")]; const i = links.indexOf(document.activeElement);
+        if (e.key === "ArrowDown" && i < links.length - 1) { e.preventDefault(); links[i + 1].focus(); }
+        if (e.key === "ArrowUp") { e.preventDefault(); (i > 0 ? links[i - 1] : input).focus(); }
       });
-      li.append(p);
+      input?.addEventListener("keydown", (e) => { if (e.key === "ArrowDown") { e.preventDefault(); results.querySelector("a")?.focus(); } });
+      searchEl?.addEventListener("iv:opened", () => { input.select(); ensureIndex(); });
     }
-    async function runSearch() {
-      const q = input.value.trim();
-      results.replaceChildren();
-      if (!q) { status.textContent = t.searchHint; return; }
-      const pf = await ensureIndex();
-      if (!pf) return;
-      const res = await pf.search(q);
-      const top = await Promise.all(res.results.slice(0, 8).map((r) => r.data()));
-      status.textContent = top.length ? t.searchResults(top.length) : t.searchNone;
-      for (const d of top) {
-        const li = document.createElement("li");
-        const a = document.createElement("a"); a.href = d.url.replace(/\.html$/, ""); a.className = "docs-search__link";
-        const strong = document.createElement("strong"); strong.textContent = d.meta?.title || d.url; a.append(strong);
-        li.append(a); renderExcerpt(li, d.excerpt || ""); results.append(li);
-      }
+
+    // Global shortcuts are bound once per site load (they survive view transitions).
+    if (!window.__docsShortcuts) {
+      window.__docsShortcuts = true;
+      document.addEventListener("keydown", (e) => {
+        const typing = /^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") || document.activeElement?.isContentEditable;
+        if ((e.key === "/" && !typing) || (e.key.toLowerCase() === "k" && (e.ctrlKey || e.metaKey))) {
+          const el = document.getElementById("docs-search"); if (!el) return;
+          e.preventDefault(); Dialog.getOrCreate(el).open();
+        }
+      });
     }
-    input?.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(runSearch, 150); });
-    results?.addEventListener("keydown", (e) => {
-      const links = [...results.querySelectorAll("a")]; const i = links.indexOf(document.activeElement);
-      if (e.key === "ArrowDown" && i < links.length - 1) { e.preventDefault(); links[i + 1].focus(); }
-      if (e.key === "ArrowUp") { e.preventDefault(); (i > 0 ? links[i - 1] : input).focus(); }
-    });
-    input?.addEventListener("keydown", (e) => { if (e.key === "ArrowDown") { e.preventDefault(); results.querySelector("a")?.focus(); } });
-    document.addEventListener("keydown", (e) => {
-      const typing = /^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") || document.activeElement?.isContentEditable;
-      if ((e.key === "/" && !typing) || (e.key.toLowerCase() === "k" && (e.ctrlKey || e.metaKey))) { e.preventDefault(); Dialog.getOrCreate(searchEl).open(); }
-    });
-    searchEl?.addEventListener("iv:opened", () => { input.select(); ensureIndex(); });
+    document.addEventListener("astro:page-load", setup);
   </script>
 </body>
 </html>

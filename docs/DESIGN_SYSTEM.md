@@ -87,11 +87,25 @@ Cada componente define en su CSS: `default`, `hover` (solo `@media (hover: hover
 
 ## 6. Composición
 
-- Landing: contenido hasta 1440px con gutters `clamp(1rem, 4vw, 4rem)`. Hero de dos columnas en ≥ lg: mensaje + demo viva con su código; altura máxima del hero `min(80vh, 640px)` para que en 1366×610 el producto aparezca sin scroll.
+- Landing (rediseño 2026-09-14, ADR-027): la web arranca en tema oscuro; fondo con campo eléctrico (rejilla enmascarada y dos resplandores radiales prerrenderizados que derivan lentamente), cabecera translúcida con filete conductor, hero de dos columnas en ≥ lg con titular de gran formato en Space Grotesk (entrada palabra a palabra, acento con brillo), demo viva con inclinación 3D al puntero, resplandor y chips flotantes, cifras medidas en build; marquesina de tokens; secciones numeradas con revelado escalonado; tarjetas con foco de luz que sigue al puntero; recetas en marcos escalados; CTA con resplandor; pie con marca fantasma; transiciones de vista entre páginas. En ≤ 720 px de alto el hero se compacta para que las cifras queden sobre el pliegue a 1366×610. Todo el movimiento desaparece con `prefers-reduced-motion` dejando la misma composición.
 - Docs: rejilla `sidebar 16rem | lectura 68ch | índice 14rem` en ≥ xl; sin índice en lg; sidebar en drawer en < lg.
 - Detalle memorable («light pulse»): al pasar el foco o el puntero sobre el demo del hero, un segmento luminoso de ~120px recorre una vez el borde superior en 600ms usando un `conic-gradient` enmascarado; no se repite en bucle, no existe en otros paneles y se elimina con reduced-motion.
-- Tipografía docs: la marca puede usar una geométrica libre para titulares (candidata: Space Grotesk, OFL, archivos locales, licencia registrada en `SOURCES.md` cuando se añada, fase 3). El cuerpo y todo el paquete usan `system-ui`.
+- Tipografía docs: Space Grotesk (OFL, variable, subconjunto latino de 22 KB servido en local con `font-display: swap`) para titulares, navegación y botones de la web; cuerpo y todo el paquete en `system-ui`. Registrada en `SOURCES.md` y `THIRD_PARTY.md`.
 
 ## 7. Lámina de referencia
 
 `docs/design/brand-board.html` muestra en una sola dirección visual: wordmark, paleta con contrastes, tipografía, botones y estados, input con estados, card, boceto de hero responsive y el light pulse, con conmutador light/dark. Su CSS es provisional y no se copia al paquete; la web definitiva consume componentes reales.
+
+## 8. Listón de diseño de la web (ADR-027)
+
+Objetivo declarado: la web debe poder competir por un reconocimiento en Awwwards, CSS Design Awards o galerías equivalentes. Criterios con los que se juzga cada entrega, en el orden en que los evalúa un jurado de ese tipo:
+
+| Criterio | Qué exigimos | Cómo se comprueba |
+|---|---|---|
+| Diseño | identidad propia (electricidad, voltaje, verde sobre carbón), tipografía de gran formato con una geométrica de marca (Space Grotesk, OFL, servida en local), composición asimétrica y capas de profundidad; nada que parezca plantilla | revisión visual con capturas a 1366×610, 1440 y 390 en claro y oscuro |
+| Creatividad | hero con campo eléctrico animado, bordes conductores que se iluminan al interactuar, foco de luz que sigue al puntero en tarjetas, marquesina de tokens, transiciones de página, revelados escalonados al hacer scroll, demo viva con inclinación 3D | cada efecto listado existe y responde; ninguno se repite en bucle sin interacción salvo el campo del hero |
+| Usabilidad | todo lo anterior sin bloquear la lectura: navegación por teclado, búsqueda, tema, copia, TOC; `prefers-reduced-motion` desactiva el movimiento y deja una experiencia completa y bella | pruebas de docs y axe; captura con reduced-motion |
+| Contenido | ejemplos reales del framework, datos medidos, sin promesas vacías | contratos de snippets y honestidad documentados |
+| Rendimiento | solo `transform`/`opacity` animados, gradientes prerrenderizados en vez de `filter: blur` animado, fuentes ≤ 30 KB, Lighthouse ≥ 95 en rendimiento en las rutas medidas | `docs/LIGHTHOUSE.md` |
+
+Efectos vetados por contrato: vídeo de fondo, partículas pesadas, WebGL obligatorio, cursor personalizado, ruido tras texto, scroll hijacking.
