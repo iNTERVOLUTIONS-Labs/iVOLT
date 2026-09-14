@@ -20,6 +20,7 @@ import { Picker } from "./components/picker.js";
 import { Carousel } from "./components/carousel.js";
 import { Form } from "./components/form.js";
 import { Counter } from "./components/counter.js";
+import { Megamenu } from "./components/megamenu.js";
 
 export { IvComponent } from "./core/component.js";
 export { IvError } from "./core/registry.js";
@@ -35,6 +36,7 @@ export { Picker } from "./components/picker.js";
 export { Carousel } from "./components/carousel.js";
 export { Form } from "./components/form.js";
 export { Counter } from "./components/counter.js";
+export { Megamenu } from "./components/megamenu.js";
 export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
@@ -46,7 +48,7 @@ export const version = "0.3.0-beta.0";
  *
  * @type {ReadonlyArray<typeof IvComponent>}
  */
-export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel, Form, Counter]);
+export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel, Form, Counter, Megamenu]);
 
 /**
  * Instantiates every iVOLT component found inside `root` and wires the

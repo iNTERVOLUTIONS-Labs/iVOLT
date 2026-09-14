@@ -52,7 +52,7 @@ export const nav = [
     { href: "/foundations/coexistence", label: "Coexisting with CSS" },
     { href: "/foundations/surfaces", label: "Surfaces & textures" },
   ] },
-  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datatable", "picker", "carousel", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
+  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datatable", "picker", "carousel", "megamenu", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Project", items: [
     { href: "/changelog", label: "Changelog" },
     { href: "/roadmap", label: "Roadmap" },
@@ -61,4 +61,4 @@ export const nav = [
 ];
 
 // Family of each component page (css-only or progressively enhanced with JS). Single source for the eyebrow and the home.
-export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datatable: "js", picker: "js", carousel: "js", badge: "css", alert: "css", table: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dialog: "js", drawer: "js", dropdown: "js", toast: "js" };
+export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datatable: "js", picker: "js", carousel: "js", megamenu: "js", badge: "css", alert: "css", table: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dialog: "js", drawer: "js", dropdown: "js", toast: "js" };

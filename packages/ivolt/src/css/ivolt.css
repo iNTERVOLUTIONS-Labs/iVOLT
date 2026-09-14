@@ -27,5 +27,6 @@
 @import url("./components/datatable.css") layer(iv.components);
 @import url("./components/picker.css") layer(iv.components);
 @import url("./components/carousel.css") layer(iv.components);
+@import url("./components/megamenu.css") layer(iv.components);
 @import url("./surfaces.css") layer(iv.components);
 @import url("./utilities.css") layer(iv.utilities);

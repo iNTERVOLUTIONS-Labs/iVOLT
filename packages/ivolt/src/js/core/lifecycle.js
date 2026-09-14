@@ -120,10 +120,11 @@ function createTriggerHandler() {
     /** @type {"open"|"close"|"toggle"} */
     let action = "open";
 
-    if (openId !== null) {
+    // Empty values are state, not triggers (the megamenu marks its open item with `data-iv-open=""`).
+    if (openId) {
       action = "open";
       instance = resolveTarget(openId, "open");
-    } else if (toggleId !== null) {
+    } else if (toggleId) {
       action = "toggle";
       instance = resolveTarget(toggleId, "toggle");
     } else if (hasClose) {

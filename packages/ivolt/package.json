@@ -75,6 +75,10 @@
       "types": "./dist/types/components/counter.d.ts",
       "default": "./dist/js/components/counter.js"
     },
+    "./megamenu": {
+      "types": "./dist/types/components/megamenu.d.ts",
+      "default": "./dist/js/components/megamenu.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",

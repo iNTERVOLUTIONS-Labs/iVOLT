@@ -1,0 +1,449 @@
+/* iVOLT — components/megamenu
+ * Navigation bar whose items unfold a wide panel. Mobile first: the panel is a
+ * block in the flow (open without JavaScript, an accordion once `data-iv-js`
+ * is on the root). From `lg` upwards it floats under the bar, centred on the
+ * root, revealed by `:hover` / `:focus-within` without JavaScript and by
+ * `data-iv-open` on the item with it.
+ * Locals: --iv-megamenu-width --iv-megamenu-offset --iv-megamenu-cols
+ *         --iv-megamenu-card-span --iv-megamenu-overlay-bg
+ * Ancestor state lives inside `:where()` so a descendant rule stays at (0,1,0)
+ * and wins by source order alone, never by specificity.
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-megamenu {
+  --iv-megamenu-width: min(64rem, 100vw - 2rem);
+  --iv-megamenu-offset: 0.75rem;
+  --iv-megamenu-cols: 4;
+  --iv-megamenu-card-span: 3;
+  --iv-megamenu-overlay-bg: var(--iv-color-overlay);
+
+  position: relative;
+}
+
+/* Bar ----------------------------------------------------------------- */
+
+.iv-megamenu__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iv-megamenu__item {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.iv-megamenu__link {
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--iv-space-2);
+  min-block-size: 2.75rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-medium);
+  line-height: var(--iv-leading-snug);
+  color: var(--iv-color-text);
+  text-decoration: none;
+  border-radius: var(--iv-radius-md);
+  transition:
+    color var(--iv-motion-base) var(--iv-ease-out),
+    background-color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-megamenu__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  padding: 0;
+  color: var(--iv-color-text-muted);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-md);
+  cursor: pointer;
+}
+
+/* Chevron drawn with borders: no glyph, so nothing is announced. */
+.iv-megamenu__toggle::after {
+  content: "";
+  inline-size: 0.45rem;
+  block-size: 0.45rem;
+  border-block-end: 2px solid currentcolor;
+  border-inline-end: 2px solid currentcolor;
+  transform: translateY(-0.12em) rotate(45deg);
+  transition: transform var(--iv-motion-base) var(--iv-ease-out);
+}
+
+/* The component layer wins over the `[hidden]` rule of the base layer, so the
+ * toggle has to hide itself until `init` shows it. */
+.iv-megamenu__toggle[hidden] {
+  display: none;
+}
+
+.iv-megamenu__toggle[aria-expanded="true"] {
+  color: var(--iv-color-primary);
+}
+
+.iv-megamenu__toggle[aria-expanded="true"]::after {
+  transform: translateY(0.12em) rotate(-135deg);
+}
+
+@media (hover: hover) {
+  .iv-megamenu__link:hover {
+    color: var(--iv-color-primary);
+    background-color: var(--iv-color-surface);
+  }
+
+  .iv-megamenu__toggle:hover {
+    color: var(--iv-color-primary);
+    background-color: var(--iv-color-surface);
+  }
+}
+
+/* Panel --------------------------------------------------------------- */
+
+.iv-megamenu__panel {
+  position: relative;
+  flex-basis: 100%;
+  min-inline-size: 0;
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface);
+  border-radius: var(--iv-radius-lg);
+}
+
+/* Luminous top rule, the seam between the bar and the panel. */
+.iv-megamenu__panel::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: 2px;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--iv-color-accent),
+    transparent
+  );
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+  opacity: 0.8;
+}
+
+.iv-megamenu__inner {
+  display: grid;
+  gap: var(--iv-space-5);
+  padding: var(--iv-space-5);
+}
+
+.iv-megamenu__group {
+  min-inline-size: 0;
+}
+
+.iv-megamenu__heading {
+  margin-block: 0 var(--iv-space-3);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-megamenu__links {
+  display: grid;
+  gap: var(--iv-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iv-megamenu__links a {
+  display: block;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-2);
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text);
+  text-decoration: none;
+  border-radius: var(--iv-radius-sm);
+  transition:
+    color var(--iv-motion-base) var(--iv-ease-out),
+    background-color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-megamenu__links a:hover {
+    color: var(--iv-color-primary);
+    background-color: var(--iv-color-surface-raised);
+  }
+}
+
+/* Cards --------------------------------------------------------------- */
+
+.iv-megamenu__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: var(--iv-space-3);
+  min-inline-size: 0;
+}
+
+.iv-megamenu__card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-space-2);
+  min-inline-size: 0;
+  padding: var(--iv-space-2);
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--iv-radius-md);
+  transition:
+    background-color var(--iv-motion-base) var(--iv-ease-out),
+    transform var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-megamenu__art {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background-color: var(--iv-color-surface-raised);
+  border-radius: var(--iv-radius-md);
+}
+
+.iv-megamenu__art img,
+.iv-megamenu__art svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.iv-megamenu__name {
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-megamenu__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--iv-space-2);
+  font-size: var(--iv-text-xs);
+  color: var(--iv-color-text-muted);
+}
+
+/* Arrow of the card: same border chevron, pointing to the inline end. */
+.iv-megamenu__meta::after {
+  content: "";
+  flex: none;
+  inline-size: 0.4rem;
+  block-size: 0.4rem;
+  border-block-start: 2px solid currentcolor;
+  border-inline-end: 2px solid currentcolor;
+  transform: rotate(45deg);
+  opacity: 0.6;
+  transition: transform var(--iv-motion-base) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-megamenu__card:hover {
+    background-color: var(--iv-color-surface-raised);
+  }
+
+  :where(.iv-megamenu__card:hover) .iv-megamenu__meta::after {
+    transform: translateX(0.2rem) rotate(45deg);
+  }
+}
+
+/* Bottom bar ---------------------------------------------------------- */
+
+.iv-megamenu__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--iv-space-3);
+  padding-block-start: var(--iv-space-4);
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* Overlay ------------------------------------------------------------- */
+
+.iv-megamenu__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--iv-z-dropdown) - 1);
+  background-color: var(--iv-megamenu-overlay-bg);
+  animation: iv-megamenu-overlay-in var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+/* Redundant where `.iv-root [hidden]` applies, required where it does not:
+ * a fixed overlay that ignores `hidden` would cover the page. */
+.iv-megamenu__overlay[hidden] {
+  display: none;
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .iv-megamenu__overlay {
+    -webkit-backdrop-filter: blur(var(--iv-blur-sm));
+    backdrop-filter: blur(var(--iv-blur-sm));
+  }
+}
+
+@keyframes iv-megamenu-overlay-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Accordion, with JavaScript, below the `staticFrom` breakpoint ---------
+ * Without JavaScript the panels stay open in the flow. `visibility` takes the
+ * collapsed content out of the tab order, which needs no attribute and so
+ * nothing to restore on `destroy`.
+ */
+
+:where(:root[data-iv-js]) .iv-megamenu__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+:where(:root[data-iv-js]) .iv-megamenu__inner {
+  overflow: hidden;
+  min-block-size: 0;
+}
+
+:where(:root[data-iv-js] .iv-megamenu__item[data-iv-open]) .iv-megamenu__panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+
+/* Floating panel ------------------------------------------------------- */
+
+@media (--iv-lg) {
+  .iv-megamenu__list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* The bar and its panel travel above the overlay together. The list is the
+   * one positioned box, so it is also the containing block of the panel: same
+   * centring as the root, since it fills the root's content box. */
+  .iv-megamenu__list {
+    position: relative;
+    z-index: var(--iv-z-dropdown);
+    gap: var(--iv-space-2);
+  }
+
+  .iv-megamenu__item {
+    position: static;
+  }
+
+  /* The links are transparent: while the page is dimmed the bar takes the
+   * surface of the panel, so the navigation keeps its AA contrast instead of
+   * reading through the scrim. */
+  :where(:root[data-iv-js] .iv-megamenu:has(> .iv-megamenu__list > .iv-megamenu__item[data-iv-open])) .iv-megamenu__list {
+    background-color: var(--iv-color-surface-raised);
+  }
+
+  .iv-megamenu__link {
+    flex: 0 0 auto;
+  }
+
+  .iv-megamenu__panel {
+    position: absolute;
+    inset-block-start: calc(100% + var(--iv-megamenu-offset));
+    inset-inline: 0;
+    z-index: var(--iv-z-dropdown);
+    display: block;
+    grid-template-rows: none;
+    visibility: visible;
+    inline-size: var(--iv-megamenu-width);
+    margin-inline: auto;
+    overflow: hidden;
+    background-color: var(--iv-color-surface-raised);
+    border: var(--iv-border-width) solid var(--iv-color-border);
+    box-shadow: var(--iv-shadow-3);
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition:
+      opacity var(--iv-motion-slow) var(--iv-ease-out),
+      transform var(--iv-motion-slow) var(--iv-ease-out);
+  }
+
+  /* Bridge over the offset, so the pointer can travel from the bar to the
+   * panel without the pure CSS `:hover` dropping on the way. */
+  .iv-megamenu__panel::after {
+    content: "";
+    position: absolute;
+    inset-block-end: 100%;
+    inset-inline: 0;
+    block-size: var(--iv-megamenu-offset);
+  }
+
+  .iv-megamenu__inner {
+    grid-template-columns: repeat(var(--iv-megamenu-cols), minmax(0, 1fr));
+    gap: var(--iv-space-6);
+    padding: var(--iv-space-6);
+  }
+
+  .iv-megamenu__cards {
+    grid-column: span var(--iv-megamenu-card-span);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .iv-megamenu__bottom {
+    grid-column: 1 / -1;
+  }
+
+  /* Open: without JavaScript by hover and focus, with it by the attribute. */
+  :where(:root:not([data-iv-js]) .iv-megamenu__item:hover) .iv-megamenu__panel,
+  :where(:root:not([data-iv-js]) .iv-megamenu__item:focus-within) .iv-megamenu__panel,
+  :where(:root[data-iv-js] .iv-megamenu__item[data-iv-open]) .iv-megamenu__panel {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  /* Edge to edge: the panel takes the whole bar and drops its top corners. */
+  .iv-megamenu--full {
+    --iv-megamenu-width: 100%;
+    --iv-megamenu-offset: 0px;
+  }
+
+  .iv-megamenu--full .iv-megamenu__panel {
+    border-inline: 0;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-megamenu__panel {
+    transform: none;
+    transition: none;
+  }
+
+  .iv-megamenu__link,
+  .iv-megamenu__links a,
+  .iv-megamenu__card,
+  .iv-megamenu__toggle::after,
+  .iv-megamenu__meta::after {
+    transition: none;
+  }
+
+  .iv-megamenu__overlay {
+    animation: none;
+  }
+}

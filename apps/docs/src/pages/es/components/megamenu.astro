@@ -1,0 +1,38 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Megamenú" description="Megamenú de iVOLT: una barra de navegación cuyos elementos abren paneles anchos con grupos de enlaces y tarjetas, que funciona al pasar el puntero y al enfocar sin JavaScript, y con hover intencional, teclado, superposición y acordeón móvil cuando corre JavaScript.">
+  <article class="docs-prose">
+    <h1>Megamenú (megamenu)</h1>
+    <p>Una barra de navegación en la que un elemento puede abrir un panel ancho: grupos de enlaces, tarjetas con arte y recuentos, y una barra inferior con acciones. El servidor envía enlaces y paneles; sin JavaScript los paneles se abren al pasar el puntero y al enfocar en pantallas grandes, y quedan abiertos en línea en las pequeñas. En <code>init</code> aparecen los botones, el hover se vuelve intencional (pequeños retardos de apertura y cierre), el teclado gana flechas y Escape, una superposición oscurece la página y los paneles cerrados quedan inertes. Por debajo del punto de ruptura <code>staticFrom</code> los paneles se convierten en acordeón.</p>
+    <p><strong>CSS:</strong> <code>css/components/megamenu.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/megamenu</code> o <code>auto.js</code>. Añadido en la v0.4.</p>
+    <Fixture name="megamenu/basic" minHeight="34rem" />
+    <h2>Panel a todo el ancho con cristal</h2>
+    <p><code>iv-megamenu--full</code> extiende el panel de borde a borde de la barra; añade <code>iv-glass</code> a un panel para desenfocar lo que hay detrás.</p>
+    <Fixture name="megamenu/full" minHeight="34rem" />
+    <h2>Opciones</h2>
+    <table>
+      <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+      <tbody>
+        <tr><td><code>hover</code></td><td><code>data-iv-hover</code></td><td><code>true</code></td><td>Abre con hover intencional en punteros finos; <code>false</code> abre solo con clic y teclado.</td></tr>
+        <tr><td><code>openDelay</code>, <code>closeDelay</code></td><td><code>data-iv-open-delay</code>, <code>data-iv-close-delay</code></td><td><code>120</code>, <code>200</code></td><td>Milisegundos antes de que el hover abra o cierre un panel.</td></tr>
+        <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code></td><td>Punto de ruptura a partir del cual los paneles flotan; por debajo se comportan como acordeón.</td></tr>
+        <tr><td><code>overlay</code></td><td><code>data-iv-overlay</code></td><td><code>true</code></td><td>Oscurece la página tras un panel abierto.</td></tr>
+        <tr><td><code>closeOthers</code></td><td><code>data-iv-close-others</code></td><td><code>true</code></td><td>Abrir un elemento cierra los demás.</td></tr>
+      </tbody>
+    </table>
+    <h2>Métodos y eventos</h2>
+    <p><code>open(itemOrIndex)</code>, <code>close()</code>, <code>toggle(item)</code>, <code>destroy()</code>; lectura de <code>openItem</code>. Eventos en la raíz: <code>iv:open</code>/<code>iv:close</code> (cancelables) y después <code>iv:opened</code>/<code>iv:closed</code>, con <code>detail.item</code> y un <code>reason</code>.</p>
+    <h2>Teclado y tecnología asistiva</h2>
+    <p>Tab recorre enlaces y botones en orden; Enter, Espacio o Abajo en un botón abren su panel, e Izquierda y Derecha se mueven entre botones, Inicio y Fin saltan a los extremos. Escape cierra y devuelve el foco al botón; Tab fuera de un panel lo cierra. Los botones llevan <code>aria-expanded</code> y <code>aria-controls</code>; los paneles cerrados son inertes. Los enlaces siguen siendo enlaces, así que no se usan roles de menú.</p>
+    <h2>Sin JavaScript</h2>
+    <p>Cada enlace navega. En pantallas grandes un panel se muestra mientras su elemento está bajo el puntero o enfocado; en pantallas pequeñas los paneles están abiertos en línea bajo sus enlaces. Los botones quedan ocultos.</p>
+    <h2>Errores frecuentes</h2>
+    <ul>
+      <li>Poner enlaces esenciales solo dentro de los paneles: el enlace del elemento debe llevar a la sección.</li>
+      <li>Más de cinco o seis elementos: un megamenú es ancho; considera una barra lateral o una búsqueda.</li>
+      <li>Paneles muy altos: mantenlos por debajo de la altura del viewport o tendrán scroll interno.</li>
+    </ul>
+  </article>
+</Base>

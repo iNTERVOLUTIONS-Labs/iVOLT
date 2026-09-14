@@ -2,6 +2,17 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 0.4.0-beta.0 (unreleased)
+
+### Added
+- `Megamenu` (`iv-megamenu`, export `./megamenu`): a navigation bar whose items open wide panels with link groups, cards and a bottom bar; hover and focus without JavaScript, intentional hover, keyboard, overlay, inert panels and a mobile accordion with it.
+
+### Changed
+- Declarative triggers (`data-iv-open`, `data-iv-toggle`, `data-iv-close`) ignore empty values, so components can use those attributes as state without noise in the console.
+- Toast regions enter the top layer as manual popovers where supported; combobox lists are placed and capped by the room around the input; carousel slides off screen are inert in every effect (ADR-034).
+- Every `select.iv-select` is enhanced by the picker when JavaScript runs; `data-iv-native` keeps the native control (ADR-032).
+- Fixes from the adversarial review: selection drags no longer close dialogs and drawers, tabs activate on Space without scrolling, dropdowns return focus after pointer selection, toasts stay while hovered or focused, switches and ranges survive forced colours, long words and inline code no longer widen pages (ADR-035).
+
 ## 0.3.0-beta.0 (unreleased)
 
 ### Added

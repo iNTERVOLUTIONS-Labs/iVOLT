@@ -138,3 +138,16 @@ describe("initComponents / destroyComponents", () => {
     expect(Dialog.get(document.getElementById("d2"))).toBeUndefined();
   });
 });
+
+describe("declarative triggers with empty values", () => {
+  it("ignores empty trigger values instead of warning about a missing target", async () => {
+        const { initComponents, destroyComponents } = await import("../../packages/ivolt/src/js/core/lifecycle.js");
+    document.body.innerHTML = '<ul><li data-iv-open=""><a href="#x">Item</a></li></ul>';
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    initComponents(document, []);
+    document.querySelector("a").dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+    destroyComponents(document);
+  });
+});
