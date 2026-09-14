@@ -1,0 +1,164 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+import Arcs from "../../components/Arcs.astro";
+import ThemeCut from "../../components/ThemeCut.astro";
+import { families } from "../../i18n/en.js";
+import { componentLabels } from "../../i18n/es.js";
+import { readFileSync, existsSync } from "node:fs";
+import { gzipSync } from "node:zlib";
+import { resolve, dirname } from "node:path";
+
+// Medidas reales tomadas del paquete compilado en tiempo de build (gzip nivel 9), para que los datos de la página nunca se escriban a mano.
+let dir = process.cwd();
+while (!existsSync(resolve(dir, "packages/ivolt/dist")) && dirname(dir) !== dir) dir = dirname(dir);
+const dist = resolve(dir, "packages/ivolt/dist");
+const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.json"), "utf8")).version;
+const stage = /beta/.test(version) ? "beta" : /alpha/.test(version) ? "alpha" : "";
+const kib = (rel) => existsSync(resolve(dist, rel)) ? (gzipSync(readFileSync(resolve(dist, rel)), { level: 9 }).length / 1024).toFixed(1) : null;
+const facts = [
+  { value: "0", label: "dependencias de ejecución" },
+  { value: kib("css/ivolt.min.css") ? `${kib("css/ivolt.min.css")} KiB` : "—", label: "CSS, min + gzip" },
+  { value: kib("js/ivolt.iife.min.js") ? `${kib("js/ivolt.iife.min.js")} KiB` : "—", label: "JS (IIFE), min + gzip" },
+  { value: "3", label: "motores en la suite de pruebas" },
+];
+const points = [
+  { title: "Primero el HTML", text: "Los enlaces navegan, los botones actúan y los controles nativos se usan donde encajan. Los componentes de contenido no necesitan script; los interactivos mejoran marcado real y lo restauran en destroy." },
+  { title: "Los tokens son la API", text: "Sobrescribe --iv-color-primary o --iv-radius-md en cualquier ámbito y el sistema entero te sigue. Temas claro, oscuro y del sistema sin JavaScript." },
+  { title: "JavaScript opcional y honesto", text: "init idempotente, destroy limpio, eventos cancelables, patrones de teclado de la APG, sin observadores globales, sin eval e importaciones seguras en SSR." },
+  { title: "Se entrega como archivos", text: "CSS en capas y plano, CSS por componente, módulos ES con exports reales, un IIFE con un solo global, tipos y los tokens en JSON. Medido, no prometido." },
+];
+const panels = [
+  { fixture: "button/variants", name: "Botón", slug: "button", kind: "css" },
+  { fixture: "badge/variants", name: "Insignia", slug: "badge", kind: "css" },
+  { fixture: "alert/variants", name: "Alerta", slug: "alert", kind: "css" },
+  { fixture: "card/basic", name: "Tarjeta", slug: "card", kind: "css" },
+  { fixture: "tabs/basic", name: "Pestañas", slug: "tabs", kind: "js" },
+  { fixture: "dialog/basic", name: "Diálogo", slug: "dialog", kind: "js" },
+  { fixture: "combobox/basic", name: "Combobox", slug: "combobox", kind: "js" },
+];
+const components = Object.entries(families);
+const recipes = [
+  { slug: "landing", title: "Landing de empresa", text: "Portada, beneficios, precios de ejemplo, acordeón de preguntas frecuentes y un diálogo de contacto." },
+  { slug: "catalog", title: "Catálogo editorial", text: "Rejilla de tarjetas con filtros y ordenación que funcionan, miga de pan, insignias, paginación y pestañas." },
+  { slug: "admin", title: "Panel de administración", text: "Panel lateral estático, indicadores, tabla adaptable, formulario con avisos y un diálogo de confirmación." },
+];
+---
+<Base lang="es" title="La interfaz empieza aquí" description="iVOLT es un framework frontend híbrido de CSS, HTML y JS: componentes semánticos, un conjunto finito de utilidades, tokens de diseño y JavaScript opcional. Sin dependencias de ejecución. En alfa." sidebar={false} bleed={true}>
+  <section class="docs-hero" aria-labelledby="hero-title">
+    <Arcs />
+    <div class="docs-hero__inner">
+      <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} {stage} · MIT · <b>cero dependencias de ejecución</b></p>
+      <h1 class="docs-hero__title" id="hero-title">
+        <span class="docs-mask" style="--i:0"><span>La interfaz</span></span>
+        <span class="docs-mask" style="--i:1"><span>empieza <em>aquí.</em></span></span>
+      </h1>
+      <p class="docs-hero__lead">Componentes semánticos como camino rápido, un conjunto finito de utilidades para componer, tokens como contrato visual y JavaScript opcional para el comportamiento. Desde un <code>&lt;link&gt;</code> a secas hasta WordPress, Astro o cualquier empaquetador.</p>
+      <div class="docs-hero__actions">
+        <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/es/getting-started">Empezar</a>
+        <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/es/components/button">Explorar los componentes</a>
+      </div>
+      <ul class="docs-facts">
+        {facts.map((f) => <li class="docs-fact"><strong data-count>{f.value}</strong><span>{f.label}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="docs-section docs-wrap" aria-labelledby="why-title">
+    <div class="docs-why">
+      <div class="docs-why__head">
+        <span class="docs-num">01 — Por qué</span>
+        <span class="docs-why__figure" aria-hidden="true">01</span>
+        <h2 class="docs-why__title" id="why-title">Una sola gramática para contenido, maquetación y comportamiento.</h2>
+        <p class="docs-why__lead">Cada clase, token, atributo y evento sigue el mismo contrato con prefijo, así que lo que aprendes en la primera página te sirve en la última.</p>
+      </div>
+      <div class="docs-why__list">
+        {points.map((p, i) => (
+          <article class="docs-point docs-rail docs-reveal" style={`--i:${i}`}>
+            <h3>{p.title}</h3>
+            <p>{p.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-cabinet" aria-labelledby="components-title">
+    <div class="docs-cabinet__head docs-wrap">
+      <span class="docs-num">02 — Componentes</span>
+      <h2 class="docs-why__title" id="components-title">Diez familias de contenido,<br>ocho interactivas.</h2>
+    </div>
+    <div class="docs-cabinet__sticky">
+      <div class="docs-cabinet__track">
+        {panels.map((p) => (
+          <article class="docs-panel">
+            <Fixture name={p.fixture} title={p.name} />
+            <p class="docs-panel__meta"><a href={`/es/components/${p.slug}`}>{p.name}</a><small>{p.kind}</small></p>
+          </article>
+        ))}
+      </div>
+    </div>
+    <div class="docs-wrap">
+      <nav class="docs-families" aria-label="Componentes">
+        {components.map(([c, kind]) => <a href={`/es/components/${c}`}>{componentLabels[c]}<small>{kind}</small></a>)}
+      </nav>
+    </div>
+  </section>
+
+  <section class="docs-section docs-wrap" aria-labelledby="themes-title">
+    <div class="docs-cutsec">
+      <div class="docs-cutsec__head docs-reveal">
+        <span class="docs-num">03 — Temas</span>
+        <h2 class="docs-why__title" id="themes-title">Ámbitos, no interruptores.</h2>
+        <p>Pon <code>data-iv-theme</code> en cualquier elemento. Las elecciones explícitas ganan a la preferencia del sistema, los ámbitos se anidan y nada necesita almacenamiento ni script.</p>
+        <pre class="docs-code" tabindex="0"><code>&lt;html data-iv-theme="system"&gt;
+  &lt;section data-iv-theme="dark"&gt;
+    &lt;aside data-iv-theme="light"&gt;…&lt;/aside&gt;
+  &lt;/section&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+      <div class="docs-reveal" style="--i:1">
+        <ThemeCut name="theme/nested" lightLabel="claro" darkLabel="oscuro" />
+        <p class="docs-cutctl">
+          <label for="docs-cut-range">Mostrar el ámbito claro</label>
+          <input id="docs-cut-range" type="range" min="0" max="100" value="50" step="1">
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-section docs-wrap" aria-labelledby="recipes-title">
+    <div class="docs-reveal">
+      <span class="docs-num">04 — Recetas</span>
+      <h2 class="docs-why__title" id="recipes-title">Tres páginas completas, un solo paquete.</h2>
+    </div>
+    <div class="docs-recipes" style="margin-block-start:clamp(3rem,7vh,5rem)">
+      {recipes.map((r, i) => (
+        <a class="docs-recipe docs-reveal" href={`/examples/${r.slug}/index.html`}>
+          <div class="docs-recipe__frame"><iframe src={`/examples/${r.slug}/index.html`} title={`Vista previa de la receta ${r.title}`} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin"></iframe></div>
+          <div class="docs-recipe__body">
+            <h3>{r.title}</h3>
+            <p>{r.text}</p>
+            <span class="docs-recipe__go">Abrir la receta <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="docs-invert" data-iv-theme="light" aria-labelledby="start-title">
+    <div class="docs-wrap">
+      <span class="docs-num">05 — Empezar</span>
+      <h2 id="start-title">Dos archivos. Sin paso de build.</h2>
+      <p>Compila el paquete una vez, copia <code>dist/</code> junto a tu página y enlaza una hoja de estilo y un módulo. La plantilla inicial y las recetas son exactamente esto.</p>
+      <pre class="docs-code" tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
+  &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
+  &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
+      <div class="iv-cluster">
+        <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/es/getting-started">Leer los primeros pasos</a>
+        <a class="iv-button iv-button--secondary iv-button--lg" href="/es/examples">Descargar la plantilla inicial</a>
+      </div>
+      <p class="docs-invert__foot">Alfa: la API puede cambiar antes de 0.1.0. Los tamaños de arriba se miden en tiempo de build a partir de los archivos que se distribuyen. Sin comparativas de rendimiento con otros frameworks.</p>
+    </div>
+  </section>
+</Base>

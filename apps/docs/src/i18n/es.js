@@ -22,24 +22,31 @@ export const t = {
   close: "Cerrar",
   primaryNav: "Principal",
   docsNav: "Documentación",
-  footer: "iVOLT v0.1 alpha · MIT · de iNTERVOLUTIONS",
-  alpha: "Software alfa: la API puede cambiar antes de 0.1.0.",
+  footer: "iVOLT v0.2 beta · MIT · de iNTERVOLUTIONS",
+  alpha: "Software beta: los contratos de 0.2 están congelados; los detalles aún pueden cambiar antes de 0.2.0.",
   anchor: "Enlace a esta sección",
   copy: "Copiar HTML",
   copyCode: "Copiar",
+  examples: "Ejemplos",
+  playground: "Playground",
+  onThisPage: "En esta página",
+  langSwitch: "English",
+  brandHome: "iVOLT CSS, inicio",
+  fixtureHtml: (title) => `HTML de ${title}`,
   copied: "Copiado",
   copiedStatus: "HTML copiado al portapapeles",
   selected: "Seleccionado — pulsa Ctrl+C",
   selectedStatus: "Portapapeles no disponible; código seleccionado para copiarlo a mano",
-  langSwitch: "English",
 };
-const componentLabels = [
-  ["button", "Botón"], ["card", "Tarjeta"], ["form", "Formulario"], ["combobox", "Combobox"],
-  ["datatable", "Tabla de datos"], ["dialog", "Diálogo"], ["badge", "Insignia"], ["alert", "Alerta"],
-  ["table", "Tabla"], ["breadcrumb", "Miga de pan"], ["pagination", "Paginación"], ["progress", "Progreso"],
-  ["skeleton", "Esqueleto"], ["disclosure", "Desplegable"], ["tabs", "Pestañas"], ["dropdown", "Menú"],
-  ["drawer", "Panel lateral"], ["toast", "Aviso"],
-];
+// Nombre en español de cada familia de componentes, en el orden de la navegación. Lo usan
+// la barra lateral y la portada; las claves son las mismas que las de `families` en en.js.
+export const componentLabels = {
+  button: "Botón", card: "Tarjeta", form: "Formulario", combobox: "Combobox",
+  datatable: "Tabla de datos", dialog: "Diálogo", badge: "Insignia", alert: "Alerta",
+  table: "Tabla", breadcrumb: "Miga de pan", pagination: "Paginación", progress: "Progreso",
+  skeleton: "Esqueleto", disclosure: "Desplegable", tabs: "Pestañas", dropdown: "Menú",
+  drawer: "Panel lateral", toast: "Aviso",
+};
 export const nav = [
   { group: "Inicio", items: [
     { href: "/es/getting-started", label: "Primeros pasos" },
@@ -53,7 +60,7 @@ export const nav = [
     { href: "/es/foundations/accessibility", label: "Accesibilidad" },
     { href: "/es/foundations/coexistence", label: "Convivir con tu CSS" },
   ] },
-  { group: "Componentes", items: componentLabels.map(([c, label]) => ({ href: `/es/components/${c}`, label })) },
+  { group: "Componentes", items: Object.entries(componentLabels).map(([c, label]) => ({ href: `/es/components/${c}`, label })) },
   { group: "Proyecto", items: [
     { href: "/es/changelog", label: "Cambios" },
     { href: "/es/roadmap", label: "Hoja de ruta" },
