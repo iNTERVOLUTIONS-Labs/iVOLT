@@ -383,3 +383,53 @@ Módulo solo CSS, importado tras los componentes y antes de las utilidades en `i
 | `.iv-shine` | barrido de luz único al hover en botones y tarjetas (`::after` con gradiente, `transform` de −120% a 120% en 700 ms) |
 | `.iv-elevate` | `transform: translateY(-4px)` y sombra 3 al hover, transición `--iv-motion-slow` |
 | Reglas | sin `!important`; especificidad ≤ (0,2,0); todos los efectos animados se anulan con `prefers-reduced-motion` salvo los estáticos; contraste AA del texto sobre `iv-glass` en ambos temas verificado por axe en la fixture `surfaces/glass` |
+
+## 8.9 Megamenu (v0.4, congelado 2026-09-14)
+
+Aprendido de las webs del propietario (brokenufo.com, clasicosbasicos.org): panel absoluto centrado bajo la barra, entrada por opacidad y traslación, `aria-expanded` en el disparador, `inert` en los paneles cerrados, superposición que oscurece la página, tarjetas con arte, recuento y flecha; en móvil, acordeón en línea. Sin dependencias (allí usan GSAP; aquí no).
+
+| Aspecto | Contrato |
+|---|---|
+| HTML servido | `<nav class="iv-megamenu" data-iv-component="megamenu" aria-label="Main"><ul class="iv-megamenu__list"><li class="iv-megamenu__item"><a class="iv-megamenu__link" href="/games">Games</a><button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="mm-games" hidden><span class="iv-u-sr-only">Open Games</span></button><div class="iv-megamenu__panel" id="mm-games"><div class="iv-megamenu__inner"><section class="iv-megamenu__group"><h3 class="iv-megamenu__heading">Genres</h3><ul class="iv-megamenu__links">…</ul></section><div class="iv-megamenu__cards"><a class="iv-megamenu__card" href="…"><span class="iv-megamenu__art">…</span><span class="iv-megamenu__name">…</span><span class="iv-megamenu__meta">…</span></a>…</div><footer class="iv-megamenu__bottom"><a class="iv-button iv-button--primary" href="…">Browse everything</a></footer></div></div></li>…</ul></nav>`. Sin JS: el enlace navega; el panel se muestra con `:hover`/`:focus-within` del `__item` en ≥ lg (CSS puro, sin retardo) y en línea, abierto, en < lg; el `__toggle` va `hidden` |
+| Tras `init` | muestra los `__toggle` (`[data-iv-js]`), desactiva el `:hover` puro (`data-iv-js` en la raíz cambia a control por atributo `data-iv-open` en el `__item`), abre al pulsar el toggle, con `Enter`/`Espacio`/`↓` en el toggle, y con hover intencional (`pointerenter` + 120 ms, `pointerleave` + 200 ms) en dispositivos con puntero fino; cierra con `Escape` (foco al toggle), clic fuera, `Tab` al salir del panel, al abrir otro ítem; añade `<div class="iv-megamenu__overlay" hidden>` al final de la raíz; los paneles cerrados llevan `inert`; `← →` mueven entre toggles, `Home`/`End`; en < lg (`staticFrom`) los paneles funcionan como acordeón (`aria-expanded`, sin superposición, sin `inert` de hermanos) |
+| Opciones (`data-iv-*`) | `hover` (true; false = solo clic), `openDelay` (120), `closeDelay` (200), `staticFrom` (`lg`), `overlay` (true), `closeOthers` (true) |
+| Métodos | `open(itemOrIndex) close() toggle(item) destroy()`; `openItem` (elemento o `null`) |
+| Eventos | `iv:open/opened/close/closed` en la raíz con `detail.item` y `reason: "trigger"\|"hover"\|"escape"\|"external"\|"api"\|"sibling"` |
+| Accesibilidad | patrón de menú de navegación (no `role="menu"`: son enlaces); toggles con nombre; `aria-controls`; panel con `role="region"`? no: es contenido de navegación, sin rol extra; foco visible; `Escape` siempre cierra; contraste del panel (cristal opcional `iv-glass`) verificado por axe |
+| CSS | `.iv-megamenu` (relative; locales `--iv-megamenu-width: min(64rem, 100vw - 2rem)`, `--iv-megamenu-offset: 0.75rem`, `--iv-megamenu-cols: 4`), `__list` (flex), `__item`, `__link`, `__toggle` (chevron `::after` que gira), `__panel` (≥ lg: absoluta bajo el ítem, centrada respecto a la raíz con `inset-inline: 0` + `margin-inline: auto`, ancho `--iv-megamenu-width`, superficie `surface-raised` + sombra 3 + radio lg + filete superior luminoso, entrada `opacity` + `translateY(8px)` en `--iv-motion-slow`; < lg: estática, `grid-template-rows: 0fr → 1fr` para el acordeón), `__inner` (grid `--iv-megamenu-cols`), `__group`, `__heading` (uppercase xs muted), `__links`, `__cards`, `__card` (arte `aspect-ratio: 3/4` con `object-fit`, nombre, meta, flecha que se desplaza al hover, `iv-elevate` opcional), `__bottom` (barra inferior con acciones), `__overlay` (fijo, `--iv-glass-bg-strong` invertido, `backdrop-filter` sm); modificador `iv-megamenu--full` (panel de borde a borde). Reduced motion: sin traslación ni retardo animado |
+| Fuera de alcance | menús de varios niveles anidados, carga perezosa de contenido, arrastre |
+
+## 8.10 Efectos de borde y proximidad (v0.4, congelado 2026-09-14)
+
+Aprendido de las webs del propietario: líneas de exploración que cruzan (`scan`), chispas que parpadean, halos verdes y bordes que se encienden. Todo CSS salvo la proximidad, que necesita la posición del puntero.
+
+| Clase / componente | Contrato |
+|---|---|
+| `.iv-edge-glint` | un destello recorre el borde una vez: `::before` con `inset: -1px`, `border-radius: inherit`, `conic-gradient(from var(--iv-glint-angle), transparent 0 70%, var(--iv-color-accent) 85%, transparent 100%)` enmascarado al borde (misma máscara que `iv-glow`), `@property --iv-glint-angle` animado de 0 a 360° en 1,2 s al `:hover`, `:focus-within` o cuando lleva `data-iv-inview` (lo pone `Reveal`, ver abajo); local `--iv-glint-color`; sin `prefers-reduced-motion`: borde iluminado fijo |
+| `.iv-edge-near` + `Proximity` | el borde se ilumina donde el puntero se acerca: `::after` con `inset: -1px`, `border-radius: inherit`, `background: radial-gradient(var(--iv-near-radius, 160px) circle at var(--iv-mx) var(--iv-my), var(--iv-color-accent), transparent 70%)`, enmascarado al borde, `opacity: var(--iv-near, 0)`; el componente `Proximity` (`data-iv-component="proximity"` en un contenedor; por defecto `init` lo aplica a `document.body` si no hay ninguno) escucha `pointermove` en el contenedor (rAF, un solo listener) y para cada `.iv-edge-near` dentro calcula la distancia del puntero al rectángulo y fija `--iv-mx`/`--iv-my` (px relativos) y `--iv-near` (1 dentro, decae a 0 a `radius` px; opción `radius` 160); solo con puntero fino; `destroy` limpia variables y listener; sin JS o sin puntero fino: sin efecto (el borde normal) |
+| `.iv-scan`, `.iv-scan--v` | una línea de luz cruza el bloque en bucle lento (`::after` con gradiente de 2 px, `translateX(-10%) → 110%` en 6 s, `opacity` 0→1→0 como en los keyframes `scan-h/scan-v` de referencia); local `--iv-scan-duration`; solo dentro de `iv-hero` o bloques grandes; detenido con `prefers-reduced-motion` |
+| `.iv-spark` | punto que parpadea (`box-shadow` en halo, escala 0.5→1.2, 2 s, `animation-delay` por `--i`); estático con reduced motion |
+| `.iv-pulse-glow` | halo que respira (`box-shadow` 8→16 px `--iv-glow-primary`, 2 s); para indicadores de estado |
+| `Reveal` (`data-iv-component="reveal"` en un contenedor, o `data-iv-reveal` en elementos) | `IntersectionObserver` que añade `data-iv-inview` a los elementos con `data-iv-reveal` (o `.iv-reveal`) cuando entran (umbral 0,15, una sola vez salvo `repeat`); CSS `.iv-reveal` (`opacity: 0; translateY(24px)` → `[data-iv-inview]` visible, `--i` para escalonar) y activa `iv-edge-glint`; sin JS o con reduced motion todo visible desde el principio (`:root:not([data-iv-js]) .iv-reveal { opacity: 1; transform: none }`); opciones `threshold` (0.15), `repeat` (false), `stagger` (80 ms) |
+
+Reglas: sin `!important`; especificidad ≤ (0,2,0); `Proximity` y `Reveal` respetan `init`/`destroy` exactos (variables y atributos retirados); ningún efecto sobre texto legible salvo `iv-scan` a baja opacidad.
+
+## 8.11 Hero (v0.4, congelado 2026-09-14)
+
+Familia CSS de composición de portadas, «súper espectaculares» sin JS obligatorio; combina superficies (§8.8) y efectos de borde (§8.10).
+
+| Clase | Contrato |
+|---|---|
+| `.iv-hero` | sección de borde a borde (`inline-size: 100%`), `min-block-size: var(--iv-hero-min, 80svh)`, `display: grid`, `align-content: end` (contenido abajo por defecto), `position: relative; isolation: isolate; overflow: clip`, relleno `clamp(2rem, 6vw, 5rem)`; locales `--iv-hero-min`, `--iv-hero-max-width` (`--iv-container-max`), `--iv-hero-scrim` |
+| `__media` | capa de fondo (`position: absolute; inset: 0; z-index: -2`) con `img`/`video` `object-fit: cover` o gradiente; `.iv-hero--kenburns` la escala 1 → 1.08 en 18 s (detenido con reduced motion) |
+| `__scrim` | capa `-1` con gradiente de abajo (`--iv-hero-scrim`, por defecto carbón 0→0.85) para AA del texto; `.iv-hero--light` invierte |
+| `__content` | columna con `max-inline-size: var(--iv-hero-max-width)`, `margin-inline: auto` |
+| `__kicker` | mono, uppercase, `letter-spacing: .2em`, `--iv-color-primary`; `.iv-hero--terminal` le añade el prompt `::before` («$ ») y un cursor `::after` que parpadea |
+| `__title` | `clamp(2.75rem, 8vw, 7.5rem)`, `line-height: 0.92`, `letter-spacing: -0.04em`, peso 600; `em` en `--iv-color-primary`; `.iv-hero__title > span` con `.iv-rise` para entrada por líneas (CSS-only: `animation` al cargar, escalonada por `--i`, anulada con reduced motion) |
+| `__lead` | `clamp(1.05rem, 1.2vw, 1.3rem)`, `max-inline-size: 48ch`, muted |
+| `__actions` | cluster de botones |
+| `__aside` | segunda columna en `.iv-hero--split` (grid 1.2fr / 0.8fr desde md) para una fixture viva, una tarjeta de cristal o un carrusel |
+| `__facts` | lista horizontal de cifras (`strong` grande + etiqueta), como en la home |
+| Modificadores | `--center` (contenido centrado, `align-content: center`), `--split`, `--cinematic` (`iv-texture-aurora` de fondo + `iv-scan` + `iv-spark` decorativos), `--terminal` (mono, cursor), `--compact` (`--iv-hero-min: 50svh`) |
+| Accesibilidad | los medios decorativos llevan `alt=""`/`aria-hidden`; el título es el `h1` de la página; sin autoplay de vídeo con sonido; texto sobre scrim con AA verificado por axe en las fixtures |
+| Fixtures | `hero/basic` (media gradiente + scrim + kicker + título con `em` + lead + acciones), `hero/split` (aside con `card iv-glass` y `iv-edge-near`), `hero/cinematic` (aurora + scan + sparks + `iv-edge-glint` en el CTA), `hero/terminal` |

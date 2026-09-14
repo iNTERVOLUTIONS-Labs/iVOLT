@@ -92,3 +92,28 @@ Objetivo: que el framework sea espectacular por defecto (DESIGN_SYSTEM §9) mant
 | 6 | Cierre: presupuestos medidos por módulo, `verify`, changelog `0.3.0-beta.0`, estado | — | hecho (2026-09-14; gate en tres motores, Lighthouse 99–100) |
 
 Fuera del ciclo: datepicker, constructor de temas, wrappers de frameworks; lector de pantalla sigue bloqueado.
+
+## 7. Ciclos v0.4 «Navigation & light» y v0.5 «Time & help» (abiertos 2026-09-14; objetivo: no parar hasta 0.5)
+
+Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus webs; temas BUFO y ClaBa de iNTERVOLUTIONS) e incluir megamenús, bordes recorridos por un destello, bordes que se iluminan al acercar el puntero, y heros súper espectaculares; después seguir hasta 0.5. Lo aprendido (ADR-033): panel de megamenú absoluto centrado con entrada por opacidad y traslación, superposición, `aria-expanded` + `inert`, tarjetas con arte y flecha, acordeón en móvil; líneas de exploración (`scan-h/v`, `hero-scan`), chispas (`brand-spark`), halos `--*-green-glow`, `backdrop-filter`, `perspective`; revelados con `IntersectionObserver`. Allí usan GSAP/ScrollTrigger; aquí todo es CSS y JS propio sin dependencias.
+
+### v0.4 «Navigation & light» → `0.4.0-beta.0`
+
+| Orden | Elemento | Contrato | Estado |
+|---|---|---|---|
+| 0 | Revisión adversaria (dos revisores Opus: componentes JS; web y CSS sin JS) y corrección de lo encontrado | — | en curso |
+| 1 | Megamenu (`megamenu`): hover intencional, teclado, superposición, acordeón en móvil, tarjetas | §8.9 | pendiente |
+| 2 | Efectos de borde y proximidad: `iv-edge-glint`, `iv-edge-near` + `Proximity`, `iv-scan`, `iv-spark`, `iv-pulse-glow`, `Reveal` | §8.10 | pendiente |
+| 3 | Hero (`iv-hero` y modificadores `--center/--split/--cinematic/--terminal`) | §8.11 | pendiente |
+| 4 | Web: páginas (megamenu, effects, hero) en dos idiomas, home con hero `iv-hero` y megamenú en la cabecera de la web, español | — | pendiente |
+| 5 | Cierre: `verify`, Lighthouse, changelog `0.4.0-beta.0`, estado | — | pendiente |
+
+### v0.5 «Time & help» → `0.5.0-beta.0` (contratos por escribir al abrir el ciclo)
+
+| Orden | Elemento | Notas |
+|---|---|---|
+| 1 | Datepicker (`datepicker`) sobre `<input type="date">`: calendario en popover, teclado por rejilla, rangos `min`/`max`, locale por `lang` | backlog P2 |
+| 2 | Tooltip y popover (`tooltip`, `popover`): `data-iv-tooltip`, atributo `popover` nativo como base, posicionamiento por espacio real (como el picker) | nuevo |
+| 3 | Command palette (`command`): búsqueda de acciones con `/` o `Ctrl+K`, como en brokenufo.com; en la web sustituye al diálogo de búsqueda | nuevo |
+| 4 | Constructor de temas en la web: editar tokens y exportar `tokens.css` | backlog P2 |
+| 5 | Cierre `0.5.0-beta.0` | — |
