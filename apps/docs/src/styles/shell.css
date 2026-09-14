@@ -122,3 +122,9 @@
 ::view-transition-new(root) { animation: docs-vt-in 300ms var(--docs-ease) both; }
 @keyframes docs-vt-out { to { opacity: 0; } }
 @keyframes docs-vt-in { from { opacity: 0; transform: translateY(10px); } }
+
+/* ---------- language switch (header at lg+, always inside the nav dialog) ---------- */
+.docs-lang { display: none; align-items: center; font-family: var(--docs-display); font-size: var(--iv-text-sm); font-weight: var(--iv-weight-medium); color: var(--iv-color-text-muted); text-decoration: none; padding: var(--iv-space-2) var(--iv-space-3); border-radius: var(--iv-radius-md); }
+.docs-lang:hover, .docs-lang:focus-visible { color: var(--iv-color-text); background: var(--iv-color-surface); }
+.docs-nav-dialog .docs-lang { display: inline-flex; }
+@media (min-width: 64em) { .docs-header .docs-lang { display: inline-flex; } }

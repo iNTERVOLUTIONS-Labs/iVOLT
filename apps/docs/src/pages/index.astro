@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import Fixture from "../components/Fixture.astro";
 import Arcs from "../components/Arcs.astro";
 import ThemeCut from "../components/ThemeCut.astro";
+import { families } from "../i18n/en.js";
 import { readFileSync, existsSync } from "node:fs";
 import { gzipSync } from "node:zlib";
 import { resolve, dirname } from "node:path";
@@ -11,6 +12,8 @@ import { resolve, dirname } from "node:path";
 let dir = process.cwd();
 while (!existsSync(resolve(dir, "packages/ivolt/dist")) && dirname(dir) !== dir) dir = dirname(dir);
 const dist = resolve(dir, "packages/ivolt/dist");
+const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.json"), "utf8")).version;
+const stage = /beta/.test(version) ? "beta" : /alpha/.test(version) ? "alpha" : "";
 const kib = (rel) => existsSync(resolve(dist, rel)) ? (gzipSync(readFileSync(resolve(dist, rel)), { level: 9 }).length / 1024).toFixed(1) : null;
 const facts = [
   { value: "0", label: "runtime dependencies" },
@@ -33,7 +36,7 @@ const panels = [
   { fixture: "dialog/basic", name: "Dialog", slug: "dialog", kind: "js" },
   { fixture: "combobox/basic", name: "Combobox", slug: "combobox", kind: "js" },
 ];
-const components = [["button", "css"], ["card", "css"], ["form", "css"], ["combobox", "js"], ["badge", "css"], ["alert", "css"], ["table", "css"], ["breadcrumb", "css"], ["pagination", "css"], ["progress", "css"], ["skeleton", "css"], ["disclosure", "js"], ["tabs", "js"], ["dialog", "js"], ["drawer", "js"], ["dropdown", "js"], ["toast", "js"]];
+const components = Object.entries(families);
 const recipes = [
   { slug: "landing", title: "Business landing", text: "Hero, benefits, example pricing, FAQ accordion and a contact dialog." },
   { slug: "catalog", title: "Editorial catalogue", text: "Card grid with working filters and sorting, breadcrumb, badges, pagination and tabs." },
@@ -44,7 +47,7 @@ const recipes = [
   <section class="docs-hero" aria-labelledby="hero-title">
     <Arcs />
     <div class="docs-hero__inner">
-      <p class="docs-hero__kicker">v0.1 alpha · MIT · <b>zero runtime dependencies</b></p>
+      <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} {stage} · MIT · <b>zero runtime dependencies</b></p>
       <h1 class="docs-hero__title" id="hero-title">
         <span class="docs-mask" style="--i:0"><span>The interface</span></span>
         <span class="docs-mask" style="--i:1"><span>starts <em>here.</em></span></span>
@@ -82,7 +85,7 @@ const recipes = [
   <section class="docs-cabinet" aria-labelledby="components-title">
     <div class="docs-cabinet__head docs-wrap">
       <span class="docs-num">02 — Components</span>
-      <h2 class="docs-why__title" id="components-title">Ten content families,<br>seven interactive ones.</h2>
+      <h2 class="docs-why__title" id="components-title">Ten content families,<br>eight interactive ones.</h2>
     </div>
     <div class="docs-cabinet__sticky">
       <div class="docs-cabinet__track">

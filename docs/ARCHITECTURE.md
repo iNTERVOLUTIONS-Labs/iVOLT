@@ -81,7 +81,7 @@ Todos los presupuestos se miden por separado con `scripts/sizes.mjs` (gzip nivel
 ```json
 {
   "name": "@intervolutions/ivolt",
-  "version": "0.1.0-alpha.0",
+  "version": "0.2.0-beta.0",
   "type": "module",
   "license": "MIT",
   "files": ["dist", "LICENSE", "README.md"],

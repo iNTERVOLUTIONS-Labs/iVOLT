@@ -66,8 +66,8 @@ const cspHash = "sha256-" + createHash("sha256").update(themeSnippet).digest("ba
     <p>No hay ningún paso de compilación que añadir. Copia <code>packages/ivolt/dist</code> dentro del tema (por ejemplo en <code>assets/ivolt/</code>) y encola los archivos.</p>
 <pre><code>function theme_ivolt_assets() &#123;
   $base = get_template_directory_uri() . '/assets/ivolt';
-  wp_enqueue_style('ivolt', $base . '/css/ivolt.flat.css', array(), '0.1.0-alpha');
-  wp_enqueue_script('ivolt', $base . '/js/auto.js', array(), '0.1.0-alpha', true);
+  wp_enqueue_style('ivolt', $base . '/css/ivolt.flat.css', array(), '0.2.0-beta');
+  wp_enqueue_script('ivolt', $base . '/js/auto.js', array(), '0.2.0-beta', true);
 &#125;
 add_action('wp_enqueue_scripts', 'theme_ivolt_assets');</code></pre>
     <p>Notas propias de este entorno:</p>

@@ -22,11 +22,17 @@ export const t = {
   close: "Close",
   primaryNav: "Primary",
   docsNav: "Documentation",
-  footer: "iVOLT v0.1 alpha · MIT · by iNTERVOLUTIONS",
-  alpha: "Alpha software: APIs may change before 0.1.0.",
+  footer: "iVOLT v0.2 beta · MIT · by iNTERVOLUTIONS",
+  alpha: "Beta software: contracts are frozen for 0.2; details may still change before 0.2.0.",
   anchor: "Link to this section",
   copy: "Copy HTML",
   copyCode: "Copy",
+  examples: "Examples",
+  playground: "Playground",
+  onThisPage: "On this page",
+  langSwitch: "Español",
+  brandHome: "iVOLT CSS, home",
+  fixtureHtml: (title) => `HTML for ${title}`,
   copied: "Copied",
   copiedStatus: "HTML copied to clipboard",
   selected: "Selected — press Ctrl+C",
@@ -45,10 +51,13 @@ export const nav = [
     { href: "/foundations/accessibility", label: "Accessibility" },
     { href: "/foundations/coexistence", label: "Coexisting with CSS" },
   ] },
-  { group: "Components", items: ["button", "card", "form", "combobox", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
+  { group: "Components", items: ["button", "card", "form", "combobox", "datatable", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Project", items: [
     { href: "/changelog", label: "Changelog" },
     { href: "/roadmap", label: "Roadmap" },
     { href: "/contributing", label: "Contributing" },
   ] },
 ];
+
+// Family of each component page (css-only or progressively enhanced with JS). Single source for the eyebrow and the home.
+export const families = { button: "css", card: "css", form: "css", combobox: "js", datatable: "js", badge: "css", alert: "css", table: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dialog: "js", drawer: "js", dropdown: "js", toast: "js" };

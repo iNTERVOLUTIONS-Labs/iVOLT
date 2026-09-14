@@ -155,3 +155,13 @@
 .docs-invert p code { background: rgb(5 16 9 / .12); border-radius: var(--iv-radius-sm); padding: 0 .3em; }
 .docs-cutctl label { font-family: var(--docs-display); }
 .docs-invert .iv-cluster { display: flex; flex-wrap: wrap; gap: var(--iv-space-3); }
+
+/* Short landscape viewports (1366×610 and similar laptops): the whole hero, facts included, fits above the fold. */
+@media (min-width: 64em) and (max-height: 660px) {
+  .docs-hero { min-block-size: 0; padding-block: 3rem 1.25rem; }
+  .docs-hero__title { font-size: clamp(2.5rem, 5.4vw, 4.25rem); }
+  .docs-hero__kicker { margin-block-end: var(--iv-space-3); }
+  .docs-hero__lead { margin-block-start: .75rem; }
+  .docs-hero__actions { margin-block-start: var(--iv-space-3); }
+  .docs-facts { margin-block-start: var(--iv-space-4); }
+}
