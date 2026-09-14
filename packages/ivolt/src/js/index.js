@@ -16,6 +16,8 @@ import { Drawer } from "./components/drawer.js";
 import { Toast } from "./components/toast.js";
 import { Combobox } from "./components/combobox.js";
 import { DataTable } from "./components/datatable.js";
+import { Picker } from "./components/picker.js";
+import { Carousel } from "./components/carousel.js";
 
 export { IvComponent } from "./core/component.js";
 export { IvError } from "./core/registry.js";
@@ -27,6 +29,8 @@ export { Drawer } from "./components/drawer.js";
 export { Toast, ToastItem } from "./components/toast.js";
 export { Combobox } from "./components/combobox.js";
 export { DataTable } from "./components/datatable.js";
+export { Picker } from "./components/picker.js";
+export { Carousel } from "./components/carousel.js";
 export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
@@ -38,7 +42,7 @@ export const version = "0.2.0-beta.0";
  *
  * @type {ReadonlyArray<typeof IvComponent>}
  */
-export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable]);
+export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel]);
 
 /**
  * Instantiates every iVOLT component found inside `root` and wires the

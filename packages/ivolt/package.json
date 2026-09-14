@@ -59,6 +59,14 @@
       "types": "./dist/types/components/datatable.d.ts",
       "default": "./dist/js/components/datatable.js"
     },
+    "./picker": {
+      "types": "./dist/types/components/picker.d.ts",
+      "default": "./dist/js/components/picker.js"
+    },
+    "./carousel": {
+      "types": "./dist/types/components/carousel.d.ts",
+      "default": "./dist/js/components/carousel.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",

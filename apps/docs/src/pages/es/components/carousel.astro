@@ -1,0 +1,43 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Carrusel" description="Carrusel de iVOLT: un pase de diapositivas con scroll-snap que funciona sin JavaScript y se convierte en un carrusel accesible por pestañas con efectos slide, fade y cinema, autoplay con barra de progreso, gestos y miniaturas.">
+  <article class="docs-prose">
+    <h1>Carrusel (carousel)</h1>
+    <p>Un pase de diapositivas construido sobre una lista. El servidor envía las diapositivas en un carril con desplazamiento horizontal y ajuste (scroll-snap), puntos que son enlaces de ancla y botones ocultos; eso ya funciona en cualquier navegador. En <code>init</code> los puntos pasan a ser pestañas, las diapositivas paneles, los botones aparecen y el carril se mueve por transformaciones: deslizamiento con leyenda en paralaje, fundido cruzado, o un modo cinema que acerca lentamente el medio activo. El autoplay dibuja una barra de progreso, se pausa al pasar el puntero, al enfocar y cuando la pestaña del navegador se oculta, y nunca arranca si la persona prefiere reducir el movimiento.</p>
+    <p><strong>CSS:</strong> <code>css/components/carousel.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/carousel</code> o <code>auto.js</code>. Añadido en la v0.3.</p>
+    <Fixture name="carousel/basic" />
+    <h2>Efecto cinema con autoplay</h2>
+    <p><code>data-iv-effect="cinema"</code> funde las diapositivas y añade un zoom lento sobre el medio activo mientras la leyenda sube. Con <code>data-iv-autoplay</code> el componente añade un contador grande y una barra de progreso que se rellena durante el intervalo; el botón de reproducir/pausar expone su estado con <code>aria-pressed</code>.</p>
+    <Fixture name="carousel/cinema" />
+    <h2>Miniaturas</h2>
+    <p>Da a los puntos la clase <code>iv-carousel__dots--thumbs</code> y pon una imagen pequeña en cada ancla: se convierten en pestañas con miniatura. Este ejemplo usa el efecto fade.</p>
+    <Fixture name="carousel/thumbs" />
+    <h2>Opciones</h2>
+    <table>
+      <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+      <tbody>
+        <tr><td><code>effect</code></td><td><code>data-iv-effect</code></td><td><code>slide</code></td><td><code>slide</code>, <code>fade</code> o <code>cinema</code>.</td></tr>
+        <tr><td><code>autoplay</code></td><td><code>data-iv-autoplay</code></td><td><code>0</code></td><td>Milisegundos entre diapositivas; <code>0</code> desactiva el autoplay. Nunca arranca con movimiento reducido.</td></tr>
+        <tr><td><code>loop</code></td><td><code>data-iv-loop</code></td><td><code>true</code></td><td>Continúa por el otro extremo al llegar al final.</td></tr>
+        <tr><td><code>pauseOnHover</code></td><td><code>data-iv-pause-on-hover</code></td><td><code>true</code></td><td>Pausa el autoplay mientras el puntero está sobre el carrusel.</td></tr>
+        <tr><td><code>swipe</code></td><td><code>data-iv-swipe</code></td><td><code>true</code></td><td>Arrastrar con el puntero cambia de diapositiva (umbral de 40 px).</td></tr>
+        <tr><td><code>duration</code></td><td><code>data-iv-duration</code></td><td><code>600</code></td><td>Duración de la transición en milisegundos.</td></tr>
+        <tr><td><code>pauseText</code>, <code>playText</code></td><td><code>data-iv-pause-text</code>, <code>data-iv-play-text</code></td><td><code>Pause</code>, <code>Play</code></td><td>Textos del botón de pausa y reproducción.</td></tr>
+      </tbody>
+    </table>
+    <h2>Métodos y eventos</h2>
+    <p><code>next()</code>, <code>prev()</code>, <code>goTo(index)</code>, <code>play()</code>, <code>pause()</code>, <code>destroy()</code>; lectura de <code>index</code>, <code>count</code>, <code>isPlaying</code> y <code>slides</code>. Eventos en el elemento raíz: <code>iv:change</code> (cancelable, <code>detail.index</code>, <code>previousIndex</code>, <code>reason</code>) y después <code>iv:changed</code>; <code>iv:play</code> e <code>iv:pause</code> con un <code>reason</code>.</p>
+    <h2>Teclado, gestos y tecnología asistiva</h2>
+    <p>Izquierda y derecha cambian de diapositiva desde las pestañas o desde el visor, Inicio y Fin saltan a los extremos, Enter y Espacio activan una pestaña. Arrastrar con el puntero cambia de diapositiva. El marcado sigue el patrón de carrusel por pestañas: cada diapositiva es un panel llamado «n of N», las no visibles quedan inertes en los efectos fade y cinema, y el visor solo es una región viva mientras el autoplay está en pausa, para no interrumpir la lectura con cada cambio.</p>
+    <h2>Sin JavaScript</h2>
+    <p>El carril se desplaza horizontalmente y se ajusta a cada diapositiva, los puntos son enlaces de ancla que llevan la diapositiva a la vista y los botones quedan ocultos. Las leyendas van sobre un degradado para que el texto se lea sobre cualquier medio.</p>
+    <h2>Errores frecuentes</h2>
+    <ul>
+      <li>Medios sin texto alternativo ni <code>aria-label</code>: cada diapositiva necesita un nombre.</li>
+      <li>Autoplay en un carrusel con enlaces y formularios dentro: quien lo lee pierde el sitio. Mejor navegación manual o un intervalo largo.</li>
+      <li>Usar el carrusel para contenido esencial: nada importante debería existir solo en la cuarta diapositiva.</li>
+    </ul>
+  </article>
+</Base>

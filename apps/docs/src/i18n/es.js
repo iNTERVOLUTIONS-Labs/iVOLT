@@ -42,7 +42,9 @@ export const t = {
 // la barra lateral y la portada; las claves son las mismas que las de `families` en en.js.
 export const componentLabels = {
   button: "Botón", card: "Tarjeta", form: "Formulario", combobox: "Combobox",
-  datatable: "Tabla de datos", dialog: "Diálogo", badge: "Insignia", alert: "Alerta",
+  datatable: "Tabla de datos",
+  picker: "Selector",
+  carousel: "Carrusel", dialog: "Diálogo", badge: "Insignia", alert: "Alerta",
   table: "Tabla", breadcrumb: "Miga de pan", pagination: "Paginación", progress: "Progreso",
   skeleton: "Esqueleto", disclosure: "Desplegable", tabs: "Pestañas", dropdown: "Menú",
   drawer: "Panel lateral", toast: "Aviso",

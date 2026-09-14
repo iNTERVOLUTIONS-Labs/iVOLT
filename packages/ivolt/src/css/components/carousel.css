@@ -1,0 +1,584 @@
+/* iVOLT — components/carousel
+ * A slideshow that is already cinematic with CSS alone: the served track
+ * scrolls with `scroll-snap`, the captions sit over a gradient scrim and the
+ * dots are anchors. When `init` marks the document with `data-iv-js` the
+ * native scrolling is switched off and the track is driven by
+ * `--iv-carousel-index` (`slide`) or by opacity (`fade`, `cinema`, which also
+ * pans and scales the media). Everything animated here is `transform` or
+ * `opacity`, everything animated here stops under `prefers-reduced-motion`.
+ * Locals: --iv-carousel-aspect --iv-carousel-duration --iv-carousel-ease
+ *         --iv-carousel-radius --iv-carousel-gap --iv-carousel-parallax
+ *         --iv-carousel-scrim --iv-carousel-index --iv-carousel-autoplay
+ *         --iv-carousel-play --iv-carousel-slide
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-carousel {
+  --iv-carousel-aspect: 16 / 9;
+  --iv-carousel-duration: 600ms;
+  --iv-carousel-ease: var(--iv-ease-out);
+  --iv-carousel-radius: var(--iv-radius-lg);
+  --iv-carousel-gap: var(--iv-space-4);
+  --iv-carousel-parallax: 10cqi;
+  --iv-carousel-scrim: color-mix(in srgb, var(--iv-palette-neutral-1000) 92%, transparent);
+
+  position: relative;
+  display: grid;
+  grid-template-areas: "view" "bar";
+  grid-template-rows: auto auto;
+  gap: var(--iv-carousel-gap);
+}
+
+/* Viewport ------------------------------------------------------------- */
+
+.iv-carousel__viewport {
+  position: relative;
+  container-type: inline-size;
+  grid-area: view;
+  border-radius: var(--iv-carousel-radius);
+  background-color: var(--iv-color-surface);
+  box-shadow: var(--iv-shadow-3);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Hairline that keeps the artwork from bleeding into the page. */
+.iv-carousel__viewport::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--iv-glass-border);
+  pointer-events: none;
+}
+
+.iv-carousel__viewport:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+/* Track and slides ----------------------------------------------------- */
+
+.iv-carousel__track {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+/* The dots and the arrows are the affordance; a scrollbar would cut the art. */
+.iv-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.iv-carousel__slide {
+  position: relative;
+  display: grid;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+.iv-carousel__slide:nth-child(1) { --iv-carousel-slide: 0; }
+.iv-carousel__slide:nth-child(2) { --iv-carousel-slide: 1; }
+.iv-carousel__slide:nth-child(3) { --iv-carousel-slide: 2; }
+.iv-carousel__slide:nth-child(4) { --iv-carousel-slide: 3; }
+.iv-carousel__slide:nth-child(5) { --iv-carousel-slide: 4; }
+.iv-carousel__slide:nth-child(6) { --iv-carousel-slide: 5; }
+.iv-carousel__slide:nth-child(7) { --iv-carousel-slide: 6; }
+.iv-carousel__slide:nth-child(8) { --iv-carousel-slide: 7; }
+.iv-carousel__slide:nth-child(9) { --iv-carousel-slide: 8; }
+.iv-carousel__slide:nth-child(10) { --iv-carousel-slide: 9; }
+.iv-carousel__slide:nth-child(11) { --iv-carousel-slide: 10; }
+.iv-carousel__slide:nth-child(12) { --iv-carousel-slide: 11; }
+
+.iv-carousel__media {
+  grid-area: 1 / 1;
+  margin: 0;
+  aspect-ratio: var(--iv-carousel-aspect);
+  background-color: var(--iv-color-surface);
+  overflow: hidden;
+}
+
+.iv-carousel__media img,
+.iv-carousel__media svg,
+.iv-carousel__media video {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.iv-carousel__scrim {
+  grid-area: 1 / 1;
+  background-image: linear-gradient(
+    to top,
+    var(--iv-carousel-scrim) 0%,
+    color-mix(in srgb, var(--iv-carousel-scrim) 62%, transparent) 26%,
+    transparent 64%
+  );
+  pointer-events: none;
+}
+
+/* Caption -------------------------------------------------------------- */
+
+.iv-carousel__caption {
+  position: relative;
+  z-index: 1;
+  grid-area: 1 / 1;
+  align-self: end;
+  display: grid;
+  justify-items: start;
+  gap: var(--iv-space-3);
+  max-inline-size: min(58ch, 100%);
+  padding: var(--iv-space-6);
+  color: var(--iv-palette-neutral-0);
+}
+
+.iv-carousel__caption h2,
+.iv-carousel__caption h3 {
+  margin: 0;
+  font-size: var(--iv-text-4xl);
+  font-weight: var(--iv-weight-bold);
+  line-height: var(--iv-leading-tight);
+  letter-spacing: -0.02em;
+  color: inherit;
+  text-wrap: balance;
+  text-shadow: 0 2px 18px var(--iv-carousel-scrim);
+}
+
+.iv-carousel__caption p {
+  margin: 0;
+  font-size: var(--iv-text-lg);
+  line-height: var(--iv-leading-snug);
+  color: color-mix(in srgb, var(--iv-palette-neutral-0) 84%, transparent);
+  text-shadow: 0 1px 12px var(--iv-carousel-scrim);
+}
+
+/* Dots ----------------------------------------------------------------- */
+
+.iv-carousel__dots {
+  grid-area: bar;
+  justify-self: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-2);
+  align-items: center;
+}
+
+.iv-carousel__dots > a,
+.iv-carousel__dots > button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: var(--iv-radius-md);
+  cursor: pointer;
+}
+
+.iv-carousel__dots > a::before,
+.iv-carousel__dots > button::before {
+  content: "";
+  display: block;
+  inline-size: 100%;
+  block-size: 0.25rem;
+  background-color: var(--iv-color-border-strong);
+  border-radius: var(--iv-radius-full);
+  transition:
+    background-color var(--iv-motion-slow) var(--iv-carousel-ease),
+    transform var(--iv-motion-slow) var(--iv-carousel-ease);
+}
+
+.iv-carousel__dots > a:hover::before,
+.iv-carousel__dots > button:hover::before {
+  background-color: var(--iv-color-primary);
+  transform: scaleY(1.6);
+}
+
+.iv-carousel__dots > [aria-selected="true"]::before {
+  background-image: linear-gradient(
+    90deg,
+    var(--iv-color-primary),
+    var(--iv-color-accent)
+  );
+  box-shadow: 0 0 14px var(--iv-glow-primary);
+  transform: scaleY(2);
+}
+
+.iv-carousel__dots > :focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+/* Thumbnails ----------------------------------------------------------- */
+
+.iv-carousel__dots--thumbs {
+  gap: var(--iv-space-3);
+}
+
+.iv-carousel__dots--thumbs > a,
+.iv-carousel__dots--thumbs > button {
+  inline-size: 6rem;
+  block-size: 3.5rem;
+  border-radius: var(--iv-radius-md);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  overflow: hidden;
+  opacity: 0.62;
+  filter: saturate(0.7);
+  transition:
+    opacity var(--iv-motion-slow) var(--iv-carousel-ease),
+    transform var(--iv-motion-slow) var(--iv-carousel-ease),
+    filter var(--iv-motion-slow) var(--iv-carousel-ease);
+}
+
+.iv-carousel__dots--thumbs > a::before,
+.iv-carousel__dots--thumbs > button::before {
+  content: none;
+}
+
+.iv-carousel__dots--thumbs > a:hover,
+.iv-carousel__dots--thumbs > button:hover {
+  opacity: 0.9;
+  filter: none;
+}
+
+.iv-carousel__dots--thumbs > [aria-selected="true"] {
+  opacity: 1;
+  filter: none;
+  border-color: var(--iv-color-accent);
+  box-shadow: 0 8px 22px var(--iv-glow-primary);
+  transform: translateY(-2px);
+}
+
+.iv-carousel__dots--thumbs img,
+.iv-carousel__dots--thumbs svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* Controls ------------------------------------------------------------- */
+
+/* The viewport is positioned, so the overlay has to be positioned too: a
+   static block would paint underneath it. */
+.iv-carousel__controls {
+  position: relative;
+  z-index: 2;
+  grid-area: view;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  padding: var(--iv-space-4);
+  pointer-events: none;
+}
+
+/* Served hidden: `.iv-button` sets a display, which outweighs the base
+   `[hidden]` rule, so the controls hide themselves until `init` shows them. */
+.iv-carousel__prev[hidden],
+.iv-carousel__next[hidden],
+.iv-carousel__toggle[hidden] {
+  display: none;
+}
+
+.iv-carousel__prev,
+.iv-carousel__next {
+  grid-row: 1;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  padding: 0;
+  font-size: var(--iv-text-lg);
+  color: var(--iv-color-text);
+  background-color: var(--iv-glass-bg);
+  border: var(--iv-border-width) solid var(--iv-glass-border);
+  border-radius: var(--iv-radius-full);
+  box-shadow:
+    inset 0 1px 0 var(--iv-glass-highlight),
+    var(--iv-shadow-2);
+  backdrop-filter: blur(var(--iv-blur-md)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--iv-blur-md)) saturate(140%);
+  pointer-events: auto;
+  transition:
+    transform var(--iv-motion-slow) var(--iv-carousel-ease),
+    background-color var(--iv-motion-slow) var(--iv-carousel-ease),
+    box-shadow var(--iv-motion-slow) var(--iv-carousel-ease);
+}
+
+.iv-carousel__prev {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.iv-carousel__next {
+  grid-column: 3;
+  justify-self: end;
+}
+
+.iv-carousel__prev:hover,
+.iv-carousel__next:hover {
+  background-color: var(--iv-glass-bg-strong);
+  box-shadow:
+    inset 0 1px 0 var(--iv-glass-highlight),
+    0 0 24px var(--iv-glow-primary);
+  transform: scale(1.08);
+}
+
+.iv-carousel__prev:disabled,
+.iv-carousel__next:disabled {
+  opacity: 0.35;
+  box-shadow: none;
+  transform: none;
+}
+
+.iv-carousel__toggle {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: end;
+  display: inline-flex;
+  gap: var(--iv-space-2);
+  align-items: center;
+  min-block-size: 2.75rem;
+  padding-inline: var(--iv-space-4);
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text);
+  background-color: var(--iv-glass-bg);
+  border: var(--iv-border-width) solid var(--iv-glass-border);
+  border-radius: var(--iv-radius-full);
+  box-shadow: inset 0 1px 0 var(--iv-glass-highlight);
+  backdrop-filter: blur(var(--iv-blur-md)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--iv-blur-md)) saturate(140%);
+  pointer-events: auto;
+}
+
+/* Decorative: the state is announced by `aria-pressed` on the button. */
+.iv-carousel__toggle::before {
+  content: "\275A\275A";
+  font-size: var(--iv-text-xs);
+  color: var(--iv-color-primary);
+}
+
+.iv-carousel__toggle[aria-pressed="true"]::before {
+  content: "\25B6";
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .iv-carousel__prev,
+  .iv-carousel__next,
+  .iv-carousel__toggle {
+    background-color: var(--iv-color-surface-raised);
+  }
+}
+
+/* Counter and progress ------------------------------------------------- */
+
+.iv-carousel__counter {
+  position: absolute;
+  z-index: 3;
+  inset-block-start: var(--iv-space-4);
+  inset-inline-end: var(--iv-space-5);
+  margin: 0;
+  font-size: var(--iv-text-4xl);
+  font-weight: var(--iv-weight-bold);
+  font-variant-numeric: tabular-nums;
+  line-height: var(--iv-leading-tight);
+  letter-spacing: -0.04em;
+  color: var(--iv-palette-neutral-0);
+  text-shadow: 0 2px 18px var(--iv-carousel-scrim);
+  pointer-events: none;
+}
+
+@supports (background-clip: text) {
+  .iv-carousel__counter {
+    background-image: linear-gradient(
+      170deg,
+      var(--iv-palette-neutral-0) 30%,
+      var(--iv-palette-green-400)
+    );
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+  }
+}
+
+.iv-carousel__progress {
+  position: absolute;
+  z-index: 3;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 0.1875rem;
+  background-color: color-mix(in srgb, var(--iv-palette-neutral-0) 22%, transparent);
+  pointer-events: none;
+}
+
+.iv-carousel__progress::after {
+  content: "";
+  display: block;
+  block-size: 100%;
+  background-image: linear-gradient(
+    90deg,
+    var(--iv-color-primary),
+    var(--iv-color-accent)
+  );
+  box-shadow: 0 0 12px var(--iv-glow-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.iv-carousel__progress[data-iv-state="running"]::after {
+  animation: iv-carousel-progress var(--iv-carousel-autoplay, 6000ms) linear forwards;
+  animation-play-state: var(--iv-carousel-play, running);
+}
+
+@keyframes iv-carousel-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes iv-carousel-kenburns {
+  from { transform: scale(1) translate3d(0, 0, 0); }
+  to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
+}
+
+/* Enhanced: the track no longer scrolls, JavaScript owns the position ---- */
+
+/* With JavaScript the track is no longer a scroll container: `overflow:
+   visible` is what stops the native scrolling here, because clipping the
+   track would also clip every slide the transform brings into view. The
+   viewport keeps `overflow: hidden` and does the clipping. */
+:where([data-iv-js]) .iv-carousel__track {
+  overflow: visible;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}
+
+:where([data-iv-js] .iv-carousel[data-iv-effect="slide"]) .iv-carousel__track {
+  transform: translate3d(calc(var(--iv-carousel-index, 0) * -100%), 0, 0);
+  transition: transform var(--iv-carousel-duration) var(--iv-carousel-ease);
+}
+
+/* Parallax: the caption trails its own slide, and only the caption of the
+   slide on screen is opaque. The squared distance is 0 for the current slide
+   and 1 or more for every other one, which opacity clamps to 0. */
+:where([data-iv-js] .iv-carousel[data-iv-effect="slide"]) .iv-carousel__caption {
+  transform: translate3d(
+    calc((var(--iv-carousel-index, 0) - var(--iv-carousel-slide, 0)) * var(--iv-carousel-parallax)),
+    0,
+    0
+  );
+  opacity: calc(
+    1 - (var(--iv-carousel-index, 0) - var(--iv-carousel-slide, 0)) *
+      (var(--iv-carousel-index, 0) - var(--iv-carousel-slide, 0))
+  );
+  transition:
+    transform var(--iv-carousel-duration) var(--iv-carousel-ease),
+    opacity var(--iv-carousel-duration) var(--iv-carousel-ease);
+}
+
+/* Stacked effects ------------------------------------------------------- */
+
+:where([data-iv-js] .iv-carousel[data-iv-effect="fade"]) .iv-carousel__track,
+:where([data-iv-js] .iv-carousel[data-iv-effect="cinema"]) .iv-carousel__track {
+  display: block;
+  position: relative;
+  aspect-ratio: var(--iv-carousel-aspect);
+}
+
+:where([data-iv-js] .iv-carousel[data-iv-effect="fade"]) .iv-carousel__slide,
+:where([data-iv-js] .iv-carousel[data-iv-effect="cinema"]) .iv-carousel__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.03);
+  pointer-events: none;
+  transition:
+    opacity var(--iv-carousel-duration) var(--iv-carousel-ease),
+    transform var(--iv-carousel-duration) var(--iv-carousel-ease);
+}
+
+:where([data-iv-js] .iv-carousel[data-iv-effect="fade"]) .iv-carousel__slide:not([aria-hidden="true"]),
+:where([data-iv-js] .iv-carousel[data-iv-effect="cinema"]) .iv-carousel__slide:not([aria-hidden="true"]) {
+  z-index: 1;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+:where([data-iv-js] .iv-carousel[data-iv-effect="fade"]) .iv-carousel__caption,
+:where([data-iv-js] .iv-carousel[data-iv-effect="cinema"]) .iv-carousel__caption {
+  opacity: 0;
+  transform: translate3d(0, 1.75rem, 0);
+  transition:
+    opacity var(--iv-carousel-duration) var(--iv-carousel-ease),
+    transform var(--iv-carousel-duration) var(--iv-carousel-ease);
+}
+
+:where([data-iv-js] .iv-carousel[data-iv-effect="fade"] .iv-carousel__slide:not([aria-hidden="true"])) .iv-carousel__caption,
+:where([data-iv-js] .iv-carousel[data-iv-effect="cinema"] .iv-carousel__slide:not([aria-hidden="true"])) .iv-carousel__caption {
+  opacity: 1;
+  transform: none;
+  transition-delay: 180ms;
+}
+
+/* Cinema: the active media pans and scales while the slide is on screen. */
+:where([data-iv-js] .iv-carousel[data-iv-effect="cinema"] .iv-carousel__slide:not([aria-hidden="true"])) .iv-carousel__media {
+  animation: iv-carousel-kenburns var(--iv-carousel-autoplay, 8s) var(--iv-carousel-ease) forwards;
+  animation-play-state: var(--iv-carousel-play, running);
+}
+
+/* Modifiers ------------------------------------------------------------- */
+
+.iv-carousel--contained {
+  max-inline-size: var(--iv-container-max);
+  margin-inline: auto;
+}
+
+.iv-carousel--tall {
+  --iv-carousel-aspect: 4 / 5;
+}
+
+/* Reduced motion: same story, no travel ---------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-carousel {
+    --iv-carousel-duration: 150ms;
+    --iv-carousel-parallax: 0px;
+  }
+
+  .iv-carousel__track {
+    scroll-behavior: auto;
+  }
+
+  .iv-carousel__media {
+    animation: none;
+  }
+
+  .iv-carousel__slide {
+    transform: none;
+  }
+
+  .iv-carousel__caption {
+    transition-delay: 0ms;
+  }
+
+  .iv-carousel__dots > a:hover::before,
+  .iv-carousel__dots > button:hover::before {
+    transform: none;
+  }
+
+  .iv-carousel__prev:hover,
+  .iv-carousel__next:hover {
+    transform: none;
+  }
+}

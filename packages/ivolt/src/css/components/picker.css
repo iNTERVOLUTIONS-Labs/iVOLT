@@ -1,0 +1,487 @@
+/* iVOLT — components/picker
+ * Rich select: a button that mirrors a native `<select>` plus a listbox
+ * popover with chips, groups and an optional search field. Without JavaScript
+ * nothing here applies: the `<select>` is a plain `.iv-select` and the
+ * generated parts do not exist.
+ * `__field` repeats the metrics of `.iv-input` on purpose; the two must stay
+ * in step. The chips live in `__field`, beside the control, never inside it
+ * (ADR-031). State that has to reach a descendant travels as a custom property
+ * (`--iv-picker-caret-turn`, `--iv-picker-enter`) or as an attribute on
+ * `__field`, which keeps every selector at or below (0,2,0).
+ * Locals: --iv-picker-max-height --iv-picker-chip-bg --iv-picker-offset
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-picker {
+  --iv-picker-max-height: 40vh;
+  --iv-picker-chip-bg: var(--iv-color-primary-subtle);
+  --iv-picker-offset: var(--iv-space-1);
+  --iv-picker-caret-turn: 0deg;
+
+  position: relative;
+  display: block;
+}
+
+/* Native select --------------------------------------------------------
+   Visually hidden with the sr-only technique, never `display: none`: the
+   element must stay rendered so constraint validation, autofill and form
+   submission keep working. It also overrides the metrics of `.iv-select`. */
+
+.iv-picker__native {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  min-block-size: 0;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  background-image: none;
+}
+
+/* Field and control ----------------------------------------------------
+   `__field` is the box: same height, padding, border and radius as
+   `.iv-input`, wrapping so that chips can take several rows. The control is a
+   transparent button inside it, and the focus ring belongs to the box, which
+   is why the button drops its own. */
+
+.iv-picker__field {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--iv-space-1);
+  inline-size: 100%;
+  min-block-size: 2.5rem;
+  padding-block: 0.3125rem;
+  padding-inline: var(--iv-space-3) 2.25rem;
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-bg);
+  border: var(--iv-border-width) solid var(--iv-color-border-strong);
+  border-radius: var(--iv-radius-md);
+  transition:
+    border-color var(--iv-motion-fast) var(--iv-ease-out),
+    box-shadow var(--iv-motion-base) var(--iv-ease-out),
+    background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* Room for the clear button, added only while there is a selection. */
+.iv-picker__field[data-iv-has-clear] {
+  padding-inline-end: 4rem;
+}
+
+.iv-picker__field[data-iv-open] {
+  --iv-picker-caret-turn: 180deg;
+
+  border-color: var(--iv-color-primary);
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+}
+
+.iv-picker__field:focus-within {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 1px;
+  border-color: var(--iv-color-focus);
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+}
+
+@media (hover: hover) {
+  .iv-picker__field:hover {
+    border-color: var(--iv-color-primary);
+  }
+}
+
+.iv-picker__control {
+  display: flex;
+  flex: 1 1 6rem;
+  align-items: center;
+  min-block-size: 1.75rem;
+  padding: 0;
+  font: inherit;
+  text-align: start;
+  color: inherit;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+/* Multiple picker: the control sits after the chip list and only carries the
+   count, so it steps back and lets the chips lead. */
+.iv-picker__chips + .iv-picker__control {
+  color: var(--iv-color-text-muted);
+}
+
+/* The ring is drawn by `__field:focus-within`, which covers the chips too. */
+.iv-picker__control:focus-visible {
+  outline: none;
+}
+
+.iv-picker__control:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.iv-picker__value {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  gap: var(--iv-space-1);
+  align-items: center;
+  min-inline-size: 0;
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-picker__placeholder {
+  color: var(--iv-color-text-muted);
+}
+
+.iv-picker__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-1);
+  max-inline-size: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iv-picker__chips[hidden] {
+  display: none;
+}
+
+/* Chips ---------------------------------------------------------------- */
+
+.iv-picker__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-1);
+  max-inline-size: 100%;
+  padding-block: 0.125rem;
+  padding-inline: var(--iv-space-2) 0.25rem;
+  font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-snug);
+  color: var(--iv-color-primary);
+  background-color: var(--iv-picker-chip-bg);
+  border: var(--iv-border-width) solid var(--iv-color-primary-subtle);
+  border-radius: var(--iv-radius-full);
+  animation: iv-picker-chip-in var(--iv-motion-base) var(--iv-ease-out);
+}
+
+@keyframes iv-picker-chip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+.iv-picker__chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iv-picker__chip-remove {
+  position: relative;
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  padding: 0;
+  color: inherit;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-full);
+  cursor: pointer;
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-picker__chip-remove::before {
+  position: absolute;
+  inset: 0.3rem;
+  content: "";
+  background-color: currentcolor;
+  clip-path: polygon(
+    20% 28%, 28% 20%, 50% 42%, 72% 20%, 80% 28%, 58% 50%,
+    80% 72%, 72% 80%, 50% 58%, 28% 80%, 20% 72%, 42% 50%
+  );
+}
+
+@media (hover: hover) {
+  .iv-picker__chip-remove:hover {
+    background-color: var(--iv-color-primary);
+    color: var(--iv-color-on-primary);
+  }
+}
+
+.iv-picker__chip-remove:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 1px;
+}
+
+/* Caret and clear ------------------------------------------------------ */
+
+.iv-picker__caret {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--iv-space-3);
+  flex: none;
+  inline-size: 0.625rem;
+  block-size: 0.4rem;
+  color: var(--iv-color-text-muted);
+  background-color: currentcolor;
+  clip-path: polygon(
+    50% 100%, 0 38%, 14% 22%, 50% 62%, 86% 22%, 100% 38%
+  );
+  transform: translateY(-50%) rotate(var(--iv-picker-caret-turn));
+  transition: transform var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-picker__clear {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 2.25rem;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  padding: 0;
+  color: var(--iv-color-text-muted);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-full);
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition:
+    color var(--iv-motion-fast) var(--iv-ease-out),
+    background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-picker__clear::before {
+  position: absolute;
+  inset: 0.4rem;
+  content: "";
+  background-color: currentcolor;
+  clip-path: polygon(
+    20% 28%, 28% 20%, 50% 42%, 72% 20%, 80% 28%, 58% 50%,
+    80% 72%, 72% 80%, 50% 58%, 28% 80%, 20% 72%, 42% 50%
+  );
+}
+
+@media (hover: hover) {
+  .iv-picker__clear:hover {
+    color: var(--iv-color-text);
+    background-color: var(--iv-color-surface);
+  }
+}
+
+.iv-picker__clear:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 1px;
+}
+
+.iv-picker__clear[hidden] {
+  display: none;
+}
+
+/* Popover -------------------------------------------------------------- */
+
+.iv-picker__popover {
+  --iv-picker-enter: 0.5rem;
+
+  position: absolute;
+  inset-block-start: calc(100% + var(--iv-picker-offset));
+  inset-inline: 0;
+  z-index: var(--iv-z-dropdown);
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-space-2);
+  padding: var(--iv-space-2);
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: var(--iv-shadow-3);
+  animation: iv-picker-pop-in var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-picker__popover[data-iv-placement="top"] {
+  --iv-picker-enter: -0.5rem;
+
+  inset-block-start: auto;
+  inset-block-end: calc(100% + var(--iv-picker-offset));
+}
+
+.iv-picker__popover[hidden] {
+  display: none;
+}
+
+@keyframes iv-picker-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--iv-picker-enter));
+  }
+}
+
+.iv-picker__search {
+  flex: none;
+  min-block-size: 2.25rem;
+}
+
+/* List ----------------------------------------------------------------- */
+
+.iv-picker__list {
+  max-block-size: var(--iv-picker-max-height);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.iv-picker__group {
+  display: block;
+  padding-block-start: var(--iv-space-2);
+}
+
+.iv-picker__group-label {
+  display: block;
+  padding-block: var(--iv-space-1);
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-picker__group-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iv-picker__group[hidden] {
+  display: none;
+}
+
+.iv-picker__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-block-size: 2.5rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: 2.25rem var(--iv-space-3);
+  font-size: var(--iv-text-md);
+  line-height: var(--iv-leading-snug);
+  color: var(--iv-color-text);
+  border-radius: var(--iv-radius-md);
+  cursor: pointer;
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-picker__option[hidden] {
+  display: none;
+}
+
+/* The tick of a selected row. */
+.iv-picker__option::before {
+  position: absolute;
+  inset-inline-start: var(--iv-space-3);
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  content: "";
+  background-color: var(--iv-color-primary);
+  opacity: 0;
+  transform: scale(0.6);
+  clip-path: polygon(
+    40% 78%, 8% 48%, 20% 34%, 40% 52%, 80% 12%, 92% 26%
+  );
+  transition:
+    opacity var(--iv-motion-fast) var(--iv-ease-out),
+    transform var(--iv-motion-base) var(--iv-ease-out);
+}
+
+/* Keyboard cursor: the row named by `aria-activedescendant`. One class only,
+   so a selected row keeps its colour and just gains the ring. */
+.iv-picker__option--active {
+  background-color: var(--iv-color-surface);
+  box-shadow: inset 0 0 0 var(--iv-focus-width) var(--iv-color-primary);
+}
+
+.iv-picker__option[aria-selected="true"] {
+  color: var(--iv-color-primary);
+  background-color: var(--iv-color-primary-subtle);
+}
+
+.iv-picker__option[aria-selected="true"]::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.iv-picker__option[aria-disabled="true"] {
+  color: var(--iv-color-text-muted);
+  cursor: not-allowed;
+}
+
+@media (hover: hover) {
+  .iv-picker__option:hover {
+    background-color: var(--iv-color-surface);
+  }
+}
+
+.iv-picker__empty {
+  display: flex;
+  align-items: center;
+  min-block-size: 2.5rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-snug);
+  color: var(--iv-color-text-muted);
+}
+
+.iv-picker__empty[hidden] {
+  display: none;
+}
+
+/* Glass variant --------------------------------------------------------
+   Frosted control and popover. `backdrop-filter` is progressive: the solid
+   fallback under `@supports not` keeps the AA contrast on every surface. */
+
+.iv-picker--glass .iv-picker__field {
+  background-color: var(--iv-glass-bg);
+  border-color: var(--iv-glass-border);
+  box-shadow: var(--iv-shadow-1);
+  backdrop-filter: blur(var(--iv-blur-sm));
+}
+
+.iv-picker--glass .iv-picker__popover {
+  background-color: var(--iv-glass-bg-strong);
+  border-color: var(--iv-glass-border);
+  backdrop-filter: blur(var(--iv-blur-lg));
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .iv-picker--glass .iv-picker__field {
+    background-color: var(--iv-color-bg);
+    border-color: var(--iv-color-border-strong);
+  }
+
+  .iv-picker--glass .iv-picker__popover {
+    background-color: var(--iv-color-surface-raised);
+    border-color: var(--iv-color-border);
+  }
+}
+
+/* Motion ---------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-picker__chip,
+  .iv-picker__popover {
+    animation: none;
+  }
+
+  .iv-picker__caret,
+  .iv-picker__field,
+  .iv-picker__option,
+  .iv-picker__option::before {
+    transition: none;
+  }
+}

@@ -28,7 +28,14 @@ const family = slug ? families[slug] : null;
 const items = nav.flatMap((g) => g.items);
 const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
 const other = lang === "es" ? "en" : "es";
-const otherHref = lang === "es" ? altEn : altEs;
+// The switch and the alternates point at the twin page only when it exists; otherwise at the other home.
+import { existsSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+let repo = process.cwd();
+while (!existsSync(resolve(repo, "apps/docs/src/pages")) && dirname(repo) !== repo) repo = dirname(repo);
+const pageFile = (p) => (p === "/" ? "index.astro" : `${p.replace(/^\//, "")}.astro`);
+const twinExists = existsSync(resolve(repo, "apps/docs/src/pages", lang === "es" ? pageFile(altEn) : `es/${pageFile(bare)}`));
+const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" ? "/" : "/es");
 ---
 <!DOCTYPE html>
 <html lang={lang} class="iv-root" data-iv-theme="dark">
@@ -38,9 +45,9 @@ const otherHref = lang === "es" ? altEn : altEs;
   <title>{title} · iVOLT</title>
   <meta name="description" content={description}>
   {canonical && <link rel="canonical" href={canonical}>}
-  {Astro.site && <link rel="alternate" hreflang="en" href={abs(altEn)}>}
-  {Astro.site && <link rel="alternate" hreflang="es" href={abs(altEs)}>}
-  {Astro.site && <link rel="alternate" hreflang="x-default" href={abs(altEn)}>}
+  {Astro.site && twinExists && <link rel="alternate" hreflang="en" href={abs(altEn)}>}
+  {Astro.site && twinExists && <link rel="alternate" hreflang="es" href={abs(altEs)}>}
+  {Astro.site && twinExists && <link rel="alternate" hreflang="x-default" href={abs(altEn)}>}
   <meta property="og:title" content={`${title} · iVOLT`}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">

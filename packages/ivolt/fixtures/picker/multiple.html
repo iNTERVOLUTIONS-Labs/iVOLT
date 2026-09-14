@@ -1,0 +1,39 @@
+<div class="iv-stack">
+  <div class="iv-field" style="max-width: 26rem">
+    <label class="iv-label" for="p-langs">Languages you write in</label>
+    <div class="iv-picker" data-iv-component="picker" data-iv-max-items="3">
+      <select class="iv-select" id="p-langs" name="langs" multiple aria-describedby="p-langs-help">
+        <optgroup label="Romance">
+          <option value="es" selected>Spanish</option>
+          <option value="ca">Catalan</option>
+          <option value="fr">French</option>
+          <option value="pt">Portuguese</option>
+          <option value="it">Italian</option>
+        </optgroup>
+        <optgroup label="Germanic">
+          <option value="en" selected>English</option>
+          <option value="de">German</option>
+          <option value="nl">Dutch</option>
+          <option value="sv" disabled>Swedish (editor missing)</option>
+        </optgroup>
+      </select>
+    </div>
+    <p class="iv-field__help iv-u-m-0" id="p-langs-help">Sample data, not a real profile. Up to three languages: once you pick the third, the rest are announced as unavailable. Chips can be removed one by one, and Backspace removes the last one.</p>
+  </div>
+
+  <div style="max-width: 26rem; padding: var(--iv-space-6); border-radius: var(--iv-radius-lg); background-image: linear-gradient(135deg, var(--iv-color-primary-subtle), var(--iv-color-info-subtle))">
+    <div class="iv-field">
+      <label class="iv-label" for="p-tags">Project tags (glass variant)</label>
+      <div class="iv-picker iv-picker--glass" data-iv-component="picker" data-iv-search="on" data-iv-search-placeholder="Filter tags" data-iv-empty-text="No tag matches" data-iv-close-on-select="true">
+        <select class="iv-select" id="p-tags" name="tags" multiple aria-describedby="p-tags-help">
+          <option value="brand">Brand</option>
+          <option value="design" selected>Design system</option>
+          <option value="docs">Documentation</option>
+          <option value="research">Research</option>
+          <option value="tooling">Tooling</option>
+        </select>
+      </div>
+      <p class="iv-field__help iv-u-m-0" id="p-tags-help">Sample data, not a real backlog. The same control on a frosted surface; this one closes the popover after every pick.</p>
+    </div>
+  </div>
+</div>

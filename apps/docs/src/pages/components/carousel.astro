@@ -1,0 +1,43 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Carousel" description="iVOLT carousel: a scroll-snap slideshow that works without JavaScript and becomes an accessible tabbed carousel with slide, fade and cinema effects, autoplay with a progress bar, swipe and thumbnails.">
+  <article class="docs-prose">
+    <h1>Carousel</h1>
+    <p>A slideshow built on a list. The server sends slides in a horizontally scrolling track with scroll snapping, dots as plain anchor links and hidden buttons; that already works everywhere. On <code>init</code> the dots become tabs, the slides become panels, the buttons appear and the track is driven by transforms: slide with a parallax caption, crossfade, or a cinema mode that slowly zooms the active media. Autoplay draws a progress bar, pauses on hover, focus and hidden tabs, and never starts when the reader prefers reduced motion.</p>
+    <p><strong>CSS:</strong> <code>css/components/carousel.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/carousel</code> or <code>auto.js</code>. Added in v0.3.</p>
+    <Fixture name="carousel/basic" />
+    <h2>Cinema effect with autoplay</h2>
+    <p><code>data-iv-effect="cinema"</code> crossfades the slides and adds a slow zoom on the active media while the caption rises. With <code>data-iv-autoplay</code> the component adds a large counter and a progress bar that fills over the interval; the play/pause button exposes its state with <code>aria-pressed</code>.</p>
+    <Fixture name="carousel/cinema" />
+    <h2>Thumbnails</h2>
+    <p>Give the dots the <code>iv-carousel__dots--thumbs</code> class and put a small image in each anchor: they become thumbnail tabs. This example uses the fade effect.</p>
+    <Fixture name="carousel/thumbs" />
+    <h2>Options</h2>
+    <table>
+      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>effect</code></td><td><code>data-iv-effect</code></td><td><code>slide</code></td><td><code>slide</code>, <code>fade</code> or <code>cinema</code>.</td></tr>
+        <tr><td><code>autoplay</code></td><td><code>data-iv-autoplay</code></td><td><code>0</code></td><td>Milliseconds between slides; <code>0</code> disables autoplay. Never starts under reduced motion.</td></tr>
+        <tr><td><code>loop</code></td><td><code>data-iv-loop</code></td><td><code>true</code></td><td>Wrap around at both ends.</td></tr>
+        <tr><td><code>pauseOnHover</code></td><td><code>data-iv-pause-on-hover</code></td><td><code>true</code></td><td>Pause autoplay while the pointer is over the carousel.</td></tr>
+        <tr><td><code>swipe</code></td><td><code>data-iv-swipe</code></td><td><code>true</code></td><td>Pointer drag changes the slide (40 px threshold).</td></tr>
+        <tr><td><code>duration</code></td><td><code>data-iv-duration</code></td><td><code>600</code></td><td>Transition length in milliseconds.</td></tr>
+        <tr><td><code>pauseText</code>, <code>playText</code></td><td><code>data-iv-pause-text</code>, <code>data-iv-play-text</code></td><td><code>Pause</code>, <code>Play</code></td><td>Labels of the toggle button.</td></tr>
+      </tbody>
+    </table>
+    <h2>Methods and events</h2>
+    <p><code>next()</code>, <code>prev()</code>, <code>goTo(index)</code>, <code>play()</code>, <code>pause()</code>, <code>destroy()</code>; read <code>index</code>, <code>count</code>, <code>isPlaying</code> and <code>slides</code>. Events on the root element: <code>iv:change</code> (cancelable, <code>detail.index</code>, <code>previousIndex</code>, <code>reason</code>) then <code>iv:changed</code>; <code>iv:play</code> and <code>iv:pause</code> with a <code>reason</code>.</p>
+    <h2>Keyboard, gestures and assistive technology</h2>
+    <p>Left and Right move between slides from the tabs or from the viewport, Home and End jump, Enter and Space activate a tab. Dragging with a pointer changes the slide. The markup follows the tabbed carousel pattern: each slide is a panel labelled "n of N", non-visible slides are inert in the fade and cinema effects, and the viewport is a live region only while autoplay is paused, so the reader is not interrupted by every change.</p>
+    <h2>Without JavaScript</h2>
+    <p>The track scrolls horizontally and snaps to each slide, the dots are anchor links that scroll the matching slide into view, and the buttons stay hidden. Captions sit on a gradient scrim so the text stays readable on any media.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>Media without <code>alt</code> text or an <code>aria-label</code>: every slide needs a name.</li>
+      <li>Autoplay on a carousel with links and forms inside: readers lose their place. Prefer manual navigation or a long interval.</li>
+      <li>Using the carousel for essential content: nothing important should only exist on slide four.</li>
+    </ul>
+  </article>
+</Base>

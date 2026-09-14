@@ -1,0 +1,40 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Picker" description="iVOLT picker: a native select promoted to a rich, searchable selector with chips for multiple values, option groups, full keyboard support and exact synchronisation with the form.">
+  <article class="docs-prose">
+    <h1>Picker (enhanced select)</h1>
+    <p>A rich selector on top of a plain <code>&lt;select&gt;</code>. The server sends the native control, which works everywhere and submits with the form. On <code>init</code> it is kept as the source of truth and hidden from view; the reader sees a control that opens a searchable list, shows selected values as chips when the select is <code>multiple</code>, respects groups and disabled options, and syncs both ways with the native element. <code>destroy</code> puts the select back exactly as served.</p>
+    <p><strong>CSS:</strong> <code>css/components/picker.css</code> on top of <code>form.css</code> (both in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/picker</code> or <code>auto.js</code>. Added in v0.3.</p>
+    <Fixture name="picker/basic" minHeight="24rem" />
+    <h2>Multiple values, groups and a limit</h2>
+    <p>With <code>multiple</code> the control shows chips, each with its own remove button; Backspace removes the last one. <code>data-iv-max-items</code> disables the remaining options once the limit is reached. The second example uses the <code>iv-picker--glass</code> variant.</p>
+    <Fixture name="picker/multiple" minHeight="28rem" />
+    <h2>Options</h2>
+    <table>
+      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>search</code></td><td><code>data-iv-search</code></td><td><code>auto</code></td><td>Search field in the list: <code>auto</code> shows it with more than seven options; <code>on</code> or <code>off</code> force it.</td></tr>
+        <tr><td><code>placeholder</code></td><td><code>data-iv-placeholder</code></td><td>first empty option</td><td>Text shown when nothing is selected.</td></tr>
+        <tr><td><code>searchPlaceholder</code></td><td><code>data-iv-search-placeholder</code></td><td><code>Search</code></td><td>Placeholder of the search field.</td></tr>
+        <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No matches</code></td><td>Row shown when the search matches nothing.</td></tr>
+        <tr><td><code>clearable</code></td><td><code>data-iv-clearable</code></td><td><code>true</code></td><td>Show a clear button when there is a value.</td></tr>
+        <tr><td><code>closeOnSelect</code></td><td><code>data-iv-close-on-select</code></td><td><code>true</code> / <code>false</code></td><td>Close after choosing; defaults to true for single and false for multiple selects.</td></tr>
+        <tr><td><code>maxItems</code></td><td><code>data-iv-max-items</code></td><td><code>0</code></td><td>Maximum number of selected values in a multiple select; <code>0</code> means no limit.</td></tr>
+      </tbody>
+    </table>
+    <h2>Methods and events</h2>
+    <p><code>open()</code>, <code>close()</code>, <code>toggle()</code>, <code>select(value)</code>, <code>deselect(value)</code>, <code>clear()</code>, <code>destroy()</code>; read <code>value</code> (a string, or an array for multiple), <code>isOpen</code>, <code>native</code> and <code>optionElements</code>. Events on the root element: <code>iv:open</code>/<code>iv:close</code> (cancelable) then <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>added</code>, <code>removed</code>) then <code>iv:changed</code>. The native select also receives <code>input</code> and <code>change</code>, so existing form code keeps working.</p>
+    <h2>Keyboard and assistive technology</h2>
+    <p>On the control: Down, Enter or Space open the list, typing opens and filters when search is on, Backspace removes the last chip. In the list: Up and Down move with wrap-around and skip disabled options, Home and End jump, Enter or Space select (multiple selects toggle without closing), Escape closes and returns focus to the control, Tab closes. The control follows the select-only combobox pattern with a listbox; the highlighted option is exposed through <code>aria-activedescendant</code>, and each chip's remove button has an accessible name.</p>
+    <h2>Without JavaScript</h2>
+    <p>The native select is shown as usual, styled by <code>form.css</code>. Groups, disabled options and multiple selection are all native features, so nothing is lost.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>Reading the value from the picker instead of the select: the form submits the native element, so read from it or listen to its <code>change</code>.</li>
+      <li>Thousands of options: the list is rendered in full. Reduce the data on the server.</li>
+      <li>Omitting the <code>&lt;label for&gt;</code>: the control takes its name from the label.</li>
+    </ul>
+  </article>
+</Base>
