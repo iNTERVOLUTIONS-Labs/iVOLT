@@ -93,7 +93,7 @@ Objetivo: que el framework sea espectacular por defecto (DESIGN_SYSTEM §9) mant
 
 Fuera del ciclo: datepicker, constructor de temas, wrappers de frameworks; lector de pantalla sigue bloqueado.
 
-## 7. Ciclos v0.4 «Navigation & light» y v0.5 «Time & help» (abiertos 2026-09-14; objetivo: no parar hasta 0.5)
+## 7. Ciclos v0.4 «Navigation & light» y v0.5 «Time & help» (abiertos y cerrados 2026-09-14; sin publicar)
 
 Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus webs; temas BUFO y ClaBa de iNTERVOLUTIONS) e incluir megamenús, bordes recorridos por un destello, bordes que se iluminan al acercar el puntero, y heros súper espectaculares; después seguir hasta 0.5. Lo aprendido (ADR-033): panel de megamenú absoluto centrado con entrada por opacidad y traslación, superposición, `aria-expanded` + `inert`, tarjetas con arte y flecha, acordeón en móvil; líneas de exploración (`scan-h/v`, `hero-scan`), chispas (`brand-spark`), halos `--*-green-glow`, `backdrop-filter`, `perspective`; revelados con `IntersectionObserver`. Allí usan GSAP/ScrollTrigger; aquí todo es CSS y JS propio sin dependencias.
 
@@ -116,4 +116,4 @@ Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus 
 | 2 | Tooltip y popover (`tooltip`, `popover`): `data-iv-tooltip`, atributo `popover` nativo como base, posicionamiento por espacio real (como el picker) | §8.13; hecho (2026-09-14) |
 | 3 | Command palette (`command`): búsqueda de acciones con `/` o `Ctrl+K`, como en brokenufo.com; en la web convive con la búsqueda Pagefind (contenido) | §8.14; hecho (2026-09-14, ADR-038) |
 | 4 | Constructor de temas en la web: editar tokens y exportar `tokens.css` | hecho (2026-09-14): `/foundations/theme-builder` en dos idiomas, previsualización viva sobre fixtures reales, CSS de personalización para copiar |
-| 5 | Cierre `0.5.0-beta.0` | en curso: gate completo en ejecución, Lighthouse y estado al terminar |
+| 5 | Cierre `0.5.0-beta.0` | hecho (2026-09-14): `verify` en tres motores (590 unitarias, 713 navegador), Lighthouse 99–100, changelog, estado |

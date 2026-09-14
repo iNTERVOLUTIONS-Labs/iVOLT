@@ -201,3 +201,16 @@ Mismo método y entorno que arriba (Lighthouse 13.4.1, HeadlessChrome, `scripts/
 | `/es` | escritorio | 100 | 100 | 100 | 100 | 432 ms | 0 | 0 ms | 345 ms |
 
 El punto perdido en móvil es LCP (1,53 → 1,84 s simulados): el CSS crecido y el gabinete con más fixtures. Sigue por encima del listón (≥ 95). Opción documentada, no ejecutada: cargar en la home solo los módulos CSS que usa (per-component CSS) en vez de `ivolt.css` completo.
+
+## Ciclos v0.4 y v0.5 — remedición al cerrar `0.5.0-beta.0` (2026-09-14)
+
+Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome, `scripts/docs-server.mjs` en 4326 sirviendo el build del gate `verify`, una pasada por ruta y preajuste, sin red real). La cabecera lleva ahora el megamenú de componentes y `ivolt.min.css` pasó de 16,4 a 21,0 KiB gzip.
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS | TBT | Speed Index |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 99 | 100 | 100 | 100 | 1849 ms | 0 | 11 ms | 1590 ms |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 437 ms | 0 | 0 ms | 347 ms |
+| `/es` | móvil | 99 | 100 | 100 | 100 | 1988 ms | 0 | 10 ms | 1582 ms |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 436 ms | 0 | 0 ms | 347 ms |
+
+El punto de móvil sigue siendo LCP por el peso del CSS completo; la opción de servir solo los módulos que usa la home sigue documentada y no ejecutada.
