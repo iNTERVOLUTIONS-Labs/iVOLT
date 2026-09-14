@@ -5,6 +5,7 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 ## 0.5.0-beta.0 (unreleased)
 
 ### Added
+- `Command` (`iv-command`, export `./command`): a command palette composed on the dialog, opened with Ctrl+K or `/`, filtered by label and keywords, driven by the keyboard, with groups, shortcuts, recent items in local storage (opt-in) and actions added from the API.
 - `Tooltip` (export `./tooltip`): short hints from `data-iv-tooltip`, shown on hover after a delay and at once on focus, described through `aria-describedby`, placed above or below within the viewport.
 - `Popover` (export `./popover`): rich content on the native `popover` attribute, placed next to its invoker (CSS anchor positioning where supported, measured otherwise), focus in and back, cancelable `iv:open`/`iv:close` mapped from `beforetoggle`; `--arrow` and `--glass` variants.
 - `Datepicker` (`iv-datepicker`, export `./datepicker`): a native date input gains an accessible calendar dialog with a keyboard grid, month and year navigation, today and clear, `min`, `max` and `step`, localised names through `Intl` and a first day of the week that follows the locale; the native picker stays on coarse pointers.

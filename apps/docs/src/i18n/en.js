@@ -59,7 +59,7 @@ export const nav = [
     { href: "/foundations/effects", label: "Light & motion" },
     { href: "/foundations/theme-builder", label: "Theme builder" },
   ] },
-  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "megamenu", "hero", "popover", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
+  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "megamenu", "hero", "popover", "command", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Project", items: [
     { href: "/changelog", label: "Changelog" },
     { href: "/roadmap", label: "Roadmap" },
@@ -68,4 +68,4 @@ export const nav = [
 ];
 
 // Family of each component page (css-only or progressively enhanced with JS). Single source for the eyebrow and the home.
-export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datepicker: "js", datatable: "js", picker: "js", carousel: "js", megamenu: "js", hero: "css", popover: "js", badge: "css", alert: "css", table: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dialog: "js", drawer: "js", dropdown: "js", toast: "js" };
+export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datepicker: "js", datatable: "js", picker: "js", carousel: "js", megamenu: "js", hero: "css", popover: "js", command: "js", badge: "css", alert: "css", table: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dialog: "js", drawer: "js", dropdown: "js", toast: "js" };

@@ -1,0 +1,73 @@
+<p class="iv-u-m-0" id="cmd-glass-note">Glass palette with recent commands. Demo only: the page links point back to
+this note, the two actions emit <code>iv:command</code> and nothing else, and the same destinations are part of the
+normal navigation of the page. What you activate is kept in <code>localStorage</code> under
+<code>iv-command-recent</code> and comes back as a “Recent” group the next time the palette opens with an empty
+search. <kbd>/</kbd> is switched off here; <kbd>Ctrl</kbd> + <kbd>K</kbd> and <kbd>⌘</kbd> + <kbd>K</kbd> still open it.</p>
+
+<button class="iv-button iv-button--secondary" data-iv-open="cmd-glass" hidden aria-keyshortcuts="Control+K Meta+K">Open the command palette</button>
+
+<dialog class="iv-dialog iv-command iv-command--glass" id="cmd-glass" data-iv-component="command" data-iv-remember="true" data-iv-slash="false" aria-label="Command palette">
+  <div class="iv-dialog__panel">
+    <div class="iv-command__field">
+      <label class="iv-u-sr-only" for="cmd-glass-q">Search actions</label>
+      <input class="iv-input iv-command__input" id="cmd-glass-q" type="search" autocomplete="off" placeholder="Type a command or search…">
+    </div>
+    <nav class="iv-command__groups">
+      <section class="iv-command__group" data-iv-group="Pages">
+        <h3 class="iv-command__heading">Pages</h3>
+        <ul class="iv-command__list">
+          <li>
+            <a class="iv-command__item" href="#cmd-glass-note" data-iv-keywords="install setup start">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <span class="iv-command__label">Getting started</span>
+              <kbd class="iv-command__kbd">G S</kbd>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#cmd-glass-note" data-iv-keywords="button card dialog widgets">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>
+              <span class="iv-command__label">Components</span>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#cmd-glass-note" data-iv-keywords="colour palette spacing variables">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/></svg></span>
+              <span class="iv-command__label">Design tokens</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section class="iv-command__group" data-iv-group="Actions">
+        <h3 class="iv-command__heading">Actions</h3>
+        <ul class="iv-command__list">
+          <li>
+            <button class="iv-command__item" type="button" data-iv-command="toggle-theme" data-iv-keywords="dark light appearance">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14a8 8 0 1 1-10-10 7 7 0 0 0 10 10z"/></svg></span>
+              <span class="iv-command__label">Toggle theme</span>
+            </button>
+          </li>
+          <li>
+            <button class="iv-command__item" type="button" data-iv-command="copy-link" data-iv-keywords="url share clipboard">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 6 .5l2-2a4 4 0 0 0-6-6l-1 1"/><path d="M14 10a4 4 0 0 0-6-.5l-2 2a4 4 0 0 0 6 6l1-1"/></svg></span>
+              <span class="iv-command__label">Copy page link</span>
+            </button>
+          </li>
+        </ul>
+      </section>
+      <section class="iv-command__group" data-iv-group="Help">
+        <h3 class="iv-command__heading">Help</h3>
+        <ul class="iv-command__list">
+          <li>
+            <a class="iv-command__item" href="#cmd-glass-note" data-iv-keywords="keyboard keys accessibility">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18v12H3zM7 10h.01M11 10h.01M15 10h.01M8 14h8"/></svg></span>
+              <span class="iv-command__label">Shortcuts</span>
+              <kbd class="iv-command__kbd">?</kbd>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </nav>
+    <p class="iv-command__empty" hidden>No results</p>
+    <footer class="iv-command__hints" aria-hidden="true"><kbd>↑↓</kbd> navigate <kbd>↵</kbd> open <kbd>esc</kbd> close</footer>
+  </div>
+</dialog>

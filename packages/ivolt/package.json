@@ -99,6 +99,10 @@
       "types": "./dist/types/components/popover.d.ts",
       "default": "./dist/js/components/popover.js"
     },
+    "./command": {
+      "types": "./dist/types/components/command.d.ts",
+      "default": "./dist/js/components/command.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",

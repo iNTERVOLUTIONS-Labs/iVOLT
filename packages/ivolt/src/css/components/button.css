@@ -223,3 +223,8 @@
 .iv-button-group > :active {
   z-index: 1;
 }
+
+/* `display` above would beat the base `[hidden]` rule across layers: a hidden button stays hidden. */
+.iv-button[hidden] {
+  display: none;
+}

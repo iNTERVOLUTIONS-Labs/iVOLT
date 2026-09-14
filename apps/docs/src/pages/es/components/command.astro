@@ -1,0 +1,37 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Paleta de comandos" description="Paleta de comandos de iVOLT: una búsqueda modal de acciones que se abre con Ctrl+K, filtra al escribir, se maneja con el teclado y tiene grupos, atajos, elementos recientes y acciones añadidas desde la API.">
+  <article class="docs-prose">
+    <h1>Paleta de comandos (command)</h1>
+    <p>Una búsqueda modal de acciones. Pulsa <kbd>Ctrl</kbd>+<kbd>K</kbd> (o <kbd>⌘</kbd>+<kbd>K</kbd>, o <kbd>/</kbd> fuera de un campo de texto) y escribe: la lista filtra por etiqueta y palabras clave, los grupos sin coincidencias desaparecen, las flechas mueven el resalte y Enter sigue el enlace o ejecuta la acción. Los elementos se sirven como enlaces y botones normales dentro de un diálogo, así que todo lo que hace la paleta existe también en otra parte de la página. El componente compone el diálogo y añade la semántica de listbox, los atajos, el filtrado, una lista opcional de acciones recientes y una API para añadir acciones en tiempo de ejecución.</p>
+    <p><strong>CSS:</strong> <code>css/components/command.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/command</code> o <code>auto.js</code>. Añadido en la v0.5.</p>
+    <Fixture name="command/basic" minHeight="12rem" />
+    <h2>Variante de cristal, recientes, sin atajo de barra</h2>
+    <Fixture name="command/glass" minHeight="12rem" />
+    <h2>Opciones</h2>
+    <table>
+      <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+      <tbody>
+        <tr><td><code>shortcut</code></td><td><code>data-iv-shortcut</code></td><td><code>true</code></td><td>Atajo global <kbd>Ctrl</kbd>+<kbd>K</kbd> / <kbd>⌘</kbd>+<kbd>K</kbd>.</td></tr>
+        <tr><td><code>slash</code></td><td><code>data-iv-slash</code></td><td><code>true</code></td><td><kbd>/</kbd> abre la paleta cuando el foco no está en un campo editable.</td></tr>
+        <tr><td><code>remember</code></td><td><code>data-iv-remember</code></td><td><code>false</code></td><td>Guarda los últimos elementos activados en el almacenamiento local y los muestra en un grupo de recientes.</td></tr>
+        <tr><td><code>maxRecent</code></td><td><code>data-iv-max-recent</code></td><td><code>5</code></td><td>Cuántos recientes se conservan.</td></tr>
+        <tr><td><code>recentText</code>, <code>emptyText</code>, <code>placeholder</code></td><td><code>data-iv-recent-text</code> …</td><td><code>Recent</code>, <code>No results</code></td><td>Textos del grupo generado, del estado vacío y del campo.</td></tr>
+      </tbody>
+    </table>
+    <h2>Métodos y eventos</h2>
+    <p><code>open()</code>, <code>close()</code>, <code>add(action)</code>, <code>remove(id)</code>, <code>clear()</code>, <code>filter(query)</code>, <code>destroy()</code>; lectura de <code>isOpen</code>, <code>query</code> y <code>actions</code>. Una acción es <code>&#123; id, label, group, keywords, href?, shortcut?, run? &#125;</code>. Eventos en el diálogo: los propios del diálogo <code>iv:open</code>/<code>iv:close</code>; <code>iv:command</code> (cancelable, <code>detail.id</code>, <code>label</code>, <code>item</code>) y después <code>iv:commanded</code>; <code>iv:filter</code> con <code>query</code> y <code>visible</code>.</p>
+    <h2>Teclado y tecnología asistiva</h2>
+    <p>La paleta es un diálogo modal con nombre; el campo es un combobox cuyo listbox es la lista de acciones, el elemento resaltado se expone con <code>aria-activedescendant</code>, el recuento de resultados se anuncia con cortesía, los atajos se muestran en <code>kbd</code> y se declaran en el disparador con <code>aria-keyshortcuts</code>. Escape cierra y devuelve el foco al disparador.</p>
+    <h2>Sin JavaScript</h2>
+    <p>El diálogo permanece cerrado y su disparador oculto; los enlaces que contiene deben existir también en la navegación de la página, que es como está escrita la fixture.</p>
+    <h2>Errores frecuentes</h2>
+    <ul>
+      <li>Acciones que solo existen en la paleta: descubrirlas solo con teclado no basta.</li>
+      <li>Usarla para buscar contenido: para eso está la búsqueda del sitio; la paleta es para acciones y destinos.</li>
+      <li>Recordar recientes en dispositivos compartidos sin avisar.</li>
+    </ul>
+  </article>
+</Base>

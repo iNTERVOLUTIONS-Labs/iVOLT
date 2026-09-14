@@ -32,6 +32,7 @@
 @import url("./components/datepicker.css") layer(iv.components);
 @import url("./components/tooltip.css") layer(iv.components);
 @import url("./components/popover.css") layer(iv.components);
+@import url("./components/command.css") layer(iv.components);
 @import url("./surfaces.css") layer(iv.components);
 @import url("./effects.css") layer(iv.components);
 @import url("./utilities.css") layer(iv.utilities);

@@ -1,0 +1,292 @@
+/* iVOLT — components/command
+ * Command palette: a `<dialog class="iv-dialog iv-command">` pinned near the
+ * top of the viewport, with a large search field, scrollable groups of rows
+ * and a hint bar. `init` promotes the groups to a listbox and highlights one
+ * row with `aria-selected`; without JavaScript nothing here is used, because
+ * the dialog never opens.
+ * Locals: --iv-command-max-height --iv-command-gutter --iv-command-icon
+ * Precondition: imported AFTER components/dialog.css and components/form.css,
+ * whose `.iv-dialog` and `.iv-input` rules it overrides at equal specificity.
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-command {
+  --iv-dialog-width: 40rem;
+  --iv-command-max-height: min(60vh, 32rem);
+  --iv-command-gutter: var(--iv-space-2);
+  --iv-command-icon: 1.125rem;
+
+  margin-block: 10vh auto;
+  margin-inline: auto;
+  overflow: hidden;
+  border: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-command .iv-dialog__panel {
+  min-block-size: 0;
+}
+
+/* Search field -------------------------------------------------------- */
+
+.iv-command__field {
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-3);
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-space-5);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* Search glyph: an inline SVG mask, so it takes the text colour and ships no
+   remote asset and no bitmap. */
+.iv-command__field::before {
+  content: "";
+  flex: none;
+  inline-size: var(--iv-command-icon);
+  block-size: var(--iv-command-icon);
+  background-color: var(--iv-color-text-muted);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4.3-4.3'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4.3-4.3'/%3E%3C/svg%3E");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.iv-command__input {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  padding: 0;
+  font-size: var(--iv-text-lg);
+  line-height: var(--iv-leading-snug);
+  color: var(--iv-color-text);
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* The whole field is the visible focus context: the input is the only
+   focusable element of the palette and it is focused the moment it opens. */
+.iv-command__input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.iv-command__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* Groups -------------------------------------------------------------- */
+
+.iv-command__groups {
+  display: block;
+  max-block-size: var(--iv-command-max-height);
+  padding-block: var(--iv-command-gutter);
+  padding-inline: var(--iv-command-gutter);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.iv-command__group {
+  display: block;
+}
+
+.iv-command__group[hidden] {
+  display: none;
+}
+
+.iv-command__group + .iv-command__group {
+  margin-block-start: var(--iv-space-2);
+}
+
+.iv-command__heading {
+  margin: 0;
+  padding-block: var(--iv-space-2) var(--iv-space-1);
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-command__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iv-command__list > li[hidden] {
+  display: none;
+}
+
+/* Rows ---------------------------------------------------------------- */
+
+.iv-command__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--iv-space-3);
+  inline-size: 100%;
+  min-block-size: 2.75rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-3);
+  font-family: inherit;
+  font-size: var(--iv-text-md);
+  line-height: var(--iv-leading-snug);
+  text-align: start;
+  text-decoration: none;
+  color: var(--iv-color-text);
+  background-color: transparent;
+  border: 0;
+  border-inline-start: var(--iv-border-width-strong) solid transparent;
+  border-radius: var(--iv-radius-md);
+  cursor: pointer;
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-command__item[hidden] {
+  display: none;
+}
+
+/* Highlight: the row is selected through `aria-selected`, never through focus,
+   which stays in the input. `--active` is the same look for authors who mark a
+   row in the served HTML. */
+.iv-command__item--active,
+.iv-command__item[aria-selected="true"] {
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface);
+  border-inline-start-color: var(--iv-color-accent);
+}
+
+@media (hover: hover) {
+  .iv-command__item:hover {
+    background-color: var(--iv-color-surface);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-command__item {
+    transition: none;
+  }
+}
+
+.iv-command__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--iv-command-icon);
+  block-size: var(--iv-command-icon);
+  color: var(--iv-color-text-muted);
+}
+
+.iv-command__icon svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.iv-command__label {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.iv-command__kbd {
+  flex: none;
+  padding-block: 0.125rem;
+  padding-inline: var(--iv-space-2);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  line-height: 1.4;
+  color: var(--iv-color-text-muted);
+  background-color: var(--iv-color-surface);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-sm);
+}
+
+/* Empty state, live region and hints ---------------------------------- */
+
+.iv-command__empty {
+  margin: 0;
+  padding-block: var(--iv-space-8);
+  padding-inline: var(--iv-space-5);
+  font-size: var(--iv-text-sm);
+  text-align: center;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-command__empty[hidden] {
+  display: none;
+}
+
+/* Generated live region: announced, never seen. The element also carries
+   `iv-u-sr-only`; this rule keeps it hidden in builds without the utilities. */
+.iv-command__status {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.iv-command__hints {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--iv-space-2);
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-5);
+  font-size: var(--iv-text-xs);
+  color: var(--iv-color-text-muted);
+  background-color: var(--iv-color-surface);
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-command__hints kbd {
+  padding-block: 0.125rem;
+  padding-inline: var(--iv-space-2);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-sm);
+}
+
+/* Glass variant -------------------------------------------------------- */
+
+.iv-command--glass {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.iv-command--glass .iv-dialog__panel {
+  background-color: var(--iv-glass-bg-strong);
+  border: var(--iv-border-width) solid var(--iv-glass-border);
+  border-radius: var(--iv-radius-lg);
+  box-shadow:
+    inset 0 1px 0 var(--iv-glass-highlight),
+    var(--iv-shadow-3);
+  -webkit-backdrop-filter: blur(var(--iv-blur-lg)) saturate(140%);
+  backdrop-filter: blur(var(--iv-blur-lg)) saturate(140%);
+}
+
+.iv-command--glass .iv-command__hints {
+  background-color: transparent;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .iv-command--glass .iv-dialog__panel {
+    background-color: var(--iv-color-surface-raised);
+  }
+}

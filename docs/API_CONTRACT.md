@@ -135,6 +135,7 @@ class Dialog {
 | `Datepicker` | `open() close() setValue(iso) clear() destroy()`; `value`, `date`, `isOpen` | `native` (`auto`), `locale`, `firstDay` (-1), `openText`, `prevText`, `nextText`, `todayText`, `clearText`, `dialogText`; ver §8.12 |
 | `Tooltip` | `show(target) hide() destroy()`; `target` (contenedor; raíz automática en `body`) | `delay` (300), `placement` (`top`); ver §8.13 |
 | `Popover` | `open() close() toggle() destroy()`; `isOpen`, `invoker` | `placement` (`bottom`), `align` (`start`), `offset` (8), `focus` (true); ver §8.13 |
+| `Command` | `open() close() add(action) remove(id) clear() filter(query) destroy()`; `isOpen`, `query`, `actions` | `shortcut` (true), `slash` (true), `remember` (false), `recentText` («Recent»), `emptyText` («No results»), `placeholder` (vacío = el servido), `maxRecent` (5); ver §8.14 |
 | `Form` | `validate() validateField(control) reset() destroy()`; `errors`, `fields` | `validateOn` (`blur`), `summary` (false), `summaryTitle` («Please fix the following»), `focusFirst` (true), `scroll` (true), `live` (true); ver §8.7 |
 | `Counter` | `update() destroy()`; `count`, `max`, `control` | `mode` (`chars`), `max` (0 = el `maxlength`), `warnAt` (0.9), `template` (vacío = «{count} / {max}» o «{count}»), `overText` («Too long»); ver §8.7 |
 
@@ -152,6 +153,7 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 | `iv:change` → `iv:changed` | sí / no | tabs y disclosure en modo acordeón; combobox al confirmar un valor; picker al cambiar la selección; carousel al cambiar de diapositiva | `tab`, `panel`, `previousTab` (tabs/disclosure); `value`, `option`, `previousValue` (combobox); `value`, `added`, `removed` (picker); `index`, `previousIndex`, `reason` (carousel) |
 | `iv:sort` → `iv:sorted` | sí / no | data table, antes / después de ordenar (`reset()` emite solo `iv:sorted` con `column: -1`) | `column`, `direction`, `previousColumn`, `previousDirection` |
 | `iv:filter` → `iv:filtered` | sí / no | data table, antes / después de filtrar | previo: `query`, `previousQuery`; posterior: `query`, `visible`, `total` |
+| `iv:filter` (command) | no | command tras cada filtrado (sin posterior) | `query`, `visible` |
 | `iv:play` / `iv:pause` | no | carousel al iniciar o retener la rotación | `reason: "trigger"\|"api"\|"interaction"` |
 | `iv:validate` | no | form, por control antes de decidir su estado | `control`, `message`, `setError(message)` |
 | `iv:invalid` | no | form, tras un `submit` con errores | `errors: { control, message }[]` |
@@ -159,6 +161,7 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 | `iv:count` | no | counter, en cada actualización (también la inicial) | `count`, `max`, `remaining`, `over` |
 | `iv:show` → `iv:shown` | sí / no | tooltip al mostrar | `target` |
 | `iv:hide` → `iv:hidden` | no / no | tooltip al ocultar (no cancelable: la burbuja nunca se queda pegada) | `target` |
+| `iv:command` → `iv:commanded` | sí / no | command al activar un ítem (con `href` el posterior llega tras disparar el enlace; sin `href`, tras `run`) | `id`, `label`, `item`, `href` |
 | `iv:themechange` | no | en `document` | `theme`, `resolved: "light"\|"dark"` |
 
 `preventDefault()` en el evento previo aborta la acción y no se emite el posterior. Para que esto sea cierto con `<dialog>` nativo, `Dialog` intercepta las tres vías de cierre antes de que el navegador actúe: `submit` de `form[method="dialog"]` (se cancela y se llama a `close(value)` tras `iv:close`), el evento nativo `cancel` (Esc) y el clic en backdrop (`event.target === dialog` y punto fuera del rect de `iv-dialog__panel`). Un cierre externo no interceptable (por ejemplo `dialog.close()` directo del consumidor) emite solo `iv:closed` con `reason: "external"`.
@@ -496,7 +499,7 @@ Aprendido de brokenufo.com (`command-palette.js`): un diálogo de búsqueda de a
 | Acciones por API | `add({ id, label, group, keywords, href?, shortcut?, run? })` crea un ítem (`<button class="iv-command__item" type="button">` cuando no hay `href`), `remove(id)`, `clear()`; al activar un ítem sin `href` se emite `iv:command` (cancelable, `detail: { id, label, item }`) y después se ejecuta `run` si existe y no se canceló; los ítems servidos también emiten `iv:command` antes de seguir el enlace (cancelable) |
 | Opciones (`data-iv-*`) | `shortcut` (true: `Ctrl+K`/`⌘K`), `slash` (true), `remember` (false), `recentText` («Recent»), `emptyText` («No results»), `placeholder` (del input), `maxRecent` (5) |
 | Métodos | `open() close() add(action) remove(id) clear() filter(query) destroy()`; `isOpen`, `query`, `actions` (lectura) |
-| Eventos | los de `Dialog` (`iv:open/opened/close/closed`) en el `<dialog>`; `iv:command` → `iv:commanded` en el `<dialog>`; `iv:filter` (`detail: { query, visible }`) |
+| Eventos | los de `Dialog` (`iv:open/opened/close/closed`) en el `<dialog>`; `iv:command` → `iv:commanded` en el `<dialog>` (también en ítems con `href`, tras disparar el enlace); `iv:filter` (`detail: { query, visible }`, no cancelable); activar siempre cierra la paleta; el primer resultado se resalta al escribir; `__status` en inglés («N results») hasta que exista `statusText` |
 | Accesibilidad | diálogo modal con nombre; input con `role="combobox"`, `aria-expanded="true"`, `aria-autocomplete="list"`; resaltado por `aria-activedescendant`; anuncios del recuento con `role="status"` (`__status` generado, `aria-live="polite"`); atajos mostrados en `<kbd>` y declarados en `aria-keyshortcuts` del disparador; el atajo global no captura teclas dentro de campos editables salvo `Ctrl+K`/`⌘K` |
 | CSS | `.iv-command` (`--iv-dialog-width: 40rem`, panel sin cabecera, esquina superior del viewport: `margin-block-start: 10vh`), `__field` (input grande, `text-lg`, icono de búsqueda `::before`), `__groups` (`max-block-size: min(60vh, 32rem)`, `overflow: auto`), `__group`, `__heading` (xs uppercase muted), `__list`, `__item` (fila `grid` icono + etiqueta + `kbd`, radio md, resaltado `--active` con `surface` y borde de acento a la izquierda, `[aria-selected="true"]`), `__icon`, `__label`, `__kbd` (mono xs, borde), `__empty`, `__hints` (pie con `kbd`), `__status` (`sr-only`); variante `iv-command--glass` (panel `iv-glass--strong`) |
 | Fuera de alcance | búsqueda de contenido (eso es Pagefind en la web), acciones asíncronas, anidamiento de paletas |

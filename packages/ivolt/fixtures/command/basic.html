@@ -1,0 +1,90 @@
+<p class="iv-u-m-0" id="cmd-note">Demo palette. The four page links point back to this note instead of a real
+page, the three actions only emit <code>iv:command</code> and change nothing, and every destination of the panel is
+also reachable from the normal navigation of the page: the palette is a shortcut, never the only route. Press
+<kbd>Ctrl</kbd> + <kbd>K</kbd>, <kbd>⌘</kbd> + <kbd>K</kbd> or <kbd>/</kbd> to open it.</p>
+
+<button class="iv-button iv-button--secondary" data-iv-open="cmd" hidden aria-keyshortcuts="Control+K Meta+K">Open the command palette</button>
+
+<dialog class="iv-dialog iv-command" id="cmd" data-iv-component="command" aria-label="Command palette">
+  <div class="iv-dialog__panel">
+    <div class="iv-command__field">
+      <label class="iv-u-sr-only" for="cmd-q">Search actions</label>
+      <input class="iv-input iv-command__input" id="cmd-q" type="search" autocomplete="off" placeholder="Type a command or search…">
+    </div>
+    <nav class="iv-command__groups">
+      <section class="iv-command__group" data-iv-group="Pages">
+        <h3 class="iv-command__heading">Pages</h3>
+        <ul class="iv-command__list">
+          <li>
+            <a class="iv-command__item" href="#cmd-note" data-iv-keywords="install setup start">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+              <span class="iv-command__label">Getting started</span>
+              <kbd class="iv-command__kbd">G S</kbd>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#cmd-note" data-iv-keywords="button card dialog widgets">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg></span>
+              <span class="iv-command__label">Components</span>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#cmd-note" data-iv-keywords="colour palette spacing variables">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4v16"/></svg></span>
+              <span class="iv-command__label">Design tokens</span>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#cmd-note" data-iv-keywords="releases versions news">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg></span>
+              <span class="iv-command__label">Changelog</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section class="iv-command__group" data-iv-group="Actions">
+        <h3 class="iv-command__heading">Actions</h3>
+        <ul class="iv-command__list">
+          <li>
+            <button class="iv-command__item" type="button" data-iv-command="toggle-theme" data-iv-keywords="dark light appearance">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14a8 8 0 1 1-10-10 7 7 0 0 0 10 10z"/></svg></span>
+              <span class="iv-command__label">Toggle theme</span>
+            </button>
+          </li>
+          <li>
+            <button class="iv-command__item" type="button" data-iv-command="copy-link" data-iv-keywords="url share clipboard">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 0 0 6 .5l2-2a4 4 0 0 0-6-6l-1 1"/><path d="M14 10a4 4 0 0 0-6-.5l-2 2a4 4 0 0 0 6 6l1-1"/></svg></span>
+              <span class="iv-command__label">Copy page link</span>
+            </button>
+          </li>
+          <li>
+            <button class="iv-command__item" type="button" data-iv-command="print-page" data-iv-keywords="paper pdf export">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 9V4h10v5M7 18H5v-6h14v6h-2M8 14h8v6H8z"/></svg></span>
+              <span class="iv-command__label">Print this page</span>
+            </button>
+          </li>
+        </ul>
+      </section>
+      <section class="iv-command__group" data-iv-group="Help">
+        <h3 class="iv-command__heading">Help</h3>
+        <ul class="iv-command__list">
+          <li>
+            <a class="iv-command__item" href="#cmd-note" data-iv-keywords="keyboard keys accessibility">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18v12H3zM7 10h.01M11 10h.01M15 10h.01M8 14h8"/></svg></span>
+              <span class="iv-command__label">Shortcuts</span>
+              <kbd class="iv-command__kbd">?</kbd>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#cmd-note" data-iv-keywords="contact question feedback">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 17h.01M9.5 9.5a2.5 2.5 0 1 1 3 3.5V14"/></svg></span>
+              <span class="iv-command__label">Ask for support</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+    </nav>
+    <p class="iv-command__empty" hidden>No results</p>
+    <footer class="iv-command__hints" aria-hidden="true"><kbd>↑↓</kbd> navigate <kbd>↵</kbd> open <kbd>esc</kbd> close</footer>
+  </div>
+</dialog>
