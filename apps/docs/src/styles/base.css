@@ -114,9 +114,13 @@
 .docs-pre:hover .docs-copy-inline, .docs-copy-inline:focus-visible { opacity: 1; }
 
 /* ---------- fixtures ---------- */
-.docs-fixture { min-width: 0; margin: var(--iv-space-6) 0; border: 0; border-radius: var(--iv-radius-lg); overflow: hidden; position: relative; background: var(--iv-color-surface-raised); box-shadow: 0 1px 0 var(--docs-hair) inset, 0 30px 60px -40px rgb(0 0 0 / .75), 0 0 0 1px rgb(128 128 128 / .08); transition: transform var(--iv-motion-base) var(--docs-ease), box-shadow var(--iv-motion-base) var(--docs-ease); }
+.docs-fixture { min-width: 0; margin: var(--iv-space-6) 0; border: 0; border-radius: var(--iv-radius-lg); overflow: visible; position: relative;
+.docs-fixture__caption { border-start-start-radius: var(--iv-radius-lg); border-start-end-radius: var(--iv-radius-lg); }
+.docs-fixture__code { border-end-start-radius: var(--iv-radius-lg); border-end-end-radius: var(--iv-radius-lg); overflow: hidden; }
+.docs-fixture__preview { position: relative; z-index: 1; } background: var(--iv-color-surface-raised); box-shadow: 0 1px 0 var(--docs-hair) inset, 0 30px 60px -40px rgb(0 0 0 / .75), 0 0 0 1px rgb(128 128 128 / .08); transition: transform var(--iv-motion-base) var(--docs-ease), box-shadow var(--iv-motion-base) var(--docs-ease); }
 .docs-fixture::before { content: ""; position: absolute; inset-inline: 0; inset-block-start: 0; block-size: 2px; background: linear-gradient(90deg, transparent, var(--iv-color-accent), transparent); opacity: .5; z-index: 1; }
-.docs-fixture:hover, .docs-fixture:focus-within { transform: translateY(-2px); box-shadow: 0 1px 0 var(--docs-line) inset, 0 40px 70px -40px var(--docs-halo), 0 0 0 1px var(--docs-hair); }
+/* No transform on hover: a transformed ancestor becomes the containing block of position: fixed descendants (toast regions). */
+.docs-fixture:hover, .docs-fixture:focus-within { box-shadow: 0 1px 0 var(--docs-line) inset, 0 40px 70px -40px var(--docs-halo), 0 0 0 1px var(--docs-hair); }
 .docs-fixture__caption { display: flex; align-items: center; flex-wrap: wrap; gap: var(--iv-space-3); padding: var(--iv-space-3) var(--iv-space-4); font-size: var(--iv-text-sm); background: var(--iv-color-surface); }
 .docs-fixture__title { font-weight: var(--iv-weight-medium); font-family: var(--docs-display); }
 .docs-fixture__path { color: var(--iv-color-text-muted); font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); margin-inline-end: auto; }

@@ -757,3 +757,54 @@ describe("Picker", () => {
     });
   });
 });
+
+describe("Picker on bare selects (ADR-032)", () => {
+  it("wraps every select.iv-select on initAll, copies data-iv-* options, and destroy restores the markup", () => {
+    document.body.innerHTML = '<form><label class="iv-label" for="bare">Plan</label><select class="iv-select" id="bare" name="plan" data-iv-search="on"><option value="">Choose</option><option value="a">Alpha</option><option value="b">Beta</option></select></form>';
+    const form = document.querySelector("form");
+    const before = form.innerHTML;
+    const [picker] = Picker.initAll(document);
+    expect(picker).toBeInstanceOf(Picker);
+    const root = form.querySelector('[data-iv-component="picker"]');
+    expect(root).not.toBeNull();
+    expect(root.hasAttribute("data-iv-auto")).toBe(true);
+    expect(root.getAttribute("data-iv-search")).toBe("on");
+    expect(picker.options.search).toBe("on");
+    expect(root.querySelector(".iv-picker__control")).not.toBeNull();
+    picker.destroy();
+    expect(form.innerHTML).toBe(before);
+  });
+
+  it("leaves data-iv-native selects and selects already inside a picker alone", () => {
+    document.body.innerHTML = '<select class="iv-select" data-iv-native><option value="a">A</option></select><div data-iv-native><select class="iv-select"><option value="a">A</option></select></div><div class="iv-picker" data-iv-component="picker"><select class="iv-select"><option value="a">A</option></select></div>';
+    const made = Picker.initAll(document);
+    expect(made.length).toBe(1);
+    expect(document.querySelectorAll("[data-iv-auto]").length).toBe(0);
+  });
+
+  it("opens below when the popover fits, above only when there is more room above, and caps the list", () => {
+    document.body.innerHTML = '<div class="iv-picker" data-iv-component="picker"><select class="iv-select"><option value="a">A</option><option value="b">B</option></select></div>';
+    const picker = new Picker(document.querySelector(".iv-picker"));
+    Object.defineProperty(window, "innerHeight", { value: 800, configurable: true });
+    const field = picker._field, popover = picker._popover;
+    // jsdom has no layout: the list measures 0, so the whole popover height counts as chrome.
+    field.getBoundingClientRect = () => ({ top: 100, bottom: 140, left: 0, right: 200, width: 200, height: 40 });
+    Object.defineProperty(popover, "offsetHeight", { value: 300, configurable: true, writable: true });
+    picker.open();
+    expect(popover.getAttribute("data-iv-placement")).toBe("bottom");
+    expect(popover.style.getPropertyValue("--iv-picker-max-height")).toBe("352px"); // 800 - 140 - 8 - 300
+    picker.close();
+    expect(popover.style.getPropertyValue("--iv-picker-max-height")).toBe("");
+    field.getBoundingClientRect = () => ({ top: 700, bottom: 740, left: 0, right: 200, width: 200, height: 40 });
+    picker.open();
+    expect(popover.getAttribute("data-iv-placement")).toBe("top"); // 52 below, 692 above
+    expect(popover.style.getPropertyValue("--iv-picker-max-height")).toBe("392px");
+    picker.close();
+    // Fits nowhere and there is less room above: stay below with the minimum cap.
+    Object.defineProperty(popover, "offsetHeight", { value: 600, configurable: true, writable: true });
+    field.getBoundingClientRect = () => ({ top: 300, bottom: 340, left: 0, right: 200, width: 200, height: 40 });
+    picker.open();
+    expect(popover.getAttribute("data-iv-placement")).toBe("bottom");
+    expect(popover.style.getPropertyValue("--iv-picker-max-height")).toBe("120px");
+  });
+});
