@@ -1,0 +1,25 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Pestañas" description="Pestañas de iVOLT: enlaces de ancla y secciones servidos como HTML normal, promocionados al patrón ARIA de pestañas por JavaScript, con activación automática o manual.">
+  <article class="docs-prose">
+    <h1>Pestañas (tabs)</h1>
+    <p>El servidor envía enlaces de ancla y secciones con sus títulos, que funcionan como navegación dentro de la página sin JavaScript. En el <code>init</code>, el componente los promociona al patrón ARIA de pestañas y oculta los paneles inactivos; <code>destroy</code> restaura el HTML servido.</p>
+    <p><strong>CSS:</strong> <code>css/components/tabs.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/tabs</code> o <code>auto.js</code>.</p>
+    <Fixture name="tabs/basic" />
+    <h2>Opciones</h2>
+    <table><thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead><tbody>
+      <tr><td><code>activation</code></td><td><code>data-iv-activation</code></td><td><code>automatic</code></td><td><code>automatic</code> selecciona al mover el foco con las flechas; <code>manual</code> espera a Enter o Espacio.</td></tr>
+      <tr><td><code>orientation</code></td><td><code>data-iv-orientation</code></td><td><code>horizontal</code></td><td><code>vertical</code> usa las flechas arriba y abajo y la disposición <code>iv-tabs--vertical</code>.</td></tr>
+    </tbody></table>
+    <h2>Métodos y eventos</h2>
+    <p><code>select(idOrElement)</code>, <code>next()</code>, <code>prev()</code>, <code>activeTab</code>, <code>destroy()</code>. <code>iv:change</code> (cancelable, <code>detail.tab</code>, <code>panel</code>, <code>previousTab</code>) y después <code>iv:changed</code>.</p>
+    <h2>Teclado</h2>
+    <p>Las flechas izquierda y derecha (o arriba y abajo en vertical) se mueven entre pestañas con vuelta al principio, Inicio y Fin saltan a la primera y a la última; Tab entra en el panel.</p>
+    <h2>Sin JavaScript</h2>
+    <p>Todos los paneles quedan visibles con sus títulos y los enlaces desplazan a cada sección. Así, el contenido esencial nunca depende del script.</p>
+    <h2>Errores frecuentes</h2>
+    <ul><li>Poner <code>role="tab"</code> en el HTML servido: sin el script, anuncia un widget que no funciona.</li><li>Pestañas para pasos secuenciales; usa un flujo de formulario.</li></ul>
+  </article>
+</Base>

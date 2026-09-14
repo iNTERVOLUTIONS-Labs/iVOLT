@@ -43,7 +43,7 @@ iVOLT/
 │  ├─ src/js/
 │  │  ├─ core/{registry,options,events,focus,keys}.js
 │  │  ├─ core/breakpoints.js   # GENERADO desde tokens.json
-│  │  ├─ components/{disclosure,tabs,dialog,drawer,dropdown,toast}.js
+│  │  ├─ components/{disclosure,tabs,dialog,drawer,dropdown,toast,combobox,datatable}.js
 │  │  ├─ theme.js
 │  │  ├─ index.js              # entrada agrupada, sin autoarranque
 │  │  ├─ auto.js               # opt-in: init(document) al cargar
@@ -81,7 +81,7 @@ Todos los presupuestos se miden por separado con `scripts/sizes.mjs` (gzip nivel
 ```json
 {
   "name": "@intervolutions/ivolt",
-  "version": "0.1.0-alpha.0",
+  "version": "0.2.0-beta.0",
   "type": "module",
   "license": "MIT",
   "files": ["dist", "LICENSE", "README.md"],
@@ -96,6 +96,8 @@ Todos los presupuestos se miden por separado con `scripts/sizes.mjs` (gzip nivel
     "./drawer":     { "types": "./dist/types/components/drawer.d.ts",     "import": "./dist/js/components/drawer.js" },
     "./dropdown":   { "types": "./dist/types/components/dropdown.d.ts",   "import": "./dist/js/components/dropdown.js" },
     "./toast":      { "types": "./dist/types/components/toast.d.ts",      "import": "./dist/js/components/toast.js" },
+    "./combobox":   { "types": "./dist/types/components/combobox.d.ts",   "import": "./dist/js/components/combobox.js" },
+    "./datatable":  { "types": "./dist/types/components/datatable.d.ts",  "import": "./dist/js/components/datatable.js" },
     "./iife":       "./dist/js/ivolt.iife.min.js",
     "./css/*":      "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",

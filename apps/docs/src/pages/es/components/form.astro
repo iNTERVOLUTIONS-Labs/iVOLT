@@ -1,0 +1,30 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Formulario" description="Controles de formulario de iVOLT: etiquetas, campos de texto, textarea, select nativo, casillas, radios, textos de ayuda y de error, y fieldsets. Controles nativos, solo CSS.">
+  <article class="docs-prose">
+    <h1>Formulario (form)</h1>
+    <p>Controles nativos con estilos de tokens. Todo control necesita una <code>&lt;label&gt;</code> visible; los textos de ayuda y de error se enlazan con <code>aria-describedby</code>. Sin JavaScript y sin widgets a medida.</p>
+    <p><strong>CSS:</strong> incluido en <code>ivolt.css</code>; suelto en <code>css/components/form.css</code>.</p>
+    <Fixture name="form/basic" />
+    <h2>Error y deshabilitado</h2>
+    <p>Marca los campos no válidos con <code>aria-invalid="true"</code> y apunta <code>aria-describedby</code> al elemento <code>iv-field__error</code>. Los controles deshabilitados usan el atributo nativo.</p>
+    <Fixture name="form/error" />
+    <h2>Clases</h2>
+    <table>
+      <thead><tr><th>Clase</th><th>Elemento</th></tr></thead>
+      <tbody>
+        <tr><td><code>iv-field</code></td><td>Contenedor: etiqueta, control y ayuda/error apilados.</td></tr>
+        <tr><td><code>iv-label</code>, <code>iv-label__required</code></td><td><code>&lt;label&gt;</code> y la marca de obligatorio (mantén <code>required</code> en el control).</td></tr>
+        <tr><td><code>iv-input</code></td><td><code>&lt;input&gt;</code> (tipos de texto) y <code>&lt;textarea&gt;</code>.</td></tr>
+        <tr><td><code>iv-select</code></td><td><code>&lt;select&gt;</code> nativo.</td></tr>
+        <tr><td><code>iv-check</code>, <code>iv-checks</code>, <code>iv-checks--inline</code></td><td>Etiqueta que envuelve una casilla o un radio; grupos verticales o en línea.</td></tr>
+        <tr><td><code>iv-fieldset</code>, <code>iv-fieldset__legend</code></td><td>Agrupación con leyenda.</td></tr>
+        <tr><td><code>iv-field__help</code>, <code>iv-field__error</code></td><td>Textos de ayuda y de error.</td></tr>
+      </tbody>
+    </table>
+    <h2>Errores frecuentes</h2>
+    <ul><li>Usar el placeholder como única etiqueta.</li><li>Texto de error sin referenciar desde <code>aria-describedby</code>.</li><li>Formularios de demostración que envían a un servidor que no existe: dilo, como hacen los ejemplos de arriba.</li></ul>
+  </article>
+</Base>

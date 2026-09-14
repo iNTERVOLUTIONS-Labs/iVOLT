@@ -1,0 +1,16 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Insignia" description="Insignia de iVOLT: etiquetas pequeñas de estado con variantes de color suaves y sólidas. Solo CSS.">
+  <article class="docs-prose">
+    <h1>Insignia (badge)</h1>
+    <p>Una etiqueta compacta para un estado o un recuento. Las insignias no son interactivas; si la etiqueta importa para la tecnología asistiva, mantenla como texto real y no como color a secas.</p>
+    <p><strong>CSS:</strong> <code>css/components/badge.css</code> (dentro de <code>ivolt.css</code>).</p>
+    <Fixture name="badge/variants" />
+    <h2>Clases</h2>
+    <p><code>iv-badge</code> más <code>--primary --success --warning --danger --info</code> (fondo suave, texto de color) y <code>--solid</code> (relleno). Sin variante, la insignia es neutra.</p>
+    <h2>Errores frecuentes</h2>
+    <ul><li>Usar una insignia como botón; usa <code>iv-button--sm</code> en su lugar.</li><li>Transmitir el estado solo con color: incluye una palabra, por ejemplo «Pagado».</li></ul>
+  </article>
+</Base>

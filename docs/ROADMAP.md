@@ -51,3 +51,29 @@ Lo que más encarece: repetir comandos sin diagnóstico, enviar contexto entero 
 | P3 | Compilador de utilidades opcional / purga | valores arbitrarios sin escáner obligatorio |
 | P3 | CLI generadora de starters | conveniencia |
 | P3 | Data grid virtualizado, editor rico, drag and drop, gráficos | dominio propio cada uno |
+
+## 4. Ciclo v0.2 (abierto 2026-09-14)
+
+Tras cerrar v0.1 (fases 0–4) y el rediseño de la web (ADR-027), el trabajo continúa por prioridad del backlog. Orden decidido:
+
+| Orden | Elemento | Estado | Notas |
+|---|---|---|---|
+| 1 | Combobox/autocomplete accesible | hecho (2026-09-14) | contrato en `API_CONTRACT.md` §8.3; fallback nativo `<datalist>`; implementador Opus 5, docs y pruebas del integrador; 3 motores en verde |
+| 2 | Estructura i18n de docs y traducción al español | hecho (2026-09-14) | 31 páginas `/es/` por un implementador Opus 5; `Base.astro` con `lang`, `hreflang`, selector; Pagefind con dos índices |
+| 3 | Lector de pantalla (NVDA, VoiceOver) | bloqueado en este entorno | lista en `A11Y_REVIEW.md` §6, requiere una persona con AT |
+| 4 | Data table con ordenación y filtro | hecho (2026-09-14) | contrato §8.4; sin virtualización; implementador Opus 5; 3 motores en verde |
+
+## 5. Hito beta: `0.2.0-beta.0` (definido y cerrado 2026-09-14; sin publicar)
+
+Beta significa: alcance v0.2 completo, contratos congelados, gates verdes en tres motores, sin fallos abiertos conocidos de severidad alta, notas y pasos de publicación actualizados; **sigue sin publicarse** sin autorización. Condiciones, en orden de ejecución:
+
+| # | Condición | Estado |
+|---|---|---|
+| 1 | Combobox integrado (entrada, `exports`, `index.js`, flat), documentado y probado en Chromium, Firefox y WebKit | hecho |
+| 2 | Rediseño de la web, ronda 2 (`docs/design/DIRECTION_R2.md`), sin rejillas, Lighthouse ≥ 95 rendimiento y 100 accesibilidad en la home, capturas revisadas | hecho (aceptación visual del propietario pendiente) |
+| 3 | Data table con ordenación y filtro sin virtualización, mejora progresiva sobre `<table>`, contrato en `API_CONTRACT.md` §8.4, docs y pruebas | hecho |
+| 4 | Docs en español: estructura i18n (`src/pages/es/`, cadenas `src/i18n/es.js`), selector de idioma, `hreflang`, búsqueda por idioma | hecho |
+| 5 | Presupuestos de tamaño revisados con los módulos nuevos (`docs/QUALITY.md` §1) y `npm run verify` verde | hecho (2026-09-14, tres motores) |
+| 6 | `CHANGELOG.md` 0.2.0-beta.0, `docs/RELEASE.md` actualizado, versión en `package.json`, `PROJECT_STATE.md` cerrado | hecho |
+
+Fuera de la beta (declarado, no verificado): prueba con lector de pantalla real (bloqueada en este entorno), datos de campo, dispositivos físicos.

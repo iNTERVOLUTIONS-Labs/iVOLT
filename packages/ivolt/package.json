@@ -1,6 +1,6 @@
 {
   "name": "@intervolutions/ivolt",
-  "version": "0.1.0-alpha.0",
+  "version": "0.2.0-beta.0",
   "description": "A hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript.",
   "license": "MIT",
   "type": "module",
@@ -50,6 +50,14 @@
     "./toast": {
       "types": "./dist/types/components/toast.d.ts",
       "default": "./dist/js/components/toast.js"
+    },
+    "./combobox": {
+      "types": "./dist/types/components/combobox.d.ts",
+      "default": "./dist/js/components/combobox.js"
+    },
+    "./datatable": {
+      "types": "./dist/types/components/datatable.d.ts",
+      "default": "./dist/js/components/datatable.js"
     },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",

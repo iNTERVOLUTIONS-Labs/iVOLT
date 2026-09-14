@@ -175,3 +175,16 @@ Home tras el rediseño (campo animado, transiciones de vista, revelados, fuente 
 | `/` | escritorio | 100 | 100 | 100 | 100 | 371 | 0,000 | 0 |
 
 Auditorías con peso 0 que siguen «fallando»: `render-blocking-insight` (una hoja CSS) y `network-dependency-tree-insight` (informativa). Solo se animan `transform` y `opacity`; los resplandores son gradientes prerrenderizados, sin `filter: blur` animado.
+
+## Ciclo v0.2 — remedición tras el rediseño ronda 2 y la web en español (2026-09-14)
+
+Mismo método y mismo entorno de laboratorio que arriba: Lighthouse 13.4.1 (CLI), HeadlessChrome `--headless=new --no-sandbox`, servidor local `scripts/docs-server.mjs` en `http://127.0.0.1:4326` sirviendo `apps/docs/dist` recién construido, una sola pasada por ruta y preajuste, sin red real ni datos de campo. JSON en el directorio temporal del trabajo (`lh-final-*.json`); no se versionan.
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS | TBT | Speed Index |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 100 | 100 | 100 | 100 | 1528 ms | 0 | 18 ms | 1134 ms |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 373 ms | 0 | 0 ms | 306 ms |
+| `/es` | móvil | 100 | 100 | 100 | 100 | 1526 ms | 0 | 0 ms | 1205 ms |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 371 ms | 0 | 0 ms | 305 ms |
+
+Hallazgos corregidos durante la medición: `hreflang` con URL relativas (auditoría `hreflang`, SEO 90/80) → ahora solo se emiten con `SITE_URL`, igual que `canonical`; enlace «Empezar» en la home española marcado como texto no descriptivo (`link-text`) → «Primeros pasos». El canvas de arcos del hero no afecta a TBT (≤ 18 ms en móvil simulado con CPU ×4); su coste por fotograma no se ha medido con perfilador.

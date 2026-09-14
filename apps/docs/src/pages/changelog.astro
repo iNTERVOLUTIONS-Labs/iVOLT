@@ -1,10 +1,19 @@
 ---
 import Base from "../layouts/Base.astro";
 ---
-<Base title="Changelog" description="What exists in iVOLT so far: the unreleased 0.1.0-alpha, built across a vertical slice and a full v0.1 scope, plus the limitations that are known and unresolved.">
+<Base title="Changelog" description="What exists in iVOLT so far: the unreleased 0.2.0-beta with combobox and data table, the 0.1.0-alpha it builds on, and the limitations that are known and unresolved.">
   <article class="docs-prose">
     <h1>Changelog</h1>
     <p>iVOLT has not been released yet. There is one version in progress and no published package, so there are no release dates here and none will be invented. Until <code>0.1.0</code> ships, install from the repository or from a tarball made with <code>npm pack</code>.</p>
+
+    <h2>0.2.0-beta (unreleased)</h2>
+    <p>The first beta: the v0.2 scope is complete and the contracts are frozen. Nothing is published yet.</p>
+    <ul>
+      <li><strong>Combobox</strong> (<code>iv-combobox</code>): a labelled <code>&lt;input list&gt;</code> with a <code>&lt;datalist&gt;</code> is promoted to the ARIA combobox pattern with a filtered listbox. Options <code>filter</code>, <code>minChars</code>, <code>strict</code>, <code>autoselect</code> and <code>emptyText</code>; cancelable <code>iv:change</code> before <code>iv:changed</code>; accent-insensitive matching; <code>destroy</code> restores the served markup exactly.</li>
+      <li><strong>Data table</strong> (<code>iv-datatable</code>): sorting by text, number and date plus a filter on top of a served <code>&lt;table class="iv-table"&gt;</code>. Header buttons carry <code>aria-sort</code>, the filter block is hidden until JavaScript runs, a live status announces the row count, and <code>destroy</code> puts the rows back in the served order.</li>
+      <li><strong>Documentation</strong>: redesigned site and a Spanish version under <code>/es/</code>.</li>
+    </ul>
+    <p>Still not verified: real screen reader sessions, physical devices and field data. See the roadmap.</p>
 
     <h2>0.1.0-alpha (unreleased)</h2>
     <p>Built in two passes: a vertical slice that proved the whole pipeline on a few families, then the full v0.1 scope on top of it.</p>

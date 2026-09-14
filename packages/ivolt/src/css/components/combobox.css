@@ -1,0 +1,106 @@
+/* iVOLT — components/combobox
+ * Input with a filtered listbox. Without JavaScript the `<datalist>` provides
+ * the native suggestions and nothing here is used; `init` inserts the
+ * `__list` right after the input and this file positions it under the control.
+ * Locals: --iv-combobox-max-height --iv-combobox-offset
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-combobox {
+  --iv-combobox-max-height: 16rem;
+  --iv-combobox-offset: var(--iv-space-1);
+
+  position: relative;
+  display: grid;
+  gap: 0.375rem;
+}
+
+/* The input keeps working as a plain control; the class is the hook the JS
+   uses to find it and lets the field fill the combobox in any container. */
+.iv-combobox__input {
+  inline-size: 100%;
+}
+
+/* Listbox ------------------------------------------------------------ */
+
+.iv-combobox__list {
+  position: absolute;
+  inset-block-start: calc(100% + var(--iv-combobox-offset));
+  inset-inline: 0;
+  z-index: var(--iv-z-dropdown);
+  max-block-size: var(--iv-combobox-max-height);
+  margin: 0;
+  padding-block: var(--iv-space-1);
+  padding-inline: 0;
+  overflow-y: auto;
+  list-style: none;
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-md);
+  box-shadow: var(--iv-shadow-2);
+  animation: iv-combobox-in var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+@keyframes iv-combobox-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-combobox__list {
+    animation: none;
+  }
+}
+
+/* Options ------------------------------------------------------------ */
+
+.iv-combobox__option {
+  display: flex;
+  align-items: center;
+  min-block-size: 2.5rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-md);
+  line-height: 1.2;
+  color: var(--iv-color-text);
+  cursor: pointer;
+}
+
+/* `init` hides the options that do not match the typed text. */
+.iv-combobox__option[hidden] {
+  display: none;
+}
+
+.iv-combobox__option[aria-selected="true"] {
+  color: var(--iv-color-primary);
+  background-color: var(--iv-color-primary-subtle);
+}
+
+.iv-combobox__option[aria-disabled="true"] {
+  color: var(--iv-color-text-muted);
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .iv-combobox__option:hover {
+    background-color: var(--iv-color-surface);
+  }
+}
+
+/* Empty state -------------------------------------------------------- */
+
+.iv-combobox__empty {
+  min-block-size: 2.5rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-sm);
+  line-height: 1.2;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-combobox__empty[hidden] {
+  display: none;
+}

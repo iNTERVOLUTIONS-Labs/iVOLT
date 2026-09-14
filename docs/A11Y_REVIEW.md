@@ -378,3 +378,23 @@ Enumerado explícitamente para que no se lea este informe como más de lo que es
   contraste alto (F3).
 - **La pieza que falta es humana:** hasta que alguien ejecute la sección 6 con NVDA y con VoiceOver, la
   parte de esta revisión que más importa —qué se oye— sigue sin comprobar.
+
+## 9. Ciclo v0.2 (2026-09-14): combobox y data table
+
+Verificado por herramienta y por pruebas de navegador (no por personas ni por lector de pantalla):
+
+- **axe-core** (wcag2a, 2aa, 21aa, 22aa) sin hallazgos critical/serious en `combobox/basic`, `combobox/strict`, `datatable/basic` y `datatable/sorted`, en claro y oscuro, en Chromium, Firefox y WebKit (`tests/browser/a11y.spec.js`).
+- **Combobox** (`tests/browser/combobox.spec.js`, tres motores): promoción a `role="combobox"` con `aria-expanded`, `aria-controls`, `aria-autocomplete="list"` y `aria-activedescendant`; el foco no sale del input; ↓/↑ con envoltura, Home/End, Enter confirma, Esc cierra, Tab confirma con `autoselect`; estado vacío; modo estricto al perder el foco; `destroy` deja el HTML servido idéntico; sin JS queda el `<datalist>` nativo.
+- **Data table** (`tests/browser/datatable.spec.js`, tres motores): botones reales de ordenación con el texto de la cabecera como nombre accesible (el indicador es solo CSS), `aria-sort` únicamente en la columna ordenada, filtro con `role="status"` y recuento, fila vacía, filas ocultas con `hidden`, el foco no se mueve al filtrar; `destroy` devuelve el orden servido; sin JS no aparece el bloque de filtro.
+
+Sin verificar: qué anuncian NVDA y VoiceOver al resaltar opciones (`aria-activedescendant`) y al cambiar `aria-sort`; el comportamiento del `<datalist>` nativo en móviles reales; zoom y reflujo. Añadir a la lista de §6:
+
+### 6.8 Combobox — `/fixture/combobox/basic`
+1. Con el foco en el campo, escribir «sp»: se espera que el lector anuncie la lista (número de opciones) y, con ↓, cada opción resaltada por `aria-activedescendant`.
+2. Enter: se espera el anuncio del valor confirmado y el cierre de la lista.
+3. En `combobox/strict`, escribir texto que no coincide y salir con Tab: se espera que el valor restaurado se anuncie al volver.
+
+### 6.9 Data table — `/fixture/datatable/basic`
+1. Tabular hasta «Customer» y activar: se espera «ordenado ascendente» (o equivalente) en la cabecera.
+2. Escribir en el filtro: se espera el anuncio del recuento («3 of 9 rows») sin mover el foco.
+3. Navegar la tabla por celdas tras filtrar: las filas ocultas no deben leerse.

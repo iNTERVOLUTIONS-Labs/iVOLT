@@ -1,4 +1,6 @@
 // Runs in the default "node" environment: no DOM globals at all.
+import { readFileSync } from "node:fs";
+const pkg = JSON.parse(readFileSync(new URL("../../packages/ivolt/package.json", import.meta.url), "utf8"));
 import { describe, it, expect } from "vitest";
 
 describe("SSR safety", () => {
@@ -13,7 +15,7 @@ describe("SSR safety", () => {
     expect(typeof mod.destroy).toBe("function");
     expect(typeof mod.Dialog).toBe("function");
     expect(typeof mod.setTheme).toBe("function");
-    expect(mod.version).toBe("0.1.0-alpha.0");
+    expect(mod.version).toBe(pkg.version);
     expect(Object.isFrozen(mod.components)).toBe(true);
   });
 

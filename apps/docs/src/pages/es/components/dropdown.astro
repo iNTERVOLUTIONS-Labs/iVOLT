@@ -1,0 +1,23 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Menú" description="Menú desplegable de iVOLT: un menú de acciones construido sobre details/summary, promocionado al patrón ARIA de botón de menú con navegación por flechas. No es para la navegación del sitio.">
+  <article class="docs-prose">
+    <h1>Menú de acciones (dropdown)</h1>
+    <p>Un menú pequeño de acciones asociado a un botón. Sin JavaScript, el <code>&lt;details&gt;</code> nativo se abre y se cierra y los elementos son botones y enlaces corrientes. Con él, el menú sigue el patrón ARIA de botón de menú. Esto no es un menú de navegación: para eso usa enlaces, un desplegable o el panel lateral.</p>
+    <p><strong>CSS:</strong> <code>css/components/dropdown.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/dropdown</code> o <code>auto.js</code>.</p>
+    <Fixture name="dropdown/basic" minHeight="16rem" />
+    <h2>Opciones</h2>
+    <table><thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th></tr></thead><tbody>
+      <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>bottom-start</code> (<code>bottom-end</code> alinea con el borde final)</td></tr>
+      <tr><td><code>closeOnSelect</code></td><td><code>data-iv-close-on-select</code></td><td><code>true</code></td></tr>
+    </tbody></table>
+    <h2>Teclado</h2>
+    <p>Enter, Espacio o flecha abajo sobre el botón abren el menú y ponen el foco en el primer elemento; las flechas arriba y abajo se mueven con vuelta al principio, Inicio y Fin saltan; Escape cierra y devuelve el foco; Tab cierra sin atrapar el foco.</p>
+    <h2>Eventos</h2>
+    <p><code>iv:open</code>/<code>iv:close</code> (cancelables) e <code>iv:opened</code>/<code>iv:closed</code>; <code>open()</code>, <code>close()</code>, <code>toggle()</code>, <code>isOpen</code>.</p>
+    <h2>Errores frecuentes</h2>
+    <ul><li>Usar <code>role="menu"</code> para una lista de enlaces de navegación.</li><li>Menús con más de unos siete elementos; mejor una página.</li></ul>
+  </article>
+</Base>

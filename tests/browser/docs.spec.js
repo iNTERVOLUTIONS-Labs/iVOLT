@@ -1,7 +1,9 @@
 import { test, expect } from "@playwright/test";
 
 const DOCS = "http://127.0.0.1:4321";
-const routes = ["/", "/getting-started", "/foundations/tokens-and-themes", "/foundations/layout", "/foundations/typography", "/foundations/accessibility", "/foundations/coexistence", "/examples", "/playground", "/changelog", "/roadmap", "/contributing", "/404", ...["button", "card", "form", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => `/components/${c}`)];
+const enRoutes = ["/", "/getting-started", "/foundations/tokens-and-themes", "/foundations/layout", "/foundations/typography", "/foundations/accessibility", "/foundations/coexistence", "/examples", "/playground", "/changelog", "/roadmap", "/contributing", "/404", ...["button", "card", "form", "combobox", "datatable", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => `/components/${c}`)];
+// Every English page has a Spanish twin under /es (the home is translated with the redesign).
+const routes = [...enRoutes, ...enRoutes.filter((r) => r !== "/").map((r) => `/es${r}`)];
 
 test.describe("Docs site", () => {
   test("key routes render without console errors and with one h1", async ({ page }) => {

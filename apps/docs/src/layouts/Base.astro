@@ -2,23 +2,45 @@
 import "@intervolutions/ivolt/css/ivolt.css";
 import "../styles/docs.css";
 import { ClientRouter } from "astro:transitions";
-import { t, nav } from "../i18n/en.js";
+import * as en from "../i18n/en.js";
+import * as es from "../i18n/es.js";
 import { themeSnippet } from "../theme-snippet.js";
 import { wordmark as brandSvg } from "../brand.js";
-const { title, description, sidebar = true, toc = sidebar, wide = false } = Astro.props;
-const path = Astro.url.pathname.replace(/\.html$/, "");
-const canonical = Astro.site ? new URL(path, Astro.site).href : undefined;
-const og = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
+const { title, description, sidebar = true, toc = sidebar, bleed = false, lang: langProp } = Astro.props;
+// Built with format "file": the home is /index.html at build time, /es/index.html in Spanish.
+const path = Astro.url.pathname.replace(/\.html$/, "").replace(/\/index$/, "") || "/";
+// Language: explicit prop, else the /es prefix of the route. Strings and navigation follow it.
+// hreflang alternates must be absolute, so they are emitted only when SITE_URL sets Astro.site (like canonical).
+const lang = langProp || (path === "/es" || path.startsWith("/es/") ? "es" : "en");
+const { t, nav } = lang === "es" ? es : en;
+const { families } = en;
+const base = lang === "es" ? "/es" : "";
+const bare = path.replace(/^\/es(?=\/|$)/, "") || "/";
+const altEn = bare;
+const altEs = bare === "/" ? "/es" : `/es${bare}`;
+const abs = (p) => (Astro.site ? new URL(p, Astro.site).href : p);
+const canonical = Astro.site ? abs(path) : undefined;
+const og = abs("/og.png");
 const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
+const group = nav.find((g) => g.items.some((i) => i.href === path))?.group;
+const slug = bare.startsWith("/components/") ? bare.split("/").pop() : null;
+const family = slug ? families[slug] : null;
+const items = nav.flatMap((g) => g.items);
+const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
+const other = lang === "es" ? "en" : "es";
+const otherHref = lang === "es" ? altEn : altEs;
 ---
 <!DOCTYPE html>
-<html lang="en" class="iv-root" data-iv-theme="dark">
+<html lang={lang} class="iv-root" data-iv-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title} · iVOLT</title>
   <meta name="description" content={description}>
   {canonical && <link rel="canonical" href={canonical}>}
+  {Astro.site && <link rel="alternate" hreflang="en" href={abs(altEn)}>}
+  {Astro.site && <link rel="alternate" hreflang="es" href={abs(altEs)}>}
+  {Astro.site && <link rel="alternate" hreflang="x-default" href={abs(altEn)}>}
   <meta property="og:title" content={`${title} · iVOLT`}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">
@@ -33,19 +55,28 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
   <ClientRouter />
 </head>
 <body class="docs">
-  <div class="docs-field" aria-hidden="true"><div class="docs-field__grid"></div><div class="docs-field__glow docs-field__glow--a"></div><div class="docs-field__glow docs-field__glow--b"></div></div>
+  <div class="docs-field" aria-hidden="true"><div class="docs-field__glow"></div></div>
+  <div class="docs-meter" aria-hidden="true"><span class="docs-meter__fill"></span><span class="docs-meter__tip"></span></div>
+  <div class="docs-flash" aria-hidden="true"></div>
   <a class="iv-u-sr-only-focusable iv-button iv-button--primary docs-skip" href="#main">{t.skip}</a>
   <header class="docs-header" data-pagefind-ignore>
     <div class="iv-container iv-container--wide docs-header__inner">
-      <a class="docs-brand" href="/" aria-label="iVOLT CSS, home" set:html={wordmark}></a>
+      <a class="docs-brand" href={base || "/"} aria-label={t.brandHome} set:html={wordmark}></a>
       <nav class="docs-nav" aria-label={t.primaryNav}>
-        <a href="/getting-started" aria-current={path === "/getting-started" ? "page" : undefined}>{t.docs}</a>
-        <a href="/components/button" aria-current={path.startsWith("/components/") ? "page" : undefined}>{t.components}</a>
-        <a href="/examples" aria-current={path === "/examples" ? "page" : undefined}>Examples</a>
-        <a href="/playground" aria-current={path === "/playground" ? "page" : undefined}>Playground</a>
-        <a href="https://github.com/iNTERVOLUTIONS-Labs/iVOLT" rel="noopener">{t.source}</a>
+        {[
+          { href: `${base}/getting-started`, label: t.docs, current: bare === "/getting-started" },
+          { href: `${base}/components/button`, label: t.components, current: bare.startsWith("/components/") },
+          { href: `${base}/examples`, label: t.examples, current: bare === "/examples" },
+          { href: `${base}/playground`, label: t.playground, current: bare === "/playground" },
+          { href: "https://github.com/iNTERVOLUTIONS-Labs/iVOLT", label: t.source, rel: "noopener" },
+        ].map((l) => (
+          <a href={l.href} rel={l.rel} aria-current={l.current ? "page" : undefined}>
+            <span class="docs-roll"><span class="docs-roll__a">{l.label}</span><span class="docs-roll__b" aria-hidden="true">{l.label}</span></span>
+          </a>
+        ))}
       </nav>
       <button class="iv-button iv-button--secondary iv-button--sm docs-search-open" type="button" data-iv-open="docs-search" aria-keyshortcuts="/ Control+K" aria-label={t.search}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="docs-search-text">{t.search}</span><kbd class="docs-kbd" aria-hidden="true">/</kbd></button>
+      <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>
       <div class="docs-theme" role="group" aria-label={t.theme}>
         <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="light" aria-pressed="false">{t.light}</button>
         <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="dark" aria-pressed="false">{t.dark}</button>
@@ -62,6 +93,7 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
         {nav.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3><ul class="docs-sidebar__list">{g.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}>{n.label}</a></li>)}</ul></section>)}
       </nav>
       <footer class="iv-dialog__footer iv-u-justify-start">
+        <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>
         <div class="docs-theme" role="group" aria-label={t.theme}>
           <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="light" aria-pressed="false">{t.light}</button>
           <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="dark" aria-pressed="false">{t.dark}</button>
@@ -85,7 +117,7 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
     </div>
   </dialog>
 
-  <div class={`iv-container ${wide ? "iv-container--wide" : "iv-container--wide"} docs-shell ${sidebar ? "docs-shell--sidebar" : ""}`}>
+  <div class:list={[bleed ? "docs-bleed" : "iv-container iv-container--wide docs-shell", sidebar && "docs-shell--sidebar"]}>
     {sidebar && (
       <aside class="docs-sidebar" data-pagefind-ignore>
         <nav aria-label={t.docsNav}>
@@ -93,28 +125,31 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
         </nav>
       </aside>
     )}
-    <main id="main" class="docs-main" tabindex="-1" data-pagefind-body>
+    <main id="main" class:list={["docs-main", bleed && "docs-main--bleed"]} tabindex="-1" data-pagefind-body>
+      {group && <p class="docs-eyebrow" data-pagefind-ignore>{group}{family && <> · <b>{family}</b></>}</p>}
       <slot />
     </main>
     {sidebar && toc && (
-      <nav class="docs-toc" aria-label="On this page" data-pagefind-ignore hidden>
-        <p class="docs-toc__title">On this page</p>
+      <nav class="docs-toc" aria-label={t.onThisPage} data-pagefind-ignore hidden>
+        <p class="docs-toc__title">{t.onThisPage}</p>
         <ol id="docs-toc-list"></ol>
       </nav>
     )}
   </div>
 
   <footer class="docs-footer" data-pagefind-ignore>
-    <div class="docs-footer__ghost" aria-hidden="true">iVOLT</div>
+    <div class="iv-container iv-container--wide">
+      <a class="docs-lockup" href={base || "/"} aria-label={t.brandHome}>
+        <span class="docs-lockup__stack" aria-hidden="true">
+          <span class="docs-lockup__fill" set:html={brandSvg}></span>
+          <span class="docs-lockup__line" set:html={brandSvg}></span>
+        </span>
+      </a>
+    </div>
     <div class="iv-container iv-container--wide docs-footer__inner">
       <span>{t.footer}</span>
       <ul class="docs-footer__links">
-        <li><a href="/getting-started">Getting started</a></li>
-        <li><a href="/components/button">Components</a></li>
-        <li><a href="/examples">Examples</a></li>
-        <li><a href="/changelog">Changelog</a></li>
-        <li><a href="/roadmap">Roadmap</a></li>
-        <li><a href="/contributing">Contributing</a></li>
+        {footerLinks.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
       <span class="iv-u-text-muted">{t.alpha}</span>
     </div>
@@ -124,13 +159,27 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
     import { init } from "@intervolutions/ivolt";
     import { setTheme, getTheme } from "@intervolutions/ivolt/theme";
     import { Dialog } from "@intervolutions/ivolt/dialog";
-    import { t } from "../i18n/en.js";
+    import { t as tEn } from "../i18n/en.js";
+    import { t as tEs } from "../i18n/es.js";
+    const tr = () => (document.documentElement.lang === "es" ? tEs : tEn);
+    import { mountEffects } from "../scripts/effects.js";
 
     const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = () => matchMedia("(hover: hover) and (pointer: fine)").matches;
 
+    let teardown = [];
+    function release() { teardown.forEach((fn) => { try { fn(); } catch {} }); teardown = []; }
+
     function setup() {
       init(document); // idempotent: instances survive, new page nodes get theirs
+      release();
+      teardown.push(mountEffects(document));
+
+      // The arc field: one canvas, home only, fine pointers only, never under reduced motion.
+      const arcs = document.querySelector("[data-docs-arcs]");
+      if (arcs && finePointer() && !reduced()) {
+        import("../scripts/arcs.js").then((m) => { if (document.contains(arcs)) teardown.push(m.mountArcs(arcs)); });
+      }
 
       // Theme switch (persisted opt-in), both header and nav dialog groups.
       const buttons = document.querySelectorAll("[data-set-theme]");
@@ -146,13 +195,13 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
           try {
             if (!navigator.clipboard) throw new Error("no clipboard");
             await navigator.clipboard.writeText(code.textContent);
-            btn.textContent = t.copied; status.textContent = t.copiedStatus;
+            btn.textContent = tr().copied; status.textContent = tr().copiedStatus;
           } catch {
             const range = document.createRange(); range.selectNodeContents(code);
             const sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
-            btn.textContent = t.selected; status.textContent = t.selectedStatus;
+            btn.textContent = tr().selected; status.textContent = tr().selectedStatus;
           }
-          setTimeout(() => { btn.textContent = t.copy; status.textContent = ""; }, 2000);
+          setTimeout(() => { btn.textContent = tr().copy; status.textContent = ""; }, 2000);
         });
       });
 
@@ -164,7 +213,7 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
         if (!h.id) { let id = slug(h.textContent) || "section"; let n = 2; while (seen.has(id) || document.getElementById(id)) id = `${slug(h.textContent)}-${n++}`; h.id = id; }
         seen.add(h.id);
         if (!h.querySelector(".docs-anchor")) {
-          const a = document.createElement("a"); a.className = "docs-anchor"; a.href = `#${h.id}`; a.textContent = "#"; a.setAttribute("aria-label", t.anchor);
+          const a = document.createElement("a"); a.className = "docs-anchor"; a.href = `#${h.id}`; a.textContent = "#"; a.setAttribute("aria-label", tr().anchor);
           h.append(" ", a);
         }
       });
@@ -213,7 +262,7 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
       async function ensureIndex() {
         if (window.__pagefind || window.__pagefindFailed) return window.__pagefind;
         try { const url = new URL("/pagefind/pagefind.js", location.origin).href; window.__pagefind = await import(/* @vite-ignore */ url); await window.__pagefind.init(); }
-        catch { window.__pagefindFailed = true; status.textContent = t.searchUnavailable; }
+        catch { window.__pagefindFailed = true; status.textContent = tr().searchUnavailable; }
         return window.__pagefind;
       }
       function renderExcerpt(li, html) {
@@ -229,12 +278,12 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
       async function runSearch() {
         const q = input.value.trim();
         results.replaceChildren();
-        if (!q) { status.textContent = t.searchHint; return; }
+        if (!q) { status.textContent = tr().searchHint; return; }
         const pf = await ensureIndex();
         if (!pf) return;
         const res = await pf.search(q);
         const top = await Promise.all(res.results.slice(0, 8).map((r) => r.data()));
-        status.textContent = top.length ? t.searchResults(top.length) : t.searchNone;
+        status.textContent = top.length ? tr().searchResults(top.length) : tr().searchNone;
         for (const d of top) {
           const li = document.createElement("li");
           const a = document.createElement("a"); a.href = d.url.replace(/\.html$/, ""); a.className = "docs-search__link";
@@ -265,6 +314,13 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
       });
     }
     document.addEventListener("astro:page-load", setup);
+    document.addEventListener("astro:before-swap", release);
+    document.addEventListener("astro:after-swap", () => {
+      const flash = document.querySelector(".docs-flash");
+      if (!flash || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      flash.classList.add("is-on");
+      flash.addEventListener("animationend", () => flash.classList.remove("is-on"), { once: true });
+    });
   </script>
 </body>
 </html>
