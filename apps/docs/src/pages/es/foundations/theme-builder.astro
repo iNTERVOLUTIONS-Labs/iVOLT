@@ -1,0 +1,76 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Constructor de temas" description="Construye un tema de iVOLT en el navegador: cambia los colores de marca, las superficies, el radio y la fuente, mira cómo se actualizan componentes reales en vivo y copia las personalizaciones como CSS.">
+  <article class="docs-prose">
+    <h1>Constructor de temas (theme builder)</h1>
+    <p>Cada color, radio y fuente de iVOLT es un token, y cada token es una propiedad personalizada que puedes sobrescribir. Cambia los controles de abajo: la previsualización se actualiza en vivo y el CSS para copiar aparece debajo. Nada se guarda ni se envía a ningún sitio; los valores solo viven en esta página hasta que los copias.</p>
+    <div class="docs-tb" data-theme-builder>
+      <form class="docs-tb__form iv-stack" data-tb-form>
+        <fieldset class="iv-fieldset">
+          <legend class="iv-fieldset__legend">Tema de la previsualización</legend>
+          <div class="iv-checks iv-checks--inline">
+            <label class="iv-check"><input type="radio" name="theme" value="light"> Claro</label>
+            <label class="iv-check"><input type="radio" name="theme" value="dark" checked> Oscuro</label>
+          </div>
+        </fieldset>
+        <fieldset class="iv-fieldset">
+          <legend class="iv-fieldset__legend">Colores</legend>
+          <div class="docs-tb__grid">
+            <label class="docs-tb__color"><input type="color" name="primary"> Primario</label>
+            <label class="docs-tb__color"><input type="color" name="on-primary"> Texto sobre primario</label>
+            <label class="docs-tb__color"><input type="color" name="accent"> Acento</label>
+            <label class="docs-tb__color"><input type="color" name="bg"> Fondo</label>
+            <label class="docs-tb__color"><input type="color" name="surface"> Superficie</label>
+            <label class="docs-tb__color"><input type="color" name="surface-raised"> Superficie elevada</label>
+            <label class="docs-tb__color"><input type="color" name="text"> Texto</label>
+          </div>
+        </fieldset>
+        <div class="iv-field">
+          <label class="iv-label" for="tb-radius">Radio de las esquinas (medio)</label>
+          <input class="iv-range" id="tb-radius" name="radius" type="range" min="0" max="1.5" step="0.125" value="0.5">
+          <p class="iv-field__help iv-u-m-0">Los radios pequeño y grande siguen en proporción.</p>
+        </div>
+        <div class="iv-field">
+          <label class="iv-label" for="tb-font">Pila sans-serif</label>
+          <select class="iv-select" id="tb-font" name="font" data-iv-native>
+            <option value='system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'>Sistema (por defecto)</option>
+            <option value='"Space Grotesk", system-ui, sans-serif'>Space Grotesk, luego sistema</option>
+            <option value='Georgia, "Times New Roman", serif'>Georgia (serif)</option>
+            <option value='ui-monospace, SFMono-Regular, Menlo, monospace'>Monoespaciada</option>
+          </select>
+        </div>
+        <div class="iv-cluster">
+          <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-tb-reset>Restablecer</button>
+        </div>
+      </form>
+      <div class="docs-tb__preview iv-root" data-iv-theme="dark" data-tb-preview>
+        <Fixture name="card/basic" title="Previsualización: tarjeta" />
+        <Fixture name="form/basic" title="Previsualización: formulario" />
+        <Fixture name="button/variants" title="Previsualización: botones" />
+      </div>
+    </div>
+    <h2>Tus personalizaciones</h2>
+    <p>Pega esto después de <code>ivolt.css</code>, o dentro de <code>@layer iv.overrides</code> cuando uses la hoja en capas. Los ámbitos anidados siguen funcionando: pon el bloque en cualquier elemento en vez de en <code>:root</code> para tematizar solo esa parte de la página.</p>
+    <div class="docs-fixture">
+      <div class="docs-fixture__caption"><span class="docs-fixture__title">tokens.overrides.css</span><button class="iv-button iv-button--secondary iv-button--sm docs-copy" type="button" data-copy-target="tb-output" aria-describedby="tb-output-status">Copiar CSS</button><span class="iv-u-sr-only" id="tb-output-status" role="status" aria-live="polite"></span></div>
+      <div class="docs-fixture__code"><pre tabindex="0" aria-label="CSS de personalización del tema"><code id="tb-output" data-tb-output>/* Cambia un control para ver aquí las personalizaciones. */</code></pre></div>
+    </div>
+    <h2>Lo que no hace</h2>
+    <ul>
+      <li>Edita un puñado de tokens. El conjunto completo vive en <code>tokens.json</code> y <code>tokens.css</code>; cualquiera se sobrescribe igual.</li>
+      <li>No comprueba el contraste por ti. Prueba el resultado con la herramienta de accesibilidad que prefieras; los temas incluidos se prueban con axe.</li>
+      <li>No reconstruye el paquete. Las personalizaciones bastan para la mayoría de marcas; un fork de <code>tokens.json</code> es el camino para una paleta completa.</li>
+    </ul>
+  </article>
+</Base>
+<script>
+  import { mountThemeBuilder } from "../../../scripts/theme-builder.js";
+  let teardown = () => {};
+  const mount = () => { teardown(); const root = document.querySelector("[data-theme-builder]"); teardown = root ? mountThemeBuilder(root) : () => {}; };
+  // The router's page-load event can fire before this page module runs on a hard load: mount now, and again on every navigation.
+  mount();
+  document.addEventListener("astro:page-load", mount);
+  document.addEventListener("astro:before-swap", () => teardown());
+</script>

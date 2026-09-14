@@ -57,6 +57,7 @@ export const nav = [
     { href: "/foundations/coexistence", label: "Coexisting with CSS" },
     { href: "/foundations/surfaces", label: "Surfaces & textures" },
     { href: "/foundations/effects", label: "Light & motion" },
+    { href: "/foundations/theme-builder", label: "Theme builder" },
   ] },
   { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "megamenu", "hero", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Project", items: [

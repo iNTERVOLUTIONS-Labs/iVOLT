@@ -71,6 +71,7 @@ export const nav = [
     { href: "/es/foundations/coexistence", label: "Convivir con tu CSS" },
     { href: "/es/foundations/surfaces", label: "Superficies y texturas" },
     { href: "/es/foundations/effects", label: "Luz y movimiento" },
+    { href: "/es/foundations/theme-builder", label: "Constructor de temas" },
   ] },
   { group: "Componentes", items: Object.entries(componentLabels).map(([c, label]) => ({ href: `/es/components/${c}`, label })) },
   { group: "Proyecto", items: [
