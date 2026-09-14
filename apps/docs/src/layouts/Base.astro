@@ -146,7 +146,12 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
     let pagefind = null, loadFailed = false, timer = 0;
     async function ensureIndex() {
       if (pagefind || loadFailed) return pagefind;
-      try { pagefind = await import(/* @vite-ignore */ "/pagefind/pagefind.js"); await pagefind.init(); }
+      try {
+        // The index only exists in the built site; build the URL at runtime so Vite does not try to resolve it in dev.
+        const url = new URL("/pagefind/pagefind.js", location.origin).href;
+        pagefind = await import(/* @vite-ignore */ url);
+        await pagefind.init();
+      }
       catch { loadFailed = true; status.textContent = t.searchUnavailable; }
       return pagefind;
     }
