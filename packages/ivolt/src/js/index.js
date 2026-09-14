@@ -14,6 +14,7 @@ import { Tabs } from "./components/tabs.js";
 import { Dropdown } from "./components/dropdown.js";
 import { Drawer } from "./components/drawer.js";
 import { Toast } from "./components/toast.js";
+import { Combobox } from "./components/combobox.js";
 
 export { IvComponent } from "./core/component.js";
 export { IvError } from "./core/registry.js";
@@ -23,6 +24,7 @@ export { Tabs } from "./components/tabs.js";
 export { Dropdown } from "./components/dropdown.js";
 export { Drawer } from "./components/drawer.js";
 export { Toast, ToastItem } from "./components/toast.js";
+export { Combobox } from "./components/combobox.js";
 export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
@@ -34,7 +36,7 @@ export const version = "0.1.0-alpha.0";
  *
  * @type {ReadonlyArray<typeof IvComponent>}
  */
-export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast]);
+export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox]);
 
 /**
  * Instantiates every iVOLT component found inside `root` and wires the

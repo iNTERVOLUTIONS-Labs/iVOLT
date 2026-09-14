@@ -51,6 +51,10 @@
       "types": "./dist/types/components/toast.d.ts",
       "default": "./dist/js/components/toast.js"
     },
+    "./combobox": {
+      "types": "./dist/types/components/combobox.d.ts",
+      "default": "./dist/js/components/combobox.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",
