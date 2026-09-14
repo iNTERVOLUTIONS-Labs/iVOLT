@@ -84,10 +84,10 @@ Objetivo: que el framework sea espectacular por defecto (DESIGN_SYSTEM §9) mant
 
 | Orden | Elemento | Contrato | Estado |
 |---|---|---|---|
-| 1 | Carrusel cinematográfico (`carousel`): scroll-snap sin JS; con JS, patrón APG por pestañas, efectos `slide`/`fade`/`cinema`, autoplay con barra de progreso y pausa, gestos, miniaturas | §8.5 | en curso |
-| 2 | Selector enriquecido (`picker`, tipo Select2): `<select>` nativo servido, búsqueda, selección múltiple con chips, grupos, teclado completo | §8.6 | en curso |
-| 3 | Formularios: validación (`form`) con mensajes por tipo de error, resumen y foco; contador de caracteres/palabras (`counter`); CSS: etiquetas flotantes, grupos con prefijos y sufijos, interruptor, rango, archivo, textarea auto-ajustable | §8.7 | pendiente |
-| 4 | Superficies y texturas (`surfaces.css`): cristal, grano, malla, aurora, borde luminoso, texto degradado, barrido; tokens `glass`/`blur`/`glow`/`texture` | §8.8 | pendiente |
+| 1 | Carrusel cinematográfico (`carousel`): scroll-snap sin JS; con JS, patrón APG por pestañas, efectos `slide`/`fade`/`cinema`, autoplay con barra de progreso y pausa, gestos, miniaturas | §8.5 | hecho (2026-09-14) |
+| 2 | Selector enriquecido (`picker`, tipo Select2): `<select>` nativo servido, búsqueda, selección múltiple con chips, grupos, teclado completo | §8.6 | hecho (2026-09-14) |
+| 3 | Formularios: validación (`form`) con mensajes por tipo de error, resumen y foco; contador de caracteres/palabras (`counter`); CSS: etiquetas flotantes, grupos con prefijos y sufijos, interruptor, rango, archivo, textarea auto-ajustable | §8.7 | en curso |
+| 4 | Superficies y texturas (`surfaces.css`): cristal, grano, malla, aurora, borde luminoso, texto degradado, barrido; tokens `glass`/`blur`/`glow`/`texture` | §8.8 | hecho (2026-09-14) |
 | 5 | Web: páginas de carrusel, selector, validación, superficies; formulario ampliado; gabinete de la home con los nuevos componentes; español | — | pendiente |
 | 6 | Cierre: presupuestos medidos por módulo, `verify`, changelog `0.3.0-beta.0`, estado | — | pendiente |
 

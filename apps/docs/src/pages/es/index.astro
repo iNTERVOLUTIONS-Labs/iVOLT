@@ -36,6 +36,7 @@ const panels = [
   { fixture: "card/basic", name: "Tarjeta", slug: "card", kind: "css" },
   { fixture: "tabs/basic", name: "Pestañas", slug: "tabs", kind: "js" },
   { fixture: "dialog/basic", name: "Diálogo", slug: "dialog", kind: "js" },
+  { fixture: "surfaces/glass", name: "Superficies", slug: "surfaces", href: "/foundations/surfaces", kind: "css" },
   { fixture: "combobox/basic", name: "Combobox", slug: "combobox", kind: "js" },
 ];
 const components = Object.entries(families);
@@ -95,7 +96,7 @@ const recipes = [
         {panels.map((p) => (
           <article class="docs-panel">
             <Fixture name={p.fixture} title={p.name} />
-            <p class="docs-panel__meta"><a href={`/es/components/${p.slug}`}>{p.name}</a><small>{p.kind}</small></p>
+            <p class="docs-panel__meta"><a href={p.href ? `/es${p.href}` : `/es/components/${p.slug}`}>{p.name}</a><small>{p.kind}</small></p>
           </article>
         ))}
       </div>
