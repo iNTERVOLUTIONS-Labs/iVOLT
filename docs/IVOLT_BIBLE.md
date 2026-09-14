@@ -68,4 +68,6 @@ core/*.js + components/*.js ─▶ index.js (ESM) · auto.js (opt-in) · ivolt.i
 
 ## 6. Qué significa «excelente» aquí
 
+Para la web de presentación, «excelente» tiene un listón explícito (ADR-027, DESIGN_SYSTEM §8): un diseño con posibilidades reales de reconocimiento en Awwwards o CSS Design Awards, medido con los criterios de esa tabla y sin renunciar a accesibilidad ni rendimiento.
+
 Puesta en marcha en un `<link>` y un `<script>`; API predecible por una gramática única; accesibilidad verificada en ejemplos; pesos dentro de presupuesto y medidos; layouts que aguantan de 320 a 1920 px; y mantenimiento razonable: un paquete, una cadena de build, documentación generada desde las mismas fixtures que las pruebas.

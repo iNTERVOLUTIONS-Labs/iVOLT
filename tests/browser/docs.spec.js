@@ -109,7 +109,7 @@ test("playground generates snippets from a closed set of options", async ({ page
 test("published CSP hash matches the inline theme snippet the site ships", async ({ page, request }) => {
   const { createHash } = await import("node:crypto");
   const home = await (await request.get(DOCS + "/")).text();
-  const m = home.match(/<script>(try\{var t=localStorage[\s\S]*?)<\/script>/);
+  const m = home.match(/<script[^>]*>(try\{document\.documentElement\.classList[\s\S]*?)<\/script>/);
   expect(m).not.toBeNull();
   const hash = "sha256-" + createHash("sha256").update(m[1]).digest("base64");
   await page.goto(DOCS + "/foundations/coexistence");

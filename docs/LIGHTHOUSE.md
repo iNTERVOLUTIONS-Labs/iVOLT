@@ -164,3 +164,14 @@ Correcciones aplicadas: favicon declarado en recetas y starter (`<link rel="icon
 | `/examples/admin/index.html` | móvil | 100 | — | 0,0000 |
 
 Nota de método: la primera versión de la corrección (rejilla sin colocación explícita) empeoró el CLS a 0,57 porque `main` ocupaba la primera columna mientras el drawer estaba oculto y saltaba a la segunda al aparecer; la colocación explícita lo resuelve. Las mismas salvedades de laboratorio de la sección anterior siguen vigentes.
+
+## Rediseño de la web (2026-09-14, ADR-027)
+
+Home tras el rediseño (campo animado, transiciones de vista, revelados, fuente local), mismo método y entorno de laboratorio, `scripts/docs-server.mjs` con build previo:
+
+| Ruta | Preset | Perf | A11y | BP | SEO | LCP ms | CLS | TBT |
+|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 100 | 100 | 100 | 100 | 1361 | 0,000 | 0 |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 371 | 0,000 | 0 |
+
+Auditorías con peso 0 que siguen «fallando»: `render-blocking-insight` (una hoja CSS) y `network-dependency-tree-insight` (informativa). Solo se animan `transform` y `opacity`; los resplandores son gradientes prerrenderizados, sin `filter: blur` animado.

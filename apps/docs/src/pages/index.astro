@@ -1,53 +1,151 @@
 ---
 import Base from "../layouts/Base.astro";
 import Fixture from "../components/Fixture.astro";
+import { readFileSync, existsSync } from "node:fs";
+import { gzipSync } from "node:zlib";
+import { resolve, dirname } from "node:path";
+
+// Real, build-time measurements from the built package (gzip level 9), so the facts on the page are never typed by hand.
+let dir = process.cwd();
+while (!existsSync(resolve(dir, "packages/ivolt/dist")) && dirname(dir) !== dir) dir = dirname(dir);
+const dist = resolve(dir, "packages/ivolt/dist");
+const kib = (rel) => existsSync(resolve(dist, rel)) ? (gzipSync(readFileSync(resolve(dist, rel)), { level: 9 }).length / 1024).toFixed(1) : null;
+const facts = [
+  { value: "0", label: "runtime dependencies" },
+  { value: kib("css/ivolt.min.css") ? `${kib("css/ivolt.min.css")} KiB` : "—", label: "CSS, minified + gzip" },
+  { value: kib("js/ivolt.iife.min.js") ? `${kib("js/ivolt.iife.min.js")} KiB` : "—", label: "JS (IIFE), minified + gzip" },
+  { value: "3", label: "engines in the test suite" },
+];
+const title = ["The", "interface", "starts", "here."];
+const marquee = ["iv-button--primary", "--iv-color-primary", "iv-u-md-grid-cols-3", "data-iv-theme=\"system\"", "iv-card__media", "iv-dialog", "iv:close", "--iv-space-4", "iv-tabs__tab", "iv-u-sr-only", "iv-drawer", "--iv-radius-lg", "iv-toast-region", "iv-grid--auto", "--iv-motion-base", "data-iv-open", "iv-field__error", "iv-container--wide"];
+const components = [["button", "css"], ["card", "css"], ["form", "css"], ["badge", "css"], ["alert", "css"], ["table", "css"], ["breadcrumb", "css"], ["pagination", "css"], ["progress", "css"], ["skeleton", "css"], ["disclosure", "js"], ["tabs", "js"], ["dialog", "js"], ["drawer", "js"], ["dropdown", "js"], ["toast", "js"]];
+const recipes = [
+  { slug: "landing", title: "Business landing", text: "Hero, benefits, example pricing, FAQ accordion and a contact dialog." },
+  { slug: "catalog", title: "Editorial catalogue", text: "Card grid with working filters and sorting, breadcrumb, badges, pagination and tabs." },
+  { slug: "admin", title: "Admin panel", text: "Static sidebar drawer, KPIs, responsive table, form with toasts and a confirmation dialog." },
+];
 ---
-<Base title="The interface starts here" description="iVOLT is a hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript. Alpha." sidebar={false}>
-  <section class="docs-hero">
+<Base title="The interface starts here" description="iVOLT is a hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript. No runtime dependencies. Alpha." sidebar={false}>
+  <section class="docs-hero" aria-labelledby="hero-title">
     <div>
-      <span class="docs-alpha">v0.1 alpha</span>
-      <h1>The interface starts here.</h1>
-      <p class="iv-u-text-lg iv-u-text-muted">Semantic components as the fast path, a finite set of utilities for composition, tokens as the visual contract and optional JavaScript for behaviour. No runtime dependencies. Works from a plain <code>&lt;link&gt;</code>, WordPress, Astro or any bundler.</p>
-      <div class="iv-cluster">
+      <span class="docs-eyebrow" style="--i:0">v0.1 alpha · open source · MIT</span>
+      <h1 class="docs-hero__title" id="hero-title">
+        {title.map((w, i) => <><span class={`w docs-rise ${i >= 2 ? "w--accent" : ""}`} style={`--i:${i}`}>{w}</span>{i < title.length - 1 ? " " : ""}</>)}
+      </h1>
+      <p class="docs-hero__lead" style="--i:1">Semantic components as the fast path, a finite utility set for composition, tokens as the visual contract and optional JavaScript for behaviour. From a plain <code>&lt;link&gt;</code> to WordPress, Astro or any bundler.</p>
+      <div class="docs-hero__actions" style="--i:2">
         <a class="iv-button iv-button--primary iv-button--lg" href="/getting-started">Get started</a>
-        <a class="iv-button iv-button--secondary iv-button--lg" href="/components/button">Components</a>
+        <a class="iv-button iv-button--secondary iv-button--lg" href="/components/button">Explore components</a>
+      </div>
+      <ul class="docs-hero__facts" style="--i:3">
+        {facts.map((f) => <li><strong>{f.value}</strong>{f.label}</li>)}
+      </ul>
+    </div>
+    <div class="docs-stage">
+      <span class="docs-chip docs-chip--a" style="--i:0" aria-hidden="true">&lt;dialog&gt; native</span>
+      <span class="docs-chip docs-chip--b" style="--i:1" aria-hidden="true">iv:close cancelable</span>
+      <span class="docs-chip docs-chip--c" style="--i:2" aria-hidden="true">focus returns</span>
+      <div class="docs-tilt">
+        <Fixture name="dialog/basic" title="Live: dialog with a form" />
       </div>
     </div>
-    <Fixture name="dialog/basic" title="Live: dialog with a form" />
   </section>
 
-  <section class="docs-prose">
-    <h2>Quick start (local files, no build)</h2>
-    <p>The package is not published yet. Build it from the repository, copy <code>dist/</code> next to your page and link two files. The plain HTML starter in <code>examples/plain-html</code> is exactly this.</p>
-<pre><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
+  <div class="docs-marquee" aria-hidden="true">
+    <div class="docs-marquee__track">
+      {marquee.map((m) => <code>{m}</code>)}
+      {marquee.map((m) => <code>{m}</code>)}
+    </div>
+  </div>
+
+  <section class="docs-section" aria-labelledby="why-title">
+    <div class="docs-section__head docs-reveal">
+      <span class="docs-section__num">01 — Why</span>
+      <h2 class="docs-section__title" id="why-title">One grammar for content, layout and behaviour.</h2>
+      <p class="docs-section__lead">Every class, token, attribute and event follows the same prefixed contract, so what you learn on the first page works on the last.</p>
+    </div>
+    <div class="docs-cards">
+      <article class="docs-spot docs-reveal" style="--i:0">
+        <div class="docs-spot__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h10M4 17h7"/></svg></div>
+        <h3>HTML first</h3>
+        <p>Links navigate, buttons act, native controls where they fit. Content components need no script; interactive ones enhance real markup and restore it on destroy.</p>
+      </article>
+      <article class="docs-spot docs-reveal" style="--i:1">
+        <div class="docs-spot__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></div>
+        <h3>Tokens as the API</h3>
+        <p>Override <code>--iv-color-primary</code> or <code>--iv-radius-md</code> on any scope and the whole system follows. Light, dark and system themes without JavaScript.</p>
+      </article>
+      <article class="docs-spot docs-reveal" style="--i:2">
+        <div class="docs-spot__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+        <h3>Optional, honest JS</h3>
+        <p>Idempotent <code>init</code>, clean <code>destroy</code>, cancelable events, keyboard patterns from the APG, no global observers, no eval, SSR-safe imports.</p>
+      </article>
+      <article class="docs-spot docs-reveal" style="--i:3">
+        <div class="docs-spot__icon" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18v14H3zM3 10h18"/></svg></div>
+        <h3>Ships as files</h3>
+        <p>Layered and flat CSS, per-component CSS, ES modules with real <code>exports</code>, an IIFE with one global, types and token JSON. Measured, not promised.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="docs-section" aria-labelledby="components-title">
+    <div class="docs-section__head docs-reveal">
+      <span class="docs-section__num">02 — Components</span>
+      <h2 class="docs-section__title" id="components-title">Ten content families, six interactive ones.</h2>
+      <p class="docs-section__lead">Each page shows the live preview, the copyable HTML, options, events, keyboard behaviour and what happens without JavaScript.</p>
+    </div>
+    <nav class="docs-components docs-reveal" aria-label="Components">
+      {components.map(([c, kind]) => <a href={`/components/${c}`}>{c[0].toUpperCase() + c.slice(1)} <small>{kind}</small></a>)}
+    </nav>
+  </section>
+
+  <section class="docs-section" aria-labelledby="themes-title">
+    <div class="docs-themes">
+      <div class="docs-section__head docs-reveal" style="margin:0">
+        <span class="docs-section__num">03 — Themes</span>
+        <h2 class="docs-section__title" id="themes-title">Scopes, not switches.</h2>
+        <p class="docs-section__lead">Set <code>data-iv-theme</code> on any element. Explicit choices win over the system preference, scopes nest, and nothing needs storage or a script.</p>
+        <pre class="docs-code"><code>&lt;html data-iv-theme="system"&gt;
+  &lt;section data-iv-theme="dark"&gt;
+    &lt;aside data-iv-theme="light"&gt;…&lt;/aside&gt;
+  &lt;/section&gt;
+&lt;/html&gt;</code></pre>
+      </div>
+      <div class="docs-reveal" style="--i:1">
+        <Fixture name="theme/nested" title="Nested theme scopes" />
+      </div>
+    </div>
+  </section>
+
+  <section class="docs-section" aria-labelledby="recipes-title">
+    <div class="docs-section__head docs-reveal">
+      <span class="docs-section__num">04 — Recipes</span>
+      <h2 class="docs-section__title" id="recipes-title">Three complete pages, one package.</h2>
+      <p class="docs-section__lead">Different compositions, the same framework. Open them, copy the folders or download the zips.</p>
+    </div>
+    <div class="docs-recipes">
+      {recipes.map((r, i) => (
+        <a class="docs-recipe docs-reveal" style={`--i:${i}`} href={`/examples/${r.slug}/index.html`}>
+          <div class="docs-recipe__frame"><iframe src={`/examples/${r.slug}/index.html`} title={`${r.title} recipe preview`} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin"></iframe></div>
+          <div class="docs-recipe__body"><h3>{r.title}</h3><p>{r.text}</p></div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="docs-section" aria-labelledby="start-title">
+    <div class="docs-cta docs-reveal">
+      <span class="docs-section__num">05 — Start</span>
+      <h2 id="start-title">Two files. No build step.</h2>
+      <p class="docs-section__lead" style="margin-inline:auto;max-inline-size:52ch">Build the package once, copy <code>dist/</code> next to your page and link a stylesheet and a module. The starter and the recipes are exactly this.</p>
+      <pre class="docs-code" style="text-align:start;max-inline-size:40rem;margin:var(--iv-space-6) auto"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
   &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
   &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
-    <p><code>auto.js</code> is the only entry that initialises components on load. Import <code>index.js</code> instead when you want to call <code>init()</code> yourself.</p>
-
-    <h2>Components in v0.1</h2>
-    <p>Seven content families that need no JavaScript and six interactive ones that enhance real HTML. Each page has a live preview, the copyable HTML, options, events, keyboard behaviour and the no-JS fallback.</p>
-    <nav class="docs-components" aria-label="Components">
-      {["button", "card", "form", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dialog", "drawer", "dropdown", "toast"].map((c) => <a href={`/components/${c}`}>{c[0].toUpperCase() + c.slice(1)}</a>)}
-    </nav>
-
-    <h2>Foundations</h2>
-    <ul>
-      <li><a href="/foundations/tokens-and-themes">Tokens and themes</a>: every visual decision as a <code>--iv-*</code> custom property, light/dark/system scopes without JavaScript.</li>
-      <li><a href="/foundations/layout">Layout and utilities</a>: container, stack, cluster, grid and a finite, generated utility matrix.</li>
-      <li><a href="/foundations/typography">Typography</a>, <a href="/foundations/accessibility">accessibility</a> and <a href="/foundations/coexistence">coexisting with existing CSS</a>.</li>
-    </ul>
-
-    <h2>Recipes</h2>
-    <p>Three complete pages built only with the package: a <a href="/examples/landing/index.html">business landing</a>, an <a href="/examples/catalog/index.html">editorial catalogue</a> with working filters, and a <a href="/examples/admin/index.html">static admin panel</a>. <a href="/examples">Open or download them</a>, or try the <a href="/playground">playground</a> to generate snippets.</p>
-
-    <h2>Distribution</h2>
-    <p>Layered and flat CSS, one CSS file per component, ES modules with real <code>exports</code>, an IIFE with a single <code>IVOLT</code> global, type declarations and the token JSON. Sizes are measured per artifact and published with their method in the repository.</p>
-
-    <h2>Themes</h2>
-    <p>Set <code>data-iv-theme</code> to <code>light</code>, <code>dark</code> or <code>system</code> on any element. Explicit choices win over the system preference, scopes nest, and nothing requires JavaScript or storage.</p>
-    <Fixture name="theme/nested" title="Nested theme scopes" />
-
-    <h2>Status and honesty</h2>
-    <p>Alpha: APIs may change before 0.1.0. Sizes, browser support and accessibility results are only published with their method, version and commit. There are no benchmarks against other frameworks.</p>
+      <div class="iv-cluster iv-u-justify-center">
+        <a class="iv-button iv-button--primary iv-button--lg" href="/getting-started">Read the getting started</a>
+        <a class="iv-button iv-button--secondary iv-button--lg" href="/examples">Download the starter</a>
+      </div>
+      <p class="iv-u-text-sm iv-u-text-muted" style="margin-block-start:var(--iv-space-6)">Alpha: APIs may change before 0.1.0. Sizes above are measured at build time from the shipped files. No benchmarks against other frameworks.</p>
+    </div>
   </section>
 </Base>

@@ -43,4 +43,9 @@ Entorno local verificado: Node 22.23.2, npm 10.9.8, Chromium disponible (`/usr/b
 
 ## 3. Código y assets externos reutilizados
 
+| Asset | Origen | Licencia | Uso |
+|---|---|---|---|
+| Space Grotesk 3.0 (variable, latin) | Florian Karsten, vía Google Fonts (2026-09-14) | OFL 1.1, texto en `apps/docs/public/fonts/` | solo `apps/docs` (titulares, navegación, botones) |
+
+
 Ninguno en el paquete (fases 0–4). El logo oficial, los SVG de iconos, el favicon y la imagen OG derivada son obra propia de iNTERVOLUTIONS. La web de documentación distribuye Pagefind (MIT) para la búsqueda; detalle y atribuciones en `THIRD_PARTY.md`.
