@@ -42,6 +42,12 @@
   animation: iv-combobox-in var(--iv-motion-fast) var(--iv-ease-out);
 }
 
+/* `init` flips the list above the input when there is more room there (ADR-034). */
+.iv-combobox__list[data-iv-placement="top"] {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + var(--iv-combobox-offset));
+}
+
 @keyframes iv-combobox-in {
   from {
     opacity: 0;

@@ -550,9 +550,8 @@ export class Carousel extends IvComponent {
   _render() {
     const root = this._root;
     root.style.setProperty("--iv-carousel-index", String(this._index));
-    const stacked = this._effect !== "slide";
+    // Every effect: the track is clipped, so an off-screen slide must leave the tab order (ADR-034).
     this._slides.forEach((slide, index) => {
-      if (!stacked) return;
       if (index === this._index) {
         this._unset(slide, "aria-hidden");
         this._unset(slide, "inert");

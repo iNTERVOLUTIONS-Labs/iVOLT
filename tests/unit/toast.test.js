@@ -290,3 +290,45 @@ describe("Toast regressions", () => {
     region.destroy();
   });
 });
+
+describe("Toast region in the top layer (ADR-034)", () => {
+  let show, hide;
+  beforeEach(() => {
+    document.body.innerHTML = '<div class="iv-toast-region" data-iv-component="toast" aria-label="Notifications"></div>';
+    show = vi.fn(); hide = vi.fn();
+    HTMLElement.prototype.showPopover = show;
+    HTMLElement.prototype.hidePopover = hide;
+  });
+  afterEach(() => {
+    delete HTMLElement.prototype.showPopover;
+    delete HTMLElement.prototype.hidePopover;
+  });
+
+  it("becomes a manual popover, shows it with the first item, hides it when empty and restores on destroy", () => {
+    const region = document.querySelector(".iv-toast-region");
+    const before = region.outerHTML;
+    const toast = new Toast(region);
+    expect(region.getAttribute("popover")).toBe("manual");
+    const a = toast.show({ message: "One", timeout: 0 });
+    const b = toast.show({ message: "Two", timeout: 0 });
+    expect(show).toHaveBeenCalledTimes(1);
+    a.dismiss();
+    expect(hide).not.toHaveBeenCalled();
+    b.dismiss();
+    expect(hide).toHaveBeenCalledTimes(1);
+    toast.show({ message: "Three", timeout: 0 });
+    expect(show).toHaveBeenCalledTimes(2);
+    toast.destroy();
+    expect(hide).toHaveBeenCalledTimes(2);
+    expect(region.hasAttribute("popover")).toBe(false);
+    expect(region.outerHTML).toBe(before);
+  });
+
+  it("leaves an author-written popover attribute alone", () => {
+    const region = document.querySelector(".iv-toast-region");
+    region.setAttribute("popover", "manual");
+    const toast = new Toast(region);
+    toast.destroy();
+    expect(region.getAttribute("popover")).toBe("manual");
+  });
+});

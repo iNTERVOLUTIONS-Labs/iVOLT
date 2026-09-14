@@ -18,6 +18,19 @@
   pointer-events: none;
 }
 
+/* Top layer: as a popover the region keeps the placement below and drops the agent sheet's box. */
+.iv-toast-region:where([popover]) {
+  inset-block-start: auto;
+  inset-inline-start: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  block-size: auto;
+  color: inherit;
+  background-color: transparent;
+  overflow: visible;
+}
+
 /* Placements ---------------------------------------------------------- */
 
 .iv-toast-region--bottom-end {

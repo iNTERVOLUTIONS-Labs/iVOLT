@@ -489,11 +489,16 @@ describe("Carousel: options and effects", () => {
     expect(slides[1].hasAttribute("aria-hidden")).toBe(false);
   });
 
-  it("keeps every slide reachable with slide, the default effect", () => {
+  it("keeps only the visible slide reachable with slide, the default effect (ADR-034)", () => {
     const root = mount();
     const carousel = new Carousel(root);
-    expect(carousel.slides.some((slide) => slide.hasAttribute("inert"))).toBe(false);
+    expect(carousel.slides[0].hasAttribute("inert")).toBe(false);
+    expect(carousel.slides.slice(1).every((slide) => slide.hasAttribute("inert"))).toBe(true);
+    carousel.goTo(2);
+    expect(carousel.slides[2].hasAttribute("inert")).toBe(false);
+    expect(carousel.slides[0].getAttribute("aria-hidden")).toBe("true");
     carousel.destroy();
+    expect(carousel.slides.some((slide) => slide.hasAttribute("inert") || slide.hasAttribute("aria-hidden"))).toBe(false);
   });
 
   it("resolves options as defaults, then attributes, then JavaScript", () => {
@@ -513,7 +518,7 @@ describe("Carousel: options and effects", () => {
     const root = mount(' data-iv-effect="zoom"');
     const carousel = new Carousel(root);
     expect(root.getAttribute("data-iv-effect")).toBe("slide");
-    expect(carousel.slides[1].hasAttribute("inert")).toBe(false);
+    expect(carousel.slides[1].hasAttribute("inert")).toBe(true);
     carousel.destroy();
   });
 

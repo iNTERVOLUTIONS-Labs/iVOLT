@@ -255,6 +255,50 @@ export class Toast extends IvComponent {
       /** @type {boolean} Whether this instance added aria-live. */
       this._addedLive = true;
     }
+    // Top layer (ADR-034): as a manual popover the region paints over modal dialogs where supported.
+    const host = /** @type {HTMLElement} */ (this._element);
+    if (typeof host.showPopover === "function" && !host.hasAttribute("popover")) {
+      host.setAttribute("popover", "manual");
+      /** @type {boolean} Whether this instance added the popover attribute. */
+      this._addedPopover = true;
+    }
+    /** @type {boolean} Whether the region is currently shown in the top layer. */
+    this._layerOpen = false;
+  }
+
+  /**
+   * Moves the region to the top layer before the first visible item, so a
+   * toast is reachable above a modal dialog. No-op without popover support.
+   *
+   * @returns {void}
+   */
+  _showLayer() {
+    const el = /** @type {HTMLElement} */ (this._element);
+    if (this._layerOpen || !el.hasAttribute("popover") || typeof el.showPopover !== "function") return;
+    try {
+      el.showPopover();
+      this._layerOpen = true;
+    } catch {
+      // Not connected or already shown by the author: the fixed region still works.
+    }
+  }
+
+  /**
+   * Leaves the top layer once nothing is visible or queued.
+   *
+   * @returns {void}
+   */
+  _hideLayer() {
+    const el = /** @type {HTMLElement} */ (this._element);
+    if (!this._layerOpen || this._items.length > 0 || this._queue.length > 0) return;
+    this._layerOpen = false;
+    if (typeof el.hidePopover === "function") {
+      try {
+        el.hidePopover();
+      } catch {
+        // Already hidden.
+      }
+    }
   }
 
   /**
@@ -349,6 +393,7 @@ export class Toast extends IvComponent {
    */
   _present(item) {
     if (item._done) return;
+    this._showLayer();
     this._element.append(item.element);
     const allowed = emit(
       item.element,
@@ -533,6 +578,7 @@ export class Toast extends IvComponent {
     emit(item.element, "closed", { instance: this, item, reason });
     item.element.remove();
     this._flushQueue();
+    this._hideLayer();
     if (hadFocus) {
       // Keep keyboard users oriented: next remaining toast, else the element focus came from.
       const next = this._items[Math.min(index === -1 ? 0 : index, this._items.length - 1)];
@@ -571,6 +617,18 @@ export class Toast extends IvComponent {
    * @returns {void}
    */
   _teardown() {
+    if (this._layerOpen) {
+      this._layerOpen = false;
+      try {
+        /** @type {HTMLElement} */ (this._element).hidePopover();
+      } catch {
+        // Already hidden.
+      }
+    }
+    if (this._addedPopover) {
+      this._element.removeAttribute("popover");
+      this._addedPopover = false;
+    }
     if (this._addedRole) {
       this._element.removeAttribute("role");
       this._addedRole = false;

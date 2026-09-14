@@ -592,6 +592,28 @@ export class Combobox extends IvComponent {
   }
 
   /**
+   * Places the list below the input, or above it only when it does not fit
+   * below and there is more room above, and caps its height to that room so
+   * it never leaves the viewport (ADR-034, same rule as the picker).
+   *
+   * @returns {void}
+   */
+  _place() {
+    const view = this._element.ownerDocument.defaultView;
+    const height = view ? view.innerHeight : 0;
+    if (!height) return;
+    const gap = 8;
+    const rect = this._input.getBoundingClientRect();
+    const below = height - rect.bottom - gap;
+    const above = rect.top - gap;
+    const needed = this._list.offsetHeight || 0;
+    const top = needed > below && above > below;
+    this._list.setAttribute("data-iv-placement", top ? "top" : "bottom");
+    const room = Math.max(120, Math.floor(top ? above : below));
+    this._list.style.setProperty("--iv-combobox-max-height", `${room}px`);
+  }
+
+  /**
    * Opens the listbox. Emits the cancelable `iv:open` first.
    *
    * @param {ComboboxReason} reason Why the list is opening.
@@ -608,6 +630,7 @@ export class Combobox extends IvComponent {
     if (!allowed) return;
     this._open = true;
     this._list.hidden = false;
+    this._place();
     this._set(this._input, "aria-expanded", "true");
     /** @type {EventListener} */
     const handler = (event) => this._onDocumentPointer(event);
@@ -637,6 +660,8 @@ export class Combobox extends IvComponent {
     if (!allowed) return;
     this._open = false;
     this._list.hidden = true;
+    this._list.removeAttribute("data-iv-placement");
+    this._list.style.removeProperty("--iv-combobox-max-height");
     this._set(this._input, "aria-expanded", "false");
     this._highlight(null);
     if (this._outside) {
