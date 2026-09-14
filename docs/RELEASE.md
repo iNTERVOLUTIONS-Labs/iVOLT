@@ -1,6 +1,14 @@
-# Release candidate v0.1.0-alpha — notas y pasos de publicación
+# Release: v0.2.0-beta.0 (en preparación) y v0.1.0-alpha.0 (candidato, no publicado)
 
-Estado: candidato revisable. **No publicado**: ninguna de las acciones de §3 se ha ejecutado.
+Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. El hito beta se define en `ROADMAP.md` §5.
+
+## 0. Notas de versión 0.2.0-beta.0 (borrador)
+
+iVOLT 0.2.0-beta.0 añade dos componentes con mejora progresiva sobre HTML nativo: **Combobox** (un `<input list>` con `<datalist>` promovido al patrón ARIA combobox con listbox: filtrado sin distinguir acentos, modo estricto, autoselección, eventos cancelables) y **DataTable** (ordenación por texto, número y fecha y filtro sobre una `<table>` servida, con `aria-sort`, recuento anunciado y restauración exacta en `destroy`). La web de documentación se rediseña (dirección «Voltage», ADR-027/028) y se publica también en español (`/es/`). Contratos congelados en `API_CONTRACT.md` §8.3 y §8.4.
+
+Beta significa: alcance v0.2 completo, contratos congelados, `npm run verify` en verde en tres motores, sin fallos abiertos conocidos de severidad alta. No significa: pruebas con lector de pantalla real (siguen sin ejecutarse), datos de campo ni dispositivos físicos.
+
+Pasos de publicación para la beta, cuando se autorice: versión `npm version 0.2.0-beta.0 --no-git-tag-version -w @intervolutions/ivolt`, etiqueta git `v0.2.0-beta.0`, `npm publish --access public --tag beta` (nunca `latest` antes de 0.2.0); el resto igual que §3.
 
 ## 1. Notas de versión (borrador público en `apps/docs/src/pages/changelog.astro`)
 
