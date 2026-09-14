@@ -1,0 +1,16 @@
+<section id="text-shimmer" data-iv-component="reveal" class="iv-stack iv-u-gap-8">
+  <p class="iv-u-m-0 iv-u-max-w-measure">Sample copy for the fixture. <code>.iv-text-shimmer</code> clips a gradient to the glyphs and moves only its position, so a band of light crosses the line and nothing repaints outside it. Do not combine it with <code>.iv-gradient-text</code>: both own the same background, so pick one. The band is the primary of the theme, not the accent: it replaces the colour of the glyph while it passes, and it has to stay readable the whole way across.</p>
+
+  <h2 class="iv-text-shimmer iv-u-m-0" style="font-size: var(--iv-text-4xl); line-height: var(--iv-leading-tight); letter-spacing: var(--iv-tracking-tight)">A band of light crosses the line</h2>
+
+  <h3 class="iv-u-m-0">Once, when it arrives</h3>
+  <p class="iv-u-m-0 iv-u-max-w-measure">The heading below carries <code>--once</code> and <code>data-iv-reveal</code>: it waits, still, until <code>Reveal</code> marks it as in view, runs the band across a single time and stays put. A loop next to running text would compete with the reading.</p>
+
+  <div class="iv-u-py-12" style="min-block-size: 90vh">
+    <p class="iv-u-m-0 iv-u-max-w-measure">Filler, so the heading below starts out of view.</p>
+  </div>
+
+  <h2 class="iv-text-shimmer iv-text-shimmer--once iv-u-m-0" style="font-size: var(--iv-text-4xl); line-height: var(--iv-leading-tight); letter-spacing: var(--iv-tracking-tight)" data-iv-reveal>One pass, then still</h2>
+
+  <p class="iv-u-m-0 iv-u-max-w-measure iv-u-py-12">Under <code>prefers-reduced-motion: reduce</code> the band is parked off the glyphs, so the line keeps its own colour and its contrast. In forced colours the gradient is dropped entirely.</p>
+</section>

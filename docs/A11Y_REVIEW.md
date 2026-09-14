@@ -433,3 +433,15 @@ Verificado por herramienta y por pruebas de navegador en Chromium, Firefox y Web
 - **Contenido**: la línea de tiempo es una lista ordenada con `<time datetime>`; el estado de cada ítem se expresa con texto (`Today`, `Next`) además del marcador; el delta de una cifra lleva flecha por máscara y signo en el texto (`sr-only` opcional para el sentido); los avatares de iniciales llevan `role="img"` con `aria-label` y las imágenes su `alt`; el recuento «+N» de un grupo es texto.
 
 Sin verificar: anuncio real del cambio de paso y del `__status` con NVDA/VoiceOver; `hideOnScroll` con lectores que desplazan el foco fuera del viewport; gestos reales en el panel plegado.
+
+## 13. Ciclo v0.7 (2026-09-14): visor de imágenes, movimiento por scroll, efectos de texto, contador
+
+Verificado por herramienta y por pruebas de navegador en Chromium, Firefox y WebKit (`tests/browser/lightbox.spec.js`, `countup.spec.js`, `motion.spec.js`, `text.spec.js`, más `a11y.spec.js` con las fixtures nuevas):
+
+- **axe-core** sin hallazgos critical/serious en `lightbox/{basic,masonry,strip}` (galería, visor abierto y con zoom), `countup/{basic,formats}`, `motion/{parallax,progress,marquee,stack}` y `text/{reveal,glow,outline,shimmer}`, en claro y oscuro. Hallazgos corregidos antes de integrar: marquesina y escenario con zoom eran regiones de scroll sin foco (`scrollable-region-focusable`) → `tabindex="0"`, rol y etiqueta; el trazo del outline y el resalte del shimmer con el color de acento no llegaban a 4,5:1 en claro → color primario.
+- **Visor**: diálogo modal con nombre (`galleryLabel`), la imagen conserva el `alt` de la miniatura, pie en `<figcaption>`, contador en `aria-live="polite"`, botones con nombre y foco visible sobre fondo oscuro, `Escape` cierra y el foco vuelve a la miniatura que abrió; con zoom las flechas desplazan la imagen y no cambian de foto; sin JS cada miniatura es un enlace a la imagen completa (con `data:` el navegador no navega: la web usa fotografías reales).
+- **Contador**: la cifra servida es la final y no cambia bajo reduced motion ni sin observador; prefijo y sufijo se conservan; `tabular-nums` evita el baile.
+- **Movimiento**: parallax, marquesina y baraja quedan estáticos bajo reduced motion; la barra de lectura sigue la página (estado) y va `aria-hidden` (es redundante con el scroll); la marquesina en reposo recupera su scrollbar y es enfocable.
+- **Texto**: el revelado por líneas es texto real partido por el autor (sin JS que rompa palabras), visible sin JS y bajo reduced motion; outline y shimmer vuelven a texto normal en `forced-colors`.
+
+Sin verificar: anuncio real del contador del visor y del cambio de imagen con NVDA/VoiceOver; gesto de arrastre con zoom en pantallas táctiles reales; parallax con lápiz o trackpad de alta frecuencia.

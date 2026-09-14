@@ -1,11 +1,329 @@
 /* iVOLT — motion
- * Scroll-driven motion: parallax, reading progress, marquee, stacked cards (API_CONTRACT §8.21). Registered stub for v0.7: the entries build
- * while the module is written in this cycle.
- * Local: --iv-parallax
+ * Scroll-driven motion (API_CONTRACT §8.21): parallax, reading progress,
+ * marquee and stacked cards. The engines that ship CSS scroll-driven
+ * animations drive everything from `animation-timeline`; the ones that do not
+ * either degrade to a still composition (marquee, stacked cards) or read the
+ * two custom properties the `ScrollMotion` component writes (`--iv-view` on
+ * every `.iv-parallax`, `--iv-scroll` on the root of the component).
+ * Locals: --iv-parallax --iv-parallax-ratio
+ *         --iv-scroll-progress-size --iv-scroll-progress-color
+ *         --iv-marquee-duration --iv-marquee-gap --iv-marquee-size
+ *         --iv-stack-top --iv-stack-step --iv-stack-scale --iv-stack-fade
+ * Written by JavaScript: `--iv-view` (0 entering from the bottom, 1 leaving at
+ * the top) and `--iv-scroll` (0 to 1), both from `ScrollMotion`.
+ * Timelines live in a rule of their own, right after the animation longhands
+ * that belong to the same selector: a minifier that folds `animation-name`,
+ * `animation-timing-function` and friends into the `animation` shorthand would
+ * reset `animation-timeline` to `auto` and the movement would be lost (the
+ * cabinet of the documentation home lost it exactly that way). The longhands
+ * are never written as the shorthand for the same reason.
+ * Every native block sits inside `@supports`: without it an engine with no
+ * scroll timelines would run the keyframes on the document timeline, and a
+ * zero-second animation with `both` would pin the element at its end state.
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
+/* Parallax --------------------------------------------------------------- */
+
+/* The fraction is the strength: 0 travels with the page, 1 is a whole screen
+ * of lag. The element is translated, never repositioned, so the effect is
+ * composited and costs no layout. */
 .iv-parallax {
+  --iv-parallax: 0.2;
+
   display: block;
+}
+
+@supports (animation-timeline: view()) {
+  .iv-parallax {
+    animation-name: iv-parallax;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+  }
+
+  .iv-parallax {
+    animation-timeline: view();
+  }
+}
+
+/* No scroll timelines: the same travel, driven by the variable `ScrollMotion`
+ * writes. Centred (0.5) means no offset, so a page that never runs the
+ * component shows the composition exactly as it was authored. */
+@supports not (animation-timeline: view()) {
+  .iv-parallax {
+    transform: translateY(calc((0.5 - var(--iv-view, 0.5)) * var(--iv-parallax) * 60vh));
+  }
+}
+
+@keyframes iv-parallax {
+  from {
+    transform: translateY(calc(var(--iv-parallax) * 30vh));
+  }
+
+  to {
+    transform: translateY(calc(var(--iv-parallax) * -30vh));
+  }
+}
+
+/* The frame clips the travel and holds the space, so nothing reflows while the
+ * layer moves inside it. `clip`, never `hidden`: a hidden overflow makes the
+ * frame a scroll container, `view()` then measures the layer against the frame
+ * instead of the page, and the timeline freezes at the value it had on load. */
+.iv-parallax-frame {
+  --iv-parallax-ratio: 16 / 9;
+
+  position: relative;
+  display: block;
+  overflow: clip;
+  aspect-ratio: var(--iv-parallax-ratio);
+  border-radius: var(--iv-radius-lg);
+}
+
+/* A media layer is taller than its frame, so the travel never uncovers an
+ * edge: 130 % of the frame, hung 15 % above it. */
+.iv-parallax--media {
+  position: absolute;
+  inset-block-start: -15%;
+  inset-inline: 0;
+  inline-size: 100%;
+  block-size: 130%;
+  object-fit: cover;
+}
+
+/* Reading progress ------------------------------------------------------- */
+
+/* The bar is painted full width and scaled down: one composited property, no
+ * layout per frame. `--iv-scroll` is the fallback source and the native
+ * animation overrides it where the engine has scroll timelines. */
+.iv-scroll-progress {
+  --iv-scroll-progress-size: 3px;
+  --iv-scroll-progress-color: var(--iv-color-primary);
+
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: var(--iv-z-dropdown);
+  block-size: var(--iv-scroll-progress-size);
+  background-image: linear-gradient(
+    90deg,
+    var(--iv-scroll-progress-color),
+    color-mix(in oklab, var(--iv-color-accent) 70%, var(--iv-scroll-progress-color))
+  );
+  transform: scaleX(var(--iv-scroll, 0));
+  transform-origin: 0 50%;
+  box-shadow: 0 0 12px var(--iv-glow-primary);
+  pointer-events: none;
+}
+
+:where([dir="rtl"]) .iv-scroll-progress {
+  transform-origin: 100% 50%;
+}
+
+@supports (animation-timeline: scroll(root)) {
+  .iv-scroll-progress {
+    animation-name: iv-scroll-progress;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+  }
+
+  .iv-scroll-progress {
+    animation-timeline: scroll(root);
+  }
+}
+
+@keyframes iv-scroll-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Marquee ---------------------------------------------------------------- */
+
+/* The author duplicates the items once and hides the copy from assistive
+ * technology; the track is then exactly twice the loop, so -50 % is seamless.
+ * The trailing gap belongs to the track, otherwise the seam is one gap short. */
+.iv-marquee {
+  --iv-marquee-duration: 30s;
+  --iv-marquee-gap: var(--iv-space-6);
+
+  display: flex;
+  overflow: hidden;
+}
+
+.iv-marquee__track {
+  display: flex;
+  flex: none;
+  gap: var(--iv-marquee-gap);
+  align-items: center;
+  inline-size: max-content;
+  padding-inline-end: var(--iv-marquee-gap);
+  animation: iv-marquee var(--iv-marquee-duration) linear infinite;
+}
+
+/* An item never wraps and never shrinks: a wrapped item would change the width
+ * of the track and break the seam. */
+.iv-marquee__item {
+  flex: none;
+  white-space: nowrap;
+}
+
+@keyframes iv-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes iv-marquee-v {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+.iv-marquee--reverse .iv-marquee__track {
+  animation-direction: reverse;
+}
+
+/* The edges dissolve instead of cutting: the mask is on the window, so it
+ * applies to whatever the author put inside. */
+.iv-marquee--fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.iv-marquee--vertical {
+  --iv-marquee-size: 14rem;
+
+  block-size: var(--iv-marquee-size);
+}
+
+.iv-marquee--vertical .iv-marquee__track {
+  flex-direction: column;
+  align-items: stretch;
+  inline-size: auto;
+  block-size: max-content;
+  padding-block-end: var(--iv-marquee-gap);
+  padding-inline-end: 0;
+  animation-name: iv-marquee-v;
+}
+
+.iv-marquee--vertical.iv-marquee--fade {
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+/* Reading a name takes longer than a glance: the loop stops under the pointer
+ * and while anything inside it holds focus. */
+@media (hover: hover) {
+  :where(.iv-marquee:hover) .iv-marquee__track {
+    animation-play-state: paused;
+  }
+}
+
+:where(.iv-marquee:focus-within) .iv-marquee__track {
+  animation-play-state: paused;
+}
+
+/* Stacked cards ---------------------------------------------------------- */
+
+/* Each card sticks one step lower than the one before it, so the deck is
+ * readable as a deck; `--iv-i` is served inline by the author. */
+.iv-stack-cards {
+  --iv-stack-top: var(--iv-space-8);
+  --iv-stack-step: 1rem;
+  --iv-stack-scale: 0.94;
+  --iv-stack-fade: 0.55;
+
+  display: grid;
+  gap: var(--iv-space-8);
+}
+
+.iv-stack-cards__card {
+  position: sticky;
+  inset-block-start: calc(var(--iv-stack-top) + var(--iv-i, 0) * var(--iv-stack-step));
+}
+
+@supports (animation-timeline: view()) {
+  .iv-stack-cards__card {
+    animation-name: iv-stack-cards;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-range: exit;
+  }
+
+  .iv-stack-cards__card {
+    animation-timeline: view();
+  }
+}
+
+@keyframes iv-stack-cards {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  to {
+    transform: scale(var(--iv-stack-scale));
+    opacity: var(--iv-stack-fade);
+  }
+}
+
+/* Reduced motion: the composition, none of the travel ---------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-parallax {
+    transform: none;
+    animation: none;
+  }
+
+  /* The reading bar is state, not travel: it keeps following the page (ADR-042), like the
+     header that hides on scroll (ADR-041). Only the scroll-linked animation drives it. */
+
+  /* A still marquee is a list that does not fit: give it back its scrollbar. */
+  .iv-marquee {
+    overflow-x: auto;
+  }
+
+  .iv-marquee__track {
+    animation: none;
+  }
+
+  .iv-marquee--vertical {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .iv-stack-cards__card {
+    transform: none;
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* Forced colours: the bar is a system control, the rest is plain content ---- */
+
+@media (forced-colors: active) {
+  .iv-scroll-progress {
+    background-image: none;
+    background-color: Highlight;
+    box-shadow: none;
+    forced-color-adjust: none;
+  }
+
+  .iv-marquee--fade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }

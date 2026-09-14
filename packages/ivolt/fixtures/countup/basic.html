@@ -1,0 +1,30 @@
+<p class="iv-u-m-0 iv-u-mb-6">Four figures measured by <code>npm run sizes</code> and <code>npm test</code> on the
+<code>0.6.0-beta.0</code> milestone (commit <code>34e69c1</code>): they are the real numbers of the package, not a
+demonstration set. Each one is served complete, so the page reads the same without JavaScript, and counts up once when it
+reaches the viewport.</p>
+
+<div class="iv-stat-group">
+  <div class="iv-stat iv-stat--card">
+    <span class="iv-stat__label">Core stylesheet</span>
+    <strong class="iv-stat__value iv-count" data-iv-component="countup">2.60</strong>
+    <span class="iv-stat__hint">KiB min + gzip, budget 8</span>
+  </div>
+  <div class="iv-stat iv-stat--card">
+    <span class="iv-stat__label">Full stylesheet</span>
+    <strong class="iv-stat__value iv-count" data-iv-component="countup">25.64</strong>
+    <span class="iv-stat__hint">KiB min + gzip, budget 40</span>
+  </div>
+  <div class="iv-stat iv-stat--card">
+    <span class="iv-stat__label">Bundled JavaScript</span>
+    <strong class="iv-stat__value iv-count" data-iv-component="countup">39.04</strong>
+    <span class="iv-stat__hint">KiB min + gzip, budget 48</span>
+  </div>
+  <div class="iv-stat iv-stat--card">
+    <span class="iv-stat__label">Unit tests</span>
+    <strong class="iv-stat__value iv-count" data-iv-component="countup" data-iv-duration="1400">641</strong>
+    <span class="iv-stat__hint">27 files, all passing</span>
+  </div>
+</div>
+
+<p class="iv-u-text-sm iv-u-text-muted iv-u-mt-6">With <code>prefers-reduced-motion: reduce</code>, without an
+<code>IntersectionObserver</code> or without JavaScript, nothing moves: the served figure is already the answer.</p>

@@ -1,11 +1,479 @@
 /* iVOLT — components/lightbox
- * Image gallery that opens a full-screen viewer composed on the dialog (API_CONTRACT §8.20). Registered stub for v0.7: the entries build
- * while the module is written in this cycle.
- * Local: --iv-gallery-min
+ * Gallery of links (`iv-gallery`) plus the full-screen viewer the component
+ * generates on top of the dialog (`iv-lightbox`, API_CONTRACT §8.20). The
+ * gallery is complete without JavaScript: the veil, the magnifier and the
+ * scale are the invitation, the anchor is the behaviour.
+ * The viewer reproduces the strong-glass recipe of `surfaces.css` on its own
+ * chips (same `--iv-glass-*` tokens) so the module needs no second class on
+ * generated markup, the way `iv-stat--glow` reproduces the gradient text.
+ * Locals: --iv-gallery-min --iv-gallery-gap --iv-gallery-ratio
+ *         --iv-gallery-scrim --iv-gallery-radius --iv-lightbox-chip
+ *         --iv-lightbox-chip-bg --iv-lightbox-chip-border
+ *         --iv-lightbox-chip-highlight --iv-lightbox-chip-text
+ *         --iv-lightbox-icon-close --iv-lightbox-icon-prev
+ *         --iv-lightbox-icon-next --iv-lightbox-icon-zoom
+ *         --iv-lightbox-icon-expand
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
 .iv-gallery {
+  --iv-gallery-gap: var(--iv-space-3);
+  --iv-gallery-ratio: 3 / 2;
+  --iv-gallery-radius: var(--iv-radius-lg);
+  --iv-gallery-scrim: color-mix(in srgb, var(--iv-palette-neutral-1000) 82%, transparent);
+  --iv-lightbox-icon-expand: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='M11 8.5v5M8.5 11h5M20 20l-4.4-4.4'/%3E%3C/svg%3E");
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--iv-gallery-min, 14rem), 1fr));
+  gap: var(--iv-gallery-gap);
+}
+
+.iv-gallery__item {
+  position: relative;
   display: block;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--iv-palette-neutral-0);
+  background-color: var(--iv-color-surface);
+  border-radius: var(--iv-gallery-radius);
+  box-shadow: var(--iv-shadow-ambient);
+  cursor: zoom-in;
+}
+
+.iv-gallery__img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: var(--iv-gallery-ratio);
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+/* The veil is what makes the magnifier readable over any photograph. */
+.iv-gallery__item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to top,
+    var(--iv-gallery-scrim) 0%,
+    color-mix(in srgb, var(--iv-gallery-scrim) 35%, transparent) 42%,
+    transparent 78%
+  );
+  opacity: 0;
+  transition: opacity var(--iv-motion-slow) var(--iv-ease-out);
+  pointer-events: none;
+}
+
+.iv-gallery__item::after {
+  content: "";
+  position: absolute;
+  inset-block-end: var(--iv-space-3);
+  inset-inline-end: var(--iv-space-3);
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  background-color: currentColor;
+  -webkit-mask-image: var(--iv-lightbox-icon-expand);
+  mask-image: var(--iv-lightbox-icon-expand);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  opacity: 0;
+  transform: translateY(0.375rem);
+  transition:
+    opacity var(--iv-motion-slow) var(--iv-ease-out),
+    transform var(--iv-motion-slow) var(--iv-ease-out);
+  pointer-events: none;
+}
+
+/* `:where()` carries no specificity, so a hovered pseudo-element has to be
+   written out: wrapped, it would lose to the rule that hides it. */
+.iv-gallery__item:hover::before,
+.iv-gallery__item:hover::after,
+.iv-gallery__item:focus-visible::before,
+.iv-gallery__item:focus-visible::after {
+  opacity: 1;
+  transform: none;
+}
+
+:where(.iv-gallery__item:hover) .iv-gallery__img,
+:where(.iv-gallery__item:focus-visible) .iv-gallery__img {
+  transform: scale(1.04);
+}
+
+.iv-gallery__item:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+  box-shadow: var(--iv-focus-halo);
+}
+
+/* Masonry: the column flow keeps every picture at its own height. */
+.iv-gallery--masonry {
+  display: block;
+  columns: var(--iv-gallery-min, 14rem) auto;
+  column-gap: var(--iv-gallery-gap);
+}
+
+:where(.iv-gallery--masonry) .iv-gallery__item {
+  margin-block-end: var(--iv-gallery-gap);
+  break-inside: avoid;
+}
+
+:where(.iv-gallery--masonry) .iv-gallery__img {
+  aspect-ratio: auto;
+}
+
+/* Strip: one row that snaps, focusable by the author with `tabindex="0"`. */
+.iv-gallery--strip {
+  display: flex;
+  gap: var(--iv-gallery-gap);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  padding-block-end: var(--iv-space-2);
+}
+
+:where(.iv-gallery--strip) .iv-gallery__item {
+  flex: 0 0 auto;
+  inline-size: min(var(--iv-gallery-min, 14rem), 78%);
+  scroll-snap-align: center;
+}
+
+.iv-gallery--strip:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+/* Viewer ---------------------------------------------------------------- */
+
+.iv-lightbox {
+  --iv-dialog-width: 100vw;
+  --iv-lightbox-chip: 2.5rem;
+  /* The viewer is a dark room in both themes: the chips keep the glass recipe
+     of `surfaces.css` but pin it to the palette instead of the theme surface,
+     the way the carousel caption pins its text to `--iv-palette-neutral-0`.
+     A white bar over a 92 % black backdrop was lit like a page, not like a
+     projection room, and the contrast here is higher, not lower. */
+  --iv-lightbox-chip-bg: color-mix(in srgb, var(--iv-palette-neutral-1000) 58%, transparent);
+  --iv-lightbox-chip-border: color-mix(in srgb, var(--iv-palette-neutral-0) 20%, transparent);
+  --iv-lightbox-chip-highlight: color-mix(in srgb, var(--iv-palette-neutral-0) 24%, transparent);
+  --iv-lightbox-chip-text: var(--iv-palette-neutral-0);
+  --iv-lightbox-icon-close: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E");
+  --iv-lightbox-icon-prev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 4L7 12l8 8'/%3E%3C/svg%3E");
+  --iv-lightbox-icon-next: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 4l8 8-8 8'/%3E%3C/svg%3E");
+  --iv-lightbox-icon-zoom: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6.5'/%3E%3Cpath d='M11 8.5v5M8.5 11h5M20 20l-4.4-4.4'/%3E%3C/svg%3E");
+
+  inline-size: 100vw;
+  max-inline-size: 100vw;
+  block-size: 100dvh;
+  max-block-size: 100dvh;
+  margin: 0;
+  border-radius: 0;
+  background-color: transparent;
+  outline: 0;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/* The page disappears behind the artwork: the shared overlay token sits near
+   0.6 alpha, too light for a full-screen viewer, so the backdrop is the
+   deepest neutral of the palette reinforced to 92 % and softly blurred.
+   `::backdrop` does not inherit custom properties everywhere, hence the
+   literal fallbacks. */
+.iv-lightbox::backdrop {
+  background-color: color-mix(in srgb, var(--iv-palette-neutral-1000, #030806) 92%, transparent);
+  -webkit-backdrop-filter: blur(var(--iv-blur-md, 16px));
+  backdrop-filter: blur(var(--iv-blur-md, 16px));
+}
+
+/* The panel holds no transform of its own: the fixed chips inside it must keep
+   the viewport as their containing block. */
+.iv-lightbox[open] {
+  animation: iv-lightbox-in var(--iv-motion-base) var(--iv-ease-out);
+}
+
+@keyframes iv-lightbox-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.iv-lightbox__panel {
+  display: block;
+  block-size: 100dvh;
+  margin: 0;
+}
+
+.iv-lightbox__stage {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100dvh;
+  margin: 0;
+  padding: 0;
+  cursor: zoom-in;
+}
+
+.iv-lightbox__img {
+  display: block;
+  max-inline-size: 100vw;
+  max-block-size: calc(100dvh - 6rem);
+  object-fit: contain;
+  border-radius: var(--iv-radius-sm);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.55);
+  animation: iv-lightbox-img-in var(--iv-motion-slow) var(--iv-ease-out);
+  transition:
+    opacity var(--iv-motion-slow) var(--iv-ease-out),
+    transform var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+@keyframes iv-lightbox-img-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+/* Crossfade: JavaScript sets the attribute, takes it away two frames later. */
+.iv-lightbox__img[data-iv-swap] {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* Zoomed: natural size inside a stage that scrolls, dragged with the pointer. */
+.iv-lightbox__stage[data-iv-zoomed] {
+  place-items: start;
+  overflow: auto;
+  overscroll-behavior: contain;
+  cursor: zoom-out;
+}
+
+:where(.iv-lightbox__stage[data-iv-zoomed]) .iv-lightbox__img {
+  max-inline-size: none;
+  max-block-size: none;
+  border-radius: 0;
+  cursor: zoom-out;
+}
+
+/* Chips: caption, counter and controls ---------------------------------- */
+
+.iv-lightbox__caption,
+.iv-lightbox__counter,
+.iv-lightbox__button {
+  position: fixed;
+  z-index: 1;
+  color: var(--iv-lightbox-chip-text);
+  background-color: var(--iv-lightbox-chip-bg);
+  border: var(--iv-border-width) solid var(--iv-lightbox-chip-border);
+  box-shadow:
+    inset 0 1px 0 var(--iv-lightbox-chip-highlight),
+    var(--iv-shadow-3);
+  -webkit-backdrop-filter: blur(var(--iv-blur-lg)) saturate(140%);
+  backdrop-filter: blur(var(--iv-blur-lg)) saturate(140%);
+}
+
+.iv-lightbox__caption {
+  inset-inline: 0;
+  inset-block-end: 0;
+  margin: 0;
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-space-6);
+  font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-snug);
+  text-align: center;
+  text-wrap: pretty;
+  border-inline: 0;
+  border-block-end: 0;
+}
+
+.iv-lightbox__caption[hidden] {
+  display: none;
+}
+
+.iv-lightbox__counter {
+  inset-block-start: var(--iv-space-4);
+  inset-inline-start: var(--iv-space-4);
+  margin: 0;
+  padding-block: var(--iv-space-1);
+  padding-inline: var(--iv-space-3);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--iv-tracking-caps);
+  border-radius: var(--iv-radius-full);
+}
+
+.iv-lightbox__button {
+  display: grid;
+  place-items: center;
+  inline-size: var(--iv-lightbox-chip, 3rem);
+  block-size: var(--iv-lightbox-chip, 3rem);
+  padding: 0;
+  font: inherit;
+  border-radius: var(--iv-radius-full);
+  cursor: pointer;
+  transition:
+    transform var(--iv-motion-slow) var(--iv-ease-out),
+    background-color var(--iv-motion-slow) var(--iv-ease-out),
+    box-shadow var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+.iv-lightbox__button::before {
+  content: "";
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  background-color: currentColor;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.iv-lightbox__button:hover {
+  background-color: color-mix(in srgb, var(--iv-palette-neutral-1000) 72%, transparent);
+  box-shadow:
+    inset 0 1px 0 var(--iv-lightbox-chip-highlight),
+    0 0 26px var(--iv-glow-primary);
+  transform: scale(1.06);
+}
+
+.iv-lightbox__button:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+.iv-lightbox__close {
+  inset-block-start: var(--iv-space-4);
+  inset-inline-end: var(--iv-space-4);
+}
+
+.iv-lightbox__close::before {
+  -webkit-mask-image: var(--iv-lightbox-icon-close);
+  mask-image: var(--iv-lightbox-icon-close);
+}
+
+.iv-lightbox__zoom {
+  inset-block-start: var(--iv-space-4);
+  inset-inline-end: calc(var(--iv-space-4) + var(--iv-lightbox-chip, 3rem) + var(--iv-space-2));
+}
+
+.iv-lightbox__zoom::before {
+  -webkit-mask-image: var(--iv-lightbox-icon-zoom);
+  mask-image: var(--iv-lightbox-icon-zoom);
+}
+
+.iv-lightbox__zoom[aria-pressed="true"] {
+  color: var(--iv-color-accent);
+  box-shadow:
+    inset 0 1px 0 var(--iv-lightbox-chip-highlight),
+    0 0 26px var(--iv-glow-primary);
+}
+
+.iv-lightbox__prev,
+.iv-lightbox__next {
+  inset-block-start: 50%;
+  translate: 0 -50%;
+}
+
+.iv-lightbox__prev {
+  inset-inline-start: var(--iv-space-2);
+}
+
+.iv-lightbox__next {
+  inset-inline-end: var(--iv-space-2);
+}
+
+.iv-lightbox__prev::before {
+  -webkit-mask-image: var(--iv-lightbox-icon-prev);
+  mask-image: var(--iv-lightbox-icon-prev);
+}
+
+.iv-lightbox__next::before {
+  -webkit-mask-image: var(--iv-lightbox-icon-next);
+  mask-image: var(--iv-lightbox-icon-next);
+}
+
+/* From md the chips grow to 3rem and step away from the edges; below it they
+   are 2.5rem and hug them, so the picture keeps the width it has. */
+@media (--iv-md) {
+  .iv-lightbox {
+    --iv-lightbox-chip: 3rem;
+  }
+
+  .iv-lightbox__prev {
+    inset-inline-start: var(--iv-space-5);
+  }
+
+  .iv-lightbox__next {
+    inset-inline-end: var(--iv-space-5);
+  }
+
+  .iv-lightbox__caption {
+    padding-block: var(--iv-space-4);
+  }
+}
+
+/* No backdrop-filter: opaque chips keep the text readable over the photo. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .iv-lightbox__caption,
+  .iv-lightbox__counter,
+  .iv-lightbox__button {
+    background-color: color-mix(in srgb, var(--iv-palette-neutral-1000) 88%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-gallery__img,
+  .iv-gallery__item::before,
+  .iv-gallery__item::after {
+    transition: none;
+  }
+
+  :where(.iv-gallery__item:hover) .iv-gallery__img,
+  :where(.iv-gallery__item:focus-visible) .iv-gallery__img {
+    transform: none;
+  }
+
+  .iv-lightbox[open],
+  .iv-lightbox__img {
+    animation: none;
+  }
+
+  .iv-lightbox__img,
+  .iv-lightbox__button {
+    transition: none;
+  }
+
+  .iv-lightbox__img[data-iv-swap] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .iv-lightbox__button:hover {
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .iv-gallery__item::after {
+    background-color: CanvasText;
+  }
+
+  .iv-lightbox__caption,
+  .iv-lightbox__counter,
+  .iv-lightbox__button {
+    background-color: Canvas;
+    border-color: CanvasText;
+  }
+
+  .iv-lightbox__button::before {
+    background-color: ButtonText;
+  }
 }

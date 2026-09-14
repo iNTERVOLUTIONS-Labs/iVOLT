@@ -29,4 +29,4 @@ esbuild, lightningcss, browserslist, TypeScript, Vitest, jsdom, Playwright, axe-
 
 ## Fotografías de la documentación (2026-09-14)
 
-Doce fotografías en `apps/docs/public/photos/` obtenidas de Lorem Picsum (`picsum.photos/id/<id>`), que sirve fotografías publicadas en Unsplash bajo la Unsplash License (uso libre comercial y no comercial, sin permiso previo; la atribución se agradece y se incluye). Autores y enlaces en `apps/docs/public/photos/README.md`. Solo se usan en la web; el paquete npm no incluye mapas de bits.
+Doce fotografías en `apps/docs/public/photos/` obtenidas de Lorem Picsum (`picsum.photos/id/<id>`), que sirve fotografías publicadas en Unsplash bajo la Unsplash License (uso libre comercial y no comercial, sin permiso previo; la atribución se agradece y se incluye). Autores y enlaces en `apps/docs/public/photos/README.md`. Solo se usan en la web y, desde v0.7, seis de ellas se copian a `examples/recipes/showcase/photos/` (con su propio `README.md` de créditos) para que la receta «showcase» funcione sin red y dentro de su zip; el paquete npm no incluye mapas de bits.

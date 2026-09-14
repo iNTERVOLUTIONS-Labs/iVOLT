@@ -1,0 +1,23 @@
+<section id="text-reveal" data-iv-component="reveal" class="iv-stack iv-u-gap-8">
+  <p class="iv-u-m-0 iv-u-max-w-measure">Sample copy for the fixture. Each line of the headline below is a mask; the span inside it starts one line lower and rises when <code>Reveal</code> marks the heading with <code>data-iv-inview</code>. The author writes the line breaks: no script splits the text, so it stays selectable, translatable and readable exactly as it was served. Without JavaScript, and under <code>prefers-reduced-motion: reduce</code>, every line is already up.</p>
+
+  <h2 class="iv-text-reveal iv-u-m-0" style="font-size: var(--iv-text-4xl); line-height: var(--iv-leading-tight); letter-spacing: var(--iv-tracking-tight)" data-iv-reveal>
+    <span class="iv-text-reveal__line"><span>The interface</span></span>
+    <span class="iv-text-reveal__line" style="--iv-i: 1"><span>starts here.</span></span>
+  </h2>
+
+  <div class="iv-stack iv-u-gap-4 iv-u-py-12" style="min-block-size: 90vh">
+    <h3 class="iv-u-m-0">Filler, so the next headline arrives on scroll</h3>
+    <p class="iv-u-m-0 iv-u-max-w-measure">The first heading is above the fold and reveals as soon as the observer reports it. The second one is below, and waits.</p>
+    <p class="iv-u-m-0 iv-u-max-w-measure">More filler. Sample copy for the fixture, with no claim of any kind.</p>
+  </div>
+
+  <h2 class="iv-text-reveal iv-u-m-0" style="font-size: var(--iv-text-4xl); line-height: var(--iv-leading-tight); letter-spacing: var(--iv-tracking-tight); --iv-text-reveal-step: 110ms" data-iv-reveal>
+    <span class="iv-text-reveal__line"><span>Four lines,</span></span>
+    <span class="iv-text-reveal__line" style="--iv-i: 1"><span>one after another,</span></span>
+    <span class="iv-text-reveal__line" style="--iv-i: 2"><span><span class="iv-gradient-text">staggered</span> by the index</span></span>
+    <span class="iv-text-reveal__line" style="--iv-i: 3"><span>the author served.</span></span>
+  </h2>
+
+  <p class="iv-u-m-0 iv-u-max-w-measure iv-u-py-12">The stagger is <code>--iv-i</code> multiplied by <code>--iv-text-reveal-step</code>, both plain custom properties: there is no JavaScript timer behind them.</p>
+</section>

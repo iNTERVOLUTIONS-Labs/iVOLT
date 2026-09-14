@@ -1,11 +1,215 @@
 /* iVOLT — text
- * Text effects: line reveal, glow, outline, shimmer; countup figures (API_CONTRACT §8.22). Registered stub for v0.7: the entries build
- * while the module is written in this cycle.
- * Local: --iv-text-glow-color
+ * Text effects (API_CONTRACT §8.22): a line reveal, a glow, an outline, a
+ * shimmer, and the tabular figures the `Countup` component needs.
+ * The author owns the line breaks of the reveal: no script splits a paragraph
+ * into spans, so the text stays selectable, translatable and readable by
+ * assistive technology exactly as it was served.
+ * Locals: --iv-text-reveal-distance --iv-text-reveal-duration --iv-text-reveal-step
+ *         --iv-text-glow-color --iv-text-glow-size
+ *         --iv-text-outline-width --iv-text-outline-color
+ *         --iv-text-shimmer-color --iv-text-shimmer-duration
+ * Written by JavaScript: the attribute `data-iv-inview` (Reveal, §8.10) on the
+ * reveal root and on a shimmer that only runs once.
+ * The state selectors are kept at (0,2,0) or below by moving the root class
+ * into `:where()`, the same device `effects.css` uses for its no-JS fallback.
+ * `-webkit-text-fill-color` carries the transparency of the outline and of the
+ * shimmer instead of `color`: the stroke and the clip both read `currentColor`,
+ * so a transparent `color` would erase the effect itself.
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
+/* Line reveal ------------------------------------------------------------ */
+
 .iv-text-reveal {
+  --iv-text-reveal-distance: 110%;
+  --iv-text-reveal-duration: 660ms;
+  --iv-text-reveal-step: 80ms;
+}
+
+/* The line is the mask; the span inside it is what travels. */
+.iv-text-reveal__line {
   display: block;
+  overflow: hidden;
+  /* Descenders and accents live below the baseline: without room the mask
+   * clips the tail of a "g" once the line has arrived. */
+  padding-block-end: 0.12em;
+  margin-block-end: -0.12em;
+}
+
+.iv-text-reveal__line > span {
+  display: block;
+  transform: translateY(var(--iv-text-reveal-distance));
+  transition: transform var(--iv-text-reveal-duration) var(--iv-ease-out);
+  transition-delay: calc(var(--iv-i, 0) * var(--iv-text-reveal-step));
+}
+
+:where(.iv-text-reveal)[data-iv-inview] .iv-text-reveal__line > span {
+  transform: none;
+}
+
+/* No JavaScript, nothing to observe: every line is already up. */
+:where(:root:not([data-iv-js])) .iv-text-reveal__line > span {
+  transform: none;
+  transition: none;
+}
+
+/* Glow ------------------------------------------------------------------- */
+
+/* Two layers: a tight halo that thickens the strokes and a wide one that
+ * spills onto the surface behind. */
+.iv-text-glow {
+  --iv-text-glow-color: var(--iv-glow-primary);
+  --iv-text-glow-size: 0.5em;
+
+  text-shadow:
+    0 0 calc(var(--iv-text-glow-size) * 0.35) var(--iv-text-glow-color),
+    0 0 var(--iv-text-glow-size) var(--iv-text-glow-color);
+}
+
+.iv-text-glow--pulse {
+  animation: iv-text-glow 2.4s var(--iv-ease-out) infinite;
+}
+
+@keyframes iv-text-glow {
+  from,
+  to {
+    text-shadow:
+      0 0 calc(var(--iv-text-glow-size) * 0.3) var(--iv-text-glow-color),
+      0 0 calc(var(--iv-text-glow-size) * 0.8) var(--iv-text-glow-color);
+  }
+
+  50% {
+    text-shadow:
+      0 0 calc(var(--iv-text-glow-size) * 0.5) var(--iv-text-glow-color),
+      0 0 calc(var(--iv-text-glow-size) * 1.8) var(--iv-text-glow-color);
+  }
+}
+
+/* Outline ---------------------------------------------------------------- */
+
+/* Hollow letters, drawn by the stroke the engine paints around the glyph.
+ * Without the property the text keeps its normal fill: the headline is never
+ * lost, it is only less dramatic. */
+.iv-text-outline {
+  --iv-text-outline-width: 1px;
+  --iv-text-outline-color: currentColor;
+}
+
+@supports (-webkit-text-stroke: 1px currentColor) {
+  .iv-text-outline {
+    -webkit-text-stroke: var(--iv-text-outline-width) var(--iv-text-outline-color);
+    -webkit-text-fill-color: transparent;
+    transition: -webkit-text-fill-color var(--iv-motion-slow) var(--iv-ease-out);
+  }
+
+  /* One `:where()` per selector, never a list inside it: the contract check
+   * splits a prelude on commas and a half `:where(` would count as a pseudo. */
+  .iv-text-outline--fill:hover,
+  .iv-text-outline--fill:focus-within,
+  :where(a:hover) .iv-text-outline--fill,
+  :where(a:focus-visible) .iv-text-outline--fill {
+    -webkit-text-fill-color: currentColor;
+  }
+}
+
+/* Shimmer ---------------------------------------------------------------- */
+
+/* A band of light crosses the glyphs: the gradient is clipped to the text and
+ * only its position moves, so nothing repaints outside the line box. */
+.iv-text-shimmer {
+  --iv-text-shimmer-color: currentColor;
+  /* The primary, not the accent: the band replaces the colour of the glyph
+   * while it passes, and the accent of the light theme is a bright green that
+   * would drop a display line below its contrast for the length of a pass. */
+  --iv-text-shimmer-highlight: var(--iv-color-primary);
+  --iv-text-shimmer-duration: 2.8s;
+
+  background-image: linear-gradient(
+    100deg,
+    var(--iv-text-shimmer-color) 0 38%,
+    var(--iv-text-shimmer-highlight) 50%,
+    var(--iv-text-shimmer-color) 62% 100%
+  );
+  /* The gradient is wider than the line and the travel stays inside 0–100 %:
+   * a percentage outside that range slides the image off the box and, clipped
+   * to the glyphs with a transparent fill, the text would simply vanish. */
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: iv-text-shimmer var(--iv-text-shimmer-duration) linear infinite;
+}
+
+@keyframes iv-text-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: 0% 0;
+  }
+}
+
+/* One pass, when the line arrives: the loop would compete with the reading. */
+.iv-text-shimmer--once {
+  animation-name: none;
+}
+
+:where(.iv-text-shimmer--once)[data-iv-inview] {
+  animation-name: iv-text-shimmer;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+/* Figures ---------------------------------------------------------------- */
+
+/* Tabular figures keep the number still while `Countup` runs through it. */
+.iv-count {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reduced motion: the final state, none of the travel --------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-text-reveal__line > span {
+    transform: none;
+    transition: none;
+  }
+
+  .iv-text-glow--pulse {
+    animation: none;
+  }
+
+  /* Parked where the band is off the glyphs: the line keeps its own colour
+   * and its contrast, and nothing moves. */
+  .iv-text-shimmer {
+    background-position: 100% 0;
+    animation: none;
+  }
+
+  :where(.iv-text-shimmer--once)[data-iv-inview] {
+    animation: none;
+  }
+}
+
+/* Forced colours: an outline and a clipped gradient are both invisible when
+ * the engine replaces the palette; both go back to plain text. */
+@media (forced-colors: active) {
+  .iv-text-glow {
+    text-shadow: none;
+  }
+
+  .iv-text-outline {
+    -webkit-text-stroke-width: 0;
+    -webkit-text-fill-color: currentColor;
+  }
+
+  .iv-text-shimmer {
+    background-image: none;
+    -webkit-text-fill-color: currentColor;
+    animation: none;
+  }
 }

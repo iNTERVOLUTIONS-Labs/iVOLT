@@ -1,0 +1,31 @@
+<p class="iv-u-m-0 iv-u-mb-6">Prefixes, suffixes and separators come from the served text and from the language of the
+element: the component never invents a format. The three money figures below are <strong>made up for this
+fixture</strong>; the test count is the real one of the <code>0.6.0-beta.0</code> milestone.</p>
+
+<div class="iv-stat-group">
+  <div class="iv-stat iv-stat--card">
+    <span class="iv-stat__label">Invoiced (made-up figure)</span>
+    <strong class="iv-stat__value iv-count" data-iv-component="countup">€ 1,240.50</strong>
+    <span class="iv-stat__hint">English grouping, prefix kept</span>
+  </div>
+  <div class="iv-stat iv-stat--card" lang="es">
+    <span class="iv-stat__label" lang="en">Invoiced, Spanish locale (made-up figure)</span>
+    <strong class="iv-stat__value iv-count" data-iv-component="countup">12.480,50 €</strong>
+    <span class="iv-stat__hint" lang="en">Spanish grouping and decimal comma, suffix kept</span>
+  </div>
+  <div class="iv-stat iv-stat--card">
+    <span class="iv-stat__label">Coverage of the contract matrix</span>
+    <strong class="iv-stat__value iv-count" data-iv-component="countup" data-iv-autostart="true">98 %</strong>
+    <span class="iv-stat__hint">Starts at <code>init</code>, not in view</span>
+  </div>
+  <div class="iv-stat iv-stat--card">
+    <span class="iv-stat__label">Browser tests, three engines</span>
+    <strong class="iv-stat__value iv-count" data-iv-component="countup" data-iv-from="900" data-iv-duration="1800" data-iv-grouping="false">1068</strong>
+    <span class="iv-stat__hint">From 900, ungrouped while counting</span>
+  </div>
+</div>
+
+<p class="iv-u-mt-6">A figure also works inside a sentence: the last full gate
+passed <strong class="iv-count" data-iv-component="countup" data-iv-duration="1200" data-iv-grouping="false">1068</strong> browser tests and
+skipped <strong class="iv-count" data-iv-component="countup" data-iv-duration="1200">114</strong> of them, the visual
+ones outside Chromium.</p>

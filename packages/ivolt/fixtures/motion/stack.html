@@ -1,0 +1,40 @@
+<section id="motion-stack" class="iv-stack iv-u-gap-8">
+  <p class="iv-u-m-0 iv-u-max-w-measure">Sample copy for the fixture. Each card sticks one step lower than the one before it, so the deck reads as a deck. Where the engine has scroll-driven animations the card underneath shrinks and dims while the next one covers it; where it does not, the stack is still a stack and nothing is lost. The text of the cards describes this project.</p>
+
+  <div class="iv-stack-cards" style="--iv-stack-top: var(--iv-space-6)">
+    <section class="iv-stack-cards__card iv-card" style="--iv-i: 0">
+      <div class="iv-card__body iv-stack iv-u-gap-4 iv-u-py-8">
+        <div class="iv-cluster"><span class="iv-badge iv-badge--primary">01</span></div>
+        <h3 class="iv-card__title iv-u-m-0" style="font-size: var(--iv-text-2xl); letter-spacing: var(--iv-tracking-tight)">Contracts first</h3>
+        <p class="iv-u-m-0 iv-u-max-w-measure">Every family of this framework is written as a contract before a line of it is implemented: markup, classes, options, events, accessibility and what is out of scope.</p>
+      </div>
+    </section>
+    <section class="iv-stack-cards__card iv-card" style="--iv-i: 1">
+      <div class="iv-card__body iv-stack iv-u-gap-4 iv-u-py-8">
+        <div class="iv-cluster"><span class="iv-badge iv-badge--primary">02</span></div>
+        <h3 class="iv-card__title iv-u-m-0" style="font-size: var(--iv-text-2xl); letter-spacing: var(--iv-tracking-tight)">One grammar</h3>
+        <p class="iv-u-m-0 iv-u-max-w-measure">Classes start with <code>iv-</code>, custom properties with <code>--iv-</code>, attributes with <code>data-iv-</code> and events with <code>iv:</code>. Nothing else is allowed in.</p>
+      </div>
+    </section>
+    <section class="iv-stack-cards__card iv-card" style="--iv-i: 2">
+      <div class="iv-card__body iv-stack iv-u-gap-4 iv-u-py-8">
+        <div class="iv-cluster"><span class="iv-badge iv-badge--primary">03</span></div>
+        <h3 class="iv-card__title iv-u-m-0" style="font-size: var(--iv-text-2xl); letter-spacing: var(--iv-tracking-tight)">HTML that already works</h3>
+        <p class="iv-u-m-0 iv-u-max-w-measure">The served markup is complete. JavaScript upgrades it; it never creates the thing the page is for.</p>
+      </div>
+    </section>
+    <section class="iv-stack-cards__card iv-card" style="--iv-i: 3">
+      <div class="iv-card__body iv-stack iv-u-gap-4 iv-u-py-8">
+        <div class="iv-cluster"><span class="iv-badge iv-badge--primary">04</span></div>
+        <h3 class="iv-card__title iv-u-m-0" style="font-size: var(--iv-text-2xl); letter-spacing: var(--iv-tracking-tight)">Motion with an argument</h3>
+        <p class="iv-u-m-0 iv-u-max-w-measure">Movement is transform and opacity, it has a reason, and <code>prefers-reduced-motion</code> removes all of it while leaving the composition whole.</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="iv-stack iv-u-gap-4 iv-u-py-12" style="min-block-size: 120vh">
+    <h3 class="iv-u-m-0">After the deck</h3>
+    <p class="iv-u-m-0 iv-u-max-w-measure">Filler, so the last card can leave the top of the window and the whole deck can be scrolled past: the shrink of a card only runs while it is on its way out.</p>
+    <p class="iv-u-m-0 iv-u-max-w-measure">Under <code>prefers-reduced-motion: reduce</code> the cards keep their sticky offsets and drop the scale and the fade.</p>
+  </div>
+</section>

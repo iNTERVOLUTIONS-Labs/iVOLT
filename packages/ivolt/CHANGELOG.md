@@ -2,6 +2,14 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 0.7.0-beta.0 (unreleased)
+
+### Added
+- `Lightbox` (`iv-gallery`, `iv-lightbox`, export `./lightbox`): a gallery of image links that opens a full-screen viewer composed on the dialog, with keyboard, swipe, zoom, captions, counter and preloading; `--masonry` and `--strip` galleries.
+- `motion.css` with `ScrollMotion` (export `./scroll-motion`): `iv-parallax`, `iv-scroll-progress`, `iv-marquee` and `iv-stack-cards` on CSS scroll-driven animations, with one small component that writes the same progress variables where the browser has none; everything static under reduced motion.
+- `text.css` with `Countup` (export `./countup`): `iv-text-reveal` (line by line, staggered by `--iv-i`), `iv-text-glow`, `iv-text-outline`, `iv-text-shimmer`, and served figures that count up when they enter the viewport, formatted through `Intl.NumberFormat`.
+- The «showcase» recipe: a full product page composed only with the framework (navbar, cinematic hero with parallax, marquee, countup figures, gallery with lightbox, stepper, timeline, text reveals), with its own credited photographs.
+
 ## 0.6.0-beta.0 (unreleased)
 
 ### Added
