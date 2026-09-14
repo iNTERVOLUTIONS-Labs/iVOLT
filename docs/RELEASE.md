@@ -46,6 +46,8 @@ Limitaciones conocidas: API sujeta a cambios antes de 0.1.0; sin pruebas con lec
 
 ## 3. Pasos de publicación (requieren autorización explícita; no ejecutar sin ella)
 
+Antes de cualquier subida de versión: `apps/docs/package.json` fija la versión exacta del paquete (`"@intervolutions/ivolt": "x.y.z"`); hay que actualizarla en el mismo commit y regenerar `package-lock.json` con `npm install`. Con el paquete ya en el registro, una versión desfasada hace fallar `npm install` con `notarget` (ocurrió tras publicar 0.7.0-beta.0 con la dependencia todavía en 0.5.0-beta.0).
+
 1. Nombre: `npm view @intervolutions/ivolt` y `npm view ivolt` devolvían 404 el 2026-09-13. La **propiedad del scope `@intervolutions`** exige una organización npm con ese nombre: crearla o verificarla con la cuenta de la empresa antes de nada (`npm org ls intervolutions`). Si el scope no está disponible, el nombre alternativo `ivolt-css` también estaba libre; cambiarlo implica actualizar `package.json`, docs y pack-smoke.
 2. Versión: `npm version 0.1.0-alpha.0 --no-git-tag-version -w @intervolutions/ivolt` (ya es la versión actual); crear etiqueta `v0.1.0-alpha.0` tras el commit de release.
 3. Tarball de revisión: `cd packages/ivolt && npm pack` → adjuntar a la revisión; `npm run pack-smoke` debe pasar sobre ese mismo tarball.
