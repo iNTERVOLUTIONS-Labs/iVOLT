@@ -8,8 +8,8 @@
  */
 
 .iv-dropdown {
-  --iv-dropdown-min-width: 12rem;
-  --iv-dropdown-offset: var(--iv-space-1);
+  --iv-dropdown-min-width: 13rem;
+  --iv-dropdown-offset: var(--iv-space-2);
 
   position: relative;
   display: inline-block;
@@ -31,11 +31,11 @@
   inset-inline-start: 0;
   z-index: var(--iv-z-dropdown);
   min-inline-size: var(--iv-dropdown-min-width);
-  padding-block: var(--iv-space-1);
+  padding: var(--iv-space-1);
   background-color: var(--iv-color-surface-raised);
   border: var(--iv-border-width) solid var(--iv-color-border);
-  border-radius: var(--iv-radius-md);
-  box-shadow: var(--iv-shadow-2);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: var(--iv-shadow-3);
   animation: iv-dropdown-in var(--iv-motion-fast) var(--iv-ease-out);
 }
 
@@ -54,6 +54,10 @@
   .iv-dropdown__menu {
     animation: none;
   }
+
+  .iv-dropdown__item {
+    transition: none;
+  }
 }
 
 /* Items -------------------------------------------------------------- */
@@ -65,16 +69,20 @@
   inline-size: 100%;
   min-block-size: 2.5rem;
   padding-block: var(--iv-space-2);
-  padding-inline: var(--iv-space-4);
+  padding-inline: var(--iv-space-3);
   font-family: inherit;
   font-size: var(--iv-text-md);
-  line-height: 1.2;
+  line-height: var(--iv-leading-snug);
   text-align: start;
   text-decoration: none;
   color: var(--iv-color-text);
   background-color: transparent;
   border: 0;
+  /* The highlight is a rounded row inside the padded menu, not a full-bleed
+     band across it. */
+  border-radius: var(--iv-radius-md);
   cursor: pointer;
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
 }
 
 .iv-dropdown__item:focus-visible {
@@ -98,7 +106,7 @@
 
 .iv-dropdown__separator {
   margin-block: var(--iv-space-1);
-  margin-inline: 0;
+  margin-inline: calc(-1 * var(--iv-space-1));
   border: 0;
   border-block-start: var(--iv-border-width) solid var(--iv-color-border);
 }

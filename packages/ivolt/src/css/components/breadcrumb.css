@@ -68,10 +68,11 @@
 .iv-breadcrumb a:focus-visible {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: var(--iv-focus-offset);
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
 }
 
 /* The current page is plain text inside `li[aria-current="page"]`. */
 .iv-breadcrumb__item[aria-current="page"] {
   color: var(--iv-color-text);
-  font-weight: var(--iv-weight-medium);
+  font-weight: var(--iv-weight-semibold);
 }

@@ -10,13 +10,14 @@
 
 .iv-disclosure {
   --iv-disclosure-bg: var(--iv-color-surface-raised);
-  --iv-disclosure-radius: var(--iv-radius-md);
-  --iv-disclosure-px: var(--iv-space-4);
-  --iv-disclosure-py: var(--iv-space-3);
+  --iv-disclosure-radius: var(--iv-radius-lg);
+  --iv-disclosure-px: var(--iv-space-5);
+  --iv-disclosure-py: var(--iv-space-4);
 
   background-color: var(--iv-disclosure-bg);
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-radius: var(--iv-disclosure-radius);
+  box-shadow: 0 1px 4px color-mix(in oklab, var(--iv-color-overlay) 16%, transparent);
 }
 
 /* Summary ------------------------------------------------------------ */
@@ -36,19 +37,27 @@
   gap: var(--iv-space-3);
   padding-block: var(--iv-disclosure-py);
   padding-inline: var(--iv-disclosure-px);
-  font-weight: var(--iv-weight-medium);
+  font-weight: var(--iv-weight-semibold);
   line-height: var(--iv-leading-snug);
   color: var(--iv-color-text);
   cursor: pointer;
-  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+  transition:
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* Open: the heading takes the brand colour, so an open panel is legible from
+   the shape of the list alone. */
+.iv-disclosure[open] > summary {
+  color: var(--iv-color-primary);
 }
 
 .iv-disclosure__summary::after {
   content: "";
   flex: none;
-  inline-size: 0.5rem;
-  block-size: 0.5rem;
-  margin-inline-end: 0.125rem;
+  inline-size: 0.45rem;
+  block-size: 0.45rem;
+  margin-inline-end: 0.25rem;
   border-inline-end: 2px solid currentColor;
   border-block-end: 2px solid currentColor;
   transform: rotate(45deg);
@@ -80,9 +89,10 @@
 /* Content ------------------------------------------------------------ */
 
 .iv-disclosure__content {
-  padding-block: 0 var(--iv-space-4);
+  padding-block: 0 var(--iv-space-5);
   padding-inline: var(--iv-disclosure-px);
-  color: var(--iv-color-text);
+  color: color-mix(in oklab, var(--iv-color-text) 90%, var(--iv-color-text-muted));
+  line-height: var(--iv-leading-relaxed);
 }
 
 /* Accordion ---------------------------------------------------------- */
@@ -91,13 +101,15 @@
   display: flex;
   flex-direction: column;
   border: var(--iv-border-width) solid var(--iv-color-border);
-  border-radius: var(--iv-radius-md);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: 0 1px 6px color-mix(in oklab, var(--iv-color-overlay) 18%, transparent);
   overflow: hidden;
 }
 
 .iv-accordion > .iv-disclosure {
   border: 0;
   border-radius: 0;
+  box-shadow: none;
 }
 
 .iv-accordion > * + * {

@@ -30,6 +30,8 @@
 
 .iv-drawer::backdrop {
   background-color: var(--iv-color-overlay);
+  -webkit-backdrop-filter: blur(var(--iv-blur-sm));
+  backdrop-filter: blur(var(--iv-blur-sm));
 }
 
 .iv-drawer--end {
@@ -80,6 +82,7 @@
   font-size: var(--iv-text-lg);
   font-weight: var(--iv-weight-semibold);
   line-height: var(--iv-leading-snug);
+  letter-spacing: -0.01em;
 }
 
 .iv-drawer__body {
@@ -97,6 +100,7 @@
   gap: var(--iv-space-3);
   padding-block: var(--iv-space-4);
   padding-inline: var(--iv-space-5);
+  background-color: color-mix(in oklab, var(--iv-color-surface) 62%, transparent);
   border-block-start: var(--iv-border-width) solid var(--iv-color-border);
 }
 

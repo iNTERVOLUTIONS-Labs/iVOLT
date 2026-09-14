@@ -117,3 +117,17 @@ Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus 
 | 3 | Command palette (`command`): búsqueda de acciones con `/` o `Ctrl+K`, como en brokenufo.com; en la web convive con la búsqueda Pagefind (contenido) | §8.14; hecho (2026-09-14, ADR-038) |
 | 4 | Constructor de temas en la web: editar tokens y exportar `tokens.css` | hecho (2026-09-14): `/foundations/theme-builder` en dos idiomas, previsualización viva sobre fixtures reales, CSS de personalización para copiar |
 | 5 | Cierre `0.5.0-beta.0` | hecho (2026-09-14): `verify` en tres motores (590 unitarias, 713 navegador), Lighthouse 99–100, changelog, estado |
+
+## 8. Ronda de revisión visual sobre `0.5.0-beta.0` (2026-09-14, ADR-039/040; sin publicar)
+
+Petición del propietario: efectos de borde que no se perciben, megamenú que se cierra antes de entrar, contenido descentrado o apretado, un filete sin sentido bajo los títulos, columna estrecha; «lanza Playwright y ve la web como se ve de verdad», mejorar los docs brutalmente, mejorar el framework y usar imágenes libres para carruseles y heros.
+
+| Orden | Elemento | Estado |
+|---|---|---|
+| 1 | Correcciones directas: halos en `iv-edge-near`/`iv-edge-glint`, megamenú que ignora ítems sin panel y tapa el hueco (320 ms), columna a 72rem, sin filete bajo el `h1` | hecho (ADR-039) |
+| 2 | Fotografías libres (Unsplash vía Lorem Picsum, acreditadas) como activos de la web; fixtures con foto para carrusel, hero, tarjeta y cristal | hecho (ADR-039) |
+| 3 | Rediseño de la web: escala vertical única, secciones numeradas, columna que llenan fixtures y tablas, heros con foto, pie con mapa del sitio, 404 útil; `qa-docs-overhaul.spec.js` | hecho (ADR-040) |
+| 4 | Pulido visual del framework: 22 módulos CSS, defecto real del `--float` con selector enriquecido, desenfoque en `::backdrop` | hecho (ADR-040) |
+| 5 | Cierre: líneas base visuales regeneradas, `verify` en tres motores, Lighthouse, estado | ver `PROJECT_STATE.md` |
+
+Candidatos para 0.6 salidos de esta ronda (ADR-040): tokens de sombra ambiente, superficie de hover, borde de marca, halo de foco y tracking; `.iv-progress--lg`; `--iv-card-shadow` público; `Picker` que conserve la etiqueta como hermana; disparador declarativo para toast; agrupar la barra lateral de la web por familias.

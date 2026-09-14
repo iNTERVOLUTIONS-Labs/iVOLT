@@ -12,16 +12,27 @@
   display: inline-flex;
   align-items: center;
   gap: var(--iv-space-1);
-  padding-block: var(--iv-space-1);
-  padding-inline: var(--iv-space-2);
+  padding-block: 0.1875rem;
+  padding-inline: 0.625rem;
   font-size: var(--iv-text-xs);
-  font-weight: var(--iv-weight-medium);
-  line-height: var(--iv-leading-tight);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: 0.012em;
+  line-height: var(--iv-leading-snug);
   white-space: nowrap;
   color: var(--iv-badge-fg, var(--iv-badge-tone, var(--iv-color-text)));
   background-color: var(--iv-badge-bg, var(--iv-badge-tone-subtle, var(--iv-color-surface)));
   border: var(--iv-border-width) solid var(--iv-badge-border, var(--iv-color-border));
   border-radius: var(--iv-badge-radius, var(--iv-radius-full));
+}
+
+/* A hairline of the tone keeps a subtle badge from dissolving into the surface
+   it sits on, in either theme. */
+.iv-badge--primary,
+.iv-badge--success,
+.iv-badge--warning,
+.iv-badge--danger,
+.iv-badge--info {
+  --iv-badge-border: color-mix(in oklab, var(--iv-badge-tone) 28%, transparent);
 }
 
 /* Tones --------------------------------------------------------------- */
@@ -30,35 +41,30 @@
   --iv-badge-tone: var(--iv-color-primary);
   --iv-badge-tone-subtle: var(--iv-color-primary-subtle);
   --iv-badge-on-tone: var(--iv-color-on-primary);
-  --iv-badge-border: transparent;
 }
 
 .iv-badge--success {
   --iv-badge-tone: var(--iv-color-success);
   --iv-badge-tone-subtle: var(--iv-color-success-subtle);
   --iv-badge-on-tone: var(--iv-color-on-success);
-  --iv-badge-border: transparent;
 }
 
 .iv-badge--warning {
   --iv-badge-tone: var(--iv-color-warning);
   --iv-badge-tone-subtle: var(--iv-color-warning-subtle);
   --iv-badge-on-tone: var(--iv-color-on-warning);
-  --iv-badge-border: transparent;
 }
 
 .iv-badge--danger {
   --iv-badge-tone: var(--iv-color-danger);
   --iv-badge-tone-subtle: var(--iv-color-danger-subtle);
   --iv-badge-on-tone: var(--iv-color-on-danger);
-  --iv-badge-border: transparent;
 }
 
 .iv-badge--info {
   --iv-badge-tone: var(--iv-color-info);
   --iv-badge-tone-subtle: var(--iv-color-info-subtle);
   --iv-badge-on-tone: var(--iv-color-on-info);
-  --iv-badge-border: transparent;
 }
 
 /* Solid: filled with the tone itself. Without a tone variant it falls back

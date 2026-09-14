@@ -11,6 +11,8 @@
  * Locals: --iv-button-bg --iv-button-fg --iv-button-border
  *         --iv-button-bg-hover --iv-button-border-hover --iv-button-bg-active
  *         --iv-button-radius --iv-button-px --iv-button-py
+ *         --iv-button-shadow --iv-button-shadow-hover --iv-button-lift
+ *         --iv-button-sheen
  *
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
@@ -26,6 +28,12 @@
   --iv-button-radius: var(--iv-radius-md);
   --iv-button-px: var(--iv-space-4);
   --iv-button-py: var(--iv-space-2);
+  /* Depth is drawn from the overlay token, which is a dark translucency in
+     both themes, so the same recipe reads as a shadow in light and in dark. */
+  --iv-button-shadow: 0 1px 2px color-mix(in oklab, var(--iv-color-overlay) 34%, transparent);
+  --iv-button-shadow-hover: 0 3px 10px color-mix(in oklab, var(--iv-color-overlay) 40%, transparent);
+  --iv-button-sheen: none;
+  --iv-button-lift: -1px;
 
   display: inline-flex;
   align-items: center;
@@ -47,12 +55,14 @@
   background-color: var(--iv-button-bg);
   border: var(--iv-border-width) solid var(--iv-button-border);
   border-radius: var(--iv-button-radius);
+  box-shadow: var(--iv-button-sheen, none), var(--iv-button-shadow);
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   transition:
     background-color var(--iv-motion-fast) var(--iv-ease-out),
     border-color var(--iv-motion-fast) var(--iv-ease-out),
+    box-shadow var(--iv-motion-fast) var(--iv-ease-out),
     color var(--iv-motion-fast) var(--iv-ease-out),
     transform var(--iv-motion-fast) var(--iv-ease-out);
 }
@@ -66,15 +76,22 @@
   --iv-button-bg-hover: var(--iv-color-primary-hover);
   --iv-button-border-hover: var(--iv-color-primary-hover);
   --iv-button-bg-active: var(--iv-color-primary-active);
+  /* A one-pixel light line along the top edge: the filled button reads as a
+     solid object catching the light instead of a flat rectangle. */
+  --iv-button-sheen: inset 0 1px 0 color-mix(in oklab, var(--iv-color-on-primary) 26%, transparent);
 }
 
 .iv-button--secondary {
   --iv-button-bg: transparent;
   --iv-button-fg: var(--iv-color-primary);
-  --iv-button-border: var(--iv-color-border-strong);
-  --iv-button-bg-hover: var(--iv-color-surface);
+  /* The outline carries the brand, not a neutral grey: it belongs to the same
+     family as the label it surrounds. */
+  --iv-button-border: color-mix(in oklab, var(--iv-color-primary) 42%, var(--iv-color-border-strong));
+  --iv-button-bg-hover: var(--iv-color-primary-subtle);
   --iv-button-border-hover: var(--iv-color-primary);
-  --iv-button-bg-active: var(--iv-color-surface);
+  --iv-button-bg-active: var(--iv-color-primary-subtle);
+  --iv-button-shadow: none;
+  --iv-button-shadow-hover: 0 2px 8px color-mix(in oklab, var(--iv-color-overlay) 28%, transparent);
 }
 
 .iv-button--ghost {
@@ -84,6 +101,9 @@
   --iv-button-bg-hover: var(--iv-color-surface);
   --iv-button-border-hover: transparent;
   --iv-button-bg-active: var(--iv-color-surface);
+  --iv-button-shadow: none;
+  --iv-button-shadow-hover: none;
+  --iv-button-lift: 0px;
 }
 
 /* There are no `danger-hover` / `danger-active` tokens: they are derived
@@ -96,6 +116,7 @@
   --iv-button-bg-hover: color-mix(in oklab, var(--iv-color-danger) 88%, var(--iv-color-text));
   --iv-button-border-hover: color-mix(in oklab, var(--iv-color-danger) 88%, var(--iv-color-text));
   --iv-button-bg-active: color-mix(in oklab, var(--iv-color-danger) 76%, var(--iv-color-text));
+  --iv-button-sheen: inset 0 1px 0 color-mix(in oklab, var(--iv-color-on-danger) 26%, transparent);
 }
 
 /* Sizes -------------------------------------------------------------- */
@@ -135,22 +156,29 @@
   .iv-button:hover {
     background-color: var(--iv-button-bg-hover);
     border-color: var(--iv-button-border-hover);
+    box-shadow: var(--iv-button-sheen, none), var(--iv-button-shadow-hover);
+    transform: translateY(var(--iv-button-lift));
   }
 }
 
 .iv-button:active {
   background-color: var(--iv-button-bg-active);
+  box-shadow: var(--iv-button-sheen, none), var(--iv-button-shadow);
   transform: translateY(1px);
 }
 
+/* The ring states where the focus is; the halo gives it the same presence a
+   focused text control already has, so both read as one system. */
 .iv-button:focus-visible {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: var(--iv-focus-offset);
+  box-shadow: var(--iv-button-sheen, none), 0 0 0 4px var(--iv-glow-primary);
 }
 
 /* The background does not change: text contrast is preserved. */
 .iv-button:disabled {
   opacity: 0.55;
+  box-shadow: none;
   cursor: not-allowed;
   transform: none;
 }
@@ -186,6 +214,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .iv-button {
+    --iv-button-lift: 0px;
+  }
+
   .iv-button[aria-busy="true"]::before {
     animation: none;
     border-style: dotted;
@@ -195,9 +227,17 @@
 
 /* Group -------------------------------------------------------------- */
 
+/* The segments share one box, so none of them lifts on its own and the
+   shadow belongs to the group, not to each button. */
 .iv-button-group {
+  --iv-button-lift: 0px;
+  --iv-button-shadow: none;
+  --iv-button-shadow-hover: none;
+
   display: inline-flex;
   flex-wrap: wrap;
+  border-radius: var(--iv-radius-md);
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--iv-color-overlay) 28%, transparent);
 }
 
 .iv-button-group > * {

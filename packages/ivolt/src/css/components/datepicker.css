@@ -222,7 +222,7 @@ th.iv-datepicker__weekday {
   color: var(--iv-color-text);
   background-color: transparent;
   border: 0;
-  border-radius: var(--iv-radius-md);
+  border-radius: var(--iv-radius-full);
   cursor: pointer;
   transition:
     background-color var(--iv-motion-fast) var(--iv-ease-out),
@@ -241,14 +241,18 @@ th.iv-datepicker__weekday {
 }
 
 /* Today is an accent ring, so it survives next to the selected day. */
+/* Today is a ring, never a fill: the fill is reserved for the selected day, so
+   the two states are never confused. */
 .iv-datepicker__day--today {
-  box-shadow: inset 0 0 0 2px var(--iv-color-accent);
+  font-weight: var(--iv-weight-semibold);
+  box-shadow: inset 0 0 0 var(--iv-focus-width) var(--iv-color-accent);
 }
 
 [aria-selected="true"] > .iv-datepicker__day {
   font-weight: var(--iv-weight-semibold);
   color: var(--iv-color-on-primary);
   background-color: var(--iv-color-primary);
+  box-shadow: 0 1px 6px var(--iv-glow-primary);
 }
 
 .iv-datepicker__day:disabled {
@@ -274,7 +278,8 @@ th.iv-datepicker__weekday {
   gap: var(--iv-space-2);
   align-items: center;
   justify-content: space-between;
-  padding-block-start: var(--iv-space-1);
+  padding-block: var(--iv-space-2) var(--iv-space-1);
+  padding-inline: var(--iv-space-1);
   border-block-start: var(--iv-border-width) solid var(--iv-color-border);
 }
 

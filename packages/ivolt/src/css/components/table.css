@@ -13,8 +13,10 @@
   inline-size: 100%;
   max-inline-size: 100%;
   overflow-x: auto;
+  background-color: var(--iv-color-surface-raised);
   border: var(--iv-border-width) solid var(--iv-color-border);
-  border-radius: var(--iv-radius-md);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: 0 1px 6px color-mix(in oklab, var(--iv-color-overlay) 20%, transparent);
 }
 
 .iv-table-wrap:focus-visible {
@@ -52,6 +54,16 @@
   border-block-end: var(--iv-border-width) solid var(--iv-table-border);
 }
 
+/* Micro type for the head: smaller, tracked out and quieter than the data, so
+   the rows read first and the labels stay available above them. */
+.iv-table thead th {
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
 .iv-table th {
   font-weight: var(--iv-weight-semibold);
   color: var(--iv-color-text);
@@ -60,6 +72,22 @@
 
 .iv-table tbody tr:last-child td {
   border-block-end: 0;
+}
+
+.iv-table tbody tr {
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-table tbody tr:hover {
+    background-color: color-mix(in oklab, var(--iv-color-primary-subtle) 55%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-table tbody tr {
+    transition: none;
+  }
 }
 
 /* Modifiers ----------------------------------------------------------- */
@@ -86,6 +114,13 @@
   display: block;
 }
 
+/* A block-level table leaves the caption as a shrink-to-fit box, which squeezes
+   it into a column one word wide; it is restored to a full-width line. */
+.iv-table--stack caption {
+  display: block;
+  inline-size: 100%;
+}
+
 /* The head is kept in the accessibility tree, only visually removed. */
 .iv-table--stack thead {
   position: absolute;
@@ -101,7 +136,7 @@
 
 .iv-table--stack tr {
   padding-inline: var(--iv-space-4);
-  padding-block: var(--iv-space-2);
+  padding-block: var(--iv-space-3);
   border-block-end: var(--iv-border-width) solid var(--iv-table-border);
 }
 
@@ -132,6 +167,10 @@
 @media (--iv-md) {
   .iv-table--stack {
     display: table;
+  }
+
+  .iv-table--stack caption {
+    display: table-caption;
   }
 
   .iv-table--stack thead {

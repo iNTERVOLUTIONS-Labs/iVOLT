@@ -21,6 +21,13 @@
   margin-inline: auto;
   overflow: hidden;
   border: var(--iv-border-width) solid var(--iv-color-border);
+  outline: 0;
+}
+
+/* The palette floats over the whole page, so it gets the deepest surface
+   treatment in the set. */
+.iv-command__field {
+  background-color: color-mix(in oklab, var(--iv-color-surface) 45%, transparent);
 }
 
 .iv-command .iv-dialog__panel {
@@ -145,7 +152,9 @@
   border-inline-start: var(--iv-border-width-strong) solid transparent;
   border-radius: var(--iv-radius-md);
   cursor: pointer;
-  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+  transition:
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    border-color var(--iv-motion-fast) var(--iv-ease-out);
 }
 
 .iv-command__item[hidden] {
@@ -158,7 +167,7 @@
 .iv-command__item--active,
 .iv-command__item[aria-selected="true"] {
   color: var(--iv-color-text);
-  background-color: var(--iv-color-surface);
+  background-color: color-mix(in oklab, var(--iv-color-primary-subtle) 80%, var(--iv-color-surface));
   border-inline-start-color: var(--iv-color-accent);
 }
 
@@ -213,7 +222,7 @@
 
 .iv-command__empty {
   margin: 0;
-  padding-block: var(--iv-space-8);
+  padding-block: var(--iv-space-12);
   padding-inline: var(--iv-space-5);
   font-size: var(--iv-text-sm);
   text-align: center;

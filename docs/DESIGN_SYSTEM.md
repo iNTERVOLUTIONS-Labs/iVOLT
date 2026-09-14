@@ -112,6 +112,8 @@ Efectos vetados por contrato: vídeo de fondo, partículas pesadas, WebGL obliga
 
 Revisión del propietario (2026-09-14) tras el primer rediseño: «muy muy deficiente». Segunda ronda con dirección concreta en `docs/design/DIRECTION_R2.md`; el criterio de aceptación sigue siendo el de la tabla, más la revisión visual del propietario. Ronda 2 implementada el mismo día (ADR-029): hero 100svh con arcos en canvas 2D, secciones sin tarjetas, gabinete pegajoso, corte de temas, bloque invertido y lockup a todo el ancho; Lighthouse 100/100/100/100 en `/` y `/es` (`LIGHTHOUSE.md`). Pendiente: aceptación visual del propietario.
 
+Tercera ronda (2026-09-14, ADR-039/040), tras la segunda revisión del propietario: las páginas interiores usan una sola escala vertical declarada en `apps/docs/src/styles/base.css` con cuatro pasos (`--docs-flow` entre párrafos, `--docs-block` alrededor de fixtures, tablas y código, `--docs-sub` antes de un `h3`, `--docs-section` antes de un `h2`, que lleva numeral y filete), medida de párrafo `--docs-measure: 74ch` y una columna de lectura que fixtures, tablas y bloques de código llenan por completo (≥ 820 px a 1440). Es una escala de la web, no del framework: no añade tokens `--iv-space-*`. La mide `tests/browser/qa-docs-overhaul.spec.js` a 390, 1024 y 1440 en ambos idiomas.
+
 ## 9. Capa expresiva del framework (ADR-030)
 
 El framework debe impresionar por defecto, no solo funcionar. Principios de la capa expresiva:

@@ -64,11 +64,13 @@
   padding-block: var(--iv-space-3);
   padding-inline: var(--iv-space-4);
   color: var(--iv-color-text);
-  background-color: var(--iv-color-surface-raised);
-  border: var(--iv-border-width) solid var(--iv-color-border);
+  /* A breath of the tone in the surface itself, so a stack of toasts is
+     readable at a glance without colouring the text. */
+  background-color: color-mix(in oklab, var(--iv-toast-tone) 7%, var(--iv-color-surface-raised));
+  border: var(--iv-border-width) solid color-mix(in oklab, var(--iv-toast-tone) 24%, var(--iv-color-border));
   border-inline-start: var(--iv-border-width-strong) solid var(--iv-toast-tone);
-  border-radius: var(--iv-radius-md);
-  box-shadow: var(--iv-shadow-2);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: var(--iv-shadow-3);
   pointer-events: auto;
   animation: iv-toast-in var(--iv-motion-fast) var(--iv-ease-out);
 }
@@ -81,7 +83,7 @@
 @keyframes iv-toast-in {
   from {
     opacity: 0;
-    transform: translateY(0.25rem);
+    transform: translateY(0.5rem) scale(0.98);
   }
 }
 
@@ -121,12 +123,14 @@
   font-size: var(--iv-text-sm);
   font-weight: var(--iv-weight-semibold);
   line-height: var(--iv-leading-snug);
+  letter-spacing: -0.004em;
 }
 
 .iv-toast__message {
   margin-block: 0;
   font-size: var(--iv-text-sm);
   line-height: var(--iv-leading-normal);
+  color: color-mix(in oklab, var(--iv-color-text) 86%, var(--iv-color-text-muted));
 }
 
 .iv-toast__dismiss {

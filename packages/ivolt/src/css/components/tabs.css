@@ -10,6 +10,7 @@
 .iv-tabs {
   --iv-tabs-indicator: 2px;
   --iv-tabs-gap: var(--iv-space-5);
+  --iv-tabs-radius: var(--iv-radius-md);
 
   display: block;
 }
@@ -40,8 +41,12 @@
   text-decoration: none;
   background-color: transparent;
   border: 0;
+  border-start-start-radius: var(--iv-tabs-radius);
+  border-start-end-radius: var(--iv-tabs-radius);
   cursor: pointer;
-  transition: color var(--iv-motion-fast) var(--iv-ease-out);
+  transition:
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    color var(--iv-motion-fast) var(--iv-ease-out);
 }
 
 .iv-tabs__tab::after {
@@ -51,14 +56,20 @@
   inset-block-end: calc(-1 * var(--iv-border-width));
   block-size: var(--iv-tabs-indicator);
   background-color: transparent;
+  border-radius: var(--iv-radius-full);
 }
 
 .iv-tabs__tab[aria-selected="true"] {
+  font-weight: var(--iv-weight-semibold);
   color: var(--iv-color-primary);
+  background-color: color-mix(in oklab, var(--iv-color-primary-subtle) 70%, transparent);
 }
 
+/* The bar carries a short glow so the selected tab is the brightest thing on
+   the row, which is what the eye returns to. */
 .iv-tabs__tab[aria-selected="true"]::after {
   background-color: var(--iv-color-primary);
+  box-shadow: 0 0 10px var(--iv-glow-primary);
 }
 
 .iv-tabs__tab:focus-visible {
@@ -69,13 +80,14 @@
 @media (hover: hover) {
   .iv-tabs__tab:hover {
     color: var(--iv-color-text);
+    background-color: color-mix(in oklab, var(--iv-color-surface) 76%, transparent);
   }
 }
 
 /* Panels ------------------------------------------------------------- */
 
 .iv-tabs__panel {
-  padding-block-start: var(--iv-space-4);
+  padding-block-start: var(--iv-space-5);
 }
 
 .iv-tabs__panel[hidden] {
@@ -107,6 +119,8 @@
 .iv-tabs--vertical .iv-tabs__tab {
   justify-content: flex-start;
   text-align: start;
+  border-start-end-radius: 0;
+  border-end-start-radius: var(--iv-tabs-radius);
 }
 
 .iv-tabs--vertical .iv-tabs__tab::after {

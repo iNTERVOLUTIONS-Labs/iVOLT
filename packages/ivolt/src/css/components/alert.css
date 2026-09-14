@@ -22,7 +22,8 @@
   background-color: var(--iv-alert-bg);
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-inline-start: var(--iv-border-width-strong) solid var(--iv-alert-tone);
-  border-radius: var(--iv-alert-radius, var(--iv-radius-md));
+  border-radius: var(--iv-alert-radius, var(--iv-radius-lg));
+  box-shadow: 0 1px 4px color-mix(in oklab, var(--iv-color-overlay) 18%, transparent);
 }
 
 /* Tones --------------------------------------------------------------- */
@@ -69,13 +70,15 @@
   font-size: var(--iv-text-md);
   font-weight: var(--iv-weight-semibold);
   line-height: var(--iv-leading-snug);
+  letter-spacing: -0.006em;
 }
 
 .iv-alert__body {
   grid-column: 2;
   margin-block: 0;
   font-size: var(--iv-text-sm);
-  line-height: var(--iv-leading-normal);
+  line-height: var(--iv-leading-relaxed);
+  color: color-mix(in oklab, var(--iv-color-text) 88%, var(--iv-color-text-muted));
 }
 
 .iv-alert__body p {

@@ -8,7 +8,7 @@
  */
 
 .iv-pagination {
-  --iv-pagination-gap: var(--iv-space-1);
+  --iv-pagination-gap: var(--iv-space-2);
   --iv-pagination-size: 2.5rem;
   --iv-pagination-radius: var(--iv-radius-md);
 
@@ -43,6 +43,10 @@
   color: var(--iv-color-text);
   background-color: var(--iv-color-surface-raised);
   border: var(--iv-border-width) solid var(--iv-color-border);
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--iv-color-overlay) 22%, transparent);
+  transition:
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    border-color var(--iv-motion-fast) var(--iv-ease-out);
 }
 
 .iv-pagination__ellipsis {
@@ -51,20 +55,24 @@
 
 @media (hover: hover) {
   .iv-pagination__link:hover {
-    background-color: var(--iv-color-surface);
-    border-color: var(--iv-color-border-strong);
+    background-color: var(--iv-color-primary-subtle);
+    border-color: color-mix(in oklab, var(--iv-color-primary) 45%, var(--iv-color-border-strong));
   }
 }
 
 .iv-pagination__link:focus-visible {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: var(--iv-focus-offset);
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
 }
 
 .iv-pagination__link[aria-current="page"] {
   color: var(--iv-color-on-primary);
   background-color: var(--iv-color-primary);
   border-color: var(--iv-color-primary);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--iv-color-on-primary) 26%, transparent),
+    0 2px 8px var(--iv-glow-primary);
 }
 
 /* Rendered as a `<span>`: no pointer-events rule is needed, and the colour
@@ -72,5 +80,13 @@
 .iv-pagination__link[aria-disabled="true"] {
   color: var(--iv-color-text-muted);
   background-color: transparent;
+  border-color: var(--iv-color-border);
+  box-shadow: none;
   cursor: not-allowed;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-pagination__link {
+    transition: none;
+  }
 }

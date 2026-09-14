@@ -41,7 +41,18 @@
   inline-size: 100%;
   transition:
     border-color var(--iv-motion-fast) var(--iv-ease-out),
+    box-shadow var(--iv-motion-fast) var(--iv-ease-out),
     background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* The border warms towards the brand under the pointer, which tells the field
+   apart from the static boxes around it before it is even clicked. */
+@media (hover: hover) {
+  .iv-input:hover,
+  .iv-select:hover,
+  .iv-textarea:hover {
+    border-color: color-mix(in oklab, var(--iv-color-primary) 40%, var(--iv-color-border-strong));
+  }
 }
 
 textarea.iv-input {
@@ -71,6 +82,7 @@ textarea.iv-input {
 .iv-select[aria-invalid="true"],
 .iv-textarea[aria-invalid="true"] {
   border-color: var(--iv-color-danger);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--iv-color-danger) 18%, transparent);
 }
 
 .iv-input:disabled,
@@ -134,23 +146,31 @@ textarea.iv-input {
 /* Grouping ----------------------------------------------------------- */
 
 .iv-fieldset {
+  background-color: color-mix(in oklab, var(--iv-color-surface) 45%, transparent);
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-radius: var(--iv-radius-lg);
-  padding: var(--iv-space-4);
+  padding-block: var(--iv-space-4) var(--iv-space-5);
+  padding-inline: var(--iv-space-5);
   margin-inline: 0;
   min-inline-size: 0;
 }
 
 .iv-fieldset__legend {
+  font-size: var(--iv-text-sm);
   font-weight: var(--iv-weight-semibold);
-  padding-inline: 0.25rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+  padding-inline: var(--iv-space-2);
 }
 
 /* Helper text -------------------------------------------------------- */
 
 .iv-field__help {
   font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-normal);
   color: var(--iv-color-text-muted);
+  text-wrap: pretty;
 }
 
 .iv-field__error {
@@ -282,6 +302,27 @@ textarea.iv-input {
 .iv-field--float :where(.iv-select:not(:focus):has(option[value=""]:checked)) ~ .iv-label {
   inset-block-start: 1.05rem;
   font-size: var(--iv-text-md);
+}
+
+/* An enriched select is wrapped by `.iv-picker`, so the sibling that carries
+   the state is the wrapper, and the empty option is matched from the wrapper
+   in a single `:has()` — `:has()` cannot be nested inside `:has()`. Without
+   these rules the label stays raised while the picker still shows its
+   placeholder, and the two print on top of each other. */
+.iv-field--float .iv-picker__field {
+  min-block-size: 3.75rem;
+  padding-block: 1.55rem 0.45rem;
+}
+
+.iv-field--float :where(.iv-picker:not(:focus-within):has(option[value=""]:checked)) ~ .iv-label {
+  inset-block-start: 1.05rem;
+  font-size: var(--iv-text-md);
+}
+
+/* While the label sits in the middle of the control it is the placeholder;
+   the picker's own placeholder text would print underneath it. */
+.iv-field--float :where(.iv-picker:not(:focus-within):has(option[value=""]:checked)) .iv-picker__placeholder {
+  color: transparent;
 }
 
 /* Autofill fills the value without an `input` event; the label stays up. */

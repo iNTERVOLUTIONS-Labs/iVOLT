@@ -31,14 +31,13 @@
   z-index: var(--iv-z-dropdown);
   max-block-size: var(--iv-combobox-max-height);
   margin: 0;
-  padding-block: var(--iv-space-1);
-  padding-inline: 0;
+  padding: var(--iv-space-1);
   overflow-y: auto;
   list-style: none;
   background-color: var(--iv-color-surface-raised);
   border: var(--iv-border-width) solid var(--iv-color-border);
-  border-radius: var(--iv-radius-md);
-  box-shadow: var(--iv-shadow-2);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: var(--iv-shadow-3);
   animation: iv-combobox-in var(--iv-motion-fast) var(--iv-ease-out);
 }
 
@@ -59,6 +58,10 @@
   .iv-combobox__list {
     animation: none;
   }
+
+  .iv-combobox__option {
+    transition: none;
+  }
 }
 
 /* Options ------------------------------------------------------------ */
@@ -70,9 +73,11 @@
   padding-block: var(--iv-space-2);
   padding-inline: var(--iv-space-3);
   font-size: var(--iv-text-md);
-  line-height: 1.2;
+  line-height: var(--iv-leading-snug);
   color: var(--iv-color-text);
+  border-radius: var(--iv-radius-md);
   cursor: pointer;
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
 }
 
 /* `init` hides the options that do not match the typed text. */
@@ -80,9 +85,13 @@
   display: none;
 }
 
+/* The active option carries a short accent bar as well as the tint, so the
+   keyboard position is visible even where the tint is faint. */
 .iv-combobox__option[aria-selected="true"] {
+  font-weight: var(--iv-weight-medium);
   color: var(--iv-color-primary);
   background-color: var(--iv-color-primary-subtle);
+  box-shadow: inset var(--iv-border-width-strong) 0 0 var(--iv-color-primary);
 }
 
 .iv-combobox__option[aria-disabled="true"] {
@@ -98,12 +107,18 @@
 
 /* Empty state -------------------------------------------------------- */
 
+/* Nothing matched: a centred, roomy line so the empty list still looks
+   finished instead of truncated. */
 .iv-combobox__empty {
-  min-block-size: 2.5rem;
-  padding-block: var(--iv-space-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 3.5rem;
+  padding-block: var(--iv-space-3);
   padding-inline: var(--iv-space-3);
   font-size: var(--iv-text-sm);
-  line-height: 1.2;
+  line-height: var(--iv-leading-snug);
+  text-align: center;
   color: var(--iv-color-text-muted);
 }
 

@@ -214,3 +214,16 @@ Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome, `scripts/docs-server
 | `/es` | escritorio | 100 | 100 | 100 | 100 | 436 ms | 0 | 0 ms | 347 ms |
 
 El punto de móvil sigue siendo LCP por el peso del CSS completo; la opción de servir solo los módulos que usa la home sigue documentada y no ejecutada.
+
+## Ronda de revisión visual sobre `0.5.0-beta.0` (2026-09-14, ADR-039/040)
+
+Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome, `scripts/docs-server.mjs` en 4327 sirviendo el build del gate `verify`, una pasada por ruta y preajuste, sin red real). La home lleva ahora el gabinete con fotografías (JPEG 1280×800, cargadas en diferido), `ivolt.min.css` pasó de 21,0 a 22,2 KiB gzip y la cabecera y el pie cambiaron con el rediseño.
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS | TBT | Speed Index |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 98 | 100 | 100 | 100 | 2225 ms | 0 | 9 ms | 1589 ms |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 479 ms | 0 | 0 ms | 387 ms |
+| `/es` | móvil | 98 | 100 | 100 | 100 | 2216 ms | 0 | 7 ms | 1583 ms |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 474 ms | 0 | 0 ms | 388 ms |
+
+Lectura honesta: móvil baja un punto (99 → 98) y el LCP sube unos 300 ms respecto al cierre de 0.5. El elemento LCP en móvil es el `<strong>` de las cifras del hero, que aparece tras la entrada escalonada (retraso de render del elemento ≈ 620 ms según `lcp-breakdown-insight`); el CSS completo sigue bloqueando el primer render. Una sola pasada por ruta: la diferencia de un punto está dentro del ruido entre ejecuciones y no se ha promediado. Las fotografías no aparecen en `image-delivery-insight` en móvil (no están en el viewport inicial). Opciones documentadas y no ejecutadas: servir a la home solo los módulos que usa, y no retrasar la entrada de las cifras del hero.

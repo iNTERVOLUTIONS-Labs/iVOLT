@@ -9,7 +9,9 @@
 
 .iv-skeleton {
   --iv-skeleton-bg: var(--iv-color-surface);
-  --iv-skeleton-highlight: var(--iv-color-border);
+  /* Halfway to the strong border: the sweep is visible in both themes without
+     turning the placeholder into a stripe. */
+  --iv-skeleton-highlight: color-mix(in oklab, var(--iv-color-border-strong) 42%, var(--iv-color-surface));
   --iv-skeleton-radius: var(--iv-radius-sm);
 
   display: block;
@@ -23,9 +25,9 @@
     transparent 100%
   );
   background-repeat: no-repeat;
-  background-size: 50% 100%;
+  background-size: 55% 100%;
   border-radius: var(--iv-skeleton-radius);
-  animation: iv-shimmer 1600ms linear infinite;
+  animation: iv-shimmer 1600ms var(--iv-ease-out) infinite;
 }
 
 /* Shapes --------------------------------------------------------------- */
@@ -49,7 +51,11 @@
 .iv-skeleton--rect {
   block-size: auto;
   aspect-ratio: 16 / 9;
-  border-radius: var(--iv-radius-md);
+  border-radius: var(--iv-radius-lg);
+}
+
+.iv-skeleton--text {
+  border-radius: var(--iv-radius-full);
 }
 
 @keyframes iv-shimmer {

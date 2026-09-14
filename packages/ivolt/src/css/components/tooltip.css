@@ -21,14 +21,16 @@
   inset-inline-start: 0;
   z-index: var(--iv-z-toast);
   max-inline-size: 18rem;
-  padding: 0.35rem 0.6rem;
+  padding-block: 0.4rem;
+  padding-inline: 0.65rem;
   font-size: var(--iv-text-sm);
-  line-height: 1.35;
+  font-weight: var(--iv-weight-medium);
+  line-height: 1.4;
   color: var(--iv-tooltip-fg);
   text-align: start;
   background-color: var(--iv-tooltip-bg);
-  border-radius: var(--iv-radius-sm);
-  box-shadow: var(--iv-shadow-2);
+  border-radius: var(--iv-radius-md);
+  box-shadow: var(--iv-shadow-3);
   pointer-events: none;
   animation: iv-tooltip-in var(--iv-motion-fast) var(--iv-ease-out);
 }

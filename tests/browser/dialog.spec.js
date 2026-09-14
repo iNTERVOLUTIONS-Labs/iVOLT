@@ -34,7 +34,9 @@ test.describe("Dialog", () => {
     await trigger.click();
     await page.mouse.click(5, 5);
     await expect(dialog).not.toHaveAttribute("open", "");
-    expect(await page.evaluate(() => window.__reasons)).toEqual(["trigger", "form", "backdrop"]);
+    // The native `close` event, and with it `iv:closed`, arrives a task after `open` is
+    // removed, so the reasons are polled rather than read as soon as the attribute is gone.
+    await expect.poll(() => page.evaluate(() => window.__reasons)).toEqual(["trigger", "form", "backdrop"]);
     // cancel
     await page.evaluate(() => document.getElementById("signup").addEventListener("iv:close", (e) => e.preventDefault(), { once: true }));
     await trigger.click();
