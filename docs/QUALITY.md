@@ -10,6 +10,8 @@ Estado: criterios de aceptación de fase 0. Nada de lo listado está medido toda
 | `ivolt.min.css` | ≤ 40 KiB (30 hasta v0.2; ADR-030) | ídem |
 | `index.js` agrupado y minificado (todos los componentes, sin docs) | ≤ 32 KiB (18 hasta v0.2; ADR-030) | esbuild bundle temporal solo para medir; `ivolt.iife.min.js` se mide aparte |
 
+Coste medido por módulo en v0.3 (2026-09-14, `esbuild --minify`, gzip 9, sin el core compartido): carousel 4,5 KiB JS, picker 5,8 KiB, form 3,0 KiB, counter 1,4 KiB, surfaces 1,4 KiB CSS; totales `ivolt.min.css` 16,40 KiB y JS agrupado 21,24 KiB, dentro de los presupuestos de ADR-030.
+
 Nota v0.2 (2026-09-14): con Combobox el JS agrupado pasa de 7,65 a 10,02 KiB gzip y la data table se añade en el mismo ciclo; los presupuestos no cambian (≤ 18 KiB JS, ≤ 30 KiB CSS) y `npm run sizes` sigue siendo la única fuente de cifras.
 
 Reglas: se mide cada artefacto por separado; el tarball tiene otra cifra. No se cumple un presupuesto eliminando estados accesibles ni excluyendo archivos necesarios. Si un objetivo es inviable, el informe muestra el coste por módulo, propone decisión y se registra la desviación en `DECISIONS.md`; el umbral no cambia en silencio.

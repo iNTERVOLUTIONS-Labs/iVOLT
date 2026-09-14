@@ -398,3 +398,14 @@ Sin verificar: qué anuncian NVDA y VoiceOver al resaltar opciones (`aria-active
 1. Tabular hasta «Customer» y activar: se espera «ordenado ascendente» (o equivalente) en la cabecera.
 2. Escribir en el filtro: se espera el anuncio del recuento («3 of 9 rows») sin mover el foco.
 3. Navegar la tabla por celdas tras filtrar: las filas ocultas no deben leerse.
+
+## 10. Ciclo v0.3 (2026-09-14): carrusel, selector, validación, contador, superficies
+
+Verificado por herramienta y por pruebas de navegador en Chromium, Firefox y WebKit (no por personas ni por lector de pantalla):
+
+- **axe-core** sin hallazgos critical/serious en `carousel/{basic,cinema,thumbs}`, `picker/{basic,multiple}`, `form/{validation,counter,float,controls}` y `surfaces/{glass,textures,glow}`, en claro y oscuro. Hallazgo corregido durante la integración: el `<ul>` del carril del carrusel con hijos `role="tabpanel"` rompía la regla `list`; el carril recibe `role="presentation"` mientras está promovido.
+- **Carrusel** (`tests/browser/carousel.spec.js`): pestañas con roving tabindex, ← → Home End, paneles «n of N», `inert` en las no visibles con fade/cinema, autoplay que no arranca con `prefers-reduced-motion`, botón de pausa con `aria-pressed`, deslizamiento por puntero, restauración exacta.
+- **Selector** (`tests/browser/picker.spec.js`): control con `aria-haspopup="listbox"`, `aria-expanded`, `aria-labelledby` desde la etiqueta, `aria-activedescendant`, chips con botón de borrado nombrado, Esc devuelve el foco, sincronización con el `<select>` nativo, restauración exacta.
+- **Validación y contador** (`tests/browser/form.spec.js`): `aria-invalid`, `aria-describedby` acumulativo, resumen `role="alert"` enfocado con enlaces a los campos, mensajes por tipo de error y por `iv:validate`, contador `aria-live="polite"`, límite blando que produce `customError`.
+
+Sin verificar: anuncio real de `aria-activedescendant` en el selector, de `aria-pressed` en el carrusel y del resumen de errores; gestos táctiles en dispositivos físicos; contraste sobre cristal medido por axe solo en las fixtures. Añadir a §6: carrusel (tabular a las pestañas, flechas, pausa), selector (abrir, escribir, elegir, borrar chip), validación (enviar vacío, seguir el enlace del resumen).

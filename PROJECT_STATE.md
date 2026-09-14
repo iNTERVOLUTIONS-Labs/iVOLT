@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-14 · Ciclo actual: **v0.2 → hito beta (`0.2.0-beta.0`)** · Estado: **beta cerrada** (gate completo en verde el 2026-09-14) · **Nada publicado ni desplegado**
+Última actualización: 2026-09-14 · Ciclo actual: **v0.3 «Spectacular» → hito `0.3.0-beta.0`** · Estado: **beta cerrada** (gate completo en verde el 2026-09-14) · **Nada publicado ni desplegado**
 
 ## Estado por fase e hito
 
@@ -10,62 +10,57 @@
 | 1 Corte vertical | hecha | merge `29a3d35` |
 | 2 Alcance v0.1 | hecha | merge `e9bc149` |
 | 3 Web y DX | hecha | merge `869d6da` |
-| 4 Release candidate v0.1.0-alpha.0 | hecha, no publicada | `docs/RELEASE.md` §1–§4, `docs/LIGHTHOUSE.md`, `docs/A11Y_REVIEW.md` |
-| Rediseño web ronda 1 (ADR-027) | sustituido | `defed60`; juzgado insuficiente por el propietario |
-| **Beta v0.2.0-beta.0** (`docs/ROADMAP.md` §5) | cerrada, no publicada | merge de `v0.2-combobox` en `main`; ver tabla de condiciones |
+| 4 Release candidate v0.1.0-alpha.0 | hecha, no publicada | `docs/RELEASE.md` §1–§4 |
+| Beta v0.2.0-beta.0 (`ROADMAP.md` §5) | cerrada, no publicada | merge `064bbb0`: combobox, data table, rediseño ronda 2, español |
+| **Beta v0.3.0-beta.0 «Spectacular»** (`ROADMAP.md` §6, ADR-030) | cerrada, no publicada | `main` desde `15eb9ab` hasta el commit de cierre; ver tabla |
 
-## Condiciones de la beta (ROADMAP §5)
+## Ciclo v0.3 (2026-09-14): qué pidió el propietario y qué se hizo
 
-| # | Condición | Estado | Evidencia |
+Petición: «necesitamos muchos más elementos espectaculares para el css/js… slideshow súper espectacular… formularios mucho más espectaculares (tipo select2) con contador… check de errores… glassmorphism, texturas… sigue todo siendo muy genérico (el framework)». Nada de eso estaba en el roadmap (dirección sobria de fase 0); ADR-030 cambia la dirección del framework a expresiva por defecto sin tocar el contrato técnico y sube los presupuestos con registro.
+
+| Bloque | Contrato | Implementación | Verificación |
 |---|---|---|---|
-| 1 | Combobox integrado, documentado, probado en 3 motores | hecho | `371583b`; contrato §8.3; 168 pruebas de navegador (combobox + axe) en Chromium, Firefox y WebKit |
-| 2 | Rediseño ronda 2 sin rejillas, Lighthouse ≥ 95 / 100 a11y, capturas revisadas | hecho (implementación) | `85151e8` + `a6fffc4`; dirección en `docs/design/DIRECTION_R2.md`; Lighthouse del implementador 100/100/100/100 móvil y escritorio; capturas revisadas por el líder a 1440, 1366×610, 390, claro, oscuro, reduced-motion; aceptación visual del propietario pendiente |
-| 3 | Data table con ordenación y filtro | hecho | `107f9a1`; contrato §8.4; 192 pruebas (data table + combobox + axe) en 3 motores |
-| 4 | Docs en español (`/es/`), selector de idioma, `hreflang`, búsqueda por idioma | hecho | `4dc39bd` (30 páginas), `a6fffc4` (layout con `lang`, `hreflang` solo con `SITE_URL`, selector con recarga completa), `5042ae9` (home); Pagefind indexa 62 páginas en dos idiomas |
-| 5 | Presupuestos revisados y `npm run verify` verde | hecho | `IVOLT_ALL_BROWSERS=1 npm run verify` exit 0; tamaños dentro de presupuesto (nota en `QUALITY.md` §1) |
-| 6 | Changelog, release notes, versión, cierre de este archivo | hecho | `CHANGELOG.md` 0.2.0-beta.0, `RELEASE.md` §0, versión `0.2.0-beta.0` en `package.json`/`index.js`/lockfile |
+| Carousel | §8.5 | Opus 5: `carousel.js` (4,5 KiB gzip), `carousel.css`, fixtures `basic/cinema/thumbs`, 24 unitarias | 4 pruebas de navegador × 3 motores, axe 3 fixtures × 2 temas × 3 motores, línea base visual; correcciones del líder: guardia `dragstart` (el arrastre nativo de imágenes cancelaba el deslizamiento), `role="presentation"` en el carril (axe `list`), solo `aria-label` en los paneles |
+| Picker | §8.6 + ADR-031 | Opus 5: `picker.js` (5,8 KiB), `picker.css`, fixtures `basic/multiple`, 32 unitarias; segunda ronda para sacar los chips del botón, `--active`, `search` como cadena, `countText` | 3 pruebas × 3 motores, axe, línea base visual |
+| Form + Counter + CSS de formularios | §8.7 | Opus 5: `form.js` (3,0 KiB), `counter.js` (1,4 KiB), `form.css` ampliado, fixtures `validation/counter/float/controls`, 32 unitarias | 3 pruebas × 3 motores, axe 4 fixtures, línea base `form/controls` |
+| Surfaces | §8.8 | Opus 5: `surfaces.css` (1,4 KiB) tras los componentes, fixtures `glass/textures/glow`; desviaciones aceptadas: parada `info` en el texto degradado, `overflow: visible` en `iv-glow`, `@supports` con prefijo | contrato CSS (módulo añadido a la lista), axe 3 fixtures × 2 temas × 3 motores, línea base `surfaces/glass` |
+| Web | — | páginas `carousel`, `picker`, `validation`, `foundations/surfaces` y ampliación de `form` en inglés y español (traducidas por el líder); navegación y `families`; gabinete de la home con carrusel, formulario flotante y cristal; selector de idioma que cae a la portada del otro idioma si falta la gemela | `docs.spec.js` 9/9 en cada paso |
+| Arreglos | — | `dev:docs` sincroniza los ejemplos antes de `astro dev` (las recetas «no iban» en desarrollo) | manual |
 
-## Hecho en el ciclo v0.2 (2026-09-14)
-
-- **Regla de diseño nueva (ADR-028):** ninguna rejilla ni patrón de cuadrícula/puntos de fondo salvo petición explícita del propietario; las existentes se retiraron (`a3d3c0e`). Listón de premio (ADR-027) vigente; ronda 2 con dirección escrita («Voltage»: hero 100svh con arcos eléctricos en canvas 2D, tipografía por líneas, secciones sin tarjetas, gabinete pegajoso con fixtures reales, corte de temas con `clip-path` y `<input type="range">`, recetas apiladas, bloque invertido verde, lockup a todo el ancho, medidor de scroll, botones magnéticos, rodillo en la navegación, línea de luz entre páginas, tema claro diseñado). No hecho por el implementador: grano `feTurbulence` (opcional) y variante vertical del medidor.
-- **Combobox** (`packages/ivolt/src/js/components/combobox.js`, `css/components/combobox.css`, fixtures `combobox/{basic,strict}`): promoción de `<input list>` + `<datalist>` al patrón APG combobox con listbox; `optionElements` en vez de `options` para no chocar con §5.2 (contrato ajustado). Cambio del líder: Esc con la lista cerrada y `strict` restaura sin cancelar la tecla.
-- **DataTable** (`components/datatable.js`, `css/components/datatable.css`, fixtures `datatable/{basic,sorted}`): ordenación estable text/number/date, filtro con retardo, `aria-sort`, `role="status"`, fila vacía, restauración exacta incluidos nodos de texto entre filas; `.iv-table--stack tr[hidden]` necesario por la especificidad del modo apilado.
-- **Docs:** páginas `combobox` y `datatable`; español completo bajo `/es/` (31 páginas, home incluida); `Base.astro` resuelve idioma por prop o prefijo; `Fixture.astro` localiza el botón de copia; `families` en `en.js` como única fuente; playground enlaza a la doc del idioma actual; `docs.css` dividido en `base/shell/home/motion` (ADR-029).
-- **Calidad:** `tests/browser/combobox.spec.js`, `datatable.spec.js`; rutas `/es/` en `docs.spec.js`; fixtures nuevas en `a11y.spec.js`; líneas base visuales de combobox y data table; `A11Y_REVIEW.md` §9 y lista §6.8–6.9 para lector de pantalla; `ssr.test.js` lee la versión de `package.json`.
-- **Proceso:** tres implementadores Opus 5 (combobox, data table, español) más uno para el rediseño; todos informaron su modelo; briefs con archivos permitidos y condición de parada. Incidencia: una página de docs del líder con llaves sin escapar rompió `build:docs` entre commits; la detectó el agente de traducción y quedó corregida en `4dc39bd` (lección: ejecutar el build de docs antes de commitear páginas).
+Tokens nuevos: `glass.*`, `blur.*`, `glow.*`, `texture.grain-opacity` (127 tokens emitidos). Presupuestos: CSS 40 KiB, JS 32 KiB gzip (ADR-030); medidos 16,40 y 21,24 KiB; coste por módulo en `QUALITY.md` §1.
 
 ## Verificaciones ejecutadas en el ciclo
 
 | Check | Resultado |
 |---|---|
-| `npm test` | 297/297 (unitarias + contratos, con combobox y data table) |
+| `npm test` | 405/405 (18 archivos) |
 | `npx tsc -p packages/ivolt/tsconfig.json` | sin errores |
-| `npm run sizes` | core 2,38 KiB / 8 · ivolt.min.css 10,52 / 30 · flat 10,46 / 30 · JS agrupado 12,04 / 18 · IIFE 12,29 / 18 (gzip 9) |
-| Navegador (fixtures) | combobox + data table + axe: 192/192 en Chromium, Firefox y WebKit |
-| Docs (`docs.spec.js`, Chromium) | 9/9 con las 30 rutas `/es/` y el selector de idioma |
-| Lighthouse 13.4.1 (líder, servidor local 4326) | `/` y `/es`, móvil y escritorio: 100/100/100/100; LCP 1,53 s móvil / 0,37 s escritorio, CLS 0, TBT ≤ 18 ms; dos hallazgos SEO corregidos durante la medición (`docs/LIGHTHOUSE.md`) |
-| `IVOLT_ALL_BROWSERS=1 npm run verify` | exit 0: build · 297 unitarias · 315 navegador superadas y 42 omitidas (las 21 visuales solo corren en Chromium) en Chromium, Firefox y WebKit · tamaños · pack-smoke (`intervolutions-ivolt-0.2.0-beta.0.tgz`, 82 archivos, theme-only 926 B, dialog-only 6290 B, unused 0 B, starter servido) · docs (62 páginas, 2 idiomas) · ejemplos (4 páginas) |
+| `npm run sizes` | core 2,38 / 8 · ivolt.min.css 16,40 / 40 · JS agrupado 21,24 / 32 (KiB gzip) |
+| Navegador por bloque | carrusel, selector, formularios, superficies y axe en Chromium, Firefox y WebKit (ver tabla) |
+| `docs.spec.js` | 9/9 tras cada integración |
+| `IVOLT_ALL_BROWSERS=1 npm run verify` | exit 0: build · 405 unitarias · 425 navegador superadas y 58 omitidas (las 29 visuales solo en Chromium) en Chromium, Firefox y WebKit · tamaños · pack-smoke (`intervolutions-ivolt-0.3.0-beta.0.tgz`, 92 archivos, theme-only 926 B, dialog-only 6290 B, unused 0 B, starter servido) · docs (70 páginas, 2 idiomas) · ejemplos (4 páginas) |
+| Lighthouse 13.4.1 (`docs/LIGHTHOUSE.md`) | `/` y `/es`: móvil 99/100/100/100 (LCP 1,84 s, CLS 0, TBT 0), escritorio 100/100/100/100 (LCP 0,42 s); el punto de móvil es LCP por el CSS crecido y el gabinete |
 | Gasto/tokens | no disponible en el entorno |
 
 ## No verificado / limitaciones declaradas
 
-- Lector de pantalla (NVDA, VoiceOver): listas §6.1–6.9 de `A11Y_REVIEW.md` preparadas, no ejecutadas.
-- Milisegundos por fotograma del canvas de arcos: no medidos con perfilador; TBT 0 ms en Lighthouse y bucle acotado por construcción.
-- Aceptación visual del rediseño por el propietario: pendiente (dos rondas anteriores rechazadas).
-- `forced-colors` real, dispositivos físicos, datos de campo: no disponibles.
-- Publicación npm, despliegue y `SITE_URL`: requieren autorización explícita (`docs/RELEASE.md` §0 y §3).
+- Lector de pantalla real: sin ejecutar (listas en `A11Y_REVIEW.md` §6, §9, §10).
+- Gestos táctiles en dispositivos físicos: solo puntero simulado.
+- `iv-field--float` con `<select>` usa `:has()`: mejora progresiva (Firefox < 121 muestra el texto de la opción vacía bajo la etiqueta).
+- Aceptación visual del propietario del rediseño ronda 2 y de la capa expresiva: pendiente.
+- Publicación npm, despliegue y `SITE_URL`: requieren autorización explícita (`docs/RELEASE.md` §0a y §3).
 
 ## Fallos abiertos
 
-Ninguno conocido. Corregido tras el cierre (2026-09-14, aviso del propietario con captura): la lista de familias de la home se pintaba encima del gabinete pegajoso (estaba dentro del bloque de 280vh) y el desplazamiento horizontal nativo no funcionaba porque el minificador de CSS fundía `animation-timeline` en el atajo `animation`, declaración que Chrome descarta. Ahora el bloque fijado (`.docs-cabinet__pin`) contiene solo cabecera y viewport pegajoso, la lista va después, `animation-timeline` vive en una regla aparte y el respaldo JS se activa cuando no hay una `ViewTimeline` real (Firefox); verificado en Chromium, Firefox y WebKit midiendo la transformación del carril a lo largo del recorrido.
+Ninguno conocido de severidad alta.
 
 ## Siguiente acción
 
-Revisión humana: abrir la web (`npm run build && npm run dev:docs`), juzgar el rediseño ronda 2 en `/` y `/es`, leer `docs/RELEASE.md` §0 y decidir publicación (etiqueta `beta`, nunca `latest`) y despliegue; ninguna de las dos se ejecuta sin autorización. Si el diseño no convence, la siguiente ronda parte de `docs/design/DIRECTION_R2.md` §1 (diagnóstico) con una crítica concreta del propietario. Trabajo posterior a la beta: `docs/ROADMAP.md` §3 (datepicker, constructor de temas, carrusel) y la prueba con lector de pantalla cuando haya una persona con AT.
+Revisión humana de la web y del framework; si el propietario aprueba, `docs/RELEASE.md` §0a describe la publicación (no se ejecuta sin autorización). Trabajo posterior: `docs/ROADMAP.md` §3 (datepicker, constructor de temas, wrappers) y lector de pantalla cuando haya una persona con AT.
 
 ## Decisiones que no deben perderse
 
-- ADR-028 (sin rejillas; ronda 2 por implementador Opus; hito beta) y ADR-029 (arquitectura de la web: hojas por ámbito, `bleed`, cabecera derivada, i18n por prefijo `/es`, selector con recarga completa).
-- Combobox: `options` = opciones resueltas (§5.2); las filas son `optionElements`. DataTable: `reset()` emite solo los eventos posteriores; `filter()` por API escribe en el input; índice de columna por `cellIndex`.
-- Versión `0.2.0-beta.0` en `packages/ivolt/package.json`, `index.js` y lockfile; la home lee la versión del manifiesto en el build.
-- Web: nunca declarar `animation-timeline` junto al atajo `animation` en la misma regla (el minificador los funde y el navegador descarta la animación); comprobar la animación real con `getAnimations()` antes de confiar en `CSS.supports`.
+- ADR-030 (capa expresiva, presupuestos 40/32) y ADR-031 (picker: chips fuera del botón, `--active`, `search` como cadena; la gramática de opciones no aprende uniones).
+- Carousel: `aria-pressed="true"` = rotación retenida; `isPlaying` = intención del usuario; `data-iv-state="running"` en la barra; carril `overflow: visible` con JS; sin `aria-labelledby` en los paneles.
+- Web: `animation-timeline` siempre en regla aparte del atajo `animation`; comprobar `getAnimations()` antes de confiar en `CSS.supports`; el selector de idioma solo enlaza a la gemela si existe.
+- Versión `0.3.0-beta.0` en `packages/ivolt/package.json`, `index.js`, lockfile y docs.

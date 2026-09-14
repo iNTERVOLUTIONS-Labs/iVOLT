@@ -1,6 +1,12 @@
-# Release: v0.2.0-beta.0 (en preparación) y v0.1.0-alpha.0 (candidato, no publicado)
+# Release: v0.3.0-beta.0 (en preparación), v0.2.0-beta.0 y v0.1.0-alpha.0 (no publicadas)
 
-Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. El hito beta se define en `ROADMAP.md` §5.
+Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2) y §6 (v0.3).
+
+## 0a. Notas de versión 0.3.0-beta.0 (borrador)
+
+iVOLT 0.3.0-beta.0 es el ciclo «Spectacular» (ADR-030): el framework pasa a ser expresivo por defecto sin tocar el contrato técnico. Añade **Carousel** (scroll-snap sin JS; con JS carrusel APG por pestañas con efectos slide, fade y cinema, autoplay con barra de progreso, gestos y miniaturas), **Picker** (`<select>` nativo promovido a un selector con búsqueda, chips, grupos y límite), **Form** (validación con mensajes por tipo de error, resumen, foco y reglas propias) y **Counter** (caracteres o palabras con límite blando), enriquece `form.css` (etiquetas flotantes, grupos, interruptor, rango, zona de archivo, textarea auto-ajustable, tallas, estados con icono) y estrena `surfaces.css` (cristal con fallback, grano, malla, aurora, borde luminoso, texto degradado, barrido, elevación) con los tokens `glass`, `blur`, `glow` y `texture`. Presupuestos: CSS 16,4 de 40 KiB y JS 21,2 de 32 KiB (gzip).
+
+Pasos de publicación, cuando se autorice: `npm version 0.3.0-beta.0 --no-git-tag-version -w @intervolutions/ivolt` (ya es la versión actual), etiqueta git `v0.3.0-beta.0`, `npm publish --access public --tag beta` (nunca `latest` antes de 0.3.0); el resto igual que §3.
 
 ## 0. Notas de versión 0.2.0-beta.0 (borrador)
 

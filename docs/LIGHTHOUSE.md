@@ -188,3 +188,16 @@ Mismo método y mismo entorno de laboratorio que arriba: Lighthouse 13.4.1 (CLI)
 | `/es` | escritorio | 100 | 100 | 100 | 100 | 371 ms | 0 | 0 ms | 305 ms |
 
 Hallazgos corregidos durante la medición: `hreflang` con URL relativas (auditoría `hreflang`, SEO 90/80) → ahora solo se emiten con `SITE_URL`, igual que `canonical`; enlace «Empezar» en la home española marcado como texto no descriptivo (`link-text`) → «Primeros pasos». El canvas de arcos del hero no afecta a TBT (≤ 18 ms en móvil simulado con CPU ×4); su coste por fotograma no se ha medido con perfilador.
+
+## Ciclo v0.3 — remedición tras la capa expresiva (2026-09-14)
+
+Mismo método y entorno que arriba (Lighthouse 13.4.1, HeadlessChrome, `scripts/docs-server.mjs` en 4326 sirviendo el build del gate `verify`, una pasada por ruta y preajuste, sin red real). La home lleva ahora en el gabinete un carrusel, un formulario con etiquetas flotantes y tarjetas de cristal, y `ivolt.min.css` pasó de 10,5 a 16,4 KiB gzip.
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS | TBT | Speed Index |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 99 | 100 | 100 | 100 | 1837 ms | 0 | 0 ms | 1437 ms |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 416 ms | 0 | 0 ms | 347 ms |
+| `/es` | móvil | 99 | 100 | 100 | 100 | 1831 ms | 0 | 0 ms | 1431 ms |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 432 ms | 0 | 0 ms | 345 ms |
+
+El punto perdido en móvil es LCP (1,53 → 1,84 s simulados): el CSS crecido y el gabinete con más fixtures. Sigue por encima del listón (≥ 95). Opción documentada, no ejecutada: cargar en la home solo los módulos CSS que usa (per-component CSS) en vez de `ivolt.css` completo.

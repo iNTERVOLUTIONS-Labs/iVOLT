@@ -1,10 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
 ---
-<Base title="Changelog" description="What exists in iVOLT so far: the unreleased 0.2.0-beta with combobox and data table, the 0.1.0-alpha it builds on, and the limitations that are known and unresolved.">
+<Base title="Changelog" description="What exists in iVOLT so far: the unreleased 0.3.0-beta with carousel, picker, form validation and surfaces, the 0.2.0-beta and 0.1.0-alpha it builds on, and the limitations that are known and unresolved.">
   <article class="docs-prose">
     <h1>Changelog</h1>
     <p>iVOLT has not been released yet. There is one version in progress and no published package, so there are no release dates here and none will be invented. Until <code>0.1.0</code> ships, install from the repository or from a tarball made with <code>npm pack</code>.</p>
+
+    <h2>0.3.0-beta (unreleased)</h2>
+    <p>The "Spectacular" cycle: the framework becomes expressive by default without changing its technical contract.</p>
+    <ul>
+      <li><strong>Carousel</strong> (<code>iv-carousel</code>): a scroll-snap slideshow without JavaScript; with it, an accessible tabbed carousel with slide, fade and cinema effects, autoplay with a progress bar, swipe and thumbnails.</li>
+      <li><strong>Picker</strong> (<code>iv-picker</code>): a native select promoted to a searchable selector with chips, groups and a limit, synced both ways with the form.</li>
+      <li><strong>Form validation and counter</strong>: inline messages per error type, an error summary, focus management, custom rules through <code>iv:validate</code>, and a character or word counter with soft limits.</li>
+      <li><strong>Richer forms</strong>: floating labels, input groups, switch, range, file drop zone, auto-sizing textarea, sizes and field states with icons.</li>
+      <li><strong>Surfaces</strong> (<code>surfaces.css</code>): glass with a solid fallback, grain, gradient mesh, aurora, glowing borders, gradient text, shine and elevation, driven by the new <code>glass</code>, <code>blur</code>, <code>glow</code> and <code>texture</code> tokens.</li>
+      <li><strong>Budgets</strong> raised with a decision record to 40 KiB of CSS and 32 KiB of JavaScript (gzip); measured at 16.4 and 21.2 KiB.</li>
+    </ul>
 
     <h2>0.2.0-beta (unreleased)</h2>
     <p>The first beta: the v0.2 scope is complete and the contracts are frozen. Nothing is published yet.</p>
