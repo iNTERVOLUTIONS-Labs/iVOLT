@@ -10,6 +10,8 @@ Estado: criterios de aceptación de fase 0. Nada de lo listado está medido toda
 | `ivolt.min.css` | ≤ 40 KiB (30 hasta v0.2; ADR-030) | ídem |
 | `index.js` agrupado y minificado (todos los componentes, sin docs) | ≤ 32 KiB (18 hasta v0.2; ADR-030) | esbuild bundle temporal solo para medir; `ivolt.iife.min.js` se mide aparte |
 
+Coste medido por módulo en v0.4/v0.5 (2026-09-14, gzip 9, sin el core): megamenu 2,9 KiB JS + 1,0 KiB CSS, effects 1,2 KiB CSS, hero 1,4 KiB CSS, proximity 1,2 KiB JS, reveal 1,0 KiB JS, datepicker 5,0 KiB JS + 1,3 KiB CSS; totales tras integrar el selector de fecha: `ivolt.min.css` ≈ 21 KiB y JS agrupado ≈ 30 KiB (medición exacta en el cierre con `npm run sizes`).
+
 Coste medido por módulo en v0.3 (2026-09-14, `esbuild --minify`, gzip 9, sin el core compartido): carousel 4,5 KiB JS, picker 5,8 KiB, form 3,0 KiB, counter 1,4 KiB, surfaces 1,4 KiB CSS; totales `ivolt.min.css` 16,40 KiB y JS agrupado 21,24 KiB, dentro de los presupuestos de ADR-030.
 
 Nota v0.2 (2026-09-14): con Combobox el JS agrupado pasa de 7,65 a 10,02 KiB gzip y la data table se añade en el mismo ciclo; los presupuestos no cambian (≤ 18 KiB JS, ≤ 30 KiB CSS) y `npm run sizes` sigue siendo la única fuente de cifras.

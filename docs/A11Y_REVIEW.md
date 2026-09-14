@@ -409,3 +409,15 @@ Verificado por herramienta y por pruebas de navegador en Chromium, Firefox y Web
 - **Validación y contador** (`tests/browser/form.spec.js`): `aria-invalid`, `aria-describedby` acumulativo, resumen `role="alert"` enfocado con enlaces a los campos, mensajes por tipo de error y por `iv:validate`, contador `aria-live="polite"`, límite blando que produce `customError`.
 
 Sin verificar: anuncio real de `aria-activedescendant` en el selector, de `aria-pressed` en el carrusel y del resumen de errores; gestos táctiles en dispositivos físicos; contraste sobre cristal medido por axe solo en las fixtures. Añadir a §6: carrusel (tabular a las pestañas, flechas, pausa), selector (abrir, escribir, elegir, borrar chip), validación (enviar vacío, seguir el enlace del resumen).
+
+## 11. Ciclos v0.4 y v0.5 (2026-09-14): megamenú, efectos, hero, selector de fecha
+
+Verificado por herramienta y por pruebas de navegador en Chromium, Firefox y WebKit:
+
+- **axe-core** sin hallazgos critical/serious en `megamenu/{basic,full}` (también con el panel abierto), `effects/{edges,scan,reveal}`, `hero/{basic,split,cinematic,terminal}` y `datepicker/{basic,locale}`, en claro y oscuro. Hallazgo corregido antes de integrar: `aria-selected` en el botón del día del selector de fecha (`aria-allowed-attr`, crítico) pasa a la celda `gridcell` (ADR-036).
+- **Megamenú** (`tests/browser/megamenu.spec.js`): toggles con `aria-expanded`/`aria-controls`, paneles cerrados `inert`, `Escape` con retorno de foco, `← → Home End`, `↓` abre y enfoca el primer enlace, clic fuera y `Tab` cierran, acordeón sin superposición en móvil, sin JS los paneles se muestran por `:focus-within`. La cabecera de la web usa el componente; el hover intencional exige movimiento real del puntero (un puntero que descansa tras una navegación no abre nada).
+- **Efectos** (`tests/browser/effects.spec.js`): `Proximity` solo con puntero fino y variables retiradas en `destroy`; `Reveal` con `data-iv-inview` y todo visible sin JS o con movimiento reducido; los efectos no tocan texto legible.
+- **Hero**: cuatro fixtures sin desbordamiento a 390 px; scrim con AA verificado por axe; título como `h2` en las fixtures (el `h1` es de la página).
+- **Selector de fecha** (`tests/browser/datepicker.spec.js`): diálogo no modal con nombre, rejilla `role="grid"` con una sola parada de tabulación, teclado completo, `Escape` y selección devuelven el foco al botón (corregido: la selección repintaba el día enfocado y el foco caía al `<body>`), `min`/`max` como botones desactivados, nombres por `Intl` en `es-ES` y `en-US`.
+
+Sin verificar: anuncio real del cambio de mes (`aria-live` del título) y de la posición en la rejilla con NVDA/VoiceOver; hover intencional del megamenú con dispositivos de puntero reales; efectos de proximidad con lápiz.

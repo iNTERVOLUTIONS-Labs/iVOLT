@@ -115,5 +115,5 @@ Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus 
 | 1 | Datepicker (`datepicker`) sobre `<input type="date">`: calendario en popover, teclado por rejilla, `min`/`max`, locale por `lang` | §8.12; hecho (2026-09-14) |
 | 2 | Tooltip y popover (`tooltip`, `popover`): `data-iv-tooltip`, atributo `popover` nativo como base, posicionamiento por espacio real (como el picker) | §8.13; en curso |
 | 3 | Command palette (`command`): búsqueda de acciones con `/` o `Ctrl+K`, como en brokenufo.com; en la web convive con la búsqueda Pagefind (contenido) | §8.14; pendiente |
-| 4 | Constructor de temas en la web: editar tokens y exportar `tokens.css` | backlog P2 |
+| 4 | Constructor de temas en la web: editar tokens y exportar `tokens.css` | hecho (2026-09-14): `/foundations/theme-builder` en dos idiomas, previsualización viva sobre fixtures reales, CSS de personalización para copiar |
 | 5 | Cierre `0.5.0-beta.0` | — |
