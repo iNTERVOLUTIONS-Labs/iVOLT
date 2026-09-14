@@ -1,0 +1,11 @@
+/* iVOLT — components/stat
+ * Key figures with label, value and delta (API_CONTRACT §8.1x). Implementation pending for v0.6: this file is a
+ * registered stub so the entries build while the module is written.
+ * Local: --iv-stat-size
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-stat {
+  display: block;
+}

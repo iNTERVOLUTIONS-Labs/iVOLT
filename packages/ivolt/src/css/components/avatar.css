@@ -1,0 +1,11 @@
+/* iVOLT — components/avatar
+ * Avatars with image or initials, status dot and groups (API_CONTRACT §8.1x). Implementation pending for v0.6: this file is a
+ * registered stub so the entries build while the module is written.
+ * Local: --iv-avatar-size
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-avatar {
+  display: block;
+}

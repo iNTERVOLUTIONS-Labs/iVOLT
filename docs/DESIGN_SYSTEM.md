@@ -72,8 +72,10 @@ Descartados con evidencia: `green-700 #0B8A55` como primario light (4.4:1 con bl
 | Fuentes (`--iv-font-*`) | `sans mono` | `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` · `ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace` |
 | Radio (`--iv-radius-*`) | `sm md lg full` | `.25 .5 .75 999` rem |
 | Borde (`--iv-border-width`, `--iv-border-width-strong`) | — | `1px`, `3px` (acento de alert y toast) |
-| Sombra (`--iv-shadow-*`) | `1 2 3` | light: `0 1px 2px rgb(8 19 16/.06)` … `0 12px 32px rgb(8 19 16/.14)`; dark: misma geometría con borde `surface-raised` y opacidad .4 |
+| Sombra (`--iv-shadow-*`) | `1 2 3 ambient` (`ambient` desde v0.6: reposo de tarjetas y tablas, con anillo en oscuro) | light: `0 1px 2px rgb(8 19 16/.06)` … `0 12px 32px rgb(8 19 16/.14)`; dark: misma geometría con borde `surface-raised` y opacidad .4 |
 | Foco | `--iv-focus-width 2px`, `--iv-focus-offset 2px`, `--iv-color-focus` | `outline: var(--iv-focus-width) solid var(--iv-color-focus); outline-offset: var(--iv-focus-offset)` solo en `:focus-visible` |
+| Tracking (`--iv-tracking-*`, v0.6) | `tight caps` | `-0.011em` (títulos), `0.06em` (versalitas) |
+| Halo de foco (`--iv-focus-halo`, v0.6) | — | `0 0 0 4px` sobre `--iv-glow-primary`, siempre junto al anillo |
 | Z-index (`--iv-z-*`) | `dropdown drawer dialog toast` | `100 200 300 400` (dialog nativo usa top layer; el token ordena los fallbacks) |
 | Movimiento (`--iv-motion-*`) | `fast base slow` | `120ms 180ms 220ms`; `--iv-ease-out: cubic-bezier(.2,.7,.2,1)` |
 | Medidas | `--iv-measure 68ch`, `--iv-content-max 90rem` (1440px), `--iv-container-max 75rem` | — |

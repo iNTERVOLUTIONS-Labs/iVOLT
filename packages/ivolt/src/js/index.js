@@ -27,6 +27,8 @@ import { Datepicker } from "./components/datepicker.js";
 import { Tooltip } from "./components/tooltip.js";
 import { Popover } from "./components/popover.js";
 import { Command } from "./components/command.js";
+import { Navbar } from "./components/navbar.js";
+import { Stepper } from "./components/stepper.js";
 
 export { IvComponent } from "./core/component.js";
 export { IvError } from "./core/registry.js";
@@ -49,6 +51,8 @@ export { Datepicker } from "./components/datepicker.js";
 export { Tooltip } from "./components/tooltip.js";
 export { Popover } from "./components/popover.js";
 export { Command } from "./components/command.js";
+export { Navbar } from "./components/navbar.js";
+export { Stepper } from "./components/stepper.js";
 export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
@@ -60,7 +64,7 @@ export const version = "0.5.0-beta.0";
  *
  * @type {ReadonlyArray<typeof IvComponent>}
  */
-export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel, Form, Counter, Megamenu, Proximity, Reveal, Datepicker, Tooltip, Popover, Command]);
+export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Drawer, Toast, Combobox, DataTable, Picker, Carousel, Form, Counter, Megamenu, Proximity, Reveal, Datepicker, Tooltip, Popover, Command, Navbar, Stepper]);
 
 /**
  * Instantiates every iVOLT component found inside `root` and wires the

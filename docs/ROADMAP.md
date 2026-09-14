@@ -131,3 +131,27 @@ Petición del propietario: efectos de borde que no se perciben, megamenú que se
 | 5 | Cierre: líneas base visuales regeneradas, `verify` en tres motores, Lighthouse, estado | ver `PROJECT_STATE.md` |
 
 Candidatos para 0.6 salidos de esta ronda (ADR-040): tokens de sombra ambiente, superficie de hover, borde de marca, halo de foco y tracking; `.iv-progress--lg`; `--iv-card-shadow` público; `Picker` que conserve la etiqueta como hermana; disparador declarativo para toast; agrupar la barra lateral de la web por familias.
+
+## 9. Ciclo v0.6 «Structure» (abierto 2026-09-14) → `0.6.0-beta.0`
+
+Petición del propietario: «sigue trabajando hasta 0.7». Lo que falta para montar una página de producto entera solo con el framework: una cabecera de sitio, un asistente por pasos para formularios largos, bloques de contenido (línea de tiempo, cifras, avatares) y los tokens que el pulido visual dejó como recetas repetidas.
+
+| Orden | Elemento | Contrato | Responsable | Estado |
+|---|---|---|---|---|
+| 1 | Tokens de la capa expresiva (`shadow-ambient`, `hover-surface`, `primary-border`, `focus-halo`, `tracking-*`), `.iv-progress--lg`, `--iv-card-shadow`; refactor de los módulos que repiten las recetas | §8.15 | integrador (tokens) + implementador B (módulos) | abierto |
+| 2 | Navbar (`navbar`): marca, enlaces, acciones, panel plegable, pegajoso y condensado, ocultar al bajar | §8.16 | implementador A | abierto |
+| 3 | Stepper (`stepper`): índice con estado, paneles, siguiente/anterior con validación, `iv:complete` | §8.17 | implementador A | abierto |
+| 4 | Toast declarativo (`data-iv-toast`) | §8.18 | implementador B | abierto |
+| 5 | Contenido CSS: `iv-timeline`, `iv-stat`, `iv-avatar` | §8.19 | implementador B | abierto |
+| 6 | Web: páginas en inglés y español (navbar, stepper, timeline, stat, avatar; toast y progress actualizadas), barra lateral agrupada por familia, `families` | — | implementador de docs | abierto |
+| 7 | Cierre `0.6.0-beta.0`: `verify` en tres motores, líneas base, Lighthouse, changelog, estado | — | integrador | abierto |
+
+## 10. Ciclo v0.7 «Media & motion» (previsto; contratos al abrir el ciclo) → `0.7.0-beta.0`
+
+| Orden | Elemento | Notas |
+|---|---|---|
+| 1 | Lightbox (`lightbox`) sobre `Dialog`: galería de imágenes con teclado, gestos, zoom, pies y precarga | las fotografías libres de la web como material |
+| 2 | Movimiento por scroll (`motion.css` + `ScrollMotion`): `iv-parallax`, `iv-scroll-progress`, `iv-marquee`, `iv-stack` con `animation-timeline` y fallback JS | todo estático con reduced motion |
+| 3 | Texto (`text.css`) y contador (`Countup`): `iv-text-reveal`, `iv-text-glow`, `iv-text-outline`, cifras que cuentan al entrar | el contador viene de la home de la web |
+| 4 | Web: páginas nuevas y receta «showcase» que compone hero, navbar, parallax, galería, cifras y línea de tiempo | cuarta receta en `examples/recipes` |
+| 5 | Cierre `0.7.0-beta.0` | mismo gate |

@@ -103,6 +103,14 @@
       "types": "./dist/types/components/command.d.ts",
       "default": "./dist/js/components/command.js"
     },
+    "./navbar": {
+      "types": "./dist/types/components/navbar.d.ts",
+      "default": "./dist/js/components/navbar.js"
+    },
+    "./stepper": {
+      "types": "./dist/types/components/stepper.d.ts",
+      "default": "./dist/js/components/stepper.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",

@@ -32,6 +32,11 @@
 @import url("./components/tooltip.css");
 @import url("./components/popover.css");
 @import url("./components/command.css");
+@import url("./components/navbar.css");
+@import url("./components/stepper.css");
+@import url("./components/timeline.css");
+@import url("./components/stat.css");
+@import url("./components/avatar.css");
 @import url("./surfaces.css");
 @import url("./effects.css");
 @import url("./utilities.css");
