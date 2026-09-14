@@ -1,0 +1,42 @@
+<header class="iv-navbar" data-iv-component="navbar" data-iv-sticky="true">
+  <div class="iv-navbar__inner">
+    <a class="iv-navbar__brand" href="#nav-note">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <defs><linearGradient id="nav-brand" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#29F59A"/><stop offset="1" stop-color="#0A6A43"/></linearGradient></defs>
+        <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#nav-brand)"/>
+        <path d="M10 21.5 16 9l6 12.5" fill="none" stroke="#081310" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Vantage</span>
+    </a>
+    <button class="iv-navbar__toggle" type="button" aria-expanded="false" aria-controls="site-nav" hidden>
+      <span class="iv-u-sr-only">Menu</span>
+      <span class="iv-navbar__burger" aria-hidden="true"></span>
+    </button>
+    <div class="iv-navbar__panel" id="site-nav">
+      <nav class="iv-navbar__nav" aria-label="Main">
+        <ul class="iv-navbar__links">
+          <li><a class="iv-navbar__link" href="#nav-note" aria-current="page">Product</a></li>
+          <li><a class="iv-navbar__link" href="#nav-scroll">Pricing</a></li>
+          <li><a class="iv-navbar__link" href="#nav-scroll">Docs</a></li>
+          <li><a class="iv-navbar__link" href="#nav-scroll">Changelog</a></li>
+          <li><a class="iv-navbar__link" href="#nav-note">Support</a></li>
+        </ul>
+      </nav>
+      <div class="iv-navbar__actions">
+        <a class="iv-button iv-button--ghost iv-button--sm" href="#nav-note">Sign in</a>
+        <a class="iv-button iv-button--primary iv-button--sm" href="#nav-note">Get started</a>
+      </div>
+    </div>
+  </div>
+</header>
+<p id="nav-note">Sample header, not a real site: every link above points inside this page, nothing is signed in and nothing is bought. The header is sticky, so it condenses once the page scrolls past 24 pixels. Below the <code>lg</code> breakpoint the panel is served open and stacked; with JavaScript the burger appears and folds it.</p>
+<!-- The filler is a screen and a half tall on purpose: a sticky header needs something to scroll over. -->
+<section id="nav-scroll" class="iv-stack" style="min-block-size: 150vh">
+  <h2>Room to scroll</h2>
+  <p>The text below exists so the condensed state can be seen: it has no meaning of its own. Scroll down and the bar loses height, takes a glass background, an ambient shadow and the conductive rule along its bottom edge.</p>
+  <p>The brand and the links keep their size; only the bar's height and its surface change, so nothing jumps under the pointer. The underline of a link grows from the centre on hover and on keyboard focus, and the current page keeps it drawn.</p>
+  <p>On a narrow screen the panel folds. Opening it turns the burger into a cross, the panel slides in from above and its height is capped to the viewport minus the bar, so a long menu scrolls inside itself instead of pushing the page.</p>
+  <p>Escape closes the panel and returns the focus to the burger, a click outside closes it too, and crossing the breakpoint closes it and hands the layout back to the bar.</p>
+  <p>Nothing here is fetched, stored or sent. The fixture is one header and this filler.</p>
+  <p>Last paragraph of the filler, so the page is taller than the viewport at every width tested.</p>
+</section>

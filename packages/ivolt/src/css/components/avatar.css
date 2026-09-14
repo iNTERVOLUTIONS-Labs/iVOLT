@@ -1,11 +1,181 @@
 /* iVOLT — components/avatar
- * Avatars with image or initials, status dot and groups (API_CONTRACT §8.1x). Implementation pending for v0.6: this file is a
- * registered stub so the entries build while the module is written.
- * Local: --iv-avatar-size
+ * A person or thing at a glance: image or initials, optional status dot and
+ * overlapping groups (API_CONTRACT §8.19). No JavaScript.
+ * Public locals: --iv-avatar-size --iv-avatar-radius --iv-avatar-ring
+ *   --iv-avatar-overlap
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
 .iv-avatar {
-  display: block;
+  --iv-avatar-size: 2.5rem;
+  --iv-avatar-radius: var(--iv-radius-full);
+  --iv-avatar-ring: transparent;
+
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--iv-avatar-size);
+  block-size: var(--iv-avatar-size);
+  border-radius: var(--iv-avatar-radius);
+  /* Initials are the default face: brand tinted, never a grey hole. */
+  background-color: var(--iv-color-primary-subtle);
+  color: var(--iv-color-primary);
+  font-size: calc(var(--iv-avatar-size) * 0.38);
+  font-weight: var(--iv-weight-semibold);
+  line-height: 1;
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.iv-avatar[hidden] {
+  display: none;
+}
+
+/* The image sits in the same box and is clipped by it; a broken source leaves
+   the alt text centred on the tinted plate instead of a torn icon. */
+.iv-avatar__img {
+  grid-area: 1 / 1;
+  inline-size: 100%;
+  block-size: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+  font-size: var(--iv-text-xs);
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Sizes ----------------------------------------------------------------- */
+
+.iv-avatar--sm {
+  --iv-avatar-size: 1.75rem;
+}
+
+.iv-avatar--lg {
+  --iv-avatar-size: 3.5rem;
+}
+
+.iv-avatar--xl {
+  --iv-avatar-size: 5rem;
+}
+
+.iv-avatar--square {
+  --iv-avatar-radius: var(--iv-radius-md);
+}
+
+/* Ring ------------------------------------------------------------------ */
+
+/* Two layers: a gap in the page colour and then the brand line, so the ring
+   reads on any surface. */
+.iv-avatar--ring {
+  --iv-avatar-ring: var(--iv-color-primary);
+
+  box-shadow:
+    0 0 0 2px var(--iv-color-bg),
+    0 0 0 4px var(--iv-avatar-ring);
+}
+
+/* Status ---------------------------------------------------------------- */
+
+.iv-avatar__status {
+  --iv-avatar-status-color: var(--iv-color-text-muted);
+
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  inline-size: calc(var(--iv-avatar-size) * 0.28);
+  block-size: calc(var(--iv-avatar-size) * 0.28);
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-avatar-status-color);
+  box-shadow: 0 0 0 2px var(--iv-color-bg);
+}
+
+.iv-avatar__status[data-iv-tone="success"] {
+  --iv-avatar-status-color: var(--iv-color-success);
+}
+
+.iv-avatar__status[data-iv-tone="warning"] {
+  --iv-avatar-status-color: var(--iv-color-warning);
+}
+
+.iv-avatar__status[data-iv-tone="danger"] {
+  --iv-avatar-status-color: var(--iv-color-danger);
+}
+
+.iv-avatar__status[data-iv-tone="muted"] {
+  --iv-avatar-status-color: var(--iv-color-text-muted);
+}
+
+/* Group ----------------------------------------------------------------- */
+
+.iv-avatar-group {
+  display: flex;
+  align-items: center;
+  padding-inline-start: 0;
+  margin-block: 0;
+  list-style: none;
+}
+
+.iv-avatar-group[hidden] {
+  display: none;
+}
+
+/* The overlap defaults to just under a fifth of the face, so a stack of small or large
+   avatars keeps the same rhythm and the initials behind stay legible; that is
+   -0.45rem at the default size, close to the -0.5rem of the contract and
+   short enough to leave the initials behind readable. `--iv-avatar-overlap` on the group retunes it.
+   The default lives in the fallback, not on the group: a calc() written there
+   would resolve `--iv-avatar-size` against the group, which does not set it. */
+:where(.iv-avatar-group) .iv-avatar {
+  margin-inline-start: var(--iv-avatar-overlap, calc(var(--iv-avatar-size) * -0.18));
+  box-shadow: 0 0 0 2px var(--iv-color-bg);
+}
+
+:where(.iv-avatar-group) .iv-avatar:first-child {
+  margin-inline-start: 0;
+}
+
+/* The first face is the one on top; the stack falls away behind it. */
+:where(.iv-avatar-group) .iv-avatar:nth-child(1) {
+  z-index: 6;
+}
+
+:where(.iv-avatar-group) .iv-avatar:nth-child(2) {
+  z-index: 5;
+}
+
+:where(.iv-avatar-group) .iv-avatar:nth-child(3) {
+  z-index: 4;
+}
+
+:where(.iv-avatar-group) .iv-avatar:nth-child(4) {
+  z-index: 3;
+}
+
+:where(.iv-avatar-group) .iv-avatar:nth-child(5) {
+  z-index: 2;
+}
+
+:where(.iv-avatar-group) .iv-avatar:nth-child(6) {
+  z-index: 1;
+}
+
+.iv-avatar-group__more {
+  z-index: 0;
+  background-color: var(--iv-color-surface);
+  color: var(--iv-color-text-muted);
+  font-size: calc(var(--iv-avatar-size) * 0.32);
+}
+
+@media (forced-colors: active) {
+  .iv-avatar {
+    border: var(--iv-border-width) solid CanvasText;
+  }
+
+  .iv-avatar__status {
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
 }

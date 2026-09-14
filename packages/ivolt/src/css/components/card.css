@@ -1,7 +1,9 @@
 /* iVOLT — components/card
  * Content container: optional `__media`, a `__body` that grows and a
  * `__footer` for actions. Composes with `iv-grid` / `iv-stack`.
- * Locals: --iv-card-bg --iv-card-radius --iv-card-padding --iv-card-shadow
+ * Public locals: --iv-card-bg --iv-card-radius --iv-card-padding
+ *   --iv-card-shadow (resting elevation, default --iv-shadow-ambient)
+ *   --iv-card-shadow-hover (pointer elevation, default --iv-shadow-2)
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,1,1).
  */
@@ -12,16 +14,24 @@
   background-color: var(--iv-card-bg, var(--iv-color-surface-raised));
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-radius: var(--iv-card-radius, var(--iv-radius-lg));
-  /* Two layers: the token ring keeps the edge crisp in dark, the overlay-tinted
-     drop gives the card the same weight in both themes. */
-  box-shadow:
-    var(--iv-card-shadow, var(--iv-shadow-1)),
-    0 2px 10px color-mix(in oklab, var(--iv-color-overlay) 26%, transparent);
+  /* One shared elevation: the ambient token already carries the edge ring a
+     dark theme needs and the soft drop a light one does. */
+  box-shadow: var(--iv-card-shadow, var(--iv-shadow-ambient));
+  transition: box-shadow var(--iv-motion-base) var(--iv-ease-out);
   overflow: hidden;
+}
+
+/* A pointer over the card lifts it one step; authors retune or cancel the
+   lift with the two public locals. */
+@media (hover: hover) {
+  .iv-card:hover {
+    box-shadow: var(--iv-card-shadow-hover, var(--iv-shadow-2));
+  }
 }
 
 .iv-card--flat {
   --iv-card-shadow: none;
+  --iv-card-shadow-hover: none;
 
   box-shadow: none;
 }
@@ -61,7 +71,7 @@
   font-size: var(--iv-text-lg);
   font-weight: var(--iv-weight-semibold);
   line-height: var(--iv-leading-snug);
-  letter-spacing: -0.011em;
+  letter-spacing: var(--iv-tracking-tight);
   text-wrap: balance;
 }
 
@@ -75,8 +85,8 @@
   align-items: center;
   padding-block: var(--iv-space-4);
   padding-inline: var(--iv-card-padding, var(--iv-space-5));
-  /* A half-strength surface tint separates the actions from the body without
-     adding a second visible box. */
-  background-color: color-mix(in oklab, var(--iv-color-surface) 62%, transparent);
+  /* The shared hover tint separates the actions from the body without adding
+     a second visible box (API_CONTRACT §8.15). */
+  background-color: var(--iv-color-hover-surface);
   border-block-start: var(--iv-border-width) solid var(--iv-color-border);
 }

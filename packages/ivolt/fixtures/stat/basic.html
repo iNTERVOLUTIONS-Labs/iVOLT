@@ -1,0 +1,27 @@
+<div class="iv-stat-group">
+  <div class="iv-stat">
+    <span class="iv-stat__label">Stylesheet</span>
+    <strong class="iv-stat__value">22.17<span class="iv-u-text-sm"> KiB</span></strong>
+    <span class="iv-stat__delta" data-iv-tone="flat">+1.17 KiB vs v0.5</span>
+    <span class="iv-stat__hint">min + gzip, budget 40 KiB</span>
+  </div>
+  <div class="iv-stat">
+    <span class="iv-stat__label">Bundled JS</span>
+    <strong class="iv-stat__value">35.42<span class="iv-u-text-sm"> KiB</span></strong>
+    <span class="iv-stat__delta" data-iv-tone="flat">no change<span class="iv-u-sr-only"> since v0.5</span></span>
+    <span class="iv-stat__hint">all components, budget 48 KiB</span>
+  </div>
+  <div class="iv-stat">
+    <span class="iv-stat__label">Unit tests</span>
+    <strong class="iv-stat__value">590</strong>
+    <span class="iv-stat__delta" data-iv-tone="up">all passing<span class="iv-u-sr-only">, no failures</span></span>
+    <span class="iv-stat__hint">25 files, last full run</span>
+  </div>
+  <div class="iv-stat">
+    <span class="iv-stat__label">Engines</span>
+    <strong class="iv-stat__value">3</strong>
+    <span class="iv-stat__hint">Chromium, Firefox and WebKit: tested in, not "all browsers"</span>
+  </div>
+</div>
+
+<p class="iv-u-text-sm iv-u-text-muted iv-u-mt-6">These are the figures measured by the gate of this package at <code>0.5.0-beta.0</code> (<code>npm run sizes</code>, <code>npm test</code>); they are not marketing numbers. The tone of a delta is its sentiment, not its sign: growing by 1.17 KiB is neither good nor bad, so it stays muted, while a passing suite is marked up. The sign and the direction live in the text and in the arrow, never in the colour alone.</p>

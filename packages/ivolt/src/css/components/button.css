@@ -28,10 +28,10 @@
   --iv-button-radius: var(--iv-radius-md);
   --iv-button-px: var(--iv-space-4);
   --iv-button-py: var(--iv-space-2);
-  /* Depth is drawn from the overlay token, which is a dark translucency in
-     both themes, so the same recipe reads as a shadow in light and in dark. */
-  --iv-button-shadow: 0 1px 2px color-mix(in oklab, var(--iv-color-overlay) 34%, transparent);
-  --iv-button-shadow-hover: 0 3px 10px color-mix(in oklab, var(--iv-color-overlay) 40%, transparent);
+  /* Depth comes from the shared ambient shadow (API_CONTRACT §8.15), which
+     already carries the edge ring a dark theme needs. */
+  --iv-button-shadow: var(--iv-shadow-ambient);
+  --iv-button-shadow-hover: var(--iv-shadow-2);
   --iv-button-sheen: none;
   --iv-button-lift: -1px;
 
@@ -85,13 +85,13 @@
   --iv-button-bg: transparent;
   --iv-button-fg: var(--iv-color-primary);
   /* The outline carries the brand, not a neutral grey: it belongs to the same
-     family as the label it surrounds. */
-  --iv-button-border: color-mix(in oklab, var(--iv-color-primary) 42%, var(--iv-color-border-strong));
+     family as the label it surrounds (shared token, API_CONTRACT §8.15). */
+  --iv-button-border: var(--iv-color-primary-border);
   --iv-button-bg-hover: var(--iv-color-primary-subtle);
   --iv-button-border-hover: var(--iv-color-primary);
   --iv-button-bg-active: var(--iv-color-primary-subtle);
   --iv-button-shadow: none;
-  --iv-button-shadow-hover: 0 2px 8px color-mix(in oklab, var(--iv-color-overlay) 28%, transparent);
+  --iv-button-shadow-hover: var(--iv-shadow-2);
 }
 
 .iv-button--ghost {
@@ -172,7 +172,7 @@
 .iv-button:focus-visible {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: var(--iv-focus-offset);
-  box-shadow: var(--iv-button-sheen, none), 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-button-sheen, none), var(--iv-focus-halo);
 }
 
 /* The background does not change: text contrast is preserved. */
@@ -237,7 +237,7 @@
   display: inline-flex;
   flex-wrap: wrap;
   border-radius: var(--iv-radius-md);
-  box-shadow: 0 1px 2px color-mix(in oklab, var(--iv-color-overlay) 28%, transparent);
+  box-shadow: var(--iv-shadow-ambient);
 }
 
 .iv-button-group > * {

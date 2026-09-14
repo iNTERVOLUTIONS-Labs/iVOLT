@@ -1,11 +1,239 @@
 /* iVOLT — components/timeline
- * Vertical or horizontal timeline with states (API_CONTRACT §8.1x). Implementation pending for v0.6: this file is a
- * registered stub so the entries build while the module is written.
- * Local: --iv-timeline-line
+ * Ordered list of moments with a continuous rail, one marker per item and three
+ * states (API_CONTRACT §8.19). No JavaScript: the author writes the states.
+ * Public locals: --iv-timeline-line --iv-timeline-marker --iv-timeline-size
+ *   --iv-timeline-rail --iv-timeline-gap --iv-timeline-top
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
 .iv-timeline {
+  --iv-timeline-line: var(--iv-color-border);
+  --iv-timeline-marker: var(--iv-color-primary);
+  --iv-timeline-size: 0.75rem;
+  --iv-timeline-rail: 1.25rem;
+  --iv-timeline-gap: var(--iv-space-6);
+  /* Distance from the top of an item to the top of its marker: puts the dot on
+     the first line of the time stamp instead of on the box edge. */
+  --iv-timeline-top: 0.2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-timeline-gap);
+  margin-block: 0;
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+.iv-timeline[hidden] {
+  display: none;
+}
+
+.iv-timeline__item {
+  position: relative;
+  padding-inline-start: calc(var(--iv-timeline-rail) + var(--iv-space-4));
+}
+
+/* The rail belongs to the item and runs from this marker to the next one, so
+   it is continuous between moments and stops with the last of them. */
+.iv-timeline__item::before {
+  content: "";
+  position: absolute;
+  inset-block-start: calc(var(--iv-timeline-top) + var(--iv-timeline-size) / 2);
+  inset-block-end: calc((var(--iv-timeline-gap) + var(--iv-timeline-top) + var(--iv-timeline-size) / 2) * -1);
+  inset-inline-start: calc(var(--iv-timeline-rail) - var(--iv-border-width) / 2);
+  inline-size: var(--iv-border-width);
+  background-color: var(--iv-timeline-line);
+}
+
+.iv-timeline__item:last-child::before {
+  content: none;
+}
+
+.iv-timeline__item::after {
+  content: "";
+  position: absolute;
+  inset-block-start: var(--iv-timeline-top);
+  inset-inline-start: calc(var(--iv-timeline-rail) - var(--iv-timeline-size) / 2);
+  inline-size: var(--iv-timeline-size);
+  block-size: var(--iv-timeline-size);
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-timeline-marker);
+}
+
+/* States ---------------------------------------------------------------- */
+
+/* Done is the filled marker above; upcoming is hollow and quieter, so the front
+   of the line is visible without reading a single label. */
+.iv-timeline__item[data-iv-state="upcoming"] {
+  color: var(--iv-color-text-muted);
+}
+
+.iv-timeline__item[data-iv-state="upcoming"]::after {
+  background-color: var(--iv-color-surface);
+  box-shadow: inset 0 0 0 var(--iv-border-width-strong) var(--iv-timeline-line);
+}
+
+/* The current moment is the one thing here that breathes: halo plus a slow
+   pulse, both gone under reduced motion. */
+.iv-timeline__item[data-iv-state="current"]::after {
+  box-shadow: var(--iv-focus-halo);
+  animation: iv-timeline-pulse 2.4s var(--iv-ease-out) infinite;
+}
+
+/* Below the current marker the rail fades out: the future is drawn, not lived. */
+.iv-timeline__item[data-iv-state="current"]::before {
+  background-image: linear-gradient(
+    180deg,
+    var(--iv-timeline-marker),
+    var(--iv-timeline-line) 60%
+  );
+}
+
+@keyframes iv-timeline-pulse {
+  from,
+  to {
+    box-shadow: var(--iv-focus-halo);
+  }
+
+  55% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+}
+
+/* Parts ----------------------------------------------------------------- */
+
+.iv-timeline__time {
   display: block;
+  margin-block-end: var(--iv-space-1);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-timeline__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-space-2);
+}
+
+.iv-timeline__body > * {
+  margin-block: 0;
+}
+
+.iv-timeline__title {
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+  letter-spacing: var(--iv-tracking-tight);
+  color: var(--iv-color-text);
+}
+
+/* Compact --------------------------------------------------------------- */
+
+.iv-timeline--compact {
+  --iv-timeline-gap: var(--iv-space-4);
+  --iv-timeline-top: 0.35rem;
+}
+
+:where(.iv-timeline--compact) .iv-timeline__body {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--iv-space-1) var(--iv-space-3);
+}
+
+:where(.iv-timeline--compact) .iv-timeline__time {
+  margin-block-end: 0;
+}
+
+/* Alternate ------------------------------------------------------------- */
+
+@media (--iv-md) {
+  /* The rail moves to the centre of the list and the items hang from it, odd on
+     the end side, even on the start side. */
+  :where(.iv-timeline--alternate) .iv-timeline__item {
+    --iv-timeline-rail: 0rem;
+
+    inline-size: 50%;
+    margin-inline-start: 50%;
+  }
+
+  :where(.iv-timeline--alternate) .iv-timeline__item:nth-child(even) {
+    padding-inline: 0 var(--iv-space-4);
+    margin-inline-start: 0;
+    text-align: end;
+  }
+
+  :where(.iv-timeline--alternate) .iv-timeline__item:nth-child(even)::before {
+    inset-inline: auto calc(var(--iv-border-width) / -2);
+  }
+
+  :where(.iv-timeline--alternate) .iv-timeline__item:nth-child(even)::after {
+    inset-inline: auto calc(var(--iv-timeline-size) / -2);
+  }
+}
+
+/* Horizontal ------------------------------------------------------------ */
+
+@media (--iv-md) {
+  .iv-timeline--horizontal {
+    flex-direction: row;
+    gap: 0;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-block-end: var(--iv-space-2);
+  }
+
+  :where(.iv-timeline--horizontal) .iv-timeline__item {
+    flex: 0 0 15rem;
+    scroll-snap-align: start;
+    padding-block-start: calc(var(--iv-timeline-size) + var(--iv-space-3));
+    padding-inline: 0 var(--iv-space-6);
+  }
+
+  :where(.iv-timeline--horizontal) .iv-timeline__item::before {
+    inset-block: 0 auto;
+    inset-inline: var(--iv-timeline-size) calc(var(--iv-timeline-size) / -2);
+    inset-block-start: calc(var(--iv-timeline-size) / 2 - var(--iv-border-width) / 2);
+    inline-size: auto;
+    block-size: var(--iv-border-width);
+  }
+
+  :where(.iv-timeline--horizontal) .iv-timeline__item::after {
+    inset-block-start: 0;
+    inset-inline-start: 0;
+  }
+}
+
+.iv-timeline--horizontal:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+/* Preferences ----------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-timeline__item[data-iv-state="current"]::after {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .iv-timeline__item::after {
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .iv-timeline__item[data-iv-state="upcoming"]::after {
+    background-color: Canvas;
+    box-shadow: inset 0 0 0 var(--iv-border-width-strong) CanvasText;
+  }
+
+  .iv-timeline__item::before {
+    background-color: CanvasText;
+    background-image: none;
+  }
 }

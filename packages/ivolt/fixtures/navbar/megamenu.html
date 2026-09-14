@@ -1,0 +1,85 @@
+<header class="iv-navbar" data-iv-component="navbar" data-iv-sticky="true">
+  <div class="iv-navbar__inner">
+    <a class="iv-navbar__brand" href="#nav-mm-note">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <defs><linearGradient id="nav-mm-brand" x1="0" y1="32" x2="32" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#29F59A"/></linearGradient></defs>
+        <circle cx="16" cy="16" r="15" fill="url(#nav-mm-brand)"/>
+        <path d="M9 16h14M16 9v14" stroke="#081310" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+      <span>Vantage</span>
+    </a>
+    <button class="iv-navbar__toggle" type="button" aria-expanded="false" aria-controls="mega-nav" hidden>
+      <span class="iv-u-sr-only">Menu</span>
+      <span class="iv-navbar__burger" aria-hidden="true"></span>
+    </button>
+    <div class="iv-navbar__panel" id="mega-nav">
+      <nav class="iv-megamenu" data-iv-component="megamenu" data-iv-overlay="false" aria-label="Main. Every section and figure below is made up for this demo.">
+        <ul class="iv-megamenu__list">
+          <li class="iv-megamenu__item">
+            <a class="iv-megamenu__link" href="#nav-mm-note">Platform</a>
+            <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="nav-mm-platform" hidden><span class="iv-u-sr-only">Open Platform</span></button>
+            <div class="iv-megamenu__panel" id="nav-mm-platform">
+              <div class="iv-megamenu__inner">
+                <section class="iv-megamenu__group">
+                  <h3 class="iv-megamenu__heading">Build</h3>
+                  <ul class="iv-megamenu__links">
+                    <li><a href="#nav-mm-note">Components</a></li>
+                    <li><a href="#nav-mm-note">Tokens</a></li>
+                    <li><a href="#nav-mm-note">Themes</a></li>
+                  </ul>
+                </section>
+                <section class="iv-megamenu__group">
+                  <h3 class="iv-megamenu__heading">Ship</h3>
+                  <ul class="iv-megamenu__links">
+                    <li><a href="#nav-mm-note">Bundles</a></li>
+                    <li><a href="#nav-mm-note">Budgets</a></li>
+                    <li><a href="#nav-mm-note">Checks</a></li>
+                  </ul>
+                </section>
+                <footer class="iv-megamenu__bottom">
+                  <p class="iv-u-m-0">Made-up sections, no catalogue behind them.</p>
+                  <a class="iv-button iv-button--primary iv-button--sm" href="#nav-mm-note">Browse the sample</a>
+                </footer>
+              </div>
+            </div>
+          </li>
+          <li class="iv-megamenu__item">
+            <a class="iv-megamenu__link" href="#nav-mm-note">Resources</a>
+            <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="nav-mm-resources" hidden><span class="iv-u-sr-only">Open Resources</span></button>
+            <div class="iv-megamenu__panel" id="nav-mm-resources">
+              <div class="iv-megamenu__inner">
+                <section class="iv-megamenu__group">
+                  <h3 class="iv-megamenu__heading">Learn</h3>
+                  <ul class="iv-megamenu__links">
+                    <li><a href="#nav-mm-note">Guides</a></li>
+                    <li><a href="#nav-mm-note">Recipes</a></li>
+                    <li><a href="#nav-mm-note">Field notes</a></li>
+                  </ul>
+                </section>
+                <footer class="iv-megamenu__bottom">
+                  <p class="iv-u-m-0">Fictional library, fictional dates.</p>
+                  <a class="iv-button iv-button--primary iv-button--sm" href="#nav-mm-note">Open the sample</a>
+                </footer>
+              </div>
+            </div>
+          </li>
+          <li class="iv-megamenu__item">
+            <a class="iv-megamenu__link" href="#nav-mm-note">Pricing</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="iv-navbar__actions">
+        <a class="iv-button iv-button--ghost iv-button--sm" href="#nav-mm-note">Sign in</a>
+        <a class="iv-button iv-button--primary iv-button--sm" href="#nav-mm-note">Get started</a>
+      </div>
+    </div>
+  </div>
+</header>
+<p id="nav-mm-note">Sample header with a megamenu inside its panel: every link points to this note, nothing is signed in and nothing is bought. The menu runs without its page overlay: inside a header the bar is already the elevated surface, and a scrim under it would dim the header itself. From the <code>lg</code> breakpoint upwards the megamenu panels float under the whole bar; below it, the navbar folds and the same panels behave as an accordion inside it.</p>
+<!-- The filler is a screen and a half tall on purpose: a sticky header needs something to scroll over. -->
+<section id="nav-mm-scroll" class="iv-stack" style="min-block-size: 150vh">
+  <h2>Room to scroll</h2>
+  <p>Filler text, so the sticky header can be seen condensing while a megamenu panel is open. The header sits above the megamenu overlay on purpose: the bar you are reading from must stay legible while the page behind it dims.</p>
+  <p>Nothing on this page is fetched from anywhere.</p>
+  <p>Last paragraph of the filler.</p>
+</section>

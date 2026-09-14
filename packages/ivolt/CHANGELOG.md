@@ -2,6 +2,19 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 0.6.0-beta.0 (unreleased)
+
+### Added
+- `Navbar` (`iv-navbar`, export `./navbar`): a site header with brand, links and actions that folds into a panel below a breakpoint, sticks and condenses on scroll (glass surface, ambient shadow), can hide while scrolling down, stays transparent over a cinematic hero until condensed, and hosts a megamenu.
+- `Stepper` (`iv-stepper`, export `./stepper`): a step-by-step assistant with a numbered index, one panel per step, next and back controls that validate the current panel (through `Form` when present, through the constraint API otherwise), keyboard moves between reachable steps, a progress line and `iv:complete` at the end; `--vertical` and `--compact`.
+- `timeline.css`, `stat.css`, `avatar.css`: a vertical, alternating or horizontal timeline with states; key figures with label, value, delta and hint (`--card`, `--lg`, `--glow`); avatars with image or initials, sizes, ring, status dot and overlapping groups.
+- Declarative toasts: a button with `data-iv-toast="<region id>"` and `data-iv-message` shows a notice without JavaScript of its own.
+- Tokens `--iv-shadow-ambient`, `--iv-color-hover-surface`, `--iv-color-primary-border`, `--iv-focus-halo`, `--iv-tracking-tight` and `--iv-tracking-caps`; `.iv-progress--lg` and `--iv-progress-size`; `--iv-card-shadow` and `--iv-card-shadow-hover`.
+
+### Changed
+- Twenty-two component modules polished after the owner's review (ADR-040): shadows that exist in the dark theme, a focus halo shared by fields and buttons, table headers in small caps, masked sort markers, pill tabs, circular calendar days, toasts by tone, and a floating label that no longer collides with an enriched select. Dialog and drawer backdrops blur.
+- Those recipes now consume the new tokens; the local `--iv-progress-height` is replaced by `--iv-progress-size`; every card lifts on hover where hover exists; the secondary button outline uses `--iv-color-primary-border`.
+
 ## 0.5.0-beta.0 (unreleased)
 
 ### Added

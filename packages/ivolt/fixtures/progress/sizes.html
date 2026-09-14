@@ -1,0 +1,28 @@
+<div class="iv-stack iv-u-gap-5" style="max-width: 28rem">
+  <div class="iv-stack iv-u-gap-2">
+    <label class="iv-u-text-sm" for="pr-size-sm">Cache warm-up — 35% (small)</label>
+    <progress class="iv-progress iv-progress--sm" id="pr-size-sm" value="35" max="100"></progress>
+  </div>
+
+  <div class="iv-stack iv-u-gap-2">
+    <label class="iv-u-text-sm" for="pr-size-md">Uploading assets — 72% (default)</label>
+    <progress class="iv-progress" id="pr-size-md" value="72" max="100"></progress>
+  </div>
+
+  <div class="iv-stack iv-u-gap-2">
+    <label class="iv-u-text-sm" for="pr-size-lg">Import finished — 100% (large)</label>
+    <progress class="iv-progress iv-progress--lg iv-progress--success" id="pr-size-lg" value="100" max="100"></progress>
+  </div>
+
+  <div class="iv-stack iv-u-gap-2">
+    <label class="iv-u-text-sm" for="pr-size-custom">Storage used — 8.6 GB of 10 GB (custom thickness)</label>
+    <progress class="iv-progress iv-progress--warning" id="pr-size-custom" style="--iv-progress-size: 0.75rem" value="8.6" max="10"></progress>
+  </div>
+
+  <p class="iv-u-m-0 iv-u-text-sm">
+    Three sizes plus the public local: <code>--iv-progress-size</code> is
+    0.5rem by default, 0.25rem with <code>iv-progress--sm</code> and 1rem with
+    <code>iv-progress--lg</code>. Every bar keeps a visible label that states
+    the value in words.
+  </p>
+</div>

@@ -43,7 +43,7 @@
   color: var(--iv-color-text);
   background-color: var(--iv-color-surface-raised);
   border: var(--iv-border-width) solid var(--iv-color-border);
-  box-shadow: 0 1px 2px color-mix(in oklab, var(--iv-color-overlay) 22%, transparent);
+  box-shadow: var(--iv-shadow-ambient);
   transition:
     background-color var(--iv-motion-fast) var(--iv-ease-out),
     border-color var(--iv-motion-fast) var(--iv-ease-out);
@@ -63,7 +63,7 @@
 .iv-pagination__link:focus-visible {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: var(--iv-focus-offset);
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 .iv-pagination__link[aria-current="page"] {

@@ -267,7 +267,7 @@ th.iv-datepicker__weekday {
 .iv-datepicker__day:focus-visible {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: 1px;
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 /* Footer --------------------------------------------------------------- */

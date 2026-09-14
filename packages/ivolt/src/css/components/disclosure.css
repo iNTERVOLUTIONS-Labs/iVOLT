@@ -17,7 +17,7 @@
   background-color: var(--iv-disclosure-bg);
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-radius: var(--iv-disclosure-radius);
-  box-shadow: 0 1px 4px color-mix(in oklab, var(--iv-color-overlay) 16%, transparent);
+  box-shadow: var(--iv-shadow-ambient);
 }
 
 /* Summary ------------------------------------------------------------ */
@@ -102,7 +102,7 @@
   flex-direction: column;
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-radius: var(--iv-radius-lg);
-  box-shadow: 0 1px 6px color-mix(in oklab, var(--iv-color-overlay) 18%, transparent);
+  box-shadow: var(--iv-shadow-ambient);
   overflow: hidden;
 }
 

@@ -68,7 +68,7 @@
 .iv-breadcrumb a:focus-visible {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: var(--iv-focus-offset);
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 /* The current page is plain text inside `li[aria-current="page"]`. */

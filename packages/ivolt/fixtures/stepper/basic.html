@@ -1,0 +1,78 @@
+<form class="iv-form" data-iv-component="form" novalidate aria-describedby="step-note">
+  <p class="iv-u-text-sm iv-u-text-muted" id="step-note">Demo checkout: nothing is submitted, no order is placed and no payment is taken. The fields are validated in the browser so the steps can refuse to advance, and the last button only announces that the flow is complete.</p>
+  <div class="iv-stepper" data-iv-component="stepper">
+    <ol class="iv-stepper__list" aria-label="Checkout">
+      <li class="iv-stepper__step" data-iv-state="current">
+        <a class="iv-stepper__trigger" href="#step-account" aria-current="step">
+          <span class="iv-stepper__marker" aria-hidden="true">1</span>
+          <span class="iv-stepper__label">Account</span>
+          <span class="iv-stepper__hint">Email and team</span>
+        </a>
+      </li>
+      <li class="iv-stepper__step">
+        <a class="iv-stepper__trigger" href="#step-payment">
+          <span class="iv-stepper__marker" aria-hidden="true">2</span>
+          <span class="iv-stepper__label">Payment</span>
+          <span class="iv-stepper__hint">Card holder and country</span>
+        </a>
+      </li>
+      <li class="iv-stepper__step">
+        <a class="iv-stepper__trigger" href="#step-review">
+          <span class="iv-stepper__marker" aria-hidden="true">3</span>
+          <span class="iv-stepper__label">Review</span>
+          <span class="iv-stepper__hint">Confirm the demo</span>
+        </a>
+      </li>
+    </ol>
+    <div class="iv-stepper__progress" aria-hidden="true"></div>
+    <div class="iv-stepper__panels">
+      <section class="iv-stepper__panel" id="step-account" aria-labelledby="step-account-title" tabindex="-1">
+        <h3 class="iv-u-mt-0" id="step-account-title">Account</h3>
+        <div class="iv-field">
+          <label class="iv-label" for="step-email">Work email <span class="iv-label__required" aria-hidden="true">*</span></label>
+          <input class="iv-input" id="step-email" name="email" type="email" required autocomplete="email">
+        </div>
+        <div class="iv-field">
+          <label class="iv-label" for="step-team">Team name <span class="iv-label__required" aria-hidden="true">*</span></label>
+          <input class="iv-input" id="step-team" name="team" type="text" required minlength="2" autocomplete="organization">
+        </div>
+        <div class="iv-stepper__controls" hidden>
+          <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev" disabled>Back</button>
+          <button class="iv-button iv-button--primary" type="button" data-iv-step="next">Continue</button>
+        </div>
+      </section>
+      <section class="iv-stepper__panel" id="step-payment" aria-labelledby="step-payment-title" tabindex="-1">
+        <h3 class="iv-u-mt-0" id="step-payment-title">Payment</h3>
+        <div class="iv-field">
+          <label class="iv-label" for="step-holder">Card holder <span class="iv-label__required" aria-hidden="true">*</span></label>
+          <input class="iv-input" id="step-holder" name="holder" type="text" required autocomplete="cc-name">
+        </div>
+        <div class="iv-field">
+          <label class="iv-label" for="step-country">Billing country <span class="iv-label__required" aria-hidden="true">*</span></label>
+          <select class="iv-select" id="step-country" name="country" required>
+            <option value="">Select a country</option>
+            <option value="es">Spain</option>
+            <option value="pt">Portugal</option>
+            <option value="fr">France</option>
+          </select>
+        </div>
+        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">No card number is asked for: this demo has nothing to charge.</p>
+        <div class="iv-stepper__controls" hidden>
+          <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev">Back</button>
+          <button class="iv-button iv-button--primary" type="button" data-iv-step="next">Continue</button>
+        </div>
+      </section>
+      <section class="iv-stepper__panel" id="step-review" aria-labelledby="step-review-title" tabindex="-1">
+        <h3 class="iv-u-mt-0" id="step-review-title">Review</h3>
+        <p>Nothing on this page leaves the browser. Confirming only emits the completion event of the component, which a real site would use to submit its own form.</p>
+        <div class="iv-field">
+          <label class="iv-check"><input id="step-confirm" name="confirm" type="checkbox" required> I understand this demo sends nothing <span class="iv-label__required" aria-hidden="true">*</span></label>
+        </div>
+        <div class="iv-stepper__controls" hidden>
+          <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev">Back</button>
+          <button class="iv-button iv-button--primary" type="button" data-iv-step="next">Finish the demo</button>
+        </div>
+      </section>
+    </div>
+  </div>
+</form>

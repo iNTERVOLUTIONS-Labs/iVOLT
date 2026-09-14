@@ -1,11 +1,159 @@
 /* iVOLT — components/stat
- * Key figures with label, value and delta (API_CONTRACT §8.1x). Implementation pending for v0.6: this file is a
- * registered stub so the entries build while the module is written.
- * Local: --iv-stat-size
+ * A measured figure: label, value, signed delta and hint (API_CONTRACT §8.19).
+ * The numbers are written by the author; nothing here animates a counter.
+ * Public locals: --iv-stat-size --iv-stat-gap --iv-stat-align
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
 .iv-stat {
-  display: block;
+  --iv-stat-size: var(--iv-text-3xl);
+  --iv-stat-gap: var(--iv-space-1);
+  --iv-stat-align: start;
+
+  display: flex;
+  flex-direction: column;
+  align-items: var(--iv-stat-align);
+  gap: var(--iv-stat-gap);
+  min-inline-size: 0;
+}
+
+.iv-stat[hidden] {
+  display: none;
+}
+
+.iv-stat__label {
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-stat__value {
+  font-size: var(--iv-stat-size);
+  font-weight: var(--iv-weight-bold);
+  line-height: var(--iv-leading-tight);
+  letter-spacing: var(--iv-tracking-tight);
+  font-variant-numeric: tabular-nums;
+  color: var(--iv-color-text);
+}
+
+/* Delta ----------------------------------------------------------------- */
+
+/* The arrow is a mask, so it takes the tone colour; the sign is in the text, so
+   the direction survives a greyscale print and a screen reader. */
+.iv-stat__delta {
+  --iv-stat-delta-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 10V2M2.8 5.2 6 2l3.2 3.2'/%3E%3C/svg%3E");
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-1);
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-stat__delta::before {
+  content: "";
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  background-color: currentcolor;
+  -webkit-mask-image: var(--iv-stat-delta-icon);
+  mask-image: var(--iv-stat-delta-icon);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.iv-stat__delta[data-iv-tone="up"] {
+  color: var(--iv-color-success);
+}
+
+.iv-stat__delta[data-iv-tone="down"] {
+  color: var(--iv-color-danger);
+}
+
+.iv-stat__delta[data-iv-tone="down"]::before {
+  rotate: 180deg;
+}
+
+.iv-stat__delta[data-iv-tone="flat"]::before {
+  rotate: 90deg;
+}
+
+.iv-stat__hint {
+  font-size: var(--iv-text-xs);
+  color: var(--iv-color-text-muted);
+}
+
+/* Modifiers ------------------------------------------------------------- */
+
+.iv-stat--lg {
+  --iv-stat-size: var(--iv-text-4xl);
+}
+
+/* A figure that stands on its own surface, with the same resting elevation as
+   a card (API_CONTRACT §8.15). */
+.iv-stat--card {
+  --iv-stat-gap: var(--iv-space-2);
+
+  padding: var(--iv-space-5);
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: var(--iv-shadow-ambient);
+}
+
+:where(.iv-stat--glow) .iv-stat__value {
+  background-image: linear-gradient(
+    100deg,
+    var(--iv-color-primary),
+    var(--iv-color-info) 48%,
+    color-mix(in oklab, var(--iv-color-accent) 42%, var(--iv-color-primary))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Group ----------------------------------------------------------------- */
+
+.iv-stat-group {
+  --iv-stat-group-min: 10rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--iv-stat-group-min), 1fr));
+  gap: var(--iv-space-6);
+}
+
+.iv-stat-group[hidden] {
+  display: none;
+}
+
+@media (--iv-md) {
+  /* A hairline between figures instead of a box around each one; the first
+     column keeps its edge clear. */
+  :where(.iv-stat-group) .iv-stat + .iv-stat {
+    padding-inline-start: var(--iv-space-6);
+    border-inline-start: var(--iv-border-width) solid var(--iv-color-border);
+  }
+
+  :where(.iv-stat-group) .iv-stat--card + .iv-stat--card {
+    padding-inline-start: var(--iv-space-5);
+    border-inline-start: var(--iv-border-width) solid var(--iv-color-border);
+  }
+}
+
+@media (forced-colors: active) {
+  .iv-stat__delta::before {
+    background-color: CanvasText;
+  }
+
+  :where(.iv-stat--glow) .iv-stat__value {
+    background-image: none;
+    color: CanvasText;
+  }
 }

@@ -332,3 +332,122 @@ describe("Toast region in the top layer (ADR-034)", () => {
     expect(region.getAttribute("popover")).toBe("manual");
   });
 });
+
+describe("Toast declarative triggers (API_CONTRACT §8.18)", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    document.body.innerHTML =
+      '<div id="notices" class="iv-toast-region" data-iv-component="toast" aria-label="Notifications"></div>' +
+      '<button id="save" type="button" data-iv-toast="notices" data-iv-message="Saved" data-iv-title="Profile" data-iv-variant="success" data-iv-timeout="4000"><span id="inner">Save</span></button>' +
+      '<button id="other" type="button" data-iv-toast="elsewhere" data-iv-message="Nope">Other</button>' +
+      '<button id="plain" type="button">Plain</button>';
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    document.body.innerHTML = "";
+  });
+
+  /** @returns {{ region: Toast, el: HTMLElement }} Region handles. */
+  function region() {
+    const el = /** @type {HTMLElement} */ (document.getElementById("notices"));
+    return { region: new Toast(el), el };
+  }
+
+  it("shows a toast from the data attributes of a trigger", () => {
+    const { region: toast, el } = region();
+    document.getElementById("save").click();
+    const node = el.querySelector(".iv-toast");
+    expect(node.querySelector(".iv-toast__message").textContent).toBe("Saved");
+    expect(node.querySelector(".iv-toast__title").textContent).toBe("Profile");
+    expect(node.className).toBe("iv-toast iv-toast--success");
+    expect(toast.items[0].timeout).toBe(4000);
+    toast.destroy();
+  });
+
+  it("reacts to a click on a descendant of the trigger", () => {
+    const { region: toast, el } = region();
+    document.getElementById("inner").click();
+    expect(el.querySelectorAll(".iv-toast")).toHaveLength(1);
+    toast.destroy();
+  });
+
+  it("ignores triggers of another region and elements without the attribute", () => {
+    const { region: toast, el } = region();
+    document.getElementById("other").click();
+    document.getElementById("plain").click();
+    expect(el.querySelectorAll(".iv-toast")).toHaveLength(0);
+    toast.destroy();
+  });
+
+  it("writes the message as text, never as markup", () => {
+    const { region: toast, el } = region();
+    const trigger = document.getElementById("save");
+    trigger.setAttribute("data-iv-message", "<img src=x onerror=alert(1)>");
+    trigger.click();
+    const node = el.querySelector(".iv-toast");
+    expect(node.querySelector("img")).toBeNull();
+    expect(node.querySelector(".iv-toast__message").textContent).toBe("<img src=x onerror=alert(1)>");
+    toast.destroy();
+  });
+
+  it("falls back to info for a variant outside the list", () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const { region: toast, el } = region();
+    const trigger = document.getElementById("save");
+    trigger.setAttribute("data-iv-variant", "spicy");
+    trigger.click();
+    expect(el.querySelector(".iv-toast").className).toBe("iv-toast iv-toast--info");
+    toast.destroy();
+  });
+
+  it("falls back to the timeout of the region when the attribute is not a number", () => {
+    const { region: toast } = region();
+    const trigger = document.getElementById("save");
+    trigger.setAttribute("data-iv-timeout", "soon");
+    trigger.click();
+    expect(toast.items[0].timeout).toBe(6000);
+    trigger.setAttribute("data-iv-timeout", "");
+    toast.items[0].dismiss();
+    trigger.click();
+    expect(toast.items[0].timeout).toBe(6000);
+    toast.destroy();
+  });
+
+  it("keeps a danger toast on screen whatever the trigger asks for", () => {
+    const { region: toast } = region();
+    const trigger = document.getElementById("save");
+    trigger.setAttribute("data-iv-variant", "danger");
+    trigger.click();
+    expect(toast.items[0].timeout).toBe(0);
+    vi.advanceTimersByTime(20000);
+    expect(toast.items).toHaveLength(1);
+    toast.destroy();
+  });
+
+  it("honours data-iv-dismissible=\"false\"", () => {
+    const { region: toast, el } = region();
+    const trigger = document.getElementById("save");
+    trigger.setAttribute("data-iv-dismissible", "false");
+    trigger.click();
+    expect(el.querySelector(".iv-toast__dismiss")).toBeNull();
+    toast.destroy();
+  });
+
+  it("removes the delegated listener on destroy", () => {
+    const { region: toast, el } = region();
+    toast.destroy();
+    document.getElementById("save").click();
+    expect(el.querySelectorAll(".iv-toast")).toHaveLength(0);
+  });
+
+  it("installs no listener when the region has no id", () => {
+    const el = /** @type {HTMLElement} */ (document.getElementById("notices"));
+    el.removeAttribute("id");
+    const toast = new Toast(el);
+    document.getElementById("save").click();
+    expect(el.querySelectorAll(".iv-toast")).toHaveLength(0);
+    toast.destroy();
+  });
+});

@@ -77,14 +77,14 @@
   --iv-picker-caret-turn: 180deg;
 
   border-color: var(--iv-color-primary);
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 .iv-picker__field:focus-within {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: 1px;
   border-color: var(--iv-color-focus);
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 @media (hover: hover) {
@@ -346,7 +346,7 @@
   padding-inline: var(--iv-space-3);
   font-size: var(--iv-text-xs);
   font-weight: var(--iv-weight-semibold);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--iv-tracking-caps);
   text-transform: uppercase;
   color: var(--iv-color-text-muted);
 }

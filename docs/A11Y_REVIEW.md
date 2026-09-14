@@ -421,3 +421,15 @@ Verificado por herramienta y por pruebas de navegador en Chromium, Firefox y Web
 - **Selector de fecha** (`tests/browser/datepicker.spec.js`): diálogo no modal con nombre, rejilla `role="grid"` con una sola parada de tabulación, teclado completo, `Escape` y selección devuelven el foco al botón (corregido: la selección repintaba el día enfocado y el foco caía al `<body>`), `min`/`max` como botones desactivados, nombres por `Intl` en `es-ES` y `en-US`.
 
 Sin verificar: anuncio real del cambio de mes (`aria-live` del título) y de la posición en la rejilla con NVDA/VoiceOver; hover intencional del megamenú con dispositivos de puntero reales; efectos de proximidad con lápiz.
+
+## 12. Ciclo v0.6 (2026-09-14): cabecera de sitio, asistente por pasos, toast declarativo, bloques de contenido
+
+Verificado por herramienta y por pruebas de navegador en Chromium, Firefox y WebKit (`tests/browser/navbar.spec.js`, `stepper.spec.js`, `content.spec.js`, `toast-declarative.spec.js`, más `a11y.spec.js` con las fixtures nuevas):
+
+- **axe-core** sin hallazgos critical/serious en `navbar/{basic,transparent,megamenu,hide}` (cerrado, abierto y condensado), `stepper/{basic,vertical,compact}` (paso avanzado y estado de error), `timeline/{basic,alternate,horizontal}`, `stat/{basic,cards}`, `avatar/{basic,group}`, `toast/declarative` y `progress/sizes`, en claro y oscuro. Hallazgo corregido antes de integrar: el grupo de avatares usaba `ul/li` con `role="img"` en cada ítem (`list`, serious) y pasa a `div/span`.
+- **Navbar**: `<header>` con `<nav aria-label>`; toggle con nombre, `aria-expanded` y `aria-controls`; `Escape` cierra y devuelve el foco al toggle; clic fuera cierra; sin JS el panel se sirve visible y apilado; el enlace actual sobre una portada oscura hereda el color claro hasta condensarse (corregido tras la captura: el verde de marca no leía sobre el mesh).
+- **Stepper**: `<ol>` numerado con `aria-current="step"`; disparadores como enlaces con nombre (marcador `aria-hidden`); pasos no alcanzables con `aria-disabled` y fuera del orden de tabulación; `← → Home End`; al cambiar, el foco va al panel (`tabindex="-1"`) y `__status` anuncia «Step n of m: label»; la validación usa `Form` si existe y `reportValidity` si no, así que el mensaje de error es el nativo o el del formulario, nunca solo color.
+- **Toast declarativo**: el aviso se crea con `textContent`; el disparador es un botón normal; sin JS no hace nada y la documentación lo marca como demo.
+- **Contenido**: la línea de tiempo es una lista ordenada con `<time datetime>`; el estado de cada ítem se expresa con texto (`Today`, `Next`) además del marcador; el delta de una cifra lleva flecha por máscara y signo en el texto (`sr-only` opcional para el sentido); los avatares de iniciales llevan `role="img"` con `aria-label` y las imágenes su `alt`; el recuento «+N» de un grupo es texto.
+
+Sin verificar: anuncio real del cambio de paso y del `__status` con NVDA/VoiceOver; `hideOnScroll` con lectores que desplazan el foco fuera del viewport; gestos reales en el panel plegado.

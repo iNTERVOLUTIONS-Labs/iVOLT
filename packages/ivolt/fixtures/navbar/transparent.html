@@ -1,0 +1,49 @@
+<header class="iv-navbar iv-navbar--transparent" data-iv-component="navbar" data-iv-sticky="true">
+  <div class="iv-navbar__inner">
+    <a class="iv-navbar__brand" href="#nav-t-note">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect x="1" y="1" width="30" height="30" rx="9" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 21.5 16 9l6 12.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Vantage</span>
+    </a>
+    <button class="iv-navbar__toggle" type="button" aria-expanded="false" aria-controls="cover-nav" hidden>
+      <span class="iv-u-sr-only">Menu</span>
+      <span class="iv-navbar__burger" aria-hidden="true"></span>
+    </button>
+    <div class="iv-navbar__panel" id="cover-nav">
+      <nav class="iv-navbar__nav" aria-label="Main">
+        <ul class="iv-navbar__links">
+          <li><a class="iv-navbar__link" href="#nav-t-note" aria-current="page">Cover</a></li>
+          <li><a class="iv-navbar__link" href="#nav-t-scroll">Story</a></li>
+          <li><a class="iv-navbar__link" href="#nav-t-scroll">Cast</a></li>
+          <li><a class="iv-navbar__link" href="#nav-t-note">Press</a></li>
+        </ul>
+      </nav>
+      <div class="iv-navbar__actions">
+        <a class="iv-button iv-button--primary iv-button--sm" href="#nav-t-scroll">Watch the sample</a>
+      </div>
+    </div>
+  </div>
+</header>
+<!-- The cover slides under the transparent bar: the header is 4rem tall, so the hero starts 4rem higher and pads its own content back down. -->
+<section class="iv-hero iv-hero--cinematic iv-hero--center" id="nav-t-cover" style="margin-block-start: -4rem; padding-block-start: 6rem">
+  <div class="iv-hero__media iv-texture-mesh" aria-hidden="true"></div>
+  <div class="iv-hero__scrim" aria-hidden="true"></div>
+  <div class="iv-hero__content">
+    <p class="iv-hero__kicker">Sample fixture, not a real film</p>
+    <h2 class="iv-hero__title">A bar that stays out of the way</h2>
+    <p class="iv-hero__lead">Made-up copy, for the fixture only. The header has no ground of its own over the cover and borrows its light text; the moment the page scrolls it condenses, takes a glass surface and the text returns to the page colours. The cover itself is a gradient mesh: no photograph ships inside the package.</p>
+    <div class="iv-hero__actions">
+      <a class="iv-button iv-button--primary iv-button--lg" href="#nav-t-scroll">Read the sample notes</a>
+    </div>
+  </div>
+</section>
+<p id="nav-t-note">Sample cover, not a real product: every link points inside this page and nothing is played, bought or sent.</p>
+<section id="nav-t-scroll" class="iv-stack">
+  <h2>Sample notes</h2>
+  <p>Filler text so the page scrolls and the transparent header can be seen condensing. Once condensed it is no longer transparent: a transparent bar over page content would be unreadable, so the surface and the text colours come back.</p>
+  <p>Unfolding the panel does the same thing for the same reason: an open menu needs a readable ground, whatever is behind it.</p>
+  <p>Nothing on this page is fetched from anywhere. The cover is two gradients and a scrim.</p>
+  <p>Last paragraph of the filler.</p>
+</section>

@@ -75,7 +75,7 @@ textarea.iv-input {
   border-color: var(--iv-color-focus);
   /* The ring keeps the focus visible on its own; the halo is what gives it
      presence. Both are painted, never one instead of the other. */
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 .iv-input[aria-invalid="true"],
@@ -485,7 +485,7 @@ textarea.iv-input {
 .iv-switch input:where(:focus-visible) + .iv-switch__track {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 .iv-switch input:where(:disabled) + .iv-switch__track {
@@ -563,7 +563,7 @@ textarea.iv-input {
 }
 
 .iv-range:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 .iv-range::-moz-range-track {
@@ -588,7 +588,7 @@ textarea.iv-input {
 }
 
 .iv-range:focus-visible::-moz-range-thumb {
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 /* Forced colours: the track is a background, so the UA removes it and only the
@@ -686,7 +686,7 @@ textarea.iv-input {
 .iv-file:where(:focus-within) .iv-file__zone {
   border-color: var(--iv-color-primary);
   background-color: var(--iv-color-primary-subtle);
-  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+  box-shadow: var(--iv-focus-halo);
 }
 
 /* Validation states -------------------------------------------------- */

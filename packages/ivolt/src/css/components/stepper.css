@@ -1,11 +1,400 @@
 /* iVOLT — components/stepper
- * Step-by-step assistant for long forms (API_CONTRACT §8.1x). Implementation pending for v0.6: this file is a
- * registered stub so the entries build while the module is written.
- * Local: --iv-stepper-marker
+ * Step-by-step assistant for long forms (API_CONTRACT §8.17). Mobile first:
+ * the index is a column with a vertical connector; from `md` upwards it is a
+ * row with the connector running between markers.
+ *
+ * Every step owns the segment that leaves its own marker, so a step marked
+ * `done` fills the line towards the next one and the track appears to advance
+ * with the user. Track and fill are two pseudo-elements of the same box; the
+ * fill grows with `inline-size` / `block-size`, which are logical and so behave
+ * in right-to-left as well.
+ *
+ * Ancestor state lives inside `:where()` so a descendant rule stays at (0,1,0)
+ * and wins by source order alone, never by specificity.
+ *
+ * Locals: --iv-stepper-marker --iv-stepper-line --iv-stepper-gap
+ *         --iv-stepper-step-gap --iv-stepper-fill --iv-stepper-track
+ *         --iv-stepper-progress (0–1, written by the script)
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
 .iv-stepper {
-  display: block;
+  --iv-stepper-marker: 2rem;
+  --iv-stepper-line: var(--iv-color-border);
+  --iv-stepper-gap: var(--iv-space-6);
+  --iv-stepper-step-gap: var(--iv-space-5);
+  --iv-stepper-fill: var(--iv-color-primary);
+  --iv-stepper-track: 2px;
+  --iv-stepper-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5 6.5 11.5 12.5 4.5'/%3E%3C/svg%3E");
+
+  display: grid;
+  gap: var(--iv-stepper-gap);
+}
+
+/* Index ----------------------------------------------------------------- */
+
+.iv-stepper__list {
+  display: grid;
+  gap: var(--iv-stepper-step-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iv-stepper__step {
+  position: relative;
+  min-inline-size: 0;
+}
+
+/* Track: the segment that leaves this marker towards the next step. */
+.iv-stepper__step::before,
+.iv-stepper__step::after {
+  content: "";
+  position: absolute;
+  inset-block-start: var(--iv-stepper-marker);
+  inset-inline-start: calc(var(--iv-stepper-marker) / 2 - var(--iv-stepper-track) / 2);
+  inline-size: var(--iv-stepper-track);
+  block-size: calc(100% - var(--iv-stepper-marker) + var(--iv-stepper-step-gap));
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-stepper-line);
+}
+
+/* Fill: same box, grown from nothing once the step is done. */
+.iv-stepper__step::after {
+  block-size: 0;
+  background-color: var(--iv-stepper-fill);
+  transition: block-size var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+.iv-stepper__step:last-child::before,
+.iv-stepper__step:last-child::after {
+  content: none;
+}
+
+.iv-stepper__step[data-iv-state="done"]::after {
+  block-size: calc(100% - var(--iv-stepper-marker) + var(--iv-stepper-step-gap));
+}
+
+.iv-stepper__trigger {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--iv-stepper-marker) minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--iv-space-3);
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--iv-radius-md);
+}
+
+.iv-stepper__trigger:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+.iv-stepper__trigger[aria-disabled="true"] {
+  cursor: default;
+}
+
+.iv-stepper__marker {
+  position: relative;
+  display: inline-flex;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--iv-stepper-marker);
+  block-size: var(--iv-stepper-marker);
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color: var(--iv-color-text-muted);
+  background-color: var(--iv-color-bg);
+  border: var(--iv-border-width-strong) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-full);
+  transition:
+    color var(--iv-motion-base) var(--iv-ease-out),
+    background-color var(--iv-motion-base) var(--iv-ease-out),
+    border-color var(--iv-motion-base) var(--iv-ease-out),
+    box-shadow var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-stepper__label {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-stepper__hint {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: var(--iv-text-xs);
+  line-height: var(--iv-leading-snug);
+  color: var(--iv-color-text-muted);
+}
+
+/* The ring is on the trigger, the halo on the marker: together they read as one
+   focused object without drawing a box around the whole row. */
+:where(.iv-stepper__trigger:focus-visible) .iv-stepper__marker {
+  box-shadow: var(--iv-focus-halo);
+}
+
+@media (hover: hover) {
+  :where(.iv-stepper__trigger:hover) .iv-stepper__marker {
+    border-color: var(--iv-color-primary-border);
+  }
+}
+
+/* Step states ----------------------------------------------------------- */
+
+:where(.iv-stepper__step[data-iv-state="current"]) .iv-stepper__marker {
+  color: var(--iv-color-on-primary);
+  background-color: var(--iv-color-primary);
+  border-color: var(--iv-color-primary);
+  box-shadow: var(--iv-focus-halo);
+}
+
+:where(.iv-stepper__step[data-iv-state="current"]) .iv-stepper__label {
+  color: var(--iv-color-primary);
+}
+
+:where(.iv-stepper__step[data-iv-state="done"]) .iv-stepper__marker {
+  color: transparent;
+  background-color: var(--iv-color-primary);
+  border-color: var(--iv-color-primary);
+}
+
+/* Done replaces the number with a check drawn by a mask: one shape, current
+   colour, nothing to announce. */
+:where(.iv-stepper__step[data-iv-state="done"]) .iv-stepper__marker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--iv-color-on-primary);
+  -webkit-mask-image: var(--iv-stepper-icon-check);
+  mask-image: var(--iv-stepper-icon-check);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: 62%;
+  mask-size: 62%;
+}
+
+:where(.iv-stepper__step[data-iv-state="upcoming"]) .iv-stepper__label {
+  color: var(--iv-color-text-muted);
+}
+
+:where(.iv-stepper__step[data-iv-state="error"]) .iv-stepper__marker {
+  color: var(--iv-color-on-danger);
+  background-color: var(--iv-color-danger);
+  border-color: var(--iv-color-danger);
+}
+
+:where(.iv-stepper__step[data-iv-state="error"]) .iv-stepper__label {
+  color: var(--iv-color-danger);
+}
+
+/* Progress bar ---------------------------------------------------------- */
+
+.iv-stepper__progress {
+  position: relative;
+  grid-column: 1 / -1;
+  block-size: 0.25rem;
+  overflow: hidden;
+  background-color: var(--iv-stepper-line);
+  border-radius: var(--iv-radius-full);
+}
+
+.iv-stepper__progress::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 100%;
+  background-image: linear-gradient(
+    90deg,
+    var(--iv-color-primary),
+    var(--iv-color-accent)
+  );
+  transform: scaleX(var(--iv-stepper-progress, 0));
+  transform-origin: 0 50%;
+  transition: transform var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+/* Panels ---------------------------------------------------------------- */
+
+.iv-stepper__panels {
+  min-inline-size: 0;
+}
+
+.iv-stepper__panel {
+  display: grid;
+  gap: var(--iv-space-4);
+  align-content: start;
+  padding: var(--iv-space-5);
+  background-color: var(--iv-color-surface);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-lg);
+}
+
+/* The component layer wins over the `[hidden]` rule of the base layer. */
+.iv-stepper__panel[hidden] {
+  display: none;
+}
+
+.iv-stepper__panel:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+/* The panel enters only where the script swaps panels; served stacked, they
+   are already where the reader expects them. */
+:where(:root[data-iv-js]) .iv-stepper__panel:not([hidden]) {
+  animation: iv-stepper-panel-in var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+@keyframes iv-stepper-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+/* Served hidden while the buttons do nothing; `init` shows the row. The
+   component layer wins over the `[hidden]` rule of the base layer, so the row
+   has to hide itself. */
+.iv-stepper__controls[hidden] {
+  display: none;
+}
+
+.iv-stepper__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--iv-space-3);
+  padding-block-start: var(--iv-space-4);
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* Row index ------------------------------------------------------------- */
+
+/* Only the plain stepper becomes a row: the vertical modifier keeps the column
+ * index of the small screen, so it is scoped out of every rule below instead of
+ * being reverted afterwards. The ancestor lives inside `:where()`, which keeps
+ * these rules at the specificity of their own class and lets the state rules
+ * (one attribute more) win without any `:where()` of their own.
+ */
+
+@media (--iv-md) {
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__list {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__trigger {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    row-gap: var(--iv-space-2);
+    padding-inline: var(--iv-space-2);
+    text-align: center;
+  }
+
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__marker {
+    grid-row: 1;
+  }
+
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__label {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__hint {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  /* The connector becomes horizontal: from this marker's centre to the next. */
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__step::before,
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__step::after {
+    inset-block-start: calc(var(--iv-stepper-marker) / 2 - var(--iv-stepper-track) / 2);
+    inset-inline-start: 50%;
+    inline-size: 100%;
+    block-size: var(--iv-stepper-track);
+  }
+
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__step::after {
+    inline-size: 0;
+    transition: inline-size var(--iv-motion-slow) var(--iv-ease-out);
+  }
+
+  :where(.iv-stepper:not(.iv-stepper--vertical)) .iv-stepper__step[data-iv-state="done"]::after {
+    inline-size: 100%;
+    block-size: var(--iv-stepper-track);
+  }
+
+  /* Vertical: the same column index, now beside the panels. */
+  .iv-stepper--vertical {
+    grid-template-columns: minmax(11rem, 16rem) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+/* Compact --------------------------------------------------------------- */
+
+/* Only the markers and the label of the current step are drawn. The text stays
+   in the accessibility tree — it is the accessible name of the trigger — so it
+   is taken out of sight the way `iv-u-sr-only` does, never with `display`. */
+:where(.iv-stepper--compact .iv-stepper__step:not([data-iv-state="current"])) .iv-stepper__label,
+:where(.iv-stepper--compact) .iv-stepper__hint {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip-path: inset(50%);
+}
+
+/* Reduced motion -------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-stepper__step::after,
+  .iv-stepper__marker,
+  .iv-stepper__progress::after {
+    transition: none;
+  }
+
+  :where(:root[data-iv-js]) .iv-stepper__panel:not([hidden]) {
+    animation: none;
+  }
+}
+
+/* Forced colours -------------------------------------------------------- */
+
+/* Backgrounds are dropped by the UA, so the filled marker and the filled track
+   take the system highlight instead of the brand colour. */
+@media (forced-colors: active) {
+  .iv-stepper__step::after {
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  :where(.iv-stepper__step[data-iv-state="current"]) .iv-stepper__marker,
+  :where(.iv-stepper__step[data-iv-state="done"]) .iv-stepper__marker {
+    color: HighlightText;
+    background-color: Highlight;
+    border-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  :where(.iv-stepper__step[data-iv-state="done"]) .iv-stepper__marker::after {
+    background-color: HighlightText;
+  }
 }

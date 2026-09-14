@@ -57,7 +57,7 @@ export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
 /** Package version, kept in sync with `package.json`. */
-export const version = "0.5.0-beta.0";
+export const version = "0.6.0-beta.0";
 
 /**
  * Component classes initialised by `init` when no explicit list is given.

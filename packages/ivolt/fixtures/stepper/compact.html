@@ -1,0 +1,63 @@
+<div class="iv-stepper iv-stepper--compact" data-iv-component="stepper" data-iv-linear="false" data-iv-validate="false">
+  <ol class="iv-stepper__list" aria-label="Onboarding">
+    <li class="iv-stepper__step">
+      <a class="iv-stepper__trigger" href="#onb-profile">
+        <span class="iv-stepper__marker" aria-hidden="true">1</span>
+        <span class="iv-stepper__label">Profile</span>
+      </a>
+    </li>
+    <li class="iv-stepper__step">
+      <a class="iv-stepper__trigger" href="#onb-workspace">
+        <span class="iv-stepper__marker" aria-hidden="true">2</span>
+        <span class="iv-stepper__label">Workspace</span>
+      </a>
+    </li>
+    <li class="iv-stepper__step">
+      <a class="iv-stepper__trigger" href="#onb-invite">
+        <span class="iv-stepper__marker" aria-hidden="true">3</span>
+        <span class="iv-stepper__label">Invites</span>
+      </a>
+    </li>
+    <li class="iv-stepper__step">
+      <a class="iv-stepper__trigger" href="#onb-done">
+        <span class="iv-stepper__marker" aria-hidden="true">4</span>
+        <span class="iv-stepper__label">Done</span>
+      </a>
+    </li>
+  </ol>
+  <div class="iv-stepper__progress" aria-hidden="true"></div>
+  <div class="iv-stepper__panels">
+    <section class="iv-stepper__panel" id="onb-profile" aria-labelledby="onb-profile-title" tabindex="-1">
+      <h3 class="iv-u-mt-0" id="onb-profile-title">Profile</h3>
+      <p>Sample onboarding, invented for this fixture: no account exists and nothing is saved. In the compact variant only the markers and the label of the current step are drawn; the other labels stay in the page for screen readers, so every step keeps its name.</p>
+      <div class="iv-stepper__controls" hidden>
+        <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev" disabled>Back</button>
+        <button class="iv-button iv-button--primary" type="button" data-iv-step="next">Continue</button>
+      </div>
+    </section>
+    <section class="iv-stepper__panel" id="onb-workspace" aria-labelledby="onb-workspace-title" tabindex="-1">
+      <h3 class="iv-u-mt-0" id="onb-workspace-title">Workspace</h3>
+      <p>This stepper is not linear, so every step can be reached from the index at any time and the arrow keys walk the whole row.</p>
+      <div class="iv-stepper__controls" hidden>
+        <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev">Back</button>
+        <button class="iv-button iv-button--primary" type="button" data-iv-step="next">Continue</button>
+      </div>
+    </section>
+    <section class="iv-stepper__panel" id="onb-invite" aria-labelledby="onb-invite-title" tabindex="-1">
+      <h3 class="iv-u-mt-0" id="onb-invite-title">Invites</h3>
+      <p>No invitation is sent from here: there is no address book and no mail behind this page.</p>
+      <div class="iv-stepper__controls" hidden>
+        <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev">Back</button>
+        <button class="iv-button iv-button--primary" type="button" data-iv-step="next">Continue</button>
+      </div>
+    </section>
+    <section class="iv-stepper__panel" id="onb-done" aria-labelledby="onb-done-title" tabindex="-1">
+      <h3 class="iv-u-mt-0" id="onb-done-title">Done</h3>
+      <p>The progress bar above reads the same custom property the connector uses, so both tell the same story.</p>
+      <div class="iv-stepper__controls" hidden>
+        <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev">Back</button>
+        <button class="iv-button iv-button--primary" type="button" data-iv-step="next">Finish the demo</button>
+      </div>
+    </section>
+  </div>
+</div>

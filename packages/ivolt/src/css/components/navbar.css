@@ -1,11 +1,479 @@
 /* iVOLT — components/navbar
- * Site header with brand, links, actions and a collapsible panel (API_CONTRACT §8.1x). Implementation pending for v0.6: this file is a
- * registered stub so the entries build while the module is written.
- * Local: --iv-navbar-height
+ * Site header: brand, links, actions and a panel that folds on narrow screens
+ * (API_CONTRACT §8.16). Mobile first: the panel is served as a block under the
+ * bar, open and reachable without JavaScript. From `lg` upwards it is the bar
+ * itself, in line and pushed to the end.
+ *
+ * With JavaScript the fold is driven by two attributes on the header rather
+ * than by a media query, so a `collapseBelow` other than `lg` still behaves:
+ * `data-iv-collapsible` says the panel may fold, `data-iv-open` says it is
+ * unfolded. Ancestor state lives inside `:where()` so a descendant rule stays
+ * at (0,1,0) and wins by source order alone, never by specificity.
+ *
+ * Locals: --iv-navbar-height --iv-navbar-height-condensed --iv-navbar-bg
+ *         --iv-navbar-max --iv-navbar-z --iv-navbar-gap
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
 .iv-navbar {
+  --iv-navbar-height: 4rem;
+  --iv-navbar-height-condensed: 3.25rem;
+  --iv-navbar-bg: var(--iv-color-bg);
+  --iv-navbar-max: var(--iv-container-max);
+  --iv-navbar-z: 150;
+  --iv-navbar-gap: var(--iv-space-5);
+
+  position: relative;
+  z-index: var(--iv-navbar-z);
   display: block;
+  color: var(--iv-color-text);
+  background-color: var(--iv-navbar-bg);
+  transition:
+    background-color var(--iv-motion-base) var(--iv-ease-out),
+    color var(--iv-motion-base) var(--iv-ease-out),
+    box-shadow var(--iv-motion-base) var(--iv-ease-out),
+    transform var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+/* Conductive rule along the bottom edge, lit only once the page scrolls under
+   the header: it is the seam that tells the bar is floating over content. */
+.iv-navbar::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 1px;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    var(--iv-color-primary),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-navbar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--iv-space-3);
+  max-inline-size: var(--iv-navbar-max);
+  min-block-size: var(--iv-navbar-height);
+  margin-inline: auto;
+  padding-inline: var(--iv-space-5);
+}
+
+/* Brand ---------------------------------------------------------------- */
+
+.iv-navbar__brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--iv-space-2);
+  min-block-size: var(--iv-navbar-height);
+  font-size: var(--iv-text-lg);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: var(--iv-tracking-tight);
+  color: inherit;
+  text-decoration: none;
+  transition: min-block-size var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-navbar__brand svg {
+  display: block;
+  flex: none;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+}
+
+.iv-navbar__brand:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+  border-radius: var(--iv-radius-sm);
+}
+
+/* Toggle --------------------------------------------------------------- */
+
+/* Only a header the script reports as collapsible shows the burger; without
+   JavaScript the panel is already open and the button is served `hidden`. */
+.iv-navbar__toggle {
+  display: none;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.75rem;
+  min-block-size: 2.75rem;
+  margin-inline-start: auto;
+  padding: 0;
+  color: inherit;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-md);
+  cursor: pointer;
+}
+
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible]) .iv-navbar__toggle {
+  display: inline-flex;
+}
+
+/* The component layer wins over the `[hidden]` rule of the base layer, so the
+   toggle has to hide itself until `init` shows it. */
+.iv-navbar__toggle[hidden] {
+  display: none;
+}
+
+.iv-navbar__toggle:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: calc(-1 * var(--iv-focus-offset));
+  box-shadow: var(--iv-focus-halo);
+}
+
+/* Three lines drawn with the element and its two pseudo-elements; no glyph, so
+   nothing is announced and the X is a pure transform. */
+.iv-navbar__burger {
+  position: relative;
+  display: block;
+  inline-size: 1.125rem;
+  block-size: 2px;
+  background-color: currentcolor;
+  border-radius: var(--iv-radius-full);
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-navbar__burger::before,
+.iv-navbar__burger::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  block-size: 2px;
+  background-color: currentcolor;
+  border-radius: var(--iv-radius-full);
+  transition: transform var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-navbar__burger::before {
+  inset-block-start: -0.375rem;
+}
+
+.iv-navbar__burger::after {
+  inset-block-start: 0.375rem;
+}
+
+:where(.iv-navbar__toggle[aria-expanded="true"]) .iv-navbar__burger {
+  background-color: transparent;
+}
+
+:where(.iv-navbar__toggle[aria-expanded="true"]) .iv-navbar__burger::before {
+  transform: translateY(0.375rem) rotate(45deg);
+}
+
+:where(.iv-navbar__toggle[aria-expanded="true"]) .iv-navbar__burger::after {
+  transform: translateY(-0.375rem) rotate(-45deg);
+}
+
+/* Panel ---------------------------------------------------------------- */
+
+.iv-navbar__panel {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  gap: var(--iv-space-4);
+  min-inline-size: 0;
+  max-block-size: calc(100dvh - var(--iv-navbar-height));
+  padding-block: var(--iv-space-4);
+  overflow-y: auto;
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-navbar__nav {
+  min-inline-size: 0;
+}
+
+.iv-navbar__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iv-navbar__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 2.5rem;
+  padding-block: var(--iv-space-2);
+  padding-inline: var(--iv-space-2);
+  font-size: var(--iv-text-md);
+  font-weight: var(--iv-weight-medium);
+  line-height: var(--iv-leading-snug);
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--iv-radius-sm);
+  transition: color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+/* The underline grows from the centre: the link is never displaced, only
+   drawn. `currentcolor` keeps it readable on the transparent variant. */
+.iv-navbar__link::after {
+  content: "";
+  position: absolute;
+  inset-inline: var(--iv-space-2);
+  inset-block-end: 0.3rem;
+  block-size: 2px;
+  background-color: currentcolor;
+  border-radius: var(--iv-radius-full);
+  transform: scaleX(0);
+  transition: transform var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-navbar__link:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: calc(-1 * var(--iv-focus-offset));
+}
+
+.iv-navbar__link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.iv-navbar__link[aria-current] {
+  color: var(--iv-color-primary);
+}
+
+.iv-navbar__link[aria-current]::after {
+  background-color: var(--iv-color-primary);
+  box-shadow: 0 0 10px var(--iv-glow-primary);
+  transform: scaleX(1);
+}
+
+@media (hover: hover) {
+  .iv-navbar__link:hover {
+    color: var(--iv-color-primary);
+  }
+
+  .iv-navbar__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .iv-navbar__toggle:hover {
+    background-color: var(--iv-color-hover-surface);
+  }
+}
+
+.iv-navbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--iv-space-3);
+}
+
+/* Bar layout ----------------------------------------------------------- */
+
+@media (--iv-lg) {
+  .iv-navbar__panel {
+    flex-direction: row;
+    flex-basis: auto;
+    align-items: center;
+    gap: var(--iv-navbar-gap);
+    max-block-size: none;
+    margin-inline-start: auto;
+    padding-block: 0;
+    overflow: visible;
+    border-block-start: 0;
+  }
+
+  .iv-navbar__links {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--iv-space-2);
+  }
+
+  .iv-navbar--center .iv-navbar__panel {
+    flex: 1 1 auto;
+    justify-content: center;
+    margin-inline-start: 0;
+  }
+
+  .iv-navbar--center .iv-navbar__actions {
+    margin-inline-start: auto;
+  }
+}
+
+/* Folded panel, with JavaScript ----------------------------------------
+ * These rules come after the bar layout on purpose: a header the script
+ * reports as collapsible is stacked again whatever the viewport says, which is
+ * what makes `collapseBelow` other than `lg` behave as documented.
+ */
+
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible]) .iv-navbar__panel {
+  flex-direction: column;
+  flex-basis: 100%;
+  align-items: stretch;
+  gap: var(--iv-space-4);
+  max-block-size: calc(100dvh - var(--iv-navbar-height));
+  margin-inline-start: 0;
+  padding-block: var(--iv-space-4);
+  overflow-y: auto;
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible]) .iv-navbar__links {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible]:not([data-iv-open])) .iv-navbar__panel {
+  display: none;
+}
+
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible][data-iv-open]) .iv-navbar__panel {
+  animation: iv-navbar-panel-in var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+@keyframes iv-navbar-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+/* States ---------------------------------------------------------------- */
+
+.iv-navbar[data-iv-sticky="true"] {
+  position: sticky;
+  inset-block-start: 0;
+}
+
+.iv-navbar[data-iv-condensed] {
+  box-shadow: var(--iv-shadow-ambient);
+}
+
+.iv-navbar[data-iv-condensed]::after {
+  opacity: 0.9;
+}
+
+:where(.iv-navbar[data-iv-condensed]) .iv-navbar__inner {
+  min-block-size: var(--iv-navbar-height-condensed);
+}
+
+:where(.iv-navbar[data-iv-condensed]) .iv-navbar__brand {
+  min-block-size: var(--iv-navbar-height-condensed);
+}
+
+.iv-navbar[data-iv-hidden] {
+  transform: translateY(-100%);
+}
+
+/* An unfolded panel is a surface over the page, not a piece of it: the header
+   takes the ambient shadow while it is open. */
+.iv-navbar[data-iv-open] {
+  box-shadow: var(--iv-shadow-ambient);
+}
+
+/* Megamenu hosted in the panel -----------------------------------------
+ * The floating panel of a megamenu is placed against its own list, which
+ * inside a header is a handful of links at the end of the bar. Taking the
+ * list out of the positioned chain hands that job to the header itself, so
+ * the panel drops from the whole bar and stays centred on it. The surface the
+ * megamenu gives its list while a panel is open belongs to a bar of its own;
+ * inside a header the header already provides it.
+ */
+:where(.iv-navbar__panel) .iv-megamenu,
+:where(.iv-navbar__panel) .iv-megamenu__list {
+  position: static;
+}
+
+:where(.iv-navbar__panel) .iv-megamenu__list {
+  background-color: transparent;
+}
+
+/* Modifiers ------------------------------------------------------------- */
+
+/* Transparent: for a cinematic hero the header has no ground of its own and
+   borrows the light text of the cover, until it condenses or unfolds its
+   panel — both moments need a readable surface of their own. */
+.iv-navbar--transparent {
+  --iv-navbar-bg: transparent;
+
+  color: var(--iv-palette-neutral-0);
+}
+
+.iv-navbar--transparent[data-iv-condensed],
+.iv-navbar--transparent[data-iv-open] {
+  --iv-navbar-bg: var(--iv-color-bg);
+
+  color: var(--iv-color-text);
+}
+
+/* Over a cover the brand colour is not readable and the underline alone marks
+   the current page; the page colours come back with the surface. */
+:where(.iv-navbar--transparent:not([data-iv-condensed]):not([data-iv-open])) .iv-navbar__link[aria-current] {
+  color: inherit;
+}
+
+:where(.iv-navbar--transparent:not([data-iv-condensed]):not([data-iv-open])) .iv-navbar__link[aria-current]::after {
+  background-color: currentcolor;
+  box-shadow: none;
+}
+
+.iv-navbar--glass {
+  --iv-navbar-bg: var(--iv-glass-bg-strong);
+}
+
+/* Glass needs a real blur behind it; where the browser has none the solid
+   background above is already the fallback. */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .iv-navbar--glass {
+    -webkit-backdrop-filter: blur(var(--iv-blur-sm)) saturate(140%);
+    backdrop-filter: blur(var(--iv-blur-sm)) saturate(140%);
+  }
+
+  .iv-navbar[data-iv-condensed] {
+    --iv-navbar-bg: var(--iv-glass-bg-strong);
+
+    -webkit-backdrop-filter: blur(var(--iv-blur-sm)) saturate(140%);
+    backdrop-filter: blur(var(--iv-blur-sm)) saturate(140%);
+  }
+}
+
+/* Reduced motion -------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-navbar,
+  .iv-navbar::after,
+  .iv-navbar__brand,
+  .iv-navbar__link,
+  .iv-navbar__link::after,
+  .iv-navbar__burger,
+  .iv-navbar__burger::before,
+  .iv-navbar__burger::after {
+    transition: none;
+  }
+
+  /* The panel appears at once, with no travel. `[data-iv-hidden]` keeps its
+     translation: it is the state itself, not decoration, and removing it would
+     leave `hideOnScroll` doing nothing. */
+  :where(:root[data-iv-js] .iv-navbar[data-iv-collapsible][data-iv-open]) .iv-navbar__panel {
+    animation: none;
+  }
+}
+
+/* Forced colours -------------------------------------------------------- */
+
+/* The underline is a background, which the UA removes; the current page needs
+   another mark, and the glass surface has to become opaque. */
+@media (forced-colors: active) {
+  .iv-navbar__link[aria-current] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25em;
+  }
+
+  .iv-navbar[data-iv-condensed] {
+    border-block-end: var(--iv-border-width) solid CanvasText;
+  }
 }

@@ -16,7 +16,7 @@
   background-color: var(--iv-color-surface-raised);
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-radius: var(--iv-radius-lg);
-  box-shadow: 0 1px 6px color-mix(in oklab, var(--iv-color-overlay) 20%, transparent);
+  box-shadow: var(--iv-shadow-ambient);
 }
 
 .iv-table-wrap:focus-visible {
@@ -59,7 +59,7 @@
 .iv-table thead th {
   font-size: var(--iv-text-xs);
   font-weight: var(--iv-weight-semibold);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--iv-tracking-caps);
   text-transform: uppercase;
   color: var(--iv-color-text-muted);
 }

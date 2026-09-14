@@ -23,7 +23,7 @@
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-inline-start: var(--iv-border-width-strong) solid var(--iv-alert-tone);
   border-radius: var(--iv-alert-radius, var(--iv-radius-lg));
-  box-shadow: 0 1px 4px color-mix(in oklab, var(--iv-color-overlay) 18%, transparent);
+  box-shadow: var(--iv-shadow-ambient);
 }
 
 /* Tones --------------------------------------------------------------- */

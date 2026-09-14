@@ -264,6 +264,52 @@ export class Toast extends IvComponent {
     }
     /** @type {boolean} Whether the region is currently shown in the top layer. */
     this._layerOpen = false;
+
+    // Declarative triggers (API_CONTRACT §8.18): one delegated listener on the document,
+    // so any served button carrying this region's id can show a toast without writing JS.
+    // `destroy` removes it with the rest of the listeners registered through `_listen`.
+    const id = this._element.id;
+    if (id) {
+      this._listen(this._element.ownerDocument, "click", (event) => {
+        const target = /** @type {Element|null} */ (event.target);
+        if (!target || typeof target.closest !== "function") return;
+        const trigger = target.closest("[data-iv-toast]");
+        if (!trigger || trigger.getAttribute("data-iv-toast") !== id) return;
+        this.showFromTrigger(trigger);
+      });
+    }
+  }
+
+  /**
+   * Shows a toast described by the `data-iv-*` attributes of a trigger element.
+   *
+   * Every value is text: it reaches the item through `textContent`, never as
+   * markup. An unknown `data-iv-variant` falls back to `info` and a
+   * non-numeric `data-iv-timeout` to the default of the region.
+   *
+   * @param {Element} trigger Element carrying the `data-iv-*` description.
+   * @returns {ToastItem} The item, visible or queued.
+   */
+  showFromTrigger(trigger) {
+    /**
+     * @param {string} name Suffix of the `data-iv-*` attribute to read.
+     * @returns {string|undefined} The value, or `undefined` when the attribute is absent.
+     */
+    const attr = (name) => {
+      const value = trigger.getAttribute(`data-iv-${name}`);
+      return value === null ? undefined : value;
+    };
+    const rawTimeout = attr("timeout");
+    const timeout = rawTimeout !== undefined && rawTimeout.trim() !== "" ? Number(rawTimeout) : Number.NaN;
+    /** @type {ToastShowOptions} */
+    const opts = { message: attr("message") ?? "" };
+    const title = attr("title");
+    if (title !== undefined) opts.title = title;
+    const variant = attr("variant");
+    if (variant !== undefined) opts.variant = /** @type {"info"|"success"|"warning"|"danger"} */ (variant);
+    if (Number.isFinite(timeout) && timeout >= 0) opts.timeout = timeout;
+    if (attr("dismissible") === "false") opts.dismissible = false;
+    return this.show(opts);
   }
 
   /**
