@@ -434,3 +434,46 @@ Familia CSS de composición de portadas, «súper espectaculares» sin JS obliga
 | Modificadores | `--center` (contenido centrado, `align-content: center`), `--split`, `--cinematic` (`iv-texture-aurora` de fondo + `iv-scan` + `iv-spark` decorativos), `--terminal` (mono, cursor), `--compact` (`--iv-hero-min: 50svh`) |
 | Accesibilidad | los medios decorativos llevan `alt=""`/`aria-hidden`; el título es el `h1` de la página; sin autoplay de vídeo con sonido; texto sobre scrim con AA verificado por axe en las fixtures |
 | Fixtures | `hero/basic` (media gradiente + scrim + kicker + título con `em` + lead + acciones), `hero/split` (aside con `card iv-glass` y `iv-edge-near`), `hero/cinematic` (aurora + scan + sparks + `iv-edge-glint` en el CTA), `hero/terminal` |
+
+## 8.12 Datepicker (v0.5, congelado 2026-09-14)
+
+| Aspecto | Contrato |
+|---|---|
+| HTML servido | `<div class="iv-field iv-datepicker" data-iv-component="datepicker"><label class="iv-label" for="d-start">Start date</label><input class="iv-input" type="date" id="d-start" name="start" min="2026-01-01" max="2026-12-31" value="2026-03-04"></div>`. Sin JS: el `<input type="date">` nativo con su propio selector; el valor siempre es ISO `YYYY-MM-DD` |
+| Tras `init` | el input se conserva (tipo `date`, teclado y envío nativos); se añade tras él `<button type="button" class="iv-datepicker__toggle" aria-haspopup="dialog" aria-expanded="false" aria-controls=id aria-label="Open calendar">` con icono SVG en línea, y `<div class="iv-datepicker__popover" role="dialog" aria-modal="false" aria-label="Choose a date" hidden>` con `__header` (`<button class="iv-datepicker__nav" data-iv-dir="-1" aria-label="Previous month">`, `<h2 class="iv-datepicker__title" aria-live="polite">March 2026</h2>`, `nav +1`), `<table class="iv-datepicker__grid" role="grid" aria-labelledby=title>` con `<th scope="col" abbr="Monday">Mo</th>` y `<td><button type="button" class="iv-datepicker__day" data-iv-date="2026-03-04" aria-label="4 March 2026" aria-selected tabindex>` (roving tabindex; días fuera del mes con `--outside`; `--today`; `[disabled]` fuera de `min`/`max`), y `__footer` con `<button class="iv-button iv-button--ghost iv-button--sm iv-datepicker__today">Today</button>` y `__clear`; `destroy` retira todo y restaura el input (atributos y orden) |
+| `native` | `auto` (por defecto): con `(pointer: coarse)` no se añade el toggle ni el popover y queda el selector nativo del móvil; `on` fuerza el nativo siempre; `off` fuerza el calendario propio |
+| Localización | `locale` (`data-iv-locale`, por defecto `lang` del documento o `undefined`): nombres de mes y abreviaturas de día por `Intl.DateTimeFormat`; `firstDay` (0–6; por defecto el de `Intl.Locale.prototype.getWeekInfo`/`weekInfo` si existe, si no 1 = lunes); las etiquetas de los botones se pasan por opciones (`openText`, `prevText`, `nextText`, `todayText`, `clearText`, `dialogText`) para poder traducirlas |
+| Teclado (rejilla) | ← → día, ↑ ↓ semana, Home/End inicio/fin de semana, PageUp/PageDown mes, Shift+PageUp/PageDown año, Enter/Espacio selecciona y cierra, Esc cierra y devuelve el foco al toggle; al abrir, el foco va al día seleccionado o a hoy; Tab recorre nav, rejilla (un solo tabstop) y pie; clic fuera cierra |
+| Selección | escribe `input.value` en ISO y despacha `input`/`change` nativos; `min`/`max` y `step` no se saltan; `iv:change` cancelable con `detail: { value, previousValue, date }` → `iv:changed`; escribir en el input a mano repinta el calendario al abrir |
+| Colocación | como el picker (§8.6): debajo por defecto, arriba solo si no cabe abajo y hay más sitio arriba, sin recortes (`data-iv-placement`); el popover no es modal y no bloquea la página |
+| Opciones (`data-iv-*`) | `native` (`auto`), `locale`, `firstDay` (`-1` = automático), `openText` («Open calendar»), `prevText`, `nextText`, `todayText` («Today»), `clearText` («Clear»), `dialogText` («Choose a date») |
+| Métodos | `open() close() setValue(iso) clear() destroy()`; `value` (ISO o `""`), `date` (`Date` local o `null`), `isOpen` |
+| Eventos | `iv:open/opened/close/closed` (`reason: "trigger"\|"escape"\|"external"\|"api"\|"select"`), `iv:change` → `iv:changed` |
+| CSS | `.iv-datepicker` (relative; el input recibe `padding-inline-end` para el toggle mediante `.iv-datepicker .iv-input`), `__toggle` (absoluto al final del input, 2.25rem, icono), `__popover` (surface-raised, sombra 3, radio lg, `inline-size: 20rem`, entrada opacidad+translate, `[data-iv-placement="top"]`), `__header`, `__nav`, `__title`, `__grid` (celdas 2.5rem, `border-spacing: 2px`), `__weekday` (xs uppercase muted), `__day` (botón cuadrado, radio md; `[aria-selected="true"]` primary/on-primary; `--today` anillo `--iv-color-accent`; `--outside` muted; `[disabled]` atenuado sin cursor; hover `surface`), `__footer` (cluster); reduced motion: sin entrada animada |
+| Fuera de alcance | rangos, hora, varios meses a la vez, calendarios no gregorianos |
+
+## 8.13 Tooltip y Popover (v0.5, congelado 2026-09-14)
+
+**Tooltip (`tooltip`)**
+
+| Aspecto | Contrato |
+|---|---|
+| HTML servido | cualquier elemento enfocable con `data-iv-tooltip="Save your changes"` (texto plano). Sin JS: sin tooltip (el texto debe ser complementario, nunca la única explicación); recomendación en docs: usar `title` solo si se acepta el retardo nativo |
+| Tras `init` | raíz `[data-iv-component="tooltip"]` (contenedor; `initAll` aplica `data-iv-auto` a `document.body` si no hay raíz y sí hay objetivos) con escucha delegada de `pointerenter`/`pointerleave`/`focusin`/`focusout`/`keydown` (Esc); un solo `<div class="iv-tooltip" role="tooltip" id>` compartido, creado al mostrar por primera vez y retirado en `destroy`; el objetivo recibe `aria-describedby` (acumulativo, restaurado al ocultar); se muestra tras `delay` ms con el puntero y de inmediato con el foco; se oculta al salir, al perder el foco, con Esc y con `scroll`; punteros gruesos: solo foco |
+| Colocación | encima del objetivo, centrado; debajo si no cabe encima (`data-iv-placement`); dentro del viewport horizontalmente (`max-inline-size: 18rem`, desplazamiento acotado) |
+| Opciones (`data-iv-*` en la raíz) | `delay` (300), `placement` (`top`\|`bottom`, por defecto `top`) |
+| Métodos | `show(target) hide() destroy()`; `target` (elemento visible o `null`) |
+| Eventos | `iv:show` (cancelable, `detail.target`) → `iv:shown`; `iv:hide` → `iv:hidden` |
+| CSS | `.iv-tooltip` (fijo, `z-index: var(--iv-z-toast)`, fondo `--iv-color-text` y texto `--iv-color-bg` (invertido), radio sm, `padding: .35rem .6rem`, `text-sm`, sombra 2, flecha `::before` de 8px, entrada opacidad+translate 4px en `--iv-motion-fast`), `[data-iv-placement="bottom"]`; reduced motion sin entrada |
+
+**Popover (`popover`)**
+
+| Aspecto | Contrato |
+|---|---|
+| HTML servido | `<button class="iv-button" type="button" popovertarget="p-share">Share</button> <div class="iv-popover" id="p-share" popover data-iv-component="popover"><h3 class="iv-popover__title">…</h3><p>…</p></div>`. Sin JS: el atributo `popover` nativo abre, cierra por luz (clic fuera, Esc) y va a la capa superior, centrado en el viewport (comportamiento del navegador; aceptado como degradación) |
+| Tras `init` | escucha `beforetoggle`/`toggle` del elemento: `beforetoggle` (cancelable) → `iv:open`/`iv:close` cancelables (cancelar → `preventDefault` del nativo); `toggle` → `iv:opened`/`iv:closed`; al abrir, calcula la posición junto al invocador (`event.source` si existe, si no `[popovertarget="id"]`): `placement` `bottom` por defecto, `top` si no cabe abajo y hay más sitio arriba, alineado al inicio del invocador y acotado al viewport con `offset` px, escrito como `inset` inline (`margin: 0`); con soporte de `position-anchor`, lo usa (`anchor-name` en el invocador) y omite el cálculo; `focus: true` enfoca el primer enfocable del popover o el propio popover (`tabindex="-1"` temporal); al cerrar, si el foco estaba dentro, vuelve al invocador; `destroy` retira estilos y atributos añadidos |
+| Opciones (`data-iv-*`) | `placement` (`bottom`\|`top`), `align` (`start`\|`center`\|`end`, por defecto `start`), `offset` (8), `focus` (true) |
+| Métodos | `open() close() toggle() destroy()`; `isOpen`, `invoker` |
+| Eventos | `iv:open/opened/close/closed` (`reason: "trigger"\|"light-dismiss"\|"escape"\|"api"`; el nativo no distingue Esc de clic fuera: ambos llegan como `light-dismiss`) |
+| CSS | `.iv-popover` (surface-raised, borde, sombra 3, radio lg, `padding: var(--iv-space-4)`, `max-inline-size: min(22rem, calc(100vw - 2rem))`, `margin: 0` cuando `init` lo coloca (`[data-iv-placement]`), entrada con `@starting-style` (opacidad + translate 6px) y `transition-behavior: allow-discrete`, flecha `::before` opcional por `iv-popover--arrow`), `__title` (`text-lg`, semibold); `iv-popover--glass`; reduced motion sin entrada |
+| Fuera de alcance | menús (usar dropdown), popovers anidados, posicionamiento con colisiones complejas |

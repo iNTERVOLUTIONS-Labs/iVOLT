@@ -101,10 +101,10 @@ Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus 
 
 | Orden | Elemento | Contrato | Estado |
 |---|---|---|---|
-| 0 | Revisión adversaria (dos revisores Opus: componentes JS; web y CSS sin JS) y corrección de lo encontrado | — | en curso |
-| 1 | Megamenu (`megamenu`): hover intencional, teclado, superposición, acordeón en móvil, tarjetas | §8.9 | pendiente |
-| 2 | Efectos de borde y proximidad: `iv-edge-glint`, `iv-edge-near` + `Proximity`, `iv-scan`, `iv-spark`, `iv-pulse-glow`, `Reveal` | §8.10 | pendiente |
-| 3 | Hero (`iv-hero` y modificadores `--center/--split/--cinematic/--terminal`) | §8.11 | pendiente |
+| 0 | Revisión adversaria (dos revisores Opus: componentes JS; web y CSS sin JS) y corrección de lo encontrado | — | hecho (17 fallos corregidos, ADR-034/035) |
+| 1 | Megamenu (`megamenu`): hover intencional, teclado, superposición, acordeón en móvil, tarjetas | §8.9 | hecho (2026-09-14) |
+| 2 | Efectos de borde y proximidad: `iv-edge-glint`, `iv-edge-near` + `Proximity`, `iv-scan`, `iv-spark`, `iv-pulse-glow`, `Reveal` | §8.10 | en curso |
+| 3 | Hero (`iv-hero` y modificadores `--center/--split/--cinematic/--terminal`) | §8.11 | en curso |
 | 4 | Web: páginas (megamenu, effects, hero) en dos idiomas, home con hero `iv-hero` y megamenú en la cabecera de la web, español | — | pendiente |
 | 5 | Cierre: `verify`, Lighthouse, changelog `0.4.0-beta.0`, estado | — | pendiente |
 
@@ -112,8 +112,8 @@ Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus 
 
 | Orden | Elemento | Notas |
 |---|---|---|
-| 1 | Datepicker (`datepicker`) sobre `<input type="date">`: calendario en popover, teclado por rejilla, rangos `min`/`max`, locale por `lang` | backlog P2 |
-| 2 | Tooltip y popover (`tooltip`, `popover`): `data-iv-tooltip`, atributo `popover` nativo como base, posicionamiento por espacio real (como el picker) | nuevo |
+| 1 | Datepicker (`datepicker`) sobre `<input type="date">`: calendario en popover, teclado por rejilla, `min`/`max`, locale por `lang` | §8.12; en curso |
+| 2 | Tooltip y popover (`tooltip`, `popover`): `data-iv-tooltip`, atributo `popover` nativo como base, posicionamiento por espacio real (como el picker) | §8.13; pendiente |
 | 3 | Command palette (`command`): búsqueda de acciones con `/` o `Ctrl+K`, como en brokenufo.com; en la web sustituye al diálogo de búsqueda | nuevo |
 | 4 | Constructor de temas en la web: editar tokens y exportar `tokens.css` | backlog P2 |
 | 5 | Cierre `0.5.0-beta.0` | — |
