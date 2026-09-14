@@ -11,6 +11,12 @@ import Fixture from "../../../components/Fixture.astro";
     <h2>Error y deshabilitado</h2>
     <p>Marca los campos no válidos con <code>aria-invalid="true"</code> y apunta <code>aria-describedby</code> al elemento <code>iv-field__error</code>. Los controles deshabilitados usan el atributo nativo.</p>
     <Fixture name="form/error" />
+    <h2>Etiquetas flotantes y grupos de entrada</h2>
+    <p><code>iv-field--float</code> mantiene la etiqueta dentro del control hasta que recibe el foco o un valor (dale al control <code>placeholder=" "</code>). <code>iv-input-group</code> une prefijos, sufijos y botones a un control.</p>
+    <Fixture name="form/float" />
+    <h2>Interruptor, rango, archivo y tallas</h2>
+    <p>Una casilla se convierte en interruptor, un campo de rango recibe una pista rellena, un campo de archivo se convierte en una zona de arrastre que mantiene accesible el input real, los textarea crecen con su contenido donde el navegador lo admite, y los campos vienen en tres tallas como los botones.</p>
+    <Fixture name="form/controls" />
     <h2>Clases</h2>
     <table>
       <thead><tr><th>Clase</th><th>Elemento</th></tr></thead>

@@ -3,7 +3,10 @@
  * an `.iv-field__error` linked with `aria-describedby`; there are no state
  * classes. Native controls keep their semantics.
  * Declares no @layer and imports nothing: the entry point does that.
- * Highest specificity used: (0,2,0) — except `.iv-check input`, (0,1,1).
+ * Highest specificity used: (0,2,0) — except `.iv-check input`,
+ * `.iv-switch input` and `.iv-file input`, (0,1,1). State conditions that
+ * would push a selector past that budget live inside `:where()`, which adds
+ * no specificity of its own.
  */
 
 .iv-field {
@@ -25,7 +28,8 @@
 /* Text controls ------------------------------------------------------ */
 
 .iv-input,
-.iv-select {
+.iv-select,
+.iv-textarea {
   font: inherit;
   color: var(--iv-color-text);
   background-color: var(--iv-color-bg);
@@ -46,25 +50,32 @@ textarea.iv-input {
   line-height: var(--iv-leading-normal);
 }
 
-.iv-input::placeholder {
+.iv-input::placeholder,
+.iv-textarea::placeholder {
   color: var(--iv-color-text-muted);
   opacity: 1;
 }
 
 .iv-input:focus-visible,
-.iv-select:focus-visible {
+.iv-select:focus-visible,
+.iv-textarea:focus-visible {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: 1px;
   border-color: var(--iv-color-focus);
+  /* The ring keeps the focus visible on its own; the halo is what gives it
+     presence. Both are painted, never one instead of the other. */
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
 }
 
 .iv-input[aria-invalid="true"],
-.iv-select[aria-invalid="true"] {
+.iv-select[aria-invalid="true"],
+.iv-textarea[aria-invalid="true"] {
   border-color: var(--iv-color-danger);
 }
 
 .iv-input:disabled,
-.iv-select:disabled {
+.iv-select:disabled,
+.iv-textarea:disabled {
   opacity: 0.55;
   background-color: var(--iv-color-surface);
   cursor: not-allowed;
@@ -146,4 +157,630 @@ textarea.iv-input {
   font-size: var(--iv-text-sm);
   font-weight: var(--iv-weight-medium);
   color: var(--iv-color-danger);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--iv-space-2);
+  line-height: var(--iv-leading-snug);
+}
+
+/* The icon is a mask over `currentColor`, so it is exactly the danger colour
+   of the active theme and it disappears with the message. */
+.iv-field__error::before {
+  content: "";
+  flex: none;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  background-color: currentColor;
+  mask-image: var(--iv-icon-alert);
+  mask-size: 100% 100%;
+  -webkit-mask-image: var(--iv-icon-alert);
+  -webkit-mask-size: 100% 100%;
+}
+
+.iv-field__error:empty {
+  display: none;
+}
+
+/* Icons -------------------------------------------------------------- */
+
+/* Inline SVG, never a remote request. A data URI cannot read `currentColor`,
+   so the two-colour status icons use a mid red and a mid green that clear 3:1
+   against both themes; the single-colour glyphs are masks over `currentColor`
+   and therefore always the exact colour of the text they sit next to. */
+.iv-field__error,
+.iv-form__summary-title {
+  --iv-icon-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM7 3.5h2v5.5H7zM7 10.5h2v2H7z'/%3E%3C/svg%3E");
+}
+
+.iv-field {
+  --iv-icon-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23DC3A42'/%3E%3Cpath d='M8 3.6v5' stroke='%23fff' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='11.8' r='1.15' fill='%23fff'/%3E%3C/svg%3E");
+  --iv-icon-valid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%2310A868'/%3E%3Cpath d='m4.6 8.3 2.4 2.4 4.4-5' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Sizes -------------------------------------------------------------- */
+
+/* Same metrics as `.iv-button--sm` and `.iv-button--lg`, so a control and the
+   button next to it line up without extra work. */
+.iv-input--sm {
+  min-block-size: 2rem;
+  padding-block: var(--iv-space-1);
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-sm);
+}
+
+.iv-input--lg {
+  min-block-size: 3rem;
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-space-4);
+  font-size: var(--iv-text-lg);
+}
+
+/* Textarea ----------------------------------------------------------- */
+
+/* Grows with its content where `field-sizing` is supported, and stays a plain
+   resizable box everywhere else. */
+.iv-textarea {
+  field-sizing: content;
+  min-block-size: 5.5rem;
+  max-block-size: 60vh;
+  resize: vertical;
+  line-height: var(--iv-leading-normal);
+}
+
+/* Floating label ----------------------------------------------------- */
+
+/* The label is painted over the control, which reserves room for it at the
+   top. It is raised by default — an author who forgets `placeholder=" "` gets
+   a plain label above the value, never a label across it — and drops to the
+   middle only while the control is empty and unfocused. */
+.iv-field--float {
+  position: relative;
+  display: block;
+}
+
+.iv-field--float .iv-input,
+.iv-field--float .iv-select,
+.iv-field--float .iv-textarea {
+  padding-block: 1.55rem 0.45rem;
+  min-block-size: 3.75rem;
+}
+
+.iv-field--float .iv-textarea {
+  min-block-size: 6.5rem;
+}
+
+.iv-field--float .iv-label {
+  position: absolute;
+  inset-block-start: 0.45rem;
+  inset-inline-start: calc(var(--iv-space-3) + var(--iv-border-width));
+  inline-size: fit-content;
+  max-inline-size: calc(100% - var(--iv-space-8));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-medium);
+  color: var(--iv-color-text-muted);
+  pointer-events: none;
+  transform-origin: 0 0;
+  transition:
+    inset-block-start var(--iv-motion-base) var(--iv-ease-out),
+    font-size var(--iv-motion-base) var(--iv-ease-out),
+    color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+/* A select always paints the text of the option it shows. While that option is
+   the empty placeholder and the label is down over it, the text would collide
+   with the label, so it is hidden until the field is focused or chosen. */
+.iv-field--float :where(.iv-select:not(:focus):has(option[value=""]:checked)) {
+  color: transparent;
+}
+
+/* Empty and unfocused: the label takes the place of the placeholder. */
+.iv-field--float :where(.iv-input:placeholder-shown:not(:focus)) ~ .iv-label,
+.iv-field--float :where(.iv-textarea:placeholder-shown:not(:focus)) ~ .iv-label,
+.iv-field--float :where(.iv-select:not(:focus):has(option[value=""]:checked)) ~ .iv-label {
+  inset-block-start: 1.05rem;
+  font-size: var(--iv-text-md);
+}
+
+/* Autofill fills the value without an `input` event; the label stays up. */
+.iv-field--float :where(.iv-input:autofill) ~ .iv-label,
+.iv-field--float :where(.iv-input:-webkit-autofill) ~ .iv-label {
+  inset-block-start: 0.45rem;
+  font-size: var(--iv-text-xs);
+}
+
+.iv-field--float:where(:focus-within) .iv-label {
+  color: var(--iv-color-primary);
+}
+
+.iv-field--float .iv-field__help,
+.iv-field--float .iv-field__error,
+.iv-field--float .iv-counter {
+  margin-block-start: var(--iv-space-2);
+}
+
+/* Input group -------------------------------------------------------- */
+
+/* Prefixes, suffixes and an attached button share one box: the children keep
+   their own borders, overlap them by one pixel and only the ends are rounded. */
+.iv-input-group {
+  display: flex;
+  align-items: stretch;
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+
+.iv-input-group > * {
+  border-radius: 0;
+}
+
+.iv-input-group > * + * {
+  margin-inline-start: calc(var(--iv-border-width) * -1);
+}
+
+.iv-input-group > :where(:first-child) {
+  border-start-start-radius: var(--iv-radius-md);
+  border-end-start-radius: var(--iv-radius-md);
+}
+
+.iv-input-group > :where(:last-child) {
+  border-start-end-radius: var(--iv-radius-md);
+  border-end-end-radius: var(--iv-radius-md);
+}
+
+.iv-input-group .iv-input,
+.iv-input-group .iv-select {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+/* The focused control has to paint its ring over its neighbours. */
+.iv-input-group .iv-input:where(:focus-visible),
+.iv-input-group .iv-select:where(:focus-visible) {
+  position: relative;
+  z-index: 1;
+}
+
+.iv-input-group__addon {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-2);
+  flex: none;
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+  background-color: var(--iv-color-surface);
+  border: var(--iv-border-width) solid var(--iv-color-border-strong);
+  white-space: nowrap;
+}
+
+/* A real `<button>` glued to the control; it is a target, so it gets the text
+   colour and a hover state instead of the muted look of a static addon. */
+.iv-input-group__addon--button {
+  font: inherit;
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text);
+  cursor: pointer;
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-input-group__addon--button:hover {
+    background-color: var(--iv-color-primary-subtle);
+  }
+}
+
+.iv-input-group__addon--button:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: -1px;
+}
+
+/* Switch ------------------------------------------------------------- */
+
+/* A real checkbox, hidden with the sr-only technique so it keeps its
+   semantics, its keyboard and its form value; the track is what is painted. */
+.iv-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-3);
+  cursor: pointer;
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-switch input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.iv-switch__track {
+  --iv-switch-shift: 0rem;
+
+  display: flex;
+  align-items: center;
+  flex: none;
+  inline-size: 2.75rem;
+  block-size: 1.5rem;
+  padding: 0.1875rem;
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-color-border-strong);
+  transition: background-color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-switch__thumb {
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-color-bg);
+  box-shadow: var(--iv-shadow-1);
+  /* A margin, not a transform: it follows the writing direction on its own. */
+  margin-inline-start: var(--iv-switch-shift);
+  transition: margin-inline-start var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-switch input:where(:checked) + .iv-switch__track {
+  --iv-switch-shift: 1.25rem;
+
+  background-color: var(--iv-color-primary);
+}
+
+.iv-switch input:where(:focus-visible) + .iv-switch__track {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+}
+
+.iv-switch input:where(:disabled) + .iv-switch__track {
+  opacity: 0.55;
+}
+
+/* Range -------------------------------------------------------------- */
+
+/* The filled part of the track comes from `--iv-range-value` (a percentage the
+   author or a script sets); Firefox fills it natively with
+   `::-moz-range-progress`. Each engine needs its own rule: one unknown
+   pseudo-element would invalidate the whole selector list. */
+.iv-range {
+  --iv-range-value: 50%;
+  --iv-range-track: 0.5rem;
+  --iv-range-thumb: 1.25rem;
+
+  appearance: none;
+  -webkit-appearance: none;
+  inline-size: 100%;
+  block-size: var(--iv-range-thumb);
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.iv-range:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 4px;
+  border-radius: var(--iv-radius-full);
+}
+
+.iv-range::-webkit-slider-runnable-track {
+  block-size: var(--iv-range-track);
+  border-radius: var(--iv-radius-full);
+  background-image: linear-gradient(to right, var(--iv-color-primary) 0 var(--iv-range-value), var(--iv-color-border) var(--iv-range-value) 100%);
+}
+
+.iv-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-block-start: calc((var(--iv-range-track) - var(--iv-range-thumb)) / 2);
+  inline-size: var(--iv-range-thumb);
+  block-size: var(--iv-range-thumb);
+  border: 2px solid var(--iv-color-primary);
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-color-bg);
+  box-shadow: var(--iv-shadow-1);
+  transition: box-shadow var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-range:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+}
+
+.iv-range::-moz-range-track {
+  block-size: var(--iv-range-track);
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-color-border);
+}
+
+.iv-range::-moz-range-progress {
+  block-size: var(--iv-range-track);
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-color-primary);
+}
+
+.iv-range::-moz-range-thumb {
+  inline-size: var(--iv-range-thumb);
+  block-size: var(--iv-range-thumb);
+  border: 2px solid var(--iv-color-primary);
+  border-radius: var(--iv-radius-full);
+  background-color: var(--iv-color-bg);
+  box-shadow: var(--iv-shadow-1);
+}
+
+.iv-range:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+}
+
+/* File --------------------------------------------------------------- */
+
+/* The label wraps a real `<input type="file">`, hidden with the sr-only
+   technique: the button and the file list stay reachable, the drop zone is
+   what the user sees. */
+.iv-file {
+  display: block;
+  cursor: pointer;
+  --iv-icon-upload: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 1 3.4 6h2.9v4.5h3.4V6h2.9L8 1zM2 12.6h12V15H2z'/%3E%3C/svg%3E");
+}
+
+.iv-file input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.iv-file__zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--iv-space-2);
+  padding: var(--iv-space-6);
+  text-align: center;
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+  background-color: var(--iv-color-surface);
+  border: var(--iv-border-width-strong) dashed var(--iv-color-border);
+  border-radius: var(--iv-radius-lg);
+  transition:
+    border-color var(--iv-motion-base) var(--iv-ease-out),
+    background-color var(--iv-motion-base) var(--iv-ease-out),
+    box-shadow var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-file__zone::before {
+  content: "";
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  background-color: var(--iv-color-primary);
+  mask-image: var(--iv-icon-upload);
+  mask-size: 100% 100%;
+  -webkit-mask-image: var(--iv-icon-upload);
+  -webkit-mask-size: 100% 100%;
+}
+
+@media (hover: hover) {
+  .iv-file:where(:hover) .iv-file__zone {
+    border-color: var(--iv-color-primary);
+    background-color: var(--iv-color-primary-subtle);
+  }
+}
+
+.iv-file:where(:focus-within) .iv-file__zone {
+  border-color: var(--iv-color-primary);
+  background-color: var(--iv-color-primary-subtle);
+  box-shadow: 0 0 0 4px var(--iv-glow-primary);
+}
+
+/* Validation states -------------------------------------------------- */
+
+/* `.iv-form` is only the rhythm of the fields; everything else is the field. */
+.iv-form {
+  display: grid;
+  gap: var(--iv-space-5);
+}
+
+.iv-field--invalid .iv-input,
+.iv-field--invalid .iv-textarea {
+  border-color: var(--iv-color-danger);
+  background-image: var(--iv-icon-invalid);
+  background-repeat: no-repeat;
+  background-size: 1.125rem 1.125rem;
+  background-position: right var(--iv-space-3) top 0.7rem;
+  padding-inline-end: 2.5rem;
+}
+
+.iv-field--invalid .iv-input:where(:dir(rtl)),
+.iv-field--invalid .iv-textarea:where(:dir(rtl)) {
+  background-position: left var(--iv-space-3) top 0.7rem;
+}
+
+/* The select already paints a chevron: the status icon joins it, it never
+   replaces it. */
+.iv-field--invalid .iv-select {
+  border-color: var(--iv-color-danger);
+  background-image: var(--iv-icon-invalid), var(--iv-select-chevron);
+  background-repeat: no-repeat;
+  background-size: 1.125rem 1.125rem, 1rem 1rem;
+  background-position: right 2.25rem center, right var(--iv-space-3) center;
+  padding-inline-end: 3.75rem;
+}
+
+.iv-field--valid .iv-input,
+.iv-field--valid .iv-textarea {
+  border-color: var(--iv-color-success);
+  background-image: var(--iv-icon-valid);
+  background-repeat: no-repeat;
+  background-size: 1.125rem 1.125rem;
+  background-position: right var(--iv-space-3) top 0.7rem;
+  padding-inline-end: 2.5rem;
+}
+
+.iv-field--valid .iv-select {
+  border-color: var(--iv-color-success);
+  background-image: var(--iv-icon-valid), var(--iv-select-chevron);
+  background-repeat: no-repeat;
+  background-size: 1.125rem 1.125rem, 1rem 1rem;
+  background-position: right 2.25rem center, right var(--iv-space-3) center;
+  padding-inline-end: 3.75rem;
+}
+
+/* The focus halo takes the colour of the state, so the ring never contradicts
+   the message underneath it. */
+.iv-field--invalid :where(.iv-input:focus-visible),
+.iv-field--invalid :where(.iv-select:focus-visible),
+.iv-field--invalid :where(.iv-textarea:focus-visible) {
+  outline-color: var(--iv-color-danger);
+  border-color: var(--iv-color-danger);
+  box-shadow: 0 0 0 4px var(--iv-color-danger-subtle);
+}
+
+.iv-field--invalid .iv-label {
+  color: var(--iv-color-danger);
+}
+
+.iv-field--valid .iv-label {
+  color: var(--iv-color-text);
+}
+
+/* The message slides in; with reduced motion it simply appears. */
+.iv-field__error {
+  animation: iv-field-error 200ms var(--iv-ease-out);
+}
+
+@keyframes iv-field-error {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+}
+
+/* Summary ------------------------------------------------------------ */
+
+/* A component sets `hidden` to put these away; the reset rule for `[hidden]`
+   is weaker than the class here, so each one turns itself off. */
+.iv-form__summary[hidden],
+.iv-field__error[hidden] {
+  display: none;
+}
+
+.iv-form__summary {
+  display: grid;
+  gap: var(--iv-space-3);
+  padding: var(--iv-space-4);
+  border: var(--iv-border-width) solid var(--iv-color-danger);
+  border-radius: var(--iv-radius-lg);
+  background-color: var(--iv-color-danger-subtle);
+  box-shadow: var(--iv-shadow-1);
+  animation: iv-field-error 200ms var(--iv-ease-out);
+}
+
+.iv-form__summary-title {
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-2);
+  margin: 0;
+  font-weight: var(--iv-weight-semibold);
+  color: var(--iv-color-danger);
+}
+
+.iv-form__summary-title::before {
+  content: "";
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  background-color: currentColor;
+  mask-image: var(--iv-icon-alert);
+  mask-size: 100% 100%;
+  -webkit-mask-image: var(--iv-icon-alert);
+  -webkit-mask-size: 100% 100%;
+}
+
+.iv-form__summary-list {
+  display: grid;
+  gap: var(--iv-space-1);
+  margin: 0;
+  padding-inline-start: var(--iv-space-5);
+  font-size: var(--iv-text-sm);
+}
+
+.iv-form__summary a {
+  color: var(--iv-color-danger);
+  text-underline-offset: 0.2em;
+}
+
+/* Shake -------------------------------------------------------------- */
+
+/* Applied by `form` for a moment after a failed submit. */
+.iv-shake {
+  animation: iv-shake 320ms var(--iv-ease-out);
+}
+
+@keyframes iv-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-6px);
+  }
+
+  45% {
+    transform: translateX(6px);
+  }
+
+  70% {
+    transform: translateX(-3px);
+  }
+
+  90% {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-shake,
+  .iv-field__error,
+  .iv-form__summary {
+    animation: none;
+  }
+}
+
+/* Counter ------------------------------------------------------------ */
+
+/* Added by `counter` at the end of the field. */
+.iv-counter {
+  margin: 0;
+  justify-self: end;
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-counter__value {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--iv-weight-medium);
+}
+
+.iv-counter--warn {
+  color: var(--iv-color-warning);
+}
+
+.iv-counter--over {
+  color: var(--iv-color-danger);
+  font-weight: var(--iv-weight-semibold);
 }

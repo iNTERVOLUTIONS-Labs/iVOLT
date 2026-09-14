@@ -11,6 +11,12 @@ import Fixture from "../../components/Fixture.astro";
     <h2>Error and disabled</h2>
     <p>Mark invalid fields with <code>aria-invalid="true"</code> and point <code>aria-describedby</code> at the <code>iv-field__error</code> element. Disabled controls use the native attribute.</p>
     <Fixture name="form/error" />
+    <h2>Floating labels and input groups</h2>
+    <p><code>iv-field--float</code> keeps the label inside the control until it has focus or a value (give the control <code>placeholder=" "</code>). <code>iv-input-group</code> joins prefixes, suffixes and buttons to a control.</p>
+    <Fixture name="form/float" />
+    <h2>Switch, range, file and sizes</h2>
+    <p>A checkbox becomes a switch, a range input gets a filled track, a file input becomes a drop zone that keeps the real input accessible, textareas grow with their content where the browser supports it, and inputs come in three sizes like buttons.</p>
+    <Fixture name="form/controls" />
     <h2>Classes</h2>
     <table>
       <thead><tr><th>Class</th><th>Element</th></tr></thead>

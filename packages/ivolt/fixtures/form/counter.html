@@ -1,0 +1,15 @@
+<div class="iv-stack" style="max-width: 34rem">
+  <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Two demo fields with made-up text. Nothing is submitted.</p>
+
+  <div class="iv-field" data-iv-component="counter" data-iv-mode="chars">
+    <label class="iv-label" for="c-bio">Short bio</label>
+    <textarea class="iv-textarea" id="c-bio" name="bio" maxlength="280" aria-describedby="c-bio-help" placeholder="A couple of lines about your work">Product designer in Bilbao. I draw interfaces that stay readable at three in the morning, and I like forms that say what is wrong instead of turning red and staying quiet about it. Currently writing about design systems.</textarea>
+    <p class="iv-field__help iv-u-m-0" id="c-bio-help">Hard limit: the browser stops typing at 280 characters, with or without JavaScript.</p>
+  </div>
+
+  <div class="iv-field" data-iv-component="counter" data-iv-mode="words" data-iv-max="40" data-iv-template="{count} of {max} words · {remaining} left" data-iv-over-text="Trim the pitch to 40 words or fewer.">
+    <label class="iv-label" for="c-pitch">Pitch</label>
+    <textarea class="iv-textarea" id="c-pitch" name="pitch" aria-describedby="c-pitch-help">We build small tools for teams that ship on Fridays. This pitch runs past the limit on purpose, so the counter turns red, the control is marked invalid and the form refuses to send it until the text is shorter than the agreed limit.</textarea>
+    <p class="iv-field__help iv-u-m-0" id="c-pitch-help">Soft limit: you can type past 40 words, and the field is then marked invalid until you trim it.</p>
+  </div>
+</div>

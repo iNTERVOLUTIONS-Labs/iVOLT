@@ -129,6 +129,8 @@ class Dialog {
 | `DataTable` | `sort(columnIndexOrTh, direction?) filter(query) clearFilter() reset() destroy()`; `sortColumn`, `sortDirection`, `rows`, `visibleRows`, `query` | `filterDelay` (150), `emptyText` («No rows match»), `statusText` («{visible} of {total} rows»), `locale` (`lang` del documento); ver §8.4 |
 | `Picker` | `open() close() toggle() select(value) deselect(value) clear() destroy()`; `value`, `isOpen`, `native`, `optionElements` | `search` (`auto`\|`on`\|`off`), `placeholder` (del `<option value="">` o «Select…»), `searchPlaceholder` («Search»), `emptyText` («No matches»), `clearable` (true), `closeOnSelect` (true simple / false múltiple), `maxItems` (0), `countText` («{count} selected»); ver §8.6 |
 | `Carousel` | `next() prev() goTo(index, reason?) play() pause() destroy()`; `index`, `count`, `isPlaying`, `slides` | `effect` (`slide`), `autoplay` (0), `loop` (true), `pauseOnHover` (true), `swipe` (true), `duration` (600), `pauseText` («Pause»), `playText` («Play»); ver §8.5 |
+| `Form` | `validate() validateField(control) reset() destroy()`; `errors`, `fields` | `validateOn` (`blur`), `summary` (false), `summaryTitle` («Please fix the following»), `focusFirst` (true), `scroll` (true), `live` (true); ver §8.7 |
+| `Counter` | `update() destroy()`; `count`, `max`, `control` | `mode` (`chars`), `max` (0 = el `maxlength`), `warnAt` (0.9), `template` (vacío = «{count} / {max}» o «{count}»), `overText` («Too long»); ver §8.7 |
 
 Toda opción se puede fijar por atributo con su nombre en kebab-case (`data-iv-close-on-select="false"`).
 
@@ -145,6 +147,10 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 | `iv:sort` → `iv:sorted` | sí / no | data table, antes / después de ordenar (`reset()` emite solo `iv:sorted` con `column: -1`) | `column`, `direction`, `previousColumn`, `previousDirection` |
 | `iv:filter` → `iv:filtered` | sí / no | data table, antes / después de filtrar | previo: `query`, `previousQuery`; posterior: `query`, `visible`, `total` |
 | `iv:play` / `iv:pause` | no | carousel al iniciar o retener la rotación | `reason: "trigger"\|"api"\|"interaction"` |
+| `iv:validate` | no | form, por control antes de decidir su estado | `control`, `message`, `setError(message)` |
+| `iv:invalid` | no | form, tras un `submit` con errores | `errors: { control, message }[]` |
+| `iv:valid` | sí | form, justo antes de dejar pasar un `submit` válido (cancelarlo impide el envío) | `errors: []` |
+| `iv:count` | no | counter, en cada actualización (también la inicial) | `count`, `max`, `remaining`, `over` |
 | `iv:themechange` | no | en `document` | `theme`, `resolved: "light"\|"dark"` |
 
 `preventDefault()` en el evento previo aborta la acción y no se emite el posterior. Para que esto sea cierto con `<dialog>` nativo, `Dialog` intercepta las tres vías de cierre antes de que el navegador actúe: `submit` de `form[method="dialog"]` (se cancela y se llama a `close(value)` tras `iv:close`), el evento nativo `cancel` (Esc) y el clic en backdrop (`event.target === dialog` y punto fuera del rect de `iv-dialog__panel`). Un cierre externo no interceptable (por ejemplo `dialog.close()` directo del consumidor) emite solo `iv:closed` con `reason: "external"`.
@@ -354,7 +360,7 @@ Opciones: `closeOnBackdrop` (true), `closeOnEscape` (true), `initialFocus` (sele
 
 | Clase | Comportamiento |
 |---|---|
-| `.iv-field--float` | etiqueta flotante: `.iv-label` dentro del campo, posicionada sobre el control; con `:placeholder-shown` (el control lleva `placeholder=" "`) baja al centro; con `:focus` o valor sube y encoge; funciona con `.iv-input`, `.iv-textarea`, `.iv-select` |
+| `.iv-field--float` | etiqueta flotante (con `<select>` usa `:has()`, mejora progresiva: sin soporte el texto de la opción vacía se ve bajo la etiqueta): `.iv-label` dentro del campo, posicionada sobre el control; con `:placeholder-shown` (el control lleva `placeholder=" "`) baja al centro; con `:focus` o valor sube y encoge; funciona con `.iv-input`, `.iv-textarea`, `.iv-select` |
 | `.iv-input-group` | contenedor `inline-flex` que une `__addon` (prefijo/sufijo de texto o icono, `surface`, muted) y controles con radios solo en los extremos; `__addon--button` para un botón adosado |
 | `.iv-switch` | `<label class="iv-switch"><input type="checkbox" role="switch"><span class="iv-switch__track"><span class="iv-switch__thumb"></span></span><span>Label</span></label>`; pista 2.75rem×1.5rem, pulgar con `transform`, `primary` al activar, foco visible en la pista |
 | `.iv-range` | `<input type="range" class="iv-range">` con pista `surface`, relleno con `accent` hasta el valor mediante `--iv-range-value` (opcional, la fixture lo demuestra con `style`), pulgar con halo al foco; estilos `::-webkit-slider-*` y `::-moz-range-*` |

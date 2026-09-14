@@ -41,7 +41,8 @@ export const t = {
 // Nombre en español de cada familia de componentes, en el orden de la navegación. Lo usan
 // la barra lateral y la portada; las claves son las mismas que las de `families` en en.js.
 export const componentLabels = {
-  button: "Botón", card: "Tarjeta", form: "Formulario", combobox: "Combobox",
+  button: "Botón", card: "Tarjeta", form: "Formulario",
+  validation: "Validación", combobox: "Combobox",
   datatable: "Tabla de datos",
   picker: "Selector",
   carousel: "Carrusel", dialog: "Diálogo", badge: "Insignia", alert: "Alerta",

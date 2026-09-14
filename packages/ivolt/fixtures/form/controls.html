@@ -1,0 +1,67 @@
+<div class="iv-stack" style="max-width: 32rem">
+  <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Demo controls with made-up values. Nothing is submitted; none of this needs JavaScript.</p>
+
+  <fieldset class="iv-fieldset">
+    <legend class="iv-fieldset__legend">Notifications</legend>
+    <div class="iv-checks">
+      <label class="iv-switch">
+        <input type="checkbox" name="deploys" role="switch" checked>
+        <span class="iv-switch__track"><span class="iv-switch__thumb"></span></span>
+        <span>Email me about deploys</span>
+      </label>
+      <label class="iv-switch">
+        <input type="checkbox" name="digest" role="switch">
+        <span class="iv-switch__track"><span class="iv-switch__thumb"></span></span>
+        <span>Weekly digest</span>
+      </label>
+      <label class="iv-switch">
+        <input type="checkbox" name="sms" role="switch" disabled>
+        <span class="iv-switch__track"><span class="iv-switch__thumb"></span></span>
+        <span>SMS alerts (not available in this demo)</span>
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="iv-field">
+    <label class="iv-label" for="ct-budget">Monthly budget: 620 €</label>
+    <input class="iv-range" id="ct-budget" name="budget" type="range" min="0" max="1000" step="20" value="620" style="--iv-range-value: 62%">
+    <p class="iv-field__help iv-u-m-0">The filled part comes from <code>--iv-range-value</code>, set here in the markup. Moving the slider does not update it without JavaScript.</p>
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="ct-file">Brand assets</label>
+    <label class="iv-file">
+      <input type="file" id="ct-file" name="assets" multiple accept="image/*">
+      <span class="iv-file__zone">
+        <span>Choose files or drop them here</span>
+        <span class="iv-u-text-sm iv-u-text-muted">PNG or SVG, up to 5 MB each. Demo only: nothing is uploaded.</span>
+      </span>
+    </label>
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="ct-notes">Release notes</label>
+    <textarea class="iv-textarea" id="ct-notes" name="notes" placeholder="What changed?">The box grows with the text where the browser supports field-sizing, and stays resizable everywhere else.</textarea>
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="ct-small">Coupon (small)</label>
+    <input class="iv-input iv-input--sm" id="ct-small" name="coupon" type="text" value="IVOLT-25" autocomplete="off">
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="ct-medium">Project (default)</label>
+    <input class="iv-input" id="ct-medium" name="project" type="text" value="Spectacular forms" autocomplete="off">
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="ct-large">Headline (large)</label>
+    <input class="iv-input iv-input--lg" id="ct-large" name="headline" type="text" value="Forms with character" autocomplete="off">
+  </div>
+
+  <div class="iv-cluster">
+    <button class="iv-button iv-button--primary iv-button--lg" type="button">Large button</button>
+    <button class="iv-button" type="button">Default</button>
+    <button class="iv-button iv-button--sm" type="button">Small</button>
+  </div>
+</div>

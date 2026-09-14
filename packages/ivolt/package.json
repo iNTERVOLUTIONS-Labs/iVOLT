@@ -67,6 +67,14 @@
       "types": "./dist/types/components/carousel.d.ts",
       "default": "./dist/js/components/carousel.js"
     },
+    "./form": {
+      "types": "./dist/types/components/form.d.ts",
+      "default": "./dist/js/components/form.js"
+    },
+    "./counter": {
+      "types": "./dist/types/components/counter.d.ts",
+      "default": "./dist/js/components/counter.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",

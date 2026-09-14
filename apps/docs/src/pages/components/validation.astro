@@ -1,0 +1,51 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Form validation and counter" description="iVOLT form validation: inline error messages from the browser's constraint validation, custom messages per error type, an error summary, focus management and a character or word counter for text fields.">
+  <article class="docs-prose">
+    <h1>Form validation and counter</h1>
+    <p>Two small components that work on top of the attributes you already write. The <code>form</code> component turns the browser's constraint validation into inline messages, a summary and sensible focus, with messages you control per error type. The <code>counter</code> shows characters or words next to a text field and can mark the field invalid when a soft limit is exceeded. Without JavaScript the browser validates and <code>maxlength</code> limits the text as usual.</p>
+    <p><strong>CSS:</strong> <code>css/components/form.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/form</code> and <code>@intervolutions/ivolt/counter</code>, or <code>auto.js</code>. Added in v0.3.</p>
+    <Fixture name="form/validation" />
+    <h2>Messages</h2>
+    <p>Each control can carry one message per error type: <code>data-iv-error-value-missing</code>, <code>-type-mismatch</code>, <code>-pattern-mismatch</code>, <code>-too-short</code>, <code>-too-long</code>, <code>-range-underflow</code>, <code>-range-overflow</code>, <code>-step-mismatch</code>, <code>-bad-input</code> and <code>-custom</code>, or a single <code>data-iv-error</code>. Without any of them the browser's own message is used. To add your own rules listen to <code>iv:validate</code> and call <code>detail.setError(message)</code>; an empty string clears it.</p>
+    <h2>Options</h2>
+    <table>
+      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>validateOn</code></td><td><code>data-iv-validate-on</code></td><td><code>blur</code></td><td><code>blur</code> validates a field when it loses focus and then on every input while invalid; <code>input</code> validates on every keystroke; <code>submit</code> only on submit.</td></tr>
+        <tr><td><code>summary</code></td><td><code>data-iv-summary</code></td><td><code>false</code></td><td>Render an error summary with links to the fields at the top of the form.</td></tr>
+        <tr><td><code>summaryTitle</code></td><td><code>data-iv-summary-title</code></td><td><code>Please fix the following</code></td><td>Heading of the summary.</td></tr>
+        <tr><td><code>focusFirst</code></td><td><code>data-iv-focus-first</code></td><td><code>true</code></td><td>Move focus to the first invalid field (or the summary) after a failed submit.</td></tr>
+        <tr><td><code>scroll</code></td><td><code>data-iv-scroll</code></td><td><code>true</code></td><td>Scroll the focused field into view.</td></tr>
+        <tr><td><code>live</code></td><td><code>data-iv-live</code></td><td><code>true</code></td><td>Announce error messages with <code>aria-live</code>.</td></tr>
+      </tbody>
+    </table>
+    <h2>Methods and events</h2>
+    <p><code>validate()</code> returns whether the form is valid and applies every state, <code>validateField(control)</code>, <code>reset()</code>, <code>destroy()</code>; read <code>errors</code>. Events: <code>iv:validate</code> on each control (<code>detail.control</code>, <code>message</code>, <code>setError</code>), <code>iv:invalid</code> on the form after a failed submit (<code>detail.errors</code>), and <code>iv:valid</code> (cancelable) right before a valid submit goes through, which is where an asynchronous submission takes over.</p>
+    <h2>Counter</h2>
+    <p>Put <code>data-iv-component="counter"</code> on the field wrapper. The count follows <code>maxlength</code> or <code>data-iv-max</code>; with a soft <code>data-iv-max</code> the reader can keep typing, the counter turns to its "over" state and the control becomes invalid through <code>setCustomValidity</code>, so the form component and the browser both report it.</p>
+    <Fixture name="form/counter" />
+    <table>
+      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>mode</code></td><td><code>data-iv-mode</code></td><td><code>chars</code></td><td><code>chars</code> or <code>words</code>.</td></tr>
+        <tr><td><code>max</code></td><td><code>data-iv-max</code></td><td><code>maxlength</code></td><td>Limit shown and, when there is no <code>maxlength</code>, enforced as a validation error.</td></tr>
+        <tr><td><code>warnAt</code></td><td><code>data-iv-warn-at</code></td><td><code>0.9</code></td><td>Fraction of the limit at which the counter changes to its warning state.</td></tr>
+        <tr><td><code>template</code></td><td><code>data-iv-template</code></td><td><code>&#123;count&#125; / &#123;max&#125;</code></td><td>Text of the counter; <code>&#123;remaining&#125;</code> is also available.</td></tr>
+        <tr><td><code>overText</code></td><td><code>data-iv-over-text</code></td><td><code>Too long</code></td><td>Validation message when a soft limit is exceeded.</td></tr>
+      </tbody>
+    </table>
+    <h2>Assistive technology</h2>
+    <p>Invalid controls carry <code>aria-invalid</code> and are described by their message; the summary is a live region and each entry is a link to its field; the counter is announced politely. Under reduced motion the shake on a failed submit is skipped.</p>
+    <h2>Without JavaScript</h2>
+    <p>The browser validates with its own bubbles and <code>maxlength</code> caps the text. Soft limits and word counts need JavaScript; nothing else does.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>Validating only in JavaScript: keep the HTML attributes, they are the rules.</li>
+      <li>A summary without <code>focusFirst</code>: readers of screen magnifiers may never see it.</li>
+      <li>Messages that describe the rule instead of the fix: write "Enter a date after today", not "Invalid date".</li>
+    </ul>
+  </article>
+</Base>

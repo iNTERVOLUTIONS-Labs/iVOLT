@@ -1,0 +1,73 @@
+<form class="iv-form" data-iv-component="form" data-iv-summary="true" data-iv-validate-on="blur" action="#" method="get" style="max-width: 34rem" aria-describedby="v-note">
+  <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0" id="v-note">Demo form with made-up fields. Nothing is sent to a server: a valid submit only reloads this page.</p>
+
+  <div class="iv-field">
+    <label class="iv-label" for="v-name">Full name <span class="iv-label__required" aria-hidden="true">*</span></label>
+    <input class="iv-input" id="v-name" name="name" type="text" required minlength="3" autocomplete="name"
+      data-iv-error-value-missing="Enter the name that should appear on the invoice."
+      data-iv-error-too-short="Use at least 3 characters, so the name can be matched.">
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="v-email">Work email <span class="iv-label__required" aria-hidden="true">*</span></label>
+    <input class="iv-input" id="v-email" name="email" type="email" required autocomplete="email" aria-describedby="v-email-help"
+      data-iv-error-value-missing="Enter an email address we can reply to."
+      data-iv-error-type-mismatch="Write the whole address, like name@company.com.">
+    <p class="iv-field__help iv-u-m-0" id="v-email-help">Used only for this demo; it is never stored.</p>
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="v-site">Website</label>
+    <input class="iv-input" id="v-site" name="site" type="url" placeholder="https://example.com" autocomplete="url"
+      data-iv-error-type-mismatch="Start the address with https:// so it can be opened.">
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="v-age">Age <span class="iv-label__required" aria-hidden="true">*</span></label>
+    <input class="iv-input" id="v-age" name="age" type="number" required min="18" max="120" inputmode="numeric"
+      data-iv-error-value-missing="Enter your age in years."
+      data-iv-error-range-underflow="This demo is for people aged 18 or over."
+      data-iv-error-range-overflow="Enter an age of 120 or less.">
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="v-start">Start date <span class="iv-label__required" aria-hidden="true">*</span></label>
+    <input class="iv-input" id="v-start" name="start" type="date" required min="2026-10-01"
+      data-iv-error-value-missing="Pick the day the plan should start."
+      data-iv-error-range-underflow="Pick a day from 1 October 2026 onwards.">
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="v-plan">Plan <span class="iv-label__required" aria-hidden="true">*</span></label>
+    <select class="iv-select" id="v-plan" name="plan" required
+      data-iv-error-value-missing="Choose one of the three plans.">
+      <option value="">Choose a plan</option>
+      <option value="starter">Starter</option>
+      <option value="team">Team</option>
+      <option value="enterprise">Enterprise</option>
+    </select>
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-label" for="v-pass">Password <span class="iv-label__required" aria-hidden="true">*</span></label>
+    <input class="iv-input" id="v-pass" name="password" type="password" required pattern="[A-Za-z0-9]{8,}" autocomplete="new-password"
+      data-iv-valid-sample="Bilbao2026"
+      aria-describedby="v-pass-help"
+      data-iv-error-value-missing="Choose a password for the demo account."
+      data-iv-error-pattern-mismatch="Use 8 characters or more, letters and digits only.">
+    <p class="iv-field__help iv-u-m-0" id="v-pass-help">Made-up account: the value never leaves the page.</p>
+  </div>
+
+  <div class="iv-field">
+    <label class="iv-check">
+      <input type="checkbox" id="v-terms" name="terms" required
+        data-iv-error-value-missing="Tick the box to accept the demo terms.">
+      I accept the terms of this demo
+    </label>
+  </div>
+
+  <div class="iv-cluster">
+    <button class="iv-button iv-button--primary" type="submit">Create account (demo)</button>
+    <button class="iv-button iv-button--ghost" type="reset">Reset</button>
+  </div>
+</form>
