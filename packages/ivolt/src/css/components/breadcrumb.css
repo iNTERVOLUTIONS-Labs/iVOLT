@@ -30,6 +30,10 @@
   align-items: center;
   gap: var(--iv-breadcrumb-gap);
   min-block-size: 1.5rem;
+  /* A long page title breaks inside the crumb rather than widening the trail;
+     `anywhere` so the intrinsic width shrinks with it. */
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
 }
 
 .iv-breadcrumb__item + .iv-breadcrumb__item::before {

@@ -12,8 +12,11 @@
   --iv-alert-bg: var(--iv-color-info-subtle);
 
   display: grid;
-  grid-template-columns: auto 1fr;
+  /* `minmax(0, 1fr)`, not `1fr`: the text column has to shrink below its
+     longest word instead of pushing the alert past its container. */
+  grid-template-columns: auto minmax(0, 1fr);
   gap: var(--iv-space-1) var(--iv-space-3);
+  overflow-wrap: break-word;
   padding: var(--iv-alert-padding, var(--iv-space-4));
   color: var(--iv-color-text);
   background-color: var(--iv-alert-bg);

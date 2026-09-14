@@ -330,9 +330,11 @@ textarea.iv-input {
   border-end-end-radius: var(--iv-radius-md);
 }
 
+/* A zero basis, not `auto`: the control takes the free space and the addons keep
+   their natural width instead of being squeezed by a 100% wide control. */
 .iv-input-group .iv-input,
 .iv-input-group .iv-select {
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   min-inline-size: 0;
 }
 
@@ -347,12 +349,17 @@ textarea.iv-input {
   display: inline-flex;
   align-items: center;
   gap: var(--iv-space-2);
-  flex: none;
+  /* Never grows, but gives way when several addons share a narrow group:
+     the text ellipsises instead of pushing the group past its container. */
+  flex: 0 1 auto;
+  min-inline-size: 0;
   padding-inline: var(--iv-space-3);
   font-size: var(--iv-text-sm);
   color: var(--iv-color-text-muted);
   background-color: var(--iv-color-surface);
   border: var(--iv-border-width) solid var(--iv-color-border-strong);
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -444,6 +451,30 @@ textarea.iv-input {
   opacity: 0.55;
 }
 
+/* Forced colours (Windows high contrast): the UA paints track and thumb with
+   Canvas, so the switch and its state disappear. System colours draw both. */
+@media (forced-colors: active) {
+  .iv-switch__track {
+    --iv-switch-fc-thumb: CanvasText;
+
+    background-color: Canvas;
+    border: var(--iv-border-width) solid CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .iv-switch__thumb {
+    background-color: var(--iv-switch-fc-thumb);
+    box-shadow: none;
+    forced-color-adjust: none;
+  }
+
+  .iv-switch input:where(:checked) + .iv-switch__track {
+    --iv-switch-fc-thumb: Canvas;
+
+    background-color: Highlight;
+  }
+}
+
 /* Range -------------------------------------------------------------- */
 
 /* The filled part of the track comes from `--iv-range-value` (a percentage the
@@ -517,6 +548,39 @@ textarea.iv-input {
 
 .iv-range:focus-visible::-moz-range-thumb {
   box-shadow: 0 0 0 4px var(--iv-glow-primary);
+}
+
+/* Forced colours: the track is a background, so the UA removes it and only the
+   thumb is left floating. One rule per engine, as above. */
+@media (forced-colors: active) {
+  .iv-range::-webkit-slider-runnable-track {
+    background-image: linear-gradient(to right, Highlight 0 var(--iv-range-value), Canvas var(--iv-range-value) 100%);
+    border: var(--iv-border-width) solid CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .iv-range::-webkit-slider-thumb {
+    background-color: Canvas;
+    border-color: CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .iv-range::-moz-range-track {
+    background-color: Canvas;
+    border: var(--iv-border-width) solid CanvasText;
+    forced-color-adjust: none;
+  }
+
+  .iv-range::-moz-range-progress {
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .iv-range::-moz-range-thumb {
+    background-color: Canvas;
+    border-color: CanvasText;
+    forced-color-adjust: none;
+  }
 }
 
 /* File --------------------------------------------------------------- */

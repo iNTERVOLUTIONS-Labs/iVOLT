@@ -60,6 +60,10 @@
     --docs-arc-blend: add;
   }
 }
+/* The header is sticky, so fragment targets must stop below it. */
+/* This sheet only ships with the documentation shell, so the root can carry the offset. */
+:root { scroll-padding-block-start: 5.5rem; }
+.docs :target { scroll-margin-block-start: 5.5rem; }
 .docs, .docs .iv-root { font-family: var(--iv-font-sans); }
 .docs h1, .docs h2, .docs h3, .docs .docs-display { font-family: var(--docs-display); letter-spacing: -0.03em; font-weight: 600; }
 .docs ::selection { background: var(--iv-color-accent); color: #051009; }
@@ -90,7 +94,7 @@
 .docs-prose { max-inline-size: var(--iv-measure); counter-reset: docs-h2; }
 .docs-prose > * + * { margin-block-start: var(--iv-space-4); }
 .docs-prose > .docs-fixture:first-of-type, .docs-prose > form { margin-block-start: var(--iv-space-8); }
-.docs-prose h1 { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95; margin: 0; letter-spacing: -0.045em; font-weight: 500; }
+.docs-prose h1 { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95; margin: 0; letter-spacing: -0.045em; font-weight: 500; overflow-wrap: break-word; }
 .docs-prose h1 + p { font-size: 1.25rem; line-height: var(--iv-leading-snug); color: var(--iv-color-text-muted); max-inline-size: 46ch; margin-block-start: var(--iv-space-5); position: relative; }
 .docs-prose h1 + p::before { content: ""; position: absolute; inset-block-start: calc(var(--iv-space-5) * -1 + -0.7rem); inset-inline-start: 0; inline-size: min(100%, 16rem); block-size: 2px; background: linear-gradient(90deg, var(--iv-color-accent), transparent); transform-origin: left; animation: docs-grow 900ms var(--docs-ease-out) 120ms both; }
 @keyframes docs-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
@@ -99,7 +103,7 @@
 .docs-prose h3 { margin-block-start: var(--iv-space-8); font-size: var(--iv-text-lg); }
 .docs-prose table { inline-size: 100%; font-size: var(--iv-text-sm); border-collapse: separate; border-spacing: 0; border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-lg); overflow: hidden; }
 .docs-prose th { text-align: start; background: var(--iv-color-surface); font-family: var(--docs-display); letter-spacing: .02em; }
-.docs-prose code:not(pre code) { background: var(--iv-color-surface); border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-sm); padding: 0 .3em; font-size: .9em; }
+.docs-prose code:not(pre code) { background: var(--iv-color-surface); border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-sm); padding: 0 .3em; font-size: .9em; overflow-wrap: anywhere; }
 .docs-prose ul li::marker { color: var(--iv-color-accent); }
 .docs-anchor { opacity: 0; text-decoration: none; color: var(--iv-color-primary); font-size: .7em; padding-inline: .25em; transition: opacity var(--iv-motion-fast) var(--docs-ease); }
 .docs-prose h2:hover .docs-anchor, .docs-prose h3:hover .docs-anchor, .docs-anchor:focus-visible { opacity: 1; }

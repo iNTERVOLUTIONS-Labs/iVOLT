@@ -40,6 +40,9 @@
   line-height: 1.2;
   text-align: center;
   text-decoration: none;
+  /* `anywhere`, not `break-word`: it also shrinks the intrinsic width, so a
+     label with no spaces breaks instead of widening the page. */
+  overflow-wrap: anywhere;
   color: var(--iv-button-fg);
   background-color: var(--iv-button-bg);
   border: var(--iv-border-width) solid var(--iv-button-border);

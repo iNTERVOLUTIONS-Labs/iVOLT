@@ -22,12 +22,12 @@
 .docs-header { position: sticky; inset-block-start: 0; z-index: 50; background: var(--docs-glass); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
 .docs-header::after { content: ""; position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 1px; background: linear-gradient(90deg, transparent, var(--docs-line) 18%, var(--docs-line) 82%, transparent); }
 .docs-header__inner { display: flex; align-items: center; gap: var(--iv-space-2); min-height: 4rem; }
-@media (min-width: 64em) { .docs-header__inner { gap: var(--iv-space-4); } }
+@media (min-width: 90em) { .docs-header__inner { gap: var(--iv-space-4); } }
 .docs-brand { color: var(--iv-color-text); display: inline-flex; }
 .docs-brand svg { height: 2.1rem; width: auto; }
 .docs-nav { display: none; gap: var(--iv-space-1); margin-inline-start: auto; }
-.docs-nav > a { color: var(--iv-color-text); text-decoration: none; font-weight: var(--iv-weight-medium); font-family: var(--docs-display); padding: var(--iv-space-2) var(--iv-space-3); border-radius: var(--iv-radius-md); position: relative; }
-.docs-nav > a::after { content: ""; position: absolute; inset-inline: var(--iv-space-3); inset-block-end: 6px; block-size: 2px; background: var(--iv-color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--iv-motion-base) var(--docs-ease); }
+.docs-nav > a { --docs-nav-pad: var(--iv-space-2); color: var(--iv-color-text); text-decoration: none; font-weight: var(--iv-weight-medium); font-family: var(--docs-display); padding: var(--iv-space-2) var(--docs-nav-pad); border-radius: var(--iv-radius-md); position: relative; }
+.docs-nav > a::after { content: ""; position: absolute; inset-inline: var(--docs-nav-pad); inset-block-end: 6px; block-size: 2px; background: var(--iv-color-accent); transform: scaleX(0); transform-origin: left; transition: transform var(--iv-motion-base) var(--docs-ease); }
 .docs-nav > a:hover::after, .docs-nav > a[aria-current="page"]::after { transform: scaleX(1); }
 /* letter roller: the label rides up, its twin rides in */
 .docs-roll { display: block; position: relative; overflow: hidden; }
@@ -46,12 +46,17 @@
 .docs-nav-dialog .docs-theme { display: inline-flex; }
 .docs-menu-toggle { margin-inline-start: 0; }
 @media (min-width: 64em) {
-  .docs-nav { display: flex; }
   .docs-theme { display: flex; }
   .docs-kbd { display: inline-block; }
+}
+/* The five primary links only fit beside search, language and theme from 80em; below that the
+   menu button carries them, and the gaps stay tight until there is room to breathe. */
+@media (min-width: 80em) {
+  .docs-nav { display: flex; }
   .docs-search-open { margin-inline-start: 0; }
   .docs-menu-toggle { display: none; }
 }
+@media (min-width: 90em) { .docs-nav > a { --docs-nav-pad: var(--iv-space-3); } }
 .docs-header__inner > .docs-search-open { margin-inline-start: auto; }
 
 /* ---------- shell, sidebar, toc ---------- */

@@ -16,6 +16,8 @@ Nota v0.2 (2026-09-14): con Combobox el JS agrupado pasa de 7,65 a 10,02 KiB gzi
 
 Reglas: se mide cada artefacto por separado; el tarball tiene otra cifra. No se cumple un presupuesto eliminando estados accesibles ni excluyendo archivos necesarios. Si un objetivo es inviable, el informe muestra el coste por módulo, propone decisión y se registra la desviación en `DECISIONS.md`; el umbral no cambia en silencio.
 
+Barrido de desbordamiento (revisión adversaria, 2026-09-14): 70 rutas × 6 anchos × 3 motores; 46 combinaciones con desbordamiento antes, 0 después (`tests/browser/qa-docs-shell.spec.js`, `qa-docs-css.spec.js`); fixtures de familias sin JS bajo axe, zoom 200 %, 320 px, RTL y colores forzados.
+
 ## 2. Matriz de navegadores (congelada)
 
 | Navegador | Mínimo | Motivo del corte |
