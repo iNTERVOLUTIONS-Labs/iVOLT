@@ -1,0 +1,16 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Progreso" description="Progreso de iVOLT: el <progress> nativo con estilo, en estados determinado e indeterminado, con tamaños y colores de estado, respetando la reducción de movimiento.">
+  <article class="docs-prose">
+    <h1>Progreso (progress)</h1>
+    <p>El elemento nativo <code>&lt;progress&gt;</code>, con estilo. Dale una etiqueta visible con <code>&lt;label for&gt;</code> o un <code>aria-label</code>. Sin <code>value</code> es indeterminado y se anima; con la reducción de movimiento activada, la animación se detiene.</p>
+    <p><strong>CSS:</strong> <code>css/components/progress.css</code> (dentro de <code>ivolt.css</code>).</p>
+    <Fixture name="progress/basic" />
+    <h2>Modificadores</h2>
+    <p><code>--sm</code>; <code>--success --warning --danger</code> para el color de la barra.</p>
+    <h2>Errores frecuentes</h2>
+    <ul><li>Un <code>div</code> con un fondo en lugar del elemento nativo.</li><li>Progreso sin etiqueta o sin <code>max</code>.</li></ul>
+  </article>
+</Base>

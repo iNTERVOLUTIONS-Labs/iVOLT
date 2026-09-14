@@ -1,0 +1,74 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+<Base lang="es" title="Playground" description="Un generador acotado de fragmentos para iVOLT: elige un componente, una variante, un tamaño y un tema para el panel, y copia el HTML resultante.">
+  <article class="docs-prose">
+    <h1>Playground</h1>
+    <p>
+      Esto es un <strong>generador de fragmentos</strong>, no un editor. Eliges un componente, una
+      variante, un tamaño cuando aplica, un tema para el panel de vista previa y uno de unos pocos
+      textos de ejemplo; la página construye el marcado a partir de plantillas fijas y te enseña el
+      HTML para copiarlo. No hay entrada libre ni se ejecuta código, así que lo que copias es
+      siempre marcado válido de iVOLT. No se guarda nada: recarga la página y vuelves a los valores
+      por defecto.
+    </p>
+    <noscript>
+      <div class="iv-alert iv-alert--info" role="status">
+        <p class="iv-alert__title">El playground necesita JavaScript</p>
+        <div class="iv-alert__body">
+          <p>Cada página de componente trae el mismo marcado como fixture estática con un botón de
+          copiar, así que puedes coger los fragmentos de ahí.</p>
+        </div>
+      </div>
+    </noscript>
+  </article>
+
+  <section aria-labelledby="pg-heading" class="iv-stack iv-u-gap-6">
+    <h2 id="pg-heading" class="iv-u-sr-only">Generador de fragmentos</h2>
+
+    <form class="iv-grid iv-u-gap-4 iv-u-grid-cols-1 iv-u-md-grid-cols-3" id="pg-form" novalidate>
+      <div class="iv-field">
+        <label class="iv-label" for="pg-component">Componente</label>
+        <select class="iv-select" id="pg-component" name="component"></select>
+      </div>
+      <div class="iv-field">
+        <label class="iv-label" for="pg-variant">Variante</label>
+        <select class="iv-select" id="pg-variant" name="variant"></select>
+      </div>
+      <div class="iv-field" id="pg-size-field">
+        <label class="iv-label" for="pg-size">Tamaño</label>
+        <select class="iv-select" id="pg-size" name="size"></select>
+      </div>
+      <div class="iv-field">
+        <label class="iv-label" for="pg-text">Texto de ejemplo</label>
+        <select class="iv-select" id="pg-text" name="text"></select>
+        <p class="iv-field__help iv-u-m-0" id="pg-text-help">Lista cerrada: el playground nunca inserta texto que escribas tú.</p>
+      </div>
+      <fieldset class="iv-fieldset">
+        <legend class="iv-fieldset__legend">Tema de la vista previa</legend>
+        <div class="iv-checks iv-checks--inline">
+          <label class="iv-check"><input type="radio" name="pg-theme" value="light" checked> Claro</label>
+          <label class="iv-check"><input type="radio" name="pg-theme" value="dark"> Oscuro</label>
+          <label class="iv-check"><input type="radio" name="pg-theme" value="system"> Sistema</label>
+        </div>
+      </fieldset>
+    </form>
+
+    <figure class="docs-fixture" id="pg-fixture">
+      <figcaption class="docs-fixture__caption">
+        <span class="docs-fixture__title">Fragmento generado</span>
+        <span class="docs-fixture__path">playground</span>
+        <button class="iv-button iv-button--secondary iv-button--sm docs-copy" type="button" data-copy-target="pg-code" aria-describedby="pg-status">Copiar HTML</button>
+        <span class="iv-u-sr-only" id="pg-status" role="status" aria-live="polite"></span>
+      </figcaption>
+      <div class="docs-fixture__preview" id="pg-preview" data-iv-theme="light" role="group" aria-label="Vista previa en vivo"></div>
+      <div class="docs-fixture__code">
+        <pre tabindex="0" aria-label="HTML generado"><code id="pg-code"></code></pre>
+      </div>
+    </figure>
+
+    <p class="iv-u-m-0"><a id="pg-doc-link" href="/es/components/button">Abrir la página del componente Botón</a></p>
+  </section>
+
+  <script src="../../scripts/playground.js"></script>
+</Base>

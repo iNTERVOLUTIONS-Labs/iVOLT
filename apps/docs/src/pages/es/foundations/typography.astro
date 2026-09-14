@@ -1,0 +1,128 @@
+---
+import Base from "../../../layouts/Base.astro";
+---
+<Base lang="es" title="Tipografía" description="La escala tipográfica de iVOLT, los estilos de elemento que aplica .iv-root, la medida de lectura, las utilidades de texto y cómo cambiar la tipografía con tokens sin cargar una fuente remota.">
+  <article class="docs-prose">
+    <h1>Tipografía</h1>
+    <p>La tipografía se compone de tokens, un conjunto pequeño de estilos de elemento acotados a <code>.iv-root</code> y ocho utilidades de texto. No hay plugin tipográfico ni clase <em>prose</em>: el texto dentro de <code>.iv-root</code> recibe su estilo de sus propias etiquetas.</p>
+
+    <h2>Escala tipográfica</h2>
+    <p>Ocho pasos. Los dos mayores son fluidos: interpolan con el ancho de la ventana mediante <code>clamp()</code>, así que el título de una página encoge en un móvil sin necesidad de media query.</p>
+    <table>
+      <thead><tr><th>Token</th><th>Valor</th><th>Lo usa</th></tr></thead>
+      <tbody>
+        <tr><td><code>--iv-text-xs</code></td><td><code>0.75rem</code></td><td><code>iv-u-text-xs</code>, letra pequeña en los componentes</td></tr>
+        <tr><td><code>--iv-text-sm</code></td><td><code>0.875rem</code></td><td><code>&lt;small&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;figcaption&gt;</code>, <code>&lt;kbd&gt;</code>, <code>iv-u-text-sm</code></td></tr>
+        <tr><td><code>--iv-text-md</code></td><td><code>1rem</code></td><td>Texto de cuerpo en <code>.iv-root</code>, <code>&lt;h6&gt;</code>, <code>iv-u-text-md</code></td></tr>
+        <tr><td><code>--iv-text-lg</code></td><td><code>1.125rem</code></td><td><code>&lt;h5&gt;</code>, <code>iv-u-text-lg</code></td></tr>
+        <tr><td><code>--iv-text-xl</code></td><td><code>1.25rem</code></td><td><code>&lt;h4&gt;</code>, <code>iv-u-text-xl</code></td></tr>
+        <tr><td><code>--iv-text-2xl</code></td><td><code>1.5rem</code></td><td><code>&lt;h3&gt;</code>, <code>iv-u-text-2xl</code></td></tr>
+        <tr><td><code>--iv-text-3xl</code></td><td><code>clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)</code></td><td><code>&lt;h2&gt;</code> — sin utilidad</td></tr>
+        <tr><td><code>--iv-text-4xl</code></td><td><code>clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)</code></td><td><code>&lt;h1&gt;</code> — sin utilidad</td></tr>
+      </tbody>
+    </table>
+    <p>La matriz de utilidades se detiene en <code>2xl</code> a propósito: los dos pasos fluidos pertenecen a los títulos de página, y una página no debería tener varios. Aplícalos con <code>&lt;h1&gt;</code> y <code>&lt;h2&gt;</code>, o leyendo el token directamente en tu propio CSS.</p>
+
+    <h3>La escala, renderizada</h3>
+    <p>Cada fila de abajo es marcado real con las utilidades de texto, así que se renderiza con los mismos tokens que tus páginas.</p>
+    <div class="iv-stack iv-u-gap-2 iv-u-my-6">
+      <p class="iv-u-text-xs">xs — 0.75rem · notas al pie, metadatos</p>
+      <p class="iv-u-text-sm">sm — 0.875rem · pies de foto, textos de ayuda</p>
+      <p class="iv-u-text-md">md — 1rem · texto de cuerpo, el valor por defecto</p>
+      <p class="iv-u-text-lg">lg — 1.125rem · párrafo de entrada</p>
+      <p class="iv-u-text-xl">xl — 1.25rem · subtítulo de sección</p>
+      <p class="iv-u-text-2xl">2xl — 1.5rem · títulos de tarjeta y de sección</p>
+    </div>
+
+    <h2>Interlineado, grosor y familia</h2>
+    <table>
+      <thead><tr><th>Token</th><th>Valor</th><th>Se aplica a</th></tr></thead>
+      <tbody>
+        <tr><td><code>--iv-leading-tight</code></td><td><code>1.1</code></td><td>Todos los títulos <code>h1</code>–<code>h6</code> lo reciben; <code>h4</code>–<code>h6</code> lo sobrescriben después con <code>snug</code></td></tr>
+        <tr><td><code>--iv-leading-snug</code></td><td><code>1.25</code></td><td><code>h4</code>, <code>h5</code>, <code>h6</code>, <code>&lt;pre&gt;</code></td></tr>
+        <tr><td><code>--iv-leading-normal</code></td><td><code>1.5</code></td><td><code>.iv-root</code>, heredado por el texto de cuerpo</td></tr>
+        <tr><td><code>--iv-leading-relaxed</code></td><td><code>1.65</code></td><td>Disponible para columnas de texto largo; no se aplica por defecto</td></tr>
+        <tr><td><code>--iv-weight-normal</code></td><td><code>400</code></td><td>Texto de cuerpo, <code>iv-u-font-normal</code></td></tr>
+        <tr><td><code>--iv-weight-medium</code></td><td><code>500</code></td><td><code>iv-u-font-medium</code></td></tr>
+        <tr><td><code>--iv-weight-semibold</code></td><td><code>600</code></td><td><code>h3</code>–<code>h6</code>, <code>&lt;strong&gt;</code>, <code>&lt;b&gt;</code>, <code>iv-u-font-semibold</code></td></tr>
+        <tr><td><code>--iv-weight-bold</code></td><td><code>700</code></td><td><code>h1</code>, <code>h2</code>, <code>iv-u-font-bold</code></td></tr>
+        <tr><td><code>--iv-font-sans</code></td><td><code>system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code></td><td><code>.iv-root</code></td></tr>
+        <tr><td><code>--iv-font-mono</code></td><td><code>ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace</code></td><td><code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;samp&gt;</code>, <code>&lt;pre&gt;</code></td></tr>
+      </tbody>
+    </table>
+
+    <h2>Qué aplica .iv-root</h2>
+    <p>Los estilos de elemento viven en <code>base.css</code> y todos los selectores empiezan por <code>.iv-root</code>. Fuera de ese ámbito, iVOLT no da estilo a ningún elemento, y eso es lo que hace seguro añadirlo a una página que ya existe.</p>
+
+    <h3>Títulos</h3>
+    <table>
+      <thead><tr><th>Elemento</th><th>Tamaño</th><th>Grosor</th><th>Interlineado</th></tr></thead>
+      <tbody>
+        <tr><td><code>h1</code></td><td><code>--iv-text-4xl</code></td><td>bold</td><td>tight</td></tr>
+        <tr><td><code>h2</code></td><td><code>--iv-text-3xl</code></td><td>bold</td><td>tight</td></tr>
+        <tr><td><code>h3</code></td><td><code>--iv-text-2xl</code></td><td>semibold</td><td>tight</td></tr>
+        <tr><td><code>h4</code></td><td><code>--iv-text-xl</code></td><td>semibold</td><td>snug</td></tr>
+        <tr><td><code>h5</code></td><td><code>--iv-text-lg</code></td><td>semibold</td><td>snug</td></tr>
+        <tr><td><code>h6</code></td><td><code>--iv-text-md</code></td><td>semibold</td><td>snug</td></tr>
+      </tbody>
+    </table>
+    <p>Todos los títulos reciben <code>margin-block: 0</code> y <code>text-wrap: balance</code>. El margen cero es deliberado: el ritmo vertical sale de una primitiva de maquetación, normalmente <code>iv-stack</code>, y no de unos márgenes colapsados contra los que pelear. El tamaño es presentación; elige el nivel de título por la estructura del documento y cambia su tamaño con una utilidad o con una regla propia si lo necesitas.</p>
+
+    <h3>Contenido de flujo</h3>
+    <ul>
+      <li><code>&lt;p&gt;</code>: <code>margin-block: 0</code> y <code>text-wrap: pretty</code>.</li>
+      <li><code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>: sin margen de bloque, <code>padding-inline-start: var(--iv-space-6)</code>; los elementos de lista reciben un pequeño margen superior (<code>--iv-space-1</code>).</li>
+      <li><code>&lt;a&gt;</code>: <code>--iv-color-primary</code>, subrayado con <code>text-underline-offset: 0.15em</code>, y pasa a <code>--iv-color-primary-hover</code> solo dentro de <code>@media (hover: hover)</code>, para que los dispositivos táctiles no se queden con un color de hover pegado.</li>
+      <li><code>&lt;strong&gt;</code> y <code>&lt;b&gt;</code>: semibold. <code>&lt;small&gt;</code>: <code>--iv-text-sm</code>.</li>
+      <li><code>&lt;blockquote&gt;</code>: texto atenuado con un borde de 2px en el lado inicial en <code>--iv-color-border-strong</code>.</li>
+      <li><code>&lt;hr&gt;</code>: una sola línea de borde en <code>--iv-color-border</code> con <code>--iv-space-8</code> arriba y abajo.</li>
+    </ul>
+
+    <h3>Código</h3>
+    <p><code>code</code>, <code>kbd</code>, <code>samp</code> y <code>pre</code> cambian a <code>--iv-font-mono</code> a <code>0.9375em</code>, lo que mantiene el texto monoespaciado ópticamente al nivel del tamaño que lo rodea en vez de dar un salto. El <code>code</code> en línea y <code>kbd</code> se apoyan en <code>--iv-color-surface</code> con <code>--iv-radius-sm</code> y un poco de relleno en línea; <code>kbd</code> añade un borde. <code>pre</code> es un bloque de superficie con relleno, <code>overflow-x: auto</code> e interlineado ajustado, y <code>pre code</code> quita el fondo y el relleno para que el código anidado no se duplique.</p>
+
+    <h3>Tablas y medios</h3>
+    <p>Las tablas de contenido — <code>&lt;table&gt;</code> a secas, no el componente <code>iv-table</code> — reciben <code>border-collapse: collapse</code>, ancho en línea completo y texto alineado al inicio; <code>&lt;caption&gt;</code> es pequeña, atenuada y alineada al inicio. <code>img</code>, <code>svg</code> y <code>video</code> se limitan a <code>max-inline-size: 100%</code>; <code>figure</code> pierde sus márgenes por defecto y <code>figcaption</code> es pequeña y atenuada.</p>
+
+    <h2>Medida de lectura</h2>
+    <p>Las líneas largas cuestan de seguir. <code>--iv-measure</code> vale <code>68ch</code> y, como <code>ch</code> es relativo a la fuente actual, la medida sigue a la tipografía y al tamaño que fijes. Tres formas de usarla:</p>
+<pre><code>&lt;div class="iv-container iv-container--narrow"&gt;…&lt;/div&gt;   &lt;!-- container limitado a la medida --&gt;
+&lt;article class="iv-u-max-w-measure"&gt;…&lt;/article&gt;          &lt;!-- utilidad en cualquier bloque --&gt;
+
+.my-article &#123; max-inline-size: var(--iv-measure); &#125;      /* tu propio CSS, leyendo el token */</code></pre>
+    <p>La medida está pensada para el texto de cuerpo. Las tablas, los bloques de código y los cuadros de mando suelen querer el contenedor completo; no los envuelvas en un contenedor estrecho por costumbre.</p>
+
+    <h2>Utilidades de texto</h2>
+    <p>Salen de la matriz finita. Solo la alineación tiene prefijos adaptables (<code>sm md lg xl</code>); las utilidades de tamaño, grosor y color no los tienen, porque un tamaño que cambia por punto de ruptura suele ser la escala fluida de títulos disfrazada.</p>
+    <table>
+      <thead><tr><th>Utilidad</th><th>Efecto</th><th>Adaptable</th></tr></thead>
+      <tbody>
+        <tr><td><code>iv-u-text-start|center|end</code></td><td>Alineación lógica del texto, así que sigue a RTL</td><td>sí</td></tr>
+        <tr><td><code>iv-u-text-xs|sm|md|lg|xl|2xl</code></td><td>Fija <code>font-size</code> desde la escala</td><td>no</td></tr>
+        <tr><td><code>iv-u-font-normal|medium|semibold|bold</code></td><td>Fija <code>font-weight</code></td><td>no</td></tr>
+        <tr><td><code>iv-u-text-muted</code></td><td><code>--iv-color-text-muted</code> — texto secundario, nunca el único portador de significado</td><td>no</td></tr>
+        <tr><td><code>iv-u-truncate</code></td><td>Una línea con puntos suspensivos; deja el texto completo accesible en otro sitio</td><td>no</td></tr>
+      </tbody>
+    </table>
+    <p>Las utilidades se emiten con el selector duplicado, especificidad <code>(0,2,0)</code>, y se cargan las últimas, así que ganan a los modificadores de componente tanto en la hoja en capas como en la plana. Lo que quede fuera de la matriz no existe en la v0.1: no hay sintaxis de valores arbitrarios ni escáner de clases.</p>
+
+    <h2>Cambiar la tipografía</h2>
+    <p>Redefine los tokens de familia después de la hoja de iVOLT. Todos los estilos de elemento y todos los componentes leen el token, así que una sola declaración mueve el sistema entero.</p>
+<pre><code>/* tu-tema.css, cargado después de ivolt.css */
+.iv-root &#123;
+  --iv-font-sans: "Your Sans", system-ui, sans-serif;
+  --iv-font-mono: "Your Mono", ui-monospace, monospace;
+&#125;</code></pre>
+    <p>Dos cosas a tener en cuenta. Primera: <code>--iv-measure</code> está en <code>ch</code>, así que una tipografía más ancha hace la columna físicamente más ancha con los mismos 68 caracteres; es el comportamiento previsto, pero conviene comprobarlo. Segunda: si alojas tú mismo una fuente web, declara <code>@font-face</code> en tu propia hoja con el <code>font-display</code> que hayas elegido, y deja una alternativa real del sistema en la pila para que el texto sea legible antes de que llegue el archivo.</p>
+    <p>También puedes reescalar sin tocar las familias. <code>--iv-text-*</code> son propiedades personalizadas corrientes, así que una variante compacta es un puñado de sobrescrituras en el mismo bloque.</p>
+
+    <h2>Por qué system-ui</h2>
+    <p>El paquete no distribuye archivos de fuente ni pide ninguno. La pila por defecto empieza en <code>system-ui</code> y desciende por <code>-apple-system</code>, <code>Segoe UI</code> y <code>Roboto</code>, de modo que cada plataforma renderiza con una tipografía que ya tiene. Las razones son concretas:</p>
+    <ul>
+      <li>Sin petición de red, así que no hay parpadeo de texto sin estilo o invisible ni desplazamiento de la maquetación mientras se descarga un archivo.</li>
+      <li>Sin un origen de terceros en la ruta crítica, lo que importa cuando un sitio aplica una Content-Security-Policy estricta o tiene que declarar de dónde vienen sus recursos.</li>
+      <li>Nada que empaquetar ni que servir: el CSS funciona desde un sistema de archivos, desde la carpeta de un tema de WordPress o desde una CDN propia sin recursos adicionales.</li>
+    </ul>
+    <p>La contrapartida es real y no la escondemos: la misma página no se ve idéntica en macOS, Windows y Android, porque no es la misma tipografía. Si tu marca necesita una sola tipografía en todas partes, alójala tú y sobrescribe el token como se ha visto arriba: el resto del sistema no cambia.</p>
+  </article>
+</Base>

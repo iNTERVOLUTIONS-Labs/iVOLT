@@ -1,0 +1,62 @@
+// Cadenas de interfaz de la cáscara de documentación. Mismas claves que en.js; las páginas
+// viven en src/pages/es/ y su contenido se redacta por idioma, no se traduce en tiempo de ejecución.
+export const t = {
+  skip: "Ir al contenido",
+  home: "Inicio de iVOLT",
+  menu: "Menú",
+  openNav: "Abrir la navegación",
+  search: "Buscar",
+  searchLabel: "Buscar en la documentación",
+  searchHint: "Escribe para buscar. Pulsa Escape para cerrar.",
+  searchUnavailable: "La búsqueda funciona en el sitio construido (npm run build:docs); no está disponible en modo de desarrollo.",
+  searchNone: "Sin resultados.",
+  searchResults: (n) => `${n} resultado${n === 1 ? "" : "s"}`,
+  theme: "Tema",
+  light: "Claro",
+  dark: "Oscuro",
+  system: "Sistema",
+  docs: "Documentación",
+  components: "Componentes",
+  source: "Código",
+  navigate: "Navegar",
+  close: "Cerrar",
+  primaryNav: "Principal",
+  docsNav: "Documentación",
+  footer: "iVOLT v0.1 alpha · MIT · de iNTERVOLUTIONS",
+  alpha: "Software alfa: la API puede cambiar antes de 0.1.0.",
+  anchor: "Enlace a esta sección",
+  copy: "Copiar HTML",
+  copyCode: "Copiar",
+  copied: "Copiado",
+  copiedStatus: "HTML copiado al portapapeles",
+  selected: "Seleccionado — pulsa Ctrl+C",
+  selectedStatus: "Portapapeles no disponible; código seleccionado para copiarlo a mano",
+  langSwitch: "English",
+};
+const componentLabels = [
+  ["button", "Botón"], ["card", "Tarjeta"], ["form", "Formulario"], ["combobox", "Combobox"],
+  ["datatable", "Tabla de datos"], ["dialog", "Diálogo"], ["badge", "Insignia"], ["alert", "Alerta"],
+  ["table", "Tabla"], ["breadcrumb", "Miga de pan"], ["pagination", "Paginación"], ["progress", "Progreso"],
+  ["skeleton", "Esqueleto"], ["disclosure", "Desplegable"], ["tabs", "Pestañas"], ["dropdown", "Menú"],
+  ["drawer", "Panel lateral"], ["toast", "Aviso"],
+];
+export const nav = [
+  { group: "Inicio", items: [
+    { href: "/es/getting-started", label: "Primeros pasos" },
+    { href: "/es/playground", label: "Playground" },
+    { href: "/es/examples", label: "Ejemplos" },
+  ] },
+  { group: "Fundamentos", items: [
+    { href: "/es/foundations/tokens-and-themes", label: "Tokens y temas" },
+    { href: "/es/foundations/typography", label: "Tipografía" },
+    { href: "/es/foundations/layout", label: "Maquetación y utilidades" },
+    { href: "/es/foundations/accessibility", label: "Accesibilidad" },
+    { href: "/es/foundations/coexistence", label: "Convivir con tu CSS" },
+  ] },
+  { group: "Componentes", items: componentLabels.map(([c, label]) => ({ href: `/es/components/${c}`, label })) },
+  { group: "Proyecto", items: [
+    { href: "/es/changelog", label: "Cambios" },
+    { href: "/es/roadmap", label: "Hoja de ruta" },
+    { href: "/es/contributing", label: "Contribuir" },
+  ] },
+];

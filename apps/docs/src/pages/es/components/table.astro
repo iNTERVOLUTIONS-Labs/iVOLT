@@ -1,0 +1,21 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Tabla" description="Tabla de iVOLT: contenedor con desplazamiento, modificadores rayada, compacta y con bordes, y una disposición apilada para pantallas estrechas. Sin motor de datos.">
+  <article class="docs-prose">
+    <h1>Tabla (table)</h1>
+    <p>Estilos para marcado <code>&lt;table&gt;</code> de verdad: leyenda, celdas de cabecera con <code>scope</code> y un contenedor que se desplaza en horizontal cuando la tabla es más ancha que su contenedor. No hay ordenación, filtrado ni motor de datos.</p>
+    <p><strong>CSS:</strong> <code>css/components/table.css</code> (dentro de <code>ivolt.css</code>).</p>
+    <h2>Contenedor con desplazamiento</h2>
+    <p><code>iv-table-wrap</code> es una región etiquetada y enfocable (<code>role="region"</code>, <code>tabindex="0"</code>) para que quien navega con teclado pueda desplazarla.</p>
+    <Fixture name="table/basic" />
+    <h2>Apilada en pantallas pequeñas</h2>
+    <p><code>iv-table--stack</code> convierte cada fila en un bloque por debajo del punto de ruptura <code>md</code> e imprime <code>data-iv-label</code> delante de cada celda.</p>
+    <Fixture name="table/stack" />
+    <h2>Modificadores</h2>
+    <p><code>--striped</code>, <code>--compact</code>, <code>--bordered</code>, <code>--stack</code>. Las columnas numéricas usan <code>iv-u-text-end</code>.</p>
+    <h2>Errores frecuentes</h2>
+    <ul><li>Tablas usadas para maquetar.</li><li>Celdas de cabecera sin <code>scope</code>.</li><li>Tablas apiladas sin <code>data-iv-label</code> en las celdas.</li></ul>
+  </article>
+</Base>

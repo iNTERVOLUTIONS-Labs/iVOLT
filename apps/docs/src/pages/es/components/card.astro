@@ -1,0 +1,29 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Tarjeta" description="Tarjeta de iVOLT: elementos de medio, cuerpo, título y pie, modificador plano y rejillas de tarjetas. Solo CSS.">
+  <article class="docs-prose">
+    <h1>Tarjeta (card)</h1>
+    <p>Una superficie que agrupa contenido relacionado. Usa <code>&lt;article&gt;</code> cuando la tarjeta es contenido autónomo y un <code>&lt;div&gt;</code> en los demás casos. Sin JavaScript.</p>
+    <p><strong>CSS:</strong> incluido en <code>ivolt.css</code>; suelto en <code>css/components/card.css</code>.</p>
+    <Fixture name="card/basic" />
+    <h2>Medio, plano y acciones en el pie</h2>
+    <Fixture name="card/media" />
+    <h2>Anatomía</h2>
+    <table>
+      <thead><tr><th>Clase</th><th>Función</th></tr></thead>
+      <tbody>
+        <tr><td><code>iv-card</code></td><td>Superficie con borde, radio y sombra; columna flex.</td></tr>
+        <tr><td><code>iv-card__media</code></td><td>Área 16:9; una <code>&lt;img&gt;</code> dentro se recorta con <code>object-fit: cover</code>.</td></tr>
+        <tr><td><code>iv-card__body</code></td><td>Contenido con relleno que crece hasta llenar la tarjeta.</td></tr>
+        <tr><td><code>iv-card__title</code></td><td>Título dentro del cuerpo (elige el nivel que corresponda a la página).</td></tr>
+        <tr><td><code>iv-card__footer</code></td><td>Acciones alineadas al final.</td></tr>
+        <tr><td><code>iv-card--flat</code></td><td>Sin sombra.</td></tr>
+      </tbody>
+    </table>
+    <p>Propiedades locales: <code>--iv-card-bg</code>, <code>--iv-card-radius</code>, <code>--iv-card-padding</code>.</p>
+    <h2>Errores frecuentes</h2>
+    <ul><li>Convertir toda la tarjeta en un enlace con controles interactivos dentro. Enlaza el título.</li><li>Saltarse niveles de título dentro de las tarjetas.</li></ul>
+  </article>
+</Base>
