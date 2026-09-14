@@ -1,6 +1,6 @@
 # iVOLT
 
-A hybrid frontend framework by iNTERVOLUTIONS: semantic components as the fast path, a finite utility set for composition, design tokens as the visual contract and optional JavaScript for behaviour. No runtime dependencies. **Alpha, not yet published.**
+A hybrid frontend framework by iNTERVOLUTIONS: semantic components as the fast path, a finite utility set for composition, design tokens as the visual contract and optional JavaScript for behaviour. No runtime dependencies. **Beta (0.2.0-beta.0), not yet published.**
 
 ## Repository
 
