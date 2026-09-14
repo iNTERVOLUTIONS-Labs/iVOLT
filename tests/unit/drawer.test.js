@@ -317,3 +317,30 @@ describe("Drawer", () => {
     expect(Drawer.initAll(document)).toHaveLength(0);
   });
 });
+
+describe("Drawer regressions", () => {
+  beforeEach(() => {
+    installDialogStub();
+    installMatchMedia(false);
+    document.body.innerHTML = MARKUP;
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = "";
+    globalThis.matchMedia = realMatchMedia;
+    vi.restoreAllMocks();
+  });
+
+  it("ignores a backdrop click whose press started inside the panel", () => {
+    const { drawer, el } = setup();
+    drawer.open();
+    const panel = /** @type {HTMLElement} */ (el.querySelector(".iv-drawer__panel"));
+    panel.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: 5, clientY: 5 }));
+    expect(drawer.isOpen).toBe(true);
+
+    el.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: 5, clientY: 5 }));
+    expect(drawer.isOpen).toBe(false);
+  });
+});

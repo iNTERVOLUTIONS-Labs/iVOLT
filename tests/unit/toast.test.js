@@ -248,3 +248,45 @@ describe("Toast", () => {
     expect(Toast.initAll(document)).toHaveLength(0);
   });
 });
+
+describe("Toast regressions", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    document.body.innerHTML = MARKUP;
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    document.body.innerHTML = "";
+  });
+
+  it("keeps the timer paused while the pointer is still on the toast", () => {
+    const { region } = setup();
+    const item = region.show({ message: "hover", timeout: 1000 });
+    item.element.dispatchEvent(new MouseEvent("mouseenter"));
+    item.element.dispatchEvent(new Event("focusin", { bubbles: true }));
+    item.element.dispatchEvent(new Event("focusout", { bubbles: true }));
+    // The countdown used to restart here, under a pointer that never left.
+    vi.advanceTimersByTime(2000);
+    expect(visibleTexts()).toEqual(["hover"]);
+
+    item.element.dispatchEvent(new MouseEvent("mouseleave"));
+    vi.advanceTimersByTime(2000);
+    expect(visibleTexts()).toEqual([]);
+    region.destroy();
+  });
+
+  it("does not resume when focus only moves between the parts of the toast", () => {
+    const { region } = setup();
+    const item = region.show({ message: "focus", timeout: 1000 });
+    const dismiss = /** @type {HTMLElement} */ (item.element.querySelector(".iv-toast__dismiss"));
+    item.element.dispatchEvent(new Event("focusin", { bubbles: true }));
+    item.element.dispatchEvent(
+      new FocusEvent("focusout", { bubbles: true, relatedTarget: dismiss })
+    );
+    vi.advanceTimersByTime(2000);
+    expect(visibleTexts()).toEqual(["focus"]);
+    region.destroy();
+  });
+});

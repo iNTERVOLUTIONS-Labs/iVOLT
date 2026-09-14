@@ -408,6 +408,14 @@ export class Carousel extends IvComponent {
     this._sync();
   }
 
+  /** Custom properties this component writes on the host element. */
+  static _customProperties = [
+    "--iv-carousel-duration",
+    "--iv-carousel-autoplay",
+    "--iv-carousel-index",
+    "--iv-carousel-play",
+  ];
+
   /** @returns {void} */
   _teardown() {
     this._clearTimer();
@@ -431,6 +439,15 @@ export class Carousel extends IvComponent {
       }
     }
     this._saved.clear();
+    // Dropping the whole `style` attribute leaves the inline declaration behind,
+    // and the browser writes it back as an empty attribute the author never had.
+    // Taking the properties out one by one, and then any empty leftover, keeps
+    // the served markup byte for byte.
+    const style = /** @type {HTMLElement} */ (this._root).style;
+    for (const property of Carousel._customProperties) style.removeProperty(property);
+    if (this._root.getAttribute("style") === "") {
+      this._root.removeAttribute("style");
+    }
   }
 
   /**
@@ -481,7 +498,6 @@ export class Carousel extends IvComponent {
       this._set(slide, "role", "tabpanel");
       this._set(slide, "aria-roledescription", "slide");
       this._set(slide, "aria-label", `${index + 1} of ${total}`);
-      const tab = this._tabs.find((candidate) => candidate.index === index);
     });
   }
 

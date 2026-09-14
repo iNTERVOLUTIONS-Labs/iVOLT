@@ -197,6 +197,8 @@ export class Drawer extends IvComponent {
     this._addedEndClass = false;
     /** @type {boolean} Whether the instance is being destroyed. */
     this._destroying = false;
+    /** @type {EventTarget|null} Where the press behind the current click landed. */
+    this._pressTarget = null;
     /** @type {MediaQueryList|null} Watcher of the static breakpoint. */
     this._mql = null;
 
@@ -209,10 +211,21 @@ export class Drawer extends IvComponent {
       if (this.options.closeOnEscape) this.close("escape");
     });
 
+    // A click whose press started inside the panel (selecting text and releasing
+    // on the backdrop) has the <drawer> as its target; remembering where the press
+    // landed is the only way to tell it from a real backdrop click.
+    this._listen(this._element, "pointerdown", (event) => {
+      this._pressTarget = event.target;
+    });
+
     this._listen(this._element, "click", (event) => {
+      const press = this._pressTarget;
+      this._pressTarget = null;
       if (!this.options.closeOnBackdrop) return;
       const mouse = /** @type {MouseEvent} */ (event);
       if (mouse.target !== this._element) return;
+      // `null` means no press was recorded (a synthetic click), which still closes.
+      if (press !== null && press !== this._element) return;
       const panel = this._element.querySelector(PANEL_SELECTOR);
       if (panel) {
         const rect = panel.getBoundingClientRect();

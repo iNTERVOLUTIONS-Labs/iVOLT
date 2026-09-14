@@ -378,7 +378,9 @@ export class Tabs extends IvComponent {
     else if (key === KEY_HOME) targetIndex = 0;
     else if (key === KEY_END) targetIndex = last;
     else if (key === KEY_ENTER || key === KEY_SPACE) {
-      if (this.options.activation !== "manual") return;
+      // Always cancelled, in both activation modes: Space on a `role="tab"` must
+      // activate it, never scroll the page. In automatic activation the tab is
+      // already selected, so `select` is a no-op.
       event.preventDefault();
       this.select(this._pairs[index].tab);
       return;

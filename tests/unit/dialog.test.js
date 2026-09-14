@@ -283,3 +283,29 @@ describe("Dialog", () => {
     expect(Dialog.initAll(document)).toHaveLength(0);
   });
 });
+
+describe("Dialog regressions", () => {
+  beforeEach(() => {
+    installDialogStub();
+    document.body.innerHTML = MARKUP;
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = "";
+  });
+
+  it("ignores a backdrop click whose press started inside the panel", () => {
+    const { dialog, el } = setup();
+    dialog.open();
+    const panel = /** @type {HTMLElement} */ (el.querySelector(".iv-dialog__panel"));
+    // Selecting text and releasing outside produces a click whose target is the
+    // <dialog>; only the press tells the two apart.
+    panel.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: 5, clientY: 5 }));
+    expect(dialog.isOpen).toBe(true);
+
+    el.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true }));
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: 5, clientY: 5 }));
+    expect(dialog.isOpen).toBe(false);
+  });
+});

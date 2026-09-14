@@ -1,10 +1,10 @@
-<a class="iv-button iv-button--secondary" href="#site-drawer" data-iv-open="site-drawer">Open navigation</a>
+<a class="iv-button iv-button--secondary iv-u-lg-hidden" href="#site-drawer" data-iv-open="site-drawer">Open navigation</a>
 
 <dialog class="iv-drawer" id="site-drawer" data-iv-component="drawer" aria-label="Site navigation">
   <div class="iv-drawer__panel">
     <header class="iv-drawer__header">
       <h2 class="iv-drawer__title">Sections</h2>
-      <button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label="Close">
+      <button class="iv-button iv-button--ghost iv-button--icon iv-u-lg-hidden" type="button" data-iv-close aria-label="Close">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </header>
@@ -17,9 +17,9 @@
       </nav>
     </div>
     <footer class="iv-drawer__footer">
-      <a class="iv-button iv-button--ghost iv-button--sm" href="#" data-iv-close>Close</a>
+      <a class="iv-button iv-button--ghost iv-button--sm iv-u-lg-hidden" href="#" data-iv-close>Close</a>
     </footer>
   </div>
 </dialog>
 
-<p id="drawer-note" class="iv-u-text-sm iv-u-text-muted">Demo: from the lg breakpoint the drawer is a static panel.</p>
+<p id="drawer-note" class="iv-u-text-sm iv-u-text-muted">Demo: below the lg breakpoint the drawer opens as a modal; from lg it is a static panel, so the opening and closing controls are hidden instead of left with nothing to do.</p>

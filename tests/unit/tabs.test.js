@@ -196,3 +196,34 @@ describe("Tabs", () => {
     expect(tab.hasAttribute("id")).toBe(false);
   });
 });
+
+describe("Tabs regressions", () => {
+  beforeEach(() => {
+    document.body.innerHTML = MARKUP;
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = "";
+    vi.restoreAllMocks();
+  });
+
+  it("cancels Space on a tab in automatic activation, so the page does not scroll", () => {
+    const tabs = setup();
+    const tab = byId("t-monthly");
+    const event = new KeyboardEvent("keydown", { key: " ", bubbles: true, cancelable: true });
+    tab.dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true);
+    expect(tab.getAttribute("aria-selected")).toBe("true");
+    tabs.destroy();
+  });
+
+  it("selects with Space in automatic activation when another tab holds focus", () => {
+    const tabs = setup();
+    const event = new KeyboardEvent("keydown", { key: " ", bubbles: true, cancelable: true });
+    byId("t-yearly").dispatchEvent(event);
+    expect(event.defaultPrevented).toBe(true);
+    expect(byId("t-yearly").getAttribute("aria-selected")).toBe("true");
+    expect(byId("t-monthly").getAttribute("aria-selected")).toBe("false");
+    tabs.destroy();
+  });
+});

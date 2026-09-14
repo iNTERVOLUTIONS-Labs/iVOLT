@@ -91,6 +91,10 @@ export class ToastItem {
     this._done = false;
     /** @type {HTMLElement | null} Element focus came from before entering this toast (restored on dismiss). */
     this._returnTo = null;
+    /** @type {boolean} Whether the pointer is over the item. */
+    this._hovered = false;
+    /** @type {boolean} Whether focus is inside the item. */
+    this._focused = false;
     /** @type {ReturnType<typeof setTimeout>|null} */
     this._timerId = null;
     /** @type {number} Milliseconds left before auto-dismiss. */
@@ -378,18 +382,40 @@ export class Toast extends IvComponent {
   _bindItem(item) {
     /** @type {ItemListener[]} */
     const listeners = [
-      { type: "mouseenter", handler: () => this._pauseTimer(item) },
-      { type: "mouseleave", handler: () => this._resumeTimer(item) },
+      {
+        type: "mouseenter",
+        handler: () => {
+          item._hovered = true;
+          this._pauseTimer(item);
+        },
+      },
+      {
+        type: "mouseleave",
+        handler: () => {
+          item._hovered = false;
+          this._resumeTimer(item);
+        },
+      },
       {
         type: "focusin",
         handler: (event) => {
           // Remember where focus came from (outside the region) to restore it after a dismissal.
           const from = /** @type {FocusEvent} */ (event).relatedTarget;
           if (from instanceof HTMLElement && !this._element.contains(from)) item._returnTo = from;
+          item._focused = true;
           this._pauseTimer(item);
         },
       },
-      { type: "focusout", handler: () => this._resumeTimer(item) },
+      {
+        type: "focusout",
+        handler: (event) => {
+          // Focus moving between the message and the dismiss button is not a leave.
+          const to = /** @type {FocusEvent} */ (event).relatedTarget;
+          if (to instanceof Node && item.element.contains(to)) return;
+          item._focused = false;
+          this._resumeTimer(item);
+        },
+      },
       {
         type: "keydown",
         handler: (event) => {
@@ -464,6 +490,9 @@ export class Toast extends IvComponent {
    */
   _resumeTimer(item) {
     if (!item._open || item._timerId !== null) return;
+    // Every hold has to be gone: a pointer resting on the toast used to see the
+    // countdown restart as soon as focus left it.
+    if (item._hovered || item._focused) return;
     this._startTimer(item);
   }
 

@@ -346,7 +346,12 @@ export class Dropdown extends IvComponent {
     if (!isElement(target)) return;
     const item = target.closest(ITEM_SELECTOR);
     if (!item || !this._element.contains(item)) return;
+    // Closing hides the menu: focus would fall to <body> unless it goes back to
+    // the trigger, exactly as it does on the keyboard path.
+    const active = this._element.ownerDocument.activeElement;
+    const hadFocus = active !== null && item.contains(active);
     this.close("trigger");
+    if (hadFocus) this._focusSummary();
   }
 
   /**

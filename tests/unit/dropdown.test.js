@@ -222,3 +222,38 @@ describe("Dropdown", () => {
     expect(Dropdown.initAll(document)).toHaveLength(0);
   });
 });
+
+describe("Dropdown regressions", () => {
+  beforeEach(() => {
+    document.body.innerHTML = MARKUP;
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = "";
+    vi.restoreAllMocks();
+  });
+
+  it("puts focus back on the trigger when an item is activated with the pointer", () => {
+    const el = byId("dd");
+    el.setAttribute("open", "");
+    const dropdown = new Dropdown(el);
+    const item = byId("i1");
+    item.focus();
+    item.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(dropdown.isOpen).toBe(false);
+    expect(document.activeElement).toBe(byId("sum"));
+    dropdown.destroy();
+  });
+
+  it("leaves focus alone when the item was activated without holding focus", () => {
+    const el = byId("dd");
+    el.setAttribute("open", "");
+    const dropdown = new Dropdown(el);
+    byId("dropdown-note").setAttribute("tabindex", "-1");
+    byId("dropdown-note").focus();
+    byId("i1").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    expect(dropdown.isOpen).toBe(false);
+    expect(document.activeElement).toBe(byId("dropdown-note"));
+    dropdown.destroy();
+  });
+});

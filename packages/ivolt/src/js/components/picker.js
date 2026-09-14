@@ -345,6 +345,8 @@ export class Picker extends IvComponent {
     this._silent = this._silent ?? false;
     /** @type {EventListener|null} Outside pointer listener while open. */
     this._outside = this._outside ?? null;
+    /** @type {EventListener|null} Viewport resize listener while open. */
+    this._resize = this._resize ?? null;
     /** @type {ReturnType<typeof setTimeout>|0} Pending repaint after a form reset. */
     this._resetTimer = this._resetTimer ?? 0;
   }
@@ -414,6 +416,7 @@ export class Picker extends IvComponent {
     this._active = -1;
     this._silent = false;
     this._outside = null;
+    this._resize = null;
     this._resetTimer = 0;
     this._nativeAttributes = Array.from(select.attributes).map(
       (attribute) => attribute.name
@@ -548,7 +551,9 @@ export class Picker extends IvComponent {
       this._listen(search, "input", () => this._onSearchInput());
       this._listen(search, "keydown", (event) => this._onKeys(event, false));
     }
-    this._listen(list, "pointerdown", (event) => this._onListPointerDown(event));
+    this._listen(popover, "pointerdown", (event) =>
+      this._onPopoverPointerDown(event)
+    );
     this._listen(list, "click", (event) => this._onListClick(event));
     this._listen(select, "change", () => this._onNativeChange());
     const form = select.form;
@@ -569,6 +574,7 @@ export class Picker extends IvComponent {
     this._open = false;
     this._active = -1;
     this._outside = null;
+    this._resize = null;
     for (const [el, attributes] of this._saved) {
       for (const [name, value] of attributes) {
         if (value === null) el.removeAttribute(name);
@@ -1007,6 +1013,15 @@ export class Picker extends IvComponent {
     const handler = (event) => this._onDocumentPointer(event);
     this._outside = handler;
     this._listen(this._element.ownerDocument, "pointerdown", handler);
+    // A resize changes the room left on each side: without this the popover keeps
+    // the placement and the height it was measured with and falls off the viewport.
+    const view = this._element.ownerDocument.defaultView;
+    if (view) {
+      /** @type {EventListener} */
+      const onResize = () => this._place();
+      this._resize = onResize;
+      this._listen(view, "resize", onResize);
+    }
     emit(this._element, "opened", {
       instance: this,
       trigger: this._control,
@@ -1043,6 +1058,10 @@ export class Picker extends IvComponent {
     if (this._outside) {
       this._unlisten(doc, "pointerdown", this._outside);
       this._outside = null;
+    }
+    if (this._resize && doc.defaultView) {
+      this._unlisten(doc.defaultView, "resize", this._resize);
+      this._resize = null;
     }
     emit(this._element, "closed", {
       instance: this,
@@ -1272,14 +1291,23 @@ export class Picker extends IvComponent {
   }
 
   /**
-   * Keeps focus on the control or the search field when a row is pressed.
+   * Keeps focus on the control or the search field when the popover is pressed.
+   *
+   * A press that lands on the chrome (padding, a group caption) would otherwise
+   * blur the focused element, and with it the `aria-activedescendant` host, so
+   * the popover stayed open with the keyboard dead. Two targets keep their
+   * native press: the search field, which needs it to place the caret, and the
+   * list itself, which owns the scrollbar.
    *
    * @param {Event} event Pointerdown event.
    * @returns {void}
    */
-  _onListPointerDown(event) {
+  _onPopoverPointerDown(event) {
     const target = event.target;
-    if (!isElement(target) || !target.closest(OPTION_SELECTOR)) return;
+    if (!isElement(target)) return;
+    if (target === this._list) return;
+    const search = this._search;
+    if (search && (target === search || search.contains(target))) return;
     event.preventDefault();
   }
 
