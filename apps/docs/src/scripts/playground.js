@@ -243,7 +243,8 @@ if (form) {
     preview.replaceChildren(node);
     preview.setAttribute("data-iv-theme", currentTheme());
     code.textContent = serialize(node, 0);
-    docLink.setAttribute("href", spec.doc);
+    // The generator is served in both languages; keep the reader on the language they are in.
+    docLink.setAttribute("href", (location.pathname.startsWith("/es/") ? "/es" : "") + spec.doc);
     docLink.textContent = `Open the ${spec.docLabel} page`;
   }
 
