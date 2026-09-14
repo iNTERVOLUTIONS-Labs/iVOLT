@@ -5,6 +5,8 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 ## 0.4.0-beta.0 (unreleased)
 
 ### Added
+- `effects.css` with `Proximity` and `Reveal` (exports `./proximity`, `./reveal`): `iv-edge-glint` (a light travels the border), `iv-edge-near` (the border lights up where the pointer approaches), `iv-scan`, `iv-spark`, `iv-pulse-glow`, `iv-rise` and `iv-reveal` (scroll reveals); everything static under reduced motion.
+- `hero.css`: full-bleed opening sections (`iv-hero`) with media, scrim, kicker, oversized title rising line by line, lead, actions, facts and an aside; `--center`, `--split`, `--cinematic`, `--terminal`, `--compact`, `--kenburns` and `--light`.
 - `Megamenu` (`iv-megamenu`, export `./megamenu`): a navigation bar whose items open wide panels with link groups, cards and a bottom bar; hover and focus without JavaScript, intentional hover, keyboard, overlay, inert panels and a mobile accordion with it.
 
 ### Changed

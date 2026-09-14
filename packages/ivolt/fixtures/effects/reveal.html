@@ -1,0 +1,45 @@
+<section id="effects-reveal" data-iv-component="reveal" class="iv-stack iv-u-gap-12">
+  <p class="iv-u-m-0">Made-up copy, for the fixture only. Scroll down: each block fades up as it enters the viewport, staggered by its inline <code>--iv-i</code>. Without JavaScript every block is visible from the start, and so it is under <code>prefers-reduced-motion</code>.</p>
+  <article class="iv-card iv-reveal iv-edge-glint" style="--iv-i: 0; min-block-size: 9rem">
+    <div class="iv-card__body">
+      <span class="iv-badge iv-badge--primary">01</span>
+      <h3 class="iv-card__title">The first block is already in view</h3>
+      <p class="iv-u-m-0">Entering also fires <code>iv-edge-glint</code>, so the border is drawn once as the card arrives.</p>
+    </div>
+  </article>
+  <article class="iv-card iv-reveal" style="--iv-i: 1; min-block-size: 9rem">
+    <div class="iv-card__body">
+      <span class="iv-badge">02</span>
+      <h3 class="iv-card__title">Eighty milliseconds later</h3>
+      <p class="iv-u-m-0">The delay is <code>--iv-i</code> multiplied by the <code>stagger</code> option, written as <code>--iv-reveal-delay</code>.</p>
+    </div>
+  </article>
+  <article class="iv-card iv-reveal" style="--iv-i: 2; min-block-size: 9rem">
+    <div class="iv-card__body">
+      <span class="iv-badge">03</span>
+      <h3 class="iv-card__title">One observer for the whole container</h3>
+      <p class="iv-u-m-0">The component keeps a single <code>IntersectionObserver</code>; no scroll listener, no layout read.</p>
+    </div>
+  </article>
+  <article class="iv-card iv-reveal" style="--iv-i: 3; min-block-size: 9rem">
+    <div class="iv-card__body">
+      <span class="iv-badge">04</span>
+      <h3 class="iv-card__title">Seen once, left alone</h3>
+      <p class="iv-u-m-0">With <code>repeat</code> off the element stops being observed as soon as it has entered.</p>
+    </div>
+  </article>
+  <article class="iv-card iv-reveal" style="--iv-i: 4; min-block-size: 9rem">
+    <div class="iv-card__body">
+      <span class="iv-badge">05</span>
+      <h3 class="iv-card__title">Threshold at fifteen per cent</h3>
+      <p class="iv-u-m-0">A block counts as arrived when 15&nbsp;% of it is visible; the <code>threshold</code> option moves that line.</p>
+    </div>
+  </article>
+  <article class="iv-card iv-reveal" style="--iv-i: 5; min-block-size: 9rem">
+    <div class="iv-card__body">
+      <span class="iv-badge">06</span>
+      <h3 class="iv-card__title">Destroy puts the markup back</h3>
+      <p class="iv-u-m-0">The attribute and the delay are removed, and so is the style attribute when nothing else was using it.</p>
+    </div>
+  </article>
+</section>

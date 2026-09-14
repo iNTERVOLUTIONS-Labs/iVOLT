@@ -46,7 +46,7 @@ export const componentLabels = {
   datatable: "Tabla de datos",
   picker: "Selector",
   carousel: "Carrusel",
-  megamenu: "Megamenú", dialog: "Diálogo", badge: "Insignia", alert: "Alerta",
+  megamenu: "Megamenú", hero: "Hero", dialog: "Diálogo", badge: "Insignia", alert: "Alerta",
   table: "Tabla", breadcrumb: "Miga de pan", pagination: "Paginación", progress: "Progreso",
   skeleton: "Esqueleto", disclosure: "Desplegable", tabs: "Pestañas", dropdown: "Menú",
   drawer: "Panel lateral", toast: "Aviso",
@@ -64,6 +64,7 @@ export const nav = [
     { href: "/es/foundations/accessibility", label: "Accesibilidad" },
     { href: "/es/foundations/coexistence", label: "Convivir con tu CSS" },
     { href: "/es/foundations/surfaces", label: "Superficies y texturas" },
+    { href: "/es/foundations/effects", label: "Luz y movimiento" },
   ] },
   { group: "Componentes", items: Object.entries(componentLabels).map(([c, label]) => ({ href: `/es/components/${c}`, label })) },
   { group: "Proyecto", items: [

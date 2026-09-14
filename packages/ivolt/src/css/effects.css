@@ -1,0 +1,345 @@
+/* iVOLT — effects
+ * Edge and proximity effects (API_CONTRACT §8.10): a glint that runs once
+ * around the border, a border that lights up where the pointer comes close,
+ * scan lines, sparks, a breathing halo, the rise of a title line and the
+ * scroll reveal.
+ * Precondition: this module is imported AFTER `surfaces.css` and BEFORE the
+ * utilities, so an effect wins over a component border at the same
+ * specificity (0,1,0) by source order alone.
+ * Locals: --iv-glint-color --iv-glint-duration --iv-near-radius --iv-near-color
+ *         --iv-scan-color --iv-scan-duration --iv-spark-size --iv-spark-color
+ *         --iv-rise-distance --iv-rise-duration --iv-rise-step
+ *         --iv-reveal-distance --iv-reveal-duration --iv-reveal-delay
+ * Written by JavaScript: `--iv-mx`, `--iv-my` and `--iv-near` (Proximity),
+ * the attribute `data-iv-inview` (Reveal).
+ * Composition: `iv-edge-glint` owns `::before` (do not combine it with
+ * `iv-glow`), `iv-edge-near` and `iv-scan` own `::after` (do not combine those
+ * two on the same element). All three declare `position: relative`, so they
+ * belong on the block itself, never on a layer that is already absolutely
+ * positioned such as `.iv-hero__media`; on a hero the scan goes on the root,
+ * which is relative and clipped already.
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0), plus the documented no-JS fallback
+ * `:where(:root:not([data-iv-js])) .iv-reveal` (kept at (0,1,0) by `:where()`).
+ */
+
+/* Edge glint ------------------------------------------------------------ */
+
+@property --iv-glint-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* `overflow: visible` keeps the ring out of the clip of containers that hide
+ * their overflow, such as `.iv-card`; the ring lives at `inset: -1px`. */
+.iv-edge-glint {
+  --iv-glint-color: var(--iv-color-accent);
+  --iv-glint-duration: 1200ms;
+
+  position: relative;
+  overflow: visible;
+}
+
+.iv-edge-glint::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--iv-glint-angle, 0deg),
+    transparent 0 70%,
+    var(--iv-glint-color) 85%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  opacity: 0;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* The animation lives on the trigger states only, so the glint runs once per
+ * hover, per focus and once when `Reveal` marks the element as seen. Without
+ * `@property` the angle is not animatable and the sweep degrades to a single
+ * flash of the lit segment. */
+.iv-edge-glint:hover::before,
+.iv-edge-glint:focus-within::before,
+.iv-edge-glint[data-iv-inview]::before {
+  animation: iv-edge-glint var(--iv-glint-duration) var(--iv-ease-out);
+}
+
+@keyframes iv-edge-glint {
+  from {
+    --iv-glint-angle: 0deg;
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  to {
+    --iv-glint-angle: 360deg;
+    opacity: 0;
+  }
+}
+
+/* Proximity edge -------------------------------------------------------- */
+
+/* Without JavaScript, without a fine pointer, or before the first move,
+ * `--iv-near` is 0 and the element shows its normal border. */
+.iv-edge-near {
+  --iv-near-radius: 160px;
+  --iv-near-color: var(--iv-color-accent);
+
+  position: relative;
+  overflow: visible;
+}
+
+.iv-edge-near::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  /* A three pixel ring: the mask cuts anything painted outside it, a blur or
+   * a shadow included, so the width of the ring is what makes the halo
+   * readable on a light surface. */
+  padding: 3px;
+  background: radial-gradient(
+    var(--iv-near-radius) circle at var(--iv-mx, 50%) var(--iv-my, 50%),
+    var(--iv-near-color),
+    transparent 70%
+  );
+  border-radius: inherit;
+  opacity: var(--iv-near, 0);
+  transition: opacity var(--iv-motion-slow) var(--iv-ease-out);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Scan ------------------------------------------------------------------ */
+
+/* The line is the lit edge of a full-size layer, so the travel is a plain
+ * percentage of the block: -10% to 110% crosses it completely. The block
+ * clips, otherwise the line would leave its bounds. */
+.iv-scan {
+  --iv-scan-color: var(--iv-color-accent);
+  --iv-scan-duration: 6s;
+  --iv-scan-opacity: 0.8;
+
+  position: relative;
+  overflow: clip;
+}
+
+.iv-scan::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    var(--iv-scan-color) 0 2px,
+    color-mix(in oklab, var(--iv-scan-color) 22%, transparent) 2px,
+    transparent 96px
+  );
+  opacity: 0;
+  animation: iv-scan-h var(--iv-scan-duration) linear infinite;
+  pointer-events: none;
+}
+
+.iv-scan--v::after {
+  background-image: linear-gradient(
+    180deg,
+    var(--iv-scan-color) 0 2px,
+    color-mix(in oklab, var(--iv-scan-color) 22%, transparent) 2px,
+    transparent 96px
+  );
+  animation-name: iv-scan-v;
+}
+
+@keyframes iv-scan-h {
+  from {
+    transform: translateX(-10%);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: var(--iv-scan-opacity, 1);
+  }
+
+  90% {
+    opacity: var(--iv-scan-opacity, 1);
+  }
+
+  to {
+    transform: translateX(110%);
+    opacity: 0;
+  }
+}
+
+@keyframes iv-scan-v {
+  from {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: var(--iv-scan-opacity, 1);
+  }
+
+  90% {
+    opacity: var(--iv-scan-opacity, 1);
+  }
+
+  to {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+}
+
+/* Spark ----------------------------------------------------------------- */
+
+.iv-spark {
+  --iv-spark-size: 0.5rem;
+  --iv-spark-color: var(--iv-color-accent);
+
+  display: inline-block;
+  inline-size: var(--iv-spark-size);
+  block-size: var(--iv-spark-size);
+  background-color: var(--iv-spark-color);
+  border-radius: var(--iv-radius-full);
+  box-shadow: 0 0 12px 2px var(--iv-glow-primary);
+  animation: iv-spark 2s var(--iv-ease-out) infinite;
+  animation-delay: calc(var(--iv-i, 0) * 260ms);
+  pointer-events: none;
+}
+
+@keyframes iv-spark {
+  from,
+  to {
+    opacity: 0.2;
+    transform: scale(0.5);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Breathing halo -------------------------------------------------------- */
+
+.iv-pulse-glow {
+  animation: iv-pulse-glow 2s var(--iv-ease-out) infinite;
+}
+
+@keyframes iv-pulse-glow {
+  from,
+  to {
+    box-shadow: 0 0 8px var(--iv-glow-primary);
+  }
+
+  50% {
+    box-shadow: 0 0 16px 3px var(--iv-glow-primary);
+  }
+}
+
+/* Rise: entrance on load, staggered by --iv-i ------------------------------- */
+
+.iv-rise {
+  --iv-rise-distance: 0.45em;
+  --iv-rise-duration: 900ms;
+  --iv-rise-step: 120ms;
+
+  animation: iv-rise var(--iv-rise-duration) var(--iv-ease-out) backwards;
+  animation-delay: calc(var(--iv-i, 0) * var(--iv-rise-step));
+}
+
+@keyframes iv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--iv-rise-distance));
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Reveal on scroll ------------------------------------------------------ */
+
+.iv-reveal {
+  --iv-reveal-distance: 24px;
+  --iv-reveal-duration: 700ms;
+
+  opacity: 0;
+  transform: translateY(var(--iv-reveal-distance));
+  transition:
+    opacity var(--iv-reveal-duration) var(--iv-ease-out),
+    transform var(--iv-reveal-duration) var(--iv-ease-out);
+  transition-delay: var(--iv-reveal-delay, 0ms);
+}
+
+.iv-reveal[data-iv-inview] {
+  opacity: 1;
+  transform: none;
+}
+
+/* No JavaScript, nothing to observe: everything is visible from the start. */
+:where(:root:not([data-iv-js])) .iv-reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* Reduced motion: the final state, none of the travel --------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-edge-glint:hover::before,
+  .iv-edge-glint:focus-within::before,
+  .iv-edge-glint[data-iv-inview]::before {
+    background: var(--iv-glint-color);
+    opacity: 1;
+    animation: none;
+  }
+
+  .iv-edge-near::after {
+    transition: none;
+  }
+
+  .iv-scan::after {
+    content: none;
+  }
+
+  .iv-spark {
+    opacity: 1;
+    animation: none;
+  }
+
+  .iv-pulse-glow {
+    box-shadow: 0 0 12px var(--iv-glow-primary);
+    animation: none;
+  }
+
+  .iv-rise {
+    animation: none;
+  }
+
+  .iv-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,38 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Hero" description="Hero de iVOLT: secciones de apertura de borde a borde con medio, scrim, kicker, título de gran formato, entradilla, acciones y un aside, en variantes centrada, dividida, cinematográfica y terminal, construidas solo con CSS.">
+  <article class="docs-prose">
+    <h1>Hero</h1>
+    <p>Una sección de apertura que marca el tono. Una capa de medio con un scrim mantiene legible el texto, el título es de gran formato y sube línea a línea, y el contenido puede compartir escenario con un componente vivo en el aside. Todo es CSS; el medio puede ser una imagen, un vídeo o un degradado, y la variante cinematográfica añade una aurora, una línea de exploración y chispas de los módulos de superficies y efectos.</p>
+    <p><strong>CSS:</strong> <code>css/components/hero.css</code> (en <code>ivolt.css</code>). Sin JavaScript. Añadido en la v0.4.</p>
+    <Fixture name="hero/basic" />
+    <h2>Dividido con un aside</h2>
+    <Fixture name="hero/split" />
+    <h2>Cinematográfico</h2>
+    <p>Fondo de aurora, línea de exploración, chispas y destello en la acción principal. Con movimiento reducido la aurora queda quieta y la exploración y las chispas se detienen.</p>
+    <Fixture name="hero/cinematic" />
+    <h2>Terminal</h2>
+    <p>Kicker monoespaciado con prompt y cursor parpadeante.</p>
+    <Fixture name="hero/terminal" />
+    <h2>Anatomía y modificadores</h2>
+    <table>
+      <thead><tr><th>Clase</th><th>Papel</th></tr></thead>
+      <tbody>
+        <tr><td><code>iv-hero</code></td><td>Sección de borde a borde, <code>--iv-hero-min</code> (80svh), contenido alineado abajo.</td></tr>
+        <tr><td><code>__media</code>, <code>__scrim</code></td><td>Capa de fondo y el degradado que mantiene el texto en contraste AA (<code>--iv-hero-scrim</code>).</td></tr>
+        <tr><td><code>__content</code>, <code>__kicker</code>, <code>__title</code>, <code>__lead</code>, <code>__actions</code>, <code>__facts</code>, <code>__aside</code></td><td>La columna de texto y sus partes; <code>__title &gt; span.iv-rise</code> suben línea a línea.</td></tr>
+        <tr><td><code>--center</code>, <code>--split</code>, <code>--cinematic</code>, <code>--terminal</code>, <code>--compact</code>, <code>--kenburns</code>, <code>--light</code></td><td>Alineación, dos columnas, aurora con exploración y chispas, prompt monoespaciado, 50svh, zoom lento del medio, scrim claro.</td></tr>
+      </tbody>
+    </table>
+    <h2>Accesibilidad</h2>
+    <p>El título es el encabezado de la página; los medios decorativos llevan <code>alt</code> vacío; ningún vídeo se reproduce con sonido; el scrim se comprueba con axe en ambos temas en cada fixture.</p>
+    <h2>Errores frecuentes</h2>
+    <ul>
+      <li>Texto sobre el medio sin scrim: el contraste depende de la imagen.</li>
+      <li>Un hero más alto que el viewport en móvil: usa <code>--compact</code> o baja <code>--iv-hero-min</code>.</li>
+      <li>Vídeo con sonido en reproducción automática: nunca.</li>
+    </ul>
+  </article>
+</Base>

@@ -1,0 +1,297 @@
+/* iVOLT — components/hero
+ * Cover compositions (API_CONTRACT §8.11). CSS only: the served markup is a
+ * section with a background layer, a scrim and a content column, and it is
+ * already spectacular without JavaScript. The expressive layer is composed,
+ * not duplicated: a cinematic hero wears `iv-texture-aurora` on its
+ * `__media` (§8.8) and `iv-scan`, `iv-spark` and `iv-edge-glint` from §8.10,
+ * so this module never repeats a mesh gradient or a border mask.
+ * Colours: the hero paints its own dark canvas in both themes, so the text
+ * cannot use `--iv-color-text` (dark in the light theme) over the scrim. The
+ * locals `--iv-hero-ink`, `--iv-hero-muted` and `--iv-hero-accent` carry the
+ * light-on-dark ramp; `--iv-hero--light` points them back at the theme
+ * tokens. `--iv-hero-accent` defaults to `--iv-color-accent` instead of
+ * `--iv-color-primary` because the light-theme primary is a dark green and
+ * fails AA over the scrim.
+ * Locals: --iv-hero-min --iv-hero-max-width --iv-hero-scrim --iv-hero-ink
+ *         --iv-hero-muted --iv-hero-accent --iv-hero-gap
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-hero {
+  --iv-hero-min: 80svh;
+  --iv-hero-max-width: var(--iv-container-max);
+  --iv-hero-ink: var(--iv-palette-neutral-0);
+  --iv-hero-muted: color-mix(in srgb, var(--iv-palette-neutral-0) 82%, transparent);
+  --iv-hero-accent: var(--iv-color-accent);
+  --iv-hero-gap: var(--iv-space-5);
+  --iv-hero-scrim: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--iv-palette-neutral-1000) 85%, transparent) 0%,
+    color-mix(in srgb, var(--iv-palette-neutral-1000) 58%, transparent) 46%,
+    color-mix(in srgb, var(--iv-palette-neutral-1000) 20%, transparent) 100%
+  );
+
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: end;
+  inline-size: 100%;
+  min-block-size: var(--iv-hero-min);
+  padding: clamp(2rem, 6vw, 5rem);
+  overflow: clip;
+  color: var(--iv-hero-ink);
+}
+
+/* Background layer: an image, a video or a gradient. Always decorative. */
+.iv-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-color: var(--iv-palette-neutral-950);
+  pointer-events: none;
+}
+
+.iv-hero__media img,
+.iv-hero__media video {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* Contrast layer: the text above it keeps AA in both themes. */
+.iv-hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--iv-hero-scrim);
+  pointer-events: none;
+}
+
+.iv-hero__content {
+  display: grid;
+  gap: var(--iv-hero-gap);
+  inline-size: 100%;
+  max-inline-size: var(--iv-hero-max-width);
+  margin-inline: auto;
+  justify-items: start;
+}
+
+.iv-hero__kicker {
+  margin: 0;
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--iv-hero-accent);
+}
+
+.iv-hero__title {
+  margin: 0;
+  font-size: clamp(2.75rem, 8vw, 7.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-weight: var(--iv-weight-semibold);
+  text-wrap: balance;
+}
+
+/* One line per span, so `iv-rise` can stagger the entrance with `--iv-i`. */
+.iv-hero__title > span {
+  display: block;
+}
+
+.iv-hero__title em {
+  font-style: normal;
+  color: var(--iv-hero-accent);
+}
+
+.iv-hero__lead {
+  margin: 0;
+  max-inline-size: 48ch;
+  font-size: clamp(1.05rem, 1.2vw, 1.3rem);
+  line-height: var(--iv-leading-relaxed);
+  color: var(--iv-hero-muted);
+}
+
+.iv-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-3);
+  align-items: center;
+}
+
+.iv-hero__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(var(--iv-space-6), 5vw, var(--iv-space-12));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--iv-hero-muted);
+  font-size: var(--iv-text-sm);
+}
+
+.iv-hero__facts strong {
+  display: block;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: var(--iv-leading-tight);
+  letter-spacing: -0.02em;
+  font-weight: var(--iv-weight-semibold);
+  color: var(--iv-hero-ink);
+}
+
+/* The aside holds a surface (a glass card, a carousel), not scrim text: the
+ * theme ink comes back so the component keeps its own contrast. */
+.iv-hero__aside {
+  color: var(--iv-color-text);
+  inline-size: 100%;
+  max-inline-size: var(--iv-hero-max-width);
+  margin-inline: auto;
+}
+
+/* Modifiers -------------------------------------------------------------- */
+
+.iv-hero--center {
+  align-content: center;
+  text-align: center;
+}
+
+.iv-hero--center .iv-hero__content {
+  justify-items: center;
+}
+
+.iv-hero--center .iv-hero__lead {
+  margin-inline: auto;
+}
+
+.iv-hero--center .iv-hero__actions,
+.iv-hero--center .iv-hero__facts {
+  justify-content: center;
+}
+
+.iv-hero--compact {
+  --iv-hero-min: 50svh;
+}
+
+/* Cinematic: taller, softer scrim, aurora and scan composed in the markup.
+ * The mesh locals of §8.8 are re-pointed at a dark canvas, because the hero
+ * is dark in both themes and the light-theme aurora would wash out. */
+.iv-hero--cinematic .iv-hero__media {
+  --iv-mesh-1: color-mix(in oklab, var(--iv-color-primary) 70%, var(--iv-palette-neutral-1000));
+  --iv-mesh-2: color-mix(in oklab, var(--iv-glow-secondary) 90%, var(--iv-palette-neutral-1000));
+  --iv-mesh-3: color-mix(in oklab, var(--iv-color-accent) 40%, var(--iv-palette-neutral-1000));
+
+  background-color: var(--iv-palette-neutral-1000);
+}
+
+.iv-hero--cinematic {
+  --iv-hero-min: 90svh;
+  --iv-hero-scrim: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--iv-palette-neutral-1000) 88%, transparent) 0%,
+    color-mix(in srgb, var(--iv-palette-neutral-1000) 52%, transparent) 50%,
+    color-mix(in srgb, var(--iv-palette-neutral-1000) 30%, transparent) 100%
+  );
+}
+
+.iv-hero--terminal {
+  --iv-hero-min: 70svh;
+}
+
+.iv-hero--terminal .iv-hero__content {
+  font-family: var(--iv-font-mono);
+}
+
+.iv-hero--terminal .iv-hero__title {
+  letter-spacing: -0.02em;
+  font-weight: var(--iv-weight-medium);
+}
+
+.iv-hero--terminal .iv-hero__kicker::before {
+  content: "$ ";
+}
+
+.iv-hero--terminal .iv-hero__kicker::after {
+  content: "";
+  display: inline-block;
+  inline-size: 0.55em;
+  block-size: 1.05em;
+  margin-inline-start: 0.35em;
+  vertical-align: -0.2em;
+  background-color: currentcolor;
+  animation: iv-hero-caret 1s steps(2, jump-none) infinite;
+}
+
+@keyframes iv-hero-caret {
+  to {
+    opacity: 0;
+  }
+}
+
+/* Ken Burns: the background layer drifts in, the text never moves. */
+.iv-hero--kenburns .iv-hero__media {
+  animation: iv-hero-kenburns 18s var(--iv-ease-out) forwards;
+}
+
+@keyframes iv-hero-kenburns {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.08) translate3d(-1%, -1%, 0);
+  }
+}
+
+/* Light cover: the scrim and the ink swap, the theme tokens come back. */
+.iv-hero--light {
+  --iv-hero-ink: var(--iv-color-text);
+  --iv-hero-muted: var(--iv-color-text-muted);
+  --iv-hero-accent: var(--iv-color-primary);
+  --iv-hero-scrim: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--iv-palette-neutral-0) 88%, transparent) 0%,
+    color-mix(in srgb, var(--iv-palette-neutral-0) 62%, transparent) 46%,
+    color-mix(in srgb, var(--iv-palette-neutral-0) 24%, transparent) 100%
+  );
+}
+
+.iv-hero--light .iv-hero__media {
+  background-color: var(--iv-color-surface);
+}
+
+/* Split: two columns from md, both inside the content width. The title gives
+ * up some size: it lives in a narrower column than a full-width cover. */
+.iv-hero--split {
+  --iv-hero-gap: var(--iv-space-4);
+
+  gap: var(--iv-space-8);
+}
+
+.iv-hero--split .iv-hero__title {
+  font-size: clamp(2.5rem, 5vw, 5rem);
+}
+
+@media (--iv-md) {
+  .iv-hero--split {
+    align-content: center;
+    align-items: center;
+    grid-template-columns:
+      minmax(0, calc(var(--iv-hero-max-width) * 0.6))
+      minmax(0, calc(var(--iv-hero-max-width) * 0.4));
+    justify-content: center;
+  }
+}
+
+/* Reduced motion: the final frame, none of the travel --------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-hero--terminal .iv-hero__kicker::after {
+    animation: none;
+  }
+
+  .iv-hero--kenburns .iv-hero__media {
+    animation: none;
+  }
+}

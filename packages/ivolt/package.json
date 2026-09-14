@@ -79,6 +79,14 @@
       "types": "./dist/types/components/megamenu.d.ts",
       "default": "./dist/js/components/megamenu.js"
     },
+    "./proximity": {
+      "types": "./dist/types/components/proximity.d.ts",
+      "default": "./dist/js/components/proximity.js"
+    },
+    "./reveal": {
+      "types": "./dist/types/components/reveal.d.ts",
+      "default": "./dist/js/components/reveal.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",
