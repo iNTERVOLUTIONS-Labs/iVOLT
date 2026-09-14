@@ -6,7 +6,7 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Form</h1>
     <p>Native controls styled with tokens. Every control needs a visible <code>&lt;label&gt;</code>; help and error text are linked with <code>aria-describedby</code>. No JavaScript, no custom widgets.</p>
-    <p><strong>CSS:</strong> included in <code>ivolt.css</code>; standalone <code>css/components/form.css</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> included in <code>ivolt.css</code>; standalone <code>css/components/form.css</code>.</p>
     <Fixture name="form/basic" />
     <h2>Error and disabled</h2>
     <p>Mark invalid fields with <code>aria-invalid="true"</code> and point <code>aria-describedby</code> at the <code>iv-field__error</code> element. Disabled controls use the native attribute.</p>
@@ -18,18 +18,20 @@ import Fixture from "../../components/Fixture.astro";
     <p>A checkbox becomes a switch, a range input gets a filled track, a file input becomes a drop zone that keeps the real input accessible, textareas grow with their content where the browser supports it, and inputs come in three sizes like buttons.</p>
     <Fixture name="form/controls" />
     <h2>Classes</h2>
-    <table>
-      <thead><tr><th>Class</th><th>Element</th></tr></thead>
-      <tbody>
-        <tr><td><code>iv-field</code></td><td>Wrapper: label, control, help/error stacked.</td></tr>
-        <tr><td><code>iv-label</code>, <code>iv-label__required</code></td><td><code>&lt;label&gt;</code> and the required marker (keep <code>required</code> on the control).</td></tr>
-        <tr><td><code>iv-input</code></td><td><code>&lt;input&gt;</code> (text-like types) and <code>&lt;textarea&gt;</code>.</td></tr>
-        <tr><td><code>iv-select</code></td><td>Native <code>&lt;select&gt;</code>.</td></tr>
-        <tr><td><code>iv-check</code>, <code>iv-checks</code>, <code>iv-checks--inline</code></td><td>Label wrapping a checkbox or radio; vertical or inline groups.</td></tr>
-        <tr><td><code>iv-fieldset</code>, <code>iv-fieldset__legend</code></td><td>Grouping with a legend.</td></tr>
-        <tr><td><code>iv-field__help</code>, <code>iv-field__error</code></td><td>Help and error text.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Class</th><th>Element</th></tr></thead>
+        <tbody>
+          <tr><td><code>iv-field</code></td><td>Wrapper: label, control, help/error stacked.</td></tr>
+          <tr><td><code>iv-label</code>, <code>iv-label__required</code></td><td><code>&lt;label&gt;</code> and the required marker (keep <code>required</code> on the control).</td></tr>
+          <tr><td><code>iv-input</code></td><td><code>&lt;input&gt;</code> (text-like types) and <code>&lt;textarea&gt;</code>.</td></tr>
+          <tr><td><code>iv-select</code></td><td>Native <code>&lt;select&gt;</code>.</td></tr>
+          <tr><td><code>iv-check</code>, <code>iv-checks</code>, <code>iv-checks--inline</code></td><td>Label wrapping a checkbox or radio; vertical or inline groups.</td></tr>
+          <tr><td><code>iv-fieldset</code>, <code>iv-fieldset__legend</code></td><td>Grouping with a legend.</td></tr>
+          <tr><td><code>iv-field__help</code>, <code>iv-field__error</code></td><td>Help and error text.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Common mistakes</h2>
     <ul><li>Placeholder used as the only label.</li><li>Error text not referenced by <code>aria-describedby</code>.</li><li>Demo forms that post to a backend that does not exist: say it is a demo, as the examples above do.</li></ul>
   </article>

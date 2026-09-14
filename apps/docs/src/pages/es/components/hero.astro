@@ -6,7 +6,7 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Hero</h1>
     <p>Una sección de apertura que marca el tono. Una capa de medio con un scrim mantiene legible el texto, el título es de gran formato y sube línea a línea, y el contenido puede compartir escenario con un componente vivo en el aside. Todo es CSS; el medio puede ser una imagen, un vídeo o un degradado, y la variante cinematográfica añade una aurora, una línea de exploración y chispas de los módulos de superficies y efectos.</p>
-    <p><strong>CSS:</strong> <code>css/components/hero.css</code> (en <code>ivolt.css</code>). Sin JavaScript. Añadido en la v0.4.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/hero.css</code> (en <code>ivolt.css</code>). Sin JavaScript. Añadido en la v0.4.</p>
     <Fixture name="hero/basic" />
     <h2>Dividido con un aside</h2>
     <Fixture name="hero/split" />
@@ -20,15 +20,17 @@ import Fixture from "../../../components/Fixture.astro";
     <p>Una imagen real en la capa de medio con el zoom lento y una línea de exploración.</p>
     <Fixture name="hero/photo" />
     <h2>Anatomía y modificadores</h2>
-    <table>
-      <thead><tr><th>Clase</th><th>Papel</th></tr></thead>
-      <tbody>
-        <tr><td><code>iv-hero</code></td><td>Sección de borde a borde, <code>--iv-hero-min</code> (80svh), contenido alineado abajo.</td></tr>
-        <tr><td><code>__media</code>, <code>__scrim</code></td><td>Capa de fondo y el degradado que mantiene el texto en contraste AA (<code>--iv-hero-scrim</code>).</td></tr>
-        <tr><td><code>__content</code>, <code>__kicker</code>, <code>__title</code>, <code>__lead</code>, <code>__actions</code>, <code>__facts</code>, <code>__aside</code></td><td>La columna de texto y sus partes; <code>__title &gt; span.iv-rise</code> suben línea a línea.</td></tr>
-        <tr><td><code>--center</code>, <code>--split</code>, <code>--cinematic</code>, <code>--terminal</code>, <code>--compact</code>, <code>--kenburns</code>, <code>--light</code></td><td>Alineación, dos columnas, aurora con exploración y chispas, prompt monoespaciado, 50svh, zoom lento del medio, scrim claro.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Clase</th><th>Papel</th></tr></thead>
+        <tbody>
+          <tr><td><code>iv-hero</code></td><td>Sección de borde a borde, <code>--iv-hero-min</code> (80svh), contenido alineado abajo.</td></tr>
+          <tr><td><code>__media</code>, <code>__scrim</code></td><td>Capa de fondo y el degradado que mantiene el texto en contraste AA (<code>--iv-hero-scrim</code>).</td></tr>
+          <tr><td><code>__content</code>, <code>__kicker</code>, <code>__title</code>, <code>__lead</code>, <code>__actions</code>, <code>__facts</code>, <code>__aside</code></td><td>La columna de texto y sus partes; <code>__title &gt; span.iv-rise</code> suben línea a línea.</td></tr>
+          <tr><td><code>--center</code>, <code>--split</code>, <code>--cinematic</code>, <code>--terminal</code>, <code>--compact</code>, <code>--kenburns</code>, <code>--light</code></td><td>Alineación, dos columnas, aurora con exploración y chispas, prompt monoespaciado, 50svh, zoom lento del medio, scrim claro.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Accesibilidad</h2>
     <p>El título es el encabezado de la página; los medios decorativos llevan <code>alt</code> vacío; ningún vídeo se reproduce con sonido; el scrim se comprueba con axe en ambos temas en cada fixture.</p>
     <h2>Errores frecuentes</h2>

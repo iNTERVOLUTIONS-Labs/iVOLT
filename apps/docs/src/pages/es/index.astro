@@ -152,16 +152,20 @@ const recipes = [
   </section>
 
   <section class="docs-invert" data-iv-theme="light" aria-labelledby="start-title">
-    <div class="docs-wrap">
+    <div class="docs-wrap docs-invert__grid">
+      <div class="docs-invert__head">
       <span class="docs-num">05 — Empezar</span>
       <h2 id="start-title">Dos archivos. Sin paso de build.</h2>
       <p>Compila el paquete una vez, copia <code>dist/</code> junto a tu página y enlaza una hoja de estilo y un módulo. La plantilla inicial y las recetas son exactamente esto.</p>
+      </div>
+      <div class="docs-invert__side">
       <pre class="docs-code" tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
   &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
   &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
       <div class="iv-cluster">
         <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/es/getting-started">Leer los primeros pasos</a>
         <a class="iv-button iv-button--secondary iv-button--lg" href="/es/examples">Descargar la plantilla inicial</a>
+      </div>
       </div>
       <p class="docs-invert__foot">Alfa: la API puede cambiar antes de 0.1.0. Los tamaños de arriba se miden en tiempo de build a partir de los archivos que se distribuyen. Sin comparativas de rendimiento con otros frameworks.</p>
     </div>

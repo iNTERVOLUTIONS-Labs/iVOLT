@@ -37,14 +37,16 @@ const cspHash = "sha256-" + createHash("sha256").update(themeSnippet).digest("ba
     <p>Así que las capas ordenan iVOLT por dentro y te facilitan sobrescribirlo; no lo defienden. Dilo en voz alta una vez y la depuración se acorta mucho.</p>
 
     <h3>Elegir una estrategia</h3>
-    <table>
-      <thead><tr><th>Tu situación</th><th>Usa</th><th>Por qué</th></tr></thead>
-      <tbody>
-        <tr><td>Página nueva, controlas el CSS</td><td><code>css/ivolt.css</code></td><td>Orden por capas, y es fácil sobrescribir desde tus propias reglas sin capa</td></tr>
-        <tr><td>Hoja heredada que no puedes editar</td><td><code>css/ivolt.flat.css</code></td><td>Sin <code>@layer</code>: compite por especificidad y orden de origen como cualquier otra hoja</td></tr>
-        <tr><td>Hoja heredada que sí puedes importar</td><td><code>ivolt.css</code> + envolver la hoja heredada en una capa</td><td>Pone el CSS antiguo por debajo de iVOLT sin reescribirlo</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Tu situación</th><th>Usa</th><th>Por qué</th></tr></thead>
+        <tbody>
+          <tr><td>Página nueva, controlas el CSS</td><td><code>css/ivolt.css</code></td><td>Orden por capas, y es fácil sobrescribir desde tus propias reglas sin capa</td></tr>
+          <tr><td>Hoja heredada que no puedes editar</td><td><code>css/ivolt.flat.css</code></td><td>Sin <code>@layer</code>: compite por especificidad y orden de origen como cualquier otra hoja</td></tr>
+          <tr><td>Hoja heredada que sí puedes importar</td><td><code>ivolt.css</code> + envolver la hoja heredada en una capa</td><td>Pone el CSS antiguo por debajo de iVOLT sin reescribirlo</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>El truco de envolverla, con el orden de capas declarado antes que las de iVOLT para que las reglas heredadas queden por debajo:</p>
 <pre><code>@layer legacy, iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides;
 @import url("legacy-theme.css") layer(legacy);

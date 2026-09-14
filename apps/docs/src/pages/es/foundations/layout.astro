@@ -17,19 +17,21 @@ import Fixture from "../../../components/Fixture.astro";
     <Fixture name="layout/grid" />
     <h2>Utilidades</h2>
     <p>La matriz es finita y generada; no hay valores arbitrarios, escáner ni paso de purga. Los prefijos adaptables existen solo para <code>sm md lg xl</code> y solo en los grupos marcados abajo.</p>
-    <table>
-      <thead><tr><th>Grupo</th><th>Clases</th><th>Adaptable</th></tr></thead>
-      <tbody>
-        <tr><td>Display</td><td><code>iv-u-block inline inline-block flex inline-flex grid hidden</code></td><td>sí</td></tr>
-        <tr><td>Flex</td><td><code>iv-u-flex-row|col</code>, <code>flex-wrap|nowrap</code>, <code>items-*</code>, <code>justify-*</code>, <code>grow</code>, <code>shrink-0</code></td><td>solo la dirección</td></tr>
-        <tr><td>Grid</td><td><code>iv-u-grid-cols-1…6,12</code>, <code>col-span-1…6,12,full</code></td><td>sí</td></tr>
-        <tr><td>Gap</td><td><code>iv-u-gap-0…12</code>, <code>gap-x-*</code>, <code>gap-y-*</code></td><td>solo gap</td></tr>
-        <tr><td>Espaciado</td><td><code>iv-u-m|mt|mb|ms|me|mx|my-0…12,auto</code>, <code>p|pt|pb|ps|pe|px|py-0…12</code> (lados lógicos)</td><td>no</td></tr>
-        <tr><td>Ancho</td><td><code>iv-u-w-full w-auto max-w-measure max-w-content</code></td><td>no</td></tr>
-        <tr><td>Texto</td><td><code>iv-u-text-start|center|end</code>, <code>text-xs…2xl</code>, <code>font-normal…bold</code>, <code>text-muted</code>, <code>truncate</code></td><td>solo la alineación</td></tr>
-        <tr><td>Visibilidad</td><td><code>iv-u-sr-only</code>, <code>iv-u-sr-only-focusable</code></td><td>no</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Grupo</th><th>Clases</th><th>Adaptable</th></tr></thead>
+        <tbody>
+          <tr><td>Display</td><td><code>iv-u-block inline inline-block flex inline-flex grid hidden</code></td><td>sí</td></tr>
+          <tr><td>Flex</td><td><code>iv-u-flex-row|col</code>, <code>flex-wrap|nowrap</code>, <code>items-*</code>, <code>justify-*</code>, <code>grow</code>, <code>shrink-0</code></td><td>solo la dirección</td></tr>
+          <tr><td>Grid</td><td><code>iv-u-grid-cols-1…6,12</code>, <code>col-span-1…6,12,full</code></td><td>sí</td></tr>
+          <tr><td>Gap</td><td><code>iv-u-gap-0…12</code>, <code>gap-x-*</code>, <code>gap-y-*</code></td><td>solo gap</td></tr>
+          <tr><td>Espaciado</td><td><code>iv-u-m|mt|mb|ms|me|mx|my-0…12,auto</code>, <code>p|pt|pb|ps|pe|px|py-0…12</code> (lados lógicos)</td><td>no</td></tr>
+          <tr><td>Ancho</td><td><code>iv-u-w-full w-auto max-w-measure max-w-content</code></td><td>no</td></tr>
+          <tr><td>Texto</td><td><code>iv-u-text-start|center|end</code>, <code>text-xs…2xl</code>, <code>font-normal…bold</code>, <code>text-muted</code>, <code>truncate</code></td><td>solo la alineación</td></tr>
+          <tr><td>Visibilidad</td><td><code>iv-u-sr-only</code>, <code>iv-u-sr-only-focusable</code></td><td>no</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Las utilidades se emiten con el selector duplicado (especificidad 0,2,0) y se cargan las últimas, así que ganan a los modificadores de componente tanto en la hoja en capas como en la plana.</p>
   </article>
 </Base>

@@ -6,21 +6,23 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Command palette</h1>
     <p>A modal search for actions. Press <kbd>Ctrl</kbd>+<kbd>K</kbd> (or <kbd>⌘</kbd>+<kbd>K</kbd>, or <kbd>/</kbd> outside a text field) and type: the list filters by label and keywords, groups without matches disappear, arrows move the highlight and Enter follows the link or runs the action. Items are served as plain links and buttons inside a dialog, so everything the palette can do also exists elsewhere on the page. The component composes the dialog, adds the listbox semantics, the shortcuts, the filtering, an optional list of recent actions and an API to add actions at runtime.</p>
-    <p><strong>CSS:</strong> <code>css/components/command.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/command</code> or <code>auto.js</code>. Added in v0.5.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/command.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/command</code> or <code>auto.js</code>. Added in v0.5.</p>
     <Fixture name="command/basic" minHeight="12rem" />
     <h2>Glass variant, recent items, no slash shortcut</h2>
     <Fixture name="command/glass" minHeight="12rem" />
     <h2>Options</h2>
-    <table>
-      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr><td><code>shortcut</code></td><td><code>data-iv-shortcut</code></td><td><code>true</code></td><td>Global <kbd>Ctrl</kbd>+<kbd>K</kbd> / <kbd>⌘</kbd>+<kbd>K</kbd>.</td></tr>
-        <tr><td><code>slash</code></td><td><code>data-iv-slash</code></td><td><code>true</code></td><td><kbd>/</kbd> opens the palette when focus is not in an editable field.</td></tr>
-        <tr><td><code>remember</code></td><td><code>data-iv-remember</code></td><td><code>false</code></td><td>Keep the last activated items in local storage and show them as a Recent group.</td></tr>
-        <tr><td><code>maxRecent</code></td><td><code>data-iv-max-recent</code></td><td><code>5</code></td><td>How many recent items to keep.</td></tr>
-        <tr><td><code>recentText</code>, <code>emptyText</code>, <code>placeholder</code></td><td><code>data-iv-recent-text</code> …</td><td><code>Recent</code>, <code>No results</code></td><td>Texts of the generated group, the empty state and the input.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>shortcut</code></td><td><code>data-iv-shortcut</code></td><td><code>true</code></td><td>Global <kbd>Ctrl</kbd>+<kbd>K</kbd> / <kbd>⌘</kbd>+<kbd>K</kbd>.</td></tr>
+          <tr><td><code>slash</code></td><td><code>data-iv-slash</code></td><td><code>true</code></td><td><kbd>/</kbd> opens the palette when focus is not in an editable field.</td></tr>
+          <tr><td><code>remember</code></td><td><code>data-iv-remember</code></td><td><code>false</code></td><td>Keep the last activated items in local storage and show them as a Recent group.</td></tr>
+          <tr><td><code>maxRecent</code></td><td><code>data-iv-max-recent</code></td><td><code>5</code></td><td>How many recent items to keep.</td></tr>
+          <tr><td><code>recentText</code>, <code>emptyText</code>, <code>placeholder</code></td><td><code>data-iv-recent-text</code> …</td><td><code>Recent</code>, <code>No results</code></td><td>Texts of the generated group, the empty state and the input.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Methods and events</h2>
     <p><code>open()</code>, <code>close()</code>, <code>add(action)</code>, <code>remove(id)</code>, <code>clear()</code>, <code>filter(query)</code>, <code>destroy()</code>; read <code>isOpen</code>, <code>query</code> and <code>actions</code>. An action is <code>&#123; id, label, group, keywords, href?, shortcut?, run? &#125;</code>. Events on the dialog: the dialog's own <code>iv:open</code>/<code>iv:close</code>; <code>iv:command</code> (cancelable, <code>detail.id</code>, <code>label</code>, <code>item</code>) then <code>iv:commanded</code>; <code>iv:filter</code> with <code>query</code> and <code>visible</code>.</p>
     <h2>Keyboard and assistive technology</h2>

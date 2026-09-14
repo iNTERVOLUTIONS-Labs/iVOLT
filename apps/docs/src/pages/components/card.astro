@@ -6,7 +6,7 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Card</h1>
     <p>A surface that groups related content. Use <code>&lt;article&gt;</code> when the card is self-contained content, a <code>&lt;div&gt;</code> otherwise. No JavaScript.</p>
-    <p><strong>CSS:</strong> included in <code>ivolt.css</code>; standalone <code>css/components/card.css</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> included in <code>ivolt.css</code>; standalone <code>css/components/card.css</code>.</p>
     <Fixture name="card/basic" />
     <h2>Media, flat and footer actions</h2>
     <Fixture name="card/media" />
@@ -14,17 +14,19 @@ import Fixture from "../../components/Fixture.astro";
     <p>Real images, proximity-lit edges and a lift on hover.</p>
     <Fixture name="card/photo" />
     <h2>Anatomy</h2>
-    <table>
-      <thead><tr><th>Class</th><th>Role</th></tr></thead>
-      <tbody>
-        <tr><td><code>iv-card</code></td><td>Surface with border, radius and shadow; flex column.</td></tr>
-        <tr><td><code>iv-card__media</code></td><td>16:9 area; an <code>&lt;img&gt;</code> inside is cropped with <code>object-fit: cover</code>.</td></tr>
-        <tr><td><code>iv-card__body</code></td><td>Padded content that grows to fill the card.</td></tr>
-        <tr><td><code>iv-card__title</code></td><td>Heading inside the body (pick the right level for the page).</td></tr>
-        <tr><td><code>iv-card__footer</code></td><td>Actions aligned to the end.</td></tr>
-        <tr><td><code>iv-card--flat</code></td><td>No shadow.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Class</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><code>iv-card</code></td><td>Surface with border, radius and shadow; flex column.</td></tr>
+          <tr><td><code>iv-card__media</code></td><td>16:9 area; an <code>&lt;img&gt;</code> inside is cropped with <code>object-fit: cover</code>.</td></tr>
+          <tr><td><code>iv-card__body</code></td><td>Padded content that grows to fill the card.</td></tr>
+          <tr><td><code>iv-card__title</code></td><td>Heading inside the body (pick the right level for the page).</td></tr>
+          <tr><td><code>iv-card__footer</code></td><td>Actions aligned to the end.</td></tr>
+          <tr><td><code>iv-card--flat</code></td><td>No shadow.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Local properties: <code>--iv-card-bg</code>, <code>--iv-card-radius</code>, <code>--iv-card-padding</code>.</p>
     <h2>Common mistakes</h2>
     <ul><li>Making the whole card a link with nested interactive controls. Link the title instead.</li><li>Skipping heading levels inside cards.</li></ul>

@@ -21,25 +21,29 @@ const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color
     <p>El módulo opcional <code>theme</code> añade <code>getTheme()</code>, <code>setTheme(theme, &#123; persist &#125;)</code>, <code>resolveTheme()</code> y <code>restoreTheme()</code>, y emite <code>iv:themechange</code> sobre <code>document</code>. La persistencia hay que pedirla expresamente. Para evitar un parpadeo antes de que se aplique el tema guardado, añade un pequeño script en línea dentro de <code>&lt;head&gt;</code>; con una CSP estricta, permítelo por hash o por nonce.</p>
 
     <h2>Colores semánticos</h2>
-    <table>
-      <thead><tr><th>Token</th><th>Claro</th><th>Oscuro</th></tr></thead>
-      <tbody>{semantic.map(([k, v]) => <tr><td><code>{k}</code></td><td><code>{v.value.light}</code></td><td><code>{v.value.dark}</code></td></tr>)}</tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Claro</th><th>Oscuro</th></tr></thead>
+        <tbody>{semantic.map(([k, v]) => <tr><td><code>{k}</code></td><td><code>{v.value.light}</code></td><td><code>{v.value.dark}</code></td></tr>)}</tbody>
+      </table>
+    </div>
     <p>Objetivos de contraste: 4.5:1 para el texto y 3:1 para los controles y el foco sobre sus superficies. Los valores de arriba se comprobaron con la fórmula de WCAG; se vuelven a medir en cada publicación.</p>
 
     <h2>Escalas</h2>
-    <table>
-      <thead><tr><th>Familia</th><th>Tokens</th></tr></thead>
-      <tbody>
-        <tr><td>Espacio</td><td><code>--iv-space-0 … 16</code> (pasos de 0.25rem hasta 1.5rem, y después 2, 2.5, 3 y 4rem)</td></tr>
-        <tr><td>Tipografía</td><td><code>--iv-text-xs … 4xl</code>, <code>--iv-leading-*</code>, <code>--iv-weight-*</code>, <code>--iv-font-sans|mono</code></td></tr>
-        <tr><td>Forma</td><td><code>--iv-radius-sm|md|lg|full</code>, <code>--iv-border-width</code>, <code>--iv-shadow-1|2|3</code></td></tr>
-        <tr><td>Foco</td><td><code>--iv-focus-width</code>, <code>--iv-focus-offset</code>, <code>--iv-color-focus</code></td></tr>
-        <tr><td>Movimiento</td><td><code>--iv-motion-fast|base|slow</code> (120/180/220 ms; 0 ms con la reducción de movimiento), <code>--iv-ease-out</code></td></tr>
-        <tr><td>Capas</td><td><code>--iv-z-dropdown|drawer|dialog|toast</code></td></tr>
-        <tr><td>Medidas</td><td><code>--iv-measure</code> (68ch), <code>--iv-container-max</code> (75rem), <code>--iv-content-max</code> (90rem)</td></tr>
-        <tr><td>Puntos de ruptura</td><td>sm 30em · md 48em · lg 64em · xl 80em · 2xl 90em. Se resuelven al compilar; no están disponibles como propiedades personalizadas dentro de las media queries.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Familia</th><th>Tokens</th></tr></thead>
+        <tbody>
+          <tr><td>Espacio</td><td><code>--iv-space-0 … 16</code> (pasos de 0.25rem hasta 1.5rem, y después 2, 2.5, 3 y 4rem)</td></tr>
+          <tr><td>Tipografía</td><td><code>--iv-text-xs … 4xl</code>, <code>--iv-leading-*</code>, <code>--iv-weight-*</code>, <code>--iv-font-sans|mono</code></td></tr>
+          <tr><td>Forma</td><td><code>--iv-radius-sm|md|lg|full</code>, <code>--iv-border-width</code>, <code>--iv-shadow-1|2|3</code></td></tr>
+          <tr><td>Foco</td><td><code>--iv-focus-width</code>, <code>--iv-focus-offset</code>, <code>--iv-color-focus</code></td></tr>
+          <tr><td>Movimiento</td><td><code>--iv-motion-fast|base|slow</code> (120/180/220 ms; 0 ms con la reducción de movimiento), <code>--iv-ease-out</code></td></tr>
+          <tr><td>Capas</td><td><code>--iv-z-dropdown|drawer|dialog|toast</code></td></tr>
+          <tr><td>Medidas</td><td><code>--iv-measure</code> (68ch), <code>--iv-container-max</code> (75rem), <code>--iv-content-max</code> (90rem)</td></tr>
+          <tr><td>Puntos de ruptura</td><td>sm 30em · md 48em · lg 64em · xl 80em · 2xl 90em. Se resuelven al compilar; no están disponibles como propiedades personalizadas dentro de las media queries.</td></tr>
+        </tbody>
+      </table>
+    </div>
   </article>
 </Base>

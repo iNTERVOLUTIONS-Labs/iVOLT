@@ -6,30 +6,34 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Tabla de datos (data table)</h1>
     <p>Ordenación y filtrado para una tabla que ya existe en el HTML. El servidor envía una <code>&lt;table class="iv-table"&gt;</code> normal; en el <code>init</code>, las cabeceras ordenables se convierten en botones con <code>aria-sort</code>, aparece el campo de filtro y un estado en vivo anuncia cuántas filas se ven. No se pagina ni se virtualiza nada: las filas que sirvas son las que se ordenan, así que mantén la tabla en un tamaño que una página pueda sostener.</p>
-    <p><strong>CSS:</strong> <code>css/components/datatable.css</code> sobre <code>table.css</code> (ambos dentro de <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/datatable</code> o <code>auto.js</code>. Añadido en la v0.2.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/datatable.css</code> sobre <code>table.css</code> (ambos dentro de <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/datatable</code> o <code>auto.js</code>. Añadido en la v0.2.</p>
     <Fixture name="datatable/basic" />
     <h2>Orden inicial y valores tipados</h2>
     <p><code>data-iv-sorted="asc"</code> o <code>"desc"</code> en una cabecera ordena la tabla en cuanto se inicializa. Una celda puede llevar <code>data-iv-value</code> cuando el texto que se muestra no es el valor por el que hay que ordenar, y las celdas de fecha se leen de <code>&lt;time datetime&gt;</code>. Las celdas sin un valor válido van al final en ambas direcciones.</p>
     <Fixture name="datatable/sorted" />
     <h2>Tipos de columna</h2>
-    <table>
-      <thead><tr><th>Atributo</th><th>Comparación</th><th>Valor de la celda</th></tr></thead>
-      <tbody>
-        <tr><td><code>data-iv-sort</code> o <code>data-iv-sort="text"</code></td><td><code>localeCompare</code>, con orden numérico, insensible a acentos y mayúsculas</td><td><code>data-iv-value</code> y, si no, el texto de la celda</td></tr>
-        <tr><td><code>data-iv-sort="number"</code></td><td>numérica, tras quitar unidades y separadores</td><td><code>data-iv-value</code> y, si no, el texto de la celda</td></tr>
-        <tr><td><code>data-iv-sort="date"</code></td><td>cronológica (<code>Date.parse</code>)</td><td><code>data-iv-value</code>; si no, <code>&lt;time datetime&gt;</code>; si no, el texto de la celda</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Atributo</th><th>Comparación</th><th>Valor de la celda</th></tr></thead>
+        <tbody>
+          <tr><td><code>data-iv-sort</code> o <code>data-iv-sort="text"</code></td><td><code>localeCompare</code>, con orden numérico, insensible a acentos y mayúsculas</td><td><code>data-iv-value</code> y, si no, el texto de la celda</td></tr>
+          <tr><td><code>data-iv-sort="number"</code></td><td>numérica, tras quitar unidades y separadores</td><td><code>data-iv-value</code> y, si no, el texto de la celda</td></tr>
+          <tr><td><code>data-iv-sort="date"</code></td><td>cronológica (<code>Date.parse</code>)</td><td><code>data-iv-value</code>; si no, <code>&lt;time datetime&gt;</code>; si no, el texto de la celda</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Opciones</h2>
-    <table>
-      <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-      <tbody>
-        <tr><td><code>filterDelay</code></td><td><code>data-iv-filter-delay</code></td><td><code>150</code></td><td>Milisegundos que se esperan tras escribir antes de filtrar las filas.</td></tr>
-        <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No rows match</code></td><td>Texto de la fila que aparece cuando el filtro lo oculta todo.</td></tr>
-        <tr><td><code>statusText</code></td><td><code>data-iv-status-text</code></td><td><code>&#123;visible&#125; of &#123;total&#125; rows</code></td><td>Plantilla del estado en vivo; se sustituyen ambos marcadores.</td></tr>
-        <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>idioma del documento</td><td>Configuración regional que usan las comparaciones de texto.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>filterDelay</code></td><td><code>data-iv-filter-delay</code></td><td><code>150</code></td><td>Milisegundos que se esperan tras escribir antes de filtrar las filas.</td></tr>
+          <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No rows match</code></td><td>Texto de la fila que aparece cuando el filtro lo oculta todo.</td></tr>
+          <tr><td><code>statusText</code></td><td><code>data-iv-status-text</code></td><td><code>&#123;visible&#125; of &#123;total&#125; rows</code></td><td>Plantilla del estado en vivo; se sustituyen ambos marcadores.</td></tr>
+          <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>idioma del documento</td><td>Configuración regional que usan las comparaciones de texto.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Métodos y eventos</h2>
     <p><code>sort(columnIndexOrTh, direction?)</code>, <code>filter(query)</code>, <code>clearFilter()</code>, <code>reset()</code> (orden original y sin filtro), <code>destroy()</code>; se leen <code>sortColumn</code>, <code>sortDirection</code>, <code>rows</code> (orden original), <code>visibleRows</code> y <code>query</code>. Eventos en el elemento raíz: <code>iv:sort</code> (cancelable, <code>detail.column</code>, <code>direction</code>, <code>previousColumn</code>, <code>previousDirection</code>) y después <code>iv:sorted</code>; <code>iv:filter</code> (cancelable, <code>detail.query</code>, <code>previousQuery</code>) y después <code>iv:filtered</code> con <code>visible</code> y <code>total</code>.</p>
     <h2>Teclado y tecnología asistiva</h2>

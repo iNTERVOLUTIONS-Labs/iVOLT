@@ -151,16 +151,20 @@ const recipes = [
   </section>
 
   <section class="docs-invert" data-iv-theme="light" aria-labelledby="start-title">
-    <div class="docs-wrap">
+    <div class="docs-wrap docs-invert__grid">
+      <div class="docs-invert__head">
       <span class="docs-num">05 — Start</span>
       <h2 id="start-title">Two files. No build step.</h2>
       <p>Build the package once, copy <code>dist/</code> next to your page and link a stylesheet and a module. The starter and the recipes are exactly this.</p>
+      </div>
+      <div class="docs-invert__side">
       <pre class="docs-code" tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
   &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
   &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
       <div class="iv-cluster">
         <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/getting-started">Read the getting started</a>
         <a class="iv-button iv-button--secondary iv-button--lg" href="/examples">Download the starter</a>
+      </div>
       </div>
       <p class="docs-invert__foot">Alpha: APIs may change before 0.1.0. Sizes above are measured at build time from the shipped files. No benchmarks against other frameworks.</p>
     </div>

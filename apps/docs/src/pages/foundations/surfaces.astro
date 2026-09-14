@@ -6,7 +6,7 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Surfaces and textures</h1>
     <p>A CSS-only module that gives any block depth and light. Add a class to a card, a dialog panel, a drawer, a dropdown menu, a toast, a picker or a carousel control and it takes the surface; every effect is driven by the <code>--iv-glass-*</code>, <code>--iv-blur-*</code>, <code>--iv-glow-*</code> and <code>--iv-texture-*</code> tokens, so themes and overrides keep working. Animated effects stop under <code>prefers-reduced-motion</code>; browsers without <code>backdrop-filter</code> get a solid raised surface.</p>
-    <p><strong>CSS:</strong> <code>css/surfaces.css</code> (in <code>ivolt.css</code>, after the components). No JavaScript. Added in v0.3.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/surfaces.css</code> (in <code>ivolt.css</code>, after the components). No JavaScript. Added in v0.3.</p>
     <h2>Glass</h2>
     <p><code>iv-glass</code> and <code>iv-glass--strong</code>: translucent background, blur and saturation behind, a light border and a highlight on the top edge. Text keeps AA contrast on both themes; the fixture places panels over a mesh so the effect is visible.</p>
     <Fixture name="surfaces/glass" />
@@ -19,16 +19,18 @@ import Fixture from "../../components/Fixture.astro";
     <p><code>iv-glow</code> draws a conic gradient border that rotates on hover or focus and casts a soft glow. <code>iv-gradient-text</code> fills a heading with the brand gradient. <code>iv-shine</code> sweeps a light across a button or card once on hover. <code>iv-elevate</code> lifts a block on hover.</p>
     <Fixture name="surfaces/glow" />
     <h2>Tokens</h2>
-    <table>
-      <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Used by</th></tr></thead>
-      <tbody>
-        <tr><td><code>--iv-glass-bg</code>, <code>--iv-glass-bg-strong</code></td><td>white at 55% and 78%</td><td>carbon at 45% and 72%</td><td><code>iv-glass</code></td></tr>
-        <tr><td><code>--iv-glass-border</code>, <code>--iv-glass-highlight</code></td><td>white at 65% and 90%</td><td>white at 12% and 20%</td><td><code>iv-glass</code></td></tr>
-        <tr><td><code>--iv-blur-sm/md/lg</code></td><td colspan="2">8px, 16px, 28px</td><td><code>iv-glass</code></td></tr>
-        <tr><td><code>--iv-glow-primary</code>, <code>--iv-glow-secondary</code></td><td>deep green at 35%, blue at 25%</td><td>electric green at 45%, blue at 35%</td><td><code>iv-glow</code>, focus halos, meshes</td></tr>
-        <tr><td><code>--iv-texture-grain-opacity</code></td><td>0.05</td><td>0.09</td><td><code>iv-texture-grain</code></td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-glass-bg</code>, <code>--iv-glass-bg-strong</code></td><td>white at 55% and 78%</td><td>carbon at 45% and 72%</td><td><code>iv-glass</code></td></tr>
+          <tr><td><code>--iv-glass-border</code>, <code>--iv-glass-highlight</code></td><td>white at 65% and 90%</td><td>white at 12% and 20%</td><td><code>iv-glass</code></td></tr>
+          <tr><td><code>--iv-blur-sm/md/lg</code></td><td colspan="2">8px, 16px, 28px</td><td><code>iv-glass</code></td></tr>
+          <tr><td><code>--iv-glow-primary</code>, <code>--iv-glow-secondary</code></td><td>deep green at 35%, blue at 25%</td><td>electric green at 45%, blue at 35%</td><td><code>iv-glow</code>, focus halos, meshes</td></tr>
+          <tr><td><code>--iv-texture-grain-opacity</code></td><td>0.05</td><td>0.09</td><td><code>iv-texture-grain</code></td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Common mistakes</h2>
     <ul>
       <li>Glass over a flat, single-colour background: nothing shows through. Put it over media, a mesh or content.</li>

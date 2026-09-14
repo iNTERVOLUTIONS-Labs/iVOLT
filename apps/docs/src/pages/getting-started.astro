@@ -6,13 +6,13 @@ import Base from "../layouts/Base.astro";
     <h1>Getting started</h1>
     <p>iVOLT ships as prebuilt CSS and JavaScript. Until the package is published, install it from the repository.</p>
 
-    <h2>1. Build the package</h2>
+    <h2>Build the package</h2>
 <pre><code>git clone https://github.com/iNTERVOLUTIONS-Labs/iVOLT
 cd iVOLT
 npm ci
 npm run build          # writes packages/ivolt/dist</code></pre>
 
-    <h2>2a. Plain HTML, no Node</h2>
+    <h2>Plain HTML, no Node</h2>
     <p>Copy <code>packages/ivolt/dist</code> into your project (the starter calls the folder <code>ivolt/</code>) and link the files. Add the <code>iv-root</code> class where base typography should apply; on <code>&lt;html&gt;</code> for a whole page, or on a wrapper when embedding into an existing site.</p>
 <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en" class="iv-root" data-iv-theme="system"&gt;
@@ -22,7 +22,7 @@ npm run build          # writes packages/ivolt/dist</code></pre>
 &lt;/head&gt;</code></pre>
     <p>Prefer a classic script? <code>ivolt/js/ivolt.iife.min.js</code> exposes one global, <code>IVOLT</code>, and does not initialise anything until you call <code>IVOLT.init()</code>.</p>
 
-    <h2>2b. ES modules with a bundler</h2>
+    <h2>ES modules with a bundler</h2>
     <p>Create a tarball with <code>npm pack</code> inside <code>packages/ivolt</code> and install it in your project. The package exports are the public API; deep paths into <code>dist/</code> are not.</p>
 <pre><code>import "@intervolutions/ivolt/css/ivolt.css";
 import &#123; init, Dialog &#125; from "@intervolutions/ivolt";
@@ -32,17 +32,19 @@ init(document);                       // explicit, idempotent
 const dialog = Dialog.get(document.querySelector("#signup"));</code></pre>
     <p>Importing <code>@intervolutions/ivolt</code> has no side effects; only <code>@intervolutions/ivolt/auto</code> initialises on load. Modules never touch <code>document</code> at import time, so they are safe in server-side rendering.</p>
 
-    <h2>3. Pick the CSS you need</h2>
-    <table>
-      <thead><tr><th>File</th><th>Contains</th></tr></thead>
-      <tbody>
-        <tr><td><code>css/ivolt.css</code></td><td>Everything, organised in cascade layers <code>iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides</code>.</td></tr>
-        <tr><td><code>css/ivolt.flat.css</code></td><td>Same rules without <code>@layer</code>, for sites whose existing CSS is not layered and must keep competing by specificity.</td></tr>
-        <tr><td><code>css/core.css</code></td><td>Tokens, base and layout only.</td></tr>
-        <tr><td><code>css/components/*.css</code></td><td>One file per component, unlayered. Import after <code>core.css</code>; assign a layer yourself if you use them: <code>@import url("…/components/button.css") layer(iv.components);</code></td></tr>
-        <tr><td><code>css/reset.css</code></td><td>Optional normalisation. It is unlayered: import it with <code>@import url("…/reset.css") layer(iv.reset)</code>, or link <code>css/reset.layer.css</code>, which is already wrapped.</td></tr>
-      </tbody>
-    </table>
+    <h2>Pick the CSS you need</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>File</th><th>Contains</th></tr></thead>
+        <tbody>
+          <tr><td><code>css/ivolt.css</code></td><td>Everything, organised in cascade layers <code>iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides</code>.</td></tr>
+          <tr><td><code>css/ivolt.flat.css</code></td><td>Same rules without <code>@layer</code>, for sites whose existing CSS is not layered and must keep competing by specificity.</td></tr>
+          <tr><td><code>css/core.css</code></td><td>Tokens, base and layout only.</td></tr>
+          <tr><td><code>css/components/*.css</code></td><td>One file per component, unlayered. Import after <code>core.css</code>; assign a layer yourself if you use them: <code>@import url("…/components/button.css") layer(iv.components);</code></td></tr>
+          <tr><td><code>css/reset.css</code></td><td>Optional normalisation. It is unlayered: import it with <code>@import url("…/reset.css") layer(iv.reset)</code>, or link <code>css/reset.layer.css</code>, which is already wrapped.</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <h2>Coexisting with existing CSS</h2>
     <p>Cascade layers order iVOLT's own rules; they do not isolate it. Any normal (non-<code>!important</code>) rule outside a layer beats every layered rule, whatever its specificity. A theme rule like <code>button &#123; background: red &#125;</code> therefore overrides <code>.iv-button</code> in <code>ivolt.css</code>. Two ways out: use <code>ivolt.flat.css</code>, or wrap the legacy stylesheet in a layer declared before iVOLT's: <code>@import url("theme.css") layer(legacy);</code>. Base element styles only apply inside <code>.iv-root</code>, so headings, links and inputs outside it are left alone.</p>

@@ -6,7 +6,7 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Breadcrumb</h1>
     <p>Shows where the current page sits in the site hierarchy. The separator is drawn with CSS so screen readers only read the links.</p>
-    <p><strong>CSS:</strong> <code>css/components/breadcrumb.css</code> (in <code>ivolt.css</code>).</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/breadcrumb.css</code> (in <code>ivolt.css</code>).</p>
     <Fixture name="breadcrumb/basic" />
     <h2>Markup</h2>
     <p><code>nav.iv-breadcrumb[aria-label="Breadcrumb"]</code> → <code>ol.iv-breadcrumb__list</code> → <code>li.iv-breadcrumb__item</code>. The last item carries <code>aria-current="page"</code> and is not a link.</p>

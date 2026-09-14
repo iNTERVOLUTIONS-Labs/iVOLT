@@ -6,7 +6,7 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Light and motion effects</h1>
     <p>Small classes that give any block a sense of light: a glint that runs along the border once, a border that glows where the pointer comes near, a scan line crossing a large surface, sparks, a breathing halo, and elements that reveal as they scroll into view. Everything is CSS except two tiny components: <code>Proximity</code>, which feeds the pointer position into custom properties, and <code>Reveal</code>, which marks elements when they enter the viewport. Under reduced motion nothing moves and nothing is hidden.</p>
-    <p><strong>CSS:</strong> <code>css/effects.css</code> (in <code>ivolt.css</code>, after the surfaces). <strong>JS:</strong> <code>@intervolutions/ivolt/proximity</code>, <code>@intervolutions/ivolt/reveal</code> or <code>auto.js</code>. Added in v0.4.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/effects.css</code> (in <code>ivolt.css</code>, after the surfaces). <strong>JS:</strong> <code>@intervolutions/ivolt/proximity</code>, <code>@intervolutions/ivolt/reveal</code> or <code>auto.js</code>. Added in v0.4.</p>
     <h2>Edge glint and proximity</h2>
     <p><code>iv-edge-glint</code> sends a light around the border on hover, on focus within, or when the element is revealed. <code>iv-edge-near</code> lights the border where the pointer approaches; it needs a <code>Proximity</code> root above it (by default the whole page) and a fine pointer.</p>
     <Fixture name="effects/edges" />
@@ -17,15 +17,17 @@ import Fixture from "../../components/Fixture.astro";
     <p>Add <code>data-iv-component="reveal"</code> to a container and <code>iv-reveal</code> (with <code>--iv-i</code> for stagger) to its children: they fade and rise when they enter the viewport. Without JavaScript or under reduced motion they are simply visible.</p>
     <Fixture name="effects/reveal" minHeight="28rem" />
     <h2>Options</h2>
-    <table>
-      <thead><tr><th>Component</th><th>Option</th><th>Default</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr><td><code>Proximity</code></td><td><code>radius</code></td><td><code>160</code></td><td>Distance in pixels at which a border starts to light up.</td></tr>
-        <tr><td><code>Reveal</code></td><td><code>threshold</code></td><td><code>0.15</code></td><td>Visible fraction that triggers the reveal.</td></tr>
-        <tr><td><code>Reveal</code></td><td><code>repeat</code></td><td><code>false</code></td><td>Reveal again each time the element re-enters.</td></tr>
-        <tr><td><code>Reveal</code></td><td><code>stagger</code></td><td><code>80</code></td><td>Milliseconds between siblings, multiplied by <code>--iv-i</code>.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Component</th><th>Option</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>Proximity</code></td><td><code>radius</code></td><td><code>160</code></td><td>Distance in pixels at which a border starts to light up.</td></tr>
+          <tr><td><code>Reveal</code></td><td><code>threshold</code></td><td><code>0.15</code></td><td>Visible fraction that triggers the reveal.</td></tr>
+          <tr><td><code>Reveal</code></td><td><code>repeat</code></td><td><code>false</code></td><td>Reveal again each time the element re-enters.</td></tr>
+          <tr><td><code>Reveal</code></td><td><code>stagger</code></td><td><code>80</code></td><td>Milliseconds between siblings, multiplied by <code>--iv-i</code>.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Common mistakes</h2>
     <ul>
       <li>Glint or proximity on tiny elements: the effect reads as noise. Keep it for cards, panels and heroes.</li>

@@ -7,16 +7,18 @@ import Base from "../layouts/Base.astro";
     <p>This page is a statement of order, not of dates. Nothing here is a commitment to ship by a given time, and items move when evidence says they should. What is marked done is done and testable today; everything else is not.</p>
 
     <h2>Where v0.1 stands</h2>
-    <table>
-      <thead><tr><th>Stage</th><th>State</th><th>Contents</th></tr></thead>
-      <tbody>
-        <tr><td>Blueprint</td><td>done</td><td>Contracts, design system, quality bar and decision records in <code>docs/</code></td></tr>
-        <tr><td>Vertical slice</td><td>done</td><td>Tokens, themes, base, layout, button, card, form, dialog, docs, starter — the whole pipeline proven end to end before widening</td></tr>
-        <tr><td>Full v0.1 scope</td><td>done</td><td>The remaining families, the six JavaScript components, three recipes and component documentation</td></tr>
-        <tr><td>Web and developer experience</td><td>in progress</td><td>Local search, a bounded playground, changelog, contributing, this page, navigation and 404, downloadable starters and recipes, i18n-ready structure</td></tr>
-        <tr><td>Release candidate</td><td>not started</td><td>Screen reader pass, Lighthouse, the final wordmark, securing the npm scope and publishing</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Stage</th><th>State</th><th>Contents</th></tr></thead>
+        <tbody>
+          <tr><td>Blueprint</td><td>done</td><td>Contracts, design system, quality bar and decision records in <code>docs/</code></td></tr>
+          <tr><td>Vertical slice</td><td>done</td><td>Tokens, themes, base, layout, button, card, form, dialog, docs, starter — the whole pipeline proven end to end before widening</td></tr>
+          <tr><td>Full v0.1 scope</td><td>done</td><td>The remaining families, the six JavaScript components, three recipes and component documentation</td></tr>
+          <tr><td>Web and developer experience</td><td>in progress</td><td>Local search, a bounded playground, changelog, contributing, this page, navigation and 404, downloadable starters and recipes, i18n-ready structure</td></tr>
+          <tr><td>Release candidate</td><td>not started</td><td>Screen reader pass, Lighthouse, the final wordmark, securing the npm scope and publishing</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>The gating work between here and a release is the verification that has not been run rather than more components: no screen reader pass, no Lighthouse audit, and an unpublished package. See the <a href="/changelog">changelog</a> for the full list of known limitations.</p>
 
     <h2>Explicitly out of scope for v0.1</h2>
@@ -30,22 +32,24 @@ import Base from "../layouts/Base.astro";
 
     <h2>Backlog after v0.1</h2>
     <p>Priority is about order of work, not about importance to you. P1 items are the ones the project considers blocking for a credible 1.0 story.</p>
-    <table>
-      <thead><tr><th>Priority</th><th>Item</th><th>Why it sits here</th></tr></thead>
-      <tbody>
-        <tr><td>P1</td><td>Screen reader pass (NVDA, VoiceOver) and the fixes it produces</td><td>Validates what axe structurally cannot; the largest known gap in the accessibility story</td></tr>
-        <tr><td>P1</td><td>Accessible combobox / autocomplete</td><td>High demand in catalogues and admin panels, and a complex enough pattern that a rushed version would be worse than none</td></tr>
-        <tr><td>P1</td><td>Spanish translation of the documentation</td><td>The structure for it is already planned in the docs site; the brand's audience is Spanish-speaking</td></tr>
-        <tr><td>P2</td><td>Data table with sorting and filtering, no virtualisation</td><td>Admin panels need it; virtualisation is a separate problem</td></tr>
-        <tr><td>P2</td><td>Enhanced native datepicker (<code>&lt;input type="date"&gt;</code> styled with tokens)</td><td>Forms; builds on the platform control instead of replacing it</td></tr>
-        <tr><td>P2</td><td>Lightweight theme builder that exports <code>tokens.css</code></td><td>Customisation without a build step, which is the point of token-based theming</td></tr>
-        <tr><td>P2</td><td>Simple accessible carousel</td><td>Editorial layouts</td></tr>
-        <tr><td>P3</td><td>React, Vue and Astro wrappers</td><td>Only with real demand — the plain HTML already works in all three</td></tr>
-        <tr><td>P3</td><td>Optional utility compiler / purge</td><td>Arbitrary values without forcing a class scanner on anyone</td></tr>
-        <tr><td>P3</td><td>Starter-generating CLI</td><td>Convenience, not capability</td></tr>
-        <tr><td>P3</td><td>Virtualised data grid, rich editor, drag and drop, charts</td><td>Each one is a product in itself</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Priority</th><th>Item</th><th>Why it sits here</th></tr></thead>
+        <tbody>
+          <tr><td>P1</td><td>Screen reader pass (NVDA, VoiceOver) and the fixes it produces</td><td>Validates what axe structurally cannot; the largest known gap in the accessibility story</td></tr>
+          <tr><td>P1</td><td>Accessible combobox / autocomplete</td><td>High demand in catalogues and admin panels, and a complex enough pattern that a rushed version would be worse than none</td></tr>
+          <tr><td>P1</td><td>Spanish translation of the documentation</td><td>The structure for it is already planned in the docs site; the brand's audience is Spanish-speaking</td></tr>
+          <tr><td>P2</td><td>Data table with sorting and filtering, no virtualisation</td><td>Admin panels need it; virtualisation is a separate problem</td></tr>
+          <tr><td>P2</td><td>Enhanced native datepicker (<code>&lt;input type="date"&gt;</code> styled with tokens)</td><td>Forms; builds on the platform control instead of replacing it</td></tr>
+          <tr><td>P2</td><td>Lightweight theme builder that exports <code>tokens.css</code></td><td>Customisation without a build step, which is the point of token-based theming</td></tr>
+          <tr><td>P2</td><td>Simple accessible carousel</td><td>Editorial layouts</td></tr>
+          <tr><td>P3</td><td>React, Vue and Astro wrappers</td><td>Only with real demand — the plain HTML already works in all three</td></tr>
+          <tr><td>P3</td><td>Optional utility compiler / purge</td><td>Arbitrary values without forcing a class scanner on anyone</td></tr>
+          <tr><td>P3</td><td>Starter-generating CLI</td><td>Convenience, not capability</td></tr>
+          <tr><td>P3</td><td>Virtualised data grid, rich editor, drag and drop, charts</td><td>Each one is a product in itself</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <h2>How this list changes</h2>
     <p>An item moves up when there is evidence: a reproducible problem in a real project, a contract that turned out to be wrong, or an accessibility finding. Anything that alters a public surface — class names, tokens, options, events, layer order — is recorded as a decision record in <code>docs/DECISIONS.md</code> before it lands, so the reasoning survives the change. Bug reports and use cases are the most useful input; see <a href="/contributing">contributing</a>.</p>

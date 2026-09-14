@@ -5,7 +5,7 @@
 .docs-wrap { inline-size: 100%; max-inline-size: var(--docs-wrap); margin-inline: auto; padding-inline: var(--docs-gutter); }
 .docs-num { font-family: var(--docs-display); font-size: var(--iv-text-xs); letter-spacing: .2em; text-transform: uppercase; color: var(--iv-color-text-muted); display: inline-flex; align-items: center; gap: .6rem; }
 .docs-num::before { content: ""; inline-size: 2.5rem; block-size: 1px; background: var(--iv-color-accent); }
-.docs-section { padding-block: clamp(5rem, 12vh, 10rem); position: relative; }
+.docs-section { padding-block: clamp(4.5rem, 10vh, 8.5rem); position: relative; }
 
 /* ---------- 1. hero ---------- */
 .docs-hero { position: relative; min-block-size: 85svh; display: flex; flex-direction: column; justify-content: flex-end; padding-block: clamp(4rem, 12vh, 9rem) clamp(3rem, 8vh, 6rem); overflow: hidden; }
@@ -82,7 +82,7 @@
 .docs-panel { position: relative; }
 @media (min-width: 64em) {
   /* The pinned block holds the heading and the sticky viewport; the families list follows it, never over it. */
-  .docs-cabinet__pin { block-size: 280vh; }
+  .docs-cabinet__pin { block-size: 220vh; }
   .docs-cabinet__sticky { position: sticky; inset-block-start: 0; block-size: 100svh; display: flex; flex-direction: column; justify-content: center; gap: clamp(1.5rem, 4vh, 3rem); overflow: hidden; scroll-snap-type: none; padding-block: 0; }
   .docs-cabinet__track { transform: translateX(calc(var(--docs-cab, 0) * (-100% + 100vw))); }
   .docs-panel { inline-size: min(38vw, 32rem); }
@@ -122,7 +122,7 @@
 .docs-cutctl input { flex: 1; min-inline-size: 8rem; accent-color: var(--iv-color-primary); }
 
 /* ---------- 5. recipes ---------- */
-.docs-recipes { display: grid; gap: clamp(3rem, 8vh, 7rem); }
+.docs-recipes { display: grid; gap: clamp(3rem, 7vh, 6rem); }
 .docs-recipe { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; text-decoration: none; color: inherit; }
 @media (min-width: 64em) {
   .docs-recipe { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); }
@@ -140,16 +140,27 @@
 .docs-recipe:hover .docs-recipe__go svg { transform: translateX(6px); }
 
 /* ---------- 6. the inverted block ---------- */
-.docs-invert { background: var(--docs-invert-bg); color: var(--docs-invert-fg); padding-block: clamp(5rem, 14vh, 11rem); margin-block-start: clamp(4rem, 10vh, 8rem); position: relative; overflow: hidden; --iv-color-text: var(--docs-invert-fg); --iv-color-text-muted: #0d3a26; --iv-color-bg: var(--docs-invert-bg); --iv-color-surface: #16d986; --iv-color-border: #0d3a26; --iv-color-primary: #051009; --iv-color-on-primary: #29f59a; --iv-color-primary-hover: #0d3a26; --iv-color-focus: #051009; }
+.docs-invert { background: var(--docs-invert-bg); color: var(--docs-invert-fg); padding-block: clamp(4rem, 11vh, 8.5rem); margin-block-start: clamp(3rem, 8vh, 6rem); position: relative; overflow: hidden; --iv-color-text: var(--docs-invert-fg); --iv-color-text-muted: #0d3a26; --iv-color-bg: var(--docs-invert-bg); --iv-color-surface: #16d986; --iv-color-border: #0d3a26; --iv-color-primary: #051009; --iv-color-on-primary: #29f59a; --iv-color-primary-hover: #0d3a26; --iv-color-focus: #051009; }
 .docs-invert .docs-num { color: #0d3a26; }
 .docs-invert .docs-num::before { background: #051009; }
 .docs-invert h2 { font-family: var(--docs-display); font-weight: 500; font-size: clamp(3rem, 9vw, 8rem); line-height: .9; letter-spacing: -0.05em; margin: var(--iv-space-6) 0 0; max-inline-size: 14ch; }
 .docs-invert p { color: #0d3a26; max-inline-size: 52ch; }
+.docs-invert h2 + p { margin-block-start: var(--iv-space-6); }
 .docs-invert .docs-code { background: #051009; color: #d8fff0; box-shadow: none; margin-block: var(--iv-space-8); max-inline-size: 44rem; }
 .docs-invert .docs-code::before { background: linear-gradient(90deg, #29f59a, transparent 55%); }
 .docs-invert .iv-button--primary { box-shadow: 0 12px 34px -18px #051009; }
 .docs-invert .iv-button--secondary { --iv-button-fg: #051009; --iv-button-border: #051009; }
-.docs-invert__foot { margin-block-start: var(--iv-space-8); font-size: var(--iv-text-sm); }
+.docs-invert__foot { margin-block-start: var(--iv-space-8); font-size: var(--iv-text-sm); max-inline-size: 70ch; }
+/* Two columns: the statement on the left, the two files and the way in on the right. One column
+   left two thirds of a full-bleed band empty. */
+.docs-invert__grid { display: grid; gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+.docs-invert__head, .docs-invert__side { min-inline-size: 0; }
+.docs-invert__side .docs-code { margin-block: 0 var(--iv-space-6); max-inline-size: none; }
+@media (min-width: 64em) {
+  .docs-invert__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+  .docs-invert__foot { grid-column: 1 / -1; margin-block-start: clamp(1.5rem, 3vh, 2.5rem); }
+  .docs-invert h2 { font-size: clamp(3rem, 6.5vw, 6rem); }
+}
 
 /* grid and flex children that hold <pre> must be allowed to shrink */
 .docs-why > *, .docs-why__list > *, .docs-cutsec > *, .docs-recipe > *, .docs-recipes > *, .docs-hero__inner > *, .docs-invert .docs-wrap > * { min-inline-size: 0; }

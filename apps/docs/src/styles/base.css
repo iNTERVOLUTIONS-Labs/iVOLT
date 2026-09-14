@@ -1,4 +1,4 @@
-/* iVOLT docs — foundations: type, colour, prose, code, fixtures, buttons.
+/* iVOLT docs — foundations: type, colour, prose rhythm, code, fixtures, tables, buttons.
    Motion policy: only transform, opacity and clip-path are animated (the hero canvas is the single
    exception). Every effect is removed under prefers-reduced-motion and the page stays complete. */
 
@@ -16,18 +16,31 @@
   --docs-display: "Space Grotesk", var(--iv-font-sans);
   --docs-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --docs-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --docs-wrap: 108rem;
-  --docs-gutter: clamp(1.25rem, 4.5vw, 5.5rem);
+  --docs-wrap: 104rem;
+  --docs-gutter: clamp(1rem, 3vw, 3.5rem);
   --docs-halo: rgb(41 245 154 / 0.34);
   --docs-line: rgb(41 245 154 / 0.24);
   --docs-hair: rgb(41 245 154 / 0.14);
   --docs-glass: rgb(8 19 16 / 0.74);
   --docs-paper: var(--iv-color-bg);
+  --docs-zebra: rgb(255 255 255 / 0.028);
   --docs-invert-bg: #29f59a;
   --docs-invert-fg: #051009;
   --docs-arc-core: #ffffff;
   --docs-arc-halo: #29f59a;
   --docs-arc-blend: add;
+
+  /* One vertical scale for every interior page. Four steps, nothing else.
+     flow    — paragraph to paragraph
+     block   — around a fixture, a table, a code block, a form
+     sub     — before an h3
+     section — before an h2 */
+  --docs-flow: 1.15rem;
+  --docs-block: clamp(1.75rem, 3.2vw, 2.5rem);
+  --docs-sub: clamp(2.25rem, 4vw, 3rem);
+  --docs-section: clamp(3.5rem, 6.5vw, 5.5rem);
+  --docs-measure: 74ch;
+
   background: var(--docs-paper);
   color: var(--iv-color-text);
   min-block-size: 100dvh;
@@ -42,6 +55,7 @@
   --docs-hair: rgb(10 106 67 / 0.14);
   --docs-glass: rgb(247 250 248 / 0.82);
   --docs-paper: #f6f9f7;
+  --docs-zebra: rgb(10 106 67 / 0.035);
   --docs-arc-core: #0a6a43;
   --docs-arc-halo: #16b877;
   --docs-arc-blend: ink;
@@ -55,6 +69,7 @@
     --docs-hair: rgb(41 245 154 / 0.14);
     --docs-glass: rgb(8 19 16 / 0.74);
     --docs-paper: var(--iv-color-bg);
+    --docs-zebra: rgb(255 255 255 / 0.028);
     --docs-arc-core: #ffffff;
     --docs-arc-halo: #29f59a;
     --docs-arc-blend: add;
@@ -90,48 +105,227 @@
 .docs-js .docs-mask > span { transform: translateY(110%); transition: transform 760ms var(--docs-ease-out); transition-delay: calc(var(--i, 0) * 90ms); }
 .docs-js .is-in .docs-mask > span, .docs-js .docs-mask.is-in > span { transform: none; }
 
-/* ---------- prose ---------- */
-.docs-prose { max-inline-size: 72rem; counter-reset: docs-h2; }
-.docs-prose > p, .docs-prose > ul, .docs-prose > ol { max-inline-size: 72ch; }
-.docs-prose > * + * { margin-block-start: var(--iv-space-5); }
-.docs-prose > .docs-fixture:first-of-type, .docs-prose > form { margin-block-start: var(--iv-space-8); }
-.docs-prose h1 { font-size: clamp(2.5rem, 6vw, 5rem); line-height: 0.95; margin: 0; letter-spacing: -0.045em; font-weight: 500; overflow-wrap: break-word; }
-.docs-prose h1 + p { font-size: 1.25rem; line-height: var(--iv-leading-snug); color: var(--iv-color-text-muted); max-inline-size: 46ch; margin-block-start: var(--iv-space-5); position: relative; }
-@keyframes docs-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-.docs-prose h2 { margin-block-start: var(--iv-space-12); font-size: clamp(1.65rem, 2.6vw, 2.25rem); line-height: 1.1; counter-increment: docs-h2; position: relative; padding-block-start: var(--iv-space-5); }
-.docs-prose h2::before { content: counter(docs-h2, decimal-leading-zero); position: absolute; inset-block-start: 0; inset-inline-start: 0; font-size: var(--iv-text-xs); letter-spacing: 0.18em; color: var(--iv-color-primary); font-family: var(--iv-font-mono); }
-.docs-prose h3 { margin-block-start: var(--iv-space-8); font-size: var(--iv-text-lg); }
-.docs-prose table { inline-size: 100%; font-size: var(--iv-text-sm); border-collapse: separate; border-spacing: 0; border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-lg); overflow: hidden; }
-.docs-prose th { text-align: start; background: var(--iv-color-surface); font-family: var(--docs-display); letter-spacing: .02em; }
-.docs-prose code:not(pre code) { background: var(--iv-color-surface); border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-sm); padding: 0 .3em; font-size: .9em; overflow-wrap: anywhere; }
+/* ================================================================
+   PROSE — one rhythm for every interior page
+   ================================================================ */
+.docs-prose { max-inline-size: 78rem; counter-reset: docs-h2; }
+
+/* Measure applies to running text only; fixtures, tables and code take the whole column. */
+.docs-prose > p,
+.docs-prose > ul,
+.docs-prose > ol,
+.docs-prose > dl,
+.docs-prose > blockquote { max-inline-size: var(--docs-measure); }
+
+.docs-prose > * + * { margin-block-start: var(--docs-flow); }
+/* Blocks get air on both sides, whatever sits next to them. */
+/* Headings are excluded on purpose: a section gap must never lose a specificity tie to a
+   block gap just because a fixture happened to come before it. */
+.docs-prose > * + :is(pre, figure, table, form, iframe, .docs-scroller, .docs-fixture, .docs-note, .iv-grid, .iv-stack, .iv-cluster, .iv-alert, .docs-tb, .docs-cards),
+.docs-prose > :is(pre, figure, table, form, iframe, .docs-scroller, .docs-fixture, .docs-note, .iv-grid, .iv-stack, .iv-cluster, .iv-alert, .docs-tb, .docs-cards) + :not(h2, h3) { margin-block-start: var(--docs-block); }
+.docs-prose > * + h3 { margin-block-start: var(--docs-sub); }
+.docs-prose > * + h2 { margin-block-start: var(--docs-section); }
+.docs-prose > :is(figure, table, form, pre, ul, ol, p, h2, h3) { margin-block-end: 0; }
+
+/* ---------- page header ---------- */
+.docs-prose > h1 {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 0.96;
+  margin: 0;
+  letter-spacing: -0.042em;
+  font-weight: 500;
+  max-inline-size: 17ch;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+.docs-prose > h1 + p {
+  font-size: clamp(1.125rem, 0.95rem + 0.55vw, 1.4rem);
+  line-height: 1.45;
+  color: var(--iv-color-text-muted);
+  max-inline-size: 58ch;
+  margin-block-start: var(--iv-space-5);
+}
+/* The "CSS: …" / "JS: …" line under the lead: a quiet technical footnote, not body copy. */
+.docs-prose > .docs-meta {
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+  max-inline-size: 68ch;
+  padding-block-start: var(--iv-space-4);
+  border-block-start: 1px solid var(--iv-color-border);
+  margin-block-start: var(--iv-space-6);
+}
+.docs-prose > .docs-meta strong { color: var(--iv-color-text); font-family: var(--docs-display); font-weight: var(--iv-weight-semibold); letter-spacing: .02em; }
+
+/* ---------- section headings: a hairline, a numeral, a bright tick ---------- */
+.docs-prose > h2 {
+  font-size: clamp(1.7rem, 1.15rem + 1.5vw, 2.35rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  font-weight: 500;
+  counter-increment: docs-h2;
+  position: relative;
+  padding-block-start: 3rem;
+  border-block-start: 1px solid var(--iv-color-border);
+  text-wrap: balance;
+}
+.docs-prose > h2::before {
+  content: counter(docs-h2, decimal-leading-zero);
+  position: absolute;
+  inset-block-start: 1.15rem;
+  inset-inline-start: 0;
+  font-size: var(--iv-text-xs);
+  letter-spacing: 0.22em;
+  color: var(--iv-color-primary);
+  font-family: var(--iv-font-mono);
+  font-weight: var(--iv-weight-semibold);
+}
+.docs-prose > h2::after {
+  content: "";
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline-start: 0;
+  inline-size: 3rem;
+  block-size: 1px;
+  background: var(--iv-color-accent);
+}
+.docs-prose > h2 + p { margin-block-start: var(--iv-space-4); }
+.docs-prose h3 {
+  font-size: clamp(1.15rem, 1rem + 0.45vw, 1.4rem);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+.docs-prose > h3 { max-inline-size: 36ch; }
+.docs-prose > h3 + p { margin-block-start: var(--iv-space-3); }
+/* Nested headings (card titles, alert titles) never take the section furniture. */
+.docs-prose :is(.iv-card, .iv-alert, .docs-note, figure) :is(h2, h3) { border: 0; padding: 0; counter-increment: none; max-inline-size: none; }
+.docs-prose :is(.iv-card, .iv-alert, .docs-note, figure) :is(h2, h3)::before,
+.docs-prose :is(.iv-card, .iv-alert, .docs-note, figure) :is(h2, h3)::after { content: none; }
+
+.docs-prose li + li { margin-block-start: 0.45rem; }
+.docs-prose ul, .docs-prose ol { padding-inline-start: 1.35rem; }
 .docs-prose ul li::marker { color: var(--iv-color-accent); }
+.docs-prose ol li::marker { color: var(--iv-color-primary); font-family: var(--iv-font-mono); font-size: .9em; }
+.docs-prose code:not(pre code) { background: var(--iv-color-surface); border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-sm); padding: 0 .3em; font-size: .9em; overflow-wrap: anywhere; }
 .docs-anchor { opacity: 0; text-decoration: none; color: var(--iv-color-primary); font-size: .7em; padding-inline: .25em; transition: opacity var(--iv-motion-fast) var(--docs-ease); }
 .docs-prose h2:hover .docs-anchor, .docs-prose h3:hover .docs-anchor, .docs-anchor:focus-visible { opacity: 1; }
 
+/* ---------- a quiet callout for warnings and asides ---------- */
+.docs-note {
+  position: relative;
+  padding: var(--iv-space-5) var(--iv-space-5) var(--iv-space-5) var(--iv-space-6);
+  border-radius: var(--iv-radius-lg);
+  background: var(--iv-color-surface);
+  box-shadow: 0 1px 0 var(--docs-hair) inset;
+  max-inline-size: var(--docs-measure);
+}
+.docs-note::before { content: ""; position: absolute; inset-block: var(--iv-space-4); inset-inline-start: 0; inline-size: 2px; border-radius: 2px; background: linear-gradient(180deg, var(--iv-color-accent), var(--iv-color-primary)); }
+.docs-note > :first-child { margin-block-start: 0; }
+.docs-note > * + * { margin-block-start: var(--iv-space-3); }
+.docs-note__title { display: block; font-family: var(--docs-display); font-weight: var(--iv-weight-semibold); font-size: var(--iv-text-sm); letter-spacing: .08em; text-transform: uppercase; color: var(--iv-color-primary); }
+
+/* ---------- tables: full column, scrollable, readable ----------
+   Scoped to .docs-scroller on purpose: a table inside a fixture preview belongs to the package
+   and must keep the styling the package gives it. */
+.docs-scroller { overflow-x: auto; min-inline-size: 0; overscroll-behavior-x: contain; border-radius: var(--iv-radius-lg); box-shadow: 0 0 0 1px var(--iv-color-border); }
+.docs-scroller > table {
+  inline-size: 100%;
+  min-inline-size: 32rem;
+  font-size: var(--iv-text-sm);
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 0;
+  border-radius: var(--iv-radius-lg);
+  overflow: hidden;
+  line-height: var(--iv-leading-snug);
+}
+.docs-scroller thead th {
+  text-align: start;
+  background: var(--iv-color-surface-raised);
+  font-family: var(--docs-display);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: .04em;
+  font-size: var(--iv-text-xs);
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+  white-space: nowrap;
+}
+.docs-scroller :is(th, td) { padding: 0.7rem 0.95rem; vertical-align: top; }
+.docs-scroller tbody tr:nth-child(even) { background: var(--docs-zebra); }
+.docs-scroller tbody td { border-block-start: 1px solid var(--iv-color-border); }
+.docs-scroller tbody tr:first-child td { border-block-start: 0; }
+/* Identifiers in a table cell are atoms: they scroll with the table, they never break mid-token. */
+.docs-scroller :is(th, td) code { white-space: nowrap; overflow-wrap: normal; }
+.docs-scroller td:first-child { font-variant-numeric: tabular-nums; }
+
 /* ---------- code surfaces: luminous top edge, contact shadow, no 1px cage ---------- */
-.docs-prose pre, .docs-code { background: var(--iv-color-surface); border: 0; border-radius: var(--iv-radius-lg); padding: var(--iv-space-5); overflow-x: auto; position: relative; font-size: var(--iv-text-sm); box-shadow: 0 1px 0 var(--docs-hair) inset, 0 18px 40px -34px rgb(0 0 0 / .8); }
+.docs-prose pre, .docs-code { background: var(--iv-color-surface); border: 0; border-radius: var(--iv-radius-lg); padding: var(--iv-space-5); overflow-x: auto; white-space: pre-wrap; overflow-wrap: break-word; position: relative; font-size: var(--iv-text-sm); line-height: 1.6; tab-size: 2; box-shadow: 0 1px 0 var(--docs-hair) inset, 0 18px 40px -34px rgb(0 0 0 / .8); }
 .docs-code { margin: 0; }
 .docs-prose pre::before, .docs-code::before { content: ""; position: absolute; inset-inline: 0; inset-block-start: 0; block-size: 2px; border-radius: 2px 2px 0 0; background: linear-gradient(90deg, var(--iv-color-accent), transparent 55%); }
 .docs-pre { position: relative; min-inline-size: 0; }
-.docs-scroller { overflow-x: auto; min-inline-size: 0; }
 .docs-copy-inline { position: absolute; inset-block-start: var(--iv-space-2); inset-inline-end: var(--iv-space-2); opacity: 0; transition: opacity var(--iv-motion-fast) var(--docs-ease); }
 .docs-pre:hover .docs-copy-inline, .docs-copy-inline:focus-visible { opacity: 1; }
 
 /* ---------- fixtures ---------- */
-.docs-fixture { min-width: 0; margin: var(--iv-space-6) 0; border: 0; border-radius: var(--iv-radius-lg); overflow: visible; position: relative;
-.docs-fixture__caption { border-start-start-radius: var(--iv-radius-lg); border-start-end-radius: var(--iv-radius-lg); }
-.docs-fixture__code { border-end-start-radius: var(--iv-radius-lg); border-end-end-radius: var(--iv-radius-lg); overflow: hidden; }
-.docs-fixture__preview { position: relative; z-index: 1; } background: var(--iv-color-surface-raised); box-shadow: 0 1px 0 var(--docs-hair) inset, 0 30px 60px -40px rgb(0 0 0 / .75), 0 0 0 1px rgb(128 128 128 / .08); transition: transform var(--iv-motion-base) var(--docs-ease), box-shadow var(--iv-motion-base) var(--docs-ease); }
+.docs-fixture {
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  border-radius: var(--iv-radius-lg);
+  overflow: visible;
+  position: relative;
+  background: var(--iv-color-surface-raised);
+  box-shadow: 0 1px 0 var(--docs-hair) inset, 0 30px 60px -40px rgb(0 0 0 / .75), 0 0 0 1px rgb(128 128 128 / .08);
+  transition: box-shadow var(--iv-motion-base) var(--docs-ease);
+}
 .docs-fixture::before { content: ""; position: absolute; inset-inline: 0; inset-block-start: 0; block-size: 2px; background: linear-gradient(90deg, transparent, var(--iv-color-accent), transparent); opacity: .5; z-index: 1; }
 /* No transform on hover: a transformed ancestor becomes the containing block of position: fixed descendants (toast regions). */
 .docs-fixture:hover, .docs-fixture:focus-within { box-shadow: 0 1px 0 var(--docs-line) inset, 0 40px 70px -40px var(--docs-halo), 0 0 0 1px var(--docs-hair); }
-.docs-fixture__caption { display: flex; align-items: center; flex-wrap: wrap; gap: var(--iv-space-3); padding: var(--iv-space-3) var(--iv-space-4); font-size: var(--iv-text-sm); background: var(--iv-color-surface); }
-.docs-fixture__title { font-weight: var(--iv-weight-medium); font-family: var(--docs-display); }
-.docs-fixture__path { color: var(--iv-color-text-muted); font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); margin-inline-end: auto; }
-.docs-fixture__preview { padding: var(--iv-space-6); background-color: var(--iv-color-bg); background-image: radial-gradient(120% 100% at 50% -10%, var(--iv-color-surface) 0%, transparent 68%); }
-.docs-fixture__code { position: relative; }
-.docs-fixture__code pre { margin: 0; padding: var(--iv-space-4); overflow: auto; font-size: var(--iv-text-sm); background: var(--iv-color-surface); max-block-size: 20rem; border-radius: 0; box-shadow: none; }
+.docs-fixture__caption {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--iv-space-3);
+  row-gap: var(--iv-space-1);
+  padding: var(--iv-space-3) var(--iv-space-4);
+  font-size: var(--iv-text-sm);
+  background: var(--iv-color-surface);
+  border-start-start-radius: var(--iv-radius-lg);
+  border-start-end-radius: var(--iv-radius-lg);
+}
+.docs-fixture__title { font-weight: var(--iv-weight-medium); font-family: var(--docs-display); letter-spacing: .01em; min-inline-size: 0; overflow-wrap: anywhere; }
+.docs-fixture__path { grid-column: 1; color: var(--iv-color-text-muted); font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); min-inline-size: 0; overflow-wrap: anywhere; }
+.docs-fixture__caption .docs-copy { grid-column: 2; grid-row: 1 / span 2; justify-self: end; }
+@media (min-width: 48em) {
+  .docs-fixture__caption { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .docs-fixture__path { grid-column: 2; }
+  .docs-fixture__caption .docs-copy { grid-column: 3; grid-row: 1; }
+}
+.docs-fixture__preview { position: relative; z-index: 1; padding: clamp(var(--iv-space-4), 3vw, var(--iv-space-6)); background-color: var(--iv-color-bg); background-image: radial-gradient(120% 100% at 50% -10%, var(--iv-color-surface) 0%, transparent 68%); }
+/* A demo is not a page: at phone widths a long pill inside a preview wraps rather than
+   widening the document. The package keeps its nowrap everywhere else. */
+@media (max-width: 30em) {
+  .docs-fixture__preview .iv-badge { white-space: normal; }
+}
+.docs-fixture__code { position: relative; border-end-start-radius: var(--iv-radius-lg); border-end-end-radius: var(--iv-radius-lg); overflow: hidden; }
+/* The snippet is the documentation: it wraps rather than hiding half of itself behind a scrollbar. */
+.docs-fixture__code pre {
+  margin: 0;
+  padding: var(--iv-space-4) var(--iv-space-5);
+  overflow: auto;
+  font-size: var(--iv-text-xs);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  background: var(--iv-color-surface);
+  max-block-size: 22rem;
+  border-radius: 0;
+  box-shadow: none;
+  scrollbar-gutter: stable;
+}
 .docs-fixture__code pre::before { content: none; }
+.docs-fixture__code::after { content: ""; position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 2.5rem; pointer-events: none; background: linear-gradient(180deg, transparent, var(--iv-color-surface)); opacity: .85; }
+.docs-fixture__code:focus-within::after { opacity: 0; }
 
 /* ---------- buttons: light sweep + magnetism ---------- */
 .docs .iv-button { font-family: var(--docs-display); }

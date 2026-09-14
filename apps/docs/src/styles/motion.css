@@ -6,10 +6,10 @@
   .docs-js .docs-mask > span { transform: none; }
   .docs-js .docs-hero__kicker, .docs-js .docs-hero__lead, .docs-js .docs-hero__actions, .docs-js .docs-facts { opacity: 1; transform: none; }
   .docs-rail::before { transform: scaleY(1); }
-  .docs-prose h1 + p::before { transform: scaleX(1); }
   .docs-magnetic { transform: none; }
   .docs-recipe:hover .docs-recipe__frame, .docs-recipe:hover .docs-recipe__frame iframe { transform: none; }
   .docs-lockup__fill { clip-path: inset(0 0 0 0); }
+  .docs-fixture__code::after { opacity: 0; }
   .docs-lockup__line { opacity: 0; }
   .docs-meter__fill { transform: scaleX(var(--docs-scroll, 0)); }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }

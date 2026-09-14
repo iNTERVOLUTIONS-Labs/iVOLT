@@ -26,7 +26,12 @@ const group = nav.find((g) => g.items.some((i) => i.href === path))?.group;
 const slug = bare.startsWith("/components/") ? bare.split("/").pop() : null;
 const family = slug ? families[slug] : null;
 const items = nav.flatMap((g) => g.items);
+// "css" or "js" beside a component link: 26 entries are only scannable when the kind is visible.
+const kindOf = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return m ? families[m[1]] : null; };
 const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
+// The footer carries the real sitemap: four short columns taken from the same navigation as the
+// sidebar, so a link can never exist in one and be missing from the other.
+const sitemap = nav.map((g, i) => ({ group: g.group, items: i === 2 ? g.items.slice(0, 8) : g.items, more: i === 2 ? g.items.length - 8 : 0 }));
 // Component list for the header megamenu (labels per language, kind from the shared families map).
 const labelOf = (slug) => (lang === "es" && es.componentLabels && es.componentLabels[slug]) || slug[0].toUpperCase() + slug.slice(1);
 const componentList = Object.entries(families).map(([slug, kind]) => ({ slug, kind, label: labelOf(slug), href: `${base}/components/${slug}` }));
@@ -137,7 +142,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     <div class="iv-dialog__panel">
       <header class="iv-dialog__header"><h2 class="iv-dialog__title">{t.navigate}</h2><button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label={t.close}>×</button></header>
       <nav class="iv-dialog__body" aria-label={t.docsNav}>
-        {nav.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3><ul class="docs-sidebar__list">{g.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}>{n.label}</a></li>)}</ul></section>)}
+        {nav.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3><ul class="docs-sidebar__list">{g.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></section>)}
       </nav>
       <footer class="iv-dialog__footer iv-u-justify-start">
         <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>
@@ -168,7 +173,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     {sidebar && (
       <aside class="docs-sidebar" data-pagefind-ignore>
         <nav aria-label={t.docsNav}>
-          {nav.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3><ul class="docs-sidebar__list">{g.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}>{n.label}</a></li>)}</ul></section>)}
+          {nav.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3><ul class="docs-sidebar__list">{g.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></section>)}
         </nav>
       </aside>
     )}
@@ -192,6 +197,19 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
           <span class="docs-lockup__line" set:html={brandSvg}></span>
         </span>
       </a>
+    </div>
+    <div class="iv-container iv-container--wide">
+      <nav class="docs-sitemap" aria-label={t.footerNav}>
+        {sitemap.map((g) => (
+          <div class="docs-sitemap__col">
+            <h2 class="docs-sitemap__title">{g.group}</h2>
+            <ul>
+              {g.items.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+              {g.more > 0 && <li><a href={`${base}/components/button`}>{t.mmBrowse}</a></li>}
+            </ul>
+          </div>
+        ))}
+      </nav>
     </div>
     <div class="iv-container iv-container--wide docs-footer__inner">
       <span>{t.footer}</span>
@@ -255,7 +273,9 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
       // Heading anchors + "On this page" table of contents.
       const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
       const seen = new Set();
-      const headings = [...document.querySelectorAll(".docs-prose h2, .docs-prose h3")];
+      // Only the page's own sections: a heading inside a card, an alert or a fixture is content,
+      // not a landmark, and must not reach the anchors or the table of contents.
+      const headings = [...document.querySelectorAll(".docs-prose > h2, .docs-prose > h3, .docs-prose > section > h2, .docs-prose > section > h3")];
       headings.forEach((h) => {
         if (!h.id) { let id = slug(h.textContent) || "section"; let n = 2; while (seen.has(id) || document.getElementById(id)) id = `${slug(h.textContent)}-${n++}`; h.id = id; }
         seen.add(h.id);

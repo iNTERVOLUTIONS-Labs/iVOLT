@@ -6,7 +6,7 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Miga de pan (breadcrumb)</h1>
     <p>Indica dónde está la página actual dentro de la jerarquía del sitio. El separador se dibuja con CSS, así que el lector de pantalla solo lee los enlaces.</p>
-    <p><strong>CSS:</strong> <code>css/components/breadcrumb.css</code> (dentro de <code>ivolt.css</code>).</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/breadcrumb.css</code> (dentro de <code>ivolt.css</code>).</p>
     <Fixture name="breadcrumb/basic" />
     <h2>Marcado</h2>
     <p><code>nav.iv-breadcrumb[aria-label="Breadcrumb"]</code> → <code>ol.iv-breadcrumb__list</code> → <code>li.iv-breadcrumb__item</code>. El último elemento lleva <code>aria-current="page"</code> y no es un enlace.</p>

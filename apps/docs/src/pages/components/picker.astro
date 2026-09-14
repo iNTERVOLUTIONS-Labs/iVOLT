@@ -6,25 +6,27 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Picker (enhanced select)</h1>
     <p>A rich selector on top of a plain <code>&lt;select&gt;</code>. The server sends the native control, which works everywhere and submits with the form. On <code>init</code> it is kept as the source of truth and hidden from view; the reader sees a control that opens a searchable list, shows selected values as chips when the select is <code>multiple</code>, respects groups and disabled options, and syncs both ways with the native element. <code>destroy</code> puts the select back exactly as served.</p>
-    <p><strong>CSS:</strong> <code>css/components/picker.css</code> on top of <code>form.css</code> (both in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/picker</code> or <code>auto.js</code>. Added in v0.3.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/picker.css</code> on top of <code>form.css</code> (both in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/picker</code> or <code>auto.js</code>. Added in v0.3.</p>
     <p><strong>Every <code>select.iv-select</code> is enhanced by default</strong> when <code>init</code> or <code>auto.js</code> runs: a bare select gets a generated root that <code>destroy</code> removes again, and <code>data-iv-*</code> options written on the select move to it. Add <code>data-iv-native</code> to the select, or to an ancestor, to keep the native control.</p>
     <Fixture name="picker/basic" minHeight="24rem" />
     <h2>Multiple values, groups and a limit</h2>
     <p>With <code>multiple</code> the control shows chips, each with its own remove button; Backspace removes the last one. <code>data-iv-max-items</code> disables the remaining options once the limit is reached. The second example uses the <code>iv-picker--glass</code> variant.</p>
     <Fixture name="picker/multiple" minHeight="28rem" />
     <h2>Options</h2>
-    <table>
-      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr><td><code>search</code></td><td><code>data-iv-search</code></td><td><code>auto</code></td><td>Search field in the list: <code>auto</code> shows it with more than seven options; <code>on</code> or <code>off</code> force it.</td></tr>
-        <tr><td><code>placeholder</code></td><td><code>data-iv-placeholder</code></td><td>first empty option</td><td>Text shown when nothing is selected.</td></tr>
-        <tr><td><code>searchPlaceholder</code></td><td><code>data-iv-search-placeholder</code></td><td><code>Search</code></td><td>Placeholder of the search field.</td></tr>
-        <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No matches</code></td><td>Row shown when the search matches nothing.</td></tr>
-        <tr><td><code>clearable</code></td><td><code>data-iv-clearable</code></td><td><code>true</code></td><td>Show a clear button when there is a value.</td></tr>
-        <tr><td><code>closeOnSelect</code></td><td><code>data-iv-close-on-select</code></td><td><code>true</code> / <code>false</code></td><td>Close after choosing; defaults to true for single and false for multiple selects.</td></tr>
-        <tr><td><code>maxItems</code></td><td><code>data-iv-max-items</code></td><td><code>0</code></td><td>Maximum number of selected values in a multiple select; <code>0</code> means no limit.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>search</code></td><td><code>data-iv-search</code></td><td><code>auto</code></td><td>Search field in the list: <code>auto</code> shows it with more than seven options; <code>on</code> or <code>off</code> force it.</td></tr>
+          <tr><td><code>placeholder</code></td><td><code>data-iv-placeholder</code></td><td>first empty option</td><td>Text shown when nothing is selected.</td></tr>
+          <tr><td><code>searchPlaceholder</code></td><td><code>data-iv-search-placeholder</code></td><td><code>Search</code></td><td>Placeholder of the search field.</td></tr>
+          <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No matches</code></td><td>Row shown when the search matches nothing.</td></tr>
+          <tr><td><code>clearable</code></td><td><code>data-iv-clearable</code></td><td><code>true</code></td><td>Show a clear button when there is a value.</td></tr>
+          <tr><td><code>closeOnSelect</code></td><td><code>data-iv-close-on-select</code></td><td><code>true</code> / <code>false</code></td><td>Close after choosing; defaults to true for single and false for multiple selects.</td></tr>
+          <tr><td><code>maxItems</code></td><td><code>data-iv-max-items</code></td><td><code>0</code></td><td>Maximum number of selected values in a multiple select; <code>0</code> means no limit.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Methods and events</h2>
     <p><code>open()</code>, <code>close()</code>, <code>toggle()</code>, <code>select(value)</code>, <code>deselect(value)</code>, <code>clear()</code>, <code>destroy()</code>; read <code>value</code> (a string, or an array for multiple), <code>isOpen</code>, <code>native</code> and <code>optionElements</code>. Events on the root element: <code>iv:open</code>/<code>iv:close</code> (cancelable) then <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>added</code>, <code>removed</code>) then <code>iv:changed</code>. The native select also receives <code>input</code> and <code>change</code>, so existing form code keeps working.</p>
     <h2>Keyboard and assistive technology</h2>

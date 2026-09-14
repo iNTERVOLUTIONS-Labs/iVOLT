@@ -6,7 +6,7 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Hero</h1>
     <p>An opening section that sets the tone. A media layer with a scrim keeps the text readable, the title is oversized and rises line by line, and the content can share the stage with a live component in the aside. Everything is CSS; the media can be an image, a video or a gradient, and the cinematic variant adds an aurora, a scan line and sparks from the surfaces and effects modules.</p>
-    <p><strong>CSS:</strong> <code>css/components/hero.css</code> (in <code>ivolt.css</code>). No JavaScript. Added in v0.4.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/hero.css</code> (in <code>ivolt.css</code>). No JavaScript. Added in v0.4.</p>
     <Fixture name="hero/basic" />
     <h2>Split with an aside</h2>
     <Fixture name="hero/split" />
@@ -20,15 +20,17 @@ import Fixture from "../../components/Fixture.astro";
     <p>A real image in the media layer with the slow zoom and a scan line.</p>
     <Fixture name="hero/photo" />
     <h2>Anatomy and modifiers</h2>
-    <table>
-      <thead><tr><th>Class</th><th>Role</th></tr></thead>
-      <tbody>
-        <tr><td><code>iv-hero</code></td><td>Full-bleed section, <code>--iv-hero-min</code> (80svh), content aligned to the bottom.</td></tr>
-        <tr><td><code>__media</code>, <code>__scrim</code></td><td>Background layer and the gradient that keeps text on AA contrast (<code>--iv-hero-scrim</code>).</td></tr>
-        <tr><td><code>__content</code>, <code>__kicker</code>, <code>__title</code>, <code>__lead</code>, <code>__actions</code>, <code>__facts</code>, <code>__aside</code></td><td>The text column and its parts; <code>__title &gt; span.iv-rise</code> rise line by line.</td></tr>
-        <tr><td><code>--center</code>, <code>--split</code>, <code>--cinematic</code>, <code>--terminal</code>, <code>--compact</code>, <code>--kenburns</code>, <code>--light</code></td><td>Alignment, two columns, aurora with scan and sparks, monospace prompt, 50svh, slow zoom on the media, light scrim.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Class</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><code>iv-hero</code></td><td>Full-bleed section, <code>--iv-hero-min</code> (80svh), content aligned to the bottom.</td></tr>
+          <tr><td><code>__media</code>, <code>__scrim</code></td><td>Background layer and the gradient that keeps text on AA contrast (<code>--iv-hero-scrim</code>).</td></tr>
+          <tr><td><code>__content</code>, <code>__kicker</code>, <code>__title</code>, <code>__lead</code>, <code>__actions</code>, <code>__facts</code>, <code>__aside</code></td><td>The text column and its parts; <code>__title &gt; span.iv-rise</code> rise line by line.</td></tr>
+          <tr><td><code>--center</code>, <code>--split</code>, <code>--cinematic</code>, <code>--terminal</code>, <code>--compact</code>, <code>--kenburns</code>, <code>--light</code></td><td>Alignment, two columns, aurora with scan and sparks, monospace prompt, 50svh, slow zoom on the media, light scrim.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Accessibility</h2>
     <p>The title is the page heading; decorative media carry an empty <code>alt</code>; no video plays with sound; the scrim is tested with axe in both themes in every fixture.</p>
     <h2>Common mistakes</h2>

@@ -6,7 +6,7 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Paginación (pagination)</h1>
     <p>Navegación entre páginas de resultados. Cada página es un enlace real; la actual lleva <code>aria-current="page"</code>. Los controles de anterior y siguiente que no están disponibles son texto plano con <code>aria-disabled="true"</code>, no enlaces.</p>
-    <p><strong>CSS:</strong> <code>css/components/pagination.css</code> (dentro de <code>ivolt.css</code>).</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/pagination.css</code> (dentro de <code>ivolt.css</code>).</p>
     <Fixture name="pagination/basic" />
     <h2>Marcado</h2>
     <p><code>nav.iv-pagination[aria-label]</code> → <code>ul.iv-pagination__list</code> → <code>li</code> → <code>a.iv-pagination__link</code>. Puntos suspensivos: <code>span.iv-pagination__ellipsis</code>. Las áreas miden al menos 2.5rem.</p>

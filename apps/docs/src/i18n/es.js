@@ -21,6 +21,7 @@ export const t = {
   navigate: "Navegar",
   close: "Cerrar",
   primaryNav: "Principal",
+  footerNav: "Mapa del sitio",
   docsNav: "Documentación",
   footer: "iVOLT v0.5 beta · MIT · de iNTERVOLUTIONS",
   alpha: "Software beta: los contratos de 0.5 están congelados; los detalles aún pueden cambiar antes de 0.5.0.",

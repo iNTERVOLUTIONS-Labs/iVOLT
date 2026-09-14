@@ -6,7 +6,7 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Toast</h1>
     <p>Short notifications created from JavaScript into a region that is already in the page. Messages are inserted as text, never HTML. Informational toasts auto-dismiss; <code>danger</code> ones never do and use <code>role="alert"</code>. When more than <code>max</code> are visible, the rest wait in a queue instead of being dropped.</p>
-    <p><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> or <code>auto.js</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> or <code>auto.js</code>.</p>
     <Fixture name="toast/basic" minHeight="6rem" />
     <p>Try it: the buttons below call <code>show()</code> on the region above (toasts appear at the bottom end of the viewport).</p>
     <div class="iv-cluster" id="toast-demo">
@@ -30,13 +30,15 @@ const region = Toast.get(document.querySelector(".iv-toast-region"));
 const item = region.show(&#123; message: "Saved", variant: "success" &#125;);
 item.dismiss();
 region.clear();</code></pre>
-    <table><thead><tr><th>Option</th><th>Where</th><th>Default</th></tr></thead><tbody>
-      <tr><td><code>placement</code></td><td>region, <code>data-iv-placement</code></td><td><code>bottom-end</code></td></tr>
-      <tr><td><code>max</code></td><td>region, <code>data-iv-max</code></td><td><code>3</code></td></tr>
-      <tr><td><code>variant</code></td><td>item</td><td><code>info</code> (<code>success warning danger</code>)</td></tr>
-      <tr><td><code>timeout</code></td><td>item, ms</td><td><code>6000</code>; <code>0</code> never; forced to <code>0</code> for danger</td></tr>
-      <tr><td><code>dismissible</code></td><td>item</td><td><code>true</code></td></tr>
-    </tbody></table>
+    <div class="docs-scroller">
+      <table><thead><tr><th>Option</th><th>Where</th><th>Default</th></tr></thead><tbody>
+        <tr><td><code>placement</code></td><td>region, <code>data-iv-placement</code></td><td><code>bottom-end</code></td></tr>
+        <tr><td><code>max</code></td><td>region, <code>data-iv-max</code></td><td><code>3</code></td></tr>
+        <tr><td><code>variant</code></td><td>item</td><td><code>info</code> (<code>success warning danger</code>)</td></tr>
+        <tr><td><code>timeout</code></td><td>item, ms</td><td><code>6000</code>; <code>0</code> never; forced to <code>0</code> for danger</td></tr>
+        <tr><td><code>dismissible</code></td><td>item</td><td><code>true</code></td></tr>
+      </tbody></table>
+    </div>
     <h2>Keyboard and timing</h2>
     <p>Hovering or focusing a toast pauses its timer. Escape on a focused toast dismisses it. Each item emits <code>iv:open/opened/close/closed</code> with <code>reason</code> <code>timeout</code>, <code>trigger</code>, <code>escape</code> or <code>api</code>.</p>
     <h2>Without JavaScript</h2>

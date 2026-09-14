@@ -6,13 +6,15 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Dropdown (actions menu)</h1>
     <p>A small menu of actions attached to a button. Without JavaScript the native <code>&lt;details&gt;</code> opens and closes and the items are ordinary buttons and links. With it, the menu follows the ARIA menu button pattern. This is not a navigation menu: use links, a disclosure or the drawer for that.</p>
-    <p><strong>CSS:</strong> <code>css/components/dropdown.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/dropdown</code> or <code>auto.js</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/dropdown.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/dropdown</code> or <code>auto.js</code>.</p>
     <Fixture name="dropdown/basic" minHeight="16rem" />
     <h2>Options</h2>
-    <table><thead><tr><th>Option</th><th>Attribute</th><th>Default</th></tr></thead><tbody>
-      <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>bottom-start</code> (<code>bottom-end</code> aligns to the end edge)</td></tr>
-      <tr><td><code>closeOnSelect</code></td><td><code>data-iv-close-on-select</code></td><td><code>true</code></td></tr>
-    </tbody></table>
+    <div class="docs-scroller">
+      <table><thead><tr><th>Option</th><th>Attribute</th><th>Default</th></tr></thead><tbody>
+        <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>bottom-start</code> (<code>bottom-end</code> aligns to the end edge)</td></tr>
+        <tr><td><code>closeOnSelect</code></td><td><code>data-iv-close-on-select</code></td><td><code>true</code></td></tr>
+      </tbody></table>
+    </div>
     <h2>Keyboard</h2>
     <p>Enter, Space or Down on the button opens the menu and focuses the first item; Up/Down move with wrap-around, Home/End jump; Escape closes and returns focus; Tab closes without trapping.</p>
     <h2>Events</h2>

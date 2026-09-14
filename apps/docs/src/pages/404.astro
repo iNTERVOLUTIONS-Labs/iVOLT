@@ -1,9 +1,26 @@
 ---
 import Base from "../layouts/Base.astro";
+const links = [
+  { href: "/", label: "Home", meta: "start here" },
+  { href: "/getting-started", label: "Getting started", meta: "install" },
+  { href: "/components/button", label: "Components", meta: "26 families" },
+  { href: "/foundations/tokens-and-themes", label: "Tokens & themes", meta: "foundations" },
+  { href: "/examples", label: "Examples", meta: "3 recipes" },
+];
 ---
 <Base title="Page not found" description="The page does not exist. Find your way back to the iVOLT documentation." sidebar={false}>
   <article class="docs-prose">
-    <h1>Page not found</h1>
-    <p>The address does not match any page. Start again from the <a href="/">home page</a> or the <a href="/getting-started">getting started guide</a>.</p>
+    <div class="docs-lost">
+      <div>
+        <p class="docs-lost__code" aria-hidden="true">404</p>
+        <h1>Page not found</h1>
+        <p>The address does not match any page in this documentation. Nothing was deleted; the link was probably never there. Pick a way back, or press <kbd class="docs-kbd-inline">/</kbd> to search.</p>
+      </div>
+      <nav aria-label="Ways back">
+        <ul class="docs-lost__links">
+          {links.map((l) => <li><a href={l.href}>{l.label}<small>{l.meta}</small></a></li>)}
+        </ul>
+      </nav>
+    </div>
   </article>
 </Base>

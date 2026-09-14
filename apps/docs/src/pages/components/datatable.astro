@@ -6,30 +6,34 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Data table (sort and filter)</h1>
     <p>Sorting and filtering for a table that already exists in the HTML. The server sends a normal <code>&lt;table class="iv-table"&gt;</code>; on <code>init</code> the sortable headers become buttons with <code>aria-sort</code>, the filter field appears and a live status announces how many rows are visible. Nothing is paginated or virtualised: the rows you serve are the rows that get sorted, so keep the table at a size a page can hold.</p>
-    <p><strong>CSS:</strong> <code>css/components/datatable.css</code> on top of <code>table.css</code> (both in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/datatable</code> or <code>auto.js</code>. Added in v0.2.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/datatable.css</code> on top of <code>table.css</code> (both in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/datatable</code> or <code>auto.js</code>. Added in v0.2.</p>
     <Fixture name="datatable/basic" />
     <h2>Initial sort and typed values</h2>
     <p><code>data-iv-sorted="asc"</code> or <code>"desc"</code> on a header sorts the table as soon as it is initialised. A cell can carry <code>data-iv-value</code> when the displayed text is not the value to sort by, and date cells are read from <code>&lt;time datetime&gt;</code>. Cells without a valid value go last in both directions.</p>
     <Fixture name="datatable/sorted" />
     <h2>Column types</h2>
-    <table>
-      <thead><tr><th>Attribute</th><th>Comparison</th><th>Cell value</th></tr></thead>
-      <tbody>
-        <tr><td><code>data-iv-sort</code> or <code>data-iv-sort="text"</code></td><td><code>localeCompare</code>, numeric-aware, accent and case insensitive</td><td><code>data-iv-value</code>, else the cell text</td></tr>
-        <tr><td><code>data-iv-sort="number"</code></td><td>numeric, after stripping units and separators</td><td><code>data-iv-value</code>, else the cell text</td></tr>
-        <tr><td><code>data-iv-sort="date"</code></td><td>chronological (<code>Date.parse</code>)</td><td><code>data-iv-value</code>, else <code>&lt;time datetime&gt;</code>, else the cell text</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Attribute</th><th>Comparison</th><th>Cell value</th></tr></thead>
+        <tbody>
+          <tr><td><code>data-iv-sort</code> or <code>data-iv-sort="text"</code></td><td><code>localeCompare</code>, numeric-aware, accent and case insensitive</td><td><code>data-iv-value</code>, else the cell text</td></tr>
+          <tr><td><code>data-iv-sort="number"</code></td><td>numeric, after stripping units and separators</td><td><code>data-iv-value</code>, else the cell text</td></tr>
+          <tr><td><code>data-iv-sort="date"</code></td><td>chronological (<code>Date.parse</code>)</td><td><code>data-iv-value</code>, else <code>&lt;time datetime&gt;</code>, else the cell text</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Options</h2>
-    <table>
-      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr><td><code>filterDelay</code></td><td><code>data-iv-filter-delay</code></td><td><code>150</code></td><td>Milliseconds waited after typing before the rows are filtered.</td></tr>
-        <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No rows match</code></td><td>Text of the row shown when the filter hides everything.</td></tr>
-        <tr><td><code>statusText</code></td><td><code>data-iv-status-text</code></td><td><code>&#123;visible&#125; of &#123;total&#125; rows</code></td><td>Template of the live status; both placeholders are replaced.</td></tr>
-        <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>document language</td><td>Locale used by text comparisons.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>filterDelay</code></td><td><code>data-iv-filter-delay</code></td><td><code>150</code></td><td>Milliseconds waited after typing before the rows are filtered.</td></tr>
+          <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No rows match</code></td><td>Text of the row shown when the filter hides everything.</td></tr>
+          <tr><td><code>statusText</code></td><td><code>data-iv-status-text</code></td><td><code>&#123;visible&#125; of &#123;total&#125; rows</code></td><td>Template of the live status; both placeholders are replaced.</td></tr>
+          <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>document language</td><td>Locale used by text comparisons.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Methods and events</h2>
     <p><code>sort(columnIndexOrTh, direction?)</code>, <code>filter(query)</code>, <code>clearFilter()</code>, <code>reset()</code> (original order and no filter), <code>destroy()</code>; read <code>sortColumn</code>, <code>sortDirection</code>, <code>rows</code> (original order), <code>visibleRows</code> and <code>query</code>. Events on the root element: <code>iv:sort</code> (cancelable, <code>detail.column</code>, <code>direction</code>, <code>previousColumn</code>, <code>previousDirection</code>) then <code>iv:sorted</code>; <code>iv:filter</code> (cancelable, <code>detail.query</code>, <code>previousQuery</code>) then <code>iv:filtered</code> with <code>visible</code> and <code>total</code>.</p>
     <h2>Keyboard and assistive technology</h2>

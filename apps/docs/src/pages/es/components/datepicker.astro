@@ -6,21 +6,23 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Selector de fecha (datepicker)</h1>
     <p>Un calendario sobre un campo de fecha nativo. El servidor envía <code>&lt;input type="date"&gt;</code>, que ya tiene su propio selector y envía un valor ISO; en <code>init</code> un botón abre un diálogo de calendario con una rejilla manejable desde el teclado, navegación por mes y año, acciones de hoy y vaciar, y los límites de <code>min</code> y <code>max</code>. Los nombres de mes y de día salen de los datos de configuración regional del navegador, así que el mismo marcado se lee bien en cualquier idioma. En punteros gruesos se mantiene el selector nativo, porque ahí es la mejor herramienta.</p>
-    <p><strong>CSS:</strong> <code>css/components/datepicker.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/datepicker</code> o <code>auto.js</code>. Añadido en la v0.5.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/datepicker.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/datepicker</code> o <code>auto.js</code>. Añadido en la v0.5.</p>
     <Fixture name="datepicker/basic" minHeight="28rem" />
     <h2>Configuración regional y primer día de la semana</h2>
     <p><code>data-iv-locale</code> elige el idioma de los nombres y <code>data-iv-first-day</code> la primera columna; por defecto ambos siguen el idioma del documento. Los textos de los botones son opciones, así que también se pueden traducir.</p>
     <Fixture name="datepicker/locale" minHeight="28rem" />
     <h2>Opciones</h2>
-    <table>
-      <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-      <tbody>
-        <tr><td><code>native</code></td><td><code>data-iv-native</code></td><td><code>auto</code></td><td><code>auto</code> mantiene el selector nativo en punteros gruesos; <code>on</code> siempre; <code>off</code> muestra siempre el calendario.</td></tr>
-        <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>idioma del documento</td><td>Etiqueta BCP 47 para los nombres de mes y de día.</td></tr>
-        <tr><td><code>firstDay</code></td><td><code>data-iv-first-day</code></td><td><code>-1</code></td><td>0 (domingo) a 6; <code>-1</code> sigue la configuración regional, o lunes cuando el navegador no lo sabe.</td></tr>
-        <tr><td><code>openText</code>, <code>prevText</code>, <code>nextText</code>, <code>todayText</code>, <code>clearText</code>, <code>dialogText</code></td><td><code>data-iv-open-text</code> …</td><td>textos en inglés</td><td>Nombres accesibles y textos de los botones.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>native</code></td><td><code>data-iv-native</code></td><td><code>auto</code></td><td><code>auto</code> mantiene el selector nativo en punteros gruesos; <code>on</code> siempre; <code>off</code> muestra siempre el calendario.</td></tr>
+          <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>idioma del documento</td><td>Etiqueta BCP 47 para los nombres de mes y de día.</td></tr>
+          <tr><td><code>firstDay</code></td><td><code>data-iv-first-day</code></td><td><code>-1</code></td><td>0 (domingo) a 6; <code>-1</code> sigue la configuración regional, o lunes cuando el navegador no lo sabe.</td></tr>
+          <tr><td><code>openText</code>, <code>prevText</code>, <code>nextText</code>, <code>todayText</code>, <code>clearText</code>, <code>dialogText</code></td><td><code>data-iv-open-text</code> …</td><td>textos en inglés</td><td>Nombres accesibles y textos de los botones.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Métodos y eventos</h2>
     <p><code>open()</code>, <code>close()</code>, <code>setValue(iso)</code>, <code>clear()</code>, <code>destroy()</code>; lectura de <code>value</code>, <code>date</code> e <code>isOpen</code>. Eventos: <code>iv:open</code>/<code>iv:close</code> (cancelables) y después <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>previousValue</code>, <code>date</code>) y después <code>iv:changed</code>. El campo también recibe <code>input</code> y <code>change</code>.</p>
     <h2>Teclado y tecnología asistiva</h2>

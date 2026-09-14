@@ -6,13 +6,15 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Pestañas (tabs)</h1>
     <p>El servidor envía enlaces de ancla y secciones con sus títulos, que funcionan como navegación dentro de la página sin JavaScript. En el <code>init</code>, el componente los promociona al patrón ARIA de pestañas y oculta los paneles inactivos; <code>destroy</code> restaura el HTML servido.</p>
-    <p><strong>CSS:</strong> <code>css/components/tabs.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/tabs</code> o <code>auto.js</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/tabs.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/tabs</code> o <code>auto.js</code>.</p>
     <Fixture name="tabs/basic" />
     <h2>Opciones</h2>
-    <table><thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead><tbody>
-      <tr><td><code>activation</code></td><td><code>data-iv-activation</code></td><td><code>automatic</code></td><td><code>automatic</code> selecciona al mover el foco con las flechas; <code>manual</code> espera a Enter o Espacio.</td></tr>
-      <tr><td><code>orientation</code></td><td><code>data-iv-orientation</code></td><td><code>horizontal</code></td><td><code>vertical</code> usa las flechas arriba y abajo y la disposición <code>iv-tabs--vertical</code>.</td></tr>
-    </tbody></table>
+    <div class="docs-scroller">
+      <table><thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead><tbody>
+        <tr><td><code>activation</code></td><td><code>data-iv-activation</code></td><td><code>automatic</code></td><td><code>automatic</code> selecciona al mover el foco con las flechas; <code>manual</code> espera a Enter o Espacio.</td></tr>
+        <tr><td><code>orientation</code></td><td><code>data-iv-orientation</code></td><td><code>horizontal</code></td><td><code>vertical</code> usa las flechas arriba y abajo y la disposición <code>iv-tabs--vertical</code>.</td></tr>
+      </tbody></table>
+    </div>
     <h2>Métodos y eventos</h2>
     <p><code>select(idOrElement)</code>, <code>next()</code>, <code>prev()</code>, <code>activeTab</code>, <code>destroy()</code>. <code>iv:change</code> (cancelable, <code>detail.tab</code>, <code>panel</code>, <code>previousTab</code>) y después <code>iv:changed</code>.</p>
     <h2>Teclado</h2>

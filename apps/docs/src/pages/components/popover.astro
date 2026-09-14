@@ -6,28 +6,32 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Tooltip and popover</h1>
     <p>Two ways to say a little more. A <strong>tooltip</strong> is a short text hint taken from <code>data-iv-tooltip</code>, shown on hover with a small delay and immediately on focus, and described to assistive technology through <code>aria-describedby</code>. A <strong>popover</strong> is rich content built on the native <code>popover</code> attribute: it opens and closes without JavaScript, lives in the top layer and dismisses on outside clicks and Escape; the component adds placement next to the invoker, focus handling and events.</p>
-    <p><strong>CSS:</strong> <code>css/components/tooltip.css</code> and <code>css/components/popover.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/tooltip</code>, <code>@intervolutions/ivolt/popover</code> or <code>auto.js</code>. Added in v0.5.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/tooltip.css</code> and <code>css/components/popover.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/tooltip</code>, <code>@intervolutions/ivolt/popover</code> or <code>auto.js</code>. Added in v0.5.</p>
     <h2>Tooltip</h2>
     <Fixture name="tooltip/basic" minHeight="14rem" />
-    <table>
-      <thead><tr><th>Option</th><th>Attribute (on the root)</th><th>Default</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr><td><code>delay</code></td><td><code>data-iv-delay</code></td><td><code>300</code></td><td>Milliseconds before a hovered tooltip appears; focus shows it at once.</td></tr>
-        <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>top</code></td><td><code>top</code> or <code>bottom</code>; flips when there is no room.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Option</th><th>Attribute (on the root)</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>delay</code></td><td><code>data-iv-delay</code></td><td><code>300</code></td><td>Milliseconds before a hovered tooltip appears; focus shows it at once.</td></tr>
+          <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>top</code></td><td><code>top</code> or <code>bottom</code>; flips when there is no room.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Methods <code>show(target)</code>, <code>hide()</code>, <code>destroy()</code>; events <code>iv:show</code> (cancelable) then <code>iv:shown</code>, <code>iv:hide</code> then <code>iv:hidden</code>. Tooltips are for hints, never for the only explanation: without JavaScript they do not exist.</p>
     <h2>Popover</h2>
     <Fixture name="popover/basic" minHeight="22rem" />
-    <table>
-      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>bottom</code></td><td><code>bottom</code> or <code>top</code>; flips when there is no room.</td></tr>
-        <tr><td><code>align</code></td><td><code>data-iv-align</code></td><td><code>start</code></td><td><code>start</code>, <code>center</code> or <code>end</code> relative to the invoker.</td></tr>
-        <tr><td><code>offset</code></td><td><code>data-iv-offset</code></td><td><code>8</code></td><td>Gap in pixels between invoker and popover.</td></tr>
-        <tr><td><code>focus</code></td><td><code>data-iv-focus</code></td><td><code>true</code></td><td>Move focus into the popover when it opens and back to the invoker when it closes.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>bottom</code></td><td><code>bottom</code> or <code>top</code>; flips when there is no room.</td></tr>
+          <tr><td><code>align</code></td><td><code>data-iv-align</code></td><td><code>start</code></td><td><code>start</code>, <code>center</code> or <code>end</code> relative to the invoker.</td></tr>
+          <tr><td><code>offset</code></td><td><code>data-iv-offset</code></td><td><code>8</code></td><td>Gap in pixels between invoker and popover.</td></tr>
+          <tr><td><code>focus</code></td><td><code>data-iv-focus</code></td><td><code>true</code></td><td>Move focus into the popover when it opens and back to the invoker when it closes.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Methods <code>open()</code>, <code>close()</code>, <code>toggle()</code>, <code>destroy()</code>; read <code>isOpen</code> and <code>invoker</code>. Events <code>iv:open</code>/<code>iv:close</code> (cancelable, mapped from the native <code>beforetoggle</code>) then <code>iv:opened</code>/<code>iv:closed</code>. <code>iv-popover--arrow</code> adds a pointer and <code>iv-popover--glass</code> the glass surface.</p>
     <h2>Without JavaScript</h2>
     <p>The tooltip is absent. The popover works through the native attribute: it opens from its <code>popovertarget</code> button, closes on outside clicks and Escape, but sits centred in the viewport rather than next to its button.</p>

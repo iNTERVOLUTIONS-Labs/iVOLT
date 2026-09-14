@@ -17,21 +17,23 @@ import Fixture from "../../components/Fixture.astro";
 
     <h3>Colour and contrast</h3>
     <p>The semantic tokens were chosen against measured ratios, not by eye. Values below are the intended contrast for the light and dark themes, measured over <code>bg</code> unless noted.</p>
-    <table>
-      <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Contrast (light / dark)</th></tr></thead>
-      <tbody>
-        <tr><td><code>text</code></td><td><code>#12201A</code></td><td><code>#F3FAF6</code></td><td>16.8 / 17.8</td></tr>
-        <tr><td><code>text-muted</code></td><td><code>#56695F</code></td><td><code>#90A49E</code></td><td>5.9 / 7.2 (≥ 5.5 over <code>surface</code>)</td></tr>
-        <tr><td><code>border-strong</code> (controls)</td><td><code>#6E837B</code></td><td><code>#6E837B</code></td><td>4.0 / 4.7 (≥ 3:1)</td></tr>
-        <tr><td><code>border</code> (decorative)</td><td><code>#CBD8D1</code></td><td><code>#263129</code></td><td>not required</td></tr>
-        <tr><td><code>primary</code> / <code>on-primary</code></td><td><code>#0A6A43</code> / <code>#FFFFFF</code></td><td><code>#29F59A</code> / <code>#081310</code></td><td>6.7 / 13.2</td></tr>
-        <tr><td><code>success</code> / <code>on-success</code></td><td><code>#0A6A43</code> / <code>#FFFFFF</code></td><td><code>#29F59A</code> / <code>#081310</code></td><td>6.7 / 13.2</td></tr>
-        <tr><td><code>danger</code> / <code>on-danger</code></td><td><code>#B2262D</code> / <code>#FFFFFF</code></td><td><code>#FF7A80</code> / <code>#081310</code></td><td>6.6 / 7.5</td></tr>
-        <tr><td><code>warning</code> / <code>on-warning</code></td><td><code>#8A5200</code> / <code>#FFFFFF</code></td><td><code>#FFB84D</code> / <code>#081310</code></td><td>6.4 / 11.0</td></tr>
-        <tr><td><code>info</code> / <code>on-info</code></td><td><code>#1D5FB8</code> / <code>#FFFFFF</code></td><td><code>#6FB3FF</code> / <code>#081310</code></td><td>6.2 / 8.6</td></tr>
-        <tr><td><code>focus</code></td><td><code>#0A6A43</code></td><td><code>#29F59A</code></td><td>≥ 3:1 on both surfaces</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Contrast (light / dark)</th></tr></thead>
+        <tbody>
+          <tr><td><code>text</code></td><td><code>#12201A</code></td><td><code>#F3FAF6</code></td><td>16.8 / 17.8</td></tr>
+          <tr><td><code>text-muted</code></td><td><code>#56695F</code></td><td><code>#90A49E</code></td><td>5.9 / 7.2 (≥ 5.5 over <code>surface</code>)</td></tr>
+          <tr><td><code>border-strong</code> (controls)</td><td><code>#6E837B</code></td><td><code>#6E837B</code></td><td>4.0 / 4.7 (≥ 3:1)</td></tr>
+          <tr><td><code>border</code> (decorative)</td><td><code>#CBD8D1</code></td><td><code>#263129</code></td><td>not required</td></tr>
+          <tr><td><code>primary</code> / <code>on-primary</code></td><td><code>#0A6A43</code> / <code>#FFFFFF</code></td><td><code>#29F59A</code> / <code>#081310</code></td><td>6.7 / 13.2</td></tr>
+          <tr><td><code>success</code> / <code>on-success</code></td><td><code>#0A6A43</code> / <code>#FFFFFF</code></td><td><code>#29F59A</code> / <code>#081310</code></td><td>6.7 / 13.2</td></tr>
+          <tr><td><code>danger</code> / <code>on-danger</code></td><td><code>#B2262D</code> / <code>#FFFFFF</code></td><td><code>#FF7A80</code> / <code>#081310</code></td><td>6.6 / 7.5</td></tr>
+          <tr><td><code>warning</code> / <code>on-warning</code></td><td><code>#8A5200</code> / <code>#FFFFFF</code></td><td><code>#FFB84D</code> / <code>#081310</code></td><td>6.4 / 11.0</td></tr>
+          <tr><td><code>info</code> / <code>on-info</code></td><td><code>#1D5FB8</code> / <code>#FFFFFF</code></td><td><code>#6FB3FF</code> / <code>#081310</code></td><td>6.2 / 8.6</td></tr>
+          <tr><td><code>focus</code></td><td><code>#0A6A43</code></td><td><code>#29F59A</code></td><td>≥ 3:1 on both surfaces</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>The worst real case is <code>surface-raised</code>, where <code>border-strong</code> falls to 3.6 in dark and 3.8 over <code>surface</code> in light; both stay at or above 3:1. Each <code>*-subtle</code> background is paired with its own foreground and was measured against it, so an alert or badge is never a coloured surface with unreadable text on top.</p>
     <p>One consequence to know about: <code>primary</code>, <code>success</code> and <code>focus</code> share the same green, and in dark they also match <code>accent</code>. That is intentional — success and focus are distinguished by shape (a subtle-background badge or alert, an offset focus ring), not by hue. If your interface needs colour to separate them, redefine <code>--iv-color-success</code>. More generally, never let colour be the only thing carrying a meaning: an error state needs text, an icon or both.</p>
     <p>These numbers describe the tokens. Override a token with your own brand colour and they no longer apply — re-measure.</p>
@@ -62,16 +64,18 @@ import Fixture from "../../components/Fixture.astro";
     <Fixture name="form/error" />
 
     <h2>How it is tested</h2>
-    <table>
-      <thead><tr><th>Check</th><th>Scope</th></tr></thead>
-      <tbody>
-        <tr><td>axe-core through Playwright</td><td>24 fixtures × light and dark themes, plus the dialog in its open state; tags <code>wcag2a wcag2aa wcag21aa wcag22aa</code>; the gate fails on any serious or critical finding</td></tr>
-        <tr><td>Manual keyboard review</td><td>Every interactive family: reach, activate, dismiss, and where focus lands afterwards</td></tr>
-        <tr><td>Three engines</td><td>The browser suite runs in Chromium, Firefox and WebKit (<code>IVOLT_ALL_BROWSERS=1</code>)</td></tr>
-        <tr><td>Overflow and RTL</td><td>320–1920px with no horizontal overflow, and right-to-left rendering, because logical properties are what make that work</td></tr>
-        <tr><td>Fixtures as the single source</td><td>The same fixture file is the docs preview, the copyable snippet and the test subject, so what is tested is what is documented</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Check</th><th>Scope</th></tr></thead>
+        <tbody>
+          <tr><td>axe-core through Playwright</td><td>24 fixtures × light and dark themes, plus the dialog in its open state; tags <code>wcag2a wcag2aa wcag21aa wcag22aa</code>; the gate fails on any serious or critical finding</td></tr>
+          <tr><td>Manual keyboard review</td><td>Every interactive family: reach, activate, dismiss, and where focus lands afterwards</td></tr>
+          <tr><td>Three engines</td><td>The browser suite runs in Chromium, Firefox and WebKit (<code>IVOLT_ALL_BROWSERS=1</code>)</td></tr>
+          <tr><td>Overflow and RTL</td><td>320–1920px with no horizontal overflow, and right-to-left rendering, because logical properties are what make that work</td></tr>
+          <tr><td>Fixtures as the single source</td><td>The same fixture file is the docs preview, the copyable snippet and the test subject, so what is tested is what is documented</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Automated tooling catches a minority of issues. axe cannot tell you that a label is wrong, that a heading lies about the structure, or that a focus order is confusing; the manual review exists for that, and it is a review, not a proof.</p>
 
     <h2>What we do not claim</h2>

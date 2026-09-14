@@ -15,19 +15,21 @@ npm run dev:docs   # compila el paquete antes si falta dist/       # servidor de
     <p>El repositorio es un workspace de npm con un solo lockfile en la raíz. <code>dist/</code> se genera y no se versiona, así que compila antes de lanzar la suite de navegador, el informe de tamaños o la prueba de humo del empaquetado.</p>
 
     <h2>Comandos</h2>
-    <table>
-      <thead><tr><th>Comando</th><th>Qué hace</th></tr></thead>
-      <tbody>
-        <tr><td><code>npm run build</code></td><td>Compila el paquete: primero se generan tokens y utilidades, después se escriben el CSS y el JS en <code>packages/ivolt/dist</code>.</td></tr>
-        <tr><td><code>npm test</code></td><td>Vitest: pruebas unitarias de los componentes JS y pruebas de contrato sobre las fuentes CSS y los fragmentos documentados.</td></tr>
-        <tr><td><code>npm run test:browser</code></td><td>Playwright. Solo Chromium por defecto; <code>IVOLT_ALL_BROWSERS=1 npm run test:browser</code> ejecuta Chromium, Firefox y WebKit. Cubre comportamiento, axe, desbordamiento de 320 a 1920 px, RTL, temas, páginas de documentación y recetas.</td></tr>
-        <tr><td><code>npm run sizes</code></td><td>Informa del tamaño de cada artefacto compilado. Un cambio que mueva esas cifras de forma apreciable debería explicar por qué.</td></tr>
-        <tr><td><code>npm run pack-smoke</code></td><td>Empaqueta con <code>npm pack</code>, instala el tarball en un proyecto desechable y comprueba que los <code>exports</code> se resuelven y que los componentes sin usar se eliminan por tree-shaking.</td></tr>
-        <tr><td><code>npm run check-examples</code></td><td>Carga las páginas de ejemplo y las recetas y verifica que siguen funcionando con la compilación actual.</td></tr>
-        <tr><td><code>npm run build:docs</code></td><td>Compila el sitio estático de documentación.</td></tr>
-        <tr><td><code>npm run verify</code></td><td>Todo lo anterior en orden. Es la puerta antes de cerrar una fase.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Comando</th><th>Qué hace</th></tr></thead>
+        <tbody>
+          <tr><td><code>npm run build</code></td><td>Compila el paquete: primero se generan tokens y utilidades, después se escriben el CSS y el JS en <code>packages/ivolt/dist</code>.</td></tr>
+          <tr><td><code>npm test</code></td><td>Vitest: pruebas unitarias de los componentes JS y pruebas de contrato sobre las fuentes CSS y los fragmentos documentados.</td></tr>
+          <tr><td><code>npm run test:browser</code></td><td>Playwright. Solo Chromium por defecto; <code>IVOLT_ALL_BROWSERS=1 npm run test:browser</code> ejecuta Chromium, Firefox y WebKit. Cubre comportamiento, axe, desbordamiento de 320 a 1920 px, RTL, temas, páginas de documentación y recetas.</td></tr>
+          <tr><td><code>npm run sizes</code></td><td>Informa del tamaño de cada artefacto compilado. Un cambio que mueva esas cifras de forma apreciable debería explicar por qué.</td></tr>
+          <tr><td><code>npm run pack-smoke</code></td><td>Empaqueta con <code>npm pack</code>, instala el tarball en un proyecto desechable y comprueba que los <code>exports</code> se resuelven y que los componentes sin usar se eliminan por tree-shaking.</td></tr>
+          <tr><td><code>npm run check-examples</code></td><td>Carga las páginas de ejemplo y las recetas y verifica que siguen funcionando con la compilación actual.</td></tr>
+          <tr><td><code>npm run build:docs</code></td><td>Compila el sitio estático de documentación.</td></tr>
+          <tr><td><code>npm run verify</code></td><td>Todo lo anterior en orden. Es la puerta antes de cerrar una fase.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Playwright necesita que instales sus navegadores una vez (<code>npx playwright install</code>); las comprobaciones de axe pasan por <code>@axe-core/playwright</code>.</p>
 
     <h2>Estructura del repositorio</h2>
@@ -90,20 +92,22 @@ npm run dev:docs   # compila el paquete antes si falta dist/       # servidor de
 
     <h2>Las pruebas de contrato</h2>
     <p>Se ejecutan con <code>npm test</code> y fallan de forma ruidosa si se rompe alguna regla de arriba:</p>
-    <table>
-      <thead><tr><th>Comprobación</th><th>Falla cuando</th></tr></thead>
-      <tbody>
-        <tr><td>Los módulos no declaran capa ni importan nada</td><td>Un módulo fuente añade <code>@layer</code> o un <code>@import</code></td></tr>
-        <tr><td>Nada de <code>!important</code> fuera de las utilidades sr-only</td><td>Cualquier otra declaración lo usa</td></tr>
-        <tr><td>Prefijos en clases y propiedades personalizadas</td><td>Aparece un nombre sin prefijo en las fuentes</td></tr>
-        <tr><td>Selectores de elemento acotados a <code>.iv-root</code></td><td>Un selector de elemento suelto se escapa del ámbito en <code>base.css</code></td></tr>
-        <tr><td>Techo de especificidad <code>(0,2,0)</code></td><td>Un selector de componente lo supera fuera de las excepciones documentadas</td></tr>
-        <tr><td>Puntos de ruptura vía <code>@custom-media</code></td><td>Una media query lee una propiedad personalizada</td></tr>
-        <tr><td>Las utilidades coinciden exactamente con la matriz declarada</td><td>El archivo generado gana o pierde una clase respecto al contrato</td></tr>
-        <tr><td>Las entradas importan cada módulo una vez y declaran el orden de capas</td><td>Un import duplicado se come en silencio una asignación de capa</td></tr>
-        <tr><td>Los fragmentos coinciden con la distribución</td><td>El marcado documentado deja de coincidir con lo que el paquete distribuye de verdad</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Comprobación</th><th>Falla cuando</th></tr></thead>
+        <tbody>
+          <tr><td>Los módulos no declaran capa ni importan nada</td><td>Un módulo fuente añade <code>@layer</code> o un <code>@import</code></td></tr>
+          <tr><td>Nada de <code>!important</code> fuera de las utilidades sr-only</td><td>Cualquier otra declaración lo usa</td></tr>
+          <tr><td>Prefijos en clases y propiedades personalizadas</td><td>Aparece un nombre sin prefijo en las fuentes</td></tr>
+          <tr><td>Selectores de elemento acotados a <code>.iv-root</code></td><td>Un selector de elemento suelto se escapa del ámbito en <code>base.css</code></td></tr>
+          <tr><td>Techo de especificidad <code>(0,2,0)</code></td><td>Un selector de componente lo supera fuera de las excepciones documentadas</td></tr>
+          <tr><td>Puntos de ruptura vía <code>@custom-media</code></td><td>Una media query lee una propiedad personalizada</td></tr>
+          <tr><td>Las utilidades coinciden exactamente con la matriz declarada</td><td>El archivo generado gana o pierde una clase respecto al contrato</td></tr>
+          <tr><td>Las entradas importan cada módulo una vez y declaran el orden de capas</td><td>Un import duplicado se come en silencio una asignación de capa</td></tr>
+          <tr><td>Los fragmentos coinciden con la distribución</td><td>El marcado documentado deja de coincidir con lo que el paquete distribuye de verdad</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Si una prueba de contrato bloquea un cambio que crees correcto, la solución es un ADR que mueva el contrato, no una excepción en la prueba.</p>
 
     <h2>Pull requests</h2>

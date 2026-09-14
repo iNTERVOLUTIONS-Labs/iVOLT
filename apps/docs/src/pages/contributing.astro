@@ -15,19 +15,21 @@ npm run dev:docs   # builds the package first when dist/ is missing       # Astr
     <p>The repository is an npm workspace with one lockfile at the root. <code>dist/</code> is generated and not versioned, so build before running the browser suite, the size report or the pack smoke test.</p>
 
     <h2>Commands</h2>
-    <table>
-      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
-      <tbody>
-        <tr><td><code>npm run build</code></td><td>Builds the package: tokens and utilities are generated first, then CSS and JS are written to <code>packages/ivolt/dist</code>.</td></tr>
-        <tr><td><code>npm test</code></td><td>Vitest: unit tests for the JS components and the contract tests over the CSS sources and the documented snippets.</td></tr>
-        <tr><td><code>npm run test:browser</code></td><td>Playwright. Chromium only by default; <code>IVOLT_ALL_BROWSERS=1 npm run test:browser</code> runs Chromium, Firefox and WebKit. Covers behaviour, axe, overflow from 320 to 1920px, RTL, themes, docs pages and recipes.</td></tr>
-        <tr><td><code>npm run sizes</code></td><td>Reports the size of each built artefact. A change that moves these numbers noticeably should say why.</td></tr>
-        <tr><td><code>npm run pack-smoke</code></td><td>Packs the package with <code>npm pack</code>, installs the tarball into a scratch project and checks that the exports resolve and that unused components are tree-shaken.</td></tr>
-        <tr><td><code>npm run check-examples</code></td><td>Loads the example pages and recipes and asserts they still work against the current build.</td></tr>
-        <tr><td><code>npm run build:docs</code></td><td>Builds the static documentation site.</td></tr>
-        <tr><td><code>npm run verify</code></td><td>Everything above in sequence. This is the gate before a phase closes.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>npm run build</code></td><td>Builds the package: tokens and utilities are generated first, then CSS and JS are written to <code>packages/ivolt/dist</code>.</td></tr>
+          <tr><td><code>npm test</code></td><td>Vitest: unit tests for the JS components and the contract tests over the CSS sources and the documented snippets.</td></tr>
+          <tr><td><code>npm run test:browser</code></td><td>Playwright. Chromium only by default; <code>IVOLT_ALL_BROWSERS=1 npm run test:browser</code> runs Chromium, Firefox and WebKit. Covers behaviour, axe, overflow from 320 to 1920px, RTL, themes, docs pages and recipes.</td></tr>
+          <tr><td><code>npm run sizes</code></td><td>Reports the size of each built artefact. A change that moves these numbers noticeably should say why.</td></tr>
+          <tr><td><code>npm run pack-smoke</code></td><td>Packs the package with <code>npm pack</code>, installs the tarball into a scratch project and checks that the exports resolve and that unused components are tree-shaken.</td></tr>
+          <tr><td><code>npm run check-examples</code></td><td>Loads the example pages and recipes and asserts they still work against the current build.</td></tr>
+          <tr><td><code>npm run build:docs</code></td><td>Builds the static documentation site.</td></tr>
+          <tr><td><code>npm run verify</code></td><td>Everything above in sequence. This is the gate before a phase closes.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Playwright needs its browsers installed once (<code>npx playwright install</code>); the axe checks run through <code>@axe-core/playwright</code>.</p>
 
     <h2>Repository layout</h2>
@@ -90,20 +92,22 @@ npm run dev:docs   # builds the package first when dist/ is missing       # Astr
 
     <h2>The contract tests</h2>
     <p>These run in <code>npm test</code> and fail loudly if a rule above is broken:</p>
-    <table>
-      <thead><tr><th>Check</th><th>Fails when</th></tr></thead>
-      <tbody>
-        <tr><td>Modules declare no layer and import nothing</td><td>A source module adds <code>@layer</code> or an <code>@import</code></td></tr>
-        <tr><td>No <code>!important</code> outside the sr-only utilities</td><td>Any other declaration uses it</td></tr>
-        <tr><td>Prefixes on classes and custom properties</td><td>An unprefixed name appears in the sources</td></tr>
-        <tr><td>Element selectors scoped to <code>.iv-root</code></td><td>A bare element selector escapes the scope in <code>base.css</code></td></tr>
-        <tr><td>Specificity ceiling <code>(0,2,0)</code></td><td>A component selector goes above it, outside the documented fallbacks</td></tr>
-        <tr><td>Breakpoints via <code>@custom-media</code></td><td>A media query reads a custom property</td></tr>
-        <tr><td>Utilities match the declared matrix exactly</td><td>The generated file gains or loses a class relative to the contract</td></tr>
-        <tr><td>Entries import each module once and declare the layer order</td><td>A duplicate import silently drops a layer assignment</td></tr>
-        <tr><td>Snippets match the distribution</td><td>Documented markup stops matching what the package actually ships</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Check</th><th>Fails when</th></tr></thead>
+        <tbody>
+          <tr><td>Modules declare no layer and import nothing</td><td>A source module adds <code>@layer</code> or an <code>@import</code></td></tr>
+          <tr><td>No <code>!important</code> outside the sr-only utilities</td><td>Any other declaration uses it</td></tr>
+          <tr><td>Prefixes on classes and custom properties</td><td>An unprefixed name appears in the sources</td></tr>
+          <tr><td>Element selectors scoped to <code>.iv-root</code></td><td>A bare element selector escapes the scope in <code>base.css</code></td></tr>
+          <tr><td>Specificity ceiling <code>(0,2,0)</code></td><td>A component selector goes above it, outside the documented fallbacks</td></tr>
+          <tr><td>Breakpoints via <code>@custom-media</code></td><td>A media query reads a custom property</td></tr>
+          <tr><td>Utilities match the declared matrix exactly</td><td>The generated file gains or loses a class relative to the contract</td></tr>
+          <tr><td>Entries import each module once and declare the layer order</td><td>A duplicate import silently drops a layer assignment</td></tr>
+          <tr><td>Snippets match the distribution</td><td>Documented markup stops matching what the package actually ships</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>If a contract test blocks a change you believe is right, the fix is an ADR that moves the contract, not an exception in the test.</p>
 
     <h2>Pull requests</h2>

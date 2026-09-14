@@ -6,7 +6,7 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Aviso (toast)</h1>
     <p>Notificaciones cortas creadas desde JavaScript dentro de una región que ya está en la página. Los mensajes se insertan como texto, nunca como HTML. Los avisos informativos se cierran solos; los de <code>danger</code> no lo hacen nunca y usan <code>role="alert"</code>. Cuando hay más de <code>max</code> visibles, los demás esperan en una cola en lugar de descartarse.</p>
-    <p><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> o <code>auto.js</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> o <code>auto.js</code>.</p>
     <Fixture name="toast/basic" minHeight="6rem" />
     <p>Pruébalo: los botones de abajo llaman a <code>show()</code> sobre la región de arriba (los avisos aparecen en el borde inferior final de la ventana).</p>
     <div class="iv-cluster" id="toast-demo">
@@ -30,13 +30,15 @@ const region = Toast.get(document.querySelector(".iv-toast-region"));
 const item = region.show(&#123; message: "Guardado", variant: "success" &#125;);
 item.dismiss();
 region.clear();</code></pre>
-    <table><thead><tr><th>Opción</th><th>Dónde</th><th>Por defecto</th></tr></thead><tbody>
-      <tr><td><code>placement</code></td><td>región, <code>data-iv-placement</code></td><td><code>bottom-end</code></td></tr>
-      <tr><td><code>max</code></td><td>región, <code>data-iv-max</code></td><td><code>3</code></td></tr>
-      <tr><td><code>variant</code></td><td>elemento</td><td><code>info</code> (<code>success warning danger</code>)</td></tr>
-      <tr><td><code>timeout</code></td><td>elemento, ms</td><td><code>6000</code>; <code>0</code> nunca; forzado a <code>0</code> para danger</td></tr>
-      <tr><td><code>dismissible</code></td><td>elemento</td><td><code>true</code></td></tr>
-    </tbody></table>
+    <div class="docs-scroller">
+      <table><thead><tr><th>Opción</th><th>Dónde</th><th>Por defecto</th></tr></thead><tbody>
+        <tr><td><code>placement</code></td><td>región, <code>data-iv-placement</code></td><td><code>bottom-end</code></td></tr>
+        <tr><td><code>max</code></td><td>región, <code>data-iv-max</code></td><td><code>3</code></td></tr>
+        <tr><td><code>variant</code></td><td>elemento</td><td><code>info</code> (<code>success warning danger</code>)</td></tr>
+        <tr><td><code>timeout</code></td><td>elemento, ms</td><td><code>6000</code>; <code>0</code> nunca; forzado a <code>0</code> para danger</td></tr>
+        <tr><td><code>dismissible</code></td><td>elemento</td><td><code>true</code></td></tr>
+      </tbody></table>
+    </div>
     <h2>Teclado y tiempos</h2>
     <p>Pasar el ratón por encima de un aviso o enfocarlo pausa su temporizador. Escape sobre un aviso enfocado lo descarta. Cada elemento emite <code>iv:open/opened/close/closed</code> con <code>reason</code> <code>timeout</code>, <code>trigger</code>, <code>escape</code> o <code>api</code>.</p>
     <h2>Sin JavaScript</h2>

@@ -6,22 +6,24 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Combobox (autocompletado)</h1>
     <p>Un campo de texto con una lista filtrada de sugerencias. El servidor envía un <code>&lt;input list&gt;</code> normal con su <code>&lt;datalist&gt;</code>, que ya funciona en todos los navegadores sin JavaScript. En el <code>init</code>, el componente lo promociona al patrón ARIA de combobox con listbox: renderizado consistente, navegación por teclado, filtrado insensible a los acentos, estado vacío y eventos cancelables. <code>destroy</code> restaura el HTML servido.</p>
-    <p><strong>CSS:</strong> <code>css/components/combobox.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/combobox</code> o <code>auto.js</code>. Añadido en la v0.2.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/combobox.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/combobox</code> o <code>auto.js</code>. Añadido en la v0.2.</p>
     <Fixture name="combobox/basic" minHeight="20rem" />
     <h2>Selección estricta con autoselect</h2>
     <p>Con <code>strict</code>, el campo solo conserva valores que existen en la lista: el texto libre se revierte al salir del campo y con un segundo Escape. <code>autoselect</code> resalta la primera coincidencia, de modo que Enter o Tab la confirman.</p>
     <Fixture name="combobox/strict" minHeight="20rem" />
     <h2>Opciones</h2>
-    <table>
-      <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-      <tbody>
-        <tr><td><code>filter</code></td><td><code>data-iv-filter</code></td><td><code>contains</code></td><td><code>contains</code> o <code>starts</code>; insensible a mayúsculas y acentos.</td></tr>
-        <tr><td><code>minChars</code></td><td><code>data-iv-min-chars</code></td><td><code>0</code></td><td>Caracteres escritos antes de que la lista se abra mientras escribes (la flecha abajo la abre siempre).</td></tr>
-        <tr><td><code>strict</code></td><td><code>data-iv-strict</code></td><td><code>false</code></td><td>Revierte el texto que no coincide con ninguna opción cuando el foco se va.</td></tr>
-        <tr><td><code>autoselect</code></td><td><code>data-iv-autoselect</code></td><td><code>false</code></td><td>Resalta la primera coincidencia automáticamente.</td></tr>
-        <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No matches</code></td><td>Texto de la opción deshabilitada que aparece cuando no hay coincidencias.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>filter</code></td><td><code>data-iv-filter</code></td><td><code>contains</code></td><td><code>contains</code> o <code>starts</code>; insensible a mayúsculas y acentos.</td></tr>
+          <tr><td><code>minChars</code></td><td><code>data-iv-min-chars</code></td><td><code>0</code></td><td>Caracteres escritos antes de que la lista se abra mientras escribes (la flecha abajo la abre siempre).</td></tr>
+          <tr><td><code>strict</code></td><td><code>data-iv-strict</code></td><td><code>false</code></td><td>Revierte el texto que no coincide con ninguna opción cuando el foco se va.</td></tr>
+          <tr><td><code>autoselect</code></td><td><code>data-iv-autoselect</code></td><td><code>false</code></td><td>Resalta la primera coincidencia automáticamente.</td></tr>
+          <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No matches</code></td><td>Texto de la opción deshabilitada que aparece cuando no hay coincidencias.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Métodos y eventos</h2>
     <p><code>open()</code>, <code>close()</code>, <code>select(valueOrOption)</code>, <code>clear()</code>, <code>destroy()</code>, <code>isOpen</code>, <code>value</code> (el valor confirmado), <code>optionElements</code> (las filas del listbox) e <code>input</code>. Eventos en el elemento raíz: <code>iv:open</code>/<code>iv:close</code> (cancelables) y después <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>option</code>, <code>previousValue</code>) y después <code>iv:changed</code> cuando se confirma un valor. El campo nativo también recibe eventos sintéticos <code>input</code> y <code>change</code>, así que los formularios y los frameworks que los escuchan siguen funcionando.</p>
     <h2>Teclado</h2>

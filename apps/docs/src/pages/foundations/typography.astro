@@ -8,19 +8,21 @@ import Base from "../../layouts/Base.astro";
 
     <h2>Type scale</h2>
     <p>Eight steps. The two largest are fluid: they interpolate with the viewport through <code>clamp()</code>, so a page title shrinks on a phone without a media query.</p>
-    <table>
-      <thead><tr><th>Token</th><th>Value</th><th>Used by</th></tr></thead>
-      <tbody>
-        <tr><td><code>--iv-text-xs</code></td><td><code>0.75rem</code></td><td><code>iv-u-text-xs</code>, small print in components</td></tr>
-        <tr><td><code>--iv-text-sm</code></td><td><code>0.875rem</code></td><td><code>&lt;small&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;figcaption&gt;</code>, <code>&lt;kbd&gt;</code>, <code>iv-u-text-sm</code></td></tr>
-        <tr><td><code>--iv-text-md</code></td><td><code>1rem</code></td><td>Body text on <code>.iv-root</code>, <code>&lt;h6&gt;</code>, <code>iv-u-text-md</code></td></tr>
-        <tr><td><code>--iv-text-lg</code></td><td><code>1.125rem</code></td><td><code>&lt;h5&gt;</code>, <code>iv-u-text-lg</code></td></tr>
-        <tr><td><code>--iv-text-xl</code></td><td><code>1.25rem</code></td><td><code>&lt;h4&gt;</code>, <code>iv-u-text-xl</code></td></tr>
-        <tr><td><code>--iv-text-2xl</code></td><td><code>1.5rem</code></td><td><code>&lt;h3&gt;</code>, <code>iv-u-text-2xl</code></td></tr>
-        <tr><td><code>--iv-text-3xl</code></td><td><code>clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)</code></td><td><code>&lt;h2&gt;</code> — no utility</td></tr>
-        <tr><td><code>--iv-text-4xl</code></td><td><code>clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)</code></td><td><code>&lt;h1&gt;</code> — no utility</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Used by</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-text-xs</code></td><td><code>0.75rem</code></td><td><code>iv-u-text-xs</code>, small print in components</td></tr>
+          <tr><td><code>--iv-text-sm</code></td><td><code>0.875rem</code></td><td><code>&lt;small&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;figcaption&gt;</code>, <code>&lt;kbd&gt;</code>, <code>iv-u-text-sm</code></td></tr>
+          <tr><td><code>--iv-text-md</code></td><td><code>1rem</code></td><td>Body text on <code>.iv-root</code>, <code>&lt;h6&gt;</code>, <code>iv-u-text-md</code></td></tr>
+          <tr><td><code>--iv-text-lg</code></td><td><code>1.125rem</code></td><td><code>&lt;h5&gt;</code>, <code>iv-u-text-lg</code></td></tr>
+          <tr><td><code>--iv-text-xl</code></td><td><code>1.25rem</code></td><td><code>&lt;h4&gt;</code>, <code>iv-u-text-xl</code></td></tr>
+          <tr><td><code>--iv-text-2xl</code></td><td><code>1.5rem</code></td><td><code>&lt;h3&gt;</code>, <code>iv-u-text-2xl</code></td></tr>
+          <tr><td><code>--iv-text-3xl</code></td><td><code>clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)</code></td><td><code>&lt;h2&gt;</code> — no utility</td></tr>
+          <tr><td><code>--iv-text-4xl</code></td><td><code>clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)</code></td><td><code>&lt;h1&gt;</code> — no utility</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>The utility matrix stops at <code>2xl</code> on purpose: the two fluid steps belong to page headings, and a page should not have several of them. Apply them with <code>&lt;h1&gt;</code> and <code>&lt;h2&gt;</code>, or by reading the token directly in your own CSS.</p>
 
     <h3>The scale rendered</h3>
@@ -35,37 +37,41 @@ import Base from "../../layouts/Base.astro";
     </div>
 
     <h2>Line height, weight and family</h2>
-    <table>
-      <thead><tr><th>Token</th><th>Value</th><th>Applied to</th></tr></thead>
-      <tbody>
-        <tr><td><code>--iv-leading-tight</code></td><td><code>1.1</code></td><td>All headings <code>h1</code>–<code>h6</code> receive it; <code>h4</code>–<code>h6</code> then override with <code>snug</code></td></tr>
-        <tr><td><code>--iv-leading-snug</code></td><td><code>1.25</code></td><td><code>h4</code>, <code>h5</code>, <code>h6</code>, <code>&lt;pre&gt;</code></td></tr>
-        <tr><td><code>--iv-leading-normal</code></td><td><code>1.5</code></td><td><code>.iv-root</code>, inherited by body text</td></tr>
-        <tr><td><code>--iv-leading-relaxed</code></td><td><code>1.65</code></td><td>Available for long-form columns; not applied by default</td></tr>
-        <tr><td><code>--iv-weight-normal</code></td><td><code>400</code></td><td>Body text, <code>iv-u-font-normal</code></td></tr>
-        <tr><td><code>--iv-weight-medium</code></td><td><code>500</code></td><td><code>iv-u-font-medium</code></td></tr>
-        <tr><td><code>--iv-weight-semibold</code></td><td><code>600</code></td><td><code>h3</code>–<code>h6</code>, <code>&lt;strong&gt;</code>, <code>&lt;b&gt;</code>, <code>iv-u-font-semibold</code></td></tr>
-        <tr><td><code>--iv-weight-bold</code></td><td><code>700</code></td><td><code>h1</code>, <code>h2</code>, <code>iv-u-font-bold</code></td></tr>
-        <tr><td><code>--iv-font-sans</code></td><td><code>system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code></td><td><code>.iv-root</code></td></tr>
-        <tr><td><code>--iv-font-mono</code></td><td><code>ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace</code></td><td><code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;samp&gt;</code>, <code>&lt;pre&gt;</code></td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Applied to</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-leading-tight</code></td><td><code>1.1</code></td><td>All headings <code>h1</code>–<code>h6</code> receive it; <code>h4</code>–<code>h6</code> then override with <code>snug</code></td></tr>
+          <tr><td><code>--iv-leading-snug</code></td><td><code>1.25</code></td><td><code>h4</code>, <code>h5</code>, <code>h6</code>, <code>&lt;pre&gt;</code></td></tr>
+          <tr><td><code>--iv-leading-normal</code></td><td><code>1.5</code></td><td><code>.iv-root</code>, inherited by body text</td></tr>
+          <tr><td><code>--iv-leading-relaxed</code></td><td><code>1.65</code></td><td>Available for long-form columns; not applied by default</td></tr>
+          <tr><td><code>--iv-weight-normal</code></td><td><code>400</code></td><td>Body text, <code>iv-u-font-normal</code></td></tr>
+          <tr><td><code>--iv-weight-medium</code></td><td><code>500</code></td><td><code>iv-u-font-medium</code></td></tr>
+          <tr><td><code>--iv-weight-semibold</code></td><td><code>600</code></td><td><code>h3</code>–<code>h6</code>, <code>&lt;strong&gt;</code>, <code>&lt;b&gt;</code>, <code>iv-u-font-semibold</code></td></tr>
+          <tr><td><code>--iv-weight-bold</code></td><td><code>700</code></td><td><code>h1</code>, <code>h2</code>, <code>iv-u-font-bold</code></td></tr>
+          <tr><td><code>--iv-font-sans</code></td><td><code>system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code></td><td><code>.iv-root</code></td></tr>
+          <tr><td><code>--iv-font-mono</code></td><td><code>ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace</code></td><td><code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;samp&gt;</code>, <code>&lt;pre&gt;</code></td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <h2>What .iv-root applies</h2>
     <p>Element styles live in <code>base.css</code> and every selector starts with <code>.iv-root</code>. Outside that scope iVOLT styles no element, which is what makes it safe to drop into an existing page.</p>
 
     <h3>Headings</h3>
-    <table>
-      <thead><tr><th>Element</th><th>Size</th><th>Weight</th><th>Line height</th></tr></thead>
-      <tbody>
-        <tr><td><code>h1</code></td><td><code>--iv-text-4xl</code></td><td>bold</td><td>tight</td></tr>
-        <tr><td><code>h2</code></td><td><code>--iv-text-3xl</code></td><td>bold</td><td>tight</td></tr>
-        <tr><td><code>h3</code></td><td><code>--iv-text-2xl</code></td><td>semibold</td><td>tight</td></tr>
-        <tr><td><code>h4</code></td><td><code>--iv-text-xl</code></td><td>semibold</td><td>snug</td></tr>
-        <tr><td><code>h5</code></td><td><code>--iv-text-lg</code></td><td>semibold</td><td>snug</td></tr>
-        <tr><td><code>h6</code></td><td><code>--iv-text-md</code></td><td>semibold</td><td>snug</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Element</th><th>Size</th><th>Weight</th><th>Line height</th></tr></thead>
+        <tbody>
+          <tr><td><code>h1</code></td><td><code>--iv-text-4xl</code></td><td>bold</td><td>tight</td></tr>
+          <tr><td><code>h2</code></td><td><code>--iv-text-3xl</code></td><td>bold</td><td>tight</td></tr>
+          <tr><td><code>h3</code></td><td><code>--iv-text-2xl</code></td><td>semibold</td><td>tight</td></tr>
+          <tr><td><code>h4</code></td><td><code>--iv-text-xl</code></td><td>semibold</td><td>snug</td></tr>
+          <tr><td><code>h5</code></td><td><code>--iv-text-lg</code></td><td>semibold</td><td>snug</td></tr>
+          <tr><td><code>h6</code></td><td><code>--iv-text-md</code></td><td>semibold</td><td>snug</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>All headings get <code>margin-block: 0</code> and <code>text-wrap: balance</code>. The zero margin is deliberate: vertical rhythm comes from a layout primitive, normally <code>iv-stack</code>, not from collapsing margins you have to fight. Size is presentation; choose the heading level by document structure and change its size with a utility or your own rule if you need to.</p>
 
     <h3>Flow content</h3>
@@ -94,16 +100,18 @@ import Base from "../../layouts/Base.astro";
 
     <h2>Text utilities</h2>
     <p>From the finite matrix. Only alignment has responsive prefixes (<code>sm md lg xl</code>); the size, weight and colour utilities do not, because a size that changes per breakpoint is normally the fluid heading scale in disguise.</p>
-    <table>
-      <thead><tr><th>Utility</th><th>Effect</th><th>Responsive</th></tr></thead>
-      <tbody>
-        <tr><td><code>iv-u-text-start|center|end</code></td><td>Logical text alignment, so it follows RTL</td><td>yes</td></tr>
-        <tr><td><code>iv-u-text-xs|sm|md|lg|xl|2xl</code></td><td>Sets <code>font-size</code> from the scale</td><td>no</td></tr>
-        <tr><td><code>iv-u-font-normal|medium|semibold|bold</code></td><td>Sets <code>font-weight</code></td><td>no</td></tr>
-        <tr><td><code>iv-u-text-muted</code></td><td><code>--iv-color-text-muted</code> — secondary text, never the only carrier of meaning</td><td>no</td></tr>
-        <tr><td><code>iv-u-truncate</code></td><td>One line with an ellipsis; keep the full text reachable elsewhere</td><td>no</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Utility</th><th>Effect</th><th>Responsive</th></tr></thead>
+        <tbody>
+          <tr><td><code>iv-u-text-start|center|end</code></td><td>Logical text alignment, so it follows RTL</td><td>yes</td></tr>
+          <tr><td><code>iv-u-text-xs|sm|md|lg|xl|2xl</code></td><td>Sets <code>font-size</code> from the scale</td><td>no</td></tr>
+          <tr><td><code>iv-u-font-normal|medium|semibold|bold</code></td><td>Sets <code>font-weight</code></td><td>no</td></tr>
+          <tr><td><code>iv-u-text-muted</code></td><td><code>--iv-color-text-muted</code> — secondary text, never the only carrier of meaning</td><td>no</td></tr>
+          <tr><td><code>iv-u-truncate</code></td><td>One line with an ellipsis; keep the full text reachable elsewhere</td><td>no</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Utilities are emitted with a doubled selector, specificity <code>(0,2,0)</code>, and loaded last, so they beat component modifiers in both the layered and the flat stylesheet. Anything outside the matrix does not exist in v0.1 — there is no arbitrary-value syntax and no class scanner.</p>
 
     <h2>Changing the typeface</h2>

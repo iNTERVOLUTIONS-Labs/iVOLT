@@ -6,22 +6,24 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Megamenu</h1>
     <p>A navigation bar where an item can open a wide panel: groups of links, cards with art and counts, and a bottom bar with actions. The server sends links and panels; without JavaScript the panels open on hover and focus on large screens and sit open inline on small ones. On <code>init</code> the toggles appear, hover becomes intentional (short open and close delays), the keyboard gets arrows and Escape, an overlay dims the page and closed panels become inert. Below the <code>staticFrom</code> breakpoint the panels turn into an accordion.</p>
-    <p><strong>CSS:</strong> <code>css/components/megamenu.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/megamenu</code> or <code>auto.js</code>. Added in v0.4.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/megamenu.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/megamenu</code> or <code>auto.js</code>. Added in v0.4.</p>
     <Fixture name="megamenu/basic" minHeight="34rem" />
     <h2>Full-width panel with glass</h2>
     <p><code>iv-megamenu--full</code> stretches the panel from edge to edge of the bar; add <code>iv-glass</code> to a panel to blur what sits behind it.</p>
     <Fixture name="megamenu/full" minHeight="34rem" />
     <h2>Options</h2>
-    <table>
-      <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-      <tbody>
-        <tr><td><code>hover</code></td><td><code>data-iv-hover</code></td><td><code>true</code></td><td>Open on intentional hover with fine pointers; <code>false</code> opens only on click and keyboard.</td></tr>
-        <tr><td><code>openDelay</code>, <code>closeDelay</code></td><td><code>data-iv-open-delay</code>, <code>data-iv-close-delay</code></td><td><code>120</code>, <code>200</code></td><td>Milliseconds before a hover opens or closes a panel.</td></tr>
-        <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code></td><td>Breakpoint from which panels float; below it they behave as an accordion.</td></tr>
-        <tr><td><code>overlay</code></td><td><code>data-iv-overlay</code></td><td><code>true</code></td><td>Dim the page behind an open panel.</td></tr>
-        <tr><td><code>closeOthers</code></td><td><code>data-iv-close-others</code></td><td><code>true</code></td><td>Opening an item closes the others.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>hover</code></td><td><code>data-iv-hover</code></td><td><code>true</code></td><td>Open on intentional hover with fine pointers; <code>false</code> opens only on click and keyboard.</td></tr>
+          <tr><td><code>openDelay</code>, <code>closeDelay</code></td><td><code>data-iv-open-delay</code>, <code>data-iv-close-delay</code></td><td><code>120</code>, <code>200</code></td><td>Milliseconds before a hover opens or closes a panel.</td></tr>
+          <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code></td><td>Breakpoint from which panels float; below it they behave as an accordion.</td></tr>
+          <tr><td><code>overlay</code></td><td><code>data-iv-overlay</code></td><td><code>true</code></td><td>Dim the page behind an open panel.</td></tr>
+          <tr><td><code>closeOthers</code></td><td><code>data-iv-close-others</code></td><td><code>true</code></td><td>Opening an item closes the others.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h2>Methods and events</h2>
     <p><code>open(itemOrIndex)</code>, <code>close()</code>, <code>toggle(item)</code>, <code>destroy()</code>; read <code>openItem</code>. Events on the root: <code>iv:open</code>/<code>iv:close</code> (cancelable) then <code>iv:opened</code>/<code>iv:closed</code>, with <code>detail.item</code> and a <code>reason</code>.</p>
     <h2>Keyboard and assistive technology</h2>

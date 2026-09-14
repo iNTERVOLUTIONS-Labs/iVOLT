@@ -8,19 +8,21 @@ import Base from "../../../layouts/Base.astro";
 
     <h2>Escala tipográfica</h2>
     <p>Ocho pasos. Los dos mayores son fluidos: interpolan con el ancho de la ventana mediante <code>clamp()</code>, así que el título de una página encoge en un móvil sin necesidad de media query.</p>
-    <table>
-      <thead><tr><th>Token</th><th>Valor</th><th>Lo usa</th></tr></thead>
-      <tbody>
-        <tr><td><code>--iv-text-xs</code></td><td><code>0.75rem</code></td><td><code>iv-u-text-xs</code>, letra pequeña en los componentes</td></tr>
-        <tr><td><code>--iv-text-sm</code></td><td><code>0.875rem</code></td><td><code>&lt;small&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;figcaption&gt;</code>, <code>&lt;kbd&gt;</code>, <code>iv-u-text-sm</code></td></tr>
-        <tr><td><code>--iv-text-md</code></td><td><code>1rem</code></td><td>Texto de cuerpo en <code>.iv-root</code>, <code>&lt;h6&gt;</code>, <code>iv-u-text-md</code></td></tr>
-        <tr><td><code>--iv-text-lg</code></td><td><code>1.125rem</code></td><td><code>&lt;h5&gt;</code>, <code>iv-u-text-lg</code></td></tr>
-        <tr><td><code>--iv-text-xl</code></td><td><code>1.25rem</code></td><td><code>&lt;h4&gt;</code>, <code>iv-u-text-xl</code></td></tr>
-        <tr><td><code>--iv-text-2xl</code></td><td><code>1.5rem</code></td><td><code>&lt;h3&gt;</code>, <code>iv-u-text-2xl</code></td></tr>
-        <tr><td><code>--iv-text-3xl</code></td><td><code>clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)</code></td><td><code>&lt;h2&gt;</code> — sin utilidad</td></tr>
-        <tr><td><code>--iv-text-4xl</code></td><td><code>clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)</code></td><td><code>&lt;h1&gt;</code> — sin utilidad</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Valor</th><th>Lo usa</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-text-xs</code></td><td><code>0.75rem</code></td><td><code>iv-u-text-xs</code>, letra pequeña en los componentes</td></tr>
+          <tr><td><code>--iv-text-sm</code></td><td><code>0.875rem</code></td><td><code>&lt;small&gt;</code>, <code>&lt;caption&gt;</code>, <code>&lt;figcaption&gt;</code>, <code>&lt;kbd&gt;</code>, <code>iv-u-text-sm</code></td></tr>
+          <tr><td><code>--iv-text-md</code></td><td><code>1rem</code></td><td>Texto de cuerpo en <code>.iv-root</code>, <code>&lt;h6&gt;</code>, <code>iv-u-text-md</code></td></tr>
+          <tr><td><code>--iv-text-lg</code></td><td><code>1.125rem</code></td><td><code>&lt;h5&gt;</code>, <code>iv-u-text-lg</code></td></tr>
+          <tr><td><code>--iv-text-xl</code></td><td><code>1.25rem</code></td><td><code>&lt;h4&gt;</code>, <code>iv-u-text-xl</code></td></tr>
+          <tr><td><code>--iv-text-2xl</code></td><td><code>1.5rem</code></td><td><code>&lt;h3&gt;</code>, <code>iv-u-text-2xl</code></td></tr>
+          <tr><td><code>--iv-text-3xl</code></td><td><code>clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)</code></td><td><code>&lt;h2&gt;</code> — sin utilidad</td></tr>
+          <tr><td><code>--iv-text-4xl</code></td><td><code>clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)</code></td><td><code>&lt;h1&gt;</code> — sin utilidad</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>La matriz de utilidades se detiene en <code>2xl</code> a propósito: los dos pasos fluidos pertenecen a los títulos de página, y una página no debería tener varios. Aplícalos con <code>&lt;h1&gt;</code> y <code>&lt;h2&gt;</code>, o leyendo el token directamente en tu propio CSS.</p>
 
     <h3>La escala, renderizada</h3>
@@ -35,37 +37,41 @@ import Base from "../../../layouts/Base.astro";
     </div>
 
     <h2>Interlineado, grosor y familia</h2>
-    <table>
-      <thead><tr><th>Token</th><th>Valor</th><th>Se aplica a</th></tr></thead>
-      <tbody>
-        <tr><td><code>--iv-leading-tight</code></td><td><code>1.1</code></td><td>Todos los títulos <code>h1</code>–<code>h6</code> lo reciben; <code>h4</code>–<code>h6</code> lo sobrescriben después con <code>snug</code></td></tr>
-        <tr><td><code>--iv-leading-snug</code></td><td><code>1.25</code></td><td><code>h4</code>, <code>h5</code>, <code>h6</code>, <code>&lt;pre&gt;</code></td></tr>
-        <tr><td><code>--iv-leading-normal</code></td><td><code>1.5</code></td><td><code>.iv-root</code>, heredado por el texto de cuerpo</td></tr>
-        <tr><td><code>--iv-leading-relaxed</code></td><td><code>1.65</code></td><td>Disponible para columnas de texto largo; no se aplica por defecto</td></tr>
-        <tr><td><code>--iv-weight-normal</code></td><td><code>400</code></td><td>Texto de cuerpo, <code>iv-u-font-normal</code></td></tr>
-        <tr><td><code>--iv-weight-medium</code></td><td><code>500</code></td><td><code>iv-u-font-medium</code></td></tr>
-        <tr><td><code>--iv-weight-semibold</code></td><td><code>600</code></td><td><code>h3</code>–<code>h6</code>, <code>&lt;strong&gt;</code>, <code>&lt;b&gt;</code>, <code>iv-u-font-semibold</code></td></tr>
-        <tr><td><code>--iv-weight-bold</code></td><td><code>700</code></td><td><code>h1</code>, <code>h2</code>, <code>iv-u-font-bold</code></td></tr>
-        <tr><td><code>--iv-font-sans</code></td><td><code>system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code></td><td><code>.iv-root</code></td></tr>
-        <tr><td><code>--iv-font-mono</code></td><td><code>ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace</code></td><td><code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;samp&gt;</code>, <code>&lt;pre&gt;</code></td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Valor</th><th>Se aplica a</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-leading-tight</code></td><td><code>1.1</code></td><td>Todos los títulos <code>h1</code>–<code>h6</code> lo reciben; <code>h4</code>–<code>h6</code> lo sobrescriben después con <code>snug</code></td></tr>
+          <tr><td><code>--iv-leading-snug</code></td><td><code>1.25</code></td><td><code>h4</code>, <code>h5</code>, <code>h6</code>, <code>&lt;pre&gt;</code></td></tr>
+          <tr><td><code>--iv-leading-normal</code></td><td><code>1.5</code></td><td><code>.iv-root</code>, heredado por el texto de cuerpo</td></tr>
+          <tr><td><code>--iv-leading-relaxed</code></td><td><code>1.65</code></td><td>Disponible para columnas de texto largo; no se aplica por defecto</td></tr>
+          <tr><td><code>--iv-weight-normal</code></td><td><code>400</code></td><td>Texto de cuerpo, <code>iv-u-font-normal</code></td></tr>
+          <tr><td><code>--iv-weight-medium</code></td><td><code>500</code></td><td><code>iv-u-font-medium</code></td></tr>
+          <tr><td><code>--iv-weight-semibold</code></td><td><code>600</code></td><td><code>h3</code>–<code>h6</code>, <code>&lt;strong&gt;</code>, <code>&lt;b&gt;</code>, <code>iv-u-font-semibold</code></td></tr>
+          <tr><td><code>--iv-weight-bold</code></td><td><code>700</code></td><td><code>h1</code>, <code>h2</code>, <code>iv-u-font-bold</code></td></tr>
+          <tr><td><code>--iv-font-sans</code></td><td><code>system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code></td><td><code>.iv-root</code></td></tr>
+          <tr><td><code>--iv-font-mono</code></td><td><code>ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace</code></td><td><code>&lt;code&gt;</code>, <code>&lt;kbd&gt;</code>, <code>&lt;samp&gt;</code>, <code>&lt;pre&gt;</code></td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <h2>Qué aplica .iv-root</h2>
     <p>Los estilos de elemento viven en <code>base.css</code> y todos los selectores empiezan por <code>.iv-root</code>. Fuera de ese ámbito, iVOLT no da estilo a ningún elemento, y eso es lo que hace seguro añadirlo a una página que ya existe.</p>
 
     <h3>Títulos</h3>
-    <table>
-      <thead><tr><th>Elemento</th><th>Tamaño</th><th>Grosor</th><th>Interlineado</th></tr></thead>
-      <tbody>
-        <tr><td><code>h1</code></td><td><code>--iv-text-4xl</code></td><td>bold</td><td>tight</td></tr>
-        <tr><td><code>h2</code></td><td><code>--iv-text-3xl</code></td><td>bold</td><td>tight</td></tr>
-        <tr><td><code>h3</code></td><td><code>--iv-text-2xl</code></td><td>semibold</td><td>tight</td></tr>
-        <tr><td><code>h4</code></td><td><code>--iv-text-xl</code></td><td>semibold</td><td>snug</td></tr>
-        <tr><td><code>h5</code></td><td><code>--iv-text-lg</code></td><td>semibold</td><td>snug</td></tr>
-        <tr><td><code>h6</code></td><td><code>--iv-text-md</code></td><td>semibold</td><td>snug</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Elemento</th><th>Tamaño</th><th>Grosor</th><th>Interlineado</th></tr></thead>
+        <tbody>
+          <tr><td><code>h1</code></td><td><code>--iv-text-4xl</code></td><td>bold</td><td>tight</td></tr>
+          <tr><td><code>h2</code></td><td><code>--iv-text-3xl</code></td><td>bold</td><td>tight</td></tr>
+          <tr><td><code>h3</code></td><td><code>--iv-text-2xl</code></td><td>semibold</td><td>tight</td></tr>
+          <tr><td><code>h4</code></td><td><code>--iv-text-xl</code></td><td>semibold</td><td>snug</td></tr>
+          <tr><td><code>h5</code></td><td><code>--iv-text-lg</code></td><td>semibold</td><td>snug</td></tr>
+          <tr><td><code>h6</code></td><td><code>--iv-text-md</code></td><td>semibold</td><td>snug</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Todos los títulos reciben <code>margin-block: 0</code> y <code>text-wrap: balance</code>. El margen cero es deliberado: el ritmo vertical sale de una primitiva de maquetación, normalmente <code>iv-stack</code>, y no de unos márgenes colapsados contra los que pelear. El tamaño es presentación; elige el nivel de título por la estructura del documento y cambia su tamaño con una utilidad o con una regla propia si lo necesitas.</p>
 
     <h3>Contenido de flujo</h3>
@@ -94,16 +100,18 @@ import Base from "../../../layouts/Base.astro";
 
     <h2>Utilidades de texto</h2>
     <p>Salen de la matriz finita. Solo la alineación tiene prefijos adaptables (<code>sm md lg xl</code>); las utilidades de tamaño, grosor y color no los tienen, porque un tamaño que cambia por punto de ruptura suele ser la escala fluida de títulos disfrazada.</p>
-    <table>
-      <thead><tr><th>Utilidad</th><th>Efecto</th><th>Adaptable</th></tr></thead>
-      <tbody>
-        <tr><td><code>iv-u-text-start|center|end</code></td><td>Alineación lógica del texto, así que sigue a RTL</td><td>sí</td></tr>
-        <tr><td><code>iv-u-text-xs|sm|md|lg|xl|2xl</code></td><td>Fija <code>font-size</code> desde la escala</td><td>no</td></tr>
-        <tr><td><code>iv-u-font-normal|medium|semibold|bold</code></td><td>Fija <code>font-weight</code></td><td>no</td></tr>
-        <tr><td><code>iv-u-text-muted</code></td><td><code>--iv-color-text-muted</code> — texto secundario, nunca el único portador de significado</td><td>no</td></tr>
-        <tr><td><code>iv-u-truncate</code></td><td>Una línea con puntos suspensivos; deja el texto completo accesible en otro sitio</td><td>no</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Utilidad</th><th>Efecto</th><th>Adaptable</th></tr></thead>
+        <tbody>
+          <tr><td><code>iv-u-text-start|center|end</code></td><td>Alineación lógica del texto, así que sigue a RTL</td><td>sí</td></tr>
+          <tr><td><code>iv-u-text-xs|sm|md|lg|xl|2xl</code></td><td>Fija <code>font-size</code> desde la escala</td><td>no</td></tr>
+          <tr><td><code>iv-u-font-normal|medium|semibold|bold</code></td><td>Fija <code>font-weight</code></td><td>no</td></tr>
+          <tr><td><code>iv-u-text-muted</code></td><td><code>--iv-color-text-muted</code> — texto secundario, nunca el único portador de significado</td><td>no</td></tr>
+          <tr><td><code>iv-u-truncate</code></td><td>Una línea con puntos suspensivos; deja el texto completo accesible en otro sitio</td><td>no</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>Las utilidades se emiten con el selector duplicado, especificidad <code>(0,2,0)</code>, y se cargan las últimas, así que ganan a los modificadores de componente tanto en la hoja en capas como en la plana. Lo que quede fuera de la matriz no existe en la v0.1: no hay sintaxis de valores arbitrarios ni escáner de clases.</p>
 
     <h2>Cambiar la tipografía</h2>

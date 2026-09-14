@@ -37,14 +37,16 @@ const cspHash = "sha256-" + createHash("sha256").update(themeSnippet).digest("ba
     <p>So layers order iVOLT internally and make it easy for you to override; they do not defend it. Say it out loud once and the debugging gets much shorter.</p>
 
     <h3>Choosing a strategy</h3>
-    <table>
-      <thead><tr><th>Your situation</th><th>Use</th><th>Why</th></tr></thead>
-      <tbody>
-        <tr><td>New page, you control the CSS</td><td><code>css/ivolt.css</code></td><td>Layered order, easy overrides from your own unlayered rules</td></tr>
-        <tr><td>Legacy stylesheet you cannot edit</td><td><code>css/ivolt.flat.css</code></td><td>No <code>@layer</code>: it competes by specificity and source order like any other sheet</td></tr>
-        <tr><td>Legacy stylesheet you can import</td><td><code>ivolt.css</code> + wrap the legacy sheet in a layer</td><td>Puts the old CSS under iVOLT's precedence without rewriting it</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Your situation</th><th>Use</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>New page, you control the CSS</td><td><code>css/ivolt.css</code></td><td>Layered order, easy overrides from your own unlayered rules</td></tr>
+          <tr><td>Legacy stylesheet you cannot edit</td><td><code>css/ivolt.flat.css</code></td><td>No <code>@layer</code>: it competes by specificity and source order like any other sheet</td></tr>
+          <tr><td>Legacy stylesheet you can import</td><td><code>ivolt.css</code> + wrap the legacy sheet in a layer</td><td>Puts the old CSS under iVOLT's precedence without rewriting it</td></tr>
+        </tbody>
+      </table>
+    </div>
     <p>The wrapping trick, with the layer order declared before iVOLT's so the legacy rules sit underneath:</p>
 <pre><code>@layer legacy, iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides;
 @import url("legacy-theme.css") layer(legacy);

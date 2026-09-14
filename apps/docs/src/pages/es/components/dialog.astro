@@ -6,7 +6,7 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Diálogo (dialog)</h1>
     <p>Un modal construido sobre el elemento nativo <code>&lt;dialog&gt;</code>. El navegador aporta la capa superior, el fondo inerte y Escape; iVOLT añade la colocación del foco, su devolución, el cierre al pulsar el fondo, los disparadores declarativos y los eventos cancelables.</p>
-    <p><strong>CSS:</strong> <code>css/components/dialog.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/dialog</code> o <code>auto.js</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/dialog.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/dialog</code> o <code>auto.js</code>.</p>
     <Fixture name="dialog/basic" />
     <h2>Marcado</h2>
     <p>Dale al diálogo <code>data-iv-component="dialog"</code>, un <code>id</code> y un nombre accesible (<code>aria-labelledby</code>). Los disparadores usan <code>data-iv-open="id"</code>; cualquier elemento interior con <code>data-iv-close</code> lo cierra. Un <code>&lt;form method="dialog"&gt;</code> hace que los botones cierren el diálogo con su <code>value</code> como valor de retorno.</p>
@@ -16,15 +16,17 @@ const dialog = Dialog.getOrCreate(document.getElementById("signup"), &#123; clos
 dialog.open(&#123; trigger: button &#125;);
 dialog.element.addEventListener("iv:close", (e) => &#123; if (e.detail.reason === "escape" && dirty) e.preventDefault(); &#125;);</code></pre>
     <h3>Opciones (defaults &lt; <code>data-iv-*</code> &lt; JS)</h3>
-    <table>
-      <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-      <tbody>
-        <tr><td><code>closeOnBackdrop</code></td><td><code>data-iv-close-on-backdrop</code></td><td><code>true</code></td><td>Pulsar fuera del panel cierra.</td></tr>
-        <tr><td><code>closeOnEscape</code></td><td><code>data-iv-close-on-escape</code></td><td><code>true</code></td><td>Escape cierra (el cancel nativo se intercepta siempre para que el evento siga siendo cancelable).</td></tr>
-        <tr><td><code>initialFocus</code></td><td><code>data-iv-initial-focus</code></td><td><code>null</code></td><td>Selector que recibe el foco al abrir; si no, el primer elemento enfocable y, en su defecto, el propio diálogo.</td></tr>
-        <tr><td><code>returnFocus</code></td><td><code>data-iv-return-focus</code></td><td><code>true</code></td><td>El foco vuelve al disparador al cerrar.</td></tr>
-      </tbody>
-    </table>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>closeOnBackdrop</code></td><td><code>data-iv-close-on-backdrop</code></td><td><code>true</code></td><td>Pulsar fuera del panel cierra.</td></tr>
+          <tr><td><code>closeOnEscape</code></td><td><code>data-iv-close-on-escape</code></td><td><code>true</code></td><td>Escape cierra (el cancel nativo se intercepta siempre para que el evento siga siendo cancelable).</td></tr>
+          <tr><td><code>initialFocus</code></td><td><code>data-iv-initial-focus</code></td><td><code>null</code></td><td>Selector que recibe el foco al abrir; si no, el primer elemento enfocable y, en su defecto, el propio diálogo.</td></tr>
+          <tr><td><code>returnFocus</code></td><td><code>data-iv-return-focus</code></td><td><code>true</code></td><td>El foco vuelve al disparador al cerrar.</td></tr>
+        </tbody>
+      </table>
+    </div>
     <h3>Métodos y eventos</h3>
     <p><code>open(&#123; trigger &#125;)</code>, <code>close(reason, returnValue)</code>, <code>toggle()</code>, <code>destroy()</code>, <code>isOpen</code>, <code>returnValue</code>. Los eventos se propagan desde el elemento del diálogo: <code>iv:open</code> e <code>iv:close</code> son cancelables; después llegan <code>iv:opened</code> e <code>iv:closed</code>. <code>detail.reason</code> es uno de <code>trigger</code>, <code>escape</code>, <code>backdrop</code>, <code>form</code>, <code>api</code> o <code>external</code>.</p>
     <h2>Teclado</h2>
