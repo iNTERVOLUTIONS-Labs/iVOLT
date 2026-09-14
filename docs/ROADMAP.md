@@ -51,3 +51,14 @@ Lo que más encarece: repetir comandos sin diagnóstico, enviar contexto entero 
 | P3 | Compilador de utilidades opcional / purga | valores arbitrarios sin escáner obligatorio |
 | P3 | CLI generadora de starters | conveniencia |
 | P3 | Data grid virtualizado, editor rico, drag and drop, gráficos | dominio propio cada uno |
+
+## 4. Ciclo v0.2 (abierto 2026-09-14)
+
+Tras cerrar v0.1 (fases 0–4) y el rediseño de la web (ADR-027), el trabajo continúa por prioridad del backlog. Orden decidido:
+
+| Orden | Elemento | Estado | Notas |
+|---|---|---|---|
+| 1 | Combobox/autocomplete accesible | en curso | contrato en `API_CONTRACT.md` §8.3; fallback nativo `<datalist>`; un implementador Opus, docs y pruebas del integrador |
+| 2 | Estructura i18n de docs y traducción al español | pendiente | cadenas ya en `apps/docs/src/i18n/en.js`; páginas `src/pages/es/` |
+| 3 | Lector de pantalla (NVDA, VoiceOver) | bloqueado en este entorno | lista en `A11Y_REVIEW.md` §6, requiere una persona con AT |
+| 4 | Data table con ordenación y filtro | pendiente | sin virtualización |
