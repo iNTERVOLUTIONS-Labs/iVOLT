@@ -47,6 +47,10 @@ import Fixture from "../../../components/Fixture.astro";
     <p>La cabecera es una región <code>&lt;header&gt;</code> y los enlaces viven en un <code>&lt;nav&gt;</code> con su propia etiqueta. La hamburguesa es un botón de verdad con nombre para lectores de pantalla, <code>aria-expanded</code> y <code>aria-controls</code>; Enter y Espacio funcionan sobre ella, Escape cierra el panel y devuelve el foco al botón, y Tab recorre el panel abierto en el orden del documento. La página actual lleva <code>aria-current="page"</code>. No se usan roles de menú: esto son enlaces, no un menú. Cruzar el punto de ruptura hacia arriba cierra el panel y devuelve el mando a la barra.</p>
     <h2>Sin JavaScript</h2>
     <p>Todo sigue al alcance. Por encima de <code>collapseBelow</code> el panel es una barra en línea con la marca; por debajo llega abierto y apilado, y la hamburguesa se queda <code>hidden</code> porque no tendría nada que alternar. El plegado solo ocurre bajo <code>[data-iv-js]</code>, así que un script que no cargue no puede esconder un menú. La cabecera pegajosa la hace el CSS y tampoco necesita script; solo lo necesitan condensarse, retirarse al bajar y el panel plegado.</p>
+    <div class="docs-note">
+      <span class="docs-note__title">Plegar sin salto de maqueta</span>
+      <p>El panel se sirve abierto e <code>init</code> lo pliega, lo que desplaza toda la página hacia abajo en un móvil cuando arranca el script. Para plegarlo desde el primer pintado, marca la raíz antes de la hoja con una línea en <code>&lt;head&gt;</code>: <code>&lt;script&gt;document.documentElement.setAttribute("data-iv-js", "")&lt;/script&gt;</code>. Por debajo de <code>lg</code> el panel arranca plegado y el toggle aparece cuando <code>init</code> lo muestra; desde <code>lg</code> la barra va en línea. Tan pronto solo se conoce el breakpoint por defecto. Si el script pudiera no cargar, no pongas la marca: un panel plegado sin toggle es peor que un salto. La receta showcase la usa.</p>
+    </div>
     <h2>Tokens y locales</h2>
     <div class="docs-scroller">
       <table>

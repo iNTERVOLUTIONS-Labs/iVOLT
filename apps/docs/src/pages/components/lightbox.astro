@@ -1,0 +1,85 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Gallery and lightbox" description="iVOLT lightbox: a gallery of links that opens a full-screen viewer built on the dialog, with captions, a counter, zoom, keyboard and swipe, and every image still reachable without JavaScript.">
+  <article class="docs-prose">
+    <h1>Gallery and lightbox</h1>
+    <p>A gallery is a list of links to images. That is the whole markup, and that is what the server sends: click a tile without JavaScript and the browser shows the full photograph, because the tile is an <code>&lt;a href&gt;</code> pointing at it. On <code>init</code> the component builds one viewer per gallery, hands it to <a href="/components/dialog">Dialog</a> for the top layer, the focus trap, Escape and the return of focus, and from then on a click opens the image in place with its caption, a counter, arrows, zoom and a swipe.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/lightbox.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/lightbox</code> or <code>auto.js</code>. Added in v0.7.</p>
+    <h2>A gallery of photographs</h2>
+    <p>The six tiles below are real photographs served from this site, each linking to its own file. Open one: the viewer takes over the window, the caption names the photographer, and the arrows walk the set. Press Escape and focus lands back on the tile you came from.</p>
+    <Fixture name="lightbox/photos" title="Photographs, with the viewer" />
+    <p class="docs-photo-credit">Photographs by Andrew Ridley, Wolfgang Lutz, Christian Joudrey, Joseph Barrientos, veeterzy and Jay Ruzesky on Unsplash, used here as documentation assets. The npm package ships no bitmaps: the fixtures below draw their artwork as inline SVG.</p>
+    <h2>The packaged fixture</h2>
+    <p>The same gallery with the artwork the package carries. Every caption says what it is, and the tiles link to the drawing itself rather than to a photograph.</p>
+    <Fixture name="lightbox/basic" title="Gallery and viewer" />
+    <div class="docs-note">
+      <span class="docs-note__title">Why this fixture cannot prove the no-script case</span>
+      <p class="iv-u-m-0">Its tiles link to <code>data:</code> URLs, and browsers refuse a top-level navigation to <code>data:</code>. The gallery of photographs above is the honest demonstration: turn JavaScript off there and every tile still opens its image.</p>
+    </div>
+    <h2>Masonry and strip</h2>
+    <p><code>iv-gallery--masonry</code> flows the tiles through CSS columns so each image keeps its own height; <code>iv-gallery--strip</code> lays them out as a single snapping row. A strip is a scroll region, so the author serves it <code>tabindex="0"</code>, a role and a label — the same contract the horizontal timeline asks for.</p>
+    <Fixture name="lightbox/masonry" title="Masonry columns" />
+    <Fixture name="lightbox/strip" title="A snapping strip" />
+    <h2>Options</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>loop</code></td><td><code>data-iv-loop</code></td><td><code>true</code></td><td>The last image steps to the first and back.</td></tr>
+          <tr><td><code>zoom</code></td><td><code>data-iv-zoom</code></td><td><code>true</code></td><td>Offer the zoom button and the <kbd>Z</kbd> key.</td></tr>
+          <tr><td><code>swipe</code></td><td><code>data-iv-swipe</code></td><td><code>true</code></td><td>A horizontal drag changes image, at the same threshold as the carousel.</td></tr>
+          <tr><td><code>preload</code></td><td><code>data-iv-preload</code></td><td><code>1</code></td><td>How many neighbours on each side are fetched ahead.</td></tr>
+          <tr><td><code>counter</code></td><td><code>data-iv-counter</code></td><td><code>true</code></td><td>Show “3 / 12” in a polite live region.</td></tr>
+          <tr><td><code>captions</code></td><td><code>data-iv-captions</code></td><td><code>true</code></td><td>Render <code>data-iv-caption</code> as the <code>&lt;figcaption&gt;</code> of the stage.</td></tr>
+          <tr><td><code>galleryLabel</code></td><td><code>data-iv-gallery-label</code></td><td><code>Image viewer</code></td><td>Accessible name of the generated dialog.</td></tr>
+          <tr><td><code>closeText</code>, <code>prevText</code>, <code>nextText</code>, <code>zoomText</code></td><td><code>data-iv-close-text</code>…</td><td><code>Close</code>, <code>Previous</code>, <code>Next</code>, <code>Zoom</code></td><td>Names of the four buttons. Translate them, do not remove them.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Methods and events</h2>
+    <p><code>open(index)</code>, <code>close()</code>, <code>next()</code>, <code>prev()</code>, <code>go(index)</code>, <code>zoom(on?)</code>, <code>destroy()</code>; read <code>index</code>, <code>isOpen</code>, <code>items</code>, <code>zoomed</code> and <code>dialog</code>. <code>destroy()</code> removes the generated dialog and every listener, and the gallery goes back to being a list of links.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Event</th><th>When</th><th><code>detail</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>iv:open</code> → <code>iv:opened</code></td><td>the viewer opens; the first is cancelable</td><td><code>index</code>, <code>reason</code></td></tr>
+          <tr><td><code>iv:close</code> → <code>iv:closed</code></td><td>the viewer closes</td><td><code>index</code>, <code>reason</code>: <code>escape</code>, <code>backdrop</code>, <code>trigger</code> or <code>api</code></td></tr>
+          <tr><td><code>iv:change</code> → <code>iv:changed</code></td><td>another image takes the stage; the first is cancelable</td><td><code>index</code>, <code>previousIndex</code>, <code>reason</code>: <code>next</code>, <code>prev</code>, <code>keyboard</code>, <code>swipe</code> or <code>api</code></td></tr>
+          <tr><td><code>iv:zoom</code></td><td>the stage enters or leaves the zoom</td><td><code>zoomed</code>, <code>index</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>All of them fire on the gallery root, not on the generated dialog, so one listener covers a gallery whatever the viewer does.</p>
+    <h2>Keyboard and assistive technology</h2>
+    <p>Tiles are links: Tab reaches them and Enter opens the viewer. Inside it, <kbd>Esc</kbd> closes, <kbd>←</kbd> and <kbd>→</kbd> change image, <kbd>Home</kbd> and <kbd>End</kbd> jump to the ends and <kbd>Z</kbd> toggles the zoom. The dialog carries a name, the four buttons carry names, the counter lives in <code>aria-live="polite"</code> and the caption is a real <code>&lt;figcaption&gt;</code>. The image on stage keeps the <code>alt</code> of the tile that opened it, so nothing is described twice and nothing is left undescribed.</p>
+    <p>Zoomed, the stage becomes a focusable scroll region: it takes <code>tabindex="0"</code> and hands the arrow keys back to the browser so they pan the enlarged photograph, which is what a keyboard user needs there. Image changes wait until the zoom is off. The page behind never scrolls; only the stage does.</p>
+    <h2>Without JavaScript</h2>
+    <p>The gallery is complete. The grid, the masonry columns, the strip, the hover scale and the focus ring are CSS; the tiles are links to full images. Nothing is hidden behind the script, and nothing about the page depends on the viewer existing — it is an upgrade to a set of links that already worked.</p>
+    <h2>Tokens and locals</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-gallery-min</code></td><td><code>14rem</code></td><td>Narrowest a tile may get before the grid drops a column.</td></tr>
+          <tr><td><code>--iv-gallery-gap</code></td><td><code>var(--iv-space-3)</code></td><td>Space between tiles.</td></tr>
+          <tr><td><code>--iv-gallery-ratio</code></td><td><code>3 / 2</code></td><td>Aspect ratio of a tile in the grid and in the strip.</td></tr>
+          <tr><td><code>--iv-gallery-radius</code></td><td><code>var(--iv-radius-lg)</code></td><td>Corner of a tile.</td></tr>
+          <tr><td><code>--iv-gallery-scrim</code></td><td>veil token</td><td>Darkness of the veil that carries the enlarge icon.</td></tr>
+          <tr><td><code>--iv-lightbox-chip-bg</code>, <code>-border</code>, <code>-highlight</code>, <code>-text</code></td><td>anchored to the palette</td><td>The chips of the viewer: close, arrows, zoom, counter and caption.</td></tr>
+          <tr><td><code>--iv-lightbox-icon-size</code>, <code>-stroke</code></td><td>icon defaults</td><td>Size and weight of the chevrons and the glyphs.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The chips do not take the glass of the current theme: they are anchored to the palette so the viewer is a dark room in light mode as well as in dark, and the buttons keep their contrast over any photograph. The backdrop is mixed from the darkest neutral at 92&nbsp;% with literal fallbacks, because not every engine inherits custom properties into <code>::backdrop</code>. Under reduced motion the crossfade and the entry scale are dropped; the viewer still opens, changes and closes.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>Linking the tile to the page instead of the image, or to <code>#</code>. The link is the no-script path; point it at the full file.</li>
+      <li>Serving the thumbnail as the full image. The tile can be small and the <code>href</code> large; that is the point of the pair.</li>
+      <li>Repeating the caption in the <code>alt</code>. The <code>alt</code> describes the picture, the caption credits and comments it.</li>
+      <li>A strip without <code>tabindex="0"</code>, a role and a label: a scroll region a keyboard cannot reach.</li>
+      <li>Expecting one viewer for two galleries. Each gallery builds its own; the same image may appear in both.</li>
+    </ul>
+  </article>
+</Base>

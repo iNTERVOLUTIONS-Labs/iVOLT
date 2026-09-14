@@ -4,17 +4,18 @@ const recipes = [
   { slug: "landing", title: "Business landing", text: "Hero, benefits, example pricing, an FAQ accordion and a contact dialog.", uses: ["container", "grid", "card", "button", "disclosure", "dialog"] },
   { slug: "catalog", title: "Editorial catalogue", text: "Card grid with working filters and sorting, plus a detail view. Labelled placeholder covers.", uses: ["card", "badge", "breadcrumb", "pagination", "tabs"] },
   { slug: "admin", title: "Admin panel", text: "Sidebar drawer, KPIs, a responsive table, forms, alerts, progress and toasts. Fictional data, no backend.", uses: ["drawer", "table", "form", "alert", "progress", "toast"] },
+  { slug: "showcase", title: "Product showcase", text: "A full product page: transparent navbar over a cinematic hero with parallax, a marquee, counted figures, a photo gallery with the viewer, a sticky deck, a three-step contact wizard that sends nothing, and the real roadmap.", uses: ["navbar", "hero", "parallax", "marquee", "countup", "lightbox", "stepper", "timeline"] },
 ];
 ---
-<Base title="Examples" description="Three complete recipes built only with iVOLT: a business landing page, an editorial catalogue and a static admin panel. Open them, download them as a zip or copy the folders.">
+<Base title="Examples" description="Four complete recipes built only with iVOLT: a business landing page, an editorial catalogue, a static admin panel and a product showcase. Open them, download them as a zip or copy the folders.">
   <article class="docs-prose">
     <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
       <div class="iv-hero__media"><img src="/photos/p1059.jpg" width="1280" height="800" alt="" fetchpriority="high" decoding="async"></div>
       <div class="iv-hero__scrim"></div>
       <div class="iv-hero__content">
-        <p class="iv-hero__kicker">Three pages · one package · no build step</p>
+        <p class="iv-hero__kicker">Four pages · one package · no build step</p>
         <h1 class="iv-hero__title" id="examples-title">Examples</h1>
-        <p class="iv-hero__lead">Three complete pages that share the framework but not the composition. Each recipe is a standalone HTML file linking the prebuilt assets from a sibling <code>ivolt/</code> folder, exactly like the plain HTML starter.</p>
+        <p class="iv-hero__lead">Four complete pages that share the framework but not the composition. Each recipe is a standalone HTML file linking the prebuilt assets from a sibling <code>ivolt/</code> folder, exactly like the plain HTML starter.</p>
         <div class="iv-hero__actions">
           <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/landing/index.html">Open the landing recipe</a>
           <a class="iv-button iv-button--secondary" href="#downloads">Downloads</a>
@@ -23,7 +24,7 @@ const recipes = [
     </section>
     <p class="docs-photo-credit">Photograph by Clark Street Mercantile on Unsplash. Data and forms in the recipes are demonstrations: nothing is sent anywhere.</p>
 
-    <h2>The three recipes</h2>
+    <h2>The four recipes</h2>
     <p>Open one in a new page to read the source, or take the zip and work offline. They are built from the same fixtures as this documentation, so they cannot drift from the package.</p>
     <div class="docs-cards">
       {recipes.map((r, i) => (

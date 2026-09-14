@@ -2,13 +2,16 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const DOCS = "http://127.0.0.1:4321";
-const recipes = ["landing", "catalog", "admin"];
+const recipes = ["landing", "catalog", "admin", "showcase"];
 
 for (const r of recipes) {
   test(`recipe ${r}: no console errors, no overflow, no serious axe findings`, async ({ page }) => {
     const errors = [];
     page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
     page.on("pageerror", (e) => errors.push(e.message));
+    // Entrance animations (hero actions rising, text reveals) fade text in over time and axe folds
+    // element opacity into the foreground colour; the audited state is the settled one (ADR-039).
+    await page.emulateMedia({ reducedMotion: "reduce" });
     for (const [w, h] of [[390, 844], [1366, 768]]) {
       await page.setViewportSize({ width: w, height: h });
       await page.goto(`${DOCS}/examples/${r}/index.html`);

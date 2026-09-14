@@ -115,7 +115,7 @@
   cursor: pointer;
 }
 
-:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible]) .iv-navbar__toggle {
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible=""]) .iv-navbar__toggle {
   display: inline-flex;
 }
 
@@ -309,7 +309,7 @@
  * what makes `collapseBelow` other than `lg` behave as documented.
  */
 
-:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible]) .iv-navbar__panel {
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible=""]) .iv-navbar__panel {
   flex-direction: column;
   flex-basis: 100%;
   align-items: stretch;
@@ -321,16 +321,16 @@
   border-block-start: var(--iv-border-width) solid var(--iv-color-border);
 }
 
-:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible]) .iv-navbar__links {
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible=""]) .iv-navbar__links {
   flex-direction: column;
   align-items: stretch;
 }
 
-:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible]:not([data-iv-open])) .iv-navbar__panel {
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible=""]:not([data-iv-open])) .iv-navbar__panel {
   display: none;
 }
 
-:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible][data-iv-open]) .iv-navbar__panel {
+:where(:root[data-iv-js] .iv-navbar[data-iv-collapsible=""][data-iv-open]) .iv-navbar__panel {
   animation: iv-navbar-panel-in var(--iv-motion-slow) var(--iv-ease-out);
 }
 
@@ -338,6 +338,24 @@
   from {
     opacity: 0;
     transform: translateY(-6px);
+  }
+}
+
+/* Before `init` runs, nothing says whether the script will fold the panel, so
+   the served state is the open one and folding later moves the whole page
+   (a layout shift). A root marked `data-iv-js` from an inline script in
+   <head> is that signal: below the default breakpoint the panel is folded
+   from the first paint (the toggle stays served `hidden` until `init` shows
+   it), and from `lg` up the bar is inline. Only the default breakpoint is
+   known this early; `init` then writes `data-iv-collapsible` ("" or "false")
+   and the rules above take over (API_CONTRACT §8.16, ADR-042). */
+:where(:root[data-iv-js] .iv-navbar:not([data-iv-collapsible]):not([data-iv-open])) .iv-navbar__panel {
+  display: none;
+}
+
+@media (--iv-lg) {
+  :where(:root[data-iv-js] .iv-navbar:not([data-iv-collapsible]):not([data-iv-open])) .iv-navbar__panel {
+    display: flex;
   }
 }
 
@@ -457,7 +475,7 @@
   /* The panel appears at once, with no travel. `[data-iv-hidden]` keeps its
      translation: it is the state itself, not decoration, and removing it would
      leave `hideOnScroll` doing nothing. */
-  :where(:root[data-iv-js] .iv-navbar[data-iv-collapsible][data-iv-open]) .iv-navbar__panel {
+  :where(:root[data-iv-js] .iv-navbar[data-iv-collapsible=""][data-iv-open]) .iv-navbar__panel {
     animation: none;
   }
 }

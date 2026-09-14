@@ -60,7 +60,8 @@ test.describe("Navbar", () => {
     // Sticky: the header is still at the top of the viewport after scrolling.
     expect(short.y).toBeLessThanOrEqual(1);
 
-    await page.mouse.wheel(0, -600);
+    // A wheel step back does not always reach the top in WebKit; the state is about the position.
+    await page.evaluate(() => window.scrollTo(0, 0));
     await expect(header).not.toHaveAttribute("data-iv-condensed", "");
   });
 
@@ -179,6 +180,24 @@ test.describe("Navbar", () => {
     expect(panel.y).toBeGreaterThanOrEqual(header.y + header.height - 1);
     expect(panel.x).toBeGreaterThanOrEqual(0);
     expect(panel.x + panel.width).toBeLessThanOrEqual(1200);
+  });
+
+  test("a root marked data-iv-js before init folds the panel from the first paint below lg and keeps the bar above it", async ({ page }) => {
+    // The marker without the script is exactly the state between the first paint and `init`.
+    // Init scripts run before <html> exists, so the marker waits for it.
+    await page.addInitScript(() => {
+      const mark = () => document.documentElement && (document.documentElement.setAttribute("data-iv-js", ""), true);
+      if (!mark()) new MutationObserver((_, o) => { if (mark()) o.disconnect(); }).observe(document, { childList: true });
+    });
+    await page.setViewportSize({ width: 390, height: 800 });
+    await page.goto("/fixture/navbar/basic?nojs=1");
+    await expect(page.locator(".iv-navbar__panel")).toBeHidden();
+    await expect(page.locator(".iv-navbar__toggle")).toBeHidden();
+    const bar = await page.locator(".iv-navbar").boundingBox();
+    expect(bar.height).toBeLessThan(120);
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await expect(page.locator(".iv-navbar__panel")).toBeVisible();
+    await expect(page.locator(".iv-navbar__link").first()).toBeVisible();
   });
 
   test("without JavaScript the panel is served open", async ({ page }) => {

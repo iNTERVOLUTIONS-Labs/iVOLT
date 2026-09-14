@@ -21,7 +21,16 @@ const id = `fx-${name.replace(/\W+/g, "-")}`;
     <button class="iv-button iv-button--secondary iv-button--sm docs-copy" type="button" data-copy-target={`${id}-code`} aria-describedby={`${id}-status`}>{t.copy}</button>
     <span class="iv-u-sr-only" id={`${id}-status`} role="status" aria-live="polite"></span>
   </figcaption>
-  <div class="docs-fixture__preview" style={[minHeight && `min-height:${minHeight}`, viewport && `--docs-fixture-port:${viewport}`].filter(Boolean).join(";") || undefined} set:html={html}></div>
+  <!-- With a viewport the preview is a scroll port, so it has to be reachable from the keyboard
+       and carry a name: a scrollable region that only a pointer can move fails WCAG 2.1.1. -->
+  <div
+    class="docs-fixture__preview"
+    style={[minHeight && `min-height:${minHeight}`, viewport && `--docs-fixture-port:${viewport}`].filter(Boolean).join(";") || undefined}
+    tabindex={viewport ? "0" : undefined}
+    role={viewport ? "group" : undefined}
+    aria-label={viewport ? t.fixturePort(title) : undefined}
+    set:html={html}
+  ></div>
   <div class="docs-fixture__code">
     <pre tabindex="0" aria-label={t.fixtureHtml(title)}><code id={`${id}-code`}>{html}</code></pre>
   </div>

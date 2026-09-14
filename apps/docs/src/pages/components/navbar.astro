@@ -47,6 +47,10 @@ import Fixture from "../../components/Fixture.astro";
     <p>The header is a <code>&lt;header&gt;</code> landmark and the links live in a <code>&lt;nav&gt;</code> with its own label. The burger is a real button with a name for screen readers, <code>aria-expanded</code> and <code>aria-controls</code>; Enter and Space work on it, Escape closes the panel and returns focus to the burger, and Tab walks the open panel in document order. The current page carries <code>aria-current="page"</code>. No menu roles are used: these are links, not a menu. Crossing the breakpoint upwards closes the panel and hands the layout back to the bar.</p>
     <h2>Without JavaScript</h2>
     <p>Everything is reachable. Above <code>collapseBelow</code> the panel is a bar in line with the brand; below it the panel is served open and stacked, and the burger stays <code>hidden</code> because it would have nothing to toggle. Folding only happens under <code>[data-iv-js]</code>, so a script that never loads cannot hide a menu. A sticky header is styled by CSS and needs no script either; only condensing, hiding on scroll and the folded panel do.</p>
+    <div class="docs-note">
+      <span class="docs-note__title">Folding without a layout shift</span>
+      <p>The panel is served open and <code>init</code> folds it, which moves the whole page down on a phone once the script runs. To fold from the first paint, mark the root before the stylesheet with one inline line in <code>&lt;head&gt;</code>: <code>&lt;script&gt;document.documentElement.setAttribute("data-iv-js", "")&lt;/script&gt;</code>. Below <code>lg</code> the panel then starts folded and the toggle appears when <code>init</code> shows it; from <code>lg</code> up the bar is inline. Only the default breakpoint is known that early. If the script could fail to load, leave the marker out: a folded panel without its toggle is worse than a shift. The showcase recipe uses it.</p>
+    </div>
     <h2>Tokens and locals</h2>
     <div class="docs-scroller">
       <table>

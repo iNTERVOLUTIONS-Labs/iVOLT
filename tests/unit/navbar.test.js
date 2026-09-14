@@ -136,7 +136,7 @@ describe("Navbar", () => {
   it("does not mark the header collapsible above the breakpoint", () => {
     installMatchMedia({ wide: true });
     const navbar = setup();
-    expect(byId("nav").hasAttribute("data-iv-collapsible")).toBe(false);
+    expect(byId("nav").getAttribute("data-iv-collapsible")).toBe("false");
     navbar.open();
     expect(navbar.isOpen).toBe(false);
     expect(byId("nav").hasAttribute("data-iv-open")).toBe(false);
@@ -218,7 +218,7 @@ describe("Navbar", () => {
     media.emitWide(true);
     expect(navbar.isOpen).toBe(false);
     expect(reasons).toEqual(["viewport"]);
-    expect(byId("nav").hasAttribute("data-iv-collapsible")).toBe(false);
+    expect(byId("nav").getAttribute("data-iv-collapsible")).toBe("false");
     media.emitWide(false);
     expect(byId("nav").getAttribute("data-iv-collapsible")).toBe("");
   });

@@ -4,17 +4,18 @@ const recipes = [
   { slug: "landing", title: "Landing de empresa", text: "Portada, beneficios, precios de ejemplo, preguntas frecuentes y un diálogo de contacto.", uses: ["container", "grid", "card", "button", "disclosure", "dialog"] },
   { slug: "catalog", title: "Catálogo editorial", text: "Rejilla de tarjetas con filtros y ordenación que funcionan, más una vista de detalle. Portadas de marcador de posición etiquetadas.", uses: ["card", "badge", "breadcrumb", "pagination", "tabs"] },
   { slug: "admin", title: "Panel de administración", text: "Panel lateral, indicadores, tabla adaptable, formularios, alertas, progreso y avisos. Datos ficticios, sin servidor.", uses: ["drawer", "table", "form", "alert", "progress", "toast"] },
+  { slug: "showcase", title: "Escaparate de producto", text: "Una página de producto completa: barra transparente sobre un hero cinematográfico con parallax, marquesina, cifras que cuentan, galería de fotos con visor, baraja pegajosa, contacto en tres pasos que no envía nada y la hoja de ruta real.", uses: ["navbar", "hero", "parallax", "marquee", "countup", "lightbox", "stepper", "timeline"] },
 ];
 ---
-<Base lang="es" title="Ejemplos" description="Tres recetas completas hechas solo con iVOLT: una landing de empresa, un catálogo editorial y un panel de administración estático. Ábrelas, descárgalas en zip o copia las carpetas.">
+<Base lang="es" title="Ejemplos" description="Cuatro recetas completas hechas solo con iVOLT: una landing de empresa, un catálogo editorial, un panel de administración estático y un escaparate de producto. Ábrelas, descárgalas en zip o copia las carpetas.">
   <article class="docs-prose">
     <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
       <div class="iv-hero__media"><img src="/photos/p1059.jpg" width="1280" height="800" alt="" fetchpriority="high" decoding="async"></div>
       <div class="iv-hero__scrim"></div>
       <div class="iv-hero__content">
-        <p class="iv-hero__kicker">Tres páginas · un paquete · sin paso de compilación</p>
+        <p class="iv-hero__kicker">Cuatro páginas · un paquete · sin paso de compilación</p>
         <h1 class="iv-hero__title" id="examples-title">Ejemplos</h1>
-        <p class="iv-hero__lead">Tres páginas completas que comparten el framework pero no la composición. Cada receta es un archivo HTML independiente que enlaza los archivos ya compilados desde una carpeta <code>ivolt/</code> hermana, igual que la plantilla de HTML plano.</p>
+        <p class="iv-hero__lead">Cuatro páginas completas que comparten el framework pero no la composición. Cada receta es un archivo HTML independiente que enlaza los archivos ya compilados desde una carpeta <code>ivolt/</code> hermana, igual que la plantilla de HTML plano.</p>
         <div class="iv-hero__actions">
           <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/landing/index.html">Abrir la receta de landing</a>
           <a class="iv-button iv-button--secondary" href="#descargas">Descargas</a>
@@ -23,7 +24,7 @@ const recipes = [
     </section>
     <p class="docs-photo-credit">Fotografía de Clark Street Mercantile en Unsplash. Los datos y los formularios de las recetas son demostraciones: no se envía nada a ninguna parte.</p>
 
-    <h2>Las tres recetas</h2>
+    <h2>Las cuatro recetas</h2>
     <p>Ábrelas en una página aparte para leer el código, o llévate el zip y trabaja sin conexión. Se construyen con las mismas fixtures que esta documentación, así que no pueden desviarse del paquete.</p>
     <div class="docs-cards">
       {recipes.map((r, i) => (

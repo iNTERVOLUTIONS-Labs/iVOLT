@@ -23,8 +23,8 @@ export const t = {
   primaryNav: "Primary",
   footerNav: "Site map",
   docsNav: "Documentation",
-  footer: "iVOLT v0.6 beta · MIT · by iNTERVOLUTIONS",
-  alpha: "Beta software: contracts are frozen for 0.6; details may still change before 0.6.0.",
+  footer: "iVOLT v0.7 beta · MIT · by iNTERVOLUTIONS",
+  alpha: "Beta software: contracts are frozen for 0.7; details may still change before 0.7.0.",
   anchor: "Link to this section",
   copy: "Copy HTML",
   copyCode: "Copy",
@@ -41,6 +41,7 @@ export const t = {
   kindJs: "With JavaScript",
   mmCount: (n) => `${n} families, one grammar`,
   fixtureHtml: (title) => `HTML for ${title}`,
+  fixturePort: (title) => `Preview of ${title}, scrollable`,
   copied: "Copied",
   copiedStatus: "HTML copied to clipboard",
   selected: "Selected — press Ctrl+C",
@@ -60,9 +61,11 @@ export const nav = [
     { href: "/foundations/coexistence", label: "Coexisting with CSS" },
     { href: "/foundations/surfaces", label: "Surfaces & textures" },
     { href: "/foundations/effects", label: "Light & motion" },
+    { href: "/foundations/motion", label: "Scroll motion" },
+    { href: "/foundations/text", label: "Text effects" },
     { href: "/foundations/theme-builder", label: "Theme builder" },
   ] },
-  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "navbar", "megamenu", "hero", "stepper", "popover", "command", "dialog", "badge", "alert", "table", "timeline", "stat", "avatar", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
+  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "lightbox", "navbar", "megamenu", "hero", "stepper", "popover", "command", "dialog", "badge", "alert", "table", "timeline", "stat", "avatar", "breadcrumb", "pagination", "progress", "skeleton", "countup", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Project", items: [
     { href: "/changelog", label: "Changelog" },
     { href: "/roadmap", label: "Roadmap" },
@@ -71,4 +74,4 @@ export const nav = [
 ];
 
 // Family of each component page (css-only or progressively enhanced with JS). Single source for the eyebrow and the home.
-export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datepicker: "js", datatable: "js", picker: "js", carousel: "js", navbar: "js", megamenu: "js", hero: "css", stepper: "js", popover: "js", command: "js", dialog: "js", badge: "css", alert: "css", table: "css", timeline: "css", stat: "css", avatar: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dropdown: "js", drawer: "js", toast: "js" };
+export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datepicker: "js", datatable: "js", picker: "js", carousel: "js", lightbox: "js", navbar: "js", megamenu: "js", hero: "css", stepper: "js", popover: "js", command: "js", dialog: "js", badge: "css", alert: "css", table: "css", timeline: "css", stat: "css", avatar: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", countup: "js", disclosure: "js", tabs: "js", dropdown: "js", drawer: "js", toast: "js" };

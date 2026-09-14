@@ -150,9 +150,9 @@ Petición del propietario: «sigue trabajando hasta 0.7». Lo que falta para mon
 
 | Orden | Elemento | Contrato | Responsable | Estado |
 |---|---|---|---|---|
-| 1 | Lightbox (`lightbox`) sobre `Dialog`: galería de imágenes con teclado, gestos, zoom, pies y precarga | §8.20 | implementador A | abierto |
-| 2 | Contador (`countup`): cifras servidas que cuentan al entrar en el viewport | §8.22 | implementador A | abierto |
-| 3 | Movimiento por scroll (`motion.css` + `ScrollMotion`): `iv-parallax`, `iv-scroll-progress`, `iv-marquee`, `iv-stack-cards` con `animation-timeline` y fallback JS | §8.21 | implementador B | abierto |
-| 4 | Texto (`text.css`): `iv-text-reveal`, `iv-text-glow`, `iv-text-outline`, `iv-text-shimmer` | §8.22 | implementador B | abierto |
-| 5 | Web: páginas nuevas (lightbox, motion, text, countup) en dos idiomas y receta «showcase» (cuarta receta en `examples/recipes`, fotos ya acreditadas en su carpeta) | §8.23 | implementador de docs | abierto |
-| 6 | Cierre `0.7.0-beta.0`: `verify` en tres motores, líneas base, Lighthouse, changelog, estado | — | integrador | abierto |
+| 1 | Lightbox (`lightbox`) sobre `Dialog`: galería de imágenes con teclado, gestos, zoom, pies y precarga | §8.20 | implementador A | hecho (2026-09-14, ADR-042) |
+| 2 | Contador (`countup`): cifras servidas que cuentan al entrar en el viewport | §8.22 | implementador A | hecho (2026-09-14, ADR-042) |
+| 3 | Movimiento por scroll (`motion.css` + `ScrollMotion`): `iv-parallax`, `iv-scroll-progress`, `iv-marquee`, `iv-stack-cards` con `animation-timeline` y fallback JS | §8.21 | implementador B | hecho (2026-09-14, ADR-042) |
+| 4 | Texto (`text.css`): `iv-text-reveal`, `iv-text-glow`, `iv-text-outline`, `iv-text-shimmer` | §8.22 | implementador B | hecho (2026-09-14, ADR-042) |
+| 5 | Web: páginas nuevas (lightbox, motion, text, countup) en dos idiomas y receta «showcase» (cuarta receta en `examples/recipes`, fotos ya acreditadas en su carpeta) | §8.23 | implementador de docs | hecho (2026-09-14; 102 páginas, receta en `examples/recipes/showcase`) |
+| 6 | Cierre `0.7.0-beta.0`: `verify` en tres motores, líneas base, Lighthouse, changelog, estado | — | integrador | hecho (2026-09-14) |

@@ -108,7 +108,7 @@ test("playground generates snippets from a closed set of options", async ({ page
   const classes = await page.locator("#pg-preview [class]").evaluateAll((els) => els.flatMap((e) => [...e.classList]));
   expect(classes.every((c) => c.startsWith("iv-"))).toBe(true);
   const manifest = await (await page.request.get(DOCS + "/downloads/manifest.json")).json();
-  expect(manifest.zips.map((z) => z.name).sort()).toEqual(["ivolt-dist.zip", "ivolt-recipe-admin.zip", "ivolt-recipe-catalog.zip", "ivolt-recipe-landing.zip", "ivolt-starter-plain-html.zip"]);
+  expect(manifest.zips.map((z) => z.name).sort()).toEqual(["ivolt-dist.zip", "ivolt-recipe-admin.zip", "ivolt-recipe-catalog.zip", "ivolt-recipe-landing.zip", "ivolt-recipe-showcase.zip", "ivolt-starter-plain-html.zip"]);
 });
 
 test("published CSP hash matches the inline theme snippet the site ships", async ({ page, request }) => {

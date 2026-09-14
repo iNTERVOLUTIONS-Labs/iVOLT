@@ -1,0 +1,74 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Movimiento por scroll" description="Movimiento por scroll de iVOLT: marcos con parallax, barra de progreso de lectura, marquesinas y barajas de tarjetas pegajosas con animaciones dirigidas por scroll de CSS, y un componente pequeño de reserva donde no existen.">
+  <article class="docs-prose">
+    <h1>Movimiento por scroll</h1>
+    <p>Cuatro cosas que se mueven porque la página se mueve: una capa que va por detrás de su marco, una barra que mide lo leído, una fila que se desliza y una baraja de tarjetas que se apila al pasar. Donde el motor tiene animaciones dirigidas por scroll de CSS, la hoja de estilos lo mueve todo sola, sin un solo escuchador. Donde no las tiene, un componente pequeño escribe dos propiedades personalizadas y la misma hoja sigue funcionando. Con <code>prefers-reduced-motion: reduce</code>, el parallax, la marquesina y la baraja se quedan quietos.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/motion.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/scroll-motion</code> o <code>auto.js</code>, solo como reserva. Añadido en v0.7.</p>
+    <div class="docs-note">
+      <span class="docs-note__title">Qué se ejecuta dónde</span>
+      <p><code>animation-timeline</code> está implementado en Chromium y en WebKit; Firefox no lo trae hoy, y allí toma el relevo <code>ScrollMotion</code>: escucha <code>scroll</code> y <code>resize</code> de forma pasiva, agrupa en <code>requestAnimationFrame</code> y escribe <code>--iv-view</code> en cada <code>.iv-parallax</code> de su raíz y <code>--iv-scroll</code> en la raíz misma. El efecto es el mismo; el coste es un poco de JavaScript en un motor. Donde existen las líneas de tiempo nativas y <code>force</code> está apagado, el componente no monta nada e informa <code>native: true</code>.</p>
+    </div>
+    <h2>Parallax</h2>
+    <p><code>iv-parallax-frame</code> sostiene la proporción y recorta; <code>iv-parallax</code> es la capa que viaja, e <code>iv-parallax--media</code> hace que una imagen mida el 130&nbsp;% de alto para que el recorrido no descubra ningún borde. La fuerza es un solo número, <code>--iv-parallax</code>: <code>0</code> es fijo a la página y <code>1</code> es teatral. Entre <code>0,1</code> y <code>0,3</code> es donde se lee como profundidad y no como truco.</p>
+    <Fixture name="motion/parallax" title="Marcos con parallax" viewport="30rem" />
+    <p>El marco recorta con <code>overflow: clip</code>, no con <code>hidden</code>. Importa: <code>hidden</code> convertiría el marco en contenedor de scroll, <code>view()</code> mediría la capa contra ese contenedor en vez de contra la ventana y la línea de tiempo se congelaría. La segunda sección de la fixture lleva <code>data-iv-force="true"</code>, que pone el componente en el camino de JavaScript incluso en un motor que tiene el nativo: así se comprueba la reserva sin un segundo navegador.</p>
+    <h2>Progreso de lectura</h2>
+    <p><code>iv-scroll-progress</code> es una barra fijada arriba de la ventana, pintada una vez a todo lo ancho y escalada horizontalmente, de modo que al leer solo cambia una propiedad compuesta. Lleva <code>aria-hidden="true"</code>: la posición de lectura ya llega a la tecnología asistiva por la barra de desplazamiento y por la estructura del documento, y un segundo anuncio sería ruido.</p>
+    <Fixture name="motion/progress" title="Barra de progreso de lectura" viewport="26rem" />
+    <div class="docs-note">
+      <span class="docs-note__title">Dos reglas que conviene saber</span>
+      <p><strong>Alcance.</strong> En el camino de reserva, <code>--iv-scroll</code> se escribe en la raíz del contenedor <code>scroll-motion</code>, así que una barra que no esté <em>dentro</em> de esa raíz nunca la hereda. Pon la barra en el contenedor que marcaste, o marca el contenedor que ya la contiene.</p>
+      <p class="iv-u-m-0"><strong>Movimiento reducido.</strong> La barra de progreso sigue acompañando a la página aunque se reduzca el movimiento, porque informa de un estado en lugar de decorarlo: el mismo argumento que una cabecera que se esconde al bajar. El parallax, la marquesina y la baraja sí se detienen.</p>
+    </div>
+    <h2>Marquesina</h2>
+    <p>CSS puro, y la duplicación es del autor: escribe los ítems una vez, escríbelos otra con <code>aria-hidden="true"</code> y una traslación de &minus;50&nbsp;% se repite sin costura. Se detiene bajo el puntero y mientras algo de dentro tenga el foco. Con movimiento reducido para y se convierte en una fila desplazable, por eso la ventana se sirve con <code>role="group"</code>, <code>tabindex="0"</code> y etiqueta: a una región desplazable hay que poder llegar con el teclado.</p>
+    <Fixture name="motion/marquee" title="Marquesina" />
+    <h2>Tarjetas apiladas</h2>
+    <p>Cada tarjeta se pega un escalón más abajo que la anterior, desplazada por <code>--iv-i</code>, así que la baraja se lee como una baraja mientras la recorres. Donde el motor tiene animaciones dirigidas por scroll, la tarjeta de debajo además se encoge y se atenúa cuando la baraja se va; donde no, el apilado pegajoso es todo lo que hay, y no se pierde nada.</p>
+    <Fixture name="motion/stack" title="Una baraja pegajosa" viewport="30rem" />
+    <p>Una nota honesta sobre esto: con <code>animation-range: exit</code> sobre sujetos pegajosos, toda la baraja informa casi del mismo progreso y retrocede junta al salir por arriba de la ventana, en vez de irse relevando tarjeta a tarjeta. Eso es lo que sale en 0.7. El relevo por tarjeta —una línea de tiempo con nombre y un rango derivado de <code>--iv-i</code> con un <code>--iv-stack-count</code> servido— queda en la lista para un ciclo posterior.</p>
+    <h2>Opciones</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>force</code></td><td><code>data-iv-force</code></td><td><code>false</code></td><td>Ejecuta el camino de JavaScript incluso donde existen las líneas de tiempo nativas. Para probar la reserva.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><code>update()</code> recalcula tras un cambio de maquetación que hayas hecho tú; <code>destroy()</code> retira los escuchadores y las propiedades que escribió; <code>native</code> es de solo lectura y dice qué camino está vivo. No hay eventos: nada de esto es un cambio de estado al que una página querría reaccionar.</p>
+    <h2>Teclado y tecnología asistiva</h2>
+    <p>Ninguna de las cuatro es un control. La barra de progreso está oculta a la tecnología asistiva; la capa del parallax es una imagen con su propio <code>alt</code>; la baraja es un conjunto de secciones que se leen en orden de documento, apiladas o no. La marquesina es la que pide cuidado: con movimiento reducido se convierte en una región de scroll horizontal, así que debe llevar rol, etiqueta y <code>tabindex="0"</code>, y la mitad duplicada debe ser <code>aria-hidden</code> para que nada se anuncie dos veces.</p>
+    <h2>Sin JavaScript</h2>
+    <p>La marquesina y la baraja son CSS de principio a fin y no necesitan nada. El parallax y la barra de progreso también lo son en Chromium y en WebKit. En Firefox, con JavaScript desactivado, la capa se queda en la posición que escribió el autor y la barra se queda a cero: la página está completa, la decoración no está. Nada que lleve significado depende de ninguna de las dos cosas.</p>
+    <h2>Tokens y locales</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-parallax</code></td><td><code>0.2</code></td><td>Fuerza del retraso, como fracción.</td></tr>
+          <tr><td><code>--iv-parallax-ratio</code></td><td>proporción del marco</td><td>Proporción de <code>iv-parallax-frame</code>.</td></tr>
+          <tr><td><code>--iv-scroll-progress-size</code></td><td><code>3px</code></td><td>Grosor de la barra de lectura.</td></tr>
+          <tr><td><code>--iv-scroll-progress-color</code></td><td><code>var(--iv-color-primary)</code></td><td>Color de la barra, con el halo primario detrás.</td></tr>
+          <tr><td><code>--iv-marquee-duration</code></td><td><code>30s</code></td><td>Una vuelta completa de la pista.</td></tr>
+          <tr><td><code>--iv-marquee-gap</code>, <code>--iv-marquee-size</code></td><td>tokens de espacio</td><td>Separación entre ítems y alto de la ventana.</td></tr>
+          <tr><td><code>--iv-stack-top</code></td><td><code>var(--iv-space-8)</code></td><td>Dónde se pega una tarjeta.</td></tr>
+          <tr><td><code>--iv-stack-step</code>, <code>--iv-stack-scale</code>, <code>--iv-stack-fade</code></td><td>valores de la baraja</td><td>Desplazamiento por tarjeta, cuánto se encoge la de debajo, cuánto se atenúa.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Dos propiedades las escribe JavaScript en el camino de reserva y se pueden leer desde CSS: <code>--iv-view</code> (0 cuando un elemento entra por abajo, 1 cuando sale por arriba) en cada capa de parallax, y <code>--iv-scroll</code> (de 0 a 1) en la raíz del componente.</p>
+    <h2>Errores habituales</h2>
+    <ul>
+      <li>Una capa de parallax sin la altura de <code>--iv-parallax--media</code>: el recorrido descubre el borde del marco.</li>
+      <li>Poner <code>overflow: hidden</code> al marco a mano y preguntarse por qué no se mueve nada en Chromium.</li>
+      <li>Una barra de progreso fuera de la raíz de <code>scroll-motion</code>: funciona en dos motores y se queda plana en el tercero.</li>
+      <li>Una marquesina cuya segunda mitad no lleva <code>aria-hidden</code>: cada ítem se lee dos veces.</li>
+      <li>Usar la baraja para pasos que hay que leer en orden y comparar. Eso es <a href="/es/components/stepper">pasos</a> o una <a href="/es/components/timeline">línea de tiempo</a>.</li>
+      <li>Entender el movimiento reducido como «apagar los efectos»: la barra de lectura es información y se queda.</li>
+    </ul>
+  </article>
+</Base>

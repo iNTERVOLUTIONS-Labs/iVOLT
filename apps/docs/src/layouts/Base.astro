@@ -26,7 +26,7 @@ const group = nav.find((g) => g.items.some((i) => i.href === path))?.group;
 const slug = bare.startsWith("/components/") ? bare.split("/").pop() : null;
 const family = slug ? families[slug] : null;
 const items = nav.flatMap((g) => g.items);
-// "css" or "js" beside a component link: 31 entries are only scannable when the kind is visible.
+// "css" or "js" beside a component link: 33 entries are only scannable when the kind is visible.
 const kindOf = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return m ? families[m[1]] : null; };
 const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
 // The footer carries the real sitemap: four columns taken from the same navigation as the

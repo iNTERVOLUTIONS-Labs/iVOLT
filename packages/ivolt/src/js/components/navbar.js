@@ -373,8 +373,9 @@ export class Navbar extends IvComponent {
    */
   _syncCollapsible() {
     if (!this._toggle || !this._panel) return;
-    if (this._collapsible) this._set(this._element, COLLAPSIBLE_ATTR, "");
-    else this._unset(this._element, COLLAPSIBLE_ATTR);
+    // "false" is written, not removed: the stylesheet folds a header that has
+    // no value yet when the root was marked before `init` (see navbar.css).
+    this._set(this._element, COLLAPSIBLE_ATTR, this._collapsible ? "" : "false");
   }
 
   /**

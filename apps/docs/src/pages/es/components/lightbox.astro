@@ -1,0 +1,85 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Galería y visor" description="Lightbox de iVOLT: una galería de enlaces que abre un visor a pantalla completa construido sobre el diálogo, con pies, contador, zoom, teclado y gesto, y todas las imágenes accesibles sin JavaScript.">
+  <article class="docs-prose">
+    <h1>Galería y visor</h1>
+    <p>Una galería es una lista de enlaces a imágenes. Ese es todo el marcado y eso es lo que envía el servidor: pulsa una miniatura sin JavaScript y el navegador muestra la fotografía completa, porque la miniatura es un <code>&lt;a href&gt;</code> que apunta a ella. En <code>init</code> el componente construye un visor por galería, se lo entrega a <a href="/es/components/dialog">Dialog</a> para la capa superior, la trampa de foco, Escape y la devolución del foco, y a partir de ahí un clic abre la imagen en su sitio con su pie, un contador, flechas, zoom y gesto.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/lightbox.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/lightbox</code> o <code>auto.js</code>. Añadido en v0.7.</p>
+    <h2>Una galería de fotografías</h2>
+    <p>Las seis miniaturas de abajo son fotografías reales servidas por este sitio, cada una enlazada a su propio archivo. Abre una: el visor ocupa la ventana, el pie nombra a quien la hizo y las flechas recorren el conjunto. Pulsa Escape y el foco vuelve a la miniatura de la que saliste.</p>
+    <Fixture name="lightbox/photos" title="Fotografías, con el visor" />
+    <p class="docs-photo-credit">Fotografías de Andrew Ridley, Wolfgang Lutz, Christian Joudrey, Joseph Barrientos, veeterzy y Jay Ruzesky en Unsplash, usadas aquí como material de documentación. El paquete npm no lleva mapas de bits: las fixtures de abajo dibujan su arte como SVG en línea.</p>
+    <h2>La fixture del paquete</h2>
+    <p>La misma galería con el arte que lleva el paquete. Cada pie dice lo que es y las miniaturas enlazan al dibujo, no a una fotografía.</p>
+    <Fixture name="lightbox/basic" title="Galería y visor" />
+    <div class="docs-note">
+      <span class="docs-note__title">Por qué esta fixture no demuestra el caso sin script</span>
+      <p class="iv-u-m-0">Sus miniaturas enlazan a URL <code>data:</code>, y los navegadores bloquean la navegación superior a <code>data:</code>. La galería de fotografías de arriba es la demostración honesta: desactiva JavaScript allí y cada miniatura sigue abriendo su imagen.</p>
+    </div>
+    <h2>Mosaico y tira</h2>
+    <p><code>iv-gallery--masonry</code> reparte las miniaturas en columnas CSS para que cada imagen conserve su altura; <code>iv-gallery--strip</code> las coloca en una sola fila con anclaje de scroll. Una tira es una región desplazable, así que el autor le sirve <code>tabindex="0"</code>, un rol y una etiqueta: el mismo contrato que pide la línea de tiempo horizontal.</p>
+    <Fixture name="lightbox/masonry" title="Columnas de mosaico" />
+    <Fixture name="lightbox/strip" title="Una tira con anclaje" />
+    <h2>Opciones</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>loop</code></td><td><code>data-iv-loop</code></td><td><code>true</code></td><td>De la última imagen se pasa a la primera y al revés.</td></tr>
+          <tr><td><code>zoom</code></td><td><code>data-iv-zoom</code></td><td><code>true</code></td><td>Ofrece el botón de zoom y la tecla <kbd>Z</kbd>.</td></tr>
+          <tr><td><code>swipe</code></td><td><code>data-iv-swipe</code></td><td><code>true</code></td><td>Un arrastre horizontal cambia de imagen, con el mismo umbral que el carrusel.</td></tr>
+          <tr><td><code>preload</code></td><td><code>data-iv-preload</code></td><td><code>1</code></td><td>Cuántas vecinas por lado se piden por adelantado.</td></tr>
+          <tr><td><code>counter</code></td><td><code>data-iv-counter</code></td><td><code>true</code></td><td>Muestra «3 / 12» en una región viva cortés.</td></tr>
+          <tr><td><code>captions</code></td><td><code>data-iv-captions</code></td><td><code>true</code></td><td>Pinta <code>data-iv-caption</code> como <code>&lt;figcaption&gt;</code> del escenario.</td></tr>
+          <tr><td><code>galleryLabel</code></td><td><code>data-iv-gallery-label</code></td><td><code>Image viewer</code></td><td>Nombre accesible del diálogo generado.</td></tr>
+          <tr><td><code>closeText</code>, <code>prevText</code>, <code>nextText</code>, <code>zoomText</code></td><td><code>data-iv-close-text</code>…</td><td><code>Close</code>, <code>Previous</code>, <code>Next</code>, <code>Zoom</code></td><td>Nombres de los cuatro botones. Tradúcelos; no los quites.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Métodos y eventos</h2>
+    <p><code>open(index)</code>, <code>close()</code>, <code>next()</code>, <code>prev()</code>, <code>go(index)</code>, <code>zoom(on?)</code>, <code>destroy()</code>; se leen <code>index</code>, <code>isOpen</code>, <code>items</code>, <code>zoomed</code> y <code>dialog</code>. <code>destroy()</code> retira el diálogo generado y todos los escuchadores, y la galería vuelve a ser una lista de enlaces.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Evento</th><th>Cuándo</th><th><code>detail</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>iv:open</code> → <code>iv:opened</code></td><td>el visor se abre; el primero es cancelable</td><td><code>index</code>, <code>reason</code></td></tr>
+          <tr><td><code>iv:close</code> → <code>iv:closed</code></td><td>el visor se cierra</td><td><code>index</code>, <code>reason</code>: <code>escape</code>, <code>backdrop</code>, <code>trigger</code> o <code>api</code></td></tr>
+          <tr><td><code>iv:change</code> → <code>iv:changed</code></td><td>otra imagen toma el escenario; el primero es cancelable</td><td><code>index</code>, <code>previousIndex</code>, <code>reason</code>: <code>next</code>, <code>prev</code>, <code>keyboard</code>, <code>swipe</code> o <code>api</code></td></tr>
+          <tr><td><code>iv:zoom</code></td><td>el escenario entra o sale del zoom</td><td><code>zoomed</code>, <code>index</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Todos se disparan en la raíz de la galería, no en el diálogo generado, así que un solo escuchador cubre una galería haga lo que haga el visor.</p>
+    <h2>Teclado y tecnología asistiva</h2>
+    <p>Las miniaturas son enlaces: el tabulador llega a ellas y Enter abre el visor. Dentro, <kbd>Esc</kbd> cierra, <kbd>←</kbd> y <kbd>→</kbd> cambian de imagen, <kbd>Inicio</kbd> y <kbd>Fin</kbd> van a los extremos y <kbd>Z</kbd> alterna el zoom. El diálogo tiene nombre, los cuatro botones tienen nombre, el contador vive en <code>aria-live="polite"</code> y el pie es un <code>&lt;figcaption&gt;</code> de verdad. La imagen en escena conserva el <code>alt</code> de la miniatura que la abrió, así que nada se describe dos veces y nada se queda sin describir.</p>
+    <p>Con zoom, el escenario pasa a ser una región desplazable enfocable: recibe <code>tabindex="0"</code> y devuelve las flechas al navegador para desplazar la fotografía ampliada, que es lo que necesita ahí quien usa teclado. El cambio de imagen espera a que el zoom se apague. La página de detrás no se desplaza nunca; solo el escenario.</p>
+    <h2>Sin JavaScript</h2>
+    <p>La galería está completa. La rejilla, las columnas del mosaico, la tira, la escala al pasar y el anillo de foco son CSS; las miniaturas son enlaces a las imágenes completas. No hay nada escondido detrás del script y nada de la página depende de que el visor exista: es una mejora sobre un conjunto de enlaces que ya funcionaba.</p>
+    <h2>Tokens y locales</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-gallery-min</code></td><td><code>14rem</code></td><td>Lo más estrecha que puede quedar una miniatura antes de que la rejilla quite una columna.</td></tr>
+          <tr><td><code>--iv-gallery-gap</code></td><td><code>var(--iv-space-3)</code></td><td>Separación entre miniaturas.</td></tr>
+          <tr><td><code>--iv-gallery-ratio</code></td><td><code>3 / 2</code></td><td>Proporción de una miniatura en la rejilla y en la tira.</td></tr>
+          <tr><td><code>--iv-gallery-radius</code></td><td><code>var(--iv-radius-lg)</code></td><td>Esquina de una miniatura.</td></tr>
+          <tr><td><code>--iv-gallery-scrim</code></td><td>token de velo</td><td>Oscuridad del velo que lleva el icono de ampliar.</td></tr>
+          <tr><td><code>--iv-lightbox-chip-bg</code>, <code>-border</code>, <code>-highlight</code>, <code>-text</code></td><td>anclados a la paleta</td><td>Los chips del visor: cerrar, flechas, zoom, contador y pie.</td></tr>
+          <tr><td><code>--iv-lightbox-icon-size</code>, <code>-stroke</code></td><td>valores del icono</td><td>Tamaño y grosor de los chevrones y los glifos.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Los chips no toman el cristal del tema en curso: están anclados a la paleta para que el visor sea una sala oscura también en claro y los botones conserven su contraste sobre cualquier fotografía. El fondo se mezcla desde el neutro más oscuro al 92&nbsp;% con literales de reserva, porque no todos los motores heredan propiedades personalizadas en <code>::backdrop</code>. Con movimiento reducido se quitan el fundido y la escala de entrada; el visor sigue abriendo, cambiando y cerrando.</p>
+    <h2>Errores habituales</h2>
+    <ul>
+      <li>Enlazar la miniatura a la página en vez de a la imagen, o a <code>#</code>. El enlace es el camino sin script: apúntalo al archivo completo.</li>
+      <li>Servir la miniatura como imagen completa. La miniatura puede ser pequeña y el <code>href</code> grande; de eso va la pareja.</li>
+      <li>Repetir el pie en el <code>alt</code>. El <code>alt</code> describe la imagen; el pie la acredita y la comenta.</li>
+      <li>Una tira sin <code>tabindex="0"</code>, rol y etiqueta: una región desplazable a la que el teclado no llega.</li>
+      <li>Esperar un solo visor para dos galerías. Cada galería construye el suyo; la misma imagen puede estar en las dos.</li>
+    </ul>
+  </article>
+</Base>

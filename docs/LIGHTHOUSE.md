@@ -240,3 +240,18 @@ Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome, `scripts/docs-server
 | `/es` | escritorio | 100 | 100 | 100 | 100 | 566 ms | 0 | 0 ms | 396 ms |
 
 Sin cambios de nota respecto a la ronda anterior; el LCP móvil sube unos 60 ms con 3,5 KiB más de CSS bloqueante. La opción de servir a la home solo los módulos que usa sigue documentada y no ejecutada; con 0.7 (lightbox, movimiento, texto) la hoja crecerá de nuevo y conviene decidirla al cerrar ese ciclo.
+
+## Ciclo v0.7 — remedición al cerrar `0.7.0-beta.0` (2026-09-14)
+
+Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome, `scripts/docs-server.mjs` en 4327 sirviendo el build del gate `verify`, una pasada por ruta y preajuste, sin red real). `ivolt.min.css` pasó de 25,6 a 28,1 KiB gzip y el JS agrupado de 39,0 a 42,8. Se añade la receta «showcase», que compone navbar, hero con fotografía y parallax, galería con visor, cifras, stepper y línea de tiempo.
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS | TBT | Speed Index |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 97 | 100 | 100 | 100 | 2376 ms | 0 | 10 ms | 1589 ms |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 521 ms | 0 | 0 ms | 388 ms |
+| `/es` | móvil | 97 | 100 | 100 | 100 | 2369 ms | 0 | 12 ms | 1582 ms |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 517 ms | 0 | 0 ms | 386 ms |
+| `/examples/showcase/index.html` | móvil | 87 | 100 | 100 | 100 | 4059 ms | 0 | 0 ms | 1367 ms |
+| `/examples/showcase/index.html` | escritorio | 99 | 100 | 100 | 100 | 876 ms | 0 | 0 ms | 452 ms |
+
+Lo que se corrigió con la medida: la primera pasada de la receta en móvil dio **69** con **CLS 0,38**: el panel del navbar se sirve abierto y `init` lo plegaba tras el primer pintado, desplazando toda la página. Con la marca temprana `data-iv-js` en `<head>` (ADR-042) el panel arranca plegado y el CLS baja a 0 (87 en móvil). Lo que queda: el LCP móvil de la receta es la fotografía de portada (JPEG de 143 KB a 1280×800 en red simulada 4G lenta); una versión de 800 px para móvil o AVIF bajaría ~2 s, y es una decisión de la receta, no del framework. La home baja un punto en móvil (98 → 97) por los 2,5 KiB más de CSS bloqueante; servir a la home solo los módulos que usa sigue documentado y no ejecutado.

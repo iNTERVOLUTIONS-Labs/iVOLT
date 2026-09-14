@@ -1,0 +1,57 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Efectos de texto" description="Efectos de texto de iVOLT: titulares que suben línea a línea, tipografía con halo, letras huecas y una banda de luz que cruza una línea — cuatro clases CSS para tamaños display, estáticas con movimiento reducido.">
+  <article class="docs-prose">
+    <h1>Efectos de texto</h1>
+    <p>Cuatro acabados para tipografía display: un titular que sube línea a línea al llegar, un halo alrededor de los glifos, letras huecas dibujadas con un trazo y una banda de luz que cruza una línea una vez. Los cuatro son CSS. Solo la aparición y el destello de una sola pasada necesitan script, y únicamente para saber que el elemento está en pantalla: eso es <code>Reveal</code>, que ya documenta la página de efectos. Con <code>prefers-reduced-motion: reduce</code>, cada uno de ellos es un titular quieto y legible.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/text.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/reveal</code> o <code>auto.js</code>, solo para <code>iv-text-reveal</code> y <code>iv-text-shimmer--once</code>. Añadido en v0.7.</p>
+    <div class="docs-note">
+      <span class="docs-note__title">Solo en tamaños display</span>
+      <p class="iv-u-m-0">Están hechos para <code>text-3xl</code> en adelante. A 1,5&nbsp;rem un trazo de un píxel recoge las franjas de color del antialiasing subpíxel y un halo se mete en los contornos interiores de las letras. El texto corrido conserva el contraste del tema y nada más.</p>
+    </div>
+    <h2>Aparición, línea a línea</h2>
+    <p>Cada línea es una máscara —<code>iv-text-reveal__line</code> con un span dentro— y el span interior empieza una línea más abajo hasta que <code>Reveal</code> marca el titular con <code>data-iv-inview</code>. Los saltos de línea los escribe el autor: ningún script parte el texto, así que sigue siendo seleccionable, traducible y legible tal como se sirvió. El escalonado es <code>--iv-i</code> multiplicado por <code>--iv-text-reveal-step</code>, dos propiedades personalizadas sin ningún temporizador detrás.</p>
+    <Fixture name="text/reveal" title="Un titular que sube" viewport="30rem" />
+    <h2>Halo</h2>
+    <p>Dos capas de <code>text-shadow</code>: una ceñida que engorda los trazos y otra ancha que se derrama sobre la superficie de detrás. El color es el token de halo del tema, así que sigue al claro y al oscuro. <code>iv-text-glow--pulse</code> respira en un ciclo de 2,4&nbsp;segundos. Un halo es un acabado, no un recurso de contraste: el glifo conserva el contraste que tenía.</p>
+    <Fixture name="text/glow" title="Tipografía con halo" />
+    <h2>Contorno</h2>
+    <p><code>iv-text-outline</code> dibuja las letras huecas con el trazo que el motor pinta alrededor de cada glifo, detrás de un <code>@supports</code>: donde falta la propiedad, el titular simplemente conserva su relleno. <code>iv-text-outline--fill</code> lo devuelve mientras el enlace que lo rodea está bajo el puntero o enfocado. El trazo usa <code>-webkit-text-fill-color: transparent</code> y no un <code>color</code> transparente, porque tanto el trazo como el destello leen <code>currentColor</code>, y su color es el primario: el acento del tema claro es un verde brillante y no aguanta el contraste como línea fina.</p>
+    <Fixture name="text/outline" title="Titulares huecos" />
+    <h2>Destello</h2>
+    <p>Un degradado recortado a los glifos, con solo su posición animada, de modo que una banda de luz cruza la línea y no se repinta nada fuera de ella. <code>iv-text-shimmer--once</code> espera a <code>data-iv-inview</code>, pasa la banda una sola vez y se queda quieto: un bucle junto a texto corrido compite con la lectura. No lo combines con <code>iv-gradient-text</code>: los dos son dueños del mismo fondo, así que elige uno.</p>
+    <Fixture name="text/shimmer" title="Una banda de luz" viewport="30rem" />
+    <h2>Teclado y tecnología asistiva</h2>
+    <p>Los cuatro son titulares y siguen siéndolo. No hay nada que enfocar, ningún rol que añadir y ningún <code>aria-hidden</code> que colgar de una mitad decorativa, porque aquí nada duplica el texto: la aparición envuelve los saltos de línea del propio autor, el halo y el destello pintan los mismos glifos y el contorno los vacía. Los lectores de pantalla reciben el titular tal como está escrito. En modo de colores forzados se descartan la sombra, el degradado y el trazo, y el titular queda como texto del sistema.</p>
+    <h2>Sin JavaScript</h2>
+    <p>El halo y el contorno nunca necesitaron script. El destello se repite solo; únicamente su variante <code>--once</code> espera a <code>Reveal</code>, y sin el script se queda visible. La aparición es el caso interesante: la regla que esconde una línea está escrita bajo <code>:root[data-iv-js]</code>, así que una página cuyo script no llegue muestra todas las líneas arriba y legibles. Una aparición que no ocurre no puede esconder un titular.</p>
+    <h2>Tokens y locales</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-text-reveal-distance</code></td><td><code>110%</code></td><td>Cuánto por debajo de la máscara empieza una línea.</td></tr>
+          <tr><td><code>--iv-text-reveal-duration</code></td><td>token de movimiento lento × 3</td><td>Duración de la subida de una línea.</td></tr>
+          <tr><td><code>--iv-text-reveal-step</code></td><td><code>80ms</code></td><td>Retardo por <code>--iv-i</code> entre líneas.</td></tr>
+          <tr><td><code>--iv-text-glow-color</code></td><td><code>var(--iv-glow-primary)</code></td><td>Color del halo.</td></tr>
+          <tr><td><code>--iv-text-glow-size</code></td><td>valor del halo</td><td>Cuánto se derrama el halo.</td></tr>
+          <tr><td><code>--iv-text-outline-width</code></td><td><code>1px</code></td><td>Grosor del trazo.</td></tr>
+          <tr><td><code>--iv-text-outline-color</code></td><td><code>currentColor</code></td><td>Color del trazo.</td></tr>
+          <tr><td><code>--iv-text-shimmer-color</code>, <code>--iv-text-shimmer-highlight</code></td><td>color del texto, <code>var(--iv-color-primary)</code></td><td>La línea en reposo y la banda que la cruza.</td></tr>
+          <tr><td><code>--iv-text-shimmer-duration</code></td><td><code>2.8s</code></td><td>Una pasada de la banda.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Los keyframes del destello van del 100&nbsp;% al 0&nbsp;%, no al revés: fuera de ese rango el degradado se sale de la caja y el titular desaparece con él.</p>
+    <h2>Errores habituales</h2>
+    <ul>
+      <li>Dejar que un script parta el titular en palabras o caracteres. Los saltos de línea son decisiones de contenido: escríbelos.</li>
+      <li>Contorno o halo en texto corrido, o en cualquier cosa por debajo de un tamaño display.</li>
+      <li>Apilar <code>iv-text-shimmer</code> sobre <code>iv-gradient-text</code>. Un fondo, un dueño.</li>
+      <li>Un destello en bucle al lado de un párrafo que alguien intenta leer. Usa <code>--once</code>.</li>
+      <li>Recurrir a un halo para arreglar un problema de contraste. Arregla el color.</li>
+    </ul>
+  </article>
+</Base>

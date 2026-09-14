@@ -1,0 +1,57 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Text effects" description="iVOLT text effects: headlines that rise line by line, glowing type, hollow outlines and a band of light crossing a line — four CSS classes for display sizes, all static under reduced motion.">
+  <article class="docs-prose">
+    <h1>Text effects</h1>
+    <p>Four finishes for display type: a headline that rises line by line as it arrives, a glow around the glyphs, hollow letters drawn with a stroke, and a band of light crossing a line once. All four are CSS. Only the reveal and the single-pass shimmer need a script, and only to be told that the element is on screen — that is <code>Reveal</code>, which the effects page already documents. Under <code>prefers-reduced-motion: reduce</code> every one of them is a still, legible headline.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/text.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/reveal</code> or <code>auto.js</code>, for <code>iv-text-reveal</code> and <code>iv-text-shimmer--once</code> only. Added in v0.7.</p>
+    <div class="docs-note">
+      <span class="docs-note__title">Display sizes only</span>
+      <p class="iv-u-m-0">These are built for <code>text-3xl</code> and up. At 1.5&nbsp;rem a one-pixel stroke picks up the colour fringing of subpixel antialiasing and a glow smears into the counters of the letters. Body copy keeps the contrast of the theme and nothing else.</p>
+    </div>
+    <h2>Reveal, line by line</h2>
+    <p>Each line is a mask — <code>iv-text-reveal__line</code> with a span inside it — and the inner span starts one line lower until <code>Reveal</code> marks the heading with <code>data-iv-inview</code>. The author writes the line breaks: no script splits the text, so it stays selectable, translatable and readable exactly as served. The stagger is <code>--iv-i</code> multiplied by <code>--iv-text-reveal-step</code>, two plain custom properties with no timer behind them.</p>
+    <Fixture name="text/reveal" title="A headline that rises" viewport="30rem" />
+    <h2>Glow</h2>
+    <p>Two layers of <code>text-shadow</code>: a tight one that thickens the strokes, a wide one that spills onto the surface behind. The colour is the halo token of the theme, so it follows light and dark. <code>iv-text-glow--pulse</code> breathes on a 2.4&nbsp;second cycle. A halo is a finish, not a contrast device — the glyph keeps the contrast it had.</p>
+    <Fixture name="text/glow" title="Glowing type" />
+    <h2>Outline</h2>
+    <p><code>iv-text-outline</code> draws the letters hollow with the stroke the engine paints around each glyph, behind an <code>@supports</code> test: where the property is missing the heading simply keeps its fill. <code>iv-text-outline--fill</code> fills it back in while the link around it is hovered or focused. The stroke uses <code>-webkit-text-fill-color: transparent</code> rather than a transparent <code>color</code>, because both the stroke and the shimmer read <code>currentColor</code>, and its colour is the primary — the accent of the light theme is a bright green and does not hold contrast as a hairline.</p>
+    <Fixture name="text/outline" title="Hollow headlines" />
+    <h2>Shimmer</h2>
+    <p>A gradient clipped to the glyphs, with only its position animated, so a band of light crosses the line and nothing repaints outside it. <code>iv-text-shimmer--once</code> waits for <code>data-iv-inview</code>, runs the band across a single time and stays put — a loop beside running text competes with the reading. Do not combine it with <code>iv-gradient-text</code>: both own the same background, so pick one.</p>
+    <Fixture name="text/shimmer" title="A band of light" viewport="30rem" />
+    <h2>Keyboard and assistive technology</h2>
+    <p>All four are headings and stay headings. There is nothing to focus, no role to add and no <code>aria-hidden</code> to hang on a decorative half, because nothing here duplicates the text: the reveal wraps the author's own line breaks, the glow and the shimmer paint the same glyphs, and the outline hollows them. Screen readers get the heading as written. In forced-colours mode the shadow, the gradient and the stroke are all dropped and the heading is plain system text.</p>
+    <h2>Without JavaScript</h2>
+    <p>Glow and outline never needed a script. The shimmer loops on its own; only its <code>--once</code> variant waits for <code>Reveal</code>, and without the script it settles visible. The reveal is the interesting case: the rule that hides a line is written under <code>:root[data-iv-js]</code>, so a page whose script never loads shows every line up and readable. A headline can never be hidden by a reveal that did not arrive.</p>
+    <h2>Tokens and locals</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-text-reveal-distance</code></td><td><code>110%</code></td><td>How far below the mask a line starts.</td></tr>
+          <tr><td><code>--iv-text-reveal-duration</code></td><td>slow motion token × 3</td><td>Length of one line's rise.</td></tr>
+          <tr><td><code>--iv-text-reveal-step</code></td><td><code>80ms</code></td><td>Delay per <code>--iv-i</code> between lines.</td></tr>
+          <tr><td><code>--iv-text-glow-color</code></td><td><code>var(--iv-glow-primary)</code></td><td>Colour of the halo.</td></tr>
+          <tr><td><code>--iv-text-glow-size</code></td><td>glow default</td><td>How far the halo spills.</td></tr>
+          <tr><td><code>--iv-text-outline-width</code></td><td><code>1px</code></td><td>Thickness of the stroke.</td></tr>
+          <tr><td><code>--iv-text-outline-color</code></td><td><code>currentColor</code></td><td>Colour of the stroke.</td></tr>
+          <tr><td><code>--iv-text-shimmer-color</code>, <code>--iv-text-shimmer-highlight</code></td><td>text colour, <code>var(--iv-color-primary)</code></td><td>The line at rest, and the band that crosses it.</td></tr>
+          <tr><td><code>--iv-text-shimmer-duration</code></td><td><code>2.8s</code></td><td>One pass of the band.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The shimmer keyframes run from 100&nbsp;% to 0&nbsp;%, not the other way round: outside that range the gradient leaves the box and the headline disappears with it.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>Letting a script split the headline into words or characters. The line breaks are content decisions; write them.</li>
+      <li>Outline or glow on body copy, or on anything below a display size.</li>
+      <li>Stacking <code>iv-text-shimmer</code> on <code>iv-gradient-text</code>. One background, one owner.</li>
+      <li>A shimmer that loops next to a paragraph somebody is trying to read. Use <code>--once</code>.</li>
+      <li>Reaching for a glow to fix a contrast problem. Fix the colour.</li>
+    </ul>
+  </article>
+</Base>
