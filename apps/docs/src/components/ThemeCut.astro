@@ -1,0 +1,18 @@
+---
+// The theme cut: one fixture rendered twice, light over dark, revealed by a draggable edge.
+// Both copies are inert and hidden from assistive technology: they are a picture of the same
+// markup in two scopes, and the live, operable version lives on the Tokens & themes page.
+import { readFileSync, existsSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+const { name = "theme/nested" } = Astro.props;
+let dir = process.cwd();
+while (!existsSync(resolve(dir, "packages/ivolt/fixtures")) && dirname(dir) !== dir) dir = dirname(dir);
+const html = readFileSync(resolve(dir, "packages/ivolt/fixtures", `${name}.html`), "utf8").trim();
+---
+<div class="docs-cut" style="--docs-cut:50%">
+  <div class="docs-cut__layer" data-iv-theme="dark" inert aria-hidden="true" set:html={html}></div>
+  <div class="docs-cut__layer docs-cut__layer--top" data-iv-theme="light" inert aria-hidden="true" set:html={html}></div>
+  <span class="docs-cut__tag docs-cut__tag--l" aria-hidden="true">light</span>
+  <span class="docs-cut__tag docs-cut__tag--r" aria-hidden="true">dark</span>
+  <span class="docs-cut__edge" aria-hidden="true"></span>
+</div>

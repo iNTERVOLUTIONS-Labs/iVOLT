@@ -5,11 +5,15 @@ import { ClientRouter } from "astro:transitions";
 import { t, nav } from "../i18n/en.js";
 import { themeSnippet } from "../theme-snippet.js";
 import { wordmark as brandSvg } from "../brand.js";
-const { title, description, sidebar = true, toc = sidebar, wide = false } = Astro.props;
+const { title, description, sidebar = true, toc = sidebar, bleed = false } = Astro.props;
+// Family of each component page, for the page eyebrow. Content pages fall back to their nav group.
+const families = { button: "css", card: "css", form: "css", combobox: "js", badge: "css", alert: "css", table: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", disclosure: "js", tabs: "js", dialog: "js", drawer: "js", dropdown: "js", toast: "js" };
 const path = Astro.url.pathname.replace(/\.html$/, "");
 const canonical = Astro.site ? new URL(path, Astro.site).href : undefined;
 const og = Astro.site ? new URL("/og.png", Astro.site).href : "/og.png";
 const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
+const group = nav.find((g) => g.items.some((i) => i.href === path))?.group;
+const family = path.startsWith("/components/") ? families[path.split("/").pop()] : null;
 ---
 <!DOCTYPE html>
 <html lang="en" class="iv-root" data-iv-theme="dark">
@@ -33,17 +37,25 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
   <ClientRouter />
 </head>
 <body class="docs">
-  <div class="docs-field" aria-hidden="true"><div class="docs-field__glow docs-field__glow--a"></div><div class="docs-field__glow docs-field__glow--b"></div></div>
+  <div class="docs-field" aria-hidden="true"><div class="docs-field__glow"></div></div>
+  <div class="docs-meter" aria-hidden="true"><span class="docs-meter__fill"></span><span class="docs-meter__tip"></span></div>
+  <div class="docs-flash" aria-hidden="true"></div>
   <a class="iv-u-sr-only-focusable iv-button iv-button--primary docs-skip" href="#main">{t.skip}</a>
   <header class="docs-header" data-pagefind-ignore>
     <div class="iv-container iv-container--wide docs-header__inner">
       <a class="docs-brand" href="/" aria-label="iVOLT CSS, home" set:html={wordmark}></a>
       <nav class="docs-nav" aria-label={t.primaryNav}>
-        <a href="/getting-started" aria-current={path === "/getting-started" ? "page" : undefined}>{t.docs}</a>
-        <a href="/components/button" aria-current={path.startsWith("/components/") ? "page" : undefined}>{t.components}</a>
-        <a href="/examples" aria-current={path === "/examples" ? "page" : undefined}>Examples</a>
-        <a href="/playground" aria-current={path === "/playground" ? "page" : undefined}>Playground</a>
-        <a href="https://github.com/iNTERVOLUTIONS-Labs/iVOLT" rel="noopener">{t.source}</a>
+        {[
+          { href: "/getting-started", label: t.docs, current: path === "/getting-started" },
+          { href: "/components/button", label: t.components, current: path.startsWith("/components/") },
+          { href: "/examples", label: "Examples", current: path === "/examples" },
+          { href: "/playground", label: "Playground", current: path === "/playground" },
+          { href: "https://github.com/iNTERVOLUTIONS-Labs/iVOLT", label: t.source, rel: "noopener" },
+        ].map((l) => (
+          <a href={l.href} rel={l.rel} aria-current={l.current ? "page" : undefined}>
+            <span class="docs-roll"><span class="docs-roll__a">{l.label}</span><span class="docs-roll__b" aria-hidden="true">{l.label}</span></span>
+          </a>
+        ))}
       </nav>
       <button class="iv-button iv-button--secondary iv-button--sm docs-search-open" type="button" data-iv-open="docs-search" aria-keyshortcuts="/ Control+K" aria-label={t.search}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="docs-search-text">{t.search}</span><kbd class="docs-kbd" aria-hidden="true">/</kbd></button>
       <div class="docs-theme" role="group" aria-label={t.theme}>
@@ -85,7 +97,7 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
     </div>
   </dialog>
 
-  <div class={`iv-container ${wide ? "iv-container--wide" : "iv-container--wide"} docs-shell ${sidebar ? "docs-shell--sidebar" : ""}`}>
+  <div class:list={[bleed ? "docs-bleed" : "iv-container iv-container--wide docs-shell", sidebar && "docs-shell--sidebar"]}>
     {sidebar && (
       <aside class="docs-sidebar" data-pagefind-ignore>
         <nav aria-label={t.docsNav}>
@@ -93,7 +105,8 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
         </nav>
       </aside>
     )}
-    <main id="main" class="docs-main" tabindex="-1" data-pagefind-body>
+    <main id="main" class:list={["docs-main", bleed && "docs-main--bleed"]} tabindex="-1" data-pagefind-body>
+      {group && <p class="docs-eyebrow" data-pagefind-ignore>{group}{family && <> · <b>{family}</b></>}</p>}
       <slot />
     </main>
     {sidebar && toc && (
@@ -105,7 +118,14 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
   </div>
 
   <footer class="docs-footer" data-pagefind-ignore>
-    <div class="docs-footer__ghost" aria-hidden="true">iVOLT</div>
+    <div class="iv-container iv-container--wide">
+      <a class="docs-lockup" href="/" aria-label="iVOLT CSS, home">
+        <span class="docs-lockup__stack" aria-hidden="true">
+          <span class="docs-lockup__fill" set:html={brandSvg}></span>
+          <span class="docs-lockup__line" set:html={brandSvg}></span>
+        </span>
+      </a>
+    </div>
     <div class="iv-container iv-container--wide docs-footer__inner">
       <span>{t.footer}</span>
       <ul class="docs-footer__links">
@@ -125,12 +145,24 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
     import { setTheme, getTheme } from "@intervolutions/ivolt/theme";
     import { Dialog } from "@intervolutions/ivolt/dialog";
     import { t } from "../i18n/en.js";
+    import { mountEffects } from "../scripts/effects.js";
 
     const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = () => matchMedia("(hover: hover) and (pointer: fine)").matches;
 
+    let teardown = [];
+    function release() { teardown.forEach((fn) => { try { fn(); } catch {} }); teardown = []; }
+
     function setup() {
       init(document); // idempotent: instances survive, new page nodes get theirs
+      release();
+      teardown.push(mountEffects(document));
+
+      // The arc field: one canvas, home only, fine pointers only, never under reduced motion.
+      const arcs = document.querySelector("[data-docs-arcs]");
+      if (arcs && finePointer() && !reduced()) {
+        import("../scripts/arcs.js").then((m) => { if (document.contains(arcs)) teardown.push(m.mountArcs(arcs)); });
+      }
 
       // Theme switch (persisted opt-in), both header and nav dialog groups.
       const buttons = document.querySelectorAll("[data-set-theme]");
@@ -265,6 +297,13 @@ const wordmark = brandSvg.replace(/<svg /, '<svg height="36" ');
       });
     }
     document.addEventListener("astro:page-load", setup);
+    document.addEventListener("astro:before-swap", release);
+    document.addEventListener("astro:after-swap", () => {
+      const flash = document.querySelector(".docs-flash");
+      if (!flash || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      flash.classList.add("is-on");
+      flash.addEventListener("animationend", () => flash.classList.remove("is-on"), { once: true });
+    });
   </script>
 </body>
 </html>

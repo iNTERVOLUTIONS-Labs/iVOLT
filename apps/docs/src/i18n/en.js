@@ -26,6 +26,7 @@ export const t = {
   alpha: "Alpha software: APIs may change before 0.1.0.",
   anchor: "Link to this section",
   copy: "Copy HTML",
+  copyCode: "Copy",
   copied: "Copied",
   copiedStatus: "HTML copied to clipboard",
   selected: "Selected — press Ctrl+C",
