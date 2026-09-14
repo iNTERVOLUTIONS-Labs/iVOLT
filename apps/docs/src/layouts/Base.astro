@@ -10,6 +10,7 @@ const { title, description, sidebar = true, toc = sidebar, bleed = false, lang: 
 // Built with format "file": the home is /index.html at build time, /es/index.html in Spanish.
 const path = Astro.url.pathname.replace(/\.html$/, "").replace(/\/index$/, "") || "/";
 // Language: explicit prop, else the /es prefix of the route. Strings and navigation follow it.
+// hreflang alternates must be absolute, so they are emitted only when SITE_URL sets Astro.site (like canonical).
 const lang = langProp || (path === "/es" || path.startsWith("/es/") ? "es" : "en");
 const { t, nav } = lang === "es" ? es : en;
 const { families } = en;
@@ -37,9 +38,9 @@ const otherHref = lang === "es" ? altEn : altEs;
   <title>{title} · iVOLT</title>
   <meta name="description" content={description}>
   {canonical && <link rel="canonical" href={canonical}>}
-  <link rel="alternate" hreflang="en" href={abs(altEn)}>
-  <link rel="alternate" hreflang="es" href={abs(altEs)}>
-  <link rel="alternate" hreflang="x-default" href={abs(altEn)}>
+  {Astro.site && <link rel="alternate" hreflang="en" href={abs(altEn)}>}
+  {Astro.site && <link rel="alternate" hreflang="es" href={abs(altEs)}>}
+  {Astro.site && <link rel="alternate" hreflang="x-default" href={abs(altEn)}>}
   <meta property="og:title" content={`${title} · iVOLT`}>
   <meta property="og:description" content={description}>
   <meta property="og:type" content="website">
