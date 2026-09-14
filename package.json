@@ -13,7 +13,7 @@
     "sizes": "node packages/ivolt/scripts/sizes.mjs",
     "pack-smoke": "node scripts/pack-smoke.mjs",
     "check-examples": "node scripts/check-examples.mjs",
-    "dev:docs": "node scripts/ensure-dist.mjs && npm run dev -w docs",
+    "dev:docs": "node apps/docs/scripts/prebuild.mjs && npm run dev -w docs",
     "build:docs": "node scripts/ensure-dist.mjs && npm run build -w docs",
     "verify": "npm run build && npm test && IVOLT_ALL_BROWSERS=1 npm run test:browser && npm run sizes && npm run pack-smoke && npm run build:docs && npm run check-examples"
   },
