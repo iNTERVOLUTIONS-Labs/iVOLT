@@ -1,0 +1,15 @@
+<div class="iv-stack" data-iv-component="tooltip">
+  <div class="iv-cluster">
+    <button class="iv-button iv-button--secondary" type="button" data-iv-tooltip="There is no room above this button, so the label flips below it">Close to the top edge</button>
+  </div>
+
+  <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Sample controls: none of the buttons on this page does anything. Point at one and its label appears after a moment; move the keyboard focus to it and the label appears at once. Escape dismisses it.</p>
+
+  <div class="iv-cluster">
+    <button class="iv-button" type="button" data-iv-tooltip="Exports the current view as CSV">Export</button>
+    <button class="iv-button" type="button" data-iv-tooltip="Sends a copy to everyone listed as a reviewer of this report">Send for review</button>
+    <a href="#tooltip-note" data-iv-tooltip="Jumps to the note at the end of this page">Read the note</a>
+  </div>
+
+  <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0" id="tooltip-note">The label is complementary: every control above is also readable without it, because without JavaScript there is no tooltip at all. The text lives in <code>data-iv-tooltip</code> and reaches assistive technology through <code>aria-describedby</code> while it is on screen.</p>
+</div>

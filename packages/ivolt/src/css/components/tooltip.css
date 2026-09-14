@@ -1,0 +1,83 @@
+/* iVOLT — components/tooltip
+ * The shared bubble the Tooltip component creates under the body. It is fixed,
+ * placed in pixels by the component (`inset` inline, `data-iv-placement` for
+ * the side) and inert to the pointer, so it never swallows a click meant for
+ * the control it describes. Inverted colours keep it readable over any surface.
+ * Locals: --iv-tooltip-bg --iv-tooltip-fg --iv-tooltip-arrow
+ *         --iv-tooltip-arrow-size --iv-tooltip-enter
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-tooltip {
+  --iv-tooltip-bg: var(--iv-color-text);
+  --iv-tooltip-fg: var(--iv-color-bg);
+  --iv-tooltip-arrow: 50%;
+  --iv-tooltip-arrow-size: 4px;
+  --iv-tooltip-enter: 4px;
+
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: var(--iv-z-toast);
+  max-inline-size: 18rem;
+  padding: 0.35rem 0.6rem;
+  font-size: var(--iv-text-sm);
+  line-height: 1.35;
+  color: var(--iv-tooltip-fg);
+  text-align: start;
+  background-color: var(--iv-tooltip-bg);
+  border-radius: var(--iv-radius-sm);
+  box-shadow: var(--iv-shadow-2);
+  pointer-events: none;
+  animation: iv-tooltip-in var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* The bubble is hidden between uses; the rule above sets no display, so the
+ * default of [hidden] would already win, but the component owns both states. */
+.iv-tooltip[hidden] {
+  display: none;
+}
+
+/* Arrow: an 8px triangle under the bubble, kept pointing at the target even
+ * when the bubble had to be pushed inside the viewport. */
+.iv-tooltip::before {
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: var(--iv-tooltip-arrow);
+  content: "";
+  border: var(--iv-tooltip-arrow-size) solid transparent;
+  border-block-start-color: var(--iv-tooltip-bg);
+  translate: -50% 0;
+}
+
+.iv-tooltip[data-iv-placement="bottom"] {
+  --iv-tooltip-enter: -4px;
+}
+
+.iv-tooltip[data-iv-placement="bottom"]::before {
+  inset-block: auto 100%;
+  border-block-start-color: transparent;
+  border-block-end-color: var(--iv-tooltip-bg);
+}
+
+@keyframes iv-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(var(--iv-tooltip-enter));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-tooltip {
+    animation: none;
+  }
+}
+
+/* Forced colours drop the inverted palette: the outline keeps the bubble
+ * separate from whatever is behind it. */
+@media (forced-colors: active) {
+  .iv-tooltip {
+    border: var(--iv-border-width) solid CanvasText;
+  }
+}

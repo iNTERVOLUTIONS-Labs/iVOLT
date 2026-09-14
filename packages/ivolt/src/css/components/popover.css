@@ -1,0 +1,151 @@
+/* iVOLT — components/popover
+ * Surface of a native `[popover]` panel. The browser puts it in the top layer
+ * and hides it with `display: none`, so the entrance transitions from
+ * `@starting-style` and survives the discrete change with
+ * `transition-behavior: allow-discrete`. The component writes `margin: 0` and
+ * an inline `inset` (or anchor positioning) once it has an invoker to sit next
+ * to; without JavaScript the browser keeps it centred in the viewport.
+ * Locals: --iv-popover-bg --iv-popover-border --iv-popover-enter
+ *         --iv-popover-arrow-size --iv-popover-arrow-inset
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-popover {
+  --iv-popover-bg: var(--iv-color-surface-raised);
+  --iv-popover-border: var(--iv-color-border);
+  --iv-popover-enter: -0.375rem;
+  --iv-popover-arrow-size: 0.75rem;
+  --iv-popover-arrow-inset: 1.25rem;
+
+  max-inline-size: min(22rem, calc(100vw - 2rem));
+  padding: var(--iv-space-4);
+  color: var(--iv-color-text);
+  background-color: var(--iv-popover-bg);
+  border: var(--iv-border-width) solid var(--iv-popover-border);
+  border-radius: var(--iv-radius-lg);
+  box-shadow: var(--iv-shadow-3);
+}
+
+/* Placed by the component: the centring margins of the user agent would fight
+ * the inline `inset` it writes. */
+.iv-popover[data-iv-placement] {
+  margin: 0;
+}
+
+.iv-popover::backdrop {
+  background-color: transparent;
+}
+
+.iv-popover > :first-child {
+  margin-block-start: 0;
+}
+
+.iv-popover > :last-child {
+  margin-block-end: 0;
+}
+
+.iv-popover__title {
+  margin-block: 0 var(--iv-space-2);
+  font-size: var(--iv-text-lg);
+  font-weight: var(--iv-weight-semibold);
+  line-height: 1.25;
+}
+
+/* Entrance ----------------------------------------------------------- */
+
+/* Scoped to browsers that hide the panel themselves: anywhere else the styles
+ * below would leave a permanently invisible block in the flow. */
+@supports selector(:popover-open) {
+  .iv-popover {
+    opacity: 0;
+    transition-property: opacity, translate, overlay, display;
+    transition-duration: var(--iv-motion-base);
+    transition-timing-function: var(--iv-ease-out);
+    transition-behavior: allow-discrete;
+  }
+
+  .iv-popover:popover-open {
+    opacity: 1;
+    translate: none;
+  }
+
+  @starting-style {
+    .iv-popover:popover-open {
+      opacity: 0;
+      translate: 0 var(--iv-popover-enter);
+    }
+  }
+}
+
+.iv-popover[data-iv-placement="top"] {
+  --iv-popover-enter: 0.375rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-popover {
+    transition-property: none;
+  }
+}
+
+/* Arrow -------------------------------------------------------------- */
+
+/* A square rotated 45° and cut in half: the visible triangle sits on the edge
+ * of the panel and covers the border line under it. */
+/* The user agent gives popovers `overflow: auto`, which would clip an arrow
+ * that sits outside the panel. */
+.iv-popover--arrow {
+  overflow: visible;
+}
+
+.iv-popover--arrow::before {
+  position: absolute;
+  inset-block-end: 100%;
+  inset-inline-start: var(--iv-popover-arrow-inset);
+  inline-size: var(--iv-popover-arrow-size);
+  block-size: var(--iv-popover-arrow-size);
+  content: "";
+  background-color: var(--iv-popover-bg);
+  border-block-start: var(--iv-border-width) solid var(--iv-popover-border);
+  border-inline-start: var(--iv-border-width) solid var(--iv-popover-border);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  translate: 0 50%;
+  rotate: 45deg;
+}
+
+.iv-popover--arrow[data-iv-placement="top"]::before {
+  inset-block: 100% auto;
+  translate: 0 -50%;
+  rotate: 225deg;
+}
+
+.iv-popover[data-iv-align="end"]::before {
+  inset-inline: auto var(--iv-popover-arrow-inset);
+}
+
+/* Glass -------------------------------------------------------------- */
+
+.iv-popover--glass {
+  --iv-popover-bg: var(--iv-glass-bg-strong);
+  --iv-popover-border: var(--iv-glass-border);
+
+  box-shadow:
+    inset 0 1px 0 var(--iv-glass-highlight),
+    var(--iv-shadow-3);
+  -webkit-backdrop-filter: blur(var(--iv-blur-lg)) saturate(140%);
+  backdrop-filter: blur(var(--iv-blur-lg)) saturate(140%);
+}
+
+/* No backdrop-filter: fall back to an opaque surface so the text keeps its
+ * contrast instead of sitting on a translucent background. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .iv-popover--glass {
+    --iv-popover-bg: var(--iv-color-surface-raised);
+  }
+}
+
+@media (forced-colors: active) {
+  .iv-popover {
+    border-color: CanvasText;
+  }
+}

@@ -29,6 +29,8 @@
 @import url("./components/megamenu.css");
 @import url("./components/hero.css");
 @import url("./components/datepicker.css");
+@import url("./components/tooltip.css");
+@import url("./components/popover.css");
 @import url("./surfaces.css");
 @import url("./effects.css");
 @import url("./utilities.css");

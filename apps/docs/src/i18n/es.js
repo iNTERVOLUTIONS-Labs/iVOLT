@@ -52,7 +52,7 @@ export const componentLabels = {
   datatable: "Tabla de datos",
   picker: "Selector",
   carousel: "Carrusel",
-  megamenu: "Megamenú", hero: "Hero", dialog: "Diálogo", badge: "Insignia", alert: "Alerta",
+  megamenu: "Megamenú", hero: "Hero", popover: "Tooltip y popover", dialog: "Diálogo", badge: "Insignia", alert: "Alerta",
   table: "Tabla", breadcrumb: "Miga de pan", pagination: "Paginación", progress: "Progreso",
   skeleton: "Esqueleto", disclosure: "Desplegable", tabs: "Pestañas", dropdown: "Menú",
   drawer: "Panel lateral", toast: "Aviso",

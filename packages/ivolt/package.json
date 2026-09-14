@@ -91,6 +91,14 @@
       "types": "./dist/types/components/datepicker.d.ts",
       "default": "./dist/js/components/datepicker.js"
     },
+    "./tooltip": {
+      "types": "./dist/types/components/tooltip.d.ts",
+      "default": "./dist/js/components/tooltip.js"
+    },
+    "./popover": {
+      "types": "./dist/types/components/popover.d.ts",
+      "default": "./dist/js/components/popover.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",

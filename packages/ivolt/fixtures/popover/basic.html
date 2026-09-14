@@ -1,0 +1,19 @@
+<div class="iv-stack iv-texture-mesh iv-u-p-6" style="min-block-size: 17rem; border-radius: 0.75rem">
+  <div class="iv-cluster">
+    <button class="iv-button iv-button--secondary" type="button" popovertarget="pop-share">Share this report</button>
+    <button class="iv-button iv-button--secondary" type="button" popovertarget="pop-plan">Plan details</button>
+  </div>
+
+  <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0" id="popover-note">Made-up data: no report is shared and no plan is billed. Both panels are native <code>popover</code> elements, so they open without JavaScript too; with JavaScript they sit next to the button that opened them, and the focus goes into the panel and comes back on close. The mesh behind the buttons is only there to show the glass panel against something.</p>
+</div>
+
+<div class="iv-popover" id="pop-share" popover data-iv-component="popover">
+  <h3 class="iv-popover__title">Share this report</h3>
+  <p class="iv-u-text-sm">Anyone with the link would be able to read the report, but not to edit it. Nothing is shared from this page.</p>
+  <a href="#popover-note">Read what this panel stands for</a>
+</div>
+
+<div class="iv-popover iv-popover--arrow iv-popover--glass" id="pop-plan" popover data-iv-component="popover" data-iv-align="end">
+  <h3 class="iv-popover__title">Team plan</h3>
+  <p class="iv-u-text-sm iv-u-m-0">Invented figures: 24 seats in use of 30, renewed every March. The panel is aligned to the end of its button and carries the arrow and the glass surface.</p>
+</div>

@@ -133,6 +133,8 @@ class Dialog {
 | `Proximity` | `destroy()` (contenedor; raíz automática `data-iv-auto` en `body` si no hay ninguna) | `radius` (160); ver §8.10 |
 | `Reveal` | `destroy()`; `revealed` (contenedor; raíz automática como Proximity) | `threshold` (0.15), `repeat` (false), `stagger` (80); sin eventos propios; ver §8.10 |
 | `Datepicker` | `open() close() setValue(iso) clear() destroy()`; `value`, `date`, `isOpen` | `native` (`auto`), `locale`, `firstDay` (-1), `openText`, `prevText`, `nextText`, `todayText`, `clearText`, `dialogText`; ver §8.12 |
+| `Tooltip` | `show(target) hide() destroy()`; `target` (contenedor; raíz automática en `body`) | `delay` (300), `placement` (`top`); ver §8.13 |
+| `Popover` | `open() close() toggle() destroy()`; `isOpen`, `invoker` | `placement` (`bottom`), `align` (`start`), `offset` (8), `focus` (true); ver §8.13 |
 | `Form` | `validate() validateField(control) reset() destroy()`; `errors`, `fields` | `validateOn` (`blur`), `summary` (false), `summaryTitle` («Please fix the following»), `focusFirst` (true), `scroll` (true), `live` (true); ver §8.7 |
 | `Counter` | `update() destroy()`; `count`, `max`, `control` | `mode` (`chars`), `max` (0 = el `maxlength`), `warnAt` (0.9), `template` (vacío = «{count} / {max}» o «{count}»), `overText` («Too long»); ver §8.7 |
 
@@ -146,7 +148,7 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 |---|---|---|---|
 | `iv:init` / `iv:destroy` | no | tras crear / antes de liberar | — |
 | `iv:open` → `iv:opened` | sí / no | antes / después de abrir (dialog, drawer, dropdown, disclosure, toast) | `trigger`, `reason` |
-| `iv:close` → `iv:closed` | sí / no | antes / después de cerrar | `reason: "escape"\|"backdrop"\|"trigger"\|"form"\|"api"\|"external"\|"viewport"\|"timeout"\|"hover"\|"sibling"` (`hover` y `sibling` los usa el megamenú), `returnValue`. `external` cubre también cierre por clic fuera o por Tab en dropdown y el cierre de hermanos en un acordeón exclusivo |
+| `iv:close` → `iv:closed` | sí / no | antes / después de cerrar | `reason: "escape"\|"backdrop"\|"trigger"\|"form"\|"api"\|"external"\|"viewport"\|"timeout"\|"hover"\|"sibling"\|"light-dismiss"\|"select"` (`hover` y `sibling` los usa el megamenú; `light-dismiss` el popover; `select` el selector de fecha), `returnValue`. `external` cubre también cierre por clic fuera o por Tab en dropdown y el cierre de hermanos en un acordeón exclusivo |
 | `iv:change` → `iv:changed` | sí / no | tabs y disclosure en modo acordeón; combobox al confirmar un valor; picker al cambiar la selección; carousel al cambiar de diapositiva | `tab`, `panel`, `previousTab` (tabs/disclosure); `value`, `option`, `previousValue` (combobox); `value`, `added`, `removed` (picker); `index`, `previousIndex`, `reason` (carousel) |
 | `iv:sort` → `iv:sorted` | sí / no | data table, antes / después de ordenar (`reset()` emite solo `iv:sorted` con `column: -1`) | `column`, `direction`, `previousColumn`, `previousDirection` |
 | `iv:filter` → `iv:filtered` | sí / no | data table, antes / después de filtrar | previo: `query`, `previousQuery`; posterior: `query`, `visible`, `total` |
@@ -155,6 +157,8 @@ Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despach
 | `iv:invalid` | no | form, tras un `submit` con errores | `errors: { control, message }[]` |
 | `iv:valid` | sí | form, justo antes de dejar pasar un `submit` válido (cancelarlo impide el envío) | `errors: []` |
 | `iv:count` | no | counter, en cada actualización (también la inicial) | `count`, `max`, `remaining`, `over` |
+| `iv:show` → `iv:shown` | sí / no | tooltip al mostrar | `target` |
+| `iv:hide` → `iv:hidden` | no / no | tooltip al ocultar (no cancelable: la burbuja nunca se queda pegada) | `target` |
 | `iv:themechange` | no | en `document` | `theme`, `resolved: "light"\|"dark"` |
 
 `preventDefault()` en el evento previo aborta la acción y no se emite el posterior. Para que esto sea cierto con `<dialog>` nativo, `Dialog` intercepta las tres vías de cierre antes de que el navegador actúe: `submit` de `form[method="dialog"]` (se cancela y se llama a `close(value)` tras `iv:close`), el evento nativo `cancel` (Esc) y el clic en backdrop (`event.target === dialog` y punto fuera del rect de `iv-dialog__panel`). Un cierre externo no interceptable (por ejemplo `dialog.close()` directo del consumidor) emite solo `iv:closed` con `reason: "external"`.
@@ -467,18 +471,18 @@ Familia CSS de composición de portadas, «súper espectaculares» sin JS obliga
 | Opciones (`data-iv-*` en la raíz) | `delay` (300), `placement` (`top`\|`bottom`, por defecto `top`) |
 | Métodos | `show(target) hide() destroy()`; `target` (elemento visible o `null`) |
 | Eventos | `iv:show` (cancelable, `detail.target`) → `iv:shown`; `iv:hide` → `iv:hidden` |
-| CSS | `.iv-tooltip` (fijo, `z-index: var(--iv-z-toast)`, fondo `--iv-color-text` y texto `--iv-color-bg` (invertido), radio sm, `padding: .35rem .6rem`, `text-sm`, sombra 2, flecha `::before` de 8px, entrada opacidad+translate 4px en `--iv-motion-fast`), `[data-iv-placement="bottom"]`; reduced motion sin entrada |
+| CSS | `.iv-tooltip` (fijo, `z-index: var(--iv-z-toast)`, `--iv-tooltip-arrow` en línea mantiene la flecha sobre el objetivo cuando la burbuja se acota al viewport, fondo `--iv-color-text` y texto `--iv-color-bg` (invertido), radio sm, `padding: .35rem .6rem`, `text-sm`, sombra 2, flecha `::before` de 8px, entrada opacidad+translate 4px en `--iv-motion-fast`), `[data-iv-placement="bottom"]`; reduced motion sin entrada |
 
 **Popover (`popover`)**
 
 | Aspecto | Contrato |
 |---|---|
 | HTML servido | `<button class="iv-button" type="button" popovertarget="p-share">Share</button> <div class="iv-popover" id="p-share" popover data-iv-component="popover"><h3 class="iv-popover__title">…</h3><p>…</p></div>`. Sin JS: el atributo `popover` nativo abre, cierra por luz (clic fuera, Esc) y va a la capa superior, centrado en el viewport (comportamiento del navegador; aceptado como degradación) |
-| Tras `init` | escucha `beforetoggle`/`toggle` del elemento: `beforetoggle` (cancelable) → `iv:open`/`iv:close` cancelables (cancelar → `preventDefault` del nativo); `toggle` → `iv:opened`/`iv:closed`; al abrir, calcula la posición junto al invocador (`event.source` si existe, si no `[popovertarget="id"]`): `placement` `bottom` por defecto, `top` si no cabe abajo y hay más sitio arriba, alineado al inicio del invocador y acotado al viewport con `offset` px, escrito como `inset` inline (`margin: 0`); con soporte de `position-anchor`, lo usa (`anchor-name` en el invocador) y omite el cálculo; `focus: true` enfoca el primer enfocable del popover o el propio popover (`tabindex="-1"` temporal); al cerrar, si el foco estaba dentro, vuelve al invocador; `destroy` retira estilos y atributos añadidos |
+| Tras `init` | escucha `beforetoggle`/`toggle` del elemento: `beforetoggle` (cancelable) → `iv:open`/`iv:close` cancelables (cancelar → `preventDefault` del nativo); `toggle` → `iv:opened`/`iv:closed` (el navegador fusiona el `toggle` si el estado cambia dos veces en la misma tarea: entonces solo llega el posterior del estado final; los previos sí llegan siempre); al abrir, calcula la posición junto al invocador (`event.source` si existe, si no `[popovertarget="id"]`): `placement` `bottom` por defecto, `top` si no cabe abajo y hay más sitio arriba, alineado al inicio del invocador y acotado al viewport con `offset` px, escrito como `inset` inline (`margin: 0`); con soporte de `position-anchor`, lo usa (`anchor-name` en el invocador) y omite el cálculo; `focus: true` enfoca el primer enfocable del popover o el propio popover (`tabindex="-1"` temporal); al cerrar, si el foco estaba dentro, vuelve al invocador; `destroy` retira estilos y atributos añadidos |
 | Opciones (`data-iv-*`) | `placement` (`bottom`\|`top`), `align` (`start`\|`center`\|`end`, por defecto `start`), `offset` (8), `focus` (true) |
 | Métodos | `open() close() toggle() destroy()`; `isOpen`, `invoker` |
 | Eventos | `iv:open/opened/close/closed` (`reason: "trigger"\|"light-dismiss"\|"escape"\|"api"`; el nativo no distingue Esc de clic fuera: ambos llegan como `light-dismiss`) |
-| CSS | `.iv-popover` (surface-raised, borde, sombra 3, radio lg, `padding: var(--iv-space-4)`, `max-inline-size: min(22rem, calc(100vw - 2rem))`, `margin: 0` cuando `init` lo coloca (`[data-iv-placement]`), entrada con `@starting-style` (opacidad + translate 6px) y `transition-behavior: allow-discrete`, flecha `::before` opcional por `iv-popover--arrow`), `__title` (`text-lg`, semibold); `iv-popover--glass`; reduced motion sin entrada |
+| CSS | `.iv-popover` (surface-raised, borde, sombra 3, radio lg, `padding: var(--iv-space-4)`, `max-inline-size: min(22rem, calc(100vw - 2rem))`, `margin: 0` cuando `init` lo coloca (`[data-iv-placement]`), entrada con `@starting-style` (opacidad + translate 6px) y `transition-behavior: allow-discrete`, flecha `::before` opcional por `iv-popover--arrow` (con `overflow: visible`, porque la hoja de agente da `overflow: auto` a los popover); con anclaje nativo, si el navegador aplica un `position-try` la flecha puede no seguir el lado real: decisión aceptada), `__title` (`text-lg`, semibold); `iv-popover--glass`; reduced motion sin entrada |
 | Fuera de alcance | menús (usar dropdown), popovers anidados, posicionamiento con colisiones complejas |
 
 ## 8.14 Command palette (v0.5, congelado 2026-09-14)
