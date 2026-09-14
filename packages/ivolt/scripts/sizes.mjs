@@ -19,13 +19,13 @@ function report(label, file, budget) {
   rows.push({ label, file: file.replace(root + "/", ""), raw: buf.length, gzip: gz(buf), budget, ok: gz(buf) <= budget * KiB });
 }
 report("core.min.css", join(root, "dist/css/core.min.css"), 8);
-report("ivolt.min.css", join(root, "dist/css/ivolt.min.css"), 30);
-report("ivolt.flat.min.css", join(root, "dist/css/ivolt.flat.min.css"), 30);
+report("ivolt.min.css", join(root, "dist/css/ivolt.min.css"), 40);
+report("ivolt.flat.min.css", join(root, "dist/css/ivolt.flat.min.css"), 40);
 // Full JS: temporary bundle of index.js, minified, only for measurement.
 const js = await build({ entryPoints: [join(root, "src/js/index.js")], bundle: true, minify: true, format: "esm", write: false, define: { __IVOLT_VERSION__: JSON.stringify(pkg.version) } });
 const jsBuf = Buffer.from(js.outputFiles[0].contents);
-rows.push({ label: "index.js (bundled, minified, measurement only)", file: "src/js/index.js", raw: jsBuf.length, gzip: gz(jsBuf), budget: 18, ok: gz(jsBuf) <= 18 * KiB });
-report("ivolt.iife.min.js", join(root, "dist/js/ivolt.iife.min.js"), 18);
+rows.push({ label: "index.js (bundled, minified, measurement only)", file: "src/js/index.js", raw: jsBuf.length, gzip: gz(jsBuf), budget: 32, ok: gz(jsBuf) <= 32 * KiB });
+report("ivolt.iife.min.js", join(root, "dist/js/ivolt.iife.min.js"), 32);
 
 const lines = [`# Sizes — @intervolutions/ivolt ${pkg.version} @ ${commit} (${new Date().toISOString().slice(0, 10)})`, "", "Method: minified output, gzip level 9 via node:zlib. Each artifact measured separately.", "", "| Artifact | raw | gzip | budget | ok |", "|---|---|---|---|---|"];
 let fail = false;

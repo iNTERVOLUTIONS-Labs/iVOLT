@@ -77,3 +77,18 @@ Beta significa: alcance v0.2 completo, contratos congelados, gates verdes en tre
 | 6 | `CHANGELOG.md` 0.2.0-beta.0, `docs/RELEASE.md` actualizado, versión en `package.json`, `PROJECT_STATE.md` cerrado | hecho |
 
 Fuera de la beta (declarado, no verificado): prueba con lector de pantalla real (bloqueada en este entorno), datos de campo, dispositivos físicos.
+
+## 6. Ciclo v0.3 «Spectacular» (abierto 2026-09-14, ADR-030)
+
+Objetivo: que el framework sea espectacular por defecto (DESIGN_SYSTEM §9) manteniendo el contrato técnico. Hito: `0.3.0-beta.0`, mismas condiciones de cierre que §5 (gates en tres motores, Lighthouse, docs en dos idiomas, changelog, sin publicar).
+
+| Orden | Elemento | Contrato | Estado |
+|---|---|---|---|
+| 1 | Carrusel cinematográfico (`carousel`): scroll-snap sin JS; con JS, patrón APG por pestañas, efectos `slide`/`fade`/`cinema`, autoplay con barra de progreso y pausa, gestos, miniaturas | §8.5 | en curso |
+| 2 | Selector enriquecido (`picker`, tipo Select2): `<select>` nativo servido, búsqueda, selección múltiple con chips, grupos, teclado completo | §8.6 | en curso |
+| 3 | Formularios: validación (`form`) con mensajes por tipo de error, resumen y foco; contador de caracteres/palabras (`counter`); CSS: etiquetas flotantes, grupos con prefijos y sufijos, interruptor, rango, archivo, textarea auto-ajustable | §8.7 | pendiente |
+| 4 | Superficies y texturas (`surfaces.css`): cristal, grano, malla, aurora, borde luminoso, texto degradado, barrido; tokens `glass`/`blur`/`glow`/`texture` | §8.8 | pendiente |
+| 5 | Web: páginas de carrusel, selector, validación, superficies; formulario ampliado; gabinete de la home con los nuevos componentes; español | — | pendiente |
+| 6 | Cierre: presupuestos medidos por módulo, `verify`, changelog `0.3.0-beta.0`, estado | — | pendiente |
+
+Fuera del ciclo: datepicker, constructor de temas, wrappers de frameworks; lector de pantalla sigue bloqueado.

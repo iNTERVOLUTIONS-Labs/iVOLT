@@ -68,6 +68,9 @@
   --iv-radius-full: 999rem;
   --iv-border-width: 1px;
   --iv-border-width-strong: 3px;
+  --iv-blur-sm: 8px;
+  --iv-blur-md: 16px;
+  --iv-blur-lg: 28px;
   --iv-focus-width: 2px;
   --iv-focus-offset: 2px;
   --iv-z-dropdown: 100;
@@ -115,6 +118,13 @@
   --iv-shadow-1: 0 1px 2px rgb(8 19 16 / 0.06);
   --iv-shadow-2: 0 4px 12px rgb(8 19 16 / 0.10);
   --iv-shadow-3: 0 12px 32px rgb(8 19 16 / 0.14);
+  --iv-glass-bg: rgb(255 255 255 / 0.55);
+  --iv-glass-bg-strong: rgb(255 255 255 / 0.78);
+  --iv-glass-border: rgb(255 255 255 / 0.65);
+  --iv-glass-highlight: rgb(255 255 255 / 0.9);
+  --iv-glow-primary: rgb(10 106 67 / 0.35);
+  --iv-glow-secondary: rgb(29 95 184 / 0.25);
+  --iv-texture-grain-opacity: 0.05;
 }
 [data-iv-theme="dark"] {
   color-scheme: dark;
@@ -149,6 +159,13 @@
   --iv-shadow-1: 0 0 0 1px #1B2C25;
   --iv-shadow-2: 0 4px 12px rgb(0 0 0 / 0.4);
   --iv-shadow-3: 0 12px 32px rgb(0 0 0 / 0.5);
+  --iv-glass-bg: rgb(18 32 26 / 0.45);
+  --iv-glass-bg-strong: rgb(18 32 26 / 0.72);
+  --iv-glass-border: rgb(255 255 255 / 0.12);
+  --iv-glass-highlight: rgb(255 255 255 / 0.2);
+  --iv-glow-primary: rgb(41 245 154 / 0.45);
+  --iv-glow-secondary: rgb(111 179 255 / 0.35);
+  --iv-texture-grain-opacity: 0.09;
 }
 @media (prefers-color-scheme: dark) {
   [data-iv-theme="system"] {
@@ -184,6 +201,13 @@
     --iv-shadow-1: 0 0 0 1px #1B2C25;
     --iv-shadow-2: 0 4px 12px rgb(0 0 0 / 0.4);
     --iv-shadow-3: 0 12px 32px rgb(0 0 0 / 0.5);
+    --iv-glass-bg: rgb(18 32 26 / 0.45);
+    --iv-glass-bg-strong: rgb(18 32 26 / 0.72);
+    --iv-glass-border: rgb(255 255 255 / 0.12);
+    --iv-glass-highlight: rgb(255 255 255 / 0.2);
+    --iv-glow-primary: rgb(41 245 154 / 0.45);
+    --iv-glow-secondary: rgb(111 179 255 / 0.35);
+    --iv-texture-grain-opacity: 0.09;
   }
 }
 /* A theme scope re-applies text and background so nested scopes do not inherit the parent theme's computed colours. */

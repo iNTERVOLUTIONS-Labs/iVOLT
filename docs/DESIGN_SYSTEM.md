@@ -111,3 +111,15 @@ Objetivo declarado: la web debe poder competir por un reconocimiento en Awwwards
 Efectos vetados por contrato: vídeo de fondo, partículas pesadas, WebGL obligatorio, cursor personalizado, ruido que reduzca la legibilidad, scroll hijacking, y **cualquier rejilla o patrón de cuadrícula/puntos de fondo** (en la página, en el hero, en tarjetas o en las previsualizaciones de fixtures) salvo que el propietario la pida explícitamente en ese encargo (ADR-028, 2026-09-14). La profundidad se consigue con luz, capas, tipografía y movimiento.
 
 Revisión del propietario (2026-09-14) tras el primer rediseño: «muy muy deficiente». Segunda ronda con dirección concreta en `docs/design/DIRECTION_R2.md`; el criterio de aceptación sigue siendo el de la tabla, más la revisión visual del propietario. Ronda 2 implementada el mismo día (ADR-029): hero 100svh con arcos en canvas 2D, secciones sin tarjetas, gabinete pegajoso, corte de temas, bloque invertido y lockup a todo el ancho; Lighthouse 100/100/100/100 en `/` y `/es` (`LIGHTHOUSE.md`). Pendiente: aceptación visual del propietario.
+
+## 9. Capa expresiva del framework (ADR-030)
+
+El framework debe impresionar por defecto, no solo funcionar. Principios de la capa expresiva:
+
+- **Profundidad real:** cristal (`iv-glass`, `backdrop-filter` con fallback sólido), grano (`iv-texture-grain`), mallas de gradiente (`iv-texture-mesh`), aurora animada (`iv-texture-aurora`, estática con `prefers-reduced-motion`), bordes luminosos (`iv-glow`). Tokens: `--iv-glass-*`, `--iv-blur-*`, `--iv-glow-*`, `--iv-texture-grain-opacity`.
+- **Movimiento con argumento:** transiciones de 400–700 ms con `--iv-ease-out`, entradas escalonadas, Ken Burns en medios del carrusel, chips que aparecen con escala, errores que sacuden una vez (`iv-shake`, 320 ms). Todo `transform`/`opacity`/`clip-path`; nada en bucle sin interacción salvo aurora, autoplay del carrusel y barra de progreso.
+- **Estados con carácter:** foco con halo (`--iv-glow-primary`) además del anillo; inválido con color, icono y mensaje; válido con marca de verificación; cargando con shimmer.
+- **Controles enriquecidos, HTML nativo debajo:** `<select>` servido bajo el selector enriquecido, `<textarea maxlength>` bajo el contador, `<form>` con atributos de validación bajo la validación, lista con `scroll-snap` bajo el carrusel.
+- **Composición generosa:** radios `lg` en superficies grandes, sombras 2–3 en flotantes, contrastes AA en todas las superficies translúcidas (comprobados con axe sobre cristal en claro y oscuro).
+
+Lo que no cambia: sin rejillas ni patrones de puntos (ADR-028), sin cursor propio, sin WebGL, sin recursos remotos, sin imágenes de mapa de bits en el paquete (texturas por gradiente o SVG en línea).
