@@ -62,3 +62,18 @@ Tras cerrar v0.1 (fases 0–4) y el rediseño de la web (ADR-027), el trabajo co
 | 2 | Estructura i18n de docs y traducción al español | pendiente | cadenas ya en `apps/docs/src/i18n/en.js`; páginas `src/pages/es/` |
 | 3 | Lector de pantalla (NVDA, VoiceOver) | bloqueado en este entorno | lista en `A11Y_REVIEW.md` §6, requiere una persona con AT |
 | 4 | Data table con ordenación y filtro | pendiente | sin virtualización |
+
+## 5. Hito beta: `0.2.0-beta.0` (definido 2026-09-14)
+
+Beta significa: alcance v0.2 completo, contratos congelados, gates verdes en tres motores, sin fallos abiertos conocidos de severidad alta, notas y pasos de publicación actualizados; **sigue sin publicarse** sin autorización. Condiciones, en orden de ejecución:
+
+| # | Condición | Estado |
+|---|---|---|
+| 1 | Combobox integrado (entrada, `exports`, `index.js`, flat), documentado y probado en Chromium, Firefox y WebKit | en curso |
+| 2 | Rediseño de la web, ronda 2 (`docs/design/DIRECTION_R2.md`), sin rejillas, Lighthouse ≥ 95 rendimiento y 100 accesibilidad en la home, capturas revisadas | en curso |
+| 3 | Data table con ordenación y filtro sin virtualización, mejora progresiva sobre `<table>`, contrato en `API_CONTRACT.md`, docs y pruebas | pendiente |
+| 4 | Docs en español: estructura i18n (`src/pages/es/`, cadenas `src/i18n/es.js`), selector de idioma, `hreflang`, búsqueda por idioma | pendiente |
+| 5 | Presupuestos de tamaño revisados con los módulos nuevos (`docs/QUALITY.md` §1) y `npm run verify` verde | pendiente |
+| 6 | `CHANGELOG.md` 0.2.0-beta.0, `docs/RELEASE.md` actualizado, versión en `package.json`, `PROJECT_STATE.md` cerrado | pendiente |
+
+Fuera de la beta (declarado, no verificado): prueba con lector de pantalla real (bloqueada en este entorno), datos de campo, dispositivos físicos.

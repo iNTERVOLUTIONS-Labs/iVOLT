@@ -27,6 +27,7 @@ Framework frontend (CSS + HTML + JS opcional) de iNTERVOLUTIONS. Coordinación e
 - Ejemplos honestos: sin botones sin destino, formularios que no envían nada lo dicen, datos ficticios señalados.
 - Sin publicar, desplegar, comprar dominios, activar servicios de pago ni generar imágenes con modelos de pago.
 - Documentar por fixture: snippet, preview y prueba salen del mismo archivo.
+- Diseño de la web: listón de premio (ADR-027). Nunca rejillas ni patrones de cuadrícula/puntos de fondo salvo petición explícita del propietario (ADR-028).
 
 ## Propiedad de archivos
 Integrador único para `package.json`, `package-lock.json`, `tokens/tokens.json`, entradas (`core.css`, `ivolt.css`, `index.js`, `iife.js`), `exports`, contratos y `PROJECT_STATE.md`. Los subagentes proponen cambios en su entrega.

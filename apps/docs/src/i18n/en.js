@@ -44,7 +44,7 @@ export const nav = [
     { href: "/foundations/accessibility", label: "Accessibility" },
     { href: "/foundations/coexistence", label: "Coexisting with CSS" },
   ] },
-  { group: "Components", items: ["button", "card", "form", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
+  { group: "Components", items: ["button", "card", "form", "combobox", "dialog", "badge", "alert", "table", "breadcrumb", "pagination", "progress", "skeleton", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Project", items: [
     { href: "/changelog", label: "Changelog" },
     { href: "/roadmap", label: "Roadmap" },

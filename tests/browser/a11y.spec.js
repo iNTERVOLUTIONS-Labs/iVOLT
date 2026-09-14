@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const fixtures = ["button/variants", "button/sizes", "button/states", "button/group", "card/basic", "card/media", "form/basic", "form/error", "layout/grid", "theme/nested", "badge/variants", "alert/variants", "table/basic", "table/stack", "breadcrumb/basic", "pagination/basic", "progress/basic", "skeleton/card", "disclosure/basic", "disclosure/accordion", "tabs/basic", "dropdown/basic", "drawer/basic", "toast/basic"];
+const fixtures = ["button/variants", "button/sizes", "button/states", "button/group", "card/basic", "card/media", "form/basic", "form/error", "layout/grid", "theme/nested", "badge/variants", "alert/variants", "table/basic", "table/stack", "breadcrumb/basic", "pagination/basic", "progress/basic", "skeleton/card", "disclosure/basic", "disclosure/accordion", "tabs/basic", "dropdown/basic", "drawer/basic", "toast/basic", "combobox/basic", "combobox/strict"];
 
 for (const theme of ["light", "dark"]) {
   for (const f of fixtures) {

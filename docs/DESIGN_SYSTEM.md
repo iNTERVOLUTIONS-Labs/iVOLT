@@ -108,4 +108,6 @@ Objetivo declarado: la web debe poder competir por un reconocimiento en Awwwards
 | Contenido | ejemplos reales del framework, datos medidos, sin promesas vacías | contratos de snippets y honestidad documentados |
 | Rendimiento | solo `transform`/`opacity` animados, gradientes prerrenderizados en vez de `filter: blur` animado, fuentes ≤ 30 KB, Lighthouse ≥ 95 en rendimiento en las rutas medidas | `docs/LIGHTHOUSE.md` |
 
-Efectos vetados por contrato: vídeo de fondo, partículas pesadas, WebGL obligatorio, cursor personalizado, ruido tras texto, scroll hijacking.
+Efectos vetados por contrato: vídeo de fondo, partículas pesadas, WebGL obligatorio, cursor personalizado, ruido que reduzca la legibilidad, scroll hijacking, y **cualquier rejilla o patrón de cuadrícula/puntos de fondo** (en la página, en el hero, en tarjetas o en las previsualizaciones de fixtures) salvo que el propietario la pida explícitamente en ese encargo (ADR-028, 2026-09-14). La profundidad se consigue con luz, capas, tipografía y movimiento.
+
+Revisión del propietario (2026-09-14) tras el primer rediseño: «muy muy deficiente». Segunda ronda con dirección concreta en `docs/design/DIRECTION_R2.md`; el criterio de aceptación sigue siendo el de la tabla, más la revisión visual del propietario.
