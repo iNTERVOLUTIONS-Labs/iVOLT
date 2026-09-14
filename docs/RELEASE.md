@@ -1,6 +1,12 @@
-# Release: v0.3.0-beta.0 (en preparación), v0.2.0-beta.0 y v0.1.0-alpha.0 (no publicadas)
+# Release: v0.5.0-beta.0 (en preparación) y versiones anteriores (no publicadas)
 
-Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2) y §6 (v0.3).
+Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
+
+## 0b. Notas de versión 0.4.0-beta.0 y 0.5.0-beta.0 (borrador)
+
+**0.4 «Navigation & light»**: revisión adversaria (dos revisores Opus, diecisiete defectos corregidos con pruebas: ADR-034/035), **Megamenu**, **efectos** (`iv-edge-glint`, `iv-edge-near` + `Proximity`, `iv-scan`, `iv-spark`, `iv-pulse-glow`, `Reveal`) y **Hero**; el megamenú vive también en la cabecera de la web. **0.5 «Time & help»**: **Datepicker**, **Tooltip** y **Popover**, **Command palette** y el **constructor de temas** de la web. Presupuesto de JS agrupado a 48 KiB (ADR-037); CSS 40 KiB sin cambios.
+
+Pasos de publicación para la beta, cuando se autorice: `npm version 0.5.0-beta.0 --no-git-tag-version -w @intervolutions/ivolt` (ya es la versión actual), etiqueta git `v0.5.0-beta.0`, `npm publish --access public --tag beta` (nunca `latest` antes de 0.5.0); el resto igual que §3.
 
 ## 0a. Notas de versión 0.3.0-beta.0 (borrador)
 

@@ -6,6 +6,25 @@ import Base from "../../layouts/Base.astro";
     <h1>Cambios</h1>
     <p>iVOLT todavía no se ha publicado. Hay una versión en curso y ningún paquete publicado, así que aquí no hay fechas de publicación ni se van a inventar. Hasta que salga <code>0.1.0</code>, instálalo desde el repositorio o desde un tarball hecho con <code>npm pack</code>.</p>
 
+    <h2>0.5.0-beta (sin publicar)</h2>
+    <p>Tiempo y ayuda: fechas, pistas, popovers, una paleta de comandos y un constructor de temas.</p>
+    <ul>
+      <li><strong>Selector de fecha</strong> (<code>iv-datepicker</code>): un campo de fecha nativo gana un diálogo de calendario accesible con rejilla por teclado, mínimo, máximo y paso, nombres localizados y un primer día de la semana que sigue a la configuración regional.</li>
+      <li><strong>Tooltip y popover</strong>: pistas desde <code>data-iv-tooltip</code> al pasar el puntero y al enfocar; popovers ricos sobre el atributo nativo <code>popover</code> colocados junto a su invocador.</li>
+      <li><strong>Paleta de comandos</strong> (<code>iv-command</code>): una búsqueda modal de acciones que se abre con Ctrl+K, filtra al escribir, se maneja con el teclado y tiene grupos, atajos y recientes.</li>
+      <li><strong>Constructor de temas</strong> en la documentación: personalización de tokens en vivo sobre componentes reales y el CSS para copiar.</li>
+      <li><strong>Presupuesto</strong> del JavaScript agrupado ampliado a 48 KiB (gzip) con tabla por módulo; cada módulo sigue importándose por separado.</li>
+    </ul>
+
+    <h2>0.4.0-beta (sin publicar)</h2>
+    <p>Navegación y luz, tras una revisión adversaria que corrigió diecisiete defectos en los componentes y en la web.</p>
+    <ul>
+      <li><strong>Megamenú</strong> (<code>iv-megamenu</code>): paneles anchos con grupos de enlaces, tarjetas y barra inferior; hover y foco sin JavaScript, hover intencional, teclado, superposición, paneles inertes y acordeón móvil con él. La cabecera de la web lo usa.</li>
+      <li><strong>Efectos</strong> (<code>effects.css</code>, <code>Proximity</code>, <code>Reveal</code>): un destello que recorre el borde, bordes que se iluminan al acercar el puntero, líneas de exploración, chispas, un halo que respira y revelados al hacer scroll.</li>
+      <li><strong>Hero</strong> (<code>iv-hero</code>): aperturas de borde a borde con medio, scrim, título de gran formato que sube, entradilla, acciones y aside; variantes centrada, dividida, cinematográfica y terminal.</li>
+      <li><strong>Correcciones</strong>: todo <code>select.iv-select</code> se enriquece por defecto con <code>data-iv-native</code> como salida; selectores y combobox abren abajo salvo que haya más sitio arriba y nunca salen del viewport; los toasts se pintan sobre los diálogos modales; arrastrar una selección ya no cierra los diálogos; las pestañas se activan con Espacio sin desplazar la página; interruptores y rangos sobreviven a los colores forzados; palabras largas y código en línea ya no ensanchan las páginas.</li>
+    </ul>
+
     <h2>0.3.0-beta (sin publicar)</h2>
     <p>El ciclo «Spectacular»: el framework pasa a ser expresivo por defecto sin cambiar su contrato técnico.</p>
     <ul>

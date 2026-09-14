@@ -1,10 +1,29 @@
 ---
 import Base from "../layouts/Base.astro";
 ---
-<Base title="Changelog" description="What exists in iVOLT so far: the unreleased 0.3.0-beta with carousel, picker, form validation and surfaces, the 0.2.0-beta and 0.1.0-alpha it builds on, and the limitations that are known and unresolved.">
+<Base title="Changelog" description="What exists in iVOLT so far: the unreleased 0.5.0-beta with datepicker, tooltip, popover and command palette, the 0.4.0-beta with megamenu, effects and hero, and the earlier betas and alpha, with the limitations that are known and unresolved.">
   <article class="docs-prose">
     <h1>Changelog</h1>
     <p>iVOLT has not been released yet. There is one version in progress and no published package, so there are no release dates here and none will be invented. Until <code>0.1.0</code> ships, install from the repository or from a tarball made with <code>npm pack</code>.</p>
+
+    <h2>0.5.0-beta (unreleased)</h2>
+    <p>Time and help: dates, hints, popovers, a command palette and a theme builder.</p>
+    <ul>
+      <li><strong>Datepicker</strong> (<code>iv-datepicker</code>): a native date input gains an accessible calendar dialog with a keyboard grid, min, max and step, localised names and a first day of the week that follows the locale.</li>
+      <li><strong>Tooltip and popover</strong>: hints from <code>data-iv-tooltip</code> on hover and focus; rich popovers on the native <code>popover</code> attribute placed next to their invoker.</li>
+      <li><strong>Command palette</strong> (<code>iv-command</code>): a modal search for actions opened with Ctrl+K, filtered as you type, driven by the keyboard, with groups, shortcuts and recent items.</li>
+      <li><strong>Theme builder</strong> in the documentation: live token overrides on real components and the CSS to copy.</li>
+      <li><strong>Budget</strong> for the bundled JavaScript raised to 48 KiB (gzip) with a per-module table; every module still imports on its own.</li>
+    </ul>
+
+    <h2>0.4.0-beta (unreleased)</h2>
+    <p>Navigation and light, after an adversarial review that fixed seventeen defects across the components and the site.</p>
+    <ul>
+      <li><strong>Megamenu</strong> (<code>iv-megamenu</code>): wide panels with link groups, cards and a bottom bar; hover and focus without JavaScript, intentional hover, keyboard, overlay, inert panels and a mobile accordion with it. The site header uses it.</li>
+      <li><strong>Effects</strong> (<code>effects.css</code>, <code>Proximity</code>, <code>Reveal</code>): a glint that travels the border, borders that light up as the pointer approaches, scan lines, sparks, a breathing glow and scroll reveals.</li>
+      <li><strong>Hero</strong> (<code>iv-hero</code>): full-bleed openings with media, scrim, oversized rising title, lead, actions and an aside; centred, split, cinematic and terminal variants.</li>
+      <li><strong>Fixes</strong>: every <code>select.iv-select</code> is enhanced by default with <code>data-iv-native</code> as the opt-out; pickers and comboboxes open below unless there is more room above and never leave the viewport; toasts paint above modal dialogs; selection drags no longer close dialogs; tabs activate on Space without scrolling; switches and ranges survive forced colours; long words and inline code no longer widen pages.</li>
+    </ul>
 
     <h2>0.3.0-beta (unreleased)</h2>
     <p>The "Spectacular" cycle: the framework becomes expressive by default without changing its technical contract.</p>
