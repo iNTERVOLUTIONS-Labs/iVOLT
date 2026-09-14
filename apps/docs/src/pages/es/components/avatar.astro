@@ -1,0 +1,56 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Avatar" description="Avatar de iVOLT: una imagen o unas iniciales en cuatro tamaños, modificadores cuadrado y anillo, punto de estado con su significado en texto y grupos superpuestos con recuento. Solo CSS.">
+  <article class="docs-prose">
+    <h1>Avatar</h1>
+    <p>Un cuadrado o un círculo pequeño que representa a una persona o a una cosa: una imagen, o las iniciales cuando no hay imagen. Cuatro tamaños, un anillo opcional, un punto de estado y grupos que se superponen con un recuento para el resto. No lleva identidad propia: el nombre accesible sale del <code>alt</code> de la imagen o de un <code>aria-label</code> en el contenedor. Sin JavaScript.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/avatar.css</code> (en <code>ivolt.css</code>). Añadido en la v0.6.</p>
+    <Fixture name="avatar/basic" title="Tamaños, anillo, cuadrado y estado" />
+    <h2>Grupos</h2>
+    <p><code>iv-avatar-group</code> coloca las caras en fila, cada una tapando a la anterior algo menos de una quinta parte de su tamaño y con la primera encima. El último elemento puede ser <code>iv-avatar-group__more</code>: una cara atenuada con el recuento de quienes no se ven, y ese recuento en su etiqueta. El solape se ajusta en una línea con <code>--iv-avatar-overlap</code> en el grupo.</p>
+    <Fixture name="avatar/group" title="Grupos superpuestos" />
+    <h2>Anatomía</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Clase</th><th>Función</th></tr></thead>
+        <tbody>
+          <tr><td><code>iv-avatar</code></td><td>La cara: 2,5rem, radio completo y fondo con tinte de marca para las iniciales.</td></tr>
+          <tr><td><code>iv-avatar__img</code></td><td>La imagen de dentro, recortada con <code>object-fit: cover</code>. Dale <code>width</code> y <code>height</code>.</td></tr>
+          <tr><td><code>iv-avatar--sm --lg --xl</code></td><td>1,75rem, 3,5rem y 5rem, todos a través de <code>--iv-avatar-size</code>.</td></tr>
+          <tr><td><code>iv-avatar--square</code></td><td>Cuadrado redondeado en lugar de círculo.</td></tr>
+          <tr><td><code>iv-avatar--ring</code></td><td>Un anillo de marca alrededor de la cara.</td></tr>
+          <tr><td><code>iv-avatar__status</code></td><td>Punto en la esquina inferior final; <code>data-iv-tone</code> admite <code>success</code>, <code>warning</code>, <code>danger</code> y <code>muted</code>.</td></tr>
+          <tr><td><code>iv-avatar-group</code>, <code>iv-avatar-group__more</code></td><td>La fila y su recuento sobrante.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Las iniciales son la forma por defecto: ponlas en un <code>&lt;span aria-hidden="true"&gt;</code> dentro de un avatar con <code>role="img"</code> y el nombre completo en <code>aria-label</code>, para que un lector de pantalla lea a la persona y no dos letras. No hay una clase modificadora aparte para ellas.</p>
+    <h2>Tokens y locales</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-avatar-size</code></td><td><code>2.5rem</code></td><td>Diámetro de la cara; los modificadores de tamaño solo cambian esto.</td></tr>
+          <tr><td><code>--iv-avatar-radius</code></td><td><code>var(--iv-radius-full)</code></td><td>Radio de las esquinas; <code>--square</code> lo lleva a <code>md</code>.</td></tr>
+          <tr><td><code>--iv-avatar-ring</code></td><td><code>transparent</code></td><td>Color del anillo; <code>--ring</code> lo pone en el de marca.</td></tr>
+          <tr><td><code>--iv-avatar-overlap</code></td><td><code>calc(var(--iv-avatar-size) * -0.18)</code></td><td>Cuánto tapa cada cara del grupo a la anterior.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>El solape por defecto es un cálculo y no una medida fija para que una fila de caras pequeñas y otra de grandes mantengan el mismo ritmo y las iniciales de detrás sigan legibles. Ponlo en el grupo, no en una cara.</p>
+    <h2>Accesibilidad y teclado</h2>
+    <p>Un avatar no es interactivo, así que no hay nada que enfocar salvo que lo envuelvas en un enlace o un botón, y entonces ese enlace necesita su propio nombre accesible, no solo la imagen. Decide una vez si el avatar es contenido o decoración: con nombre es la imagen de una persona, y repetir ese nombre en el texto de al lado le da lo mismo dos veces a un lector de pantalla; en ese caso pon el avatar con <code>alt=""</code> o <code>aria-hidden</code> y deja que el texto lleve la identidad. El punto de estado tiene que repetir su significado con palabras, como hace la fixture con un «Online» invisible; el color solo no dice nada. El recuento sobrante indica a cuántas personas no se ve, para que la fila no mienta por omisión.</p>
+    <h2>Sin JavaScript</h2>
+    <p>No hay JavaScript. Una imagen rota cae al texto de su <code>alt</code>, centrado en la cara, en lugar de a un icono partido.</p>
+    <h2>Errores frecuentes</h2>
+    <ul>
+      <li>Iniciales sin nombre: dos letras leídas en voz alta son ruido.</li>
+      <li><code>alt="avatar"</code> o <code>alt="foto de perfil"</code>. O el nombre, o vacío.</li>
+      <li>Un punto de estado que solo existe en color.</li>
+      <li>Un grupo de veinte caras sin recuento. Muestra cuatro o cinco y di cuántas faltan.</li>
+      <li>Fotografías de personas inventadas para una demostración. Las fixtures de aquí usan iniciales inventadas y un dibujo, y lo dicen.</li>
+    </ul>
+  </article>
+</Base>

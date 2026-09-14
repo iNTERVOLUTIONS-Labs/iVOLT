@@ -8,8 +8,11 @@ import Fixture from "../../components/Fixture.astro";
     <p>The native <code>&lt;progress&gt;</code> element, styled. Give it a visible label with <code>&lt;label for&gt;</code> or an <code>aria-label</code>. Without <code>value</code> it is indeterminate and animates; under reduced motion the animation stops.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/progress.css</code> (in <code>ivolt.css</code>).</p>
     <Fixture name="progress/basic" />
-    <h2>Modifiers</h2>
-    <p><code>--sm</code>; <code>--success --warning --danger</code> for the bar colour.</p>
+    <h2>Sizes</h2>
+    <p>Three thicknesses and one public local. <code>iv-progress--sm</code> is 0.25rem, the default 0.5rem and <code>iv-progress--lg</code> 1rem with a full radius; all three only set <code>--iv-progress-size</code>, so any other thickness is one declaration on the element. Added in v0.6, together with the rename: <code>--iv-progress-size</code> replaces the <code>--iv-progress-height</code> of v0.1 to v0.5.</p>
+    <Fixture name="progress/sizes" title="Three sizes and a custom thickness" />
+    <h2>Modifiers and locals</h2>
+    <p><code>--sm</code> and <code>--lg</code> for the thickness; <code>--success --warning --danger</code> for the bar colour. Public locals: <code>--iv-progress-size</code> (track thickness), <code>--iv-progress-color</code> (the bar), <code>--iv-progress-track</code> and <code>--iv-progress-track-subtle</code> (the groove behind it) and <code>--iv-progress-groove</code> (its inner shadow, drawn with <code>--iv-color-hover-surface</code>).</p>
     <h2>Common mistakes</h2>
     <ul><li>A <code>div</code> with a background instead of the native element.</li><li>Progress without a label or without <code>max</code>.</li></ul>
   </article>

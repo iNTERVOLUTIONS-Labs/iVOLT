@@ -307,6 +307,14 @@
 @media (max-width: 30em) {
   .docs-fixture__preview .iv-badge { white-space: normal; }
 }
+/* A fixture that is a page of its own — a site header needs a screen and a half to scroll
+   over — is shown inside its own scroll port, so the filler never lands in the article. */
+.docs-fixture--viewport .docs-fixture__preview {
+  max-block-size: var(--docs-fixture-port, 26rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
 .docs-fixture__code { position: relative; border-end-start-radius: var(--iv-radius-lg); border-end-end-radius: var(--iv-radius-lg); overflow: hidden; }
 /* The snippet is the documentation: it wraps rather than hiding half of itself behind a scrollbar. */
 .docs-fixture__code pre {

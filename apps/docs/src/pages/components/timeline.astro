@@ -1,0 +1,60 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Timeline" description="iVOLT timeline: an ordered list of moments on a rail, with done, current and upcoming markers, alternating and horizontal variants. CSS only.">
+  <article class="docs-prose">
+    <h1>Timeline</h1>
+    <p>An ordered list of moments on a rail: a date, a title and as much text as each moment needs. It is an <code>&lt;ol&gt;</code> with a <code>&lt;time&gt;</code> per item, so the order and the dates are in the markup and not only in the drawing. State is written by the author in <code>data-iv-state</code>; the marker changes shape as well as colour. No JavaScript.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/timeline.css</code> (in <code>ivolt.css</code>). Added in v0.6.</p>
+    <Fixture name="timeline/basic" title="Vertical rail" />
+    <h2>Alternating sides</h2>
+    <p><code>iv-timeline--alternate</code> hangs the items from a central rail, alternating sides from the <code>md</code> breakpoint up; below it the list falls back to the single rail of the default. It wants short entries: a long paragraph on the left and a short one on the right makes a ragged column.</p>
+    <Fixture name="timeline/alternate" title="Alternating rail" />
+    <h2>Horizontal rail</h2>
+    <p><code>iv-timeline--horizontal</code> lays the items out in columns along a horizontal rail from <code>md</code> up, scrolling with snap points. A scroll region needs to be reachable from the keyboard, so the author serves <code>tabindex="0"</code> and a label on the list itself; the CSS gives it a focus ring.</p>
+    <Fixture name="timeline/horizontal" title="Horizontal rail" />
+    <h2>Anatomy</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Class</th><th>Element</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td><code>iv-timeline</code></td><td><code>&lt;ol&gt;</code></td><td>The rail. Ordered, because a timeline has a direction.</td></tr>
+          <tr><td><code>iv-timeline__item</code></td><td><code>&lt;li&gt;</code></td><td>One moment; draws its segment of the line and its marker.</td></tr>
+          <tr><td><code>iv-timeline__time</code></td><td><code>&lt;time datetime&gt;</code></td><td>The date, in small caps mono. A machine-readable <code>datetime</code> makes it more than a label.</td></tr>
+          <tr><td><code>iv-timeline__body</code></td><td><code>&lt;div&gt;</code></td><td>Everything else: title, text, links.</td></tr>
+          <tr><td><code>iv-timeline__title</code></td><td>heading</td><td>Name of the moment; pick the level the page needs.</td></tr>
+          <tr><td><code>iv-timeline--compact</code></td><td>modifier</td><td>Tighter rhythm for a list of many short entries.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>States</h2>
+    <p><code>data-iv-state</code> on an item takes <code>done</code> (filled marker), <code>current</code> (filled with the shared focus halo and a slow pulse) and <code>upcoming</code> (hollow marker and muted text). An item without the attribute is drawn like a done one. The pulse stops under <code>prefers-reduced-motion</code>, and in forced-colors mode the markers keep their outline so the three states stay apart without colour.</p>
+    <h2>Tokens and locals</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-timeline-line</code></td><td><code>var(--iv-color-border)</code></td><td>Colour of the rail.</td></tr>
+          <tr><td><code>--iv-timeline-marker</code></td><td><code>var(--iv-color-primary)</code></td><td>Colour of the markers.</td></tr>
+          <tr><td><code>--iv-timeline-size</code></td><td><code>0.75rem</code></td><td>Diameter of a marker.</td></tr>
+          <tr><td><code>--iv-timeline-rail</code></td><td><code>1.25rem</code></td><td>Distance from the rail to the text.</td></tr>
+          <tr><td><code>--iv-timeline-gap</code></td><td><code>var(--iv-space-6)</code></td><td>Space between items.</td></tr>
+          <tr><td><code>--iv-timeline-top</code></td><td><code>0.2rem</code></td><td>Vertical nudge that lines a marker up with the first line of its text.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The <code>__time</code> uses <code>--iv-tracking-caps</code>, one of the expressive-layer tokens added in v0.6 (see <a href="/foundations/tokens-and-themes">tokens and themes</a>), so its small caps match table headers and fieldset legends.</p>
+    <h2>Accessibility and keyboard</h2>
+    <p>The list order is the chronology, so nothing depends on reading the rail. Every date is a <code>&lt;time&gt;</code> with a machine-readable value. State reaches the drawing through marker shape and text, never colour alone — if a state matters to a reader, say it in words in the body as well. The horizontal variant is a scroll region: serve it with <code>tabindex="0"</code> and an <code>aria-label</code> so it can be scrolled with the keyboard, as its fixture does.</p>
+    <h2>Without JavaScript</h2>
+    <p>There is no JavaScript. Nothing is initialised, nothing is registered, nothing changes after the page loads: the timeline is a list with a rail drawn by pseudo-elements.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>A <code>&lt;ul&gt;</code> instead of an <code>&lt;ol&gt;</code>. The order is the point.</li>
+      <li>A date as plain text. <code>&lt;time datetime="2026-09"&gt;</code> costs nothing and means something.</li>
+      <li>Marking the current moment with colour only. The marker shape and the copy should say it too.</li>
+      <li>Long paragraphs in the alternating variant: the two columns stop lining up and the rail loses its rhythm.</li>
+    </ul>
+  </article>
+</Base>

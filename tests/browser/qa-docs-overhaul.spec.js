@@ -142,7 +142,7 @@ test.describe("Docs overhaul", () => {
     for (const route of ["/components/button", "/es/components/button"]) {
       await page.goto(DOCS + route);
       const kinds = await page.evaluate(() => [...document.querySelectorAll(".docs-sidebar a[href*='/components/'] .docs-sidebar__kind")].map((k) => k.textContent));
-      expect(kinds.length, `${route} kinds`).toBe(26);
+      expect(kinds.length, `${route} kinds`).toBe(31); // 26 families in v0.5, five more in v0.6
       expect(new Set(kinds)).toEqual(new Set(["css", "js"]));
     }
   });

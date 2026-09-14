@@ -152,7 +152,8 @@ const bundles = [];
 // 3. One zip per recipe, each with its own copy of the assets.
 const recipeNames = readdirSync(recipes)
   .sort()
-  .filter((name) => name !== "ivolt" && statSync(join(recipes, name)).isDirectory());
+  // A recipe is a folder with an index.html; assets prepared ahead of a recipe (photos, README) are not zipped alone.
+  .filter((name) => name !== "ivolt" && statSync(join(recipes, name)).isDirectory() && existsSync(join(recipes, name, "index.html")));
 for (const name of recipeNames) {
   const entries = walk(join(recipes, name), "", []);
   walk(join(recipes, "ivolt"), "ivolt", entries);

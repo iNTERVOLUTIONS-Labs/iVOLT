@@ -94,7 +94,11 @@ test.describe("Carousel", () => {
     await expect(tabs.nth(2)).toHaveAttribute("aria-selected", "true");
     await expect(root.locator(".iv-carousel__slide").nth(2)).not.toHaveAttribute("aria-hidden", "true");
     await expect(root.locator(".iv-carousel__slide").nth(0)).toHaveAttribute("aria-hidden", "true");
-    const box = await root.locator(".iv-carousel__viewport").boundingBox();
+    // Under a loaded three-engine run WebKit once answered null here: wait for the viewport to be laid out.
+    const viewport = root.locator(".iv-carousel__viewport");
+    await expect(viewport).toBeVisible();
+    await expect.poll(() => viewport.boundingBox()).not.toBeNull();
+    const box = await viewport.boundingBox();
     await page.mouse.move(box.x + box.width * 0.7, box.y + box.height / 2);
     await page.mouse.down();
     await page.mouse.move(box.x + box.width * 0.5, box.y + box.height / 2, { steps: 6 });

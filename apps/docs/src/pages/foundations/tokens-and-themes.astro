@@ -2,6 +2,7 @@
 import Base from "../../layouts/Base.astro";
 import Fixture from "../../components/Fixture.astro";
 import tokens from "@intervolutions/ivolt/tokens.json";
+const val = (k, mode) => { const v = tokens[k].value; return typeof v === "string" ? v : v[mode]; };
 const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color-") && !k.startsWith("--iv-palette"));
 ---
 <Base title="Tokens and themes" description="iVOLT design tokens: primitive palette, semantic colours, spacing, type, radius, shadow, focus, motion and breakpoints, with light, dark and system themes.">
@@ -29,6 +30,22 @@ const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color
     </div>
     <p>Contrast targets: text 4.5:1, controls and focus 3:1 on their surfaces. The values above were checked against the WCAG formula; results are re-measured on each release.</p>
 
+    <h2>The expressive layer</h2>
+    <p>Six tokens added in v0.6. They name the recipes the polish pass had repeated by hand across a dozen modules — a shadow, a hover tint, a brand edge, a focus halo and two letter spacings — so every module now reads the same value from one place. Nothing changed visually when they landed: they are names for what was already drawn.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Where it is used</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-shadow-ambient</code></td><td><code>{val("--iv-shadow-ambient", "light")}</code></td><td><code>{val("--iv-shadow-ambient", "dark")}</code></td><td>Resting elevation of card, wrapped table, alert, accordion and button. One token instead of five recipes.</td></tr>
+          <tr><td><code>--iv-color-hover-surface</code></td><td><code>{val("--iv-color-hover-surface", "light")}</code></td><td><code>{val("--iv-color-hover-surface", "dark")}</code></td><td>Pointer tint on card, dialog and drawer footers, tabs and the picker field. Table and menu rows keep the brand tint of <code>primary-subtle</code>.</td></tr>
+          <tr><td><code>--iv-color-primary-border</code></td><td><code>{val("--iv-color-primary-border", "light")}</code></td><td><code>{val("--iv-color-primary-border", "dark")}</code></td><td>Brand outline: secondary button, field hover, pagination, and anywhere an edge should read as the brand.</td></tr>
+          <tr><td><code>--iv-focus-halo</code></td><td><code>{val("--iv-focus-halo", "light")}</code></td><td><code>{val("--iv-focus-halo", "dark")}</code></td><td>The glow that accompanies the focus ring on fields, buttons, pagination, breadcrumbs, stepper markers and the navbar toggle. Always next to the outline, never instead of it.</td></tr>
+          <tr><td><code>--iv-tracking-tight</code></td><td><code>{val("--iv-tracking-tight", "light")}</code></td><td><code>{val("--iv-tracking-tight", "dark")}</code></td><td>Letter spacing of card, dialog, drawer and stat titles.</td></tr>
+          <tr><td><code>--iv-tracking-caps</code></td><td><code>{val("--iv-tracking-caps", "light")}</code></td><td><code>{val("--iv-tracking-caps", "dark")}</code></td><td>Letter spacing of small caps: table headers, fieldset legends, megamenu and palette headings, stat labels.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The two colours also appear in the table above, because they are semantic colours like any other. All six are plain custom properties: override them on <code>:root</code> or on a scope and every component that reads them follows.</p>
     <h2>Scales</h2>
     <div class="docs-scroller">
       <table>

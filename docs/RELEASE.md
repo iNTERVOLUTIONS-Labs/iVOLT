@@ -2,6 +2,12 @@
 
 Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
 
+## 0c. Notas de versión 0.6.0-beta.0 (borrador)
+
+**0.6 «Structure»** (ADR-041): **Navbar** (cabecera con marca, enlaces y acciones que se pliega bajo un breakpoint, pegajosa y condensada con cristal, ocultable al bajar, transparente sobre un hero hasta condensarse, con megamenú alojado), **Stepper** (asistente por pasos con índice, validación por `Form` o por la API nativa antes de avanzar, teclado, línea de progreso e `iv:complete`), bloques **timeline, stat y avatar** en CSS, **toast declarativo** (`data-iv-toast`), seis **tokens** nuevos (sombra ambiental, superficie de hover, contorno de marca, halo de foco, tracking) consumidos por once módulos, `.iv-progress--lg`, locales públicos de sombra en la tarjeta. Cambios: `--iv-progress-height` pasa a `--iv-progress-size`; las tarjetas se elevan al hover; el contorno del botón secundario usa el token de marca; incluye el pulido de 22 módulos y el desenfoque del backdrop de ADR-040. Tamaños: CSS 25,6 KiB, JS 39,0 KiB gzip.
+
+Pasos de publicación, cuando se autorice: `npm version 0.6.0-beta.0 --no-git-tag-version -w @intervolutions/ivolt` (ya es la versión actual), etiqueta git `v0.6.0-beta.0`, `npm publish --access public --tag beta`; el resto igual que §3.
+
 ## 0b. Notas de versión 0.4.0-beta.0 y 0.5.0-beta.0 (borrador)
 
 **0.4 «Navigation & light»**: revisión adversaria (dos revisores Opus, diecisiete defectos corregidos con pruebas: ADR-034/035), **Megamenu**, **efectos** (`iv-edge-glint`, `iv-edge-near` + `Proximity`, `iv-scan`, `iv-spark`, `iv-pulse-glow`, `Reveal`) y **Hero**; el megamenú vive también en la cabecera de la web. **0.5 «Time & help»**: **Datepicker**, **Tooltip** y **Popover**, **Command palette** y el **constructor de temas** de la web. Presupuesto de JS agrupado a 48 KiB (ADR-037); CSS 40 KiB sin cambios.

@@ -1,0 +1,73 @@
+---
+import Base from "../../layouts/Base.astro";
+import Fixture from "../../components/Fixture.astro";
+---
+<Base title="Navbar" description="iVOLT navbar: a site header with brand, links and actions that folds into a panel on narrow screens, sticks and condenses on scroll, and serves every link without JavaScript.">
+  <article class="docs-prose">
+    <h1>Navbar</h1>
+    <p>The header of a site: brand, links, actions and, on narrow screens, a panel that folds. The server sends it working — above the collapse breakpoint it is a bar, below it the panel is served open and stacked under the brand, so no link is ever out of reach. On <code>init</code> the burger appears, the panel folds, Escape and a click outside close it, and a sticky header condenses once the page scrolls. It is not a drawer: the panel is content in the flow, it traps no focus and never locks the page.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/navbar.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/navbar</code> or <code>auto.js</code>. Added in v0.6.</p>
+    <Fixture name="navbar/basic" title="Sticky header" viewport="30rem" />
+    <div class="docs-note">
+      <span class="docs-note__title">Reading this page</span>
+      <p>Each header below lives in its own scroll port, so the filler that a sticky header needs does not add three screens to this article. Scroll inside a preview to see the bar hold its place. The condensed state reads the scroll position of the document, not of the port, so on this page the bars are already condensed by the time you reach them; open <code>fixtures/navbar/basic.html</code> on its own to watch the transition.</p>
+    </div>
+    <h2>A megamenu inside the panel</h2>
+    <p>A <a href="/components/megamenu">megamenu</a> can live inside <code>iv-navbar__panel</code>. From the <code>lg</code> breakpoint up its panels float under the whole bar; below it the navbar folds and the same panels behave as an accordion inside it. Pass <code>data-iv-overlay="false"</code> to the hosted menu: inside a header the bar is already the raised surface, and a scrim under it would dim the header itself.</p>
+    <Fixture name="navbar/megamenu" title="Navbar hosting a megamenu" viewport="34rem" />
+    <h2>Transparent over a cover</h2>
+    <p><code>iv-navbar--transparent</code> drops the background and borrows light text while the header sits over a hero; the moment it condenses or its panel opens, the surface and the page colours come back, because a transparent bar over content is unreadable. <code>iv-navbar--glass</code> keeps the blurred surface at every scroll position, and <code>iv-navbar--center</code> centres the links with the actions at the end.</p>
+    <Fixture name="navbar/transparent" title="Transparent over a cover" viewport="34rem" />
+    <h2>Options</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr><td><code>collapseBelow</code></td><td><code>data-iv-collapse-below</code></td><td><code>lg</code></td><td>Breakpoint under which the panel folds behind the burger. <code>none</code> never folds.</td></tr>
+          <tr><td><code>sticky</code></td><td><code>data-iv-sticky</code></td><td><code>false</code></td><td>Keep the header at the top of the viewport and condense it on scroll.</td></tr>
+          <tr><td><code>condenseAt</code></td><td><code>data-iv-condense-at</code></td><td><code>24</code></td><td>Pixels of scroll before <code>data-iv-condensed</code> lands on the header.</td></tr>
+          <tr><td><code>hideOnScroll</code></td><td><code>data-iv-hide-on-scroll</code></td><td><code>false</code></td><td>Slide the bar away while scrolling down, back on the way up. Never while the panel is open or focus is inside.</td></tr>
+          <tr><td><code>closeOnOutside</code></td><td><code>data-iv-close-on-outside</code></td><td><code>true</code></td><td>A click outside the header closes the open panel.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Methods and events</h2>
+    <p><code>open()</code>, <code>close(reason)</code>, <code>toggle()</code>, <code>destroy()</code>; read <code>isOpen</code> and <code>isCondensed</code>. Above the collapse breakpoint <code>open()</code> is a no-op and <code>isOpen</code> stays <code>false</code>: there is nothing folded to unfold.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Event</th><th>When</th><th><code>detail</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>iv:open</code> → <code>iv:opened</code></td><td>the folded panel unfolds; the first is cancelable</td><td><code>reason</code>, <code>trigger</code></td></tr>
+          <tr><td><code>iv:close</code> → <code>iv:closed</code></td><td>the panel folds again</td><td><code>reason</code>: <code>trigger</code>, <code>escape</code>, <code>external</code>, <code>api</code> or <code>viewport</code></td></tr>
+          <tr><td><code>iv:condense</code></td><td>the header enters or leaves the condensed state</td><td><code>condensed</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Keyboard and assistive technology</h2>
+    <p>The header is a <code>&lt;header&gt;</code> landmark and the links live in a <code>&lt;nav&gt;</code> with its own label. The burger is a real button with a name for screen readers, <code>aria-expanded</code> and <code>aria-controls</code>; Enter and Space work on it, Escape closes the panel and returns focus to the burger, and Tab walks the open panel in document order. The current page carries <code>aria-current="page"</code>. No menu roles are used: these are links, not a menu. Crossing the breakpoint upwards closes the panel and hands the layout back to the bar.</p>
+    <h2>Without JavaScript</h2>
+    <p>Everything is reachable. Above <code>collapseBelow</code> the panel is a bar in line with the brand; below it the panel is served open and stacked, and the burger stays <code>hidden</code> because it would have nothing to toggle. Folding only happens under <code>[data-iv-js]</code>, so a script that never loads cannot hide a menu. A sticky header is styled by CSS and needs no script either; only condensing, hiding on scroll and the folded panel do.</p>
+    <h2>Tokens and locals</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-navbar-height</code></td><td><code>4rem</code></td><td>Height of the bar at rest.</td></tr>
+          <tr><td><code>--iv-navbar-height-condensed</code></td><td><code>3.25rem</code></td><td>Height once the page has scrolled past <code>condenseAt</code>.</td></tr>
+          <tr><td><code>--iv-navbar-bg</code></td><td><code>var(--iv-color-bg)</code></td><td>Surface of the bar.</td></tr>
+          <tr><td><code>--iv-navbar-max</code></td><td><code>var(--iv-container-max)</code></td><td>Width the inner row is centred to.</td></tr>
+          <tr><td><code>--iv-navbar-gap</code></td><td><code>var(--iv-space-5)</code></td><td>Gap between brand, navigation and actions.</td></tr>
+          <tr><td><code>--iv-navbar-z</code></td><td><code>150</code></td><td>Stacking order against the page.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>State lives in attributes, so CSS can read it: <code>data-iv-collapsible</code> while the viewport is below the breakpoint, <code>data-iv-open</code> on the unfolded panel, <code>data-iv-condensed</code> after the scroll, <code>data-iv-hidden</code> on a bar slid away. The condensed bar takes <code>--iv-shadow-ambient</code> and a glass background; under reduced motion nothing travels, but <code>data-iv-hidden</code> still moves the bar out of the way because that is state, not decoration.</p>
+    <h2>Common mistakes</h2>
+    <ul>
+      <li>Serving the panel closed. Without the script nothing would open it; the markup must arrive usable and fold afterwards.</li>
+      <li>Using the navbar as a drawer. If the navigation must cover the page and trap focus, that is <a href="/components/drawer">drawer</a>.</li>
+      <li>Combining <code>hideOnScroll</code> with content that anchors to the top: the bar writes <code>scroll-padding-block-start</code> while sticky, but a jumping header still costs orientation.</li>
+      <li>A hosted megamenu with its overlay left on: the scrim dims the very bar you are reading from.</li>
+    </ul>
+  </article>
+</Base>

@@ -1,0 +1,71 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Pasos" description="Componente de pasos de iVOLT: índice numerado, un panel por paso, controles de avance y retroceso, validación antes de avanzar y todos los paneles visibles sin JavaScript.">
+  <article class="docs-prose">
+    <h1>Pasos (stepper)</h1>
+    <p>Un formulario largo partido en pasos: un índice numerado con estado, un panel por paso y controles para moverse entre ellos. El servidor envía una lista ordenada de enlaces y los paneles uno bajo otro, así que todo se lee y se rellena sin script. En <code>init</code> solo queda visible el panel actual, el índice marca lo hecho, lo actual y lo que falta, y los botones <code>data-iv-step</code> se niegan a avanzar mientras los campos del panel no sean válidos.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/stepper.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/stepper</code> o <code>auto.js</code>. Añadido en la v0.6.</p>
+    <Fixture name="stepper/basic" title="Compra en tres pasos" />
+    <h2>Índice vertical</h2>
+    <p><code>iv-stepper--vertical</code> lleva el índice a una columna junto a los paneles desde el punto de ruptura <code>md</code>, con el conector bajando en lugar de cruzando. Por debajo es la misma disposición apilada que la variante por defecto.</p>
+    <Fixture name="stepper/vertical" title="Índice vertical" />
+    <h2>Compacto</h2>
+    <p><code>iv-stepper--compact</code> dibuja solo los marcadores y la etiqueta del paso actual; las demás etiquetas siguen en la página para los lectores de pantalla, así que ningún paso pierde su nombre. Este además corre con <code>data-iv-linear="false"</code>, de modo que cualquier paso es alcanzable desde el índice en cualquier momento.</p>
+    <Fixture name="stepper/compact" title="Compacto y no lineal" />
+    <h2>Opciones</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>linear</code></td><td><code>data-iv-linear</code></td><td><code>true</code></td><td>Solo son alcanzables desde el índice los pasos ya visitados y el actual; el resto llevan <code>aria-disabled="true"</code>. Volver atrás y saltar de nuevo adelante no vuelve a validar.</td></tr>
+          <tr><td><code>validate</code></td><td><code>data-iv-validate</code></td><td><code>true</code></td><td>Comprueba los controles del panel actual antes de avanzar.</td></tr>
+          <tr><td><code>hash</code></td><td><code>data-iv-hash</code></td><td><code>false</code></td><td>Sincroniza <code>location.hash</code> con el panel actual y responde a <code>hashchange</code>.</td></tr>
+          <tr><td><code>focus</code></td><td><code>data-iv-focus</code></td><td><code>panel</code></td><td>Dónde cae el foco tras un cambio: el panel nuevo, o <code>none</code>.</td></tr>
+          <tr><td><code>statusText</code></td><td><code>data-iv-status-text</code></td><td><code>Step &#123;index&#125; of &#123;total&#125;: &#123;label&#125;</code></td><td>Frase que se anuncia en la región en vivo tras cada cambio.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Métodos y eventos</h2>
+    <p><code>go(index, reason)</code>, <code>next()</code>, <code>prev()</code>, <code>reset()</code>, <code>setState(index, state)</code>, <code>destroy()</code>; lectura de <code>index</code> (base 0), <code>steps</code>, <code>isFirst</code> e <code>isLast</code>. Con <code>setState</code> tu código marca un paso como <code>error</code> o <code>done</code> cuando responde un servidor.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Evento</th><th>Cuándo</th><th><code>detail</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>iv:change</code> → <code>iv:changed</code></td><td>antes y después de moverse; el primero es cancelable</td><td><code>index</code>, <code>previousIndex</code>, <code>reason</code>: <code>trigger</code>, <code>next</code>, <code>prev</code>, <code>api</code> o <code>hash</code></td></tr>
+          <tr><td><code>iv:complete</code></td><td><code>next</code> en el último paso, con su validación ya superada</td><td><code>index</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>El componente no envía nada. <code>iv:complete</code> es donde tu código manda el formulario, y cancelar <code>iv:change</code> es donde se niega a un movimiento por un motivo propio.</p>
+    <h2>Validación</h2>
+    <p>Con <code>validate</code> activo, <code>next</code> comprueba antes el panel actual. Si el panel está dentro de un <code>&lt;form&gt;</code> con instancia de <a href="/es/components/validation">Form</a>, cada control del panel pasa por <code>validateField</code> y los mensajes aparecen donde ese componente los coloca; si no, el <code>reportValidity()</code> del navegador se detiene en el primer control inválido. Volver atrás no valida nunca. Las comprobaciones asíncronas, los pasos condicionales y el guardado de borradores quedan fuera de alcance: hazlos en tu propio manejador y llama a <code>go()</code> o <code>setState()</code> con la respuesta.</p>
+    <h2>Teclado y tecnología asistiva</h2>
+    <p>El índice es una <code>&lt;ol&gt;</code> de enlaces con etiqueta, y el paso actual lleva <code>aria-current="step"</code>. Izquierda y Derecha, Inicio y Fin mueven el foco entre los disparadores alcanzables; Enter o Espacio activa uno. Los marcadores son decoración <code>aria-hidden</code> —el número que dibujan ya es el orden de la lista— y cada panel es una sección con encabezado y <code>tabindex="-1"</code> para que el foco pueda posarse en él. El estado se anuncia en una región educada oculta a la vista, y un paso con error añade un «has errors» invisible a su etiqueta, así que el color nunca va solo.</p>
+    <h2>Sin JavaScript</h2>
+    <p>Todos los paneles llegan visibles, uno bajo otro, y el índice es una lista de anclas que saltan a cada sección. Los botones de avance y retroceso se sirven dentro de un contenedor <code>hidden</code>, porque un botón que no puede avanzar es peor que ningún botón; <code>init</code> los muestra. No se esconde nada ni queda ningún campo inalcanzable: el formulario vuelve a ser uno largo, que es lo que era antes de partirlo.</p>
+    <h2>Tokens y locales</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-stepper-marker</code></td><td><code>2rem</code></td><td>Diámetro del círculo numerado.</td></tr>
+          <tr><td><code>--iv-stepper-line</code></td><td><code>var(--iv-color-border)</code></td><td>Color del conector entre marcadores.</td></tr>
+          <tr><td><code>--iv-stepper-fill</code></td><td><code>var(--iv-color-primary)</code></td><td>Color del tramo de conector ya recorrido.</td></tr>
+          <tr><td><code>--iv-stepper-track</code></td><td><code>2px</code></td><td>Grosor del conector y de la barra de progreso.</td></tr>
+          <tr><td><code>--iv-stepper-gap</code></td><td><code>var(--iv-space-6)</code></td><td>Espacio entre el índice y los paneles.</td></tr>
+          <tr><td><code>--iv-stepper-step-gap</code></td><td><code>var(--iv-space-5)</code></td><td>Espacio entre pasos del índice.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>El componente escribe <code>--iv-stepper-progress</code> (de 0 a 1) en la raíz, y es lo que escala la barra opcional <code>iv-stepper__progress</code>. Cada paso lleva <code>data-iv-state</code> con <code>done</code>, <code>current</code>, <code>upcoming</code> o <code>error</code>: un marcador hecho muestra una marca de verificación en lugar de su número, el actual toma el halo de foco común y uno con error pasa al color de peligro. Con movimiento reducido los paneles aparecen sin desplazarse.</p>
+    <h2>Errores frecuentes</h2>
+    <ul>
+      <li>Pasos sin encabezado. Cada panel necesita el suyo: es el nombre del paso para quien no ve el índice.</li>
+      <li>Servir los paneles ocultos, o los controles visibles. Lo primero pierde el formulario sin script; lo segundo ofrece botones que no hacen nada.</li>
+      <li>Más de cinco o seis pasos. A partir de ahí el índice es un sumario y el formulario pide varias páginas.</li>
+      <li>Esperar que el componente envíe. Anuncia que se ha terminado; mandar los datos sigue siendo tuyo.</li>
+    </ul>
+  </article>
+</Base>

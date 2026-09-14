@@ -26,12 +26,23 @@ const group = nav.find((g) => g.items.some((i) => i.href === path))?.group;
 const slug = bare.startsWith("/components/") ? bare.split("/").pop() : null;
 const family = slug ? families[slug] : null;
 const items = nav.flatMap((g) => g.items);
-// "css" or "js" beside a component link: 26 entries are only scannable when the kind is visible.
+// "css" or "js" beside a component link: 31 entries are only scannable when the kind is visible.
 const kindOf = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return m ? families[m[1]] : null; };
 const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
-// The footer carries the real sitemap: four short columns taken from the same navigation as the
-// sidebar, so a link can never exist in one and be missing from the other.
-const sitemap = nav.map((g, i) => ({ group: g.group, items: i === 2 ? g.items.slice(0, 8) : g.items, more: i === 2 ? g.items.length - 8 : 0 }));
+// The footer carries the real sitemap: four columns taken from the same navigation as the
+// sidebar, so a link can never exist in one and be missing from the other. The long column
+// takes two tracks and lists its links in two files instead of being cut short.
+const sitemap = nav.map((g) => ({ group: g.group, items: g.items, wide: g.items.length > 12 }));
+// The components group is the long one: split it by family so the eye lands on the right half
+// before it starts reading names, and keep the kind beside every item.
+const navSections = nav.map((g) => {
+  const kinds = g.items.map((i) => kindOf(i.href));
+  if (!kinds.length || !kinds.every(Boolean)) return { group: g.group, blocks: [{ items: g.items }] };
+  return {
+    group: g.group,
+    blocks: [["css", t.kindCss], ["js", t.kindJs]].map(([kind, label]) => ({ sub: label, items: g.items.filter((i) => kindOf(i.href) === kind) })),
+  };
+});
 // Component list for the header megamenu (labels per language, kind from the shared families map).
 const labelOf = (slug) => (lang === "es" && es.componentLabels && es.componentLabels[slug]) || slug[0].toUpperCase() + slug.slice(1);
 const componentList = Object.entries(families).map(([slug, kind]) => ({ slug, kind, label: labelOf(slug), href: `${base}/components/${slug}` }));
@@ -142,7 +153,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     <div class="iv-dialog__panel">
       <header class="iv-dialog__header"><h2 class="iv-dialog__title">{t.navigate}</h2><button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label={t.close}>×</button></header>
       <nav class="iv-dialog__body" aria-label={t.docsNav}>
-        {nav.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3><ul class="docs-sidebar__list">{g.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></section>)}
+        {navSections.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3>{g.blocks.map((b) => <Fragment>{b.sub && <p class="docs-sidebar__sub">{b.sub}</p>}<ul class="docs-sidebar__list">{b.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></Fragment>)}</section>)}
       </nav>
       <footer class="iv-dialog__footer iv-u-justify-start">
         <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>
@@ -173,7 +184,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     {sidebar && (
       <aside class="docs-sidebar" data-pagefind-ignore>
         <nav aria-label={t.docsNav}>
-          {nav.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3><ul class="docs-sidebar__list">{g.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></section>)}
+          {navSections.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3>{g.blocks.map((b) => <Fragment>{b.sub && <p class="docs-sidebar__sub">{b.sub}</p>}<ul class="docs-sidebar__list">{b.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></Fragment>)}</section>)}
         </nav>
       </aside>
     )}
@@ -201,11 +212,10 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     <div class="iv-container iv-container--wide">
       <nav class="docs-sitemap" aria-label={t.footerNav}>
         {sitemap.map((g) => (
-          <div class="docs-sitemap__col">
+          <div class:list={["docs-sitemap__col", g.wide && "docs-sitemap__col--wide"]}>
             <h2 class="docs-sitemap__title">{g.group}</h2>
             <ul>
               {g.items.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
-              {g.more > 0 && <li><a href={`${base}/components/button`}>{t.mmBrowse}</a></li>}
             </ul>
           </div>
         ))}

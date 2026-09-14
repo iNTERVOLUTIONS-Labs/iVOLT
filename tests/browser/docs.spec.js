@@ -66,7 +66,8 @@ test("toast demo on the docs page shows a toast", async ({ page }) => {
   await page.goto(DOCS + "/components/toast");
   await page.locator("[data-toast-variant=success]").click();
   await expect(page.locator(".iv-toast--success")).toBeVisible();
-  await expect(page.locator(".iv-toast-region")).toHaveAttribute("role", "region");
+  // Two regions live on the page since the declarative fixture arrived; the demo uses the first.
+  await expect(page.locator(".iv-toast-region").first()).toHaveAttribute("role", "region");
 });
 
 test("search opens with /, finds a component page and supports arrow keys", async ({ page }) => {

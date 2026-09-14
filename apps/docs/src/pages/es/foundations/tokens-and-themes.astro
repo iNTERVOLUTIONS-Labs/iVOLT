@@ -2,6 +2,7 @@
 import Base from "../../../layouts/Base.astro";
 import Fixture from "../../../components/Fixture.astro";
 import tokens from "@intervolutions/ivolt/tokens.json";
+const val = (k, mode) => { const v = tokens[k].value; return typeof v === "string" ? v : v[mode]; };
 const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color-") && !k.startsWith("--iv-palette"));
 ---
 <Base lang="es" title="Tokens y temas" description="Tokens de diseño de iVOLT: paleta primitiva, colores semánticos, espaciado, tipografía, radio, sombra, foco, movimiento y puntos de ruptura, con temas claro, oscuro y del sistema.">
@@ -29,6 +30,22 @@ const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color
     </div>
     <p>Objetivos de contraste: 4.5:1 para el texto y 3:1 para los controles y el foco sobre sus superficies. Los valores de arriba se comprobaron con la fórmula de WCAG; se vuelven a medir en cada publicación.</p>
 
+    <h2>La capa expresiva</h2>
+    <p>Seis tokens añadidos en la v0.6. Ponen nombre a las recetas que el pulido visual venía repitiendo a mano en una docena de módulos —una sombra, un tinte al pasar el puntero, un borde de marca, un halo de foco y dos espaciados de letra—, de modo que ahora todos leen el mismo valor de un solo sitio. Al llegar no cambiaron nada a la vista: son nombres para lo que ya estaba dibujado.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Dónde se usa</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-shadow-ambient</code></td><td><code>{val("--iv-shadow-ambient", "light")}</code></td><td><code>{val("--iv-shadow-ambient", "dark")}</code></td><td>Elevación en reposo de tarjeta, tabla envuelta, alerta, acordeón y botón. Un token en lugar de cinco recetas.</td></tr>
+          <tr><td><code>--iv-color-hover-surface</code></td><td><code>{val("--iv-color-hover-surface", "light")}</code></td><td><code>{val("--iv-color-hover-surface", "dark")}</code></td><td>Tinte al pasar el puntero en pies de tarjeta, diálogo y drawer, pestañas y el campo del selector. Las filas de tabla y de menú conservan el tinte de marca de <code>primary-subtle</code>.</td></tr>
+          <tr><td><code>--iv-color-primary-border</code></td><td><code>{val("--iv-color-primary-border", "light")}</code></td><td><code>{val("--iv-color-primary-border", "dark")}</code></td><td>Contorno de marca: botón secundario, hover de campos, paginación y cualquier borde que deba leerse como de la marca.</td></tr>
+          <tr><td><code>--iv-focus-halo</code></td><td><code>{val("--iv-focus-halo", "light")}</code></td><td><code>{val("--iv-focus-halo", "dark")}</code></td><td>El halo que acompaña al anillo de foco en campos, botones, paginación, migas, marcadores del stepper y el botón del navbar. Siempre junto al anillo, nunca en su lugar.</td></tr>
+          <tr><td><code>--iv-tracking-tight</code></td><td><code>{val("--iv-tracking-tight", "light")}</code></td><td><code>{val("--iv-tracking-tight", "dark")}</code></td><td>Espaciado de letra en títulos de tarjeta, diálogo, drawer y cifra.</td></tr>
+          <tr><td><code>--iv-tracking-caps</code></td><td><code>{val("--iv-tracking-caps", "light")}</code></td><td><code>{val("--iv-tracking-caps", "dark")}</code></td><td>Espaciado de letra en versalitas: cabeceras de tabla, leyendas de fieldset, encabezados del megamenú y de la paleta, etiquetas de cifra.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Los dos colores aparecen también en la tabla de arriba, porque son colores semánticos como los demás. Los seis son propiedades personalizadas normales: sobrescríbelos en <code>:root</code> o en un ámbito y todos los componentes que los leen te siguen.</p>
     <h2>Escalas</h2>
     <div class="docs-scroller">
       <table>

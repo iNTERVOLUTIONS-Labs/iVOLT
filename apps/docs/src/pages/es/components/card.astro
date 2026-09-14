@@ -27,7 +27,9 @@ import Fixture from "../../../components/Fixture.astro";
         </tbody>
       </table>
     </div>
-    <p>Propiedades locales: <code>--iv-card-bg</code>, <code>--iv-card-radius</code>, <code>--iv-card-padding</code>.</p>
+    <h2>Elevación</h2>
+    <p>Una tarjeta descansa sobre <code>--iv-shadow-ambient</code>, la elevación en reposo común añadida en la v0.6: un solo token que ya lleva el filo que necesita un tema oscuro y la caída suave que pide uno claro. Bajo el puntero sube a <code>--iv-shadow-2</code>; la elevación vive dentro de <code>@media (hover: hover)</code>, así que una pantalla táctil nunca se queda con el estado pegado, y es solo un cambio de sombra, sin desplazamiento que mueva la maqueta.</p>
+    <p>Dos locales públicos lo ajustan en una línea: <code>--iv-card-shadow</code> para la elevación en reposo y <code>--iv-card-shadow-hover</code> para la del puntero. Pon cualquiera de los dos a <code>none</code> para anularla: es justo lo que hace <code>iv-card--flat</code>. Junto a <code>--iv-card-bg</code>, <code>--iv-card-radius</code> y <code>--iv-card-padding</code>, eso es toda la superficie del componente.</p>
     <h2>Errores frecuentes</h2>
     <ul><li>Convertir toda la tarjeta en un enlace con controles interactivos dentro. Enlaza el título.</li><li>Saltarse niveles de título dentro de las tarjetas.</li></ul>
   </article>

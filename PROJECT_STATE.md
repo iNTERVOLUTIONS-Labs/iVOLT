@@ -1,64 +1,64 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-14 · Hito `0.5.0-beta.0` alcanzado y **ronda de revisión visual del propietario integrada** (`ROADMAP.md` §8, ADR-039/040) · **Nada publicado ni desplegado**
+Última actualización: 2026-09-14 · Ciclo **v0.6 «Structure» cerrado** → hito `0.6.0-beta.0` (`ROADMAP.md` §9, ADR-041) · v0.7 «Media & motion» contratado (§8.20–§8.23, `ROADMAP.md` §10) · **Nada publicado ni desplegado**
 
 ## Estado por fase e hito
 
 | Fase / hito | Estado | Evidencia |
 |---|---|---|
 | 0–4 (v0.1.0-alpha.0) | hechas, no publicada | `docs/RELEASE.md` §1–§4 |
-| Beta v0.2.0-beta.0 (`ROADMAP.md` §5) | cerrada, no publicada | combobox, data table, rediseño ronda 2, español |
-| Beta v0.3.0-beta.0 «Spectacular» (§6, ADR-030) | cerrada, no publicada | carrusel, selector, formularios, superficies |
-| v0.4 «Navigation & light» y v0.5 «Time & help» (§7) | cerrados, no publicados | megamenú, efectos, hero, datepicker, tooltip, popover, paleta, constructor de temas; gate en tres motores |
-| **Ronda de revisión visual sobre 0.5** (§8, ADR-039/040) | integrada; versión sin cambiar (`0.5.0-beta.0`) | correcciones directas, fotografías libres, rediseño de la web, pulido de 22 módulos CSS, líneas base regeneradas |
+| Betas 0.2 a 0.5 (`ROADMAP.md` §5–§7) | cerradas, no publicadas | combobox, data table, carrusel, selector, formularios, superficies, megamenú, efectos, hero, datepicker, tooltip, popover, paleta, constructor de temas |
+| Ronda de revisión visual sobre 0.5 (§8, ADR-039/040) | integrada | rediseño de la web, pulido de 22 módulos, fotografías libres |
+| **v0.6 «Structure»** (§9, ADR-041) | cerrado, no publicado | tokens con nombre, navbar, stepper, toast declarativo, timeline/stat/avatar; web en dos idiomas; gate completo en tres motores |
+| v0.7 «Media & motion» (§10) | contratado, sin implementar | §8.20 lightbox, §8.21 movimiento por scroll, §8.22 texto y contador, §8.23 receta showcase (fotos ya en `examples/recipes/showcase/photos/`) |
 
-## Petición del propietario que abrió esta ronda (2026-09-14)
+## Petición del propietario que abrió este ciclo (2026-09-14)
 
-«Edge glint y proximity en los docs no funcionan, el megamenú se va antes de poder entrar, contenido descentrado o poco espaciado, una línea verde sin sentido, la columna central tendría que ser más ancha; lanza Playwright y ve la web como se ve de verdad, mejora los docs brutalmente, mejora el framework, pilla imágenes libres para carruseles y heros.» Método adoptado (ADR-039): ninguna afirmación visual sin captura real; dos implementadores Opus con Playwright (web y framework) y el líder integrando con capturas propias.
+«Sigue trabajando hasta 0.7.» Método: contratos escritos antes de implementar, dos implementadores Opus con archivos disjuntos y capturas propias, un tercero para la web, el líder integra y pasa el gate. Ninguna afirmación visual sin captura (ADR-039).
 
-## Entregas de la ronda
+## Entregas de v0.6
 
-| Bloque | Qué cambió | Verificación |
-|---|---|---|
-| Correcciones directas (líder, ADR-039) | halos en `iv-edge-near`/`iv-edge-glint`; megamenú que ignora ítems sin panel, tapa el hueco bajo la barra y cierra a 320 ms; columna a 72rem; sin filete bajo el `h1` | `effects.spec.js`, `megamenu.spec.js`, capturas |
-| Fotografías (líder, ADR-039) | 12 fotos Unsplash vía Lorem Picsum en `apps/docs/public/photos/` con créditos; fixtures con foto para carrusel, hero, tarjeta y cristal solo en la web (`apps/docs/fixtures/`); el paquete sigue sin mapas de bits | `THIRD_PARTY.md`, `photos/README.md` |
-| Rediseño de la web (Opus, ADR-040) | escala vertical única (`--docs-flow/block/sub/section`), secciones numeradas con filete, columna que llenan fixtures, tablas y código, heros con foto en inicio/ejemplos/404, pie con mapa del sitio, `docs-meta`/`docs-note`, 76 tablas en `docs-scroller`, 404 útil; inglés y español | `qa-docs-overhaul.spec.js` (10 pruebas a 390/1024/1440), `docs.spec.js`, `qa-docs-shell`, `qa-docs-css`, `theme-builder`: 42/42 en Chromium antes de integrar |
-| Pulido del framework (Opus, ADR-040) | 22 módulos CSS: sombras derivadas de `--iv-color-overlay`, halo de foco común, tabla con microtipografía y caption a línea completa en `--stack`, marcadores de orden por máscara SVG, pestañas en pastilla, calendario con días circulares, toasts por tono, `--float` con selector enriquecido corregido | contratos 160/160; axe 357/357 en tres motores (implementador); suite Chromium 195/195 y 41 líneas base regeneradas (líder) |
-| Hallazgo del líder | `dialog.spec.js` fallaba en solitario: Chromium dispara el `close` nativo (`iv:closed`) una tarea después de retirar `open`; la prueba leía sin esperar. Prueba con `expect.poll`; `::backdrop` de diálogo y drawer con desenfoque `--iv-blur-sm` | `dialog.spec.js` 4/4 en solitario y en suite |
+| Bloque | Contrato | Tamaño gzip | Verificación |
+|---|---|---|---|
+| Tokens de la capa expresiva + refactor de 11 módulos | §8.15 | `core.min.css` +0,09 KiB | contratos 160/160; `grep` sin recetas literales; 41 líneas base previas dentro de tolerancia |
+| Navbar | §8.16 | 1,9 CSS + 3,2 JS | 8 pruebas × 3 motores (plegado, pegajoso, condensado, transparente, megamenú alojado, `hideOnScroll` añadido por el líder), axe en 4 fixtures × 2 temas |
+| Stepper | §8.17 | 1,9 CSS + 3,9 JS | pruebas × 3 motores (validación con `Form` y nativa, lineal, teclado, foco al panel, error), axe en 3 fixtures × 2 temas |
+| Toast declarativo | §8.18 | dentro de toast | +10 unitarias, spec de navegador × 3 motores |
+| Timeline, stat, avatar | §8.19 | 1,3 + 1,1 + 0,9 CSS | `content.spec.js` × 3 motores (axe, sin scroll lateral a 390, solape, alternancia) |
+| Web (implementador de docs) | — | — | 10 páginas nuevas (navbar, stepper, timeline, stat, avatar en inglés y español), toast/progress/card/tokens actualizadas, barra lateral y diálogo móvil agrupados por familia con marca css/js por ítem, pie con el mapa completo (31 familias), `Fixture.astro` con `viewport` para fixtures de página entera; 94 páginas en 2 idiomas; `qa-docs-v06.spec.js` 6/6; tres pruebas previas ajustadas por el líder (26 → 31 familias, dos regiones de toast, recetas solo con `index.html`) |
 
-Presupuestos (`npm run sizes` @ f025206): `core.min.css` 2,51 KiB, `ivolt.min.css` 22,17 KiB (≤ 40), JS agrupado 35,42 KiB (≤ 48).
+Presupuestos (`npm run sizes` @ 34e69c1): `core.min.css` 2,60 KiB (≤ 8), `ivolt.min.css` 25,64 KiB (≤ 40), JS agrupado 39,04 KiB (≤ 48).
 
-## Verificaciones ejecutadas en la ronda
+## Verificaciones ejecutadas en el ciclo
 
 | Check | Resultado |
 |---|---|
-| `npm test` | 590/590 (25 archivos) tras el pulido |
-| Suites de docs (Chromium) | 42/42 antes de integrar el rediseño |
-| Suite de componentes + axe (Chromium, sin visuales) | 195/195 tras el pulido y el desenfoque del backdrop |
-| Líneas base visuales | 41 regeneradas a propósito con `--update-snapshots` (Chromium); 21 archivos cambian, revisados a ojo (diálogo, formularios, pestañas, efectos) |
-| `IVOLT_ALL_BROWSERS=1 npm run verify` | exit 0 tras el pulido, el desenfoque del backdrop y las líneas base nuevas: build · 590 unitarias · 849 pruebas de navegador listadas en Chromium, Firefox y WebKit (las 82 visuales fuera de Chromium se omiten) · tamaños · pack-smoke · docs (84 páginas, 2 idiomas) · ejemplos (4 páginas). El recuento exacto de superadas no quedó en el registro (salida truncada); el código de salida sí |
-| Lighthouse 13.4.1 (`docs/LIGHTHOUSE.md`) | `/` y `/es`: móvil 98/100/100/100 (LCP 2,2 s, CLS 0), escritorio 100/100/100/100; un punto menos en móvil que en el cierre de 0.5, una sola pasada, comentado en `LIGHTHOUSE.md` |
+| `npm test` | 641/641 (27 archivos) |
+| Componentes nuevos + axe (Chromium) | 208/208 (`navbar`, `stepper`, `content`, `toast-declarative`, `toast`, `a11y` con 16 fixtures nuevas) |
+| Componentes nuevos en tres motores (implementadores) | navbar+stepper 102/102; content+toast 102/102 |
+| Líneas base visuales | 57 en Chromium: 16 nuevas (timeline, stat, avatar, progress, navbar, stepper), las 41 previas dentro de tolerancia tras el refactor |
+| `IVOLT_ALL_BROWSERS=1 npm run verify` | exit 0 (segunda pasada; la primera dejó un fallo en WebKit de `carousel.spec.js`, una `boundingBox()` nula bajo carga que la prueba ahora espera): build · 651 unitarias · 1068 pruebas de navegador superadas y 114 omitidas (visuales fuera de Chromium) en Chromium, Firefox y WebKit · tamaños · pack-smoke (`intervolutions-ivolt-0.6.0-beta.0.tgz`, 121 archivos, theme-only 926 B, dialog-only 6482 B, unused 0 B, starter servido) · docs (94 páginas, 2 idiomas) · ejemplos (4 páginas) |
+| Lighthouse 13.4.1 (`docs/LIGHTHOUSE.md`) | `/` y `/es`: móvil 98/100/100/100 (LCP 2,3 s, CLS 0), escritorio 100/100/100/100; sin cambio de nota respecto a la ronda anterior |
 | Gasto/tokens | no disponible en el entorno |
 
 ## No verificado / limitaciones declaradas
 
-- Lector de pantalla real: sin ejecutar (`A11Y_REVIEW.md` §6, §9–§11).
-- Gestos táctiles y punteros reales (hover intencional del megamenú, proximidad, arrastre del carrusel): solo simulados.
-- El desenfoque del `::backdrop` depende de que `::backdrop` herede variables del diálogo (Chromium 122+, Firefox 120+, Safari 17.4+); antes, el fondo solo se atenúa.
-- Aceptación visual del propietario de esta ronda: pendiente.
-- Publicación y despliegue: requieren autorización explícita (`docs/RELEASE.md` §0b y §3).
+- Lector de pantalla real: sin ejecutar (`A11Y_REVIEW.md` §12).
+- Gestos y punteros reales en el panel plegado del navbar, `hideOnScroll` con lectores que mueven el foco fuera del viewport.
+- `hideOnScroll` conserva su traslación bajo reduced motion (estado, no adorno): decisión registrada, no probada con usuarios.
+- Aceptación visual del propietario de v0.6: pendiente.
+- Publicación y despliegue: requieren autorización explícita (`docs/RELEASE.md` §0c y §3).
 
 ## Fallos abiertos
 
-Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title` pierde contra `.iv-root h2` en la hoja plana. Candidatos de 0.6 salidos de la ronda: `ROADMAP.md` §8.
+Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title` pierde contra `.iv-root h2` en la hoja plana. Pendiente de decisión: subir el cristal condensado del navbar de `--iv-blur-sm` a `md` en oscuro (el texto bajo la barra se lee difuminado; se dejó `sm` por coherencia con diálogo y drawer).
 
 ## Siguiente acción
 
-Revisión visual del propietario con la web construida (`npm run build && npm run dev:docs`), en especial: páginas interiores (columna, secciones numeradas), ejemplos, 404, formularios flotantes con selector, diálogo con fondo desenfocado. Si acepta, abrir 0.6 con los candidatos de `ROADMAP.md` §8 (tokens de sombra/halo/tracking, `Picker` con etiqueta hermana, disparador de toast). Publicación solo con autorización (`docs/RELEASE.md` §0b).
+Abrir v0.7 «Media & motion» (`ROADMAP.md` §10; contratos ya congelados en §8.20–§8.23): stubs registrados, dos implementadores Opus (A: lightbox + countup; B: `motion.css`, `text.css`, `ScrollMotion`), implementador de docs con la receta «showcase», gate y cierre `0.7.0-beta.0`. Publicación solo con autorización.
 
 ## Decisiones que no deben perderse
 
-- ADR-039/040 (ver `docs/DECISIONS.md`). Lecciones de proceso: mirar la web con capturas antes de afirmar; verificar rama y remoto antes de afirmar un push; gate de commits sobre códigos de salida, nunca tras `;` ni tras un `grep`; en pruebas, `iv:closed` del diálogo llega una tarea después de `close()`: sondear, no leer.
-- Fotografías: solo activos de la web; nunca dentro del paquete npm.
-- Escala vertical de la web (`--docs-*`) es de la web; no se añaden tokens `--iv-space-*` por ella.
-- Efectos: `--iv-i` es la variable de escalonado pública. Megamenú: `data-iv-open=""` como estado; hover armado por `pointerenter` y disparado por `pointermove`.
+- ADR-041 (ver `docs/DECISIONS.md`): `data-iv-collapsible` como estado del navbar; alcance lineal del stepper «hasta el más lejano visitado»; solape de avatares resuelto en cada avatar; filas al hover conservan `primary-subtle`; `--iv-progress-height` → `--iv-progress-size`.
+- Lecciones de proceso vigentes: mirar con capturas antes de afirmar; gate sobre códigos de salida; verificar `HEAD == origin/main` tras cada push; `iv:closed` y estados condensados llegan una tarea después: sondear (`expect.poll`), no leer.
+- Fotografías: solo activos de la web y de la receta showcase (copias acreditadas en `examples/recipes/showcase/photos/`); nunca dentro del paquete npm.

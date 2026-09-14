@@ -1,0 +1,73 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Fixture from "../../../components/Fixture.astro";
+---
+<Base lang="es" title="Barra de navegación" description="Barra de navegación de iVOLT: cabecera de sitio con marca, enlaces y acciones que se pliega en pantallas estrechas, se queda pegada y se condensa al hacer scroll, y sirve todos los enlaces sin JavaScript.">
+  <article class="docs-prose">
+    <h1>Barra de navegación (navbar)</h1>
+    <p>La cabecera de un sitio: marca, enlaces, acciones y, en pantallas estrechas, un panel que se pliega. El servidor la envía funcionando: por encima del punto de plegado es una barra, y por debajo el panel llega abierto y apilado bajo la marca, así que ningún enlace queda fuera del alcance. En <code>init</code> aparece el botón de hamburguesa, el panel se pliega, Escape y un clic fuera lo cierran, y una cabecera pegajosa se condensa en cuanto la página baja. No es un panel lateral: este panel es contenido en el flujo, no atrapa el foco y nunca bloquea la página.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/navbar.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/navbar</code> o <code>auto.js</code>. Añadido en la v0.6.</p>
+    <Fixture name="navbar/basic" title="Cabecera pegajosa" viewport="30rem" />
+    <div class="docs-note">
+      <span class="docs-note__title">Cómo leer esta página</span>
+      <p>Cada cabecera vive en su propio recuadro con scroll, para que el relleno que necesita una barra pegajosa no añada tres pantallas a este artículo. Desplázate dentro de una vista previa y verás cómo la barra se queda fija. El estado condensado lee el scroll del documento, no el del recuadro, así que aquí las barras ya llegan condensadas; abre <code>fixtures/navbar/basic.html</code> por separado para ver la transición.</p>
+    </div>
+    <h2>Un megamenú dentro del panel</h2>
+    <p>Un <a href="/es/components/megamenu">megamenú</a> puede vivir dentro de <code>iv-navbar__panel</code>. Desde el punto de ruptura <code>lg</code> hacia arriba sus paneles flotan bajo toda la barra; por debajo, la cabecera se pliega y esos mismos paneles se comportan como un acordeón dentro de ella. Pasa <code>data-iv-overlay="false"</code> al menú alojado: dentro de una cabecera la barra ya es la superficie elevada, y un velo por debajo oscurecería la propia cabecera.</p>
+    <Fixture name="navbar/megamenu" title="Cabecera con megamenú" viewport="34rem" />
+    <h2>Transparente sobre una portada</h2>
+    <p><code>iv-navbar--transparent</code> quita el fondo y toma texto claro mientras la cabecera está sobre un hero; en cuanto se condensa o abre su panel, vuelven la superficie y los colores de la página, porque una barra transparente sobre contenido no se lee. <code>iv-navbar--glass</code> mantiene la superficie de cristal en cualquier posición de scroll, y <code>iv-navbar--center</code> centra los enlaces y deja las acciones al final.</p>
+    <Fixture name="navbar/transparent" title="Transparente sobre una portada" viewport="34rem" />
+    <h2>Opciones</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+        <tbody>
+          <tr><td><code>collapseBelow</code></td><td><code>data-iv-collapse-below</code></td><td><code>lg</code></td><td>Punto de ruptura por debajo del cual el panel se pliega tras la hamburguesa. <code>none</code> no pliega nunca.</td></tr>
+          <tr><td><code>sticky</code></td><td><code>data-iv-sticky</code></td><td><code>false</code></td><td>Mantiene la cabecera arriba y la condensa al hacer scroll.</td></tr>
+          <tr><td><code>condenseAt</code></td><td><code>data-iv-condense-at</code></td><td><code>24</code></td><td>Píxeles de scroll antes de que <code>data-iv-condensed</code> aparezca en la cabecera.</td></tr>
+          <tr><td><code>hideOnScroll</code></td><td><code>data-iv-hide-on-scroll</code></td><td><code>false</code></td><td>Retira la barra al bajar y la devuelve al subir. Nunca con el panel abierto ni con el foco dentro.</td></tr>
+          <tr><td><code>closeOnOutside</code></td><td><code>data-iv-close-on-outside</code></td><td><code>true</code></td><td>Un clic fuera de la cabecera cierra el panel abierto.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Métodos y eventos</h2>
+    <p><code>open()</code>, <code>close(reason)</code>, <code>toggle()</code>, <code>destroy()</code>; lectura de <code>isOpen</code> y <code>isCondensed</code>. Por encima del punto de plegado <code>open()</code> no hace nada e <code>isOpen</code> se queda en <code>false</code>: no hay nada plegado que desplegar.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Evento</th><th>Cuándo</th><th><code>detail</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>iv:open</code> → <code>iv:opened</code></td><td>el panel plegado se despliega; el primero es cancelable</td><td><code>reason</code>, <code>trigger</code></td></tr>
+          <tr><td><code>iv:close</code> → <code>iv:closed</code></td><td>el panel vuelve a plegarse</td><td><code>reason</code>: <code>trigger</code>, <code>escape</code>, <code>external</code>, <code>api</code> o <code>viewport</code></td></tr>
+          <tr><td><code>iv:condense</code></td><td>la cabecera entra o sale del estado condensado</td><td><code>condensed</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Teclado y tecnología asistiva</h2>
+    <p>La cabecera es una región <code>&lt;header&gt;</code> y los enlaces viven en un <code>&lt;nav&gt;</code> con su propia etiqueta. La hamburguesa es un botón de verdad con nombre para lectores de pantalla, <code>aria-expanded</code> y <code>aria-controls</code>; Enter y Espacio funcionan sobre ella, Escape cierra el panel y devuelve el foco al botón, y Tab recorre el panel abierto en el orden del documento. La página actual lleva <code>aria-current="page"</code>. No se usan roles de menú: esto son enlaces, no un menú. Cruzar el punto de ruptura hacia arriba cierra el panel y devuelve el mando a la barra.</p>
+    <h2>Sin JavaScript</h2>
+    <p>Todo sigue al alcance. Por encima de <code>collapseBelow</code> el panel es una barra en línea con la marca; por debajo llega abierto y apilado, y la hamburguesa se queda <code>hidden</code> porque no tendría nada que alternar. El plegado solo ocurre bajo <code>[data-iv-js]</code>, así que un script que no cargue no puede esconder un menú. La cabecera pegajosa la hace el CSS y tampoco necesita script; solo lo necesitan condensarse, retirarse al bajar y el panel plegado.</p>
+    <h2>Tokens y locales</h2>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-navbar-height</code></td><td><code>4rem</code></td><td>Altura de la barra en reposo.</td></tr>
+          <tr><td><code>--iv-navbar-height-condensed</code></td><td><code>3.25rem</code></td><td>Altura una vez pasado <code>condenseAt</code>.</td></tr>
+          <tr><td><code>--iv-navbar-bg</code></td><td><code>var(--iv-color-bg)</code></td><td>Superficie de la barra.</td></tr>
+          <tr><td><code>--iv-navbar-max</code></td><td><code>var(--iv-container-max)</code></td><td>Ancho al que se centra la fila interior.</td></tr>
+          <tr><td><code>--iv-navbar-gap</code></td><td><code>var(--iv-space-5)</code></td><td>Separación entre marca, navegación y acciones.</td></tr>
+          <tr><td><code>--iv-navbar-z</code></td><td><code>150</code></td><td>Orden de apilado frente a la página.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>El estado vive en atributos para que el CSS pueda leerlo: <code>data-iv-collapsible</code> mientras el ancho está por debajo del punto de ruptura, <code>data-iv-open</code> en el panel desplegado, <code>data-iv-condensed</code> tras el scroll y <code>data-iv-hidden</code> en una barra retirada. La barra condensada toma <code>--iv-shadow-ambient</code> y un fondo de cristal; con movimiento reducido nada se desplaza, pero <code>data-iv-hidden</code> sigue apartando la barra porque eso es estado, no adorno.</p>
+    <h2>Errores frecuentes</h2>
+    <ul>
+      <li>Servir el panel cerrado. Sin el script nada lo abriría; el marcado tiene que llegar usable y plegarse después.</li>
+      <li>Usar la barra como panel lateral. Si la navegación debe cubrir la página y atrapar el foco, eso es <a href="/es/components/drawer">drawer</a>.</li>
+      <li>Combinar <code>hideOnScroll</code> con contenido que salta a anclas: la barra escribe <code>scroll-padding-block-start</code> mientras es pegajosa, pero una cabecera que aparece y desaparece cuesta orientación.</li>
+      <li>Un megamenú alojado con su superposición encendida: el velo oscurece la propia barra desde la que estás leyendo.</li>
+    </ul>
+  </article>
+</Base>

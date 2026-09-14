@@ -6,7 +6,7 @@ import Fixture from "../../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Aviso (toast)</h1>
     <p>Notificaciones cortas creadas desde JavaScript dentro de una región que ya está en la página. Los mensajes se insertan como texto, nunca como HTML. Los avisos informativos se cierran solos; los de <code>danger</code> no lo hacen nunca y usan <code>role="alert"</code>. Cuando hay más de <code>max</code> visibles, los demás esperan en una cola en lugar de descartarse.</p>
-    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> o <code>auto.js</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> o <code>auto.js</code>. Disparadores declarativos añadidos en la v0.6.</p>
     <Fixture name="toast/basic" minHeight="6rem" />
     <p>Pruébalo: los botones de abajo llaman a <code>show()</code> sobre la región de arriba (los avisos aparecen en el borde inferior final de la ventana).</p>
     <div class="iv-cluster" id="toast-demo">
@@ -24,6 +24,10 @@ import Fixture from "../../../components/Fixture.astro";
         Toast.getOrCreate(region).show({ message: messages[variant], variant, title: variant === "danger" ? "Error" : undefined });
       }));
     </script>
+    <h2>Disparador declarativo</h2>
+    <p>Un botón servido puede mostrar un aviso sin una línea de JavaScript: dale <code>data-iv-toast</code> con el <code>id</code> de la región y el texto en <code>data-iv-message</code>. La región recoge el clic con un único listener delegado y llama a <code>show()</code> con lo que lleve el disparador: <code>data-iv-title</code>, <code>data-iv-variant</code>, <code>data-iv-timeout</code> y <code>data-iv-dismissible</code>. El mensaje se lee como texto, nunca como HTML; una variante desconocida cae en <code>info</code> y un tiempo que no es un número cae en el de la región. <code>showFromTrigger(trigger)</code> hace lo mismo desde tu código.</p>
+    <Fixture name="toast/declarative" title="Botones que muestran un aviso" minHeight="8rem" />
+    <p>Es azúcar sobre <code>show()</code>, no una segunda forma de trabajar: la misma cola, la misma pausa al pasar el ratón y al enfocar, la misma negativa a cerrar solo un mensaje <code>danger</code>. Sin JavaScript estos botones no hacen absolutamente nada, y por eso la fixture marca cada uno como demostración: un botón que promete guardar algo y no lo guarda es peor que no tener botón.</p>
     <h2>API</h2>
 <pre><code>import &#123; Toast &#125; from "@intervolutions/ivolt/toast";
 const region = Toast.get(document.querySelector(".iv-toast-region"));

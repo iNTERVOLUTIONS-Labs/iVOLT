@@ -12,6 +12,8 @@ Estado: criterios de aceptación de fase 0. Nada de lo listado está medido toda
 
 Coste por módulo en v0.5 (2026-09-14, gzip 9, sin el core): tooltip 1,8 KiB JS + 0,5 KiB CSS, popover 2,0 KiB JS + 0,8 KiB CSS; el agrupado de 21 componentes con `init` conjunto supera los 32 KiB, de ahí ADR-037 (48 KiB). Quien importe por componente (`exports` por módulo, verificado por `pack-smoke`) paga solo lo que usa: `theme` 926 B, `dialog` 6,3 KiB.
 
+Coste medido en v0.6 (2026-09-14, gzip 9): CSS por módulo construido:navbar 1915 B; stepper 1931 B; timeline 1283 B; stat 1065 B; avatar 867 B; JS `navbar` 3,2 KiB y `stepper` 3,9 KiB (esbuild `--minify`, sin el core). Totales `ivolt.min.css` 25,64 KiB (≤ 40; 22,17 en v0.5: +3,5 por cinco módulos nuevos, el refactor a tokens no baja la cifra porque las recetas ya se comprimían bien), `ivolt.flat.min.css` 25,57, `core.min.css` 2,60 (seis tokens nuevos), JS agrupado 39,04 (≤ 48; 35,42 en v0.5), IIFE 39,30.
+
 Pulido visual sobre v0.5 (2026-09-14, ADR-040): 22 módulos CSS retocados sin JS nuevo; `ivolt.min.css` pasa de 21,0 a 22,17 KiB gzip (`ivolt.flat.min.css` 22,10, `core.min.css` 2,51, JS agrupado 35,42 sin cambios), dentro de los presupuestos.
 
 Coste medido por módulo en v0.4/v0.5 (2026-09-14, gzip 9, sin el core): megamenu 2,9 KiB JS + 1,0 KiB CSS, effects 1,2 KiB CSS, hero 1,4 KiB CSS, proximity 1,2 KiB JS, reveal 1,0 KiB JS, datepicker 5,0 KiB JS + 1,3 KiB CSS; totales tras integrar el selector de fecha: `ivolt.min.css` ≈ 21 KiB y JS agrupado ≈ 30 KiB (medición exacta en el cierre con `npm run sizes`).

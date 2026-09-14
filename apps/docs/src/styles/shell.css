@@ -99,6 +99,10 @@
   /* the group label stays legible while its own items scroll past it */
   .docs-sidebar > nav .docs-sidebar__heading { position: sticky; inset-block-start: 0; z-index: 1; background: var(--docs-paper); }
 }
+/* The components group is long enough to need a second level: the family says which half
+   of the list you are in, the kind beside each item still says it per link. */
+.docs-sidebar__sub { margin: var(--iv-space-4) 0 var(--iv-space-2); padding-inline: var(--iv-space-3); font-family: var(--docs-display); font-size: 0.6875rem; letter-spacing: .12em; text-transform: uppercase; color: var(--iv-color-text-muted); opacity: .85; }
+.docs-sidebar__group > .docs-sidebar__sub:first-of-type { margin-block-start: var(--iv-space-2); }
 .docs-sidebar__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
 .docs-sidebar__list a { display: flex; align-items: center; gap: var(--iv-space-2); padding: var(--iv-space-2) var(--iv-space-3); border-radius: var(--iv-radius-md); color: var(--iv-color-text-muted); text-decoration: none; font-size: var(--iv-text-sm); position: relative; transition: color var(--iv-motion-fast) var(--docs-ease), transform var(--iv-motion-fast) var(--docs-ease), background-color var(--iv-motion-fast) var(--docs-ease); }
 .docs-sidebar__list a:hover { color: var(--iv-color-text); background: var(--iv-color-surface); transform: translateX(3px); }
@@ -161,6 +165,14 @@
 /* the sitemap: four short columns, never a wall of links */
 .docs-sitemap { display: grid; gap: clamp(1.75rem, 4vw, 3rem); grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); margin-block-end: clamp(2.5rem, 5vw, 3.5rem); }
 .docs-sitemap__col { min-inline-size: 0; }
+/* The components column carries every component: two tracks of the site map and two files of
+   links, so the footer is a complete map instead of a sample of one. */
+@media (min-width: 48em) {
+  .docs-sitemap__col--wide ul { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--iv-space-6); }
+}
+@media (min-width: 64em) {
+  .docs-sitemap__col--wide { grid-column: span 2; }
+}
 .docs-sitemap__title { font-family: var(--docs-display); font-size: var(--iv-text-xs); font-weight: var(--iv-weight-semibold); letter-spacing: .16em; text-transform: uppercase; color: var(--iv-color-text-muted); margin: 0 0 var(--iv-space-3); }
 .docs-sitemap ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; font-size: var(--iv-text-sm); }
 .docs-sitemap a { color: var(--iv-color-text); text-decoration: none; position: relative; }

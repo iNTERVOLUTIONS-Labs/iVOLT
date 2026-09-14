@@ -6,7 +6,7 @@ import Fixture from "../../components/Fixture.astro";
   <article class="docs-prose">
     <h1>Toast</h1>
     <p>Short notifications created from JavaScript into a region that is already in the page. Messages are inserted as text, never HTML. Informational toasts auto-dismiss; <code>danger</code> ones never do and use <code>role="alert"</code>. When more than <code>max</code> are visible, the rest wait in a queue instead of being dropped.</p>
-    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> or <code>auto.js</code>.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> or <code>auto.js</code>. Declarative triggers added in v0.6.</p>
     <Fixture name="toast/basic" minHeight="6rem" />
     <p>Try it: the buttons below call <code>show()</code> on the region above (toasts appear at the bottom end of the viewport).</p>
     <div class="iv-cluster" id="toast-demo">
@@ -24,6 +24,10 @@ import Fixture from "../../components/Fixture.astro";
         Toast.getOrCreate(region).show({ message: messages[variant], variant, title: variant === "danger" ? "Error" : undefined });
       }));
     </script>
+    <h2>Declarative trigger</h2>
+    <p>A served button can show a toast without a line of JavaScript: give it <code>data-iv-toast</code> with the <code>id</code> of the region and the text in <code>data-iv-message</code>. The region picks the click up through one delegated listener and calls <code>show()</code> with what the trigger carries — <code>data-iv-title</code>, <code>data-iv-variant</code>, <code>data-iv-timeout</code> and <code>data-iv-dismissible</code>. The message is read as text, never as HTML; an unknown variant falls back to <code>info</code> and a timeout that is not a number falls back to the region's. <code>showFromTrigger(trigger)</code> does the same thing from your own code.</p>
+    <Fixture name="toast/declarative" title="Buttons that show a toast" minHeight="8rem" />
+    <p>This is sugar over <code>show()</code>, not a second way of working: the same queue, the same pause on hover and focus, the same refusal to auto-dismiss a <code>danger</code> message. Without JavaScript these buttons do nothing at all, which is why the fixture labels each one a demo — a button that promises to save something and does not is worse than no button.</p>
     <h2>API</h2>
 <pre><code>import &#123; Toast &#125; from "@intervolutions/ivolt/toast";
 const region = Toast.get(document.querySelector(".iv-toast-region"));

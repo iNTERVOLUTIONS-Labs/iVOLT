@@ -27,7 +27,9 @@ import Fixture from "../../components/Fixture.astro";
         </tbody>
       </table>
     </div>
-    <p>Local properties: <code>--iv-card-bg</code>, <code>--iv-card-radius</code>, <code>--iv-card-padding</code>.</p>
+    <h2>Elevation</h2>
+    <p>A card rests on <code>--iv-shadow-ambient</code>, the shared resting elevation added in v0.6: one token that already carries the edge ring a dark theme needs and the soft drop a light one does. Under a pointer it steps up to <code>--iv-shadow-2</code>; the lift is inside <code>@media (hover: hover)</code>, so a touch screen never gets a stuck hover state, and it is a shadow change only, with no travel to jog the layout.</p>
+    <p>Two public locals retune it in one line: <code>--iv-card-shadow</code> for the resting elevation and <code>--iv-card-shadow-hover</code> for the one under the pointer. Set either to <code>none</code> to cancel it — that is exactly what <code>iv-card--flat</code> does. Together with <code>--iv-card-bg</code>, <code>--iv-card-radius</code> and <code>--iv-card-padding</code>, that is the whole surface of the component.</p>
     <h2>Common mistakes</h2>
     <ul><li>Making the whole card a link with nested interactive controls. Link the title instead.</li><li>Skipping heading levels inside cards.</li></ul>
   </article>
