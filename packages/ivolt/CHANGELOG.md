@@ -2,7 +2,7 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
-## 0.7.0-beta.0 (unreleased)
+## 0.7.0-beta.0 — 2026-09-14 (npm, tag `beta`)
 
 ### Added
 - `Lightbox` (`iv-gallery`, `iv-lightbox`, export `./lightbox`): a gallery of image links that opens a full-screen viewer composed on the dialog, with keyboard, swipe, zoom, captions, counter and preloading; `--masonry` and `--strip` galleries.

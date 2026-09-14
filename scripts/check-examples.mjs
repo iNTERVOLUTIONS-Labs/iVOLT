@@ -1,5 +1,5 @@
 // Verifies that every local asset referenced by the starters and recipes exists (run after sync-examples),
-// and that no page advertises npm install or a CDN before publication.
+// and that no page advertises a CDN (the package is served from npm since 0.7.0-beta.0, never from a CDN).
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,7 +16,7 @@ for (const rel of pages) {
     const target = join(dirname(join(root, rel)), r.split("?")[0]);
     if (!existsSync(target)) { console.error(`${rel}: missing ${r}`); errors++; }
   }
-  if (/npm install|cdn\./i.test(html)) { console.error(`${rel}: must not show npm install or a CDN before publication`); errors++; }
+  if (/cdn\./i.test(html)) { console.error(`${rel}: must not point at a CDN`); errors++; }
 }
 if (errors) process.exit(1);
 console.log(`check-examples: ok (${pages.length} pages: ${pages.map((p) => p.split("/").slice(-2, -1)[0]).join(", ")})`);

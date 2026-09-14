@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-14 · Ciclo **v0.7 «Media & motion» cerrado** → hito `0.7.0-beta.0` (`ROADMAP.md` §10, ADR-042) · v0.6 cerrado el mismo día (§9, ADR-041) · **Nada publicado ni desplegado**
+Última actualización: 2026-09-14 · Ciclo **v0.7 «Media & motion» cerrado** → hito `0.7.0-beta.0` (`ROADMAP.md` §10, ADR-042) · v0.6 cerrado el mismo día (§9, ADR-041) · **`0.7.0-beta.0` publicada en npm el 2026-09-14 con la etiqueta `beta` (ADR-043); nada desplegado**
 
 ## Estado por fase e hito
 
@@ -9,7 +9,7 @@
 | 0–4 (v0.1.0-alpha.0) | hechas, no publicada | `docs/RELEASE.md` §1–§4 |
 | Betas 0.2 a 0.5 (`ROADMAP.md` §5–§7) y ronda visual (§8) | cerradas, no publicadas | combobox, data table, carrusel, selector, formularios, superficies, megamenú, efectos, hero, datepicker, tooltip, popover, paleta, constructor de temas, rediseño de la web |
 | v0.6 «Structure» (§9, ADR-041) | cerrado, no publicado | tokens con nombre, navbar, stepper, toast declarativo, timeline/stat/avatar; 94 páginas en dos idiomas; gate en tres motores |
-| **v0.7 «Media & motion»** (§10, ADR-042) | cerrado, no publicado | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
+| **v0.7 «Media & motion»** (§10, ADR-042) | cerrado y **publicado** (`npm install @intervolutions/ivolt@beta`) | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
 
 ## Petición del propietario que abrió estos ciclos (2026-09-14)
 
@@ -45,7 +45,7 @@ Presupuestos (`npm run sizes` @ f6d17ad): `core.min.css` 2,60 KiB (≤ 8), `ivol
 - Gestos táctiles reales (arrastre con zoom, panel del navbar), parallax con trackpad de alta frecuencia: solo simulados.
 - `iv-stack-cards` retrocede como baraja completa al salir, no tarjeta a tarjeta (ADR-042, candidato).
 - Aceptación visual del propietario de v0.6 y v0.7: pendiente.
-- Publicación y despliegue: requieren autorización explícita (`docs/RELEASE.md` §0d y §3).
+- Publicado en npm con autorización del propietario (`docs/RELEASE.md` §0d); el despliegue de la web sigue requiriendo autorización explícita (§3).
 
 ## Fallos abiertos
 
@@ -53,7 +53,7 @@ Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title`
 
 ## Siguiente acción
 
-Revisión del propietario de v0.6 y v0.7 con la web construida (`npm run build && npm run dev:docs`): navbar, stepper, bloques de contenido, galería y visor, movimiento, texto, contador y la receta «showcase» (`/examples/showcase/index.html`). Candidatos para 0.8 en `ROADMAP.md` §8 y §10 (relevo por tarjeta en la baraja, tokens pendientes, `Picker` con etiqueta hermana, decisión sobre el presupuesto de JS o la importación por módulo, servir a la home solo los módulos que usa). Publicación solo con autorización.
+Revisión del propietario de v0.6 y v0.7 con la web construida (`npm run build && npm run dev:docs`): navbar, stepper, bloques de contenido, galería y visor, movimiento, texto, contador y la receta «showcase» (`/examples/showcase/index.html`). Candidatos para 0.8 en `ROADMAP.md` §8 y §10 (relevo por tarjeta en la baraja, tokens pendientes, `Picker` con etiqueta hermana, decisión sobre el presupuesto de JS o la importación por módulo, servir a la home solo los módulos que usa). La web sigue sin desplegar (solo con autorización).
 
 ## Decisiones que no deben perderse
 

@@ -4,7 +4,11 @@ import Base from "../../layouts/Base.astro";
 <Base lang="es" title="Primeros pasos" description="Usa iVOLT desde archivos locales sin paso de compilación, o como módulos ES con exports reales del paquete. Navegadores admitidos y convivencia con tu CSS.">
   <article class="docs-prose">
     <h1>Primeros pasos</h1>
-    <p>iVOLT se distribuye como CSS y JavaScript ya compilados. Mientras el paquete no esté publicado, instálalo desde el repositorio.</p>
+    <p>iVOLT se distribuye como CSS y JavaScript ya compilados. El paquete está publicado en npm como beta bajo la etiqueta <code>beta</code>; también puedes construirlo desde el repositorio.</p>
+
+    <h2>Instalar desde npm</h2>
+<pre><code>npm install @intervolutions/ivolt@beta</code></pre>
+    <p>Beta: los contratos están congelados para el ciclo y los detalles pueden cambiar antes de <code>0.7.0</code>. Fija la versión exacta en producción.</p>
 
     <h2>Compila el paquete</h2>
 <pre><code>git clone https://github.com/iNTERVOLUTIONS-Labs/iVOLT
@@ -23,7 +27,7 @@ npm run build          # escribe packages/ivolt/dist</code></pre>
     <p>¿Prefieres un script clásico? <code>ivolt/js/ivolt.iife.min.js</code> expone un único global, <code>IVOLT</code>, y no inicializa nada hasta que llamas a <code>IVOLT.init()</code>.</p>
 
     <h2>Módulos ES con un empaquetador</h2>
-    <p>Crea un tarball con <code>npm pack</code> dentro de <code>packages/ivolt</code> e instálalo en tu proyecto. Los <code>exports</code> del paquete son la API pública; las rutas profundas dentro de <code>dist/</code> no lo son.</p>
+    <p>Instala el paquete desde npm (arriba) o, desde un clon, un tarball creado con <code>npm pack</code> dentro de <code>packages/ivolt</code>. Los <code>exports</code> del paquete son la API pública; las rutas profundas dentro de <code>dist/</code> no lo son.</p>
 <pre><code>import "@intervolutions/ivolt/css/ivolt.css";
 import &#123; init, Dialog &#125; from "@intervolutions/ivolt";
 import &#123; setTheme &#125; from "@intervolutions/ivolt/theme";

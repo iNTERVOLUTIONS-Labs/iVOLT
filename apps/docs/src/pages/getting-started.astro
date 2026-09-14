@@ -4,7 +4,11 @@ import Base from "../layouts/Base.astro";
 <Base title="Getting started" description="Use iVOLT from local files without a build step, or as ES modules with real package exports. Browser support and coexistence with existing CSS.">
   <article class="docs-prose">
     <h1>Getting started</h1>
-    <p>iVOLT ships as prebuilt CSS and JavaScript. Until the package is published, install it from the repository.</p>
+    <p>iVOLT ships as prebuilt CSS and JavaScript. The package is published on npm as a beta under the <code>beta</code> tag; you can also build it from the repository.</p>
+
+    <h2>Install from npm</h2>
+<pre><code>npm install @intervolutions/ivolt@beta</code></pre>
+    <p>Beta: the contracts are frozen for the cycle, details may still change before <code>0.7.0</code>. Pin the exact version in production.</p>
 
     <h2>Build the package</h2>
 <pre><code>git clone https://github.com/iNTERVOLUTIONS-Labs/iVOLT
@@ -23,7 +27,7 @@ npm run build          # writes packages/ivolt/dist</code></pre>
     <p>Prefer a classic script? <code>ivolt/js/ivolt.iife.min.js</code> exposes one global, <code>IVOLT</code>, and does not initialise anything until you call <code>IVOLT.init()</code>.</p>
 
     <h2>ES modules with a bundler</h2>
-    <p>Create a tarball with <code>npm pack</code> inside <code>packages/ivolt</code> and install it in your project. The package exports are the public API; deep paths into <code>dist/</code> are not.</p>
+    <p>Install the package from npm (above) or, from a checkout, a tarball made with <code>npm pack</code> inside <code>packages/ivolt</code>. The package exports are the public API; deep paths into <code>dist/</code> are not.</p>
 <pre><code>import "@intervolutions/ivolt/css/ivolt.css";
 import &#123; init, Dialog &#125; from "@intervolutions/ivolt";
 import &#123; setTheme &#125; from "@intervolutions/ivolt/theme";

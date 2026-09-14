@@ -2,11 +2,11 @@
 
 Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
 
-## 0d. Notas de versión 0.7.0-beta.0 (borrador)
+## 0d. Notas de versión 0.7.0-beta.0 (publicada el 2026-09-14)
 
 **0.7 «Media & motion»** (ADR-042): **Lightbox** (galería en rejilla, masonry o tira; visor a pantalla completa sobre el diálogo con teclado, gesto, zoom, pies, contador y precarga), **movimiento por scroll** (`motion.css`: parallax, barra de lectura, marquesina, tarjetas apiladas con animaciones dirigidas por scroll y `ScrollMotion` como reserva para navegadores sin ellas), **texto** (`text.css`: revelado por líneas, brillo, contorno, destello) y **Countup** (cifras servidas que cuentan al entrar, formateadas por `Intl`), más la receta **showcase** con fotografías propias acreditadas. Todo estático bajo reduced motion salvo la barra de lectura, que es estado. Tamaños: CSS 28,1 KiB, JS 42,8 KiB gzip (presupuestos 40 y 48).
 
-Pasos de publicación, cuando se autorice: `npm version 0.7.0-beta.0 --no-git-tag-version -w @intervolutions/ivolt` (ya es la versión actual), etiqueta git `v0.7.0-beta.0`, `npm publish --access public --tag beta`; el resto igual que §3.
+Publicación ejecutada el 2026-09-14 con autorización expresa del propietario (ADR-043): etiqueta git `v0.7.0-beta.0` sobre `16506f9`, `npm publish --access public --tag beta -w @intervolutions/ivolt` (128 archivos, 634 KB, shasum `9b7d512b…`). npm asigna `latest` a la primera versión publicada de un paquete y no admite un paquete sin `latest`, así que hoy `latest` y `beta` apuntan a `0.7.0-beta.0`; la primera versión estable moverá `latest`. Instalación verificada desde el registro en un consumidor limpio (`npm install @intervolutions/ivolt@beta`, importación ESM, 24 componentes).
 
 ## 0c. Notas de versión 0.6.0-beta.0 (borrador)
 
