@@ -1,45 +1,50 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Code from "../../components/Code.astro";
 ---
 <Base lang="es" title="Contribuir" description="Cómo compilar, probar y ampliar iVOLT: los comandos, la estructura del repositorio, las reglas que debe cumplir un cambio, las pruebas de contrato que las hacen cumplir y la licencia.">
   <article class="docs-prose">
     <h1>Contribuir</h1>
     <p>iVOLT es una base de código pequeña con reglas estrictas. La mayoría de esas reglas existen porque un sistema de diseño se rompe despacio: una clase sin prefijo, un <code>!important</code>, un componente documentado con marcado que ninguna prueba llega a renderizar. Las pruebas de contrato que vienen más abajo codifican esas reglas para que una pull request falle pronto en lugar de ir derivando.</p>
+    <p class="docs-meta"><strong>Licencia:</strong> MIT. <strong>Idioma:</strong> código, identificadores y documentación pública en inglés. <strong>Todo cambio de la superficie pública:</strong> un registro de decisión en <code>docs/DECISIONS.md</code>.</p>
 
-    <h2>Puesta en marcha</h2>
-<pre><code>git clone https://github.com/iNTERVOLUTIONS-Labs/iVOLT
+    <Section title="Puesta en marcha" num={1}>
+      <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `git clone https://github.com/iNTERVOLUTIONS-Labs/iVOLT
 cd iVOLT
-npm ci                 # instala desde el único lockfile, nunca `npm install` en CI
+npm ci                 # instala desde el único lockfile, nunca \`npm install\` en CI
 npm run build          # genera packages/ivolt/dist
-npm run dev:docs   # compila el paquete antes si falta dist/       # servidor de desarrollo de Astro para apps/docs</code></pre>
-    <p>El repositorio es un workspace de npm con un solo lockfile en la raíz. <code>dist/</code> se genera y no se versiona, así que compila antes de lanzar la suite de navegador, el informe de tamaños o la prueba de humo del empaquetado.</p>
+npm run dev:docs   # compila el paquete antes si falta dist/       # servidor de desarrollo de Astro para apps/docs` }]} />
+      <p>El repositorio es un workspace de npm con un solo lockfile en la raíz. <code>dist/</code> se genera y no se versiona, así que compila antes de lanzar la suite de navegador, el informe de tamaños o la prueba de humo del empaquetado.</p>
+    </Section>
 
-    <h2>Comandos</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Comando</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>npm run build</code></td><td>Compila el paquete: primero se generan tokens y utilidades, después se escriben el CSS y el JS en <code>packages/ivolt/dist</code>.</td></tr>
-          <tr><td><code>npm test</code></td><td>Vitest: pruebas unitarias de los componentes JS y pruebas de contrato sobre las fuentes CSS y los fragmentos documentados.</td></tr>
-          <tr><td><code>npm run test:browser</code></td><td>Playwright. Solo Chromium por defecto; <code>IVOLT_ALL_BROWSERS=1 npm run test:browser</code> ejecuta Chromium, Firefox y WebKit. Cubre comportamiento, axe, desbordamiento de 320 a 1920 px, RTL, temas, páginas de documentación y recetas.</td></tr>
-          <tr><td><code>npm run sizes</code></td><td>Informa del tamaño de cada artefacto compilado. Un cambio que mueva esas cifras de forma apreciable debería explicar por qué.</td></tr>
-          <tr><td><code>npm run pack-smoke</code></td><td>Empaqueta con <code>npm pack</code>, instala el tarball en un proyecto desechable y comprueba que los <code>exports</code> se resuelven y que los componentes sin usar se eliminan por tree-shaking.</td></tr>
-          <tr><td><code>npm run check-examples</code></td><td>Carga las páginas de ejemplo y las recetas y verifica que siguen funcionando con la compilación actual.</td></tr>
-          <tr><td><code>npm run build:docs</code></td><td>Compila el sitio estático de documentación.</td></tr>
-          <tr><td><code>npm run verify</code></td><td>Todo lo anterior en orden. Es la puerta antes de cerrar una fase.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Playwright necesita que instales sus navegadores una vez (<code>npx playwright install</code>); las comprobaciones de axe pasan por <code>@axe-core/playwright</code>.</p>
+    <Section title="Comandos" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Comando</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>npm run build</code></td><td>Compila el paquete: primero se generan tokens y utilidades, después se escriben el CSS y el JS en <code>packages/ivolt/dist</code>.</td></tr>
+            <tr><td><code>npm test</code></td><td>Vitest: pruebas unitarias de los componentes JS y pruebas de contrato sobre las fuentes CSS y los fragmentos documentados.</td></tr>
+            <tr><td><code>npm run test:browser</code></td><td>Playwright. Solo Chromium por defecto; <code>IVOLT_ALL_BROWSERS=1 npm run test:browser</code> ejecuta Chromium, Firefox y WebKit. Cubre comportamiento, axe, desbordamiento de 320 a 1920 px, RTL, temas, páginas de documentación y recetas.</td></tr>
+            <tr><td><code>npm run sizes</code></td><td>Informa del tamaño de cada artefacto compilado. Un cambio que mueva esas cifras de forma apreciable debería explicar por qué.</td></tr>
+            <tr><td><code>npm run pack-smoke</code></td><td>Empaqueta con <code>npm pack</code>, instala el tarball en un proyecto desechable y comprueba que los <code>exports</code> se resuelven y que los componentes sin usar se eliminan por tree-shaking.</td></tr>
+            <tr><td><code>npm run check-examples</code></td><td>Carga las páginas de ejemplo y las recetas y verifica que siguen funcionando con la compilación actual.</td></tr>
+            <tr><td><code>npm run build:docs</code></td><td>Compila el sitio estático de documentación.</td></tr>
+            <tr><td><code>npm run verify</code></td><td>Todo lo anterior en orden. Es la puerta antes de cerrar una fase.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Playwright necesita que instales sus navegadores una vez (<code>npx playwright install</code>); las comprobaciones de axe pasan por <code>@axe-core/playwright</code>.</p>
+    </Section>
 
-    <h2>Estructura del repositorio</h2>
-<pre><code>iVOLT/
+    <Section title="Estructura del repositorio" num={3}>
+      <Code label="código" panels={[{ key: "src", label: "CÓDIGO", code: `iVOLT/
 ├─ package.json              # workspaces + scripts de raíz
 ├─ package-lock.json         # el único lockfile
 ├─ docs/                     # contratos, sistema de diseño, listón de calidad, ADR, hoja de ruta
 ├─ packages/ivolt/
 │  ├─ tokens/tokens.json     # única fuente de verdad de los tokens
-│  ├─ fixtures/&lt;familia&gt;/*.html  # una fuente para documentación, pruebas y plantillas
+│  ├─ fixtures/<familia>/*.html  # una fuente para documentación, pruebas y plantillas
 │  ├─ src/css/               # reset, tokens (generado), base, layout/, components/,
 │  │                         # utilities (generado), core.css, ivolt.css, ivolt.flat.css
 │  ├─ src/js/                # core/ (registro, opciones, eventos, foco, teclas),
@@ -49,76 +54,79 @@ npm run dev:docs   # compila el paquete antes si falta dist/       # servidor de
 ├─ apps/docs/                # sitio estático de Astro
 ├─ examples/                 # plain-html, vite, recipes/
 ├─ tests/                    # unit, browser, contracts, integration
-└─ scripts/                  # pack-smoke, check-examples, sync-examples</code></pre>
-    <p>Hay dos archivos generados que nunca deben editarse a mano: <code>src/css/tokens.css</code> (desde <code>tokens/tokens.json</code>) y <code>src/css/utilities.css</code> (desde la configuración de utilidades). Cambia la fuente y vuelve a compilar. Lo mismo vale para <code>custom-media.css</code>, <code>reset.layer.css</code> y <code>core/breakpoints.js</code>.</p>
+└─ scripts/                  # pack-smoke, check-examples, sync-examples` }]} />
+      <p>Hay dos archivos generados que nunca deben editarse a mano: <code>src/css/tokens.css</code> (desde <code>tokens/tokens.json</code>) y <code>src/css/utilities.css</code> (desde la configuración de utilidades). Cambia la fuente y vuelve a compilar. Lo mismo vale para <code>custom-media.css</code>, <code>reset.layer.css</code> y <code>core/breakpoints.js</code>.</p>
+    </Section>
 
-    <h2>Reglas para un cambio</h2>
+    <Section title="Reglas para un cambio" num={4}>
 
-    <h3>CSS</h3>
-    <ul>
-      <li><strong>Prefíjalo todo.</strong> Clases <code>iv-</code>, utilidades <code>iv-u-</code>, propiedades personalizadas <code>--iv-</code>, atributos de datos <code>data-iv-</code>.</li>
-      <li><strong>Nada de <code>!important</code>.</strong> La única excepción es <code>.iv-u-sr-only</code>, y está documentada como tal.</li>
-      <li><strong>Especificidad igual o menor que <code>(0,2,0)</code></strong> en los selectores de componente, para que una utilidad — emitida con el selector duplicado a exactamente <code>(0,2,0)</code> y cargada la última — gane siempre. Las alternativas documentadas con <code>:target</code> para diálogo y panel lateral son la única excepción admitida.</li>
-      <li><strong>Selectores de elemento solo dentro de <code>.iv-root</code>.</strong> Nada del paquete puede dar estilo a un elemento suelto de forma global.</li>
-      <li><strong>Los módulos no declaran <code>@layer</code> ni importan nada.</strong> Las entradas asignan las capas en el momento de importar, y cada módulo se importa exactamente una vez por entrada.</li>
-      <li><strong>Puntos de ruptura con nombres de <code>@custom-media</code></strong>, nunca <code>var()</code> dentro de una media query, porque no funciona.</li>
-      <li><strong>Los colores vienen de tokens semánticos.</strong> Un hexadecimal suelto en un archivo de componente es un error; no seguirá a los temas.</li>
-    </ul>
+      <h3>CSS</h3>
+      <ul>
+        <li><strong>Prefíjalo todo.</strong> Clases <code>iv-</code>, utilidades <code>iv-u-</code>, propiedades personalizadas <code>--iv-</code>, atributos de datos <code>data-iv-</code>.</li>
+        <li><strong>Nada de <code>!important</code>.</strong> La única excepción es <code>.iv-u-sr-only</code>, y está documentada como tal.</li>
+        <li><strong>Especificidad igual o menor que <code>(0,2,0)</code></strong> en los selectores de componente, para que una utilidad — emitida con el selector duplicado a exactamente <code>(0,2,0)</code> y cargada la última — gane siempre. Las alternativas documentadas con <code>:target</code> para diálogo y panel lateral son la única excepción admitida.</li>
+        <li><strong>Selectores de elemento solo dentro de <code>.iv-root</code>.</strong> Nada del paquete puede dar estilo a un elemento suelto de forma global.</li>
+        <li><strong>Los módulos no declaran <code>@layer</code> ni importan nada.</strong> Las entradas asignan las capas en el momento de importar, y cada módulo se importa exactamente una vez por entrada.</li>
+        <li><strong>Puntos de ruptura con nombres de <code>@custom-media</code></strong>, nunca <code>var()</code> dentro de una media query, porque no funciona.</li>
+        <li><strong>Los colores vienen de tokens semánticos.</strong> Un hexadecimal suelto en un archivo de componente es un error; no seguirá a los temas.</li>
+      </ul>
 
-    <h3>Las fixtures son la fuente única</h3>
-    <p>Una fixture en <code>packages/ivolt/fixtures/&lt;familia&gt;/&lt;caso&gt;.html</code> es a la vez la vista previa de la página de documentación, el fragmento copiable y el marcado que renderizan las pruebas. No escribas marcado de ejemplo en línea dentro de una página de componente, ni marcado de prueba dentro de un archivo de spec. Si el fragmento documentado y el marcado probado pueden divergir, acabarán divergiendo.</p>
+      <h3>Las fixtures son la fuente única</h3>
+      <p>Una fixture en <code>packages/ivolt/fixtures/&lt;familia&gt;/&lt;caso&gt;.html</code> es a la vez la vista previa de la página de documentación, el fragmento copiable y el marcado que renderizan las pruebas. No escribas marcado de ejemplo en línea dentro de una página de componente, ni marcado de prueba dentro de un archivo de spec. Si el fragmento documentado y el marcado probado pueden divergir, acabarán divergiendo.</p>
 
-    <h3>Cuándo está terminada una familia</h3>
-    <p>Contar variantes no ensancha el alcance. Una familia de componentes está terminada solo cuando tiene las cinco cosas:</p>
-    <ol>
-      <li>Estados: normal, hover, foco, activo, deshabilitado, y los de carga o error que necesite.</li>
-      <li>Comportamiento de teclado, documentado tecla a tecla.</li>
-      <li>Una alternativa para cuando JavaScript no se ejecuta.</li>
-      <li>Documentación con fixtures.</li>
-      <li>Pruebas: unitarias del comportamiento, de navegador del renderizado y axe en ambos temas.</li>
-    </ol>
+      <h3>Cuándo está terminada una familia</h3>
+      <p>Contar variantes no ensancha el alcance. Una familia de componentes está terminada solo cuando tiene las cinco cosas:</p>
+      <ol>
+        <li>Estados: normal, hover, foco, activo, deshabilitado, y los de carga o error que necesite.</li>
+        <li>Comportamiento de teclado, documentado tecla a tecla.</li>
+        <li>Una alternativa para cuando JavaScript no se ejecuta.</li>
+        <li>Documentación con fixtures.</li>
+        <li>Pruebas: unitarias del comportamiento, de navegador del renderizado y axe en ambos temas.</li>
+      </ol>
 
-    <h3>JavaScript</h3>
-    <ul>
-      <li>Sin acceso en el nivel superior a <code>document</code>, <code>window</code>, <code>navigator</code> ni <code>matchMedia</code>; las importaciones en SSR no deben lanzar.</li>
-      <li>Sin <code>eval</code>, sin <code>new Function</code>, sin <code>innerHTML</code> con datos externos, sin atributos <code>on*</code>. El paquete tiene que funcionar bajo <code>script-src 'self'</code>.</li>
-      <li>Sin dependencias, sin peticiones de red, sin telemetría.</li>
-      <li><code>init()</code> es idempotente; <code>destroy()</code> devuelve el DOM a los atributos que encontró, y eso se prueba.</li>
-      <li>Los eventos llevan el prefijo <code>iv:</code> y forman parte del contrato: añadir o renombrar uno es un cambio de contrato.</li>
-    </ul>
+      <h3>JavaScript</h3>
+      <ul>
+        <li>Sin acceso en el nivel superior a <code>document</code>, <code>window</code>, <code>navigator</code> ni <code>matchMedia</code>; las importaciones en SSR no deben lanzar.</li>
+        <li>Sin <code>eval</code>, sin <code>new Function</code>, sin <code>innerHTML</code> con datos externos, sin atributos <code>on*</code>. El paquete tiene que funcionar bajo <code>script-src 'self'</code>.</li>
+        <li>Sin dependencias, sin peticiones de red, sin telemetría.</li>
+        <li><code>init()</code> es idempotente; <code>destroy()</code> devuelve el DOM a los atributos que encontró, y eso se prueba.</li>
+        <li>Los eventos llevan el prefijo <code>iv:</code> y forman parte del contrato: añadir o renombrar uno es un cambio de contrato.</li>
+      </ul>
 
-    <h3>Los cambios de contrato necesitan un ADR</h3>
-    <p>Todo lo que cambie una superficie pública — un nombre de clase, un nombre de token, una opción, un evento, un export, el orden de capas — necesita una entrada en <code>docs/DECISIONS.md</code> con la decisión, las alternativas consideradas y la evidencia. El ADR forma parte de la pull request, no es un seguimiento posterior.</p>
+      <h3>Los cambios de contrato necesitan un ADR</h3>
+      <p>Todo lo que cambie una superficie pública — un nombre de clase, un nombre de token, una opción, un evento, un export, el orden de capas — necesita una entrada en <code>docs/DECISIONS.md</code> con la decisión, las alternativas consideradas y la evidencia. El ADR forma parte de la pull request, no es un seguimiento posterior.</p>
+    </Section>
 
-    <h2>Las pruebas de contrato</h2>
-    <p>Se ejecutan con <code>npm test</code> y fallan de forma ruidosa si se rompe alguna regla de arriba:</p>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Comprobación</th><th>Falla cuando</th></tr></thead>
-        <tbody>
-          <tr><td>Los módulos no declaran capa ni importan nada</td><td>Un módulo fuente añade <code>@layer</code> o un <code>@import</code></td></tr>
-          <tr><td>Nada de <code>!important</code> fuera de las utilidades sr-only</td><td>Cualquier otra declaración lo usa</td></tr>
-          <tr><td>Prefijos en clases y propiedades personalizadas</td><td>Aparece un nombre sin prefijo en las fuentes</td></tr>
-          <tr><td>Selectores de elemento acotados a <code>.iv-root</code></td><td>Un selector de elemento suelto se escapa del ámbito en <code>base.css</code></td></tr>
-          <tr><td>Techo de especificidad <code>(0,2,0)</code></td><td>Un selector de componente lo supera fuera de las excepciones documentadas</td></tr>
-          <tr><td>Puntos de ruptura vía <code>@custom-media</code></td><td>Una media query lee una propiedad personalizada</td></tr>
-          <tr><td>Las utilidades coinciden exactamente con la matriz declarada</td><td>El archivo generado gana o pierde una clase respecto al contrato</td></tr>
-          <tr><td>Las entradas importan cada módulo una vez y declaran el orden de capas</td><td>Un import duplicado se come en silencio una asignación de capa</td></tr>
-          <tr><td>Los fragmentos coinciden con la distribución</td><td>El marcado documentado deja de coincidir con lo que el paquete distribuye de verdad</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Si una prueba de contrato bloquea un cambio que crees correcto, la solución es un ADR que mueva el contrato, no una excepción en la prueba.</p>
+    <Section title="Las pruebas de contrato" num={5} lead={`Se ejecutan con npm test y fallan de forma ruidosa si se rompe alguna regla de arriba:`}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Comprobación</th><th>Falla cuando</th></tr></thead>
+          <tbody>
+            <tr><td>Los módulos no declaran capa ni importan nada</td><td>Un módulo fuente añade <code>@layer</code> o un <code>@import</code></td></tr>
+            <tr><td>Nada de <code>!important</code> fuera de las utilidades sr-only</td><td>Cualquier otra declaración lo usa</td></tr>
+            <tr><td>Prefijos en clases y propiedades personalizadas</td><td>Aparece un nombre sin prefijo en las fuentes</td></tr>
+            <tr><td>Selectores de elemento acotados a <code>.iv-root</code></td><td>Un selector de elemento suelto se escapa del ámbito en <code>base.css</code></td></tr>
+            <tr><td>Techo de especificidad <code>(0,2,0)</code></td><td>Un selector de componente lo supera fuera de las excepciones documentadas</td></tr>
+            <tr><td>Puntos de ruptura vía <code>@custom-media</code></td><td>Una media query lee una propiedad personalizada</td></tr>
+            <tr><td>Las utilidades coinciden exactamente con la matriz declarada</td><td>El archivo generado gana o pierde una clase respecto al contrato</td></tr>
+            <tr><td>Las entradas importan cada módulo una vez y declaran el orden de capas</td><td>Un import duplicado se come en silencio una asignación de capa</td></tr>
+            <tr><td>Los fragmentos coinciden con la distribución</td><td>El marcado documentado deja de coincidir con lo que el paquete distribuye de verdad</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Si una prueba de contrato bloquea un cambio que crees correcto, la solución es un ADR que mueva el contrato, no una excepción en la prueba.</p>
+    </Section>
 
-    <h2>Pull requests</h2>
-    <ul>
-      <li>Ejecuta <code>npm run verify</code> antes de abrir una, y di en la descripción qué comprobaciones pasaste y cuáles no pudiste pasar.</li>
-      <li>Mantén el cambio centrado en una familia o en un asunto; las refactorizaciones mezcladas son difíciles de revisar contra un contrato.</li>
-      <li>Informa de los errores de accesibilidad y de navegador con el nombre de la fixture, el motor y los pasos: la fixture hace que sea reproducible con un solo comando.</li>
-      <li>El proyecto está en alfa. Un cambio correcto aunque rompa compatibilidad es aceptable si lleva su ADR; un cambio cómodo pero sin registrar, no.</li>
-    </ul>
+    <Section title="Pull requests" num={6}>
+      <ul>
+        <li>Ejecuta <code>npm run verify</code> antes de abrir una, y di en la descripción qué comprobaciones pasaste y cuáles no pudiste pasar.</li>
+        <li>Mantén el cambio centrado en una familia o en un asunto; las refactorizaciones mezcladas son difíciles de revisar contra un contrato.</li>
+        <li>Informa de los errores de accesibilidad y de navegador con el nombre de la fixture, el motor y los pasos: la fixture hace que sea reproducible con un solo comando.</li>
+        <li>El proyecto está en alfa. Un cambio correcto aunque rompa compatibilidad es aceptable si lleva su ADR; un cambio cómodo pero sin registrar, no.</li>
+      </ul>
+    </Section>
 
-    <h2>Licencia</h2>
-    <p>MIT, Copyright (c) 2026 iNTERVOLUTIONS. Mira <code>LICENSE</code> en la raíz del repositorio. Las contribuciones se aceptan bajo la misma licencia.</p>
+    <Section title="Licencia" num={7} lead={`MIT, Copyright (c) 2026 iNTERVOLUTIONS. Mira LICENSE en la raíz del repositorio. Las contribuciones se aceptan bajo la misma licencia.`}>
+    </Section>
   </article>
 </Base>

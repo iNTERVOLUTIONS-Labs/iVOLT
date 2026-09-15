@@ -1,28 +1,30 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Esqueleto" description="Esqueleto de iVOLT: bloques de marcador de posición mientras carga el contenido, con animación de brillo y alternativa con reducción de movimiento. Solo CSS.">
   <article class="docs-prose">
     <h1>Esqueleto (skeleton)</h1>
     <p>Formas de marcador de posición mientras carga el contenido. Los esqueletos son decorativos: ocúltalos a la tecnología asistiva con <code>aria-hidden="true"</code> y marca el contenedor que espera con <code>aria-busy="true"</code>. Sustitúyelos por el contenido real; no los dejes en el DOM.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/skeleton.css</code> (dentro de <code>ivolt.css</code>).</p>
-    <Fixture name="skeleton/card" />
-    <h2>Modificadores</h2>
-    <p><code>--text</code>, <code>--title</code>, <code>--circle</code>, <code>--rect</code>. El brillo usa <code>@keyframes iv-shimmer</code> y queda estático bajo <code>prefers-reduced-motion</code>.</p>
-  
-    <h2>Índice de clases</h2>
-    <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-skeleton--text</code></td><td>Línea de texto: alto de una línea con el radio del texto.</td></tr>
-          <tr><td><code>iv-skeleton--title</code></td><td>Línea más alta y más corta, para un título.</td></tr>
-          <tr><td><code>iv-skeleton--rect</code></td><td>Bloque rectangular: una imagen, una tarjeta.</td></tr>
-          <tr><td><code>iv-skeleton--circle</code></td><td>Círculo, para un avatar.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="skeleton/card" title="Una tarjeta mientras carga" />
+    <Section title="Modificadores" num={1} lead={`--text, --title, --circle, --rect. El brillo usa @keyframes iv-shimmer y queda estático bajo prefers-reduced-motion.`}>
+    </Section>
+
+    <Section title="Índice de clases" num={2}>
+      <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-skeleton--text</code></td><td>Línea de texto: alto de una línea con el radio del texto.</td></tr>
+            <tr><td><code>iv-skeleton--title</code></td><td>Línea más alta y más corta, para un título.</td></tr>
+            <tr><td><code>iv-skeleton--rect</code></td><td>Bloque rectangular: una imagen, una tarjeta.</td></tr>
+            <tr><td><code>iv-skeleton--circle</code></td><td>Círculo, para un avatar.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

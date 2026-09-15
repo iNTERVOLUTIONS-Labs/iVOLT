@@ -1,74 +1,79 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Code from "../../components/Code.astro";
 ---
 <Base title="Stability" description="What @intervolutions/ivolt promises from 1.0: the public surface, the SemVer rules, how deprecations run, the npm tags, the browsers supported, what is deliberately not promised, and how all of it is checked.">
   <article class="docs-prose">
     <h1>Stability and versioning</h1>
     <p>This page says what the package promises once <code>1.0.0</code> is out, and how that promise changes. Until the release candidate freezes it, it is a draft that can still move — and where it moves, the changelog says so.</p>
+    <p class="docs-meta"><strong>Scheme:</strong> SemVer from <code>1.0.0</code>. <strong>Public:</strong> classes, tokens, options, events and package exports. <strong>Private:</strong> deep paths into <code>dist/</code>.</p>
     <p>The short version: what is documented is public, everything else is an implementation detail; names are removed only in a major version, and a full run of the gate stands behind every release.</p>
 
-    <h2>What is public</h2>
-    <p>What appears in the API contract and on this site, and nothing else. The <a href="/reference">reference</a> renders that surface in full, generated from the sources.</p>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Surface</th><th>Public</th><th>Not public</th></tr></thead>
-        <tbody>
-          <tr><td>CSS</td><td>Documented <code>iv-*</code> classes and their modifiers; the local properties <code>--iv-&lt;block&gt;-*</code> listed as public locals; documented <code>data-iv-*</code> state attributes</td><td>Internal rule order, pseudo-elements, <code>@keyframes</code> names, the exact values of shadows and transitions</td></tr>
-          <tr><td>Tokens</td><td>Every <code>--iv-*</code> that <code>tokens.css</code> emits: the name and its meaning</td><td>Anything absent from <code>tokens.json</code>. A value may be tuned in a minor version as long as the meaning holds</td></tr>
-          <tr><td>JavaScript</td><td>The <code>exports</code> of the package (<code>.</code>, <code>./auto</code>, <code>./theme</code>, <code>./&lt;component&gt;</code>, <code>./iife</code>, <code>./css/*</code>, <code>./tokens.json</code>); classes, methods, getters, options and defaults; the <code>iv:*</code> events and their <code>detail</code>; the precedence <code>defaults &lt; data-iv-* &lt; JavaScript options</code></td><td>Members starting with <code>_</code>, deep paths inside <code>dist/</code>, listener order, exact timings</td></tr>
-          <tr><td>Served HTML</td><td>The structure each component expects, and its behaviour with no JavaScript at all</td><td>The markup <code>init</code> generates: it may change shape as long as the documented semantics survive</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Section title="What is public" num={1}>
+      <p>What appears in the API contract and on this site, and nothing else. The <a href="/reference">reference</a> renders that surface in full, generated from the sources.</p>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Surface</th><th>Public</th><th>Not public</th></tr></thead>
+          <tbody>
+            <tr><td>CSS</td><td>Documented <code>iv-*</code> classes and their modifiers; the local properties <code>--iv-&lt;block&gt;-*</code> listed as public locals; documented <code>data-iv-*</code> state attributes</td><td>Internal rule order, pseudo-elements, <code>@keyframes</code> names, the exact values of shadows and transitions</td></tr>
+            <tr><td>Tokens</td><td>Every <code>--iv-*</code> that <code>tokens.css</code> emits: the name and its meaning</td><td>Anything absent from <code>tokens.json</code>. A value may be tuned in a minor version as long as the meaning holds</td></tr>
+            <tr><td>JavaScript</td><td>The <code>exports</code> of the package (<code>.</code>, <code>./auto</code>, <code>./theme</code>, <code>./&lt;component&gt;</code>, <code>./iife</code>, <code>./css/*</code>, <code>./tokens.json</code>); classes, methods, getters, options and defaults; the <code>iv:*</code> events and their <code>detail</code>; the precedence <code>defaults &lt; data-iv-* &lt; JavaScript options</code></td><td>Members starting with <code>_</code>, deep paths inside <code>dist/</code>, listener order, exact timings</td></tr>
+            <tr><td>Served HTML</td><td>The structure each component expects, and its behaviour with no JavaScript at all</td><td>The markup <code>init</code> generates: it may change shape as long as the documented semantics survive</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
 
-    <h2>Versioning</h2>
-    <p>Strict SemVer from <code>1.0.0</code>.</p>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Release</th><th>May contain</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Major</strong></td><td>Removing or renaming anything public, changing a default, changing the <code>detail</code> of an event, raising the browser floor</td></tr>
-          <tr><td><strong>Minor</strong></td><td>Adding classes, tokens, options, methods, events or modules; tuning token values without changing their meaning; widening browser support</td></tr>
-          <tr><td><strong>Patch</strong></td><td>Fixes that do not change the public surface. An accessibility fix may change generated markup and still be a patch</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Reading it the other way round: if your page only uses documented classes, documented attributes and the exported modules, a minor upgrade is a version bump and nothing else.</p>
+    <Section title="Versioning" num={2} lead={`Strict SemVer from 1.0.0.`}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Release</th><th>May contain</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Major</strong></td><td>Removing or renaming anything public, changing a default, changing the <code>detail</code> of an event, raising the browser floor</td></tr>
+            <tr><td><strong>Minor</strong></td><td>Adding classes, tokens, options, methods, events or modules; tuning token values without changing their meaning; widening browser support</td></tr>
+            <tr><td><strong>Patch</strong></td><td>Fixes that do not change the public surface. An accessibility fix may change generated markup and still be a patch</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Reading it the other way round: if your page only uses documented classes, documented attributes and the exported modules, a minor upgrade is a version bump and nothing else.</p>
 
-    <h3>Deprecations</h3>
-    <p>Nothing public disappears without notice. A deprecation is announced in the changelog and on this site one minor version before it is removed in the next major, and while it lives the code warns once per page:</p>
-<pre><code>[iVOLT] deprecated: &lt;what&gt; — use &lt;replacement&gt; (removed in 2.0)</code></pre>
-    <p>The warning is a single <code>console.warn</code>, never a thrown error and never a visible change on the page. There are no pending deprecations as this is written.</p>
+      <h3>Deprecations</h3>
+      <p>Nothing public disappears without notice. A deprecation is announced in the changelog and on this site one minor version before it is removed in the next major, and while it lives the code warns once per page:</p>
+      <Code label="code" panels={[{ key: "src", label: "CODE", code: `[iVOLT] deprecated: <what> — use <replacement> (removed in 2.0)` }]} />
+      <p>The warning is a single <code>console.warn</code>, never a thrown error and never a visible change on the page. There are no pending deprecations as this is written.</p>
 
-    <h3>npm tags</h3>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Tag</th><th>What it points at</th><th>Install</th></tr></thead>
-        <tbody>
-          <tr><td><code>latest</code></td><td>The current stable release</td><td><code>npm install @intervolutions/ivolt</code></td></tr>
-          <tr><td><code>next</code></td><td>Release candidates</td><td><code>npm install @intervolutions/ivolt@next</code></td></tr>
-          <tr><td><code>beta</code></td><td>Betas of the cycle in progress</td><td><code>npm install @intervolutions/ivolt@beta</code></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>One caveat while the package is pre-1.0: npm cannot serve a package without a <code>latest</code>, so <code>latest</code> currently points at the most recent published beta. Pin an exact version if that matters to you.</p>
+      <h3>npm tags</h3>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Tag</th><th>What it points at</th><th>Install</th></tr></thead>
+          <tbody>
+            <tr><td><code>latest</code></td><td>The current stable release</td><td><code>npm install @intervolutions/ivolt</code></td></tr>
+            <tr><td><code>next</code></td><td>Release candidates</td><td><code>npm install @intervolutions/ivolt@next</code></td></tr>
+            <tr><td><code>beta</code></td><td>Betas of the cycle in progress</td><td><code>npm install @intervolutions/ivolt@beta</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>One caveat while the package is pre-1.0: npm cannot serve a package without a <code>latest</code>, so <code>latest</code> currently points at the most recent published beta. Pin an exact version if that matters to you.</p>
+    </Section>
 
-    <h2>Browsers</h2>
-    <p>The floor is Chromium 113, Firefox 113 and Safari 16.4, with their mobile counterparts, and every release is tested in Chromium, Firefox and WebKit. Raising that floor is a major change.</p>
-    <p>Several features are progressive enhancement and are declared as such: the <code>popover</code> attribute, <code>text-wrap: balance</code>, <code>animation-timeline</code> (Firefox gets the same motion through the scroll-motion fallback), <code>position-anchor</code>, <code>backdrop-filter</code> and <code>field-sizing</code>. No public feature depends on any of them; an older engine gets a plainer result, not a broken one.</p>
+    <Section title="Browsers" num={3} lead={`The floor is Chromium 113, Firefox 113 and Safari 16.4, with their mobile counterparts, and every release is tested in Chromium, Firefox and WebKit. Raising that floor is a major change.`}>
+      <p>Several features are progressive enhancement and are declared as such: the <code>popover</code> attribute, <code>text-wrap: balance</code>, <code>animation-timeline</code> (Firefox gets the same motion through the scroll-motion fallback), <code>position-anchor</code>, <code>backdrop-filter</code> and <code>field-sizing</code>. No public feature depends on any of them; an older engine gets a plainer result, not a broken one.</p>
+    </Section>
 
-    <h2>What is not promised</h2>
-    <ul>
-      <li><strong>Pixel equality between versions.</strong> The visual baselines belong to the project's own test suite; they are not a contract with you.</li>
-      <li><strong>File names inside <code>dist/</code>.</strong> Only the paths listed in <code>exports</code> are stable. A deep import may break in a patch.</li>
-      <li><strong>The package fixtures as an API.</strong> They are test and documentation material.</li>
-      <li><strong>Screen reader behaviour beyond what was verified.</strong> The accessibility review records what was tested and states plainly what was not run.</li>
-    </ul>
+    <Section title="What is not promised" num={4}>
+      <ul>
+        <li><strong>Pixel equality between versions.</strong> The visual baselines belong to the project's own test suite; they are not a contract with you.</li>
+        <li><strong>File names inside <code>dist/</code>.</strong> Only the paths listed in <code>exports</code> are stable. A deep import may break in a patch.</li>
+        <li><strong>The package fixtures as an API.</strong> They are test and documentation material.</li>
+        <li><strong>Screen reader behaviour beyond what was verified.</strong> The accessibility review records what was tested and states plainly what was not run.</li>
+      </ul>
+    </Section>
 
-    <h2>How this is checked</h2>
-    <p>Every release goes through one command, and a non-zero exit is a release that does not happen:</p>
-<pre><code>npm run verify</code></pre>
-    <p>It builds the package, runs the unit and contract tests, drives the browser suite in the three engines, measures the bundles against their budgets, packs the tarball and installs it into a throwaway consumer, then builds this site and the examples. On top of that, a contract test regenerates the reference and fails if a public class, option, event or token is not documented anywhere — which is why the <a href="/reference">reference</a> and the pages cannot drift apart.</p>
-    <p>What a run could not verify is written down rather than glossed over: that list lives with the project state, next to the results.</p>
+    <Section title="How this is checked" num={5} lead={`Every release goes through one command, and a non-zero exit is a release that does not happen:`}>
+      <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `npm run verify` }]} />
+      <p>It builds the package, runs the unit and contract tests, drives the browser suite in the three engines, measures the bundles against their budgets, packs the tarball and installs it into a throwaway consumer, then builds this site and the examples. On top of that, a contract test regenerates the reference and fails if a public class, option, event or token is not documented anywhere — which is why the <a href="/reference">reference</a> and the pages cannot drift apart.</p>
+      <p>What a run could not verify is written down rather than glossed over: that list lives with the project state, next to the results.</p>
+    </Section>
   </article>
 </Base>

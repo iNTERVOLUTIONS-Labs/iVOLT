@@ -1,43 +1,53 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Surfaces and textures" description="iVOLT surfaces: glass panels with backdrop blur and a solid fallback, grain, gradient meshes, an animated aurora, glowing borders, gradient text, shine and elevation, all driven by tokens and safe under reduced motion.">
   <article class="docs-prose">
     <h1>Surfaces and textures</h1>
     <p>A CSS-only module that gives any block depth and light. Add a class to a card, a dialog panel, a drawer, a dropdown menu, a toast, a picker or a carousel control and it takes the surface; every effect is driven by the <code>--iv-glass-*</code>, <code>--iv-blur-*</code>, <code>--iv-glow-*</code> and <code>--iv-texture-*</code> tokens, so themes and overrides keep working. Animated effects stop under <code>prefers-reduced-motion</code>; browsers without <code>backdrop-filter</code> get a solid raised surface.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/surfaces.css</code> (in <code>ivolt.css</code>, after the components). No JavaScript. Added in v0.3.</p>
-    <h2>Glass</h2>
-    <p><code>iv-glass</code> and <code>iv-glass--strong</code>: translucent background, blur and saturation behind, a light border and a highlight on the top edge. Text keeps AA contrast on both themes; the fixture places panels over a mesh so the effect is visible.</p>
-    <Fixture name="surfaces/glass" />
-    <p>Glass earns its name over a photograph:</p>
-    <Fixture name="surfaces/glass-photo" />
-    <h2>Textures</h2>
-    <p><code>iv-texture-grain</code> lays a fine film of noise over the block, never over the text. <code>iv-texture-mesh</code> paints a gradient mesh from the brand colours; change it with <code>--iv-mesh-1</code>, <code>--iv-mesh-2</code> and <code>--iv-mesh-3</code>. <code>iv-texture-aurora</code> is the same mesh drifting slowly.</p>
-    <Fixture name="surfaces/textures" />
-    <h2>Glow, gradient text, shine and elevation</h2>
-    <p><code>iv-glow</code> draws a conic gradient border that rotates on hover or focus and casts a soft glow. <code>iv-gradient-text</code> fills a heading with the brand gradient. <code>iv-shine</code> sweeps a light across a button or card once on hover. <code>iv-elevate</code> lifts a block on hover.</p>
-    <Fixture name="surfaces/glow" />
-    <h2>Tokens</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Used by</th></tr></thead>
-        <tbody>
-          <tr><td><code>--iv-glass-bg</code>, <code>--iv-glass-bg-strong</code></td><td>white at 55% and 78%</td><td>carbon at 45% and 72%</td><td><code>iv-glass</code></td></tr>
-          <tr><td><code>--iv-glass-border</code>, <code>--iv-glass-highlight</code></td><td>white at 65% and 90%</td><td>white at 12% and 20%</td><td><code>iv-glass</code></td></tr>
-          <tr><td><code>--iv-blur-sm/md/lg</code></td><td colspan="2">8px, 16px, 28px</td><td><code>iv-glass</code></td></tr>
-          <tr><td><code>--iv-glow-primary</code>, <code>--iv-glow-secondary</code></td><td>deep green at 35%, blue at 25%</td><td>electric green at 45%, blue at 35%</td><td><code>iv-glow</code>, focus halos, meshes</td></tr>
-          <tr><td><code>--iv-texture-grain-opacity</code></td><td>0.05</td><td>0.09</td><td><code>iv-texture-grain</code></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Common mistakes</h2>
-    <ul>
-      <li>Glass over a flat, single-colour background: nothing shows through. Put it over media, a mesh or content.</li>
-      <li>Muted text on glass: it drops below AA contrast. Use the default text colour on <code>iv-glass</code>.</li>
-      <li><code>iv-glow</code> on a card with <code>iv-card__media</code>: the ring needs <code>overflow: visible</code>, so the outer rounding of the media is lost. Use it on cards without media.</li>
-      <li>Grain on small text blocks: keep it for hero areas and large surfaces.</li>
-      <li>Several aurora blocks on one page: one is a mood, five are a load.</li>
-    </ul>
+    <Section title="Glass" num={1}>
+      <p><code>iv-glass</code> and <code>iv-glass--strong</code>: translucent background, blur and saturation behind, a light border and a highlight on the top edge. Text keeps AA contrast on both themes; the fixture places panels over a mesh so the effect is visible.</p>
+      <Stage primary name="surfaces/glass" title="Glass over a mesh" />
+      <p>Glass earns its name over a photograph:</p>
+      <Stage name="surfaces/glass-photo" title="Glass over a photograph" />
+    </Section>
+
+    <Section title="Textures" num={2}>
+      <p><code>iv-texture-grain</code> lays a fine film of noise over the block, never over the text. <code>iv-texture-mesh</code> paints a gradient mesh from the brand colours; change it with <code>--iv-mesh-1</code>, <code>--iv-mesh-2</code> and <code>--iv-mesh-3</code>. <code>iv-texture-aurora</code> is the same mesh drifting slowly.</p>
+      <Stage name="surfaces/textures" title="Grain, mesh and aurora" />
+    </Section>
+
+    <Section title="Glow, gradient text, shine and elevation" num={3}>
+      <p><code>iv-glow</code> draws a conic gradient border that rotates on hover or focus and casts a soft glow. <code>iv-gradient-text</code> fills a heading with the brand gradient. <code>iv-shine</code> sweeps a light across a button or card once on hover. <code>iv-elevate</code> lifts a block on hover.</p>
+      <Stage name="surfaces/glow" title="Glow, gradient text and shine" />
+    </Section>
+
+    <Section title="Tokens" num={4}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Used by</th></tr></thead>
+          <tbody>
+            <tr><td><code>--iv-glass-bg</code>, <code>--iv-glass-bg-strong</code></td><td>white at 55% and 78%</td><td>carbon at 45% and 72%</td><td><code>iv-glass</code></td></tr>
+            <tr><td><code>--iv-glass-border</code>, <code>--iv-glass-highlight</code></td><td>white at 65% and 90%</td><td>white at 12% and 20%</td><td><code>iv-glass</code></td></tr>
+            <tr><td><code>--iv-blur-sm/md/lg</code></td><td colspan="2">8px, 16px, 28px</td><td><code>iv-glass</code></td></tr>
+            <tr><td><code>--iv-glow-primary</code>, <code>--iv-glow-secondary</code></td><td>deep green at 35%, blue at 25%</td><td>electric green at 45%, blue at 35%</td><td><code>iv-glow</code>, focus halos, meshes</td></tr>
+            <tr><td><code>--iv-texture-grain-opacity</code></td><td>0.05</td><td>0.09</td><td><code>iv-texture-grain</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>Glass over a flat, single-colour background: nothing shows through. Put it over media, a mesh or content.</li>
+        <li>Muted text on glass: it drops below AA contrast. Use the default text colour on <code>iv-glass</code>.</li>
+        <li><code>iv-glow</code> on a card with <code>iv-card__media</code>: the ring needs <code>overflow: visible</code>, so the outer rounding of the media is lost. Use it on cards without media.</li>
+        <li>Grain on small text blocks: keep it for hero areas and large surfaces.</li>
+        <li>Several aurora blocks on one page: one is a mood, five are a load.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

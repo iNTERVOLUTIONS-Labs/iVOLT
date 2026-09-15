@@ -1,48 +1,54 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Maquetación" description="Primitivas de maquetación de iVOLT: container, stack, cluster y grid, más la matriz finita de utilidades de display, flex, grid, gap, espaciado, ancho y texto.">
   <article class="docs-prose">
     <h1>Maquetación</h1>
     <p>Cuatro primitivas cubren casi todas las páginas. Cada una expone una propiedad personalizada local, y las utilidades finitas ajustan columnas, huecos y alineación por punto de ruptura.</p>
-    <h2>Container</h2>
-    <p><code>iv-container</code> centra el contenido con márgenes fluidos. <code>--narrow</code> usa la medida de lectura y <code>--wide</code> permite 1440px.</p>
-    <Fixture name="layout/container" />
-    <h2>Stack y cluster</h2>
-    <p><code>iv-stack</code> dispone los hijos en vertical con <code>--iv-stack-gap</code>; <code>iv-cluster</code> distribuye elementos en línea que se ajustan con <code>--iv-cluster-gap</code>.</p>
-    <Fixture name="layout/stack-cluster" />
-    <h2>Grid</h2>
-    <p><code>iv-grid</code> es una rejilla CSS de una columna por defecto. Fija las columnas con <code>iv-u-grid-cols-N</code> y sus prefijos adaptables, o usa <code>iv-grid--auto</code> con <code>--iv-grid-min</code> para columnas con auto-fit.</p>
-    <Fixture name="layout/grid" />
-    <h2>Utilidades</h2>
-    <p>La matriz es finita y generada; no hay valores arbitrarios, escáner ni paso de purga. Los prefijos adaptables existen solo para <code>sm md lg xl</code> y solo en los grupos marcados abajo.</p>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Grupo</th><th>Clases</th><th>Adaptable</th></tr></thead>
-        <tbody>
-          <tr><td>Display</td><td><code>iv-u-block inline inline-block flex inline-flex grid hidden</code></td><td>sí</td></tr>
-          <tr><td>Flex</td><td><code>iv-u-flex-row|col</code>, <code>flex-wrap|nowrap</code>, <code>items-*</code>, <code>justify-*</code>, <code>grow</code>, <code>shrink-0</code></td><td>solo la dirección</td></tr>
-          <tr><td>Grid</td><td><code>iv-u-grid-cols-1…6,12</code>, <code>col-span-1…6,12,full</code></td><td>sí</td></tr>
-          <tr><td>Gap</td><td><code>iv-u-gap-0…12</code>, <code>gap-x-*</code>, <code>gap-y-*</code></td><td>solo gap</td></tr>
-          <tr><td>Espaciado</td><td><code>iv-u-m|mt|mb|ms|me|mx|my-0…12,auto</code>, <code>p|pt|pb|ps|pe|px|py-0…12</code> (lados lógicos)</td><td>no</td></tr>
-          <tr><td>Ancho</td><td><code>iv-u-w-full w-auto max-w-measure max-w-content</code></td><td>no</td></tr>
-          <tr><td>Texto</td><td><code>iv-u-text-start|center|end</code>, <code>text-xs…2xl</code>, <code>font-normal…bold</code>, <code>text-muted</code>, <code>truncate</code></td><td>solo la alineación</td></tr>
-          <tr><td>Visibilidad</td><td><code>iv-u-sr-only</code>, <code>iv-u-sr-only-focusable</code></td><td>no</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Las utilidades se emiten con el selector duplicado (especificidad 0,2,0) y se cargan las últimas, así que ganan a los modificadores de componente tanto en la hoja en capas como en la plana.</p>
-  
-    <h2>Índice de clases</h2>
-    <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-stack--center</code></td><td>Centra los hijos de una pila en el eje en línea.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <p class="docs-meta"><strong>CSS:</strong> maquetación y utilidades (en <code>ivolt.css</code> y en <code>core.css</code>). Sin JavaScript. <strong>Utilidades:</strong> una matriz finita, sin escáner ni purga.</p>
+    <Section title="Container" num={1} lead={`iv-container centra el contenido con márgenes fluidos. --narrow usa la medida de lectura y --wide permite 1440px.`}>
+      <Stage primary name="layout/container" title="El contenedor" />
+    </Section>
+
+    <Section title="Stack y cluster" num={2} lead={`iv-stack dispone los hijos en vertical con --iv-stack-gap; iv-cluster distribuye elementos en línea que se ajustan con --iv-cluster-gap.`}>
+      <Stage name="layout/stack-cluster" title="Pila y racimo" />
+    </Section>
+
+    <Section title="Grid" num={3} lead={`iv-grid es una rejilla CSS de una columna por defecto. Fija las columnas con iv-u-grid-cols-N y sus prefijos adaptables, o usa iv-grid--auto con --iv-grid-min para columnas con auto-fit.`}>
+      <Stage name="layout/grid" title="La primitiva de rejilla" />
+    </Section>
+
+    <Section title="Utilidades" num={4} lead={`La matriz es finita y generada; no hay valores arbitrarios, escáner ni paso de purga. Los prefijos adaptables existen solo para sm md lg xl y solo en los grupos marcados abajo.`}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Grupo</th><th>Clases</th><th>Adaptable</th></tr></thead>
+          <tbody>
+            <tr><td>Display</td><td><code>iv-u-block inline inline-block flex inline-flex grid hidden</code></td><td>sí</td></tr>
+            <tr><td>Flex</td><td><code>iv-u-flex-row|col</code>, <code>flex-wrap|nowrap</code>, <code>items-*</code>, <code>justify-*</code>, <code>grow</code>, <code>shrink-0</code></td><td>solo la dirección</td></tr>
+            <tr><td>Grid</td><td><code>iv-u-grid-cols-1…6,12</code>, <code>col-span-1…6,12,full</code></td><td>sí</td></tr>
+            <tr><td>Gap</td><td><code>iv-u-gap-0…12</code>, <code>gap-x-*</code>, <code>gap-y-*</code></td><td>solo gap</td></tr>
+            <tr><td>Espaciado</td><td><code>iv-u-m|mt|mb|ms|me|mx|my-0…12,auto</code>, <code>p|pt|pb|ps|pe|px|py-0…12</code> (lados lógicos)</td><td>no</td></tr>
+            <tr><td>Ancho</td><td><code>iv-u-w-full w-auto max-w-measure max-w-content</code></td><td>no</td></tr>
+            <tr><td>Texto</td><td><code>iv-u-text-start|center|end</code>, <code>text-xs…2xl</code>, <code>font-normal…bold</code>, <code>text-muted</code>, <code>truncate</code></td><td>solo la alineación</td></tr>
+            <tr><td>Visibilidad</td><td><code>iv-u-sr-only</code>, <code>iv-u-sr-only-focusable</code></td><td>no</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Las utilidades se emiten con el selector duplicado (especificidad 0,2,0) y se cargan las últimas, así que ganan a los modificadores de componente tanto en la hoja en capas como en la plana.</p>
+    </Section>
+
+    <Section title="Índice de clases" num={5}>
+      <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-stack--center</code></td><td>Centra los hijos de una pila en el eje en línea.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

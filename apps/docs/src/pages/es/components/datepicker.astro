@@ -1,55 +1,69 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Selector de fecha" description="Selector de fecha de iVOLT: un campo de fecha nativo que gana un diálogo de calendario accesible con rejilla por teclado, mínimo y máximo, nombres de mes y de día localizados y un primer día de la semana que sigue a la configuración regional.">
   <article class="docs-prose">
     <h1>Selector de fecha (datepicker)</h1>
     <p>Un calendario sobre un campo de fecha nativo. El servidor envía <code>&lt;input type="date"&gt;</code>, que ya tiene su propio selector y envía un valor ISO; en <code>init</code> un botón abre un diálogo de calendario con una rejilla manejable desde el teclado, navegación por mes y año, acciones de hoy y vaciar, y los límites de <code>min</code> y <code>max</code>. Los nombres de mes y de día salen de los datos de configuración regional del navegador, así que el mismo marcado se lee bien en cualquier idioma. En punteros gruesos se mantiene el selector nativo, porque ahí es la mejor herramienta.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/datepicker.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/datepicker</code> o <code>auto.js</code>. Añadido en la v0.5.</p>
-    <Fixture name="datepicker/basic" minHeight="28rem" />
-    <h2>Configuración regional y primer día de la semana</h2>
-    <p><code>data-iv-locale</code> elige el idioma de los nombres y <code>data-iv-first-day</code> la primera columna; por defecto ambos siguen el idioma del documento. Los textos de los botones son opciones, así que también se pueden traducir.</p>
-    <Fixture name="datepicker/locale" minHeight="28rem" />
-    <h2>Opciones</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-        <tbody>
-          <tr><td><code>native</code></td><td><code>data-iv-native</code></td><td><code>auto</code></td><td><code>auto</code> mantiene el selector nativo en punteros gruesos; <code>on</code> siempre; <code>off</code> muestra siempre el calendario.</td></tr>
-          <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>idioma del documento</td><td>Etiqueta BCP 47 para los nombres de mes y de día.</td></tr>
-          <tr><td><code>firstDay</code></td><td><code>data-iv-first-day</code></td><td><code>-1</code></td><td>0 (domingo) a 6; <code>-1</code> sigue la configuración regional, o lunes cuando el navegador no lo sabe.</td></tr>
-          <tr><td><code>openText</code>, <code>prevText</code>, <code>nextText</code>, <code>todayText</code>, <code>clearText</code>, <code>dialogText</code></td><td><code>data-iv-open-text</code> …</td><td>textos en inglés</td><td>Nombres accesibles y textos de los botones.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Métodos y eventos</h2>
-    <p><code>open()</code>, <code>close()</code>, <code>setValue(iso)</code>, <code>clear()</code>, <code>destroy()</code>; lectura de <code>value</code>, <code>date</code> e <code>isOpen</code>. Eventos: <code>iv:open</code>/<code>iv:close</code> (cancelables) y después <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>previousValue</code>, <code>date</code>) y después <code>iv:changed</code>. El campo también recibe <code>input</code> y <code>change</code>.</p>
-    <h2>Teclado y tecnología asistiva</h2>
-    <p>Izquierda y Derecha mueven un día, Arriba y Abajo una semana, Inicio y Fin a los extremos de la semana, Re Pág y Av Pág un mes, con Mayús un año; Enter o Espacio seleccionan y cierran; Escape cierra y devuelve el foco al botón. La rejilla es una tabla real con una sola parada de tabulación, el diálogo no es modal y tiene nombre, los días desactivados son botones desactivados reales y el título del mes se anuncia cuando cambia.</p>
-    <h2>Sin JavaScript</h2>
-    <p>El campo de fecha nativo lo hace todo: escritura, el selector propio del navegador, <code>min</code>, <code>max</code> y el envío del formulario en formato ISO.</p>
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li>Leer o escribir el valor en un formato de presentación: el valor del campo es siempre <code>YYYY-MM-DD</code>.</li>
-      <li>Forzar el calendario propio en el móvil: el nativo es más rápido y lo localiza el sistema.</li>
-      <li>Rangos u horas: fuera de alcance; usa dos campos o un campo de hora.</li>
-    </ul>
-  
-    <h2>Índice de clases</h2>
-    <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-datepicker__header</code></td><td>Cabecera del mes con los dos botones de navegación.</td></tr>
-          <tr><td><code>iv-datepicker__footer</code></td><td>Fila con los botones de hoy y de limpiar.</td></tr>
-          <tr><td><code>iv-datepicker__weekday</code></td><td>Día de la semana abreviado de la rejilla, tomado de Intl.</td></tr>
-          <tr><td><code>iv-datepicker__icon</code></td><td>Glifo de calendario del disparador, dibujado con una máscara.</td></tr>
-          <tr><td><code>iv-datepicker__day--today</code></td><td>Celda de hoy: un anillo, nunca solo color.</td></tr>
-          <tr><td><code>iv-datepicker__day--outside</code></td><td>Día del mes anterior o del siguiente.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="datepicker/basic" title="Un calendario sobre un campo de fecha" minHeight="28rem" />
+
+    <Section title="Configuración regional y primer día de la semana" num={1}>
+      <p><code>data-iv-locale</code> elige el idioma de los nombres y <code>data-iv-first-day</code> la primera columna; por defecto ambos siguen el idioma del documento. Los textos de los botones son opciones, así que también se pueden traducir.</p>
+      <Stage name="datepicker/locale" title="Idioma y primer día de la semana" minHeight="28rem" />
+    </Section>
+
+    <Section title="Opciones" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+          <tbody>
+            <tr><td><code>native</code></td><td><code>data-iv-native</code></td><td><code>auto</code></td><td><code>auto</code> mantiene el selector nativo en punteros gruesos; <code>on</code> siempre; <code>off</code> muestra siempre el calendario.</td></tr>
+            <tr><td><code>locale</code></td><td><code>data-iv-locale</code></td><td>idioma del documento</td><td>Etiqueta BCP 47 para los nombres de mes y de día.</td></tr>
+            <tr><td><code>firstDay</code></td><td><code>data-iv-first-day</code></td><td><code>-1</code></td><td>0 (domingo) a 6; <code>-1</code> sigue la configuración regional, o lunes cuando el navegador no lo sabe.</td></tr>
+            <tr><td><code>openText</code>, <code>prevText</code>, <code>nextText</code>, <code>todayText</code>, <code>clearText</code>, <code>dialogText</code></td><td><code>data-iv-open-text</code> …</td><td>textos en inglés</td><td>Nombres accesibles y textos de los botones.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Métodos y eventos" num={3}>
+      <p><code>open()</code>, <code>close()</code>, <code>setValue(iso)</code>, <code>clear()</code>, <code>destroy()</code>; lectura de <code>value</code>, <code>date</code> e <code>isOpen</code>. Eventos: <code>iv:open</code>/<code>iv:close</code> (cancelables) y después <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>previousValue</code>, <code>date</code>) y después <code>iv:changed</code>. El campo también recibe <code>input</code> y <code>change</code>.</p>
+    </Section>
+
+    <Section title="Teclado y tecnología asistiva" num={4}>
+      <p>Izquierda y Derecha mueven un día, Arriba y Abajo una semana, Inicio y Fin a los extremos de la semana, Re Pág y Av Pág un mes, con Mayús un año; Enter o Espacio seleccionan y cierran; Escape cierra y devuelve el foco al botón. La rejilla es una tabla real con una sola parada de tabulación, el diálogo no es modal y tiene nombre, los días desactivados son botones desactivados reales y el título del mes se anuncia cuando cambia.</p>
+    </Section>
+
+    <Section title="Sin JavaScript" num={5}>
+      <p>El campo de fecha nativo lo hace todo: escritura, el selector propio del navegador, <code>min</code>, <code>max</code> y el envío del formulario en formato ISO.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={6}>
+      <ul>
+        <li>Leer o escribir el valor en un formato de presentación: el valor del campo es siempre <code>YYYY-MM-DD</code>.</li>
+        <li>Forzar el calendario propio en el móvil: el nativo es más rápido y lo localiza el sistema.</li>
+        <li>Rangos u horas: fuera de alcance; usa dos campos o un campo de hora.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={7}>
+      <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-datepicker__header</code></td><td>Cabecera del mes con los dos botones de navegación.</td></tr>
+            <tr><td><code>iv-datepicker__footer</code></td><td>Fila con los botones de hoy y de limpiar.</td></tr>
+            <tr><td><code>iv-datepicker__weekday</code></td><td>Día de la semana abreviado de la rejilla, tomado de Intl.</td></tr>
+            <tr><td><code>iv-datepicker__icon</code></td><td>Glifo de calendario del disparador, dibujado con una máscara.</td></tr>
+            <tr><td><code>iv-datepicker__day--today</code></td><td>Celda de hoy: un anillo, nunca solo color.</td></tr>
+            <tr><td><code>iv-datepicker__day--outside</code></td><td>Día del mes anterior o del siguiente.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

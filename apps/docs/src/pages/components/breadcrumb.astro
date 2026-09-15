@@ -1,16 +1,21 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Breadcrumb" description="iVOLT breadcrumb: an ordered list of links inside a labelled nav, with a CSS separator and aria-current on the last item. CSS only.">
   <article class="docs-prose">
     <h1>Breadcrumb</h1>
     <p>Shows where the current page sits in the site hierarchy. The separator is drawn with CSS so screen readers only read the links.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/breadcrumb.css</code> (in <code>ivolt.css</code>).</p>
-    <Fixture name="breadcrumb/basic" />
-    <h2>Markup</h2>
-    <p><code>nav.iv-breadcrumb[aria-label="Breadcrumb"]</code> → <code>ol.iv-breadcrumb__list</code> → <code>li.iv-breadcrumb__item</code>. The last item carries <code>aria-current="page"</code> and is not a link.</p>
-    <h2>Common mistakes</h2>
-    <ul><li>Separator characters typed into the HTML (they get read aloud).</li><li>Linking the current page to itself.</li></ul>
+    <Stage primary name="breadcrumb/basic" title="A trail with the current page" />
+
+    <Section title="Markup" num={1}>
+      <p><code>nav.iv-breadcrumb[aria-label="Breadcrumb"]</code> → <code>ol.iv-breadcrumb__list</code> → <code>li.iv-breadcrumb__item</code>. The last item carries <code>aria-current="page"</code> and is not a link.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={2}>
+      <ul><li>Separator characters typed into the HTML (they get read aloud).</li><li>Linking the current page to itself.</li></ul>
+    </Section>
   </article>
 </Base>

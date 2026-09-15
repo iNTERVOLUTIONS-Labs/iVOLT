@@ -1,34 +1,40 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Table" description="iVOLT table: scrollable wrapper, striped, compact and bordered modifiers, and a stacked layout for narrow screens. No data engine.">
   <article class="docs-prose">
     <h1>Table</h1>
     <p>Styles for real <code>&lt;table&gt;</code> markup: caption, header cells with <code>scope</code>, and a wrapper that scrolls horizontally when the table is wider than its container. There is no sorting, filtering or data engine.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/table.css</code> (in <code>ivolt.css</code>).</p>
-    <h2>Scrollable wrapper</h2>
-    <p><code>iv-table-wrap</code> is a labelled, focusable region (<code>role="region"</code>, <code>tabindex="0"</code>) so keyboard users can scroll it.</p>
-    <Fixture name="table/basic" />
-    <h2>Stacked on small screens</h2>
-    <p><code>iv-table--stack</code> turns each row into a block below the <code>md</code> breakpoint and prints <code>data-iv-label</code> before each cell.</p>
-    <Fixture name="table/stack" />
-    <h2>Modifiers</h2>
-    <p><code>--striped</code>, <code>--compact</code>, <code>--bordered</code>, <code>--stack</code>. Numeric columns use <code>iv-u-text-end</code>.</p>
-    <h2>Common mistakes</h2>
-    <ul><li>Tables used for layout.</li><li>Header cells without <code>scope</code>.</li><li>Stacked tables without <code>data-iv-label</code> on cells.</li></ul>
-  
-    <h2>Class index</h2>
-    <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Class</th><th>What it does</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-table--striped</code></td><td>Zebra rows.</td></tr>
-          <tr><td><code>iv-table--bordered</code></td><td>Border on every cell.</td></tr>
-          <tr><td><code>iv-table--compact</code></td><td>Tighter padding for dense data.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Section title="Scrollable wrapper" num={1} lead={`iv-table-wrap is a labelled, focusable region (role="region", tabindex="0") so keyboard users can scroll it.`}>
+      <Stage primary name="table/basic" title="A table in its scrollable wrapper" />
+    </Section>
+
+    <Section title="Stacked on small screens" num={2} lead={`iv-table--stack turns each row into a block below the md breakpoint and prints data-iv-label before each cell.`}>
+      <Stage name="table/stack" title="Stacked on a narrow screen" />
+    </Section>
+
+    <Section title="Modifiers" num={3} lead={`--striped, --compact, --bordered, --stack. Numeric columns use iv-u-text-end.`}>
+    </Section>
+
+    <Section title="Common mistakes" num={4}>
+      <ul><li>Tables used for layout.</li><li>Header cells without <code>scope</code>.</li><li>Stacked tables without <code>data-iv-label</code> on cells.</li></ul>
+    </Section>
+
+    <Section title="Class index" num={5}>
+      <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-table--striped</code></td><td>Zebra rows.</td></tr>
+            <tr><td><code>iv-table--bordered</code></td><td>Border on every cell.</td></tr>
+            <tr><td><code>iv-table--compact</code></td><td>Tighter padding for dense data.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

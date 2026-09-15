@@ -1,60 +1,75 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Línea de tiempo" description="Línea de tiempo de iVOLT: lista ordenada de momentos sobre un raíl, con marcadores hecho, actual y previsto, y variantes alterna y horizontal. Solo CSS.">
   <article class="docs-prose">
     <h1>Línea de tiempo (timeline)</h1>
     <p>Una lista ordenada de momentos sobre un raíl: una fecha, un título y el texto que cada momento necesite. Es una <code>&lt;ol&gt;</code> con un <code>&lt;time&gt;</code> por elemento, así que el orden y las fechas están en el marcado y no solo en el dibujo. El estado lo escribe quien redacta en <code>data-iv-state</code>; el marcador cambia de forma además de color. Sin JavaScript.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/timeline.css</code> (en <code>ivolt.css</code>). Añadido en la v0.6.</p>
-    <Fixture name="timeline/basic" title="Raíl vertical" />
-    <h2>Lados alternos</h2>
-    <p><code>iv-timeline--alternate</code> cuelga los elementos de un raíl central, alternando lados desde el punto de ruptura <code>md</code>; por debajo la lista vuelve al raíl único de la variante por defecto. Pide entradas cortas: un párrafo largo a la izquierda y uno breve a la derecha dejan la columna desigual.</p>
-    <Fixture name="timeline/alternate" title="Raíl alterno" />
-    <h2>Raíl horizontal</h2>
-    <p><code>iv-timeline--horizontal</code> coloca los elementos en columnas a lo largo de un raíl horizontal desde <code>md</code>, con desplazamiento y puntos de anclaje. Una región con scroll tiene que alcanzarse con el teclado, así que quien redacta sirve <code>tabindex="0"</code> y una etiqueta en la propia lista; el CSS le da anillo de foco.</p>
-    <Fixture name="timeline/horizontal" title="Raíl horizontal" />
-    <h2>Anatomía</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Clase</th><th>Elemento</th><th>Función</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-timeline</code></td><td><code>&lt;ol&gt;</code></td><td>El raíl. Ordenada, porque una línea de tiempo tiene dirección.</td></tr>
-          <tr><td><code>iv-timeline__item</code></td><td><code>&lt;li&gt;</code></td><td>Un momento; dibuja su tramo de línea y su marcador.</td></tr>
-          <tr><td><code>iv-timeline__time</code></td><td><code>&lt;time datetime&gt;</code></td><td>La fecha, en versalitas monoespaciadas. Un <code>datetime</code> legible por máquina la convierte en algo más que una etiqueta.</td></tr>
-          <tr><td><code>iv-timeline__body</code></td><td><code>&lt;div&gt;</code></td><td>Todo lo demás: título, texto, enlaces.</td></tr>
-          <tr><td><code>iv-timeline__title</code></td><td>encabezado</td><td>Nombre del momento; elige el nivel que pida la página.</td></tr>
-          <tr><td><code>iv-timeline--compact</code></td><td>modificador</td><td>Ritmo más apretado para muchas entradas breves.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Estados</h2>
-    <p><code>data-iv-state</code> en un elemento admite <code>done</code> (marcador relleno), <code>current</code> (relleno con el halo de foco común y un pulso lento) y <code>upcoming</code> (marcador hueco y texto atenuado). Un elemento sin el atributo se dibuja como hecho. El pulso se detiene con <code>prefers-reduced-motion</code>, y en modo de colores forzados los marcadores conservan su contorno para que los tres estados sigan distinguiéndose sin color.</p>
-    <h2>Tokens y locales</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
-        <tbody>
-          <tr><td><code>--iv-timeline-line</code></td><td><code>var(--iv-color-border)</code></td><td>Color del raíl.</td></tr>
-          <tr><td><code>--iv-timeline-marker</code></td><td><code>var(--iv-color-primary)</code></td><td>Color de los marcadores.</td></tr>
-          <tr><td><code>--iv-timeline-size</code></td><td><code>0.75rem</code></td><td>Diámetro de un marcador.</td></tr>
-          <tr><td><code>--iv-timeline-rail</code></td><td><code>1.25rem</code></td><td>Distancia del raíl al texto.</td></tr>
-          <tr><td><code>--iv-timeline-gap</code></td><td><code>var(--iv-space-6)</code></td><td>Separación entre elementos.</td></tr>
-          <tr><td><code>--iv-timeline-top</code></td><td><code>0.2rem</code></td><td>Ajuste vertical que alinea el marcador con la primera línea de su texto.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>El <code>__time</code> usa <code>--iv-tracking-caps</code>, uno de los tokens de la capa expresiva añadidos en la v0.6 (ver <a href="/es/foundations/tokens-and-themes">tokens y temas</a>), para que sus versalitas casen con las cabeceras de tabla y las leyendas de fieldset.</p>
-    <h2>Accesibilidad y teclado</h2>
-    <p>El orden de la lista es la cronología, así que nada depende de leer el raíl. Cada fecha es un <code>&lt;time&gt;</code> con valor legible por máquina. El estado llega al dibujo por la forma del marcador y por el texto, nunca solo por el color: si un estado importa a quien lee, dilo también con palabras en el cuerpo. La variante horizontal es una región con scroll: sírvela con <code>tabindex="0"</code> y un <code>aria-label</code> para poder desplazarla con el teclado, como hace su fixture.</p>
-    <h2>Sin JavaScript</h2>
-    <p>No hay JavaScript. No se inicializa nada, no se registra nada y nada cambia después de cargar la página: la línea de tiempo es una lista con un raíl dibujado por pseudoelementos.</p>
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li>Una <code>&lt;ul&gt;</code> en lugar de una <code>&lt;ol&gt;</code>. El orden es justamente lo importante.</li>
-      <li>Una fecha como texto suelto. <code>&lt;time datetime="2026-09"&gt;</code> no cuesta nada y significa algo.</li>
-      <li>Marcar el momento actual solo con color. La forma del marcador y el texto también deberían decirlo.</li>
-      <li>Párrafos largos en la variante alterna: las dos columnas dejan de casar y el raíl pierde su ritmo.</li>
-    </ul>
+    <Stage primary name="timeline/basic" title="Raíl vertical" />
+    <Section title="Lados alternos" num={1}>
+      <p><code>iv-timeline--alternate</code> cuelga los elementos de un raíl central, alternando lados desde el punto de ruptura <code>md</code>; por debajo la lista vuelve al raíl único de la variante por defecto. Pide entradas cortas: un párrafo largo a la izquierda y uno breve a la derecha dejan la columna desigual.</p>
+      <Stage name="timeline/alternate" title="Raíl alterno" />
+    </Section>
+
+    <Section title="Raíl horizontal" num={2}>
+      <p><code>iv-timeline--horizontal</code> coloca los elementos en columnas a lo largo de un raíl horizontal desde <code>md</code>, con desplazamiento y puntos de anclaje. Una región con scroll tiene que alcanzarse con el teclado, así que quien redacta sirve <code>tabindex="0"</code> y una etiqueta en la propia lista; el CSS le da anillo de foco.</p>
+      <Stage name="timeline/horizontal" title="Raíl horizontal" />
+    </Section>
+
+    <Section title="Anatomía" num={3}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Clase</th><th>Elemento</th><th>Función</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-timeline</code></td><td><code>&lt;ol&gt;</code></td><td>El raíl. Ordenada, porque una línea de tiempo tiene dirección.</td></tr>
+            <tr><td><code>iv-timeline__item</code></td><td><code>&lt;li&gt;</code></td><td>Un momento; dibuja su tramo de línea y su marcador.</td></tr>
+            <tr><td><code>iv-timeline__time</code></td><td><code>&lt;time datetime&gt;</code></td><td>La fecha, en versalitas monoespaciadas. Un <code>datetime</code> legible por máquina la convierte en algo más que una etiqueta.</td></tr>
+            <tr><td><code>iv-timeline__body</code></td><td><code>&lt;div&gt;</code></td><td>Todo lo demás: título, texto, enlaces.</td></tr>
+            <tr><td><code>iv-timeline__title</code></td><td>encabezado</td><td>Nombre del momento; elige el nivel que pida la página.</td></tr>
+            <tr><td><code>iv-timeline--compact</code></td><td>modificador</td><td>Ritmo más apretado para muchas entradas breves.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Estados" num={4}>
+      <p><code>data-iv-state</code> en un elemento admite <code>done</code> (marcador relleno), <code>current</code> (relleno con el halo de foco común y un pulso lento) y <code>upcoming</code> (marcador hueco y texto atenuado). Un elemento sin el atributo se dibuja como hecho. El pulso se detiene con <code>prefers-reduced-motion</code>, y en modo de colores forzados los marcadores conservan su contorno para que los tres estados sigan distinguiéndose sin color.</p>
+    </Section>
+
+    <Section title="Tokens y locales" num={5}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
+          <tbody>
+            <tr><td><code>--iv-timeline-line</code></td><td><code>var(--iv-color-border)</code></td><td>Color del raíl.</td></tr>
+            <tr><td><code>--iv-timeline-marker</code></td><td><code>var(--iv-color-primary)</code></td><td>Color de los marcadores.</td></tr>
+            <tr><td><code>--iv-timeline-size</code></td><td><code>0.75rem</code></td><td>Diámetro de un marcador.</td></tr>
+            <tr><td><code>--iv-timeline-rail</code></td><td><code>1.25rem</code></td><td>Distancia del raíl al texto.</td></tr>
+            <tr><td><code>--iv-timeline-gap</code></td><td><code>var(--iv-space-6)</code></td><td>Separación entre elementos.</td></tr>
+            <tr><td><code>--iv-timeline-top</code></td><td><code>0.2rem</code></td><td>Ajuste vertical que alinea el marcador con la primera línea de su texto.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>El <code>__time</code> usa <code>--iv-tracking-caps</code>, uno de los tokens de la capa expresiva añadidos en la v0.6 (ver <a href="/es/foundations/tokens-and-themes">tokens y temas</a>), para que sus versalitas casen con las cabeceras de tabla y las leyendas de fieldset.</p>
+    </Section>
+
+    <Section title="Accesibilidad y teclado" num={6}>
+      <p>El orden de la lista es la cronología, así que nada depende de leer el raíl. Cada fecha es un <code>&lt;time&gt;</code> con valor legible por máquina. El estado llega al dibujo por la forma del marcador y por el texto, nunca solo por el color: si un estado importa a quien lee, dilo también con palabras en el cuerpo. La variante horizontal es una región con scroll: sírvela con <code>tabindex="0"</code> y un <code>aria-label</code> para poder desplazarla con el teclado, como hace su fixture.</p>
+    </Section>
+
+    <Section title="Sin JavaScript" num={7} lead={`No hay JavaScript. No se inicializa nada, no se registra nada y nada cambia después de cargar la página: la línea de tiempo es una lista con un raíl dibujado por pseudoelementos.`}>
+    </Section>
+
+    <Section title="Errores frecuentes" num={8}>
+      <ul>
+        <li>Una <code>&lt;ul&gt;</code> en lugar de una <code>&lt;ol&gt;</code>. El orden es justamente lo importante.</li>
+        <li>Una fecha como texto suelto. <code>&lt;time datetime="2026-09"&gt;</code> no cuesta nada y significa algo.</li>
+        <li>Marcar el momento actual solo con color. La forma del marcador y el texto también deberían decirlo.</li>
+        <li>Párrafos largos en la variante alterna: las dos columnas dejan de casar y el raíl pierde su ritmo.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

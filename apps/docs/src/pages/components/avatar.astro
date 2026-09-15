@@ -1,68 +1,82 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Avatar" description="iVOLT avatar: a face or initials in four sizes, square and ring modifiers, a status dot with its meaning in text, and overlapping groups with an overflow count. CSS only.">
   <article class="docs-prose">
     <h1>Avatar</h1>
     <p>A small square or circle standing for a person or a thing: an image, or the initials when there is no image. Four sizes, an optional ring, a status dot and groups that overlap with a count for the rest. It carries no identity of its own — the accessible name comes from the <code>alt</code> of the image or from an <code>aria-label</code> on the container. No JavaScript.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/avatar.css</code> (in <code>ivolt.css</code>). Added in v0.6.</p>
-    <Fixture name="avatar/basic" title="Sizes, ring, square, status" />
-    <h2>Groups</h2>
-    <p><code>iv-avatar-group</code> lays faces in a row, each overlapping the one before by just under a fifth of its size, with the first on top. The last item can be <code>iv-avatar-group__more</code>: a muted face carrying the count of everyone not shown, with that count in its label. Tune the overlap in one line with <code>--iv-avatar-overlap</code> on the group.</p>
-    <Fixture name="avatar/group" title="Overlapping groups" />
-    <h2>Anatomy</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Class</th><th>Role</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-avatar</code></td><td>The face: 2.5rem, full radius, brand-tinted ground for initials.</td></tr>
-          <tr><td><code>iv-avatar__img</code></td><td>The image inside it, cropped with <code>object-fit: cover</code>. Give it <code>width</code> and <code>height</code>.</td></tr>
-          <tr><td><code>iv-avatar--sm --lg --xl</code></td><td>1.75rem, 3.5rem and 5rem, all through <code>--iv-avatar-size</code>.</td></tr>
-          <tr><td><code>iv-avatar--square</code></td><td>Rounded square instead of a circle.</td></tr>
-          <tr><td><code>iv-avatar--ring</code></td><td>A brand ring around the face.</td></tr>
-          <tr><td><code>iv-avatar__status</code></td><td>Dot at the bottom end corner; <code>data-iv-tone</code> takes <code>success</code>, <code>warning</code>, <code>danger</code> and <code>muted</code>.</td></tr>
-          <tr><td><code>iv-avatar-group</code>, <code>iv-avatar-group__more</code></td><td>The row and its overflow count.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Initials are the default rendering: put them in a <code>&lt;span aria-hidden="true"&gt;</code> inside an avatar that carries <code>role="img"</code> and the full name in <code>aria-label</code>, so a screen reader reads the person and not two letters. There is no separate modifier class for them.</p>
-    <h2>Tokens and locals</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
-        <tbody>
-          <tr><td><code>--iv-avatar-size</code></td><td><code>2.5rem</code></td><td>Diameter of the face; the size modifiers only set this.</td></tr>
-          <tr><td><code>--iv-avatar-radius</code></td><td><code>var(--iv-radius-full)</code></td><td>Corner radius; <code>--square</code> switches it to <code>md</code>.</td></tr>
-          <tr><td><code>--iv-avatar-ring</code></td><td><code>transparent</code></td><td>Colour of the ring; <code>--ring</code> sets it to the brand.</td></tr>
-          <tr><td><code>--iv-avatar-overlap</code></td><td><code>calc(var(--iv-avatar-size) * -0.18)</code></td><td>How much each face in a group covers the previous one.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>The default overlap is a calculation rather than a fixed length so a row of small faces and a row of large ones keep the same rhythm and the initials behind stay legible. Set it on the group, not on a face.</p>
-    <h2>Accessibility and keyboard</h2>
-    <p>An avatar is not interactive, so there is nothing to focus unless you wrap it in a link or a button — and then the link needs its own accessible name, not just the picture. Decide once whether the avatar is content or decoration: with a name it is an image of a person, and repeating that name in the text beside it gives a screen reader the same thing twice; in that case make the avatar <code>alt=""</code> or <code>aria-hidden</code> and let the text carry the identity. The status dot must repeat its meaning in words, as the fixture does with a hidden "Online"; colour alone says nothing. The overflow count says how many people are not shown, so the row is not a lie of omission.</p>
-    <h2>Without JavaScript</h2>
-    <p>There is no JavaScript. A broken image falls back to its <code>alt</code> text centred in the face rather than a torn icon.</p>
-    <h2>Common mistakes</h2>
-    <ul>
-      <li>Initials with no name: two letters read aloud are noise.</li>
-      <li><code>alt="avatar"</code> or <code>alt="profile picture"</code>. Either the name, or empty.</li>
-      <li>A status dot that only exists in colour.</li>
-      <li>A group of twenty faces without a count. Show four or five and say how many are left.</li>
-      <li>Photographs of people invented for a demo. The fixtures here use invented initials and a drawing, and say so.</li>
-    </ul>
-  
-    <h2>Class index</h2>
-    <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Class</th><th>What it does</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-avatar--lg</code></td><td>3.5rem avatar.</td></tr>
-          <tr><td><code>iv-avatar--xl</code></td><td>5rem avatar, for a profile header.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="avatar/basic" title="Sizes, ring, square, status" />
+
+    <Section title="Groups" num={1}>
+      <p><code>iv-avatar-group</code> lays faces in a row, each overlapping the one before by just under a fifth of its size, with the first on top. The last item can be <code>iv-avatar-group__more</code>: a muted face carrying the count of everyone not shown, with that count in its label. Tune the overlap in one line with <code>--iv-avatar-overlap</code> on the group.</p>
+      <Stage name="avatar/group" title="Overlapping groups" />
+    </Section>
+
+    <Section title="Anatomy" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Class</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-avatar</code></td><td>The face: 2.5rem, full radius, brand-tinted ground for initials.</td></tr>
+            <tr><td><code>iv-avatar__img</code></td><td>The image inside it, cropped with <code>object-fit: cover</code>. Give it <code>width</code> and <code>height</code>.</td></tr>
+            <tr><td><code>iv-avatar--sm --lg --xl</code></td><td>1.75rem, 3.5rem and 5rem, all through <code>--iv-avatar-size</code>.</td></tr>
+            <tr><td><code>iv-avatar--square</code></td><td>Rounded square instead of a circle.</td></tr>
+            <tr><td><code>iv-avatar--ring</code></td><td>A brand ring around the face.</td></tr>
+            <tr><td><code>iv-avatar__status</code></td><td>Dot at the bottom end corner; <code>data-iv-tone</code> takes <code>success</code>, <code>warning</code>, <code>danger</code> and <code>muted</code>.</td></tr>
+            <tr><td><code>iv-avatar-group</code>, <code>iv-avatar-group__more</code></td><td>The row and its overflow count.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Initials are the default rendering: put them in a <code>&lt;span aria-hidden="true"&gt;</code> inside an avatar that carries <code>role="img"</code> and the full name in <code>aria-label</code>, so a screen reader reads the person and not two letters. There is no separate modifier class for them.</p>
+    </Section>
+
+    <Section title="Tokens and locals" num={3}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
+          <tbody>
+            <tr><td><code>--iv-avatar-size</code></td><td><code>2.5rem</code></td><td>Diameter of the face; the size modifiers only set this.</td></tr>
+            <tr><td><code>--iv-avatar-radius</code></td><td><code>var(--iv-radius-full)</code></td><td>Corner radius; <code>--square</code> switches it to <code>md</code>.</td></tr>
+            <tr><td><code>--iv-avatar-ring</code></td><td><code>transparent</code></td><td>Colour of the ring; <code>--ring</code> sets it to the brand.</td></tr>
+            <tr><td><code>--iv-avatar-overlap</code></td><td><code>calc(var(--iv-avatar-size) * -0.18)</code></td><td>How much each face in a group covers the previous one.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The default overlap is a calculation rather than a fixed length so a row of small faces and a row of large ones keep the same rhythm and the initials behind stay legible. Set it on the group, not on a face.</p>
+    </Section>
+
+    <Section title="Accessibility and keyboard" num={4}>
+      <p>An avatar is not interactive, so there is nothing to focus unless you wrap it in a link or a button — and then the link needs its own accessible name, not just the picture. Decide once whether the avatar is content or decoration: with a name it is an image of a person, and repeating that name in the text beside it gives a screen reader the same thing twice; in that case make the avatar <code>alt=""</code> or <code>aria-hidden</code> and let the text carry the identity. The status dot must repeat its meaning in words, as the fixture does with a hidden "Online"; colour alone says nothing. The overflow count says how many people are not shown, so the row is not a lie of omission.</p>
+    </Section>
+
+    <Section title="Without JavaScript" num={5}>
+      <p>There is no JavaScript. A broken image falls back to its <code>alt</code> text centred in the face rather than a torn icon.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={6}>
+      <ul>
+        <li>Initials with no name: two letters read aloud are noise.</li>
+        <li><code>alt="avatar"</code> or <code>alt="profile picture"</code>. Either the name, or empty.</li>
+        <li>A status dot that only exists in colour.</li>
+        <li>A group of twenty faces without a count. Show four or five and say how many are left.</li>
+        <li>Photographs of people invented for a demo. The fixtures here use invented initials and a drawing, and say so.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={7}>
+      <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-avatar--lg</code></td><td>3.5rem avatar.</td></tr>
+            <tr><td><code>iv-avatar--xl</code></td><td>5rem avatar, for a profile header.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

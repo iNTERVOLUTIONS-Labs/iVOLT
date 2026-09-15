@@ -1,34 +1,40 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Tabla" description="Tabla de iVOLT: contenedor con desplazamiento, modificadores rayada, compacta y con bordes, y una disposición apilada para pantallas estrechas. Sin motor de datos.">
   <article class="docs-prose">
     <h1>Tabla (table)</h1>
     <p>Estilos para marcado <code>&lt;table&gt;</code> de verdad: leyenda, celdas de cabecera con <code>scope</code> y un contenedor que se desplaza en horizontal cuando la tabla es más ancha que su contenedor. No hay ordenación, filtrado ni motor de datos.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/table.css</code> (dentro de <code>ivolt.css</code>).</p>
-    <h2>Contenedor con desplazamiento</h2>
-    <p><code>iv-table-wrap</code> es una región etiquetada y enfocable (<code>role="region"</code>, <code>tabindex="0"</code>) para que quien navega con teclado pueda desplazarla.</p>
-    <Fixture name="table/basic" />
-    <h2>Apilada en pantallas pequeñas</h2>
-    <p><code>iv-table--stack</code> convierte cada fila en un bloque por debajo del punto de ruptura <code>md</code> e imprime <code>data-iv-label</code> delante de cada celda.</p>
-    <Fixture name="table/stack" />
-    <h2>Modificadores</h2>
-    <p><code>--striped</code>, <code>--compact</code>, <code>--bordered</code>, <code>--stack</code>. Las columnas numéricas usan <code>iv-u-text-end</code>.</p>
-    <h2>Errores frecuentes</h2>
-    <ul><li>Tablas usadas para maquetar.</li><li>Celdas de cabecera sin <code>scope</code>.</li><li>Tablas apiladas sin <code>data-iv-label</code> en las celdas.</li></ul>
-  
-    <h2>Índice de clases</h2>
-    <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-table--striped</code></td><td>Filas en cebra.</td></tr>
-          <tr><td><code>iv-table--bordered</code></td><td>Borde en todas las celdas.</td></tr>
-          <tr><td><code>iv-table--compact</code></td><td>Relleno más ajustado para datos densos.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Section title="Contenedor con desplazamiento" num={1} lead={`iv-table-wrap es una región etiquetada y enfocable (role="region", tabindex="0") para que quien navega con teclado pueda desplazarla.`}>
+      <Stage primary name="table/basic" title="Una tabla en su envoltura desplazable" />
+    </Section>
+
+    <Section title="Apilada en pantallas pequeñas" num={2} lead={`iv-table--stack convierte cada fila en un bloque por debajo del punto de ruptura md e imprime data-iv-label delante de cada celda.`}>
+      <Stage name="table/stack" title="Apilada en pantalla estrecha" />
+    </Section>
+
+    <Section title="Modificadores" num={3} lead={`--striped, --compact, --bordered, --stack. Las columnas numéricas usan iv-u-text-end.`}>
+    </Section>
+
+    <Section title="Errores frecuentes" num={4}>
+      <ul><li>Tablas usadas para maquetar.</li><li>Celdas de cabecera sin <code>scope</code>.</li><li>Tablas apiladas sin <code>data-iv-label</code> en las celdas.</li></ul>
+    </Section>
+
+    <Section title="Índice de clases" num={5}>
+      <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-table--striped</code></td><td>Filas en cebra.</td></tr>
+            <tr><td><code>iv-table--bordered</code></td><td>Borde en todas las celdas.</td></tr>
+            <tr><td><code>iv-table--compact</code></td><td>Relleno más ajustado para datos densos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

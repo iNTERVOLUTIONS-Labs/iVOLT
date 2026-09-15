@@ -1,32 +1,38 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Insignia" description="Insignia de iVOLT: etiquetas pequeñas de estado con variantes de color suaves y sólidas. Solo CSS.">
   <article class="docs-prose">
     <h1>Insignia (badge)</h1>
     <p>Una etiqueta compacta para un estado o un recuento. Las insignias no son interactivas; si la etiqueta importa para la tecnología asistiva, mantenla como texto real y no como color a secas.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/badge.css</code> (dentro de <code>ivolt.css</code>).</p>
-    <Fixture name="badge/variants" />
-    <h2>Clases</h2>
-    <p><code>iv-badge</code> más <code>--primary --success --warning --danger --info</code> (fondo suave, texto de color) y <code>--solid</code> (relleno). Sin variante, la insignia es neutra.</p>
-    <h2>Errores frecuentes</h2>
-    <ul><li>Usar una insignia como botón; usa <code>iv-button--sm</code> en su lugar.</li><li>Transmitir el estado solo con color: incluye una palabra, por ejemplo «Pagado».</li></ul>
-  
-    <h2>Índice de clases</h2>
-    <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-badge--primary</code></td><td>Tono primario.</td></tr>
-          <tr><td><code>iv-badge--info</code></td><td>Tono informativo.</td></tr>
-          <tr><td><code>iv-badge--success</code></td><td>Tono de éxito.</td></tr>
-          <tr><td><code>iv-badge--warning</code></td><td>Tono de aviso.</td></tr>
-          <tr><td><code>iv-badge--danger</code></td><td>Tono de peligro.</td></tr>
-          <tr><td><code>iv-badge--solid</code></td><td>Variante sólida: el tono pasa al fondo en lugar del tinte.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="badge/variants" title="Tonos, sutil y sólido" />
+
+    <Section title="Clases" num={1}>
+      <p><code>iv-badge</code> más <code>--primary --success --warning --danger --info</code> (fondo suave, texto de color) y <code>--solid</code> (relleno). Sin variante, la insignia es neutra.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={2}>
+      <ul><li>Usar una insignia como botón; usa <code>iv-button--sm</code> en su lugar.</li><li>Transmitir el estado solo con color: incluye una palabra, por ejemplo «Pagado».</li></ul>
+    </Section>
+
+    <Section title="Índice de clases" num={3}>
+      <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-badge--primary</code></td><td>Tono primario.</td></tr>
+            <tr><td><code>iv-badge--info</code></td><td>Tono informativo.</td></tr>
+            <tr><td><code>iv-badge--success</code></td><td>Tono de éxito.</td></tr>
+            <tr><td><code>iv-badge--warning</code></td><td>Tono de aviso.</td></tr>
+            <tr><td><code>iv-badge--danger</code></td><td>Tono de peligro.</td></tr>
+            <tr><td><code>iv-badge--solid</code></td><td>Variante sólida: el tono pasa al fondo en lugar del tinte.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

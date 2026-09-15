@@ -1,52 +1,63 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Form" description="iVOLT form controls: labels, inputs, textarea, native select, checkboxes, radios, help and error text, fieldsets. Native controls, CSS only.">
   <article class="docs-prose">
     <h1>Form</h1>
     <p>Native controls styled with tokens. Every control needs a visible <code>&lt;label&gt;</code>; help and error text are linked with <code>aria-describedby</code>. No JavaScript, no custom widgets.</p>
     <p class="docs-meta"><strong>CSS:</strong> included in <code>ivolt.css</code>; standalone <code>css/components/form.css</code>.</p>
-    <Fixture name="form/basic" />
-    <h2>Error and disabled</h2>
-    <p>Mark invalid fields with <code>aria-invalid="true"</code> and point <code>aria-describedby</code> at the <code>iv-field__error</code> element. Disabled controls use the native attribute.</p>
-    <Fixture name="form/error" />
-    <h2>Floating labels and input groups</h2>
-    <p><code>iv-field--float</code> keeps the label inside the control until it has focus or a value (give the control <code>placeholder=" "</code>). <code>iv-input-group</code> joins prefixes, suffixes and buttons to a control.</p>
-    <Fixture name="form/float" />
-    <h2>Switch, range, file and sizes</h2>
-    <p>A checkbox becomes a switch, a range input gets a filled track, a file input becomes a drop zone that keeps the real input accessible, textareas grow with their content where the browser supports it, and inputs come in three sizes like buttons.</p>
-    <Fixture name="form/controls" />
-    <h2>Classes</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Class</th><th>Element</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-field</code></td><td>Wrapper: label, control, help/error stacked.</td></tr>
-          <tr><td><code>iv-label</code>, <code>iv-label__required</code></td><td><code>&lt;label&gt;</code> and the required marker (keep <code>required</code> on the control).</td></tr>
-          <tr><td><code>iv-input</code></td><td><code>&lt;input&gt;</code> (text-like types) and <code>&lt;textarea&gt;</code>.</td></tr>
-          <tr><td><code>iv-select</code></td><td>Native <code>&lt;select&gt;</code>.</td></tr>
-          <tr><td><code>iv-check</code>, <code>iv-checks</code>, <code>iv-checks--inline</code></td><td>Label wrapping a checkbox or radio; vertical or inline groups.</td></tr>
-          <tr><td><code>iv-fieldset</code>, <code>iv-fieldset__legend</code></td><td>Grouping with a legend.</td></tr>
-          <tr><td><code>iv-field__help</code>, <code>iv-field__error</code></td><td>Help and error text.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Common mistakes</h2>
-    <ul><li>Placeholder used as the only label.</li><li>Error text not referenced by <code>aria-describedby</code>.</li><li>Demo forms that post to a backend that does not exist: say it is a demo, as the examples above do.</li></ul>
-  
-    <h2>Class index</h2>
-    <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Class</th><th>What it does</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-form__summary-title</code></td><td>Heading of the error summary; its text is the summaryTitle option.</td></tr>
-          <tr><td><code>iv-form__summary-list</code></td><td>List of links to the invalid fields.</td></tr>
-          <tr><td><code>iv-input-group__addon</code></td><td>Prefix or suffix glued to an input: a currency, a unit, a domain.</td></tr>
-          <tr><td><code>iv-input-group__addon--button</code></td><td>Add-on that is a real button and keeps its focus ring.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="form/basic" title="Fields, labels and help text" />
+
+    <Section title="Error and disabled" num={1}>
+      <p>Mark invalid fields with <code>aria-invalid="true"</code> and point <code>aria-describedby</code> at the <code>iv-field__error</code> element. Disabled controls use the native attribute.</p>
+      <Stage name="form/error" title="Error and disabled" />
+    </Section>
+
+    <Section title="Floating labels and input groups" num={2}>
+      <p><code>iv-field--float</code> keeps the label inside the control until it has focus or a value (give the control <code>placeholder=" "</code>). <code>iv-input-group</code> joins prefixes, suffixes and buttons to a control.</p>
+      <Stage name="form/float" title="Floating labels and input groups" />
+    </Section>
+
+    <Section title="Switch, range, file and sizes" num={3} lead="A checkbox becomes a switch, a range input gets a filled track, a file input becomes a drop zone that keeps the real input accessible, textareas grow with their content where the browser supports it, and inputs come in three sizes like buttons.">
+      <Stage name="form/controls" title="Switch, range, file and sizes" />
+    </Section>
+
+    <Section title="Classes" num={4}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Class</th><th>Element</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-field</code></td><td>Wrapper: label, control, help/error stacked.</td></tr>
+            <tr><td><code>iv-label</code>, <code>iv-label__required</code></td><td><code>&lt;label&gt;</code> and the required marker (keep <code>required</code> on the control).</td></tr>
+            <tr><td><code>iv-input</code></td><td><code>&lt;input&gt;</code> (text-like types) and <code>&lt;textarea&gt;</code>.</td></tr>
+            <tr><td><code>iv-select</code></td><td>Native <code>&lt;select&gt;</code>.</td></tr>
+            <tr><td><code>iv-check</code>, <code>iv-checks</code>, <code>iv-checks--inline</code></td><td>Label wrapping a checkbox or radio; vertical or inline groups.</td></tr>
+            <tr><td><code>iv-fieldset</code>, <code>iv-fieldset__legend</code></td><td>Grouping with a legend.</td></tr>
+            <tr><td><code>iv-field__help</code>, <code>iv-field__error</code></td><td>Help and error text.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul><li>Placeholder used as the only label.</li><li>Error text not referenced by <code>aria-describedby</code>.</li><li>Demo forms that post to a backend that does not exist: say it is a demo, as the examples above do.</li></ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-form__summary-title</code></td><td>Heading of the error summary; its text is the summaryTitle option.</td></tr>
+            <tr><td><code>iv-form__summary-list</code></td><td>List of links to the invalid fields.</td></tr>
+            <tr><td><code>iv-input-group__addon</code></td><td>Prefix or suffix glued to an input: a currency, a unit, a domain.</td></tr>
+            <tr><td><code>iv-input-group__addon--button</code></td><td>Add-on that is a real button and keeps its focus ring.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

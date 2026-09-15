@@ -1,55 +1,67 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Stat" description="iVOLT stat: a figure with its label, a delta with tone and an arrow, a hint, and groups separated by hairlines. CSS only.">
   <article class="docs-prose">
     <h1>Stat</h1>
     <p>A number that deserves to be read: a label above it, the figure in tabular numerals, an optional delta with its direction and a hint underneath. Several of them make an <code>iv-stat-group</code>, a grid separated by hairlines rather than boxes. The figures are static; an animated counter is a different component and belongs to a later version.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/stat.css</code> (in <code>ivolt.css</code>). Added in v0.6.</p>
-    <Fixture name="stat/basic" title="A row of figures" />
-    <h2>Cards, large and glow</h2>
-    <p><code>iv-stat--card</code> puts a figure on its own surface with the shared ambient elevation, <code>iv-stat--lg</code> takes the value up one step of the type scale, and <code>iv-stat--glow</code> paints it with the brand gradient. The three combine.</p>
-    <Fixture name="stat/cards" title="Cards, glow and a large figure" />
-    <h2>Anatomy</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Class</th><th>Role</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-stat</code></td><td>The block: label, value, delta and hint in a column.</td></tr>
-          <tr><td><code>iv-stat__label</code></td><td>What is being measured, in small caps with <code>--iv-tracking-caps</code>.</td></tr>
-          <tr><td><code>iv-stat__value</code></td><td>The figure, at <code>--iv-text-3xl</code> with tabular numerals and <code>--iv-tracking-tight</code>.</td></tr>
-          <tr><td><code>iv-stat__delta</code></td><td>The change, with an arrow drawn by a mask and a tone in <code>data-iv-tone</code>.</td></tr>
-          <tr><td><code>iv-stat__hint</code></td><td>The footnote: period, budget, source.</td></tr>
-          <tr><td><code>iv-stat-group</code></td><td>Grid of <code>minmax(10rem, 1fr)</code> columns with a hairline between figures from <code>md</code> up.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Tones, and telling the truth</h2>
-    <p><code>data-iv-tone</code> on the delta takes <code>up</code> (success), <code>down</code> (danger) and <code>flat</code> (muted); the arrow turns with it. The tone is sentiment, not arithmetic: a stylesheet growing by 1.17 KiB is neither good nor bad, so it stays flat, while a suite that passes is marked up. Whatever the colour says, the text must say as well — the sign, the direction, or a visually hidden word after it. The figures in the fixtures above are the ones this package measures in its own gate, budgets included, and the zero of published releases is a real zero.</p>
-    <h2>Tokens and locals</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
-        <tbody>
-          <tr><td><code>--iv-stat-size</code></td><td><code>var(--iv-text-3xl)</code></td><td>Size of the value; <code>--lg</code> raises it to <code>4xl</code>.</td></tr>
-          <tr><td><code>--iv-stat-gap</code></td><td><code>var(--iv-space-1)</code></td><td>Space between label, value, delta and hint.</td></tr>
-          <tr><td><code>--iv-stat-align</code></td><td><code>start</code></td><td>Alignment of the block; <code>center</code> for a centred row.</td></tr>
-          <tr><td><code>--iv-stat-group-min</code></td><td><code>10rem</code></td><td>Narrowest a column may get before the grid wraps.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>A card figure uses <code>--iv-shadow-ambient</code>, the resting elevation shared with cards, tables and alerts since v0.6.</p>
-    <h2>Accessibility and keyboard</h2>
-    <p>Nothing here is focusable, so there is no keyboard behaviour to learn: it is text. The order in the markup is label, value, delta, hint, which is also the order it is read in. The arrow is decoration painted by CSS, so the direction has to live in the text — <code>+8.2%</code>, <code>down</code>, or an <code>iv-u-sr-only</code> word. If a figure needs units, write them; a screen reader does not see the column header your eye supplies. When several figures form a table of numbers rather than a row of headlines, use a <a href="/components/table">table</a>.</p>
-    <h2>Without JavaScript</h2>
-    <p>There is no JavaScript. The values are served as text and stay as served.</p>
-    <h2>Common mistakes</h2>
-    <ul>
-      <li>A figure with no label or no period. "12.4k" alone is not information.</li>
-      <li>Colour as the only sign of direction.</li>
-      <li>Invented numbers in a demo that does not say they are invented.</li>
-      <li>A group of eight figures: a row of headlines stops being read past four or five.</li>
-    </ul>
+    <Stage primary name="stat/basic" title="A row of figures" />
+    <Section title="Cards, large and glow" num={1} lead={`iv-stat--card puts a figure on its own surface with the shared ambient elevation, iv-stat--lg takes the value up one step of the type scale, and iv-stat--glow paints it with the brand gradient. The three combine.`}>
+      <Stage name="stat/cards" title="Cards, glow and a large figure" />
+    </Section>
+
+    <Section title="Anatomy" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Class</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-stat</code></td><td>The block: label, value, delta and hint in a column.</td></tr>
+            <tr><td><code>iv-stat__label</code></td><td>What is being measured, in small caps with <code>--iv-tracking-caps</code>.</td></tr>
+            <tr><td><code>iv-stat__value</code></td><td>The figure, at <code>--iv-text-3xl</code> with tabular numerals and <code>--iv-tracking-tight</code>.</td></tr>
+            <tr><td><code>iv-stat__delta</code></td><td>The change, with an arrow drawn by a mask and a tone in <code>data-iv-tone</code>.</td></tr>
+            <tr><td><code>iv-stat__hint</code></td><td>The footnote: period, budget, source.</td></tr>
+            <tr><td><code>iv-stat-group</code></td><td>Grid of <code>minmax(10rem, 1fr)</code> columns with a hairline between figures from <code>md</code> up.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Tones, and telling the truth" num={3}>
+      <p><code>data-iv-tone</code> on the delta takes <code>up</code> (success), <code>down</code> (danger) and <code>flat</code> (muted); the arrow turns with it. The tone is sentiment, not arithmetic: a stylesheet growing by 1.17 KiB is neither good nor bad, so it stays flat, while a suite that passes is marked up. Whatever the colour says, the text must say as well — the sign, the direction, or a visually hidden word after it. The figures in the fixtures above are the ones this package measures in its own gate, budgets included, and the zero of published releases is a real zero.</p>
+    </Section>
+
+    <Section title="Tokens and locals" num={4}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
+          <tbody>
+            <tr><td><code>--iv-stat-size</code></td><td><code>var(--iv-text-3xl)</code></td><td>Size of the value; <code>--lg</code> raises it to <code>4xl</code>.</td></tr>
+            <tr><td><code>--iv-stat-gap</code></td><td><code>var(--iv-space-1)</code></td><td>Space between label, value, delta and hint.</td></tr>
+            <tr><td><code>--iv-stat-align</code></td><td><code>start</code></td><td>Alignment of the block; <code>center</code> for a centred row.</td></tr>
+            <tr><td><code>--iv-stat-group-min</code></td><td><code>10rem</code></td><td>Narrowest a column may get before the grid wraps.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>A card figure uses <code>--iv-shadow-ambient</code>, the resting elevation shared with cards, tables and alerts since v0.6.</p>
+    </Section>
+
+    <Section title="Accessibility and keyboard" num={5}>
+      <p>Nothing here is focusable, so there is no keyboard behaviour to learn: it is text. The order in the markup is label, value, delta, hint, which is also the order it is read in. The arrow is decoration painted by CSS, so the direction has to live in the text — <code>+8.2%</code>, <code>down</code>, or an <code>iv-u-sr-only</code> word. If a figure needs units, write them; a screen reader does not see the column header your eye supplies. When several figures form a table of numbers rather than a row of headlines, use a <a href="/components/table">table</a>.</p>
+    </Section>
+
+    <Section title="Without JavaScript" num={6} lead={`There is no JavaScript. The values are served as text and stay as served.`}>
+    </Section>
+
+    <Section title="Common mistakes" num={7}>
+      <ul>
+        <li>A figure with no label or no period. "12.4k" alone is not information.</li>
+        <li>Colour as the only sign of direction.</li>
+        <li>Invented numbers in a demo that does not say they are invented.</li>
+        <li>A group of eight figures: a row of headlines stops being read past four or five.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

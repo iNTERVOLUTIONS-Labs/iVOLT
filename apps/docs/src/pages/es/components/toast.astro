@@ -1,5 +1,8 @@
 ---
 import Base from "../../../layouts/Base.astro";
+import Stage from "../../../components/Stage.astro";
+import Section from "../../../components/Section.astro";
+import Code from "../../../components/Code.astro";
 import Fixture from "../../../components/Fixture.astro";
 ---
 <Base lang="es" title="Aviso" description="Aviso de iVOLT: notificaciones breves creadas por API dentro de una región en vivo, con cola, pausa al pasar el ratón y al enfocar, descarte por teclado y sin pérdida de mensajes en las variantes críticas.">
@@ -7,7 +10,11 @@ import Fixture from "../../../components/Fixture.astro";
     <h1>Aviso (toast)</h1>
     <p>Notificaciones cortas creadas desde JavaScript dentro de una región que ya está en la página. Los mensajes se insertan como texto, nunca como HTML. Los avisos informativos se cierran solos; los de <code>danger</code> no lo hacen nunca y usan <code>role="alert"</code>. Cuando hay más de <code>max</code> visibles, los demás esperan en una cola en lugar de descartarse.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> o <code>auto.js</code>. Disparadores declarativos añadidos en la v0.6.</p>
-    <Fixture name="toast/basic" minHeight="6rem" />
+    <Fixture name="toast/basic" title="La región de avisos" minHeight="6rem" />
+    <div class="docs-note">
+      <span class="docs-note__title">Por qué esta no está en un escenario</span>
+      <p>Todos los demás ejemplos de este sitio funcionan en una página propia. Esta región no: los botones de abajo tienen que llamar a <code>show()</code> sobre la región que está justo encima, y una región dentro de un marco no se podría alcanzar desde esta página. Lo que ves es la propia fixture, funcionando aquí.</p>
+    </div>
     <p>Pruébalo: los botones de abajo llaman a <code>show()</code> sobre la región de arriba (los avisos aparecen en el borde inferior final de la ventana).</p>
     <div class="iv-cluster" id="toast-demo">
       <button class="iv-button iv-button--secondary" type="button" data-toast-variant="info">Aviso informativo</button>
@@ -24,49 +31,55 @@ import Fixture from "../../../components/Fixture.astro";
         Toast.getOrCreate(region).show({ message: messages[variant], variant, title: variant === "danger" ? "Error" : undefined });
       }));
     </script>
-    <h2>Disparador declarativo</h2>
-    <p>Un botón servido puede mostrar un aviso sin una línea de JavaScript: dale <code>data-iv-toast</code> con el <code>id</code> de la región y el texto en <code>data-iv-message</code>. La región recoge el clic con un único listener delegado y llama a <code>show()</code> con lo que lleve el disparador: <code>data-iv-title</code>, <code>data-iv-variant</code>, <code>data-iv-timeout</code> y <code>data-iv-dismissible</code>. El mensaje se lee como texto, nunca como HTML; una variante desconocida cae en <code>info</code> y un tiempo que no es un número cae en el de la región. <code>showFromTrigger(trigger)</code> hace lo mismo desde tu código.</p>
-    <Fixture name="toast/declarative" title="Botones que muestran un aviso" minHeight="8rem" />
-    <p>Es azúcar sobre <code>show()</code>, no una segunda forma de trabajar: la misma cola, la misma pausa al pasar el ratón y al enfocar, la misma negativa a cerrar solo un mensaje <code>danger</code>. Sin JavaScript estos botones no hacen absolutamente nada, y por eso la fixture marca cada uno como demostración: un botón que promete guardar algo y no lo guarda es peor que no tener botón.</p>
-    <h2>API</h2>
-<pre><code>import &#123; Toast &#125; from "@intervolutions/ivolt/toast";
+    <Section title="Disparador declarativo" num={1}>
+      <p>Un botón servido puede mostrar un aviso sin una línea de JavaScript: dale <code>data-iv-toast</code> con el <code>id</code> de la región y el texto en <code>data-iv-message</code>. La región recoge el clic con un único listener delegado y llama a <code>show()</code> con lo que lleve el disparador: <code>data-iv-title</code>, <code>data-iv-variant</code>, <code>data-iv-timeout</code> y <code>data-iv-dismissible</code>. El mensaje se lee como texto, nunca como HTML; una variante desconocida cae en <code>info</code> y un tiempo que no es un número cae en el de la región. <code>showFromTrigger(trigger)</code> hace lo mismo desde tu código.</p>
+      <Stage primary name="toast/declarative" title="Botones que muestran un aviso" minHeight="8rem" />
+      <p>Es azúcar sobre <code>show()</code>, no una segunda forma de trabajar: la misma cola, la misma pausa al pasar el ratón y al enfocar, la misma negativa a cerrar solo un mensaje <code>danger</code>. Sin JavaScript estos botones no hacen absolutamente nada, y por eso la fixture marca cada uno como demostración: un botón que promete guardar algo y no lo guarda es peor que no tener botón.</p>
+    </Section>
+
+    <Section title="API" num={2}>
+      <Code label="javascript" panels={[{ key: "src", label: "JAVASCRIPT", code: `import { Toast } from "@intervolutions/ivolt/toast";
 const region = Toast.get(document.querySelector(".iv-toast-region"));
-const item = region.show(&#123; message: "Guardado", variant: "success" &#125;);
+const item = region.show({ message: "Guardado", variant: "success" });
 item.dismiss();
-region.clear();</code></pre>
-    <div class="docs-scroller">
-      <table><thead><tr><th>Opción</th><th>Dónde</th><th>Por defecto</th></tr></thead><tbody>
-        <tr><td><code>placement</code></td><td>región, <code>data-iv-placement</code></td><td><code>bottom-end</code></td></tr>
-        <tr><td><code>max</code></td><td>región, <code>data-iv-max</code></td><td><code>3</code></td></tr>
-        <tr><td><code>variant</code></td><td>elemento</td><td><code>info</code> (<code>success warning danger</code>)</td></tr>
-        <tr><td><code>timeout</code></td><td>elemento, ms</td><td><code>6000</code>; <code>0</code> nunca; forzado a <code>0</code> para danger</td></tr>
-        <tr><td><code>dismissible</code></td><td>elemento</td><td><code>true</code></td></tr>
-      </tbody></table>
-    </div>
-    <h2>Teclado y tiempos</h2>
-    <p>Pasar el ratón por encima de un aviso o enfocarlo pausa su temporizador. Escape sobre un aviso enfocado lo descarta. Cada elemento emite <code>iv:open/opened/close/closed</code> con <code>reason</code> <code>timeout</code>, <code>trigger</code>, <code>escape</code> o <code>api</code>.</p>
-    <h2>Sin JavaScript</h2>
-    <p>No aplica: los avisos solo existen cuando un script los crea. Muestra también en línea, como alerta, los resultados importantes.</p>
-  
-    <h2>Índice de clases</h2>
-    <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-toast--info</code></td><td>Tono informativo (el de por defecto).</td></tr>
-          <tr><td><code>iv-toast--warning</code></td><td>Tono de aviso.</td></tr>
-          <tr><td><code>iv-toast--danger</code></td><td>Tono de peligro; nunca se cierra solo.</td></tr>
-          <tr><td><code>iv-toast__title</code></td><td>Línea de título opcional del aviso.</td></tr>
-          <tr><td><code>iv-toast__message</code></td><td>Cuerpo del aviso, siempre texto plano.</td></tr>
-          <tr><td><code>iv-toast__body</code></td><td>Envoltorio del título y del mensaje.</td></tr>
-          <tr><td><code>iv-toast__dismiss</code></td><td>Botón de cierre del aviso.</td></tr>
-          <tr><td><code>iv-toast-region--top-start</code></td><td>Región anclada a la esquina superior de inicio.</td></tr>
-          <tr><td><code>iv-toast-region--top-end</code></td><td>Esquina superior final.</td></tr>
-          <tr><td><code>iv-toast-region--bottom-start</code></td><td>Esquina inferior de inicio.</td></tr>
-          <tr><td><code>iv-toast-region--bottom-end</code></td><td>Esquina inferior final (la de por defecto).</td></tr>
-        </tbody>
-      </table>
-    </div>
+region.clear();` }]} />
+      <div class="docs-scroller">
+        <table><thead><tr><th>Opción</th><th>Dónde</th><th>Por defecto</th></tr></thead><tbody>
+          <tr><td><code>placement</code></td><td>región, <code>data-iv-placement</code></td><td><code>bottom-end</code></td></tr>
+          <tr><td><code>max</code></td><td>región, <code>data-iv-max</code></td><td><code>3</code></td></tr>
+          <tr><td><code>variant</code></td><td>elemento</td><td><code>info</code> (<code>success warning danger</code>)</td></tr>
+          <tr><td><code>timeout</code></td><td>elemento, ms</td><td><code>6000</code>; <code>0</code> nunca; forzado a <code>0</code> para danger</td></tr>
+          <tr><td><code>dismissible</code></td><td>elemento</td><td><code>true</code></td></tr>
+        </tbody></table>
+      </div>
+    </Section>
+
+    <Section title="Teclado y tiempos" num={3} lead={`Pasar el ratón por encima de un aviso o enfocarlo pausa su temporizador. Escape sobre un aviso enfocado lo descarta. Cada elemento emite iv:open/opened/close/closed con reason timeout, trigger, escape o api.`}>
+    </Section>
+
+    <Section title="Sin JavaScript" num={4} lead={`No aplica: los avisos solo existen cuando un script los crea. Muestra también en línea, como alerta, los resultados importantes.`}>
+    </Section>
+
+    <Section title="Índice de clases" num={5}>
+      <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-toast--info</code></td><td>Tono informativo (el de por defecto).</td></tr>
+            <tr><td><code>iv-toast--warning</code></td><td>Tono de aviso.</td></tr>
+            <tr><td><code>iv-toast--danger</code></td><td>Tono de peligro; nunca se cierra solo.</td></tr>
+            <tr><td><code>iv-toast__title</code></td><td>Línea de título opcional del aviso.</td></tr>
+            <tr><td><code>iv-toast__message</code></td><td>Cuerpo del aviso, siempre texto plano.</td></tr>
+            <tr><td><code>iv-toast__body</code></td><td>Envoltorio del título y del mensaje.</td></tr>
+            <tr><td><code>iv-toast__dismiss</code></td><td>Botón de cierre del aviso.</td></tr>
+            <tr><td><code>iv-toast-region--top-start</code></td><td>Región anclada a la esquina superior de inicio.</td></tr>
+            <tr><td><code>iv-toast-region--top-end</code></td><td>Esquina superior final.</td></tr>
+            <tr><td><code>iv-toast-region--bottom-start</code></td><td>Esquina inferior de inicio.</td></tr>
+            <tr><td><code>iv-toast-region--bottom-end</code></td><td>Esquina inferior final (la de por defecto).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

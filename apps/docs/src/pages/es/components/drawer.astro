@@ -1,37 +1,43 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Panel lateral" description="Panel lateral de iVOLT: un panel deslizante sobre un único dialog nativo que pasa a ser una barra lateral estática a partir del punto de ruptura lg. Se usa para la navegación en móvil.">
   <article class="docs-prose">
     <h1>Panel lateral (drawer)</h1>
     <p>Un panel deslizante para navegación o filtros. Es un único <code>&lt;dialog&gt;</code>: por debajo del punto de ruptura <code>staticFrom</code> se abre como modal; a partir de ese punto, el CSS lo muestra como un panel estático y el disparador se puede ocultar. Cruzar el punto de ruptura con el modal abierto lo cierra.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/drawer.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/drawer</code> o <code>auto.js</code>.</p>
-    <Fixture name="drawer/basic" minHeight="14rem" />
-    <h2>Opciones</h2>
-    <div class="docs-scroller">
-      <table><thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th></tr></thead><tbody>
-        <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>start</code> (<code>end</code> entra desde el borde final)</td></tr>
-        <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code> (<code>none</code> lo mantiene modal en todos los tamaños)</td></tr>
-        <tr><td><code>closeOnBackdrop</code>, <code>closeOnEscape</code>, <code>returnFocus</code></td><td>como en Dialog</td><td><code>true</code></td></tr>
-      </tbody></table>
-    </div>
-    <p>Los métodos y los eventos son los mismos que en Dialog; un cierre provocado por un cambio de tamaño informa de <code>reason: "viewport"</code>.</p>
-    <h2>Sin JavaScript</h2>
-    <p>A partir del punto de ruptura estático, el panel simplemente se ve. En pantallas pequeñas, el enlace disparador apunta al <code>id</code> del panel y <code>:target</code> lo muestra como un bloque estático.</p>
-  
-    <h2>Índice de clases</h2>
-    <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-drawer__header</code></td><td>Banda superior del panel: título y botón de cierre.</td></tr>
-          <tr><td><code>iv-drawer__title</code></td><td>Título del cajón; es lo que etiqueta al diálogo.</td></tr>
-          <tr><td><code>iv-drawer__body</code></td><td>Región desplazable del panel.</td></tr>
-          <tr><td><code>iv-drawer__footer</code></td><td>Banda inferior, para las acciones.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="drawer/basic" title="Un panel desde el borde" minHeight="14rem" />
+
+    <Section title="Opciones" num={1}>
+      <div class="docs-scroller">
+        <table><thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th></tr></thead><tbody>
+          <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>start</code> (<code>end</code> entra desde el borde final)</td></tr>
+          <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code> (<code>none</code> lo mantiene modal en todos los tamaños)</td></tr>
+          <tr><td><code>closeOnBackdrop</code>, <code>closeOnEscape</code>, <code>returnFocus</code></td><td>como en Dialog</td><td><code>true</code></td></tr>
+        </tbody></table>
+      </div>
+      <p>Los métodos y los eventos son los mismos que en Dialog; un cierre provocado por un cambio de tamaño informa de <code>reason: "viewport"</code>.</p>
+    </Section>
+
+    <Section title="Sin JavaScript" num={2}>
+      <p>A partir del punto de ruptura estático, el panel simplemente se ve. En pantallas pequeñas, el enlace disparador apunta al <code>id</code> del panel y <code>:target</code> lo muestra como un bloque estático.</p>
+    </Section>
+
+    <Section title="Índice de clases" num={3}>
+      <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-drawer__header</code></td><td>Banda superior del panel: título y botón de cierre.</td></tr>
+            <tr><td><code>iv-drawer__title</code></td><td>Título del cajón; es lo que etiqueta al diálogo.</td></tr>
+            <tr><td><code>iv-drawer__body</code></td><td>Región desplazable del panel.</td></tr>
+            <tr><td><code>iv-drawer__footer</code></td><td>Banda inferior, para las acciones.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

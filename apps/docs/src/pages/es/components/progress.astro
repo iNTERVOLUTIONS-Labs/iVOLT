@@ -1,32 +1,39 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Progreso" description="Progreso de iVOLT: el <progress> nativo con estilo, en estados determinado e indeterminado, con tamaños y colores de estado, respetando la reducción de movimiento.">
   <article class="docs-prose">
     <h1>Progreso (progress)</h1>
     <p>El elemento nativo <code>&lt;progress&gt;</code>, con estilo. Dale una etiqueta visible con <code>&lt;label for&gt;</code> o un <code>aria-label</code>. Sin <code>value</code> es indeterminado y se anima; con la reducción de movimiento activada, la animación se detiene.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/progress.css</code> (dentro de <code>ivolt.css</code>).</p>
-    <Fixture name="progress/basic" />
-    <h2>Tamaños</h2>
-    <p>Tres grosores y un local público. <code>iv-progress--sm</code> son 0,25rem, el valor por defecto 0,5rem y <code>iv-progress--lg</code> 1rem con radio completo; los tres solo fijan <code>--iv-progress-size</code>, así que cualquier otro grosor es una declaración en el elemento. Añadido en la v0.6, junto con el cambio de nombre: <code>--iv-progress-size</code> sustituye al <code>--iv-progress-height</code> de la v0.1 a la v0.5.</p>
-    <Fixture name="progress/sizes" title="Tres tamaños y un grosor a medida" />
-    <h2>Modificadores y locales</h2>
-    <p><code>--sm</code> y <code>--lg</code> para el grosor; <code>--success --warning --danger</code> para el color de la barra. Locales públicos: <code>--iv-progress-size</code> (grosor de la pista), <code>--iv-progress-color</code> (la barra), <code>--iv-progress-track</code> y <code>--iv-progress-track-subtle</code> (el canal de detrás) y <code>--iv-progress-groove</code> (su sombra interior, dibujada con <code>--iv-color-hover-surface</code>).</p>
-    <h2>Errores frecuentes</h2>
-    <ul><li>Un <code>div</code> con un fondo en lugar del elemento nativo.</li><li>Progreso sin etiqueta o sin <code>max</code>.</li></ul>
-  
-    <h2>Índice de clases</h2>
-    <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-progress--success</code></td><td>Tono de éxito de la barra.</td></tr>
-          <tr><td><code>iv-progress--warning</code></td><td>Tono de aviso.</td></tr>
-          <tr><td><code>iv-progress--danger</code></td><td>Tono de peligro.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="progress/basic" title="Una barra determinada" />
+    <Section title="Tamaños" num={1}>
+      <p>Tres grosores y un local público. <code>iv-progress--sm</code> son 0,25rem, el valor por defecto 0,5rem y <code>iv-progress--lg</code> 1rem con radio completo; los tres solo fijan <code>--iv-progress-size</code>, así que cualquier otro grosor es una declaración en el elemento. Añadido en la v0.6, junto con el cambio de nombre: <code>--iv-progress-size</code> sustituye al <code>--iv-progress-height</code> de la v0.1 a la v0.5.</p>
+      <Stage name="progress/sizes" title="Tres tamaños y un grosor a medida" />
+    </Section>
+
+    <Section title="Modificadores y locales" num={2}>
+      <p><code>--sm</code> y <code>--lg</code> para el grosor; <code>--success --warning --danger</code> para el color de la barra. Locales públicos: <code>--iv-progress-size</code> (grosor de la pista), <code>--iv-progress-color</code> (la barra), <code>--iv-progress-track</code> y <code>--iv-progress-track-subtle</code> (el canal de detrás) y <code>--iv-progress-groove</code> (su sombra interior, dibujada con <code>--iv-color-hover-surface</code>).</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={3}>
+      <ul><li>Un <code>div</code> con un fondo en lugar del elemento nativo.</li><li>Progreso sin etiqueta o sin <code>max</code>.</li></ul>
+    </Section>
+
+    <Section title="Índice de clases" num={4}>
+      <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-progress--success</code></td><td>Tono de éxito de la barra.</td></tr>
+            <tr><td><code>iv-progress--warning</code></td><td>Tono de aviso.</td></tr>
+            <tr><td><code>iv-progress--danger</code></td><td>Tono de peligro.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

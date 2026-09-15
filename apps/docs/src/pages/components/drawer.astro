@@ -1,37 +1,43 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Drawer" description="iVOLT drawer: an off-canvas panel on a single native dialog that becomes a static sidebar from the lg breakpoint. Used for mobile navigation.">
   <article class="docs-prose">
     <h1>Drawer</h1>
     <p>An off-canvas panel for navigation or filters. It is one <code>&lt;dialog&gt;</code>: below the <code>staticFrom</code> breakpoint it opens as a modal; from that breakpoint the CSS shows it as a static panel and the trigger can be hidden. Crossing the breakpoint with the modal open closes it.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/drawer.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/drawer</code> or <code>auto.js</code>.</p>
-    <Fixture name="drawer/basic" minHeight="14rem" />
-    <h2>Options</h2>
-    <div class="docs-scroller">
-      <table><thead><tr><th>Option</th><th>Attribute</th><th>Default</th></tr></thead><tbody>
-        <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>start</code> (<code>end</code> slides from the end edge)</td></tr>
-        <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code> (<code>none</code> keeps it modal at every size)</td></tr>
-        <tr><td><code>closeOnBackdrop</code>, <code>closeOnEscape</code>, <code>returnFocus</code></td><td>as Dialog</td><td><code>true</code></td></tr>
-      </tbody></table>
-    </div>
-    <p>Methods and events are the same as Dialog; a close caused by resizing reports <code>reason: "viewport"</code>.</p>
-    <h2>Without JavaScript</h2>
-    <p>From the static breakpoint the panel is simply visible. On small screens the trigger link targets the drawer <code>id</code> and <code>:target</code> shows it as a static block.</p>
-  
-    <h2>Class index</h2>
-    <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Class</th><th>What it does</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-drawer__header</code></td><td>Top band of the panel: title and close button.</td></tr>
-          <tr><td><code>iv-drawer__title</code></td><td>Title of the drawer; it labels the dialog.</td></tr>
-          <tr><td><code>iv-drawer__body</code></td><td>Scrollable region of the panel.</td></tr>
-          <tr><td><code>iv-drawer__footer</code></td><td>Bottom band, for the actions.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="drawer/basic" title="A panel from the edge" minHeight="14rem" />
+
+    <Section title="Options" num={1}>
+      <div class="docs-scroller">
+        <table><thead><tr><th>Option</th><th>Attribute</th><th>Default</th></tr></thead><tbody>
+          <tr><td><code>placement</code></td><td><code>data-iv-placement</code></td><td><code>start</code> (<code>end</code> slides from the end edge)</td></tr>
+          <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code> (<code>none</code> keeps it modal at every size)</td></tr>
+          <tr><td><code>closeOnBackdrop</code>, <code>closeOnEscape</code>, <code>returnFocus</code></td><td>as Dialog</td><td><code>true</code></td></tr>
+        </tbody></table>
+      </div>
+      <p>Methods and events are the same as Dialog; a close caused by resizing reports <code>reason: "viewport"</code>.</p>
+    </Section>
+
+    <Section title="Without JavaScript" num={2}>
+      <p>From the static breakpoint the panel is simply visible. On small screens the trigger link targets the drawer <code>id</code> and <code>:target</code> shows it as a static block.</p>
+    </Section>
+
+    <Section title="Class index" num={3}>
+      <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-drawer__header</code></td><td>Top band of the panel: title and close button.</td></tr>
+            <tr><td><code>iv-drawer__title</code></td><td>Title of the drawer; it labels the dialog.</td></tr>
+            <tr><td><code>iv-drawer__body</code></td><td>Scrollable region of the panel.</td></tr>
+            <tr><td><code>iv-drawer__footer</code></td><td>Bottom band, for the actions.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

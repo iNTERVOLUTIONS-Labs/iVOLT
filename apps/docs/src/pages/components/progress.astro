@@ -1,32 +1,39 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Progress" description="iVOLT progress: styled native <progress> with determinate and indeterminate states, sizes and status colours, respecting reduced motion.">
   <article class="docs-prose">
     <h1>Progress</h1>
     <p>The native <code>&lt;progress&gt;</code> element, styled. Give it a visible label with <code>&lt;label for&gt;</code> or an <code>aria-label</code>. Without <code>value</code> it is indeterminate and animates; under reduced motion the animation stops.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/progress.css</code> (in <code>ivolt.css</code>).</p>
-    <Fixture name="progress/basic" />
-    <h2>Sizes</h2>
-    <p>Three thicknesses and one public local. <code>iv-progress--sm</code> is 0.25rem, the default 0.5rem and <code>iv-progress--lg</code> 1rem with a full radius; all three only set <code>--iv-progress-size</code>, so any other thickness is one declaration on the element. Added in v0.6, together with the rename: <code>--iv-progress-size</code> replaces the <code>--iv-progress-height</code> of v0.1 to v0.5.</p>
-    <Fixture name="progress/sizes" title="Three sizes and a custom thickness" />
-    <h2>Modifiers and locals</h2>
-    <p><code>--sm</code> and <code>--lg</code> for the thickness; <code>--success --warning --danger</code> for the bar colour. Public locals: <code>--iv-progress-size</code> (track thickness), <code>--iv-progress-color</code> (the bar), <code>--iv-progress-track</code> and <code>--iv-progress-track-subtle</code> (the groove behind it) and <code>--iv-progress-groove</code> (its inner shadow, drawn with <code>--iv-color-hover-surface</code>).</p>
-    <h2>Common mistakes</h2>
-    <ul><li>A <code>div</code> with a background instead of the native element.</li><li>Progress without a label or without <code>max</code>.</li></ul>
-  
-    <h2>Class index</h2>
-    <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Class</th><th>What it does</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-progress--success</code></td><td>Success tone of the bar.</td></tr>
-          <tr><td><code>iv-progress--warning</code></td><td>Warning tone.</td></tr>
-          <tr><td><code>iv-progress--danger</code></td><td>Danger tone.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="progress/basic" title="A determinate bar" />
+    <Section title="Sizes" num={1}>
+      <p>Three thicknesses and one public local. <code>iv-progress--sm</code> is 0.25rem, the default 0.5rem and <code>iv-progress--lg</code> 1rem with a full radius; all three only set <code>--iv-progress-size</code>, so any other thickness is one declaration on the element. Added in v0.6, together with the rename: <code>--iv-progress-size</code> replaces the <code>--iv-progress-height</code> of v0.1 to v0.5.</p>
+      <Stage name="progress/sizes" title="Three sizes and a custom thickness" />
+    </Section>
+
+    <Section title="Modifiers and locals" num={2}>
+      <p><code>--sm</code> and <code>--lg</code> for the thickness; <code>--success --warning --danger</code> for the bar colour. Public locals: <code>--iv-progress-size</code> (track thickness), <code>--iv-progress-color</code> (the bar), <code>--iv-progress-track</code> and <code>--iv-progress-track-subtle</code> (the groove behind it) and <code>--iv-progress-groove</code> (its inner shadow, drawn with <code>--iv-color-hover-surface</code>).</p>
+    </Section>
+
+    <Section title="Common mistakes" num={3}>
+      <ul><li>A <code>div</code> with a background instead of the native element.</li><li>Progress without a label or without <code>max</code>.</li></ul>
+    </Section>
+
+    <Section title="Class index" num={4}>
+      <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-progress--success</code></td><td>Success tone of the bar.</td></tr>
+            <tr><td><code>iv-progress--warning</code></td><td>Warning tone.</td></tr>
+            <tr><td><code>iv-progress--danger</code></td><td>Danger tone.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

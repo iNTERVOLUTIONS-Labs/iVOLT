@@ -1,55 +1,68 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Validación de formularios y contador" description="Validación de formularios de iVOLT: mensajes en línea a partir de la validación de restricciones del navegador, mensajes propios por tipo de error, resumen de errores, gestión del foco y contador de caracteres o palabras.">
   <article class="docs-prose">
     <h1>Validación de formularios y contador (form, counter)</h1>
     <p>Dos componentes pequeños que trabajan sobre los atributos que ya escribes. El componente <code>form</code> convierte la validación de restricciones del navegador en mensajes en línea, un resumen y un foco sensato, con mensajes que controlas por tipo de error. El <code>counter</code> muestra caracteres o palabras junto a un campo de texto y puede marcarlo inválido cuando se supera un límite blando. Sin JavaScript el navegador valida y <code>maxlength</code> limita el texto como siempre.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/form.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/form</code> y <code>@intervolutions/ivolt/counter</code>, o <code>auto.js</code>. Añadidos en la v0.3.</p>
-    <Fixture name="form/validation" />
-    <h2>Mensajes</h2>
-    <p>Cada control puede llevar un mensaje por tipo de error: <code>data-iv-error-value-missing</code>, <code>-type-mismatch</code>, <code>-pattern-mismatch</code>, <code>-too-short</code>, <code>-too-long</code>, <code>-range-underflow</code>, <code>-range-overflow</code>, <code>-step-mismatch</code>, <code>-bad-input</code> y <code>-custom</code>, o un único <code>data-iv-error</code>. Sin ninguno de ellos se usa el mensaje del navegador. Para añadir reglas propias escucha <code>iv:validate</code> y llama a <code>detail.setError(mensaje)</code>; una cadena vacía lo limpia.</p>
-    <h2>Opciones</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-        <tbody>
-          <tr><td><code>validateOn</code></td><td><code>data-iv-validate-on</code></td><td><code>blur</code></td><td><code>blur</code> valida un campo al perder el foco y después en cada entrada mientras sea inválido; <code>input</code> valida en cada pulsación; <code>submit</code> solo al enviar.</td></tr>
-          <tr><td><code>summary</code></td><td><code>data-iv-summary</code></td><td><code>false</code></td><td>Pinta un resumen de errores con enlaces a los campos al principio del formulario.</td></tr>
-          <tr><td><code>summaryTitle</code></td><td><code>data-iv-summary-title</code></td><td><code>Please fix the following</code></td><td>Título del resumen.</td></tr>
-          <tr><td><code>focusFirst</code></td><td><code>data-iv-focus-first</code></td><td><code>true</code></td><td>Lleva el foco al primer campo inválido (o al resumen) tras un envío fallido.</td></tr>
-          <tr><td><code>scroll</code></td><td><code>data-iv-scroll</code></td><td><code>true</code></td><td>Desplaza el campo enfocado a la vista.</td></tr>
-          <tr><td><code>live</code></td><td><code>data-iv-live</code></td><td><code>true</code></td><td>Anuncia los mensajes de error con <code>aria-live</code>.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Métodos y eventos</h2>
-    <p><code>validate()</code> devuelve si el formulario es válido y aplica todos los estados, <code>validateField(control)</code>, <code>reset()</code>, <code>destroy()</code>; lectura de <code>errors</code>. Eventos: <code>iv:validate</code> en cada control (<code>detail.control</code>, <code>message</code>, <code>setError</code>), <code>iv:invalid</code> en el formulario tras un envío fallido (<code>detail.errors</code>), e <code>iv:valid</code> (cancelable) justo antes de que un envío válido siga adelante, que es donde toma el relevo un envío asíncrono.</p>
-    <h2>Contador</h2>
-    <p>Pon <code>data-iv-component="counter"</code> en el contenedor del campo. El recuento sigue a <code>maxlength</code> o a <code>data-iv-max</code>; con un <code>data-iv-max</code> blando se puede seguir escribiendo, el contador pasa a su estado «over» y el control se vuelve inválido mediante <code>setCustomValidity</code>, así que el componente de formulario y el navegador lo notifican los dos.</p>
-    <Fixture name="form/counter" />
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-        <tbody>
-          <tr><td><code>mode</code></td><td><code>data-iv-mode</code></td><td><code>chars</code></td><td><code>chars</code> o <code>words</code>.</td></tr>
-          <tr><td><code>max</code></td><td><code>data-iv-max</code></td><td><code>maxlength</code></td><td>Límite que se muestra y, cuando no hay <code>maxlength</code>, se exige como error de validación.</td></tr>
-          <tr><td><code>warnAt</code></td><td><code>data-iv-warn-at</code></td><td><code>0.9</code></td><td>Fracción del límite a partir de la cual el contador pasa a su estado de aviso.</td></tr>
-          <tr><td><code>template</code></td><td><code>data-iv-template</code></td><td><code>&#123;count&#125; / &#123;max&#125;</code></td><td>Texto del contador; también está disponible <code>&#123;remaining&#125;</code>.</td></tr>
-          <tr><td><code>overText</code></td><td><code>data-iv-over-text</code></td><td><code>Too long</code></td><td>Mensaje de validación cuando se supera un límite blando.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Tecnología asistiva</h2>
-    <p>Los controles inválidos llevan <code>aria-invalid</code> y están descritos por su mensaje; el resumen es una región viva y cada entrada es un enlace a su campo; el contador se anuncia con cortesía. Con movimiento reducido se omite la sacudida del envío fallido.</p>
-    <h2>Sin JavaScript</h2>
-    <p>El navegador valida con sus propios globos y <code>maxlength</code> recorta el texto. Los límites blandos y el recuento de palabras necesitan JavaScript; nada más lo necesita.</p>
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li>Validar solo en JavaScript: conserva los atributos HTML, ellos son las reglas.</li>
-      <li>Un resumen sin <code>focusFirst</code>: quien usa una lupa de pantalla puede no verlo nunca.</li>
-      <li>Mensajes que describen la regla en vez de la solución: escribe «Indica una fecha posterior a hoy», no «Fecha no válida».</li>
-    </ul>
+    <Stage primary name="form/validation" title="Un formulario que se valida" />
+    <Section title="Mensajes" num={1}>
+      <p>Cada control puede llevar un mensaje por tipo de error: <code>data-iv-error-value-missing</code>, <code>-type-mismatch</code>, <code>-pattern-mismatch</code>, <code>-too-short</code>, <code>-too-long</code>, <code>-range-underflow</code>, <code>-range-overflow</code>, <code>-step-mismatch</code>, <code>-bad-input</code> y <code>-custom</code>, o un único <code>data-iv-error</code>. Sin ninguno de ellos se usa el mensaje del navegador. Para añadir reglas propias escucha <code>iv:validate</code> y llama a <code>detail.setError(mensaje)</code>; una cadena vacía lo limpia.</p>
+    </Section>
+
+    <Section title="Opciones" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+          <tbody>
+            <tr><td><code>validateOn</code></td><td><code>data-iv-validate-on</code></td><td><code>blur</code></td><td><code>blur</code> valida un campo al perder el foco y después en cada entrada mientras sea inválido; <code>input</code> valida en cada pulsación; <code>submit</code> solo al enviar.</td></tr>
+            <tr><td><code>summary</code></td><td><code>data-iv-summary</code></td><td><code>false</code></td><td>Pinta un resumen de errores con enlaces a los campos al principio del formulario.</td></tr>
+            <tr><td><code>summaryTitle</code></td><td><code>data-iv-summary-title</code></td><td><code>Please fix the following</code></td><td>Título del resumen.</td></tr>
+            <tr><td><code>focusFirst</code></td><td><code>data-iv-focus-first</code></td><td><code>true</code></td><td>Lleva el foco al primer campo inválido (o al resumen) tras un envío fallido.</td></tr>
+            <tr><td><code>scroll</code></td><td><code>data-iv-scroll</code></td><td><code>true</code></td><td>Desplaza el campo enfocado a la vista.</td></tr>
+            <tr><td><code>live</code></td><td><code>data-iv-live</code></td><td><code>true</code></td><td>Anuncia los mensajes de error con <code>aria-live</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Métodos y eventos" num={3}>
+      <p><code>validate()</code> devuelve si el formulario es válido y aplica todos los estados, <code>validateField(control)</code>, <code>reset()</code>, <code>destroy()</code>; lectura de <code>errors</code>. Eventos: <code>iv:validate</code> en cada control (<code>detail.control</code>, <code>message</code>, <code>setError</code>), <code>iv:invalid</code> en el formulario tras un envío fallido (<code>detail.errors</code>), e <code>iv:valid</code> (cancelable) justo antes de que un envío válido siga adelante, que es donde toma el relevo un envío asíncrono.</p>
+    </Section>
+
+    <Section title="Contador" num={4}>
+      <p>Pon <code>data-iv-component="counter"</code> en el contenedor del campo. El recuento sigue a <code>maxlength</code> o a <code>data-iv-max</code>; con un <code>data-iv-max</code> blando se puede seguir escribiendo, el contador pasa a su estado «over» y el control se vuelve inválido mediante <code>setCustomValidity</code>, así que el componente de formulario y el navegador lo notifican los dos.</p>
+      <Stage name="form/counter" title="Un contador con límite blando" />
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+          <tbody>
+            <tr><td><code>mode</code></td><td><code>data-iv-mode</code></td><td><code>chars</code></td><td><code>chars</code> o <code>words</code>.</td></tr>
+            <tr><td><code>max</code></td><td><code>data-iv-max</code></td><td><code>maxlength</code></td><td>Límite que se muestra y, cuando no hay <code>maxlength</code>, se exige como error de validación.</td></tr>
+            <tr><td><code>warnAt</code></td><td><code>data-iv-warn-at</code></td><td><code>0.9</code></td><td>Fracción del límite a partir de la cual el contador pasa a su estado de aviso.</td></tr>
+            <tr><td><code>template</code></td><td><code>data-iv-template</code></td><td><code>&#123;count&#125; / &#123;max&#125;</code></td><td>Texto del contador; también está disponible <code>&#123;remaining&#125;</code>.</td></tr>
+            <tr><td><code>overText</code></td><td><code>data-iv-over-text</code></td><td><code>Too long</code></td><td>Mensaje de validación cuando se supera un límite blando.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Tecnología asistiva" num={5}>
+      <p>Los controles inválidos llevan <code>aria-invalid</code> y están descritos por su mensaje; el resumen es una región viva y cada entrada es un enlace a su campo; el contador se anuncia con cortesía. Con movimiento reducido se omite la sacudida del envío fallido.</p>
+    </Section>
+
+    <Section title="Sin JavaScript" num={6} lead={`El navegador valida con sus propios globos y maxlength recorta el texto. Los límites blandos y el recuento de palabras necesitan JavaScript; nada más lo necesita.`}>
+    </Section>
+
+    <Section title="Errores frecuentes" num={7}>
+      <ul>
+        <li>Validar solo en JavaScript: conserva los atributos HTML, ellos son las reglas.</li>
+        <li>Un resumen sin <code>focusFirst</code>: quien usa una lupa de pantalla puede no verlo nunca.</li>
+        <li>Mensajes que describen la regla en vez de la solución: escribe «Indica una fecha posterior a hoy», no «Fecha no válida».</li>
+      </ul>
+    </Section>
   </article>
 </Base>

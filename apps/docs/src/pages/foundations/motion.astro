@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Scroll motion" description="iVOLT scroll motion: parallax frames, a reading progress bar, marquees and sticky card decks driven by CSS scroll-driven animations, with one small component as the fallback where they are missing.">
   <article class="docs-prose">
@@ -11,75 +12,93 @@ import Fixture from "../../components/Fixture.astro";
       <span class="docs-note__title">What runs where</span>
       <p><code>animation-timeline</code> is implemented in Chromium and in WebKit; Firefox does not ship it today, and there <code>ScrollMotion</code> takes over: it listens to <code>scroll</code> and <code>resize</code> passively, batches into <code>requestAnimationFrame</code>, and writes <code>--iv-view</code> on every <code>.iv-parallax</code> inside its root and <code>--iv-scroll</code> on the root itself. The effect is the same; the cost is a little JavaScript on one engine. Where the native timelines exist and <code>force</code> is off, the component sets up nothing at all and reports <code>native: true</code>.</p>
     </div>
-    <h2>Parallax</h2>
-    <p><code>iv-parallax-frame</code> holds the aspect ratio and clips; <code>iv-parallax</code> is the layer that travels, and <code>iv-parallax--media</code> makes an image 130&nbsp;% tall so the travel never uncovers an edge. Strength is one number, <code>--iv-parallax</code>: <code>0</code> is fixed to the page and <code>1</code> is theatrical. Between <code>0.1</code> and <code>0.3</code> is where it reads as depth rather than as a trick.</p>
-    <Fixture name="motion/parallax" title="Parallax frames" viewport="30rem" />
-    <p>The frame clips with <code>overflow: clip</code>, not <code>hidden</code>. It matters: <code>hidden</code> would turn the frame into a scroll container, <code>view()</code> would measure the layer against that container instead of against the window, and the timeline would freeze. The second section of the fixture carries <code>data-iv-force="true"</code>, which puts the component on the JavaScript path even on an engine that has the native one — that is how the fallback is checked without a second browser.</p>
-    <h2>Reading progress</h2>
-    <p><code>iv-scroll-progress</code> is a bar pinned to the top of the window, painted once at full width and scaled horizontally, so a single composited property changes as you read. It is <code>aria-hidden="true"</code>: the reading position already reaches assistive technology through the scrollbar and the document structure, and a second announcement would be noise.</p>
-    <Fixture name="motion/progress" title="A reading progress bar" viewport="26rem" />
-    <div class="docs-note">
-      <span class="docs-note__title">Two rules worth knowing</span>
-      <p><strong>Scope.</strong> On the fallback path <code>--iv-scroll</code> is written on the root of the <code>scroll-motion</code> container, so a bar that is not <em>inside</em> that root never inherits it. Put the bar in the container you marked, or mark the container that already holds it.</p>
-      <p class="iv-u-m-0"><strong>Reduced motion.</strong> The progress bar keeps following the page even when motion is reduced, because it reports state rather than decorating it — the same argument as a header that hides on scroll. Parallax, marquee and deck do stop.</p>
-    </div>
-    <h2>Marquee</h2>
-    <p>Pure CSS, and the author owns the duplication: write the items once, write them again with <code>aria-hidden="true"</code>, and a translation of &minus;50&nbsp;% loops seamlessly. It pauses under the pointer and while anything inside holds focus. Under reduced motion it stops and becomes a scrollable row — which is why the window is served with <code>role="group"</code>, <code>tabindex="0"</code> and a label: a scroll region has to be reachable from the keyboard.</p>
-    <Fixture name="motion/marquee" title="Marquee" />
-    <h2>Stacked cards</h2>
-    <p>Each card sticks one step lower than the one before it, offset by <code>--iv-i</code>, so the deck reads as a deck while you scroll through it. Where the engine has scroll-driven animations the cards also shrink and dim as the deck leaves; where it does not, the sticky stack is all there is, and nothing is lost.</p>
-    <Fixture name="motion/stack" title="A sticky deck" viewport="30rem" />
-    <p>An honest note about this one: with <code>animation-range: exit</code> on sticky subjects, the whole deck reports almost the same progress and retreats together as it leaves the top of the window, instead of handing over card by card. That is what ships in 0.7. A relay per card — a named timeline with a range derived from <code>--iv-i</code> and a served <code>--iv-stack-count</code> — is on the list for a later cycle.</p>
-    <h2>Options</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-        <tbody>
-          <tr><td><code>force</code></td><td><code>data-iv-force</code></td><td><code>false</code></td><td>Run the JavaScript path even where the native timelines exist. For testing the fallback.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p><code>update()</code> recalculates after a layout change you made yourself; <code>destroy()</code> removes the listeners and the properties it wrote; <code>native</code> is read-only and says which path is live. There are no events: nothing here is a state change a page would want to react to.</p>
-    <h2>Keyboard and assistive technology</h2>
-    <p>None of these four is a control. The progress bar is hidden from assistive technology; the parallax layer is an image with its own <code>alt</code>; the deck is a set of sections that read in document order whether they are stacked or not. The marquee is the one that needs care: under reduced motion it turns into a horizontal scroll region, so it must carry a role, a label and <code>tabindex="0"</code>, and the duplicated half must be <code>aria-hidden</code> so nothing is announced twice.</p>
-    <h2>Without JavaScript</h2>
-    <p>The marquee and the deck are CSS from end to end and need nothing. Parallax and the progress bar are CSS too on Chromium and WebKit. On Firefox, with JavaScript off, the layer sits at its authored position and the bar stays at zero: the page is complete, the decoration is absent. Nothing that carries meaning is behind any of it.</p>
-    <h2>Tokens and locals</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
-        <tbody>
-          <tr><td><code>--iv-parallax</code></td><td><code>0.2</code></td><td>Strength of the lag, as a fraction.</td></tr>
-          <tr><td><code>--iv-parallax-ratio</code></td><td>frame ratio</td><td>Aspect ratio of <code>iv-parallax-frame</code>.</td></tr>
-          <tr><td><code>--iv-scroll-progress-size</code></td><td><code>3px</code></td><td>Thickness of the reading bar.</td></tr>
-          <tr><td><code>--iv-scroll-progress-color</code></td><td><code>var(--iv-color-primary)</code></td><td>Colour of the bar, with the primary halo behind it.</td></tr>
-          <tr><td><code>--iv-marquee-duration</code></td><td><code>30s</code></td><td>One full loop of the track.</td></tr>
-          <tr><td><code>--iv-marquee-gap</code>, <code>--iv-marquee-size</code></td><td>spacing tokens</td><td>Space between items and height of the window.</td></tr>
-          <tr><td><code>--iv-stack-top</code></td><td><code>var(--iv-space-8)</code></td><td>Where a card sticks.</td></tr>
-          <tr><td><code>--iv-stack-step</code>, <code>--iv-stack-scale</code>, <code>--iv-stack-fade</code></td><td>deck defaults</td><td>Offset per card, how far the one underneath shrinks, how far it dims.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Two properties are written from JavaScript on the fallback path and are readable from CSS: <code>--iv-view</code> (0 as an element enters from below, 1 as it leaves at the top) on each parallax layer, and <code>--iv-scroll</code> (0 to 1) on the root of the component.</p>
-    <h2>Common mistakes</h2>
-    <ul>
-      <li>A parallax layer with no <code>--iv-parallax--media</code> height: the travel uncovers the edge of the frame.</li>
-      <li>Giving the frame <code>overflow: hidden</code> by hand and wondering why nothing moves in Chromium.</li>
-      <li>A progress bar outside the <code>scroll-motion</code> root: it works on two engines and stays flat on the third.</li>
-      <li>A marquee whose second half is not <code>aria-hidden</code>: every item is read twice.</li>
-      <li>Using the deck for steps that must be read in order and compared. That is a <a href="/components/stepper">stepper</a> or a <a href="/components/timeline">timeline</a>.</li>
-      <li>Treating reduced motion as “switch the effects off”: the reading bar is information, and it stays.</li>
-    </ul>
-  
-    <h2>Class index</h2>
-    <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Class</th><th>What it does</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-parallax__layer</code></td><td>Layer inside a parallax frame: it is the element that moves, while the frame clips it.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Section title="Parallax" num={1}>
+      <p><code>iv-parallax-frame</code> holds the aspect ratio and clips; <code>iv-parallax</code> is the layer that travels, and <code>iv-parallax--media</code> makes an image 130&nbsp;% tall so the travel never uncovers an edge. Strength is one number, <code>--iv-parallax</code>: <code>0</code> is fixed to the page and <code>1</code> is theatrical. Between <code>0.1</code> and <code>0.3</code> is where it reads as depth rather than as a trick.</p>
+      <Stage primary name="motion/parallax" title="Parallax frames" maxHeight={480} />
+      <p>The frame clips with <code>overflow: clip</code>, not <code>hidden</code>. It matters: <code>hidden</code> would turn the frame into a scroll container, <code>view()</code> would measure the layer against that container instead of against the window, and the timeline would freeze. The second section of the fixture carries <code>data-iv-force="true"</code>, which puts the component on the JavaScript path even on an engine that has the native one — that is how the fallback is checked without a second browser.</p>
+    </Section>
+
+    <Section title="Reading progress" num={2}>
+      <p><code>iv-scroll-progress</code> is a bar pinned to the top of the window, painted once at full width and scaled horizontally, so a single composited property changes as you read. It is <code>aria-hidden="true"</code>: the reading position already reaches assistive technology through the scrollbar and the document structure, and a second announcement would be noise.</p>
+      <Stage name="motion/progress" title="A reading progress bar" maxHeight={416} />
+      <div class="docs-note">
+        <span class="docs-note__title">Two rules worth knowing</span>
+        <p><strong>Scope.</strong> On the fallback path <code>--iv-scroll</code> is written on the root of the <code>scroll-motion</code> container, so a bar that is not <em>inside</em> that root never inherits it. Put the bar in the container you marked, or mark the container that already holds it.</p>
+        <p class="iv-u-m-0"><strong>Reduced motion.</strong> The progress bar keeps following the page even when motion is reduced, because it reports state rather than decorating it — the same argument as a header that hides on scroll. Parallax, marquee and deck do stop.</p>
+      </div>
+    </Section>
+
+    <Section title="Marquee" num={3}>
+      <p>Pure CSS, and the author owns the duplication: write the items once, write them again with <code>aria-hidden="true"</code>, and a translation of &minus;50&nbsp;% loops seamlessly. It pauses under the pointer and while anything inside holds focus. Under reduced motion it stops and becomes a scrollable row — which is why the window is served with <code>role="group"</code>, <code>tabindex="0"</code> and a label: a scroll region has to be reachable from the keyboard.</p>
+      <Stage name="motion/marquee" title="Marquee" />
+    </Section>
+
+    <Section title="Stacked cards" num={4}>
+      <p>Each card sticks one step lower than the one before it, offset by <code>--iv-i</code>, so the deck reads as a deck while you scroll through it. Where the engine has scroll-driven animations the cards also shrink and dim as the deck leaves; where it does not, the sticky stack is all there is, and nothing is lost.</p>
+      <Stage name="motion/stack" title="A sticky deck" maxHeight={480} />
+      <p>An honest note about this one: with <code>animation-range: exit</code> on sticky subjects, the whole deck reports almost the same progress and retreats together as it leaves the top of the window, instead of handing over card by card. That is what ships in 0.7. A relay per card — a named timeline with a range derived from <code>--iv-i</code> and a served <code>--iv-stack-count</code> — is on the list for a later cycle.</p>
+    </Section>
+
+    <Section title="Options" num={5}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>force</code></td><td><code>data-iv-force</code></td><td><code>false</code></td><td>Run the JavaScript path even where the native timelines exist. For testing the fallback.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><code>update()</code> recalculates after a layout change you made yourself; <code>destroy()</code> removes the listeners and the properties it wrote; <code>native</code> is read-only and says which path is live. There are no events: nothing here is a state change a page would want to react to.</p>
+    </Section>
+
+    <Section title="Keyboard and assistive technology" num={6}>
+      <p>None of these four is a control. The progress bar is hidden from assistive technology; the parallax layer is an image with its own <code>alt</code>; the deck is a set of sections that read in document order whether they are stacked or not. The marquee is the one that needs care: under reduced motion it turns into a horizontal scroll region, so it must carry a role, a label and <code>tabindex="0"</code>, and the duplicated half must be <code>aria-hidden</code> so nothing is announced twice.</p>
+    </Section>
+
+    <Section title="Without JavaScript" num={7}>
+      <p>The marquee and the deck are CSS from end to end and need nothing. Parallax and the progress bar are CSS too on Chromium and WebKit. On Firefox, with JavaScript off, the layer sits at its authored position and the bar stays at zero: the page is complete, the decoration is absent. Nothing that carries meaning is behind any of it.</p>
+    </Section>
+
+    <Section title="Tokens and locals" num={8}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
+          <tbody>
+            <tr><td><code>--iv-parallax</code></td><td><code>0.2</code></td><td>Strength of the lag, as a fraction.</td></tr>
+            <tr><td><code>--iv-parallax-ratio</code></td><td>frame ratio</td><td>Aspect ratio of <code>iv-parallax-frame</code>.</td></tr>
+            <tr><td><code>--iv-scroll-progress-size</code></td><td><code>3px</code></td><td>Thickness of the reading bar.</td></tr>
+            <tr><td><code>--iv-scroll-progress-color</code></td><td><code>var(--iv-color-primary)</code></td><td>Colour of the bar, with the primary halo behind it.</td></tr>
+            <tr><td><code>--iv-marquee-duration</code></td><td><code>30s</code></td><td>One full loop of the track.</td></tr>
+            <tr><td><code>--iv-marquee-gap</code>, <code>--iv-marquee-size</code></td><td>spacing tokens</td><td>Space between items and height of the window.</td></tr>
+            <tr><td><code>--iv-stack-top</code></td><td><code>var(--iv-space-8)</code></td><td>Where a card sticks.</td></tr>
+            <tr><td><code>--iv-stack-step</code>, <code>--iv-stack-scale</code>, <code>--iv-stack-fade</code></td><td>deck defaults</td><td>Offset per card, how far the one underneath shrinks, how far it dims.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Two properties are written from JavaScript on the fallback path and are readable from CSS: <code>--iv-view</code> (0 as an element enters from below, 1 as it leaves at the top) on each parallax layer, and <code>--iv-scroll</code> (0 to 1) on the root of the component.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={9}>
+      <ul>
+        <li>A parallax layer with no <code>--iv-parallax--media</code> height: the travel uncovers the edge of the frame.</li>
+        <li>Giving the frame <code>overflow: hidden</code> by hand and wondering why nothing moves in Chromium.</li>
+        <li>A progress bar outside the <code>scroll-motion</code> root: it works on two engines and stays flat on the third.</li>
+        <li>A marquee whose second half is not <code>aria-hidden</code>: every item is read twice.</li>
+        <li>Using the deck for steps that must be read in order and compared. That is a <a href="/components/stepper">stepper</a> or a <a href="/components/timeline">timeline</a>.</li>
+        <li>Treating reduced motion as “switch the effects off”: the reading bar is information, and it stays.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={10}>
+      <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-parallax__layer</code></td><td>Layer inside a parallax frame: it is the element that moves, while the frame clips it.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

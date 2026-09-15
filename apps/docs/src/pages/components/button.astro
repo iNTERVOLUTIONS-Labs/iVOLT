@@ -1,32 +1,47 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+import Code from "../../components/Code.astro";
 ---
 <Base title="Button" description="iVOLT button: primary, secondary, ghost and danger variants, sizes, icon-only, disabled and loading states, and button groups. CSS only.">
   <article class="docs-prose">
     <h1>Button</h1>
     <p>Use a <code>&lt;button&gt;</code> for actions and an <code>&lt;a&gt;</code> for navigation; both take the same classes. No JavaScript is involved.</p>
     <p class="docs-meta"><strong>CSS:</strong> included in <code>ivolt.css</code>; standalone <code>css/components/button.css</code> (needs <code>core.css</code>).</p>
-    <h2>Variants</h2>
-    <p>Without a variant the button is neutral. <code>--primary</code> is for the main action of a view, <code>--secondary</code> outlines, <code>--ghost</code> is text-only, <code>--danger</code> marks destructive actions.</p>
-    <Fixture name="button/variants" />
-    <h2>Sizes and icon-only</h2>
-    <p>Default height is 2.5rem; <code>--sm</code> is 2rem and <code>--lg</code> 3rem. Icon-only buttons need <code>aria-label</code> and keep a square target of at least 24×24 px.</p>
-    <Fixture name="button/sizes" />
-    <h2>States</h2>
-    <p>Use the native <code>disabled</code> attribute on buttons and <code>aria-disabled="true"</code> on links. <code>aria-busy="true"</code> shows a spinner, blocks pointer events and keeps the label. Hover styles only apply on devices with hover; the focus ring uses <code>--iv-color-focus</code> on <code>:focus-visible</code>.</p>
-    <Fixture name="button/states" />
-    <h2>Groups</h2>
-    <Fixture name="button/group" />
-    <h2>Customising</h2>
-<pre><code>.iv-button &#123; --iv-button-radius: var(--iv-radius-full); &#125;
-.iv-button--primary &#123; --iv-button-bg: var(--iv-color-accent); --iv-button-fg: var(--iv-color-on-accent); &#125;</code></pre>
-    <p>Local properties: <code>--iv-button-bg</code>, <code>--iv-button-fg</code>, <code>--iv-button-border</code>, <code>--iv-button-radius</code>.</p>
-    <h2>Common mistakes</h2>
-    <ul>
-      <li>A <code>&lt;div&gt;</code> with the button class: not focusable, no keyboard activation.</li>
-      <li>Icon-only button without <code>aria-label</code>.</li>
-      <li>Several <code>--primary</code> buttons in one view; keep one main action.</li>
-    </ul>
+
+    <Stage primary name="button/variants" title="Every variant of the button" />
+
+    <Section title="Variants" num={1}>
+      <p>Without a variant the button is neutral. <code>--primary</code> is for the main action of a view, <code>--secondary</code> outlines, <code>--ghost</code> is text-only, <code>--danger</code> marks destructive actions.</p>
+    </Section>
+
+    <Section title="Sizes and icon-only" num={2}>
+      <p>Default height is 2.5rem; <code>--sm</code> is 2rem and <code>--lg</code> 3rem. Icon-only buttons need <code>aria-label</code> and keep a square target of at least 24×24 px.</p>
+      <Stage name="button/sizes" title="Sizes and icon-only" />
+    </Section>
+
+    <Section title="States" num={3}>
+      <p>Use the native <code>disabled</code> attribute on buttons and <code>aria-disabled="true"</code> on links. <code>aria-busy="true"</code> shows a spinner, blocks pointer events and keeps the label. Hover styles only apply on devices with hover; the focus ring uses <code>--iv-color-focus</code> on <code>:focus-visible</code>.</p>
+      <Stage name="button/states" title="Disabled, busy and focus" />
+    </Section>
+
+    <Section title="Groups" num={4}>
+      <Stage name="button/group" title="Buttons joined in a group" />
+    </Section>
+
+    <Section title="Customising" num={5}>
+      <Code label="button.css" panels={[{ key: "css", label: "CSS", code: `.iv-button { --iv-button-radius: var(--iv-radius-full); }
+.iv-button--primary { --iv-button-bg: var(--iv-color-accent); --iv-button-fg: var(--iv-color-on-accent); }` }]} />
+      <p>Local properties: <code>--iv-button-bg</code>, <code>--iv-button-fg</code>, <code>--iv-button-border</code>, <code>--iv-button-radius</code>.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={6}>
+      <ul>
+        <li>A <code>&lt;div&gt;</code> with the button class: not focusable, no keyboard activation.</li>
+        <li>Icon-only button without <code>aria-label</code>.</li>
+        <li>Several <code>--primary</code> buttons in one view; keep one main action.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

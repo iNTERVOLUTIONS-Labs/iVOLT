@@ -1,71 +1,87 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Stepper" description="iVOLT stepper: a numbered index, one panel per step, next and back controls, validation before advancing, and every panel served visible without JavaScript.">
   <article class="docs-prose">
     <h1>Stepper</h1>
     <p>A long form cut into steps: a numbered index with state, one panel per step, and controls that move between them. The server sends an ordered list of links and the panels one under the other, so the whole form is readable and fillable without a script. On <code>init</code> only the current panel stays visible, the index marks what is done, current and still to come, and <code>data-iv-step</code> buttons refuse to advance while the fields of the panel are invalid.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/stepper.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/stepper</code> or <code>auto.js</code>. Added in v0.6.</p>
-    <Fixture name="stepper/basic" title="Checkout in three steps" />
-    <h2>Vertical index</h2>
-    <p><code>iv-stepper--vertical</code> moves the index into a column beside the panels from the <code>md</code> breakpoint up, with the connector running down instead of across. Below that breakpoint it is the same stacked layout as the default.</p>
-    <Fixture name="stepper/vertical" title="Vertical index" />
-    <h2>Compact</h2>
-    <p><code>iv-stepper--compact</code> draws the markers and the label of the current step only; the other labels stay in the page for screen readers, so no step loses its name. This one also runs with <code>data-iv-linear="false"</code>, so every step is reachable from the index at any time.</p>
-    <Fixture name="stepper/compact" title="Compact, non-linear" />
-    <h2>Options</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-        <tbody>
-          <tr><td><code>linear</code></td><td><code>data-iv-linear</code></td><td><code>true</code></td><td>Only steps already visited and the current one are reachable from the index; the rest carry <code>aria-disabled="true"</code>. Going back and jumping forward again does not revalidate.</td></tr>
-          <tr><td><code>validate</code></td><td><code>data-iv-validate</code></td><td><code>true</code></td><td>Check the controls of the current panel before advancing.</td></tr>
-          <tr><td><code>hash</code></td><td><code>data-iv-hash</code></td><td><code>false</code></td><td>Keep <code>location.hash</code> in sync with the current panel and answer <code>hashchange</code>.</td></tr>
-          <tr><td><code>focus</code></td><td><code>data-iv-focus</code></td><td><code>panel</code></td><td>Where focus lands after a change: the new panel, or <code>none</code>.</td></tr>
-          <tr><td><code>statusText</code></td><td><code>data-iv-status-text</code></td><td><code>Step &#123;index&#125; of &#123;total&#125;: &#123;label&#125;</code></td><td>Sentence announced in the polite live region after every change.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Methods and events</h2>
-    <p><code>go(index, reason)</code>, <code>next()</code>, <code>prev()</code>, <code>reset()</code>, <code>setState(index, state)</code>, <code>destroy()</code>; read <code>index</code> (0-based), <code>steps</code>, <code>isFirst</code> and <code>isLast</code>. <code>setState</code> is how a server answer marks a step <code>error</code> or <code>done</code> from your own code.</p>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Event</th><th>When</th><th><code>detail</code></th></tr></thead>
-        <tbody>
-          <tr><td><code>iv:change</code> → <code>iv:changed</code></td><td>before and after moving; the first is cancelable</td><td><code>index</code>, <code>previousIndex</code>, <code>reason</code>: <code>trigger</code>, <code>next</code>, <code>prev</code>, <code>api</code> or <code>hash</code></td></tr>
-          <tr><td><code>iv:complete</code></td><td><code>next</code> on the last step, once its validation has passed</td><td><code>index</code></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>The component never submits anything. <code>iv:complete</code> is where your code sends the form, and cancelling <code>iv:change</code> is where it refuses a move for a reason of its own.</p>
-    <h2>Validation</h2>
-    <p>With <code>validate</code> on, <code>next</code> checks the current panel first. If the panel sits inside a <code>&lt;form&gt;</code> that has a <a href="/components/validation">Form</a> instance, every control in the panel goes through <code>validateField</code> and the messages appear where that component puts them; otherwise the browser's own <code>reportValidity()</code> stops on the first invalid control. Going back never validates. Asynchronous checks, conditional steps and draft saving are out of scope: do them in your own handler and call <code>go()</code> or <code>setState()</code> with the answer.</p>
-    <h2>Keyboard and assistive technology</h2>
-    <p>The index is an <code>&lt;ol&gt;</code> of links with a label, and the current step carries <code>aria-current="step"</code>. Left and Right, Home and End move focus between reachable triggers; Enter or Space activates one. The markers are <code>aria-hidden</code> decoration — the number they draw is already the list order — and each panel is a section with a heading and <code>tabindex="-1"</code> so focus can land on it. State is announced in a visually hidden polite region, and a step in error adds a hidden "has errors" to its label, so colour is never the only carrier.</p>
-    <h2>Without JavaScript</h2>
-    <p>Every panel is served visible, one under the other, and the index is a list of anchors that jump to each section. The next and back buttons are served inside a <code>hidden</code> container, because a button that cannot advance is worse than no button; <code>init</code> reveals them. Nothing is hidden and no field is unreachable: the form is one long form, which is exactly what it was before it was cut into steps.</p>
-    <h2>Tokens and locals</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
-        <tbody>
-          <tr><td><code>--iv-stepper-marker</code></td><td><code>2rem</code></td><td>Diameter of the numbered circle.</td></tr>
-          <tr><td><code>--iv-stepper-line</code></td><td><code>var(--iv-color-border)</code></td><td>Colour of the connector between markers.</td></tr>
-          <tr><td><code>--iv-stepper-fill</code></td><td><code>var(--iv-color-primary)</code></td><td>Colour of the part of the connector already walked.</td></tr>
-          <tr><td><code>--iv-stepper-track</code></td><td><code>2px</code></td><td>Thickness of the connector and of the progress bar.</td></tr>
-          <tr><td><code>--iv-stepper-gap</code></td><td><code>var(--iv-space-6)</code></td><td>Space between the index and the panels.</td></tr>
-          <tr><td><code>--iv-stepper-step-gap</code></td><td><code>var(--iv-space-5)</code></td><td>Space between steps in the index.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>The component writes <code>--iv-stepper-progress</code> (0 to 1) on the root, which is what the optional <code>iv-stepper__progress</code> bar scales. Each step carries <code>data-iv-state</code> with <code>done</code>, <code>current</code>, <code>upcoming</code> or <code>error</code>: a done marker shows a check instead of its number, the current one takes the shared focus halo, and an error marker turns to the danger colour. Under reduced motion the panels appear without travelling.</p>
-    <h2>Common mistakes</h2>
-    <ul>
-      <li>Steps with no heading. Each panel needs its own heading: it is the name of the step for anyone who cannot see the index.</li>
-      <li>Serving the panels hidden, or the controls visible. The first loses the form without a script; the second offers buttons that do nothing.</li>
-      <li>More than five or six steps. Past that, an index is a table of contents and the form wants splitting into pages.</li>
-      <li>Expecting the component to submit. It announces completion; sending the data stays yours.</li>
-    </ul>
+    <Stage primary name="stepper/basic" title="Checkout in three steps" />
+    <Section title="Vertical index" num={1} lead={`iv-stepper--vertical moves the index into a column beside the panels from the md breakpoint up, with the connector running down instead of across. Below that breakpoint it is the same stacked layout as the default.`}>
+      <Stage name="stepper/vertical" title="Vertical index" />
+    </Section>
+
+    <Section title="Compact" num={2}>
+      <p><code>iv-stepper--compact</code> draws the markers and the label of the current step only; the other labels stay in the page for screen readers, so no step loses its name. This one also runs with <code>data-iv-linear="false"</code>, so every step is reachable from the index at any time.</p>
+      <Stage name="stepper/compact" title="Compact, non-linear" />
+    </Section>
+
+    <Section title="Options" num={3}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>linear</code></td><td><code>data-iv-linear</code></td><td><code>true</code></td><td>Only steps already visited and the current one are reachable from the index; the rest carry <code>aria-disabled="true"</code>. Going back and jumping forward again does not revalidate.</td></tr>
+            <tr><td><code>validate</code></td><td><code>data-iv-validate</code></td><td><code>true</code></td><td>Check the controls of the current panel before advancing.</td></tr>
+            <tr><td><code>hash</code></td><td><code>data-iv-hash</code></td><td><code>false</code></td><td>Keep <code>location.hash</code> in sync with the current panel and answer <code>hashchange</code>.</td></tr>
+            <tr><td><code>focus</code></td><td><code>data-iv-focus</code></td><td><code>panel</code></td><td>Where focus lands after a change: the new panel, or <code>none</code>.</td></tr>
+            <tr><td><code>statusText</code></td><td><code>data-iv-status-text</code></td><td><code>Step &#123;index&#125; of &#123;total&#125;: &#123;label&#125;</code></td><td>Sentence announced in the polite live region after every change.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Methods and events" num={4} lead={`go(index, reason), next(), prev(), reset(), setState(index, state), destroy(); read index (0-based), steps, isFirst and isLast. setState is how a server answer marks a step error or done from your own code.`}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Event</th><th>When</th><th><code>detail</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>iv:change</code> → <code>iv:changed</code></td><td>before and after moving; the first is cancelable</td><td><code>index</code>, <code>previousIndex</code>, <code>reason</code>: <code>trigger</code>, <code>next</code>, <code>prev</code>, <code>api</code> or <code>hash</code></td></tr>
+            <tr><td><code>iv:complete</code></td><td><code>next</code> on the last step, once its validation has passed</td><td><code>index</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The component never submits anything. <code>iv:complete</code> is where your code sends the form, and cancelling <code>iv:change</code> is where it refuses a move for a reason of its own.</p>
+    </Section>
+
+    <Section title="Validation" num={5}>
+      <p>With <code>validate</code> on, <code>next</code> checks the current panel first. If the panel sits inside a <code>&lt;form&gt;</code> that has a <a href="/components/validation">Form</a> instance, every control in the panel goes through <code>validateField</code> and the messages appear where that component puts them; otherwise the browser's own <code>reportValidity()</code> stops on the first invalid control. Going back never validates. Asynchronous checks, conditional steps and draft saving are out of scope: do them in your own handler and call <code>go()</code> or <code>setState()</code> with the answer.</p>
+    </Section>
+
+    <Section title="Keyboard and assistive technology" num={6}>
+      <p>The index is an <code>&lt;ol&gt;</code> of links with a label, and the current step carries <code>aria-current="step"</code>. Left and Right, Home and End move focus between reachable triggers; Enter or Space activates one. The markers are <code>aria-hidden</code> decoration — the number they draw is already the list order — and each panel is a section with a heading and <code>tabindex="-1"</code> so focus can land on it. State is announced in a visually hidden polite region, and a step in error adds a hidden "has errors" to its label, so colour is never the only carrier.</p>
+    </Section>
+
+    <Section title="Without JavaScript" num={7}>
+      <p>Every panel is served visible, one under the other, and the index is a list of anchors that jump to each section. The next and back buttons are served inside a <code>hidden</code> container, because a button that cannot advance is worse than no button; <code>init</code> reveals them. Nothing is hidden and no field is unreachable: the form is one long form, which is exactly what it was before it was cut into steps.</p>
+    </Section>
+
+    <Section title="Tokens and locals" num={8}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Local</th><th>Default</th><th>What it moves</th></tr></thead>
+          <tbody>
+            <tr><td><code>--iv-stepper-marker</code></td><td><code>2rem</code></td><td>Diameter of the numbered circle.</td></tr>
+            <tr><td><code>--iv-stepper-line</code></td><td><code>var(--iv-color-border)</code></td><td>Colour of the connector between markers.</td></tr>
+            <tr><td><code>--iv-stepper-fill</code></td><td><code>var(--iv-color-primary)</code></td><td>Colour of the part of the connector already walked.</td></tr>
+            <tr><td><code>--iv-stepper-track</code></td><td><code>2px</code></td><td>Thickness of the connector and of the progress bar.</td></tr>
+            <tr><td><code>--iv-stepper-gap</code></td><td><code>var(--iv-space-6)</code></td><td>Space between the index and the panels.</td></tr>
+            <tr><td><code>--iv-stepper-step-gap</code></td><td><code>var(--iv-space-5)</code></td><td>Space between steps in the index.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The component writes <code>--iv-stepper-progress</code> (0 to 1) on the root, which is what the optional <code>iv-stepper__progress</code> bar scales. Each step carries <code>data-iv-state</code> with <code>done</code>, <code>current</code>, <code>upcoming</code> or <code>error</code>: a done marker shows a check instead of its number, the current one takes the shared focus halo, and an error marker turns to the danger colour. Under reduced motion the panels appear without travelling.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={9}>
+      <ul>
+        <li>Steps with no heading. Each panel needs its own heading: it is the name of the step for anyone who cannot see the index.</li>
+        <li>Serving the panels hidden, or the controls visible. The first loses the form without a script; the second offers buttons that do nothing.</li>
+        <li>More than five or six steps. Past that, an index is a table of contents and the form wants splitting into pages.</li>
+        <li>Expecting the component to submit. It announces completion; sending the data stays yours.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

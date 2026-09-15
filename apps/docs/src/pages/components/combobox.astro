@@ -1,40 +1,53 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Combobox" description="iVOLT combobox: an accessible autocomplete built on a native input and datalist, promoted to the ARIA combobox with listbox pattern, with filtering, keyboard navigation, strict mode and cancelable events.">
   <article class="docs-prose">
     <h1>Combobox (autocomplete)</h1>
     <p>A text input with a filtered list of suggestions. The server sends a plain <code>&lt;input list&gt;</code> with a <code>&lt;datalist&gt;</code>, which already works in every browser without JavaScript. On <code>init</code> the component promotes it to the ARIA combobox with listbox pattern: consistent rendering, keyboard navigation, accent-insensitive filtering, an empty state and cancelable events. <code>destroy</code> restores the served HTML.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/combobox.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/combobox</code> or <code>auto.js</code>. Added in v0.2.</p>
-    <Fixture name="combobox/basic" minHeight="20rem" />
-    <h2>Strict selection with autoselect</h2>
-    <p>With <code>strict</code> the input only keeps values that exist in the list: free text is reverted on blur and on a second Escape. <code>autoselect</code> highlights the first match so Enter or Tab confirms it.</p>
-    <Fixture name="combobox/strict" minHeight="20rem" />
-    <h2>Options</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-        <tbody>
-          <tr><td><code>filter</code></td><td><code>data-iv-filter</code></td><td><code>contains</code></td><td><code>contains</code> or <code>starts</code>; case and accent insensitive.</td></tr>
-          <tr><td><code>minChars</code></td><td><code>data-iv-min-chars</code></td><td><code>0</code></td><td>Characters typed before the list opens while typing (Down arrow always opens).</td></tr>
-          <tr><td><code>strict</code></td><td><code>data-iv-strict</code></td><td><code>false</code></td><td>Revert text that matches no option when focus leaves.</td></tr>
-          <tr><td><code>autoselect</code></td><td><code>data-iv-autoselect</code></td><td><code>false</code></td><td>Highlight the first match automatically.</td></tr>
-          <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No matches</code></td><td>Text of the disabled option shown when nothing matches.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Methods and events</h2>
-    <p><code>open()</code>, <code>close()</code>, <code>select(valueOrOption)</code>, <code>clear()</code>, <code>destroy()</code>, <code>isOpen</code>, <code>value</code> (the confirmed value), <code>optionElements</code> (the listbox rows) and <code>input</code>. Events on the root element: <code>iv:open</code>/<code>iv:close</code> (cancelable) then <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>option</code>, <code>previousValue</code>) then <code>iv:changed</code> when a value is confirmed. The native input also receives synthetic <code>input</code> and <code>change</code> events, so forms and frameworks that listen to them keep working.</p>
-    <h2>Keyboard</h2>
-    <p>Down opens the list and moves the highlight (with wrap-around), Up moves back, Home and End jump, Enter confirms the highlighted option, Escape closes (a second Escape reverts in strict mode), Tab confirms the highlight when autoselect is on and always closes. Typing filters. Focus never leaves the input; the highlighted option is exposed through <code>aria-activedescendant</code>.</p>
-    <h2>Without JavaScript</h2>
-    <p>The native <code>&lt;datalist&gt;</code> provides suggestions. Rendering and keyboard behaviour then depend on the browser, but the field remains usable and the form submits the typed value.</p>
-    <h2>Common mistakes</h2>
-    <ul>
-      <li>Using a combobox for fewer than about six options: a native <code>&lt;select&gt;</code> is simpler.</li>
-      <li>Remote or asynchronous data: not supported in v0.2. Render the options on the server.</li>
-      <li>Forgetting the visible <code>&lt;label&gt;</code>; placeholders are not labels.</li>
-    </ul>
+    <Stage primary name="combobox/basic" title="Type, filter, choose" minHeight="20rem" />
+
+    <Section title="Strict selection with autoselect" num={1}>
+      <p>With <code>strict</code> the input only keeps values that exist in the list: free text is reverted on blur and on a second Escape. <code>autoselect</code> highlights the first match so Enter or Tab confirms it.</p>
+      <Stage name="combobox/strict" title="Strict selection with autoselect" minHeight="20rem" />
+    </Section>
+
+    <Section title="Options" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>filter</code></td><td><code>data-iv-filter</code></td><td><code>contains</code></td><td><code>contains</code> or <code>starts</code>; case and accent insensitive.</td></tr>
+            <tr><td><code>minChars</code></td><td><code>data-iv-min-chars</code></td><td><code>0</code></td><td>Characters typed before the list opens while typing (Down arrow always opens).</td></tr>
+            <tr><td><code>strict</code></td><td><code>data-iv-strict</code></td><td><code>false</code></td><td>Revert text that matches no option when focus leaves.</td></tr>
+            <tr><td><code>autoselect</code></td><td><code>data-iv-autoselect</code></td><td><code>false</code></td><td>Highlight the first match automatically.</td></tr>
+            <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>No matches</code></td><td>Text of the disabled option shown when nothing matches.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Methods and events" num={3}>
+      <p><code>open()</code>, <code>close()</code>, <code>select(valueOrOption)</code>, <code>clear()</code>, <code>destroy()</code>, <code>isOpen</code>, <code>value</code> (the confirmed value), <code>optionElements</code> (the listbox rows) and <code>input</code>. Events on the root element: <code>iv:open</code>/<code>iv:close</code> (cancelable) then <code>iv:opened</code>/<code>iv:closed</code>; <code>iv:change</code> (cancelable, <code>detail.value</code>, <code>option</code>, <code>previousValue</code>) then <code>iv:changed</code> when a value is confirmed. The native input also receives synthetic <code>input</code> and <code>change</code> events, so forms and frameworks that listen to them keep working.</p>
+    </Section>
+
+    <Section title="Keyboard" num={4}>
+      <p>Down opens the list and moves the highlight (with wrap-around), Up moves back, Home and End jump, Enter confirms the highlighted option, Escape closes (a second Escape reverts in strict mode), Tab confirms the highlight when autoselect is on and always closes. Typing filters. Focus never leaves the input; the highlighted option is exposed through <code>aria-activedescendant</code>.</p>
+    </Section>
+
+    <Section title="Without JavaScript" num={5}>
+      <p>The native <code>&lt;datalist&gt;</code> provides suggestions. Rendering and keyboard behaviour then depend on the browser, but the field remains usable and the form submits the typed value.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={6}>
+      <ul>
+        <li>Using a combobox for fewer than about six options: a native <code>&lt;select&gt;</code> is simpler.</li>
+        <li>Remote or asynchronous data: not supported in v0.2. Render the options on the server.</li>
+        <li>Forgetting the visible <code>&lt;label&gt;</code>; placeholders are not labels.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

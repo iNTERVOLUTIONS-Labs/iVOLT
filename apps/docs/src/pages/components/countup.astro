@@ -1,57 +1,72 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Countup" description="iVOLT countup: a served figure that counts up once when it reaches the viewport, keeping its prefix, suffix, decimals and grouping, and staying exactly as served without JavaScript or under reduced motion.">
   <article class="docs-prose">
     <h1>Countup</h1>
     <p>A number that rises to itself. The figure in the markup is the final value — prefix, suffix, decimals and all — and the component counts from <code>from</code> up to it once the element reaches the viewport, then restores the served text character for character. Nothing is computed, nothing is invented: the only thing JavaScript adds is the climb.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>.iv-count</code> in <code>css/text.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/countup</code> or <code>auto.js</code>. Added in v0.7.</p>
-    <h2>Real figures</h2>
+
     <p>The fixture below counts the measurements of the package itself. Scroll it into view and the four cards climb once; reload with JavaScript off and the same four numbers are simply there.</p>
-    <Fixture name="countup/basic" title="Measured figures" />
-    <h2>Formats, prefixes and locales</h2>
-    <p>The format comes from the served text and from the language of the element. A figure written <code>12.480,50 €</code> inside <code>lang="es"</code> counts in Spanish grouping and keeps its suffix; <code>€ 1,240.50</code> in English keeps its prefix and its comma. <code>decimals</code> is deduced from what was served, and a non-breaking space keeps a currency sign from falling to the next line.</p>
-    <Fixture name="countup/formats" title="Formats and locales" />
-    <h2>Options</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
-        <tbody>
-          <tr><td><code>from</code></td><td><code>data-iv-from</code></td><td><code>0</code></td><td>Where the climb starts. A figure that only moves in its last digits reads faster from close by.</td></tr>
-          <tr><td><code>duration</code></td><td><code>data-iv-duration</code></td><td><code>900</code></td><td>Milliseconds of the climb, eased out so it settles rather than stops.</td></tr>
-          <tr><td><code>decimals</code></td><td><code>data-iv-decimals</code></td><td><code>-1</code> (auto)</td><td>Decimal places held during the climb. <code>-1</code> is the sentinel for “take them from the served figure”, because the attribute grammar has no null.</td></tr>
-          <tr><td><code>grouping</code></td><td><code>data-iv-grouping</code></td><td><code>true</code></td><td>Thousands separators while counting. Off, the digits stop shifting sideways.</td></tr>
-          <tr><td><code>once</code></td><td><code>data-iv-once</code></td><td><code>true</code></td><td>Count the first time only. <code>false</code> counts again on every entry.</td></tr>
-          <tr><td><code>autostart</code></td><td><code>data-iv-autostart</code></td><td><code>false</code></td><td>Start at <code>init</code> instead of waiting for the viewport.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Methods and events</h2>
-    <p><code>start()</code>, <code>reset()</code>, <code>destroy()</code>; read <code>value</code> and <code>done</code>. <code>value</code> is the number currently shown, and <code>done</code> means “there is nothing left to count” — which is also true immediately under reduced motion or without an <code>IntersectionObserver</code>. <code>destroy()</code> puts back the nodes that were served, not just their text, so the DOM returns identical.</p>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Event</th><th>When</th><th><code>detail</code></th></tr></thead>
-        <tbody>
-          <tr><td><code>iv:count</code></td><td>the climb begins; cancelable</td><td><code>from</code>, <code>to</code></td></tr>
-          <tr><td><code>iv:counted</code></td><td>the served figure is back on screen</td><td><code>from</code>, <code>to</code></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Where nothing counts, nothing is announced: neither event fires under reduced motion or without an observer.</p>
-    <h2>Keyboard and assistive technology</h2>
-    <p>A figure is text, not a control: there is nothing to focus and nothing to operate. It is deliberately not a live region — a number ticking into a screen reader forty times a second would be unusable — so assistive technology reads the final value, which is the one that was served and the one that is there again a second later. Give the figure a label in its own markup (<code>.iv-stat__label</code> does it inside a <a href="/components/stat">stat</a>) and never let the number stand alone as a claim.</p>
-    <h2>Without JavaScript</h2>
-    <p>The page is already correct. The value is in the HTML, the styling is CSS, and <code>.iv-count</code> only adds <code>font-variant-numeric: tabular-nums</code> so the digits sit in fixed columns and the figure does not jitter while it climbs. Under <code>prefers-reduced-motion: reduce</code>, or where <code>IntersectionObserver</code> is missing, the component reads the figure and stops there.</p>
-    <h2>Tokens and locals</h2>
-    <p>Countup has no locals of its own: it borrows the typography of whatever holds it. Inside a <a href="/components/stat">stat</a> that is <code>--iv-stat-size</code>, <code>--iv-tracking-tight</code> and the tabular figures of <code>.iv-count</code>; inside a sentence it is the surrounding text. The one rule the class enforces is the tabular numbers, and it is there for a visual reason, not a decorative one.</p>
-    <h2>Common mistakes</h2>
-    <ul>
-      <li>Serving <code>0</code> and expecting the script to fill in the real number. Without JavaScript the page would then be a lie; serve the answer.</li>
-      <li>Counting a figure nobody measured. A number that climbs looks authoritative — say where it comes from, or mark it as invented.</li>
-      <li>A long <code>duration</code> on a figure above the fold: the reader arrives before the number does.</li>
-      <li>Grouping on while counting a four-digit number: the separator appears and disappears and the line jumps.</li>
-      <li>Wrapping the figure in a live region to “make it accessible”. It makes it unreadable.</li>
-    </ul>
+    <Stage primary name="countup/basic" title="Measured figures" />
+
+    <Section title="Formats, prefixes and locales" num={1}>
+      <p>The format comes from the served text and from the language of the element. A figure written <code>12.480,50 €</code> inside <code>lang="es"</code> counts in Spanish grouping and keeps its suffix; <code>€ 1,240.50</code> in English keeps its prefix and its comma. <code>decimals</code> is deduced from what was served, and a non-breaking space keeps a currency sign from falling to the next line.</p>
+      <Stage name="countup/formats" title="Formats and locales" />
+    </Section>
+
+    <Section title="Options" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>from</code></td><td><code>data-iv-from</code></td><td><code>0</code></td><td>Where the climb starts. A figure that only moves in its last digits reads faster from close by.</td></tr>
+            <tr><td><code>duration</code></td><td><code>data-iv-duration</code></td><td><code>900</code></td><td>Milliseconds of the climb, eased out so it settles rather than stops.</td></tr>
+            <tr><td><code>decimals</code></td><td><code>data-iv-decimals</code></td><td><code>-1</code> (auto)</td><td>Decimal places held during the climb. <code>-1</code> is the sentinel for “take them from the served figure”, because the attribute grammar has no null.</td></tr>
+            <tr><td><code>grouping</code></td><td><code>data-iv-grouping</code></td><td><code>true</code></td><td>Thousands separators while counting. Off, the digits stop shifting sideways.</td></tr>
+            <tr><td><code>once</code></td><td><code>data-iv-once</code></td><td><code>true</code></td><td>Count the first time only. <code>false</code> counts again on every entry.</td></tr>
+            <tr><td><code>autostart</code></td><td><code>data-iv-autostart</code></td><td><code>false</code></td><td>Start at <code>init</code> instead of waiting for the viewport.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Methods and events" num={3}>
+      <p><code>start()</code>, <code>reset()</code>, <code>destroy()</code>; read <code>value</code> and <code>done</code>. <code>value</code> is the number currently shown, and <code>done</code> means “there is nothing left to count” — which is also true immediately under reduced motion or without an <code>IntersectionObserver</code>. <code>destroy()</code> puts back the nodes that were served, not just their text, so the DOM returns identical.</p>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Event</th><th>When</th><th><code>detail</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>iv:count</code></td><td>the climb begins; cancelable</td><td><code>from</code>, <code>to</code></td></tr>
+            <tr><td><code>iv:counted</code></td><td>the served figure is back on screen</td><td><code>from</code>, <code>to</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Where nothing counts, nothing is announced: neither event fires under reduced motion or without an observer.</p>
+    </Section>
+
+    <Section title="Keyboard and assistive technology" num={4}>
+      <p>A figure is text, not a control: there is nothing to focus and nothing to operate. It is deliberately not a live region — a number ticking into a screen reader forty times a second would be unusable — so assistive technology reads the final value, which is the one that was served and the one that is there again a second later. Give the figure a label in its own markup (<code>.iv-stat__label</code> does it inside a <a href="/components/stat">stat</a>) and never let the number stand alone as a claim.</p>
+    </Section>
+
+    <Section title="Without JavaScript" num={5}>
+      <p>The page is already correct. The value is in the HTML, the styling is CSS, and <code>.iv-count</code> only adds <code>font-variant-numeric: tabular-nums</code> so the digits sit in fixed columns and the figure does not jitter while it climbs. Under <code>prefers-reduced-motion: reduce</code>, or where <code>IntersectionObserver</code> is missing, the component reads the figure and stops there.</p>
+    </Section>
+
+    <Section title="Tokens and locals" num={6}>
+      <p>Countup has no locals of its own: it borrows the typography of whatever holds it. Inside a <a href="/components/stat">stat</a> that is <code>--iv-stat-size</code>, <code>--iv-tracking-tight</code> and the tabular figures of <code>.iv-count</code>; inside a sentence it is the surrounding text. The one rule the class enforces is the tabular numbers, and it is there for a visual reason, not a decorative one.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={7}>
+      <ul>
+        <li>Serving <code>0</code> and expecting the script to fill in the real number. Without JavaScript the page would then be a lie; serve the answer.</li>
+        <li>Counting a figure nobody measured. A number that climbs looks authoritative — say where it comes from, or mark it as invented.</li>
+        <li>A long <code>duration</code> on a figure above the fold: the reader arrives before the number does.</li>
+        <li>Grouping on while counting a four-digit number: the separator appears and disappears and the line jumps.</li>
+        <li>Wrapping the figure in a live region to “make it accessible”. It makes it unreadable.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

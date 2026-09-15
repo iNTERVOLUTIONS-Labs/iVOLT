@@ -1,16 +1,21 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Miga de pan" description="Miga de pan de iVOLT: una lista ordenada de enlaces dentro de un nav etiquetado, con el separador dibujado por CSS y aria-current en el último elemento. Solo CSS.">
   <article class="docs-prose">
     <h1>Miga de pan (breadcrumb)</h1>
     <p>Indica dónde está la página actual dentro de la jerarquía del sitio. El separador se dibuja con CSS, así que el lector de pantalla solo lee los enlaces.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/breadcrumb.css</code> (dentro de <code>ivolt.css</code>).</p>
-    <Fixture name="breadcrumb/basic" />
-    <h2>Marcado</h2>
-    <p><code>nav.iv-breadcrumb[aria-label="Breadcrumb"]</code> → <code>ol.iv-breadcrumb__list</code> → <code>li.iv-breadcrumb__item</code>. El último elemento lleva <code>aria-current="page"</code> y no es un enlace.</p>
-    <h2>Errores frecuentes</h2>
-    <ul><li>Escribir los caracteres separadores en el HTML (se leen en voz alta).</li><li>Enlazar la página actual a sí misma.</li></ul>
+    <Stage primary name="breadcrumb/basic" title="Un rastro con la página actual" />
+
+    <Section title="Marcado" num={1}>
+      <p><code>nav.iv-breadcrumb[aria-label="Breadcrumb"]</code> → <code>ol.iv-breadcrumb__list</code> → <code>li.iv-breadcrumb__item</code>. El último elemento lleva <code>aria-current="page"</code> y no es un enlace.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={2}>
+      <ul><li>Escribir los caracteres separadores en el HTML (se leen en voz alta).</li><li>Enlazar la página actual a sí misma.</li></ul>
+    </Section>
   </article>
 </Base>

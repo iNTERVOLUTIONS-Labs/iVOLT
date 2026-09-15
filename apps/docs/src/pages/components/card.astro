@@ -1,36 +1,46 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Card" description="iVOLT card: media, body, title and footer elements, flat modifier, and grids of cards. CSS only.">
   <article class="docs-prose">
     <h1>Card</h1>
     <p>A surface that groups related content. Use <code>&lt;article&gt;</code> when the card is self-contained content, a <code>&lt;div&gt;</code> otherwise. No JavaScript.</p>
     <p class="docs-meta"><strong>CSS:</strong> included in <code>ivolt.css</code>; standalone <code>css/components/card.css</code>.</p>
-    <Fixture name="card/basic" />
-    <h2>Media, flat and footer actions</h2>
-    <Fixture name="card/media" />
-    <h2>With photographs</h2>
-    <p>Real images, proximity-lit edges and a lift on hover.</p>
-    <Fixture name="card/photo" />
-    <h2>Anatomy</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Class</th><th>Role</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-card</code></td><td>Surface with border, radius and shadow; flex column.</td></tr>
-          <tr><td><code>iv-card__media</code></td><td>16:9 area; an <code>&lt;img&gt;</code> inside is cropped with <code>object-fit: cover</code>.</td></tr>
-          <tr><td><code>iv-card__body</code></td><td>Padded content that grows to fill the card.</td></tr>
-          <tr><td><code>iv-card__title</code></td><td>Heading inside the body (pick the right level for the page).</td></tr>
-          <tr><td><code>iv-card__footer</code></td><td>Actions aligned to the end.</td></tr>
-          <tr><td><code>iv-card--flat</code></td><td>No shadow.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Elevation</h2>
-    <p>A card rests on <code>--iv-shadow-ambient</code>, the shared resting elevation added in v0.6: one token that already carries the edge ring a dark theme needs and the soft drop a light one does. Under a pointer it steps up to <code>--iv-shadow-2</code>; the lift is inside <code>@media (hover: hover)</code>, so a touch screen never gets a stuck hover state, and it is a shadow change only, with no travel to jog the layout.</p>
-    <p>Two public locals retune it in one line: <code>--iv-card-shadow</code> for the resting elevation and <code>--iv-card-shadow-hover</code> for the one under the pointer. Set either to <code>none</code> to cancel it — that is exactly what <code>iv-card--flat</code> does. Together with <code>--iv-card-bg</code>, <code>--iv-card-radius</code> and <code>--iv-card-padding</code>, that is the whole surface of the component.</p>
-    <h2>Common mistakes</h2>
-    <ul><li>Making the whole card a link with nested interactive controls. Link the title instead.</li><li>Skipping heading levels inside cards.</li></ul>
+    <Stage primary name="card/basic" title="A card with body and footer" />
+
+    <Section title="Media, flat and footer actions" num={1}>
+      <Stage name="card/media" title="Media, flat and footer actions" />
+    </Section>
+
+    <Section title="With photographs" num={2} lead="Real images, proximity-lit edges and a lift on hover.">
+      <Stage name="card/photo" title="Cards with photographs" />
+    </Section>
+
+    <Section title="Anatomy" num={3}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Class</th><th>Role</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-card</code></td><td>Surface with border, radius and shadow; flex column.</td></tr>
+            <tr><td><code>iv-card__media</code></td><td>16:9 area; an <code>&lt;img&gt;</code> inside is cropped with <code>object-fit: cover</code>.</td></tr>
+            <tr><td><code>iv-card__body</code></td><td>Padded content that grows to fill the card.</td></tr>
+            <tr><td><code>iv-card__title</code></td><td>Heading inside the body (pick the right level for the page).</td></tr>
+            <tr><td><code>iv-card__footer</code></td><td>Actions aligned to the end.</td></tr>
+            <tr><td><code>iv-card--flat</code></td><td>No shadow.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Elevation" num={4}>
+      <p>A card rests on <code>--iv-shadow-ambient</code>, the shared resting elevation added in v0.6: one token that already carries the edge ring a dark theme needs and the soft drop a light one does. Under a pointer it steps up to <code>--iv-shadow-2</code>; the lift is inside <code>@media (hover: hover)</code>, so a touch screen never gets a stuck hover state, and it is a shadow change only, with no travel to jog the layout.</p>
+      <p>Two public locals retune it in one line: <code>--iv-card-shadow</code> for the resting elevation and <code>--iv-card-shadow-hover</code> for the one under the pointer. Set either to <code>none</code> to cancel it — that is exactly what <code>iv-card--flat</code> does. Together with <code>--iv-card-bg</code>, <code>--iv-card-radius</code> and <code>--iv-card-padding</code>, that is the whole surface of the component.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul><li>Making the whole card a link with nested interactive controls. Link the title instead.</li><li>Skipping heading levels inside cards.</li></ul>
+    </Section>
   </article>
 </Base>

@@ -1,55 +1,67 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Cifra" description="Cifra de iVOLT: un número con su etiqueta, una variación con tono y flecha, una nota al pie y grupos separados por filetes. Solo CSS.">
   <article class="docs-prose">
     <h1>Cifra (stat)</h1>
     <p>Un número que merece leerse: una etiqueta encima, la cifra en numerales tabulares, una variación opcional con su dirección y una nota debajo. Varias forman un <code>iv-stat-group</code>, una rejilla separada por filetes en vez de por cajas. Las cifras son estáticas; el contador animado es otro componente y llega en una versión posterior.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/stat.css</code> (en <code>ivolt.css</code>). Añadido en la v0.6.</p>
-    <Fixture name="stat/basic" title="Una fila de cifras" />
-    <h2>Tarjetas, grande y destello</h2>
-    <p><code>iv-stat--card</code> pone una cifra sobre su propia superficie con la elevación ambiental común, <code>iv-stat--lg</code> sube el valor un escalón de la escala tipográfica y <code>iv-stat--glow</code> lo pinta con el degradado de marca. Los tres se combinan.</p>
-    <Fixture name="stat/cards" title="Tarjetas, destello y una cifra grande" />
-    <h2>Anatomía</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Clase</th><th>Función</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-stat</code></td><td>El bloque: etiqueta, valor, variación y nota en columna.</td></tr>
-          <tr><td><code>iv-stat__label</code></td><td>Qué se mide, en versalitas con <code>--iv-tracking-caps</code>.</td></tr>
-          <tr><td><code>iv-stat__value</code></td><td>La cifra, a <code>--iv-text-3xl</code> con numerales tabulares y <code>--iv-tracking-tight</code>.</td></tr>
-          <tr><td><code>iv-stat__delta</code></td><td>La variación, con una flecha dibujada por máscara y un tono en <code>data-iv-tone</code>.</td></tr>
-          <tr><td><code>iv-stat__hint</code></td><td>La nota al pie: periodo, presupuesto, fuente.</td></tr>
-          <tr><td><code>iv-stat-group</code></td><td>Rejilla de columnas <code>minmax(10rem, 1fr)</code> con un filete entre cifras desde <code>md</code>.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Tonos, y decir la verdad</h2>
-    <p><code>data-iv-tone</code> en la variación admite <code>up</code> (éxito), <code>down</code> (peligro) y <code>flat</code> (atenuado); la flecha gira con él. El tono es sentimiento, no aritmética: que la hoja de estilos crezca 1,17 KiB no es bueno ni malo, así que se queda plano, mientras que una suite que pasa se marca hacia arriba. Lo que diga el color tiene que decirlo también el texto: el signo, la dirección, o una palabra invisible detrás. Las cifras de las fixtures de arriba son las que mide el gate de este paquete, presupuestos incluidos, y el cero de versiones publicadas es un cero real.</p>
-    <h2>Tokens y locales</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
-        <tbody>
-          <tr><td><code>--iv-stat-size</code></td><td><code>var(--iv-text-3xl)</code></td><td>Tamaño del valor; <code>--lg</code> lo sube a <code>4xl</code>.</td></tr>
-          <tr><td><code>--iv-stat-gap</code></td><td><code>var(--iv-space-1)</code></td><td>Separación entre etiqueta, valor, variación y nota.</td></tr>
-          <tr><td><code>--iv-stat-align</code></td><td><code>start</code></td><td>Alineación del bloque; <code>center</code> para una fila centrada.</td></tr>
-          <tr><td><code>--iv-stat-group-min</code></td><td><code>10rem</code></td><td>Lo más estrecha que puede quedar una columna antes de que la rejilla salte de línea.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Una cifra en tarjeta usa <code>--iv-shadow-ambient</code>, la elevación en reposo que comparte con tarjetas, tablas y alertas desde la v0.6.</p>
-    <h2>Accesibilidad y teclado</h2>
-    <p>Aquí no hay nada enfocable, así que no hay comportamiento de teclado que aprender: es texto. El orden en el marcado es etiqueta, valor, variación y nota, que es también el orden en que se lee. La flecha es decoración pintada por CSS, así que la dirección tiene que vivir en el texto: <code>+8,2 %</code>, <code>down</code> o una palabra en <code>iv-u-sr-only</code>. Si una cifra necesita unidades, escríbelas; un lector de pantalla no ve la cabecera de columna que tu ojo suple. Cuando varias cifras son una tabla de números y no una fila de titulares, usa una <a href="/es/components/table">tabla</a>.</p>
-    <h2>Sin JavaScript</h2>
-    <p>No hay JavaScript. Los valores se sirven como texto y se quedan como se sirvieron.</p>
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li>Una cifra sin etiqueta o sin periodo. «12,4 k» a secas no informa de nada.</li>
-      <li>El color como único indicio de la dirección.</li>
-      <li>Números inventados en una demostración que no dice que lo son.</li>
-      <li>Un grupo de ocho cifras: una fila de titulares deja de leerse a partir de cuatro o cinco.</li>
-    </ul>
+    <Stage primary name="stat/basic" title="Una fila de cifras" />
+    <Section title="Tarjetas, grande y destello" num={1} lead={`iv-stat--card pone una cifra sobre su propia superficie con la elevación ambiental común, iv-stat--lg sube el valor un escalón de la escala tipográfica y iv-stat--glow lo pinta con el degradado de marca. Los tres se combinan.`}>
+      <Stage name="stat/cards" title="Tarjetas, destello y una cifra grande" />
+    </Section>
+
+    <Section title="Anatomía" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Clase</th><th>Función</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-stat</code></td><td>El bloque: etiqueta, valor, variación y nota en columna.</td></tr>
+            <tr><td><code>iv-stat__label</code></td><td>Qué se mide, en versalitas con <code>--iv-tracking-caps</code>.</td></tr>
+            <tr><td><code>iv-stat__value</code></td><td>La cifra, a <code>--iv-text-3xl</code> con numerales tabulares y <code>--iv-tracking-tight</code>.</td></tr>
+            <tr><td><code>iv-stat__delta</code></td><td>La variación, con una flecha dibujada por máscara y un tono en <code>data-iv-tone</code>.</td></tr>
+            <tr><td><code>iv-stat__hint</code></td><td>La nota al pie: periodo, presupuesto, fuente.</td></tr>
+            <tr><td><code>iv-stat-group</code></td><td>Rejilla de columnas <code>minmax(10rem, 1fr)</code> con un filete entre cifras desde <code>md</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Tonos, y decir la verdad" num={3}>
+      <p><code>data-iv-tone</code> en la variación admite <code>up</code> (éxito), <code>down</code> (peligro) y <code>flat</code> (atenuado); la flecha gira con él. El tono es sentimiento, no aritmética: que la hoja de estilos crezca 1,17 KiB no es bueno ni malo, así que se queda plano, mientras que una suite que pasa se marca hacia arriba. Lo que diga el color tiene que decirlo también el texto: el signo, la dirección, o una palabra invisible detrás. Las cifras de las fixtures de arriba son las que mide el gate de este paquete, presupuestos incluidos, y el cero de versiones publicadas es un cero real.</p>
+    </Section>
+
+    <Section title="Tokens y locales" num={4}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Local</th><th>Por defecto</th><th>Qué mueve</th></tr></thead>
+          <tbody>
+            <tr><td><code>--iv-stat-size</code></td><td><code>var(--iv-text-3xl)</code></td><td>Tamaño del valor; <code>--lg</code> lo sube a <code>4xl</code>.</td></tr>
+            <tr><td><code>--iv-stat-gap</code></td><td><code>var(--iv-space-1)</code></td><td>Separación entre etiqueta, valor, variación y nota.</td></tr>
+            <tr><td><code>--iv-stat-align</code></td><td><code>start</code></td><td>Alineación del bloque; <code>center</code> para una fila centrada.</td></tr>
+            <tr><td><code>--iv-stat-group-min</code></td><td><code>10rem</code></td><td>Lo más estrecha que puede quedar una columna antes de que la rejilla salte de línea.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Una cifra en tarjeta usa <code>--iv-shadow-ambient</code>, la elevación en reposo que comparte con tarjetas, tablas y alertas desde la v0.6.</p>
+    </Section>
+
+    <Section title="Accesibilidad y teclado" num={5}>
+      <p>Aquí no hay nada enfocable, así que no hay comportamiento de teclado que aprender: es texto. El orden en el marcado es etiqueta, valor, variación y nota, que es también el orden en que se lee. La flecha es decoración pintada por CSS, así que la dirección tiene que vivir en el texto: <code>+8,2 %</code>, <code>down</code> o una palabra en <code>iv-u-sr-only</code>. Si una cifra necesita unidades, escríbelas; un lector de pantalla no ve la cabecera de columna que tu ojo suple. Cuando varias cifras son una tabla de números y no una fila de titulares, usa una <a href="/es/components/table">tabla</a>.</p>
+    </Section>
+
+    <Section title="Sin JavaScript" num={6} lead={`No hay JavaScript. Los valores se sirven como texto y se quedan como se sirvieron.`}>
+    </Section>
+
+    <Section title="Errores frecuentes" num={7}>
+      <ul>
+        <li>Una cifra sin etiqueta o sin periodo. «12,4 k» a secas no informa de nada.</li>
+        <li>El color como único indicio de la dirección.</li>
+        <li>Números inventados en una demostración que no dice que lo son.</li>
+        <li>Un grupo de ocho cifras: una fila de titulares deja de leerse a partir de cuatro o cinco.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

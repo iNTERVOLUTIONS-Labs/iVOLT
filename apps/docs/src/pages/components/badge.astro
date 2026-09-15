@@ -1,32 +1,38 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Badge" description="iVOLT badge: small status labels with subtle and solid colour variants. CSS only.">
   <article class="docs-prose">
     <h1>Badge</h1>
     <p>A compact label for status or counts. Badges are not interactive; if the label matters to assistive technology, keep it as real text, not colour alone.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/badge.css</code> (in <code>ivolt.css</code>).</p>
-    <Fixture name="badge/variants" />
-    <h2>Classes</h2>
-    <p><code>iv-badge</code> plus <code>--primary --success --warning --danger --info</code> (subtle background, coloured text) and <code>--solid</code> (filled). Without a variant the badge is neutral.</p>
-    <h2>Common mistakes</h2>
-    <ul><li>Using a badge as a button; use <code>iv-button--sm</code> instead.</li><li>Conveying state by colour only: include a word such as “Paid”.</li></ul>
-  
-    <h2>Class index</h2>
-    <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Class</th><th>What it does</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-badge--primary</code></td><td>Primary tone.</td></tr>
-          <tr><td><code>iv-badge--info</code></td><td>Informative tone.</td></tr>
-          <tr><td><code>iv-badge--success</code></td><td>Success tone.</td></tr>
-          <tr><td><code>iv-badge--warning</code></td><td>Warning tone.</td></tr>
-          <tr><td><code>iv-badge--danger</code></td><td>Danger tone.</td></tr>
-          <tr><td><code>iv-badge--solid</code></td><td>Filled variant: the tone becomes the background instead of the tint.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Stage primary name="badge/variants" title="Tones, subtle and solid" />
+
+    <Section title="Classes" num={1}>
+      <p><code>iv-badge</code> plus <code>--primary --success --warning --danger --info</code> (subtle background, coloured text) and <code>--solid</code> (filled). Without a variant the badge is neutral.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={2}>
+      <ul><li>Using a badge as a button; use <code>iv-button--sm</code> instead.</li><li>Conveying state by colour only: include a word such as “Paid”.</li></ul>
+    </Section>
+
+    <Section title="Class index" num={3}>
+      <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-badge--primary</code></td><td>Primary tone.</td></tr>
+            <tr><td><code>iv-badge--info</code></td><td>Informative tone.</td></tr>
+            <tr><td><code>iv-badge--success</code></td><td>Success tone.</td></tr>
+            <tr><td><code>iv-badge--warning</code></td><td>Warning tone.</td></tr>
+            <tr><td><code>iv-badge--danger</code></td><td>Danger tone.</td></tr>
+            <tr><td><code>iv-badge--solid</code></td><td>Filled variant: the tone becomes the background instead of the tint.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

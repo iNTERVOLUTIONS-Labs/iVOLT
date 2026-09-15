@@ -1,5 +1,8 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Stage from "../../components/Stage.astro";
+import Section from "../../components/Section.astro";
+import Code from "../../components/Code.astro";
 import Fixture from "../../components/Fixture.astro";
 ---
 <Base title="Toast" description="iVOLT toast: brief notifications created through an API into a live region, with queueing, pause on hover and focus, keyboard dismissal and no message loss for critical variants.">
@@ -7,7 +10,11 @@ import Fixture from "../../components/Fixture.astro";
     <h1>Toast</h1>
     <p>Short notifications created from JavaScript into a region that is already in the page. Messages are inserted as text, never HTML. Informational toasts auto-dismiss; <code>danger</code> ones never do and use <code>role="alert"</code>. When more than <code>max</code> are visible, the rest wait in a queue instead of being dropped.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> or <code>auto.js</code>. Declarative triggers added in v0.6.</p>
-    <Fixture name="toast/basic" minHeight="6rem" />
+    <Fixture name="toast/basic" title="The notice region" minHeight="6rem" />
+    <div class="docs-note">
+      <span class="docs-note__title">Why this one is not on a stage</span>
+      <p>Every other example on this site runs in a page of its own. This region does not: the buttons below have to call <code>show()</code> on the very region above them, and a region inside a frame could not be reached from this page. What you see is the fixture itself, running here.</p>
+    </div>
     <p>Try it: the buttons below call <code>show()</code> on the region above (toasts appear at the bottom end of the viewport).</p>
     <div class="iv-cluster" id="toast-demo">
       <button class="iv-button iv-button--secondary" type="button" data-toast-variant="info">Info toast</button>
@@ -24,49 +31,55 @@ import Fixture from "../../components/Fixture.astro";
         Toast.getOrCreate(region).show({ message: messages[variant], variant, title: variant === "danger" ? "Error" : undefined });
       }));
     </script>
-    <h2>Declarative trigger</h2>
-    <p>A served button can show a toast without a line of JavaScript: give it <code>data-iv-toast</code> with the <code>id</code> of the region and the text in <code>data-iv-message</code>. The region picks the click up through one delegated listener and calls <code>show()</code> with what the trigger carries — <code>data-iv-title</code>, <code>data-iv-variant</code>, <code>data-iv-timeout</code> and <code>data-iv-dismissible</code>. The message is read as text, never as HTML; an unknown variant falls back to <code>info</code> and a timeout that is not a number falls back to the region's. <code>showFromTrigger(trigger)</code> does the same thing from your own code.</p>
-    <Fixture name="toast/declarative" title="Buttons that show a toast" minHeight="8rem" />
-    <p>This is sugar over <code>show()</code>, not a second way of working: the same queue, the same pause on hover and focus, the same refusal to auto-dismiss a <code>danger</code> message. Without JavaScript these buttons do nothing at all, which is why the fixture labels each one a demo — a button that promises to save something and does not is worse than no button.</p>
-    <h2>API</h2>
-<pre><code>import &#123; Toast &#125; from "@intervolutions/ivolt/toast";
+    <Section title="Declarative trigger" num={1}>
+      <p>A served button can show a toast without a line of JavaScript: give it <code>data-iv-toast</code> with the <code>id</code> of the region and the text in <code>data-iv-message</code>. The region picks the click up through one delegated listener and calls <code>show()</code> with what the trigger carries — <code>data-iv-title</code>, <code>data-iv-variant</code>, <code>data-iv-timeout</code> and <code>data-iv-dismissible</code>. The message is read as text, never as HTML; an unknown variant falls back to <code>info</code> and a timeout that is not a number falls back to the region's. <code>showFromTrigger(trigger)</code> does the same thing from your own code.</p>
+      <Stage primary name="toast/declarative" title="Buttons that show a toast" minHeight="8rem" />
+      <p>This is sugar over <code>show()</code>, not a second way of working: the same queue, the same pause on hover and focus, the same refusal to auto-dismiss a <code>danger</code> message. Without JavaScript these buttons do nothing at all, which is why the fixture labels each one a demo — a button that promises to save something and does not is worse than no button.</p>
+    </Section>
+
+    <Section title="API" num={2}>
+      <Code label="javascript" panels={[{ key: "src", label: "JAVASCRIPT", code: `import { Toast } from "@intervolutions/ivolt/toast";
 const region = Toast.get(document.querySelector(".iv-toast-region"));
-const item = region.show(&#123; message: "Saved", variant: "success" &#125;);
+const item = region.show({ message: "Saved", variant: "success" });
 item.dismiss();
-region.clear();</code></pre>
-    <div class="docs-scroller">
-      <table><thead><tr><th>Option</th><th>Where</th><th>Default</th></tr></thead><tbody>
-        <tr><td><code>placement</code></td><td>region, <code>data-iv-placement</code></td><td><code>bottom-end</code></td></tr>
-        <tr><td><code>max</code></td><td>region, <code>data-iv-max</code></td><td><code>3</code></td></tr>
-        <tr><td><code>variant</code></td><td>item</td><td><code>info</code> (<code>success warning danger</code>)</td></tr>
-        <tr><td><code>timeout</code></td><td>item, ms</td><td><code>6000</code>; <code>0</code> never; forced to <code>0</code> for danger</td></tr>
-        <tr><td><code>dismissible</code></td><td>item</td><td><code>true</code></td></tr>
-      </tbody></table>
-    </div>
-    <h2>Keyboard and timing</h2>
-    <p>Hovering or focusing a toast pauses its timer. Escape on a focused toast dismisses it. Each item emits <code>iv:open/opened/close/closed</code> with <code>reason</code> <code>timeout</code>, <code>trigger</code>, <code>escape</code> or <code>api</code>.</p>
-    <h2>Without JavaScript</h2>
-    <p>Not applicable: toasts only exist when scripts create them. Render important outcomes inline as an alert as well.</p>
-  
-    <h2>Class index</h2>
-    <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
-    <div class="docs-scroller docs-class-index">
-      <table>
-        <thead><tr><th>Class</th><th>What it does</th></tr></thead>
-        <tbody>
-          <tr><td><code>iv-toast--info</code></td><td>Informative tone (the default).</td></tr>
-          <tr><td><code>iv-toast--warning</code></td><td>Warning tone.</td></tr>
-          <tr><td><code>iv-toast--danger</code></td><td>Danger tone; it never closes on its own.</td></tr>
-          <tr><td><code>iv-toast__title</code></td><td>Optional title line of the notice.</td></tr>
-          <tr><td><code>iv-toast__message</code></td><td>Body of the notice, always plain text.</td></tr>
-          <tr><td><code>iv-toast__body</code></td><td>Wrapper of title and message.</td></tr>
-          <tr><td><code>iv-toast__dismiss</code></td><td>Close button of the notice.</td></tr>
-          <tr><td><code>iv-toast-region--top-start</code></td><td>Region pinned to the top start corner.</td></tr>
-          <tr><td><code>iv-toast-region--top-end</code></td><td>Top end corner.</td></tr>
-          <tr><td><code>iv-toast-region--bottom-start</code></td><td>Bottom start corner.</td></tr>
-          <tr><td><code>iv-toast-region--bottom-end</code></td><td>Bottom end corner (the default).</td></tr>
-        </tbody>
-      </table>
-    </div>
+region.clear();` }]} />
+      <div class="docs-scroller">
+        <table><thead><tr><th>Option</th><th>Where</th><th>Default</th></tr></thead><tbody>
+          <tr><td><code>placement</code></td><td>region, <code>data-iv-placement</code></td><td><code>bottom-end</code></td></tr>
+          <tr><td><code>max</code></td><td>region, <code>data-iv-max</code></td><td><code>3</code></td></tr>
+          <tr><td><code>variant</code></td><td>item</td><td><code>info</code> (<code>success warning danger</code>)</td></tr>
+          <tr><td><code>timeout</code></td><td>item, ms</td><td><code>6000</code>; <code>0</code> never; forced to <code>0</code> for danger</td></tr>
+          <tr><td><code>dismissible</code></td><td>item</td><td><code>true</code></td></tr>
+        </tbody></table>
+      </div>
+    </Section>
+
+    <Section title="Keyboard and timing" num={3} lead={`Hovering or focusing a toast pauses its timer. Escape on a focused toast dismisses it. Each item emits iv:open/opened/close/closed with reason timeout, trigger, escape or api.`}>
+    </Section>
+
+    <Section title="Without JavaScript" num={4} lead={`Not applicable: toasts only exist when scripts create them. Render important outcomes inline as an alert as well.`}>
+    </Section>
+
+    <Section title="Class index" num={5}>
+      <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-toast--info</code></td><td>Informative tone (the default).</td></tr>
+            <tr><td><code>iv-toast--warning</code></td><td>Warning tone.</td></tr>
+            <tr><td><code>iv-toast--danger</code></td><td>Danger tone; it never closes on its own.</td></tr>
+            <tr><td><code>iv-toast__title</code></td><td>Optional title line of the notice.</td></tr>
+            <tr><td><code>iv-toast__message</code></td><td>Body of the notice, always plain text.</td></tr>
+            <tr><td><code>iv-toast__body</code></td><td>Wrapper of title and message.</td></tr>
+            <tr><td><code>iv-toast__dismiss</code></td><td>Close button of the notice.</td></tr>
+            <tr><td><code>iv-toast-region--top-start</code></td><td>Region pinned to the top start corner.</td></tr>
+            <tr><td><code>iv-toast-region--top-end</code></td><td>Top end corner.</td></tr>
+            <tr><td><code>iv-toast-region--bottom-start</code></td><td>Bottom start corner.</td></tr>
+            <tr><td><code>iv-toast-region--bottom-end</code></td><td>Bottom end corner (the default).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
   </article>
 </Base>

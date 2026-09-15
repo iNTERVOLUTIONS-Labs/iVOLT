@@ -1,4 +1,5 @@
 ---
+import Section from "../../components/Section.astro";
 import Base from "../../layouts/Base.astro";
 ---
 <Base lang="es" title="Playground" description="Un generador acotado de fragmentos para iVOLT: elige un componente, una variante, un tamaño y un tema para el panel, y copia el HTML resultante.">
@@ -12,6 +13,7 @@ import Base from "../../layouts/Base.astro";
       siempre marcado válido de iVOLT. No se guarda nada: recarga la página y vuelves a los valores
       por defecto.
     </p>
+    <p class="docs-meta"><strong>Funciona:</strong> en esta página, a partir de plantillas fijas. <strong>Guarda:</strong> nada. <strong>Ejecuta:</strong> ningún código tuyo: no hay nada que escribir.</p>
     <noscript>
       <div class="iv-alert iv-alert--info" role="status">
         <p class="iv-alert__title">El playground necesita JavaScript</p>
@@ -21,10 +23,8 @@ import Base from "../../layouts/Base.astro";
         </div>
       </div>
     </noscript>
-  </article>
 
-  <section aria-labelledby="pg-heading" class="iv-stack iv-u-gap-6">
-    <h2 id="pg-heading" class="iv-u-sr-only">Generador de fragmentos</h2>
+    <Section title="Generador de fragmentos" num={1} lead={`Elige un componente, una variante, un tamaño y un tema para el panel. El marcado se construye con plantillas fijas y el HTML de debajo es lo que copias.`}>
 
     <form class="iv-grid iv-u-gap-4 iv-u-grid-cols-1 iv-u-md-grid-cols-3" id="pg-form" novalidate>
       <div class="iv-field">
@@ -68,7 +68,8 @@ import Base from "../../layouts/Base.astro";
     </figure>
 
     <p class="iv-u-m-0"><a id="pg-doc-link" href="/es/components/button">Abrir la página del componente Botón</a></p>
-  </section>
+    </Section>
+  </article>
 
   <script src="../../scripts/playground.js"></script>
 </Base>

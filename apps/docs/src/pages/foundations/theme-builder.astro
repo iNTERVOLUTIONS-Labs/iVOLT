@@ -1,11 +1,13 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
 import Fixture from "../../components/Fixture.astro";
 ---
 <Base title="Theme builder" description="Build an iVOLT theme in the browser: change the brand colours, surfaces, radius and font, watch real components update live, and copy the overrides as CSS.">
   <article class="docs-prose">
     <h1>Theme builder</h1>
     <p>Every colour, radius and font in iVOLT is a token, and every token is a custom property you can override. Change the controls below: the preview updates live and the CSS to copy appears underneath. Nothing is stored or sent anywhere; the values only live in this page until you copy them.</p>
+    <p class="docs-meta"><strong>Source:</strong> <code>tokens/tokens.json</code>. <strong>Output:</strong> plain custom properties. <strong>Stored:</strong> nothing.</p>
     <div class="docs-tb" data-theme-builder>
       <form class="docs-tb__form docs-tb__controls iv-stack" data-tb-form>
         <fieldset class="iv-fieldset">
@@ -51,18 +53,23 @@ import Fixture from "../../components/Fixture.astro";
         <Fixture name="button/variants" title="Preview: buttons" />
       </div>
     </div>
-    <h2>Your overrides</h2>
-    <p>Paste this after <code>ivolt.css</code>, or inside <code>@layer iv.overrides</code> when you use the layered stylesheet. Nested scopes keep working: put the block on any element instead of <code>:root</code> to theme only that part of the page.</p>
-    <div class="docs-fixture">
-      <div class="docs-fixture__caption"><span class="docs-fixture__title">tokens.overrides.css</span><button class="iv-button iv-button--secondary iv-button--sm docs-copy" type="button" data-copy-target="tb-output" aria-describedby="tb-output-status">Copy CSS</button><span class="iv-u-sr-only" id="tb-output-status" role="status" aria-live="polite"></span></div>
-      <div class="docs-fixture__code"><pre tabindex="0" aria-label="Theme overrides CSS"><code id="tb-output" data-tb-output>/* Change a control to see the overrides here. */</code></pre></div>
-    </div>
-    <h2>What this does not do</h2>
-    <ul>
-      <li>It edits a handful of tokens. The full set lives in <code>tokens.json</code> and <code>tokens.css</code>; anything can be overridden the same way.</li>
-      <li>It does not check contrast for you. Test the result with the accessibility tooling of your choice; the shipped themes are tested with axe.</li>
-      <li>It does not rebuild the package. Overrides are enough for most brands; a fork of <code>tokens.json</code> is the path for a full palette.</li>
-    </ul>
+    <Section title="Your overrides" num={1} lead={`Paste this after ivolt.css, or inside @layer iv.overrides when you use the layered stylesheet. Nested scopes keep working: put the block on any element instead of :root to theme only that part of the page.`}>
+      <div class="docs-code-block" data-code-block>
+        <div class="docs-code__panel" data-code-panel="css">
+          <pre tabindex="0" aria-label="Theme overrides CSS"><code id="tb-output" data-tb-output>/* tokens.overrides.css — change a control to see the overrides here. */</code></pre>
+          <button class="iv-button iv-button--secondary iv-button--sm docs-copy docs-code__copy" type="button" data-copy-target="tb-output" aria-describedby="tb-output-status">Copy CSS</button>
+          <span class="iv-u-sr-only" id="tb-output-status" role="status" aria-live="polite"></span>
+        </div>
+      </div>
+    </Section>
+
+    <Section title="What this does not do" num={2}>
+      <ul>
+        <li>It edits a handful of tokens. The full set lives in <code>tokens.json</code> and <code>tokens.css</code>; anything can be overridden the same way.</li>
+        <li>It does not check contrast for you. Test the result with the accessibility tooling of your choice; the shipped themes are tested with axe.</li>
+        <li>It does not rebuild the package. Overrides are enough for most brands; a fork of <code>tokens.json</code> is the path for a full palette.</li>
+      </ul>
+    </Section>
   </article>
 </Base>
 <script>

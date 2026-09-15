@@ -1,38 +1,46 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Efectos de luz y movimiento" description="Efectos de iVOLT: un destello que recorre el borde, bordes que se iluminan al acercar el puntero, líneas de exploración, chispas, un halo que respira y revelados al hacer scroll, con dos scripts opcionales minúsculos y una experiencia estática completa con movimiento reducido.">
   <article class="docs-prose">
     <h1>Efectos de luz y movimiento (effects)</h1>
     <p>Clases pequeñas que dan sensación de luz a cualquier bloque: un destello que recorre el borde una vez, un borde que se ilumina donde el puntero se acerca, una línea de exploración que cruza una superficie grande, chispas, un halo que respira y elementos que se revelan al entrar en la vista. Todo es CSS salvo dos componentes minúsculos: <code>Proximity</code>, que traduce la posición del puntero a propiedades personalizadas, y <code>Reveal</code>, que marca los elementos cuando entran en el viewport. Con movimiento reducido nada se mueve y nada queda oculto.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/effects.css</code> (en <code>ivolt.css</code>, después de las superficies). <strong>JS:</strong> <code>@intervolutions/ivolt/proximity</code>, <code>@intervolutions/ivolt/reveal</code> o <code>auto.js</code>. Añadidos en la v0.4.</p>
-    <h2>Destello y proximidad en el borde</h2>
-    <p><code>iv-edge-glint</code> envía una luz alrededor del borde al pasar el puntero, al enfocar dentro o cuando el elemento se revela. <code>iv-edge-near</code> ilumina el borde donde el puntero se acerca; necesita una raíz <code>Proximity</code> por encima (por defecto toda la página) y un puntero fino.</p>
-    <Fixture name="effects/edges" />
-    <h2>Exploración, chispas y pulso</h2>
-    <p><code>iv-scan</code> e <code>iv-scan--v</code> mueven una línea fina por un bloque grande en un bucle lento; <code>iv-spark</code> parpadea; <code>iv-pulse-glow</code> respira. Úsalos con mesura: una exploración por hero, un puñado de chispas.</p>
-    <Fixture name="effects/scan" />
-    <h2>Revelados</h2>
-    <p>Añade <code>data-iv-component="reveal"</code> a un contenedor e <code>iv-reveal</code> (con <code>--iv-i</code> para escalonar) a sus hijos: se funden y suben al entrar en el viewport. Sin JavaScript o con movimiento reducido simplemente son visibles.</p>
-    <Fixture name="effects/reveal" minHeight="28rem" />
-    <h2>Opciones</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Componente</th><th>Opción</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-        <tbody>
-          <tr><td><code>Proximity</code></td><td><code>radius</code></td><td><code>160</code></td><td>Distancia en píxeles a la que un borde empieza a iluminarse.</td></tr>
-          <tr><td><code>Reveal</code></td><td><code>threshold</code></td><td><code>0.15</code></td><td>Fracción visible que dispara el revelado.</td></tr>
-          <tr><td><code>Reveal</code></td><td><code>repeat</code></td><td><code>false</code></td><td>Revelar de nuevo cada vez que el elemento vuelve a entrar.</td></tr>
-          <tr><td><code>Reveal</code></td><td><code>stagger</code></td><td><code>80</code></td><td>Milisegundos entre hermanos, multiplicados por <code>--iv-i</code>.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li>Destello o proximidad en elementos minúsculos: el efecto se lee como ruido. Resérvalo para tarjetas, paneles y heros.</li>
-      <li>Depender de un revelado para mostrar contenido: es decoración; el contenido está en la página desde el principio.</li>
-      <li>Líneas de exploración sobre párrafos: mantenlas sobre medios y superficies grandes.</li>
-    </ul>
+    <Section title="Destello y proximidad en el borde" num={1}>
+      <p><code>iv-edge-glint</code> envía una luz alrededor del borde al pasar el puntero, al enfocar dentro o cuando el elemento se revela. <code>iv-edge-near</code> ilumina el borde donde el puntero se acerca; necesita una raíz <code>Proximity</code> por encima (por defecto toda la página) y un puntero fino.</p>
+      <Stage primary name="effects/edges" title="Filete y proximidad" />
+    </Section>
+
+    <Section title="Exploración, chispas y pulso" num={2} lead={`iv-scan e iv-scan--v mueven una línea fina por un bloque grande en un bucle lento; iv-spark parpadea; iv-pulse-glow respira. Úsalos con mesura: una exploración por hero, un puñado de chispas.`}>
+      <Stage name="effects/scan" title="Barrido, chispas y pulso" />
+    </Section>
+
+    <Section title="Revelados" num={3} lead={`Añade data-iv-component="reveal" a un contenedor e iv-reveal (con --iv-i para escalonar) a sus hijos: se funden y suben al entrar en el viewport. Sin JavaScript o con movimiento reducido simplemente son visibles.`}>
+      <Stage name="effects/reveal" title="Revelados al entrar en vista" minHeight="28rem" />
+    </Section>
+
+    <Section title="Opciones" num={4}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Componente</th><th>Opción</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+          <tbody>
+            <tr><td><code>Proximity</code></td><td><code>radius</code></td><td><code>160</code></td><td>Distancia en píxeles a la que un borde empieza a iluminarse.</td></tr>
+            <tr><td><code>Reveal</code></td><td><code>threshold</code></td><td><code>0.15</code></td><td>Fracción visible que dispara el revelado.</td></tr>
+            <tr><td><code>Reveal</code></td><td><code>repeat</code></td><td><code>false</code></td><td>Revelar de nuevo cada vez que el elemento vuelve a entrar.</td></tr>
+            <tr><td><code>Reveal</code></td><td><code>stagger</code></td><td><code>80</code></td><td>Milisegundos entre hermanos, multiplicados por <code>--iv-i</code>.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Destello o proximidad en elementos minúsculos: el efecto se lee como ruido. Resérvalo para tarjetas, paneles y heros.</li>
+        <li>Depender de un revelado para mostrar contenido: es decoración; el contenido está en la página desde el principio.</li>
+        <li>Líneas de exploración sobre párrafos: mantenlas sobre medios y superficies grandes.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

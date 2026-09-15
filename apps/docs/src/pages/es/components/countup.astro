@@ -1,57 +1,72 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Contador" description="Countup de iVOLT: una cifra servida que cuenta una vez al llegar al viewport, conserva prefijo, sufijo, decimales y separadores, y se queda tal cual sin JavaScript o con movimiento reducido.">
   <article class="docs-prose">
     <h1>Contador</h1>
     <p>Un número que sube hasta sí mismo. La cifra del marcado es el valor final —prefijo, sufijo, decimales y todo— y el componente cuenta desde <code>from</code> hasta ella cuando el elemento llega al viewport; después restituye el texto servido carácter a carácter. No se calcula nada ni se inventa nada: lo único que añade JavaScript es la subida.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>.iv-count</code> en <code>css/text.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/countup</code> o <code>auto.js</code>. Añadido en v0.7.</p>
-    <h2>Cifras reales</h2>
+
     <p>La fixture de abajo cuenta las medidas del propio paquete. Desplázala hasta verla y las cuatro tarjetas suben una vez; recarga con JavaScript desactivado y esos mismos cuatro números están ahí sin más.</p>
-    <Fixture name="countup/basic" title="Cifras medidas" />
-    <h2>Formatos, prefijos e idiomas</h2>
-    <p>El formato sale del texto servido y del idioma del elemento. Una cifra escrita <code>12.480,50 €</code> dentro de <code>lang="es"</code> cuenta con separadores españoles y conserva su sufijo; <code>€ 1,240.50</code> en inglés conserva su prefijo y su coma. <code>decimals</code> se deduce de lo servido, y un espacio duro impide que el símbolo de moneda salte de línea.</p>
-    <Fixture name="countup/formats" title="Formatos e idiomas" />
-    <h2>Opciones</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
-        <tbody>
-          <tr><td><code>from</code></td><td><code>data-iv-from</code></td><td><code>0</code></td><td>Dónde empieza la subida. Una cifra que solo se mueve en sus últimos dígitos se lee antes empezando cerca.</td></tr>
-          <tr><td><code>duration</code></td><td><code>data-iv-duration</code></td><td><code>900</code></td><td>Milisegundos de la subida, con salida suavizada para que se pose en vez de frenar.</td></tr>
-          <tr><td><code>decimals</code></td><td><code>data-iv-decimals</code></td><td><code>-1</code> (automático)</td><td>Decimales que se mantienen durante la subida. <code>-1</code> es el centinela de «los que traiga la cifra servida», porque la gramática de atributos no admite nulo.</td></tr>
-          <tr><td><code>grouping</code></td><td><code>data-iv-grouping</code></td><td><code>true</code></td><td>Separadores de millar mientras cuenta. Desactivado, los dígitos dejan de desplazarse.</td></tr>
-          <tr><td><code>once</code></td><td><code>data-iv-once</code></td><td><code>true</code></td><td>Cuenta solo la primera vez. Con <code>false</code> vuelve a contar en cada entrada.</td></tr>
-          <tr><td><code>autostart</code></td><td><code>data-iv-autostart</code></td><td><code>false</code></td><td>Arranca en <code>init</code> en lugar de esperar al viewport.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <h2>Métodos y eventos</h2>
-    <p><code>start()</code>, <code>reset()</code>, <code>destroy()</code>; se leen <code>value</code> y <code>done</code>. <code>value</code> es el número que se muestra y <code>done</code> significa «no queda nada que contar», que también es cierto de inmediato con movimiento reducido o sin <code>IntersectionObserver</code>. <code>destroy()</code> devuelve los nodos servidos, no solo su texto, así que el DOM queda idéntico.</p>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Evento</th><th>Cuándo</th><th><code>detail</code></th></tr></thead>
-        <tbody>
-          <tr><td><code>iv:count</code></td><td>empieza la subida; cancelable</td><td><code>from</code>, <code>to</code></td></tr>
-          <tr><td><code>iv:counted</code></td><td>la cifra servida vuelve a estar en pantalla</td><td><code>from</code>, <code>to</code></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>Donde no se cuenta, no se anuncia nada: ninguno de los dos eventos se dispara con movimiento reducido ni sin observador.</p>
-    <h2>Teclado y tecnología asistiva</h2>
-    <p>Una cifra es texto, no un control: no hay nada que enfocar ni nada que accionar. Deliberadamente no es una región viva —un número entrando cuarenta veces por segundo en un lector de pantalla sería inservible—, así que la tecnología asistiva lee el valor final, que es el servido y el que vuelve a estar ahí un segundo después. Dale a la cifra una etiqueta en su propio marcado (dentro de una <a href="/es/components/stat">cifra</a> lo hace <code>.iv-stat__label</code>) y no dejes nunca que el número sostenga solo una afirmación.</p>
-    <h2>Sin JavaScript</h2>
-    <p>La página ya es correcta. El valor está en el HTML, el estilo es CSS y <code>.iv-count</code> solo añade <code>font-variant-numeric: tabular-nums</code> para que los dígitos ocupen columnas fijas y la cifra no baile mientras sube. Con <code>prefers-reduced-motion: reduce</code>, o allí donde falta <code>IntersectionObserver</code>, el componente lee la cifra y se detiene ahí.</p>
-    <h2>Tokens y locales</h2>
-    <p>El contador no tiene locales propios: toma la tipografía de lo que lo contenga. Dentro de una <a href="/es/components/stat">cifra</a> son <code>--iv-stat-size</code>, <code>--iv-tracking-tight</code> y los números tabulares de <code>.iv-count</code>; dentro de una frase, el texto que la rodea. La única regla que impone la clase son los números tabulares, y está ahí por una razón visual, no decorativa.</p>
-    <h2>Errores habituales</h2>
-    <ul>
-      <li>Servir <code>0</code> esperando que el script ponga el número real. Sin JavaScript la página sería entonces una mentira: sirve la respuesta.</li>
-      <li>Contar una cifra que nadie ha medido. Un número que sube parece autorizado: di de dónde sale o márcalo como inventado.</li>
-      <li>Una <code>duration</code> larga en una cifra sobre el pliegue: quien lee llega antes que el número.</li>
-      <li>Separadores activos contando un número de cuatro dígitos: el separador aparece y desaparece y la línea da un salto.</li>
-      <li>Envolver la cifra en una región viva «para hacerla accesible». La hace ilegible.</li>
-    </ul>
+    <Stage primary name="countup/basic" title="Cifras medidas" />
+
+    <Section title="Formatos, prefijos e idiomas" num={1}>
+      <p>El formato sale del texto servido y del idioma del elemento. Una cifra escrita <code>12.480,50 €</code> dentro de <code>lang="es"</code> cuenta con separadores españoles y conserva su sufijo; <code>€ 1,240.50</code> en inglés conserva su prefijo y su coma. <code>decimals</code> se deduce de lo servido, y un espacio duro impide que el símbolo de moneda salte de línea.</p>
+      <Stage name="countup/formats" title="Formatos e idiomas" />
+    </Section>
+
+    <Section title="Opciones" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
+          <tbody>
+            <tr><td><code>from</code></td><td><code>data-iv-from</code></td><td><code>0</code></td><td>Dónde empieza la subida. Una cifra que solo se mueve en sus últimos dígitos se lee antes empezando cerca.</td></tr>
+            <tr><td><code>duration</code></td><td><code>data-iv-duration</code></td><td><code>900</code></td><td>Milisegundos de la subida, con salida suavizada para que se pose en vez de frenar.</td></tr>
+            <tr><td><code>decimals</code></td><td><code>data-iv-decimals</code></td><td><code>-1</code> (automático)</td><td>Decimales que se mantienen durante la subida. <code>-1</code> es el centinela de «los que traiga la cifra servida», porque la gramática de atributos no admite nulo.</td></tr>
+            <tr><td><code>grouping</code></td><td><code>data-iv-grouping</code></td><td><code>true</code></td><td>Separadores de millar mientras cuenta. Desactivado, los dígitos dejan de desplazarse.</td></tr>
+            <tr><td><code>once</code></td><td><code>data-iv-once</code></td><td><code>true</code></td><td>Cuenta solo la primera vez. Con <code>false</code> vuelve a contar en cada entrada.</td></tr>
+            <tr><td><code>autostart</code></td><td><code>data-iv-autostart</code></td><td><code>false</code></td><td>Arranca en <code>init</code> en lugar de esperar al viewport.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <Section title="Métodos y eventos" num={3}>
+      <p><code>start()</code>, <code>reset()</code>, <code>destroy()</code>; se leen <code>value</code> y <code>done</code>. <code>value</code> es el número que se muestra y <code>done</code> significa «no queda nada que contar», que también es cierto de inmediato con movimiento reducido o sin <code>IntersectionObserver</code>. <code>destroy()</code> devuelve los nodos servidos, no solo su texto, así que el DOM queda idéntico.</p>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Evento</th><th>Cuándo</th><th><code>detail</code></th></tr></thead>
+          <tbody>
+            <tr><td><code>iv:count</code></td><td>empieza la subida; cancelable</td><td><code>from</code>, <code>to</code></td></tr>
+            <tr><td><code>iv:counted</code></td><td>la cifra servida vuelve a estar en pantalla</td><td><code>from</code>, <code>to</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Donde no se cuenta, no se anuncia nada: ninguno de los dos eventos se dispara con movimiento reducido ni sin observador.</p>
+    </Section>
+
+    <Section title="Teclado y tecnología asistiva" num={4}>
+      <p>Una cifra es texto, no un control: no hay nada que enfocar ni nada que accionar. Deliberadamente no es una región viva —un número entrando cuarenta veces por segundo en un lector de pantalla sería inservible—, así que la tecnología asistiva lee el valor final, que es el servido y el que vuelve a estar ahí un segundo después. Dale a la cifra una etiqueta en su propio marcado (dentro de una <a href="/es/components/stat">cifra</a> lo hace <code>.iv-stat__label</code>) y no dejes nunca que el número sostenga solo una afirmación.</p>
+    </Section>
+
+    <Section title="Sin JavaScript" num={5}>
+      <p>La página ya es correcta. El valor está en el HTML, el estilo es CSS y <code>.iv-count</code> solo añade <code>font-variant-numeric: tabular-nums</code> para que los dígitos ocupen columnas fijas y la cifra no baile mientras sube. Con <code>prefers-reduced-motion: reduce</code>, o allí donde falta <code>IntersectionObserver</code>, el componente lee la cifra y se detiene ahí.</p>
+    </Section>
+
+    <Section title="Tokens y locales" num={6}>
+      <p>El contador no tiene locales propios: toma la tipografía de lo que lo contenga. Dentro de una <a href="/es/components/stat">cifra</a> son <code>--iv-stat-size</code>, <code>--iv-tracking-tight</code> y los números tabulares de <code>.iv-count</code>; dentro de una frase, el texto que la rodea. La única regla que impone la clase son los números tabulares, y está ahí por una razón visual, no decorativa.</p>
+    </Section>
+
+    <Section title="Errores habituales" num={7}>
+      <ul>
+        <li>Servir <code>0</code> esperando que el script ponga el número real. Sin JavaScript la página sería entonces una mentira: sirve la respuesta.</li>
+        <li>Contar una cifra que nadie ha medido. Un número que sube parece autorizado: di de dónde sale o márcalo como inventado.</li>
+        <li>Una <code>duration</code> larga en una cifra sobre el pliegue: quien lee llega antes que el número.</li>
+        <li>Separadores activos contando un número de cuatro dígitos: el separador aparece y desaparece y la línea da un salto.</li>
+        <li>Envolver la cifra en una región viva «para hacerla accesible». La hace ilegible.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

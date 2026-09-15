@@ -1,32 +1,47 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+import Code from "../../../components/Code.astro";
 ---
 <Base lang="es" title="Botón" description="Botón de iVOLT: variantes primaria, secundaria, fantasma y de peligro, tamaños, solo icono, estados deshabilitado y de carga, y grupos de botones. Solo CSS.">
   <article class="docs-prose">
     <h1>Botón (button)</h1>
     <p>Usa <code>&lt;button&gt;</code> para acciones y <code>&lt;a&gt;</code> para navegar; ambos admiten las mismas clases. Aquí no interviene JavaScript.</p>
     <p class="docs-meta"><strong>CSS:</strong> incluido en <code>ivolt.css</code>; suelto en <code>css/components/button.css</code> (necesita <code>core.css</code>).</p>
-    <h2>Variantes</h2>
-    <p>Sin variante, el botón es neutro. <code>--primary</code> es para la acción principal de una vista, <code>--secondary</code> la perfila, <code>--ghost</code> es solo texto y <code>--danger</code> marca las acciones destructivas.</p>
-    <Fixture name="button/variants" />
-    <h2>Tamaños y solo icono</h2>
-    <p>La altura por defecto es 2.5rem; <code>--sm</code> mide 2rem y <code>--lg</code>, 3rem. Los botones de solo icono necesitan <code>aria-label</code> y mantienen un área cuadrada de al menos 24 × 24 px.</p>
-    <Fixture name="button/sizes" />
-    <h2>Estados</h2>
-    <p>Usa el atributo nativo <code>disabled</code> en los botones y <code>aria-disabled="true"</code> en los enlaces. <code>aria-busy="true"</code> muestra un indicador, bloquea los eventos de puntero y conserva la etiqueta. Los estilos de hover solo se aplican en dispositivos con hover; el anillo de foco usa <code>--iv-color-focus</code> en <code>:focus-visible</code>.</p>
-    <Fixture name="button/states" />
-    <h2>Grupos</h2>
-    <Fixture name="button/group" />
-    <h2>Personalizar</h2>
-<pre><code>.iv-button &#123; --iv-button-radius: var(--iv-radius-full); &#125;
-.iv-button--primary &#123; --iv-button-bg: var(--iv-color-accent); --iv-button-fg: var(--iv-color-on-accent); &#125;</code></pre>
-    <p>Propiedades locales: <code>--iv-button-bg</code>, <code>--iv-button-fg</code>, <code>--iv-button-border</code>, <code>--iv-button-radius</code>.</p>
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li>Un <code>&lt;div&gt;</code> con la clase de botón: no recibe el foco ni se activa con el teclado.</li>
-      <li>Botón de solo icono sin <code>aria-label</code>.</li>
-      <li>Varios botones <code>--primary</code> en una misma vista; deja una sola acción principal.</li>
-    </ul>
+
+    <Stage primary name="button/variants" title="Todas las variantes del botón" />
+
+    <Section title="Variantes" num={1}>
+      <p>Sin variante, el botón es neutro. <code>--primary</code> es para la acción principal de una vista, <code>--secondary</code> la perfila, <code>--ghost</code> es solo texto y <code>--danger</code> marca las acciones destructivas.</p>
+    </Section>
+
+    <Section title="Tamaños y solo icono" num={2}>
+      <p>La altura por defecto es 2.5rem; <code>--sm</code> mide 2rem y <code>--lg</code>, 3rem. Los botones de solo icono necesitan <code>aria-label</code> y mantienen un área cuadrada de al menos 24 × 24 px.</p>
+      <Stage name="button/sizes" title="Tamaños y solo icono" />
+    </Section>
+
+    <Section title="Estados" num={3}>
+      <p>Usa el atributo nativo <code>disabled</code> en los botones y <code>aria-disabled="true"</code> en los enlaces. <code>aria-busy="true"</code> muestra un indicador, bloquea los eventos de puntero y conserva la etiqueta. Los estilos de hover solo se aplican en dispositivos con hover; el anillo de foco usa <code>--iv-color-focus</code> en <code>:focus-visible</code>.</p>
+      <Stage name="button/states" title="Deshabilitado, ocupado y foco" />
+    </Section>
+
+    <Section title="Grupos" num={4}>
+      <Stage name="button/group" title="Botones unidos en un grupo" />
+    </Section>
+
+    <Section title="Personalizar" num={5}>
+      <Code label="button.css" panels={[{ key: "css", label: "CSS", code: `.iv-button { --iv-button-radius: var(--iv-radius-full); }
+.iv-button--primary { --iv-button-bg: var(--iv-color-accent); --iv-button-fg: var(--iv-color-on-accent); }` }]} />
+      <p>Propiedades locales: <code>--iv-button-bg</code>, <code>--iv-button-fg</code>, <code>--iv-button-border</code>, <code>--iv-button-radius</code>.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={6}>
+      <ul>
+        <li>Un <code>&lt;div&gt;</code> con la clase de botón: no recibe el foco ni se activa con el teclado.</li>
+        <li>Botón de solo icono sin <code>aria-label</code>.</li>
+        <li>Varios botones <code>--primary</code> en una misma vista; deja una sola acción principal.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

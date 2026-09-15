@@ -1,98 +1,100 @@
 ---
 import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
 ---
 <Base title="Changelog" description="What exists in iVOLT so far: the unreleased 0.5.0-beta with datepicker, tooltip, popover and command palette, the 0.4.0-beta with megamenu, effects and hero, and the earlier betas and alpha, with the limitations that are known and unresolved.">
   <article class="docs-prose">
     <h1>Changelog</h1>
     <p>iVOLT has not been released yet. There is one version in progress and no published package, so there are no release dates here and none will be invented. Until <code>0.1.0</code> ships, install from the repository or from a tarball made with <code>npm pack</code>.</p>
+    <p class="docs-meta"><strong>Scope:</strong> every cycle so far. <strong>Dates:</strong> none — nothing is published yet. <strong>Contract:</strong> frozen for 1.0.</p>
 
-    <h2>0.5.0-beta (unreleased)</h2>
-    <p>Time and help: dates, hints, popovers, a command palette and a theme builder.</p>
-    <ul>
-      <li><strong>Datepicker</strong> (<code>iv-datepicker</code>): a native date input gains an accessible calendar dialog with a keyboard grid, min, max and step, localised names and a first day of the week that follows the locale.</li>
-      <li><strong>Tooltip and popover</strong>: hints from <code>data-iv-tooltip</code> on hover and focus; rich popovers on the native <code>popover</code> attribute placed next to their invoker.</li>
-      <li><strong>Command palette</strong> (<code>iv-command</code>): a modal search for actions opened with Ctrl+K, filtered as you type, driven by the keyboard, with groups, shortcuts and recent items.</li>
-      <li><strong>Theme builder</strong> in the documentation: live token overrides on real components and the CSS to copy.</li>
-      <li><strong>Budget</strong> for the bundled JavaScript raised to 48 KiB (gzip) with a per-module table; every module still imports on its own.</li>
-    </ul>
+    <Section title="0.5.0-beta (unreleased)" num={1} lead={`Time and help: dates, hints, popovers, a command palette and a theme builder.`}>
+      <ul>
+        <li><strong>Datepicker</strong> (<code>iv-datepicker</code>): a native date input gains an accessible calendar dialog with a keyboard grid, min, max and step, localised names and a first day of the week that follows the locale.</li>
+        <li><strong>Tooltip and popover</strong>: hints from <code>data-iv-tooltip</code> on hover and focus; rich popovers on the native <code>popover</code> attribute placed next to their invoker.</li>
+        <li><strong>Command palette</strong> (<code>iv-command</code>): a modal search for actions opened with Ctrl+K, filtered as you type, driven by the keyboard, with groups, shortcuts and recent items.</li>
+        <li><strong>Theme builder</strong> in the documentation: live token overrides on real components and the CSS to copy.</li>
+        <li><strong>Budget</strong> for the bundled JavaScript raised to 48 KiB (gzip) with a per-module table; every module still imports on its own.</li>
+      </ul>
+    </Section>
 
-    <h2>0.4.0-beta (unreleased)</h2>
-    <p>Navigation and light, after an adversarial review that fixed seventeen defects across the components and the site.</p>
-    <ul>
-      <li><strong>Megamenu</strong> (<code>iv-megamenu</code>): wide panels with link groups, cards and a bottom bar; hover and focus without JavaScript, intentional hover, keyboard, overlay, inert panels and a mobile accordion with it. The site header uses it.</li>
-      <li><strong>Effects</strong> (<code>effects.css</code>, <code>Proximity</code>, <code>Reveal</code>): a glint that travels the border, borders that light up as the pointer approaches, scan lines, sparks, a breathing glow and scroll reveals.</li>
-      <li><strong>Hero</strong> (<code>iv-hero</code>): full-bleed openings with media, scrim, oversized rising title, lead, actions and an aside; centred, split, cinematic and terminal variants.</li>
-      <li><strong>Fixes</strong>: every <code>select.iv-select</code> is enhanced by default with <code>data-iv-native</code> as the opt-out; pickers and comboboxes open below unless there is more room above and never leave the viewport; toasts paint above modal dialogs; selection drags no longer close dialogs; tabs activate on Space without scrolling; switches and ranges survive forced colours; long words and inline code no longer widen pages.</li>
-    </ul>
+    <Section title="0.4.0-beta (unreleased)" num={2} lead={`Navigation and light, after an adversarial review that fixed seventeen defects across the components and the site.`}>
+      <ul>
+        <li><strong>Megamenu</strong> (<code>iv-megamenu</code>): wide panels with link groups, cards and a bottom bar; hover and focus without JavaScript, intentional hover, keyboard, overlay, inert panels and a mobile accordion with it. The site header uses it.</li>
+        <li><strong>Effects</strong> (<code>effects.css</code>, <code>Proximity</code>, <code>Reveal</code>): a glint that travels the border, borders that light up as the pointer approaches, scan lines, sparks, a breathing glow and scroll reveals.</li>
+        <li><strong>Hero</strong> (<code>iv-hero</code>): full-bleed openings with media, scrim, oversized rising title, lead, actions and an aside; centred, split, cinematic and terminal variants.</li>
+        <li><strong>Fixes</strong>: every <code>select.iv-select</code> is enhanced by default with <code>data-iv-native</code> as the opt-out; pickers and comboboxes open below unless there is more room above and never leave the viewport; toasts paint above modal dialogs; selection drags no longer close dialogs; tabs activate on Space without scrolling; switches and ranges survive forced colours; long words and inline code no longer widen pages.</li>
+      </ul>
+    </Section>
 
-    <h2>0.3.0-beta (unreleased)</h2>
-    <p>The "Spectacular" cycle: the framework becomes expressive by default without changing its technical contract.</p>
-    <ul>
-      <li><strong>Carousel</strong> (<code>iv-carousel</code>): a scroll-snap slideshow without JavaScript; with it, an accessible tabbed carousel with slide, fade and cinema effects, autoplay with a progress bar, swipe and thumbnails.</li>
-      <li><strong>Picker</strong> (<code>iv-picker</code>): a native select promoted to a searchable selector with chips, groups and a limit, synced both ways with the form.</li>
-      <li><strong>Form validation and counter</strong>: inline messages per error type, an error summary, focus management, custom rules through <code>iv:validate</code>, and a character or word counter with soft limits.</li>
-      <li><strong>Richer forms</strong>: floating labels, input groups, switch, range, file drop zone, auto-sizing textarea, sizes and field states with icons.</li>
-      <li><strong>Surfaces</strong> (<code>surfaces.css</code>): glass with a solid fallback, grain, gradient mesh, aurora, glowing borders, gradient text, shine and elevation, driven by the new <code>glass</code>, <code>blur</code>, <code>glow</code> and <code>texture</code> tokens.</li>
-      <li><strong>Budgets</strong> raised with a decision record to 40 KiB of CSS and 32 KiB of JavaScript (gzip); measured at 16.4 and 21.2 KiB.</li>
-    </ul>
+    <Section title="0.3.0-beta (unreleased)" num={3} lead={`The "Spectacular" cycle: the framework becomes expressive by default without changing its technical contract.`}>
+      <ul>
+        <li><strong>Carousel</strong> (<code>iv-carousel</code>): a scroll-snap slideshow without JavaScript; with it, an accessible tabbed carousel with slide, fade and cinema effects, autoplay with a progress bar, swipe and thumbnails.</li>
+        <li><strong>Picker</strong> (<code>iv-picker</code>): a native select promoted to a searchable selector with chips, groups and a limit, synced both ways with the form.</li>
+        <li><strong>Form validation and counter</strong>: inline messages per error type, an error summary, focus management, custom rules through <code>iv:validate</code>, and a character or word counter with soft limits.</li>
+        <li><strong>Richer forms</strong>: floating labels, input groups, switch, range, file drop zone, auto-sizing textarea, sizes and field states with icons.</li>
+        <li><strong>Surfaces</strong> (<code>surfaces.css</code>): glass with a solid fallback, grain, gradient mesh, aurora, glowing borders, gradient text, shine and elevation, driven by the new <code>glass</code>, <code>blur</code>, <code>glow</code> and <code>texture</code> tokens.</li>
+        <li><strong>Budgets</strong> raised with a decision record to 40 KiB of CSS and 32 KiB of JavaScript (gzip); measured at 16.4 and 21.2 KiB.</li>
+      </ul>
+    </Section>
 
-    <h2>0.2.0-beta (unreleased)</h2>
-    <p>The first beta: the v0.2 scope is complete and the contracts are frozen. Nothing is published yet.</p>
-    <ul>
-      <li><strong>Combobox</strong> (<code>iv-combobox</code>): a labelled <code>&lt;input list&gt;</code> with a <code>&lt;datalist&gt;</code> is promoted to the ARIA combobox pattern with a filtered listbox. Options <code>filter</code>, <code>minChars</code>, <code>strict</code>, <code>autoselect</code> and <code>emptyText</code>; cancelable <code>iv:change</code> before <code>iv:changed</code>; accent-insensitive matching; <code>destroy</code> restores the served markup exactly.</li>
-      <li><strong>Data table</strong> (<code>iv-datatable</code>): sorting by text, number and date plus a filter on top of a served <code>&lt;table class="iv-table"&gt;</code>. Header buttons carry <code>aria-sort</code>, the filter block is hidden until JavaScript runs, a live status announces the row count, and <code>destroy</code> puts the rows back in the served order.</li>
-      <li><strong>Documentation</strong>: redesigned site and a Spanish version under <code>/es/</code>.</li>
-    </ul>
-    <p>Still not verified: real screen reader sessions, physical devices and field data. See the roadmap.</p>
+    <Section title="0.2.0-beta (unreleased)" num={4} lead={`The first beta: the v0.2 scope is complete and the contracts are frozen. Nothing is published yet.`}>
+      <ul>
+        <li><strong>Combobox</strong> (<code>iv-combobox</code>): a labelled <code>&lt;input list&gt;</code> with a <code>&lt;datalist&gt;</code> is promoted to the ARIA combobox pattern with a filtered listbox. Options <code>filter</code>, <code>minChars</code>, <code>strict</code>, <code>autoselect</code> and <code>emptyText</code>; cancelable <code>iv:change</code> before <code>iv:changed</code>; accent-insensitive matching; <code>destroy</code> restores the served markup exactly.</li>
+        <li><strong>Data table</strong> (<code>iv-datatable</code>): sorting by text, number and date plus a filter on top of a served <code>&lt;table class="iv-table"&gt;</code>. Header buttons carry <code>aria-sort</code>, the filter block is hidden until JavaScript runs, a live status announces the row count, and <code>destroy</code> puts the rows back in the served order.</li>
+        <li><strong>Documentation</strong>: redesigned site and a Spanish version under <code>/es/</code>.</li>
+      </ul>
+      <p>Still not verified: real screen reader sessions, physical devices and field data. See the roadmap.</p>
+    </Section>
 
-    <h2>0.1.0-alpha (unreleased)</h2>
-    <p>Built in two passes: a vertical slice that proved the whole pipeline on a few families, then the full v0.1 scope on top of it.</p>
+    <Section title="0.1.0-alpha (unreleased)" num={5} lead={`Built in two passes: a vertical slice that proved the whole pipeline on a few families, then the full v0.1 scope on top of it.`}>
+      <h3>Foundations</h3>
+      <ul>
+        <li><strong>Tokens</strong> generated from a single <code>tokens/tokens.json</code>: colour, spacing, type scale, line heights, weights, radii, borders, shadows, motion, breakpoints and the reading measure, all emitted as <code>--iv-*</code> custom properties.</li>
+        <li><strong>Themes</strong>: light and dark semantic sets, switched with <code>data-iv-theme="light|dark|system"</code>. Nested theme scopes work, because any element carrying the attribute re-applies text and background instead of inheriting the parent's computed colours.</li>
+        <li><strong>Base element styles</strong> scoped to <code>.iv-root</code>: headings, paragraphs, lists, links, code, quotes, media and content tables. Nothing outside the scope is touched.</li>
+        <li><strong>Optional reset</strong> shipped both unlayered (<code>reset.css</code>, to be imported into <code>layer(iv.reset)</code>) and pre-wrapped (<code>reset.layer.css</code>).</li>
+        <li><strong>Layout primitives</strong>: container, stack, cluster and grid, each with a local custom property.</li>
+        <li><strong>Finite utility matrix</strong> generated from a config — display, flex, grid, gap, spacing, width, text and visibility — with responsive prefixes only where the contract allows them. No scanner, no purge, no arbitrary values.</li>
+        <li><strong>Cascade layers</strong> <code>iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides</code>, plus <code>ivolt.flat.css</code> for sites whose CSS is not layered, and <code>core.css</code> for tokens, base and layout alone.</li>
+      </ul>
 
-    <h3>Foundations</h3>
-    <ul>
-      <li><strong>Tokens</strong> generated from a single <code>tokens/tokens.json</code>: colour, spacing, type scale, line heights, weights, radii, borders, shadows, motion, breakpoints and the reading measure, all emitted as <code>--iv-*</code> custom properties.</li>
-      <li><strong>Themes</strong>: light and dark semantic sets, switched with <code>data-iv-theme="light|dark|system"</code>. Nested theme scopes work, because any element carrying the attribute re-applies text and background instead of inheriting the parent's computed colours.</li>
-      <li><strong>Base element styles</strong> scoped to <code>.iv-root</code>: headings, paragraphs, lists, links, code, quotes, media and content tables. Nothing outside the scope is touched.</li>
-      <li><strong>Optional reset</strong> shipped both unlayered (<code>reset.css</code>, to be imported into <code>layer(iv.reset)</code>) and pre-wrapped (<code>reset.layer.css</code>).</li>
-      <li><strong>Layout primitives</strong>: container, stack, cluster and grid, each with a local custom property.</li>
-      <li><strong>Finite utility matrix</strong> generated from a config — display, flex, grid, gap, spacing, width, text and visibility — with responsive prefixes only where the contract allows them. No scanner, no purge, no arbitrary values.</li>
-      <li><strong>Cascade layers</strong> <code>iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides</code>, plus <code>ivolt.flat.css</code> for sites whose CSS is not layered, and <code>core.css</code> for tokens, base and layout alone.</li>
-    </ul>
+      <h3>Components</h3>
+      <ul>
+        <li><strong>CSS-only families (11)</strong>: button and button group, card, form controls with help and error text, badge, alert, table with a wrap mode and a <code>--stack</code> mode, breadcrumb, pagination, progress and skeleton — plus the layout primitives above.</li>
+        <li><strong>JavaScript families (6)</strong>: dialog, disclosure and accordion (<code>exclusive</code>, <code>closeOnOutside</code>), tabs (ARIA promoted at init and restored exactly on <code>destroy</code>), dropdown (a menu button built on <code>&lt;details&gt;</code>), drawer (one real <code>&lt;dialog&gt;</code>, static from the <code>lg</code> breakpoint), and toast (queue, pause, <kbd>Escape</kbd>, no auto-dismiss for <code>danger</code>).</li>
+        <li>All six are exported from the grouped entry and from the IIFE build. Importing the package has no side effects; only the <code>auto</code> entry initialises on load.</li>
+        <li><strong>27 fixtures</strong>, each one serving simultaneously as docs preview, copyable snippet and test subject.</li>
+      </ul>
 
-    <h3>Components</h3>
-    <ul>
-      <li><strong>CSS-only families (11)</strong>: button and button group, card, form controls with help and error text, badge, alert, table with a wrap mode and a <code>--stack</code> mode, breadcrumb, pagination, progress and skeleton — plus the layout primitives above.</li>
-      <li><strong>JavaScript families (6)</strong>: dialog, disclosure and accordion (<code>exclusive</code>, <code>closeOnOutside</code>), tabs (ARIA promoted at init and restored exactly on <code>destroy</code>), dropdown (a menu button built on <code>&lt;details&gt;</code>), drawer (one real <code>&lt;dialog&gt;</code>, static from the <code>lg</code> breakpoint), and toast (queue, pause, <kbd>Escape</kbd>, no auto-dismiss for <code>danger</code>).</li>
-      <li>All six are exported from the grouped entry and from the IIFE build. Importing the package has no side effects; only the <code>auto</code> entry initialises on load.</li>
-      <li><strong>27 fixtures</strong>, each one serving simultaneously as docs preview, copyable snippet and test subject.</li>
-    </ul>
+      <h3>Examples and documentation</h3>
+      <ul>
+        <li>Three recipes — an enterprise landing page, an editorial catalogue with working filters and sorting, and a static admin panel with drawer, toasts and a confirmation flow. Sample data is fictional and labelled; the forms state that they submit nothing.</li>
+        <li>Plain-HTML and Vite starters, mirrored into the docs site so the published pages and the repository cannot drift.</li>
+        <li>Documentation for all 16 component pages plus foundations, an examples index, and this site.</li>
+      </ul>
 
-    <h3>Examples and documentation</h3>
-    <ul>
-      <li>Three recipes — an enterprise landing page, an editorial catalogue with working filters and sorting, and a static admin panel with drawer, toasts and a confirmation flow. Sample data is fictional and labelled; the forms state that they submit nothing.</li>
-      <li>Plain-HTML and Vite starters, mirrored into the docs site so the published pages and the repository cannot drift.</li>
-      <li>Documentation for all 16 component pages plus foundations, an examples index, and this site.</li>
-    </ul>
+      <h3>Quality</h3>
+      <ul>
+        <li>138 unit and contract tests; 237 browser tests passing in Chromium, Firefox and WebKit.</li>
+        <li>axe with the WCAG 2.0/2.1/2.2 A and AA tags over 24 fixtures in both themes plus the dialog in its open state, gated on serious and critical findings.</li>
+        <li>Overflow checks from 320 to 1920px, RTL rendering, theme switching, docs pages and recipes at phone and laptop widths.</li>
+        <li><code>pack-smoke</code> verifies that the packed tarball installs, that the exports resolve and that unused components are tree-shaken.</li>
+        <li>Size budget tracked by <code>npm run sizes</code>: roughly 10 KiB of compressed CSS for the full stylesheet and under 8 KiB of compressed JavaScript for the bundled entry. Run the command for exact current figures.</li>
+      </ul>
+    </Section>
 
-    <h3>Quality</h3>
-    <ul>
-      <li>138 unit and contract tests; 237 browser tests passing in Chromium, Firefox and WebKit.</li>
-      <li>axe with the WCAG 2.0/2.1/2.2 A and AA tags over 24 fixtures in both themes plus the dialog in its open state, gated on serious and critical findings.</li>
-      <li>Overflow checks from 320 to 1920px, RTL rendering, theme switching, docs pages and recipes at phone and laptop widths.</li>
-      <li><code>pack-smoke</code> verifies that the packed tarball installs, that the exports resolve and that unused components are tree-shaken.</li>
-      <li>Size budget tracked by <code>npm run sizes</code>: roughly 10 KiB of compressed CSS for the full stylesheet and under 8 KiB of compressed JavaScript for the bundled entry. Run the command for exact current figures.</li>
-    </ul>
-
-    <h2>Known limitations</h2>
-    <ul>
-      <li><strong>No screen reader testing.</strong> NVDA and VoiceOver passes have not been run and are recorded as not verified. ARIA behaviour is reasoned about and checked by axe, which is not the same thing.</li>
-      <li><strong>No Lighthouse run yet.</strong> Performance and best-practice audits are scheduled for a later phase.</li>
-      <li><code>prefers-contrast: more</code> only strengthens decorative borders; forced-colors mode is untested.</li>
-      <li><strong>The package is not published.</strong> There is no <code>npm install</code> and no CDN; install from the repository or a local tarball. The npm scope is not secured yet.</li>
-      <li><strong>Alpha means the API can change.</strong> Class names, tokens, options and events may move before <code>0.1.0</code>, with an ADR recording each change.</li>
-      <li><strong>Browser support is a target, not a survey.</strong> Chrome and Edge 111+, Firefox 113+, Safari and iOS 16.4+, Samsung Internet 22+, tested through three Playwright engines and not on physical devices.</li>
-      <li><strong>The wordmark is temporary</strong> pending the final logo.</li>
-      <li>An <code>iv:change</code> event once mentioned for the accordion was not implemented; only <code>open</code> and <code>close</code> exist.</li>
-    </ul>
+    <Section title="Known limitations" num={6}>
+      <ul>
+        <li><strong>No screen reader testing.</strong> NVDA and VoiceOver passes have not been run and are recorded as not verified. ARIA behaviour is reasoned about and checked by axe, which is not the same thing.</li>
+        <li><strong>No Lighthouse run yet.</strong> Performance and best-practice audits are scheduled for a later phase.</li>
+        <li><code>prefers-contrast: more</code> only strengthens decorative borders; forced-colors mode is untested.</li>
+        <li><strong>The package is not published.</strong> There is no <code>npm install</code> and no CDN; install from the repository or a local tarball. The npm scope is not secured yet.</li>
+        <li><strong>Alpha means the API can change.</strong> Class names, tokens, options and events may move before <code>0.1.0</code>, with an ADR recording each change.</li>
+        <li><strong>Browser support is a target, not a survey.</strong> Chrome and Edge 111+, Firefox 113+, Safari and iOS 16.4+, Samsung Internet 22+, tested through three Playwright engines and not on physical devices.</li>
+        <li><strong>The wordmark is temporary</strong> pending the final logo.</li>
+        <li>An <code>iv:change</code> event once mentioned for the accordion was not implemented; only <code>open</code> and <code>close</code> exist.</li>
+      </ul>
+    </Section>
   </article>
 </Base>

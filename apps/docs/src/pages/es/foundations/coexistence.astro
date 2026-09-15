@@ -1,5 +1,7 @@
 ---
 import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Code from "../../../components/Code.astro";
 import { createHash } from "node:crypto";
 import { themeSnippet } from "../../../theme-snippet.js";
 const cspHash = "sha256-" + createHash("sha256").update(themeSnippet).digest("base64");
@@ -9,100 +11,102 @@ const cspHash = "sha256-" + createHash("sha256").update(themeSnippet).digest("ba
     <h1>Convivencia con tu CSS</h1>
     <p>Casi ninguna página que adopta un framework está vacía. Hay un tema, una hoja heredada, un plugin que da estilo a <code>button</code> y una fecha de entrega. Esta página va de esa situación: qué hace iVOLT para no estorbar, qué no hace, y las reglas exactas que deciden quién gana cuando dos hojas de estilo discrepan.</p>
     <p>La versión corta: <code>.iv-root</code> limita dónde se aplican los estilos de elemento, los prefijos evitan colisiones de nombres y las capas de cascada ordenan las reglas propias de iVOLT. Las capas <em>no</em> aíslan el framework de tu CSS, y conviene entender por qué antes de depurar una sorpresa.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/ivolt.css</code> (en capas) o <code>css/ivolt.flat.css</code> (sin capas). <strong>Ámbito:</strong> <code>.iv-root</code>. <strong>Prefijos:</strong> <code>iv-</code>, <code>--iv-</code>, <code>data-iv-</code>.</p>
 
-    <h2>Ámbito y prefijos</h2>
-    <p>Todos los selectores de elemento de <code>base.css</code> empiezan por <code>.iv-root</code>. Fuera de esa clase, iVOLT no da estilo a ningún <code>h1</code>, ni <code>a</code>, ni <code>input</code>. El ámbito lo eliges tú:</p>
-<pre><code>&lt;!-- página entera --&gt;
-&lt;html lang="es" class="iv-root" data-iv-theme="system"&gt;
+    <Section title="Ámbito y prefijos" num={1} lead={`Todos los selectores de elemento de base.css empiezan por .iv-root. Fuera de esa clase, iVOLT no da estilo a ningún h1, ni a, ni input. El ámbito lo eliges tú:`}>
+      <Code label="html" panels={[{ key: "src", label: "HTML", code: `<!-- página entera -->
+<html lang="es" class="iv-root" data-iv-theme="system">
 
-&lt;!-- una zona de un sitio existente --&gt;
-&lt;div class="iv-root" data-iv-theme="light"&gt;
-  &lt;!-- marcado de iVOLT aquí; la página que lo rodea queda intacta --&gt;
-&lt;/div&gt;</code></pre>
-    <p>Todo lo demás va con prefijo y una prueba de contrato lo hace cumplir: las clases empiezan por <code>iv-</code> (<code>iv-button</code>, <code>iv-card</code>), las utilidades por <code>iv-u-</code>, las propiedades personalizadas por <code>--iv-</code>, los atributos de datos por <code>data-iv-</code>, y la compilación IIFE expone exactamente un global, <code>IVOLT</code>. Una colisión con tu propio <code>.button</code> o <code>--color-primary</code> es, por construcción, imposible.</p>
-    <p>Dos advertencias. <code>.iv-root</code> también fija <code>box-sizing: border-box</code> en sí misma y en todos sus descendientes, así que los widgets de terceros que estén dentro del ámbito lo heredan; y el ámbito de tema vuelve a aplicar <code>color</code> y <code>background-color</code> en cualquier elemento que lleve <code>data-iv-theme</code>, que es lo que permite que una isla oscura viva dentro de una página clara.</p>
+<!-- una zona de un sitio existente -->
+<div class="iv-root" data-iv-theme="light">
+  <!-- marcado de iVOLT aquí; la página que lo rodea queda intacta -->
+</div>` }]} />
+      <p>Todo lo demás va con prefijo y una prueba de contrato lo hace cumplir: las clases empiezan por <code>iv-</code> (<code>iv-button</code>, <code>iv-card</code>), las utilidades por <code>iv-u-</code>, las propiedades personalizadas por <code>--iv-</code>, los atributos de datos por <code>data-iv-</code>, y la compilación IIFE expone exactamente un global, <code>IVOLT</code>. Una colisión con tu propio <code>.button</code> o <code>--color-primary</code> es, por construcción, imposible.</p>
+      <p>Dos advertencias. <code>.iv-root</code> también fija <code>box-sizing: border-box</code> en sí misma y en todos sus descendientes, así que los widgets de terceros que estén dentro del ámbito lo heredan; y el ámbito de tema vuelve a aplicar <code>color</code> y <code>background-color</code> en cualquier elemento que lleve <code>data-iv-theme</code>, que es lo que permite que una isla oscura viva dentro de una página clara.</p>
+    </Section>
 
-    <h2>Las reglas de las capas de cascada, exactamente</h2>
-    <p>La entrada en capas declara su orden por adelantado y asigna la capa en el momento de importar:</p>
-<pre><code>@layer iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides;
+    <Section title="Las reglas de las capas de cascada, exactamente" num={2} lead={`La entrada en capas declara su orden por adelantado y asigna la capa en el momento de importar:`}>
+      <Code label="css" panels={[{ key: "src", label: "CSS", code: `@layer iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides;
 @import url("./tokens.css") layer(iv.tokens);
 @import url("./base.css") layer(iv.base);
-/* … */</code></pre>
-    <p>Los módulos fuente no declaran capa propia, y eso es lo que permite que el mismo archivo sirva para la compilación en capas, la plana y un import por componente. De ahí se derivan tres reglas, y la tercera es la que muerde:</p>
-    <ol>
-      <li><strong>Dentro de las capas, gana la última.</strong> <code>iv.utilities</code> gana a <code>iv.components</code> incluso con menos especificidad. Por eso <code>iv-u-gap-4</code> sobrescribe de forma fiable a un modificador de componente.</li>
-      <li><strong>Cualquier declaración normal (sin <code>!important</code>) que esté fuera de las capas gana a todas las declaraciones normales que estén en capas, sea cual sea su especificidad.</strong> Un solo <code>button &#123; background: red &#125;</code> en un tema heredado sobrescribe <code>.iv-button</code> en <code>ivolt.css</code>. Esto no es un error de iVOLT ni de tu navegador; es así como la cascada ordena las reglas sin capa: como si estuvieran en una capa final implícita.</li>
-      <li><strong>Entre declaraciones <code>!important</code> el orden se invierte por completo.</strong> Ganan las capas iniciales y las declaraciones sin capa pasan a ser las más débiles. Consecuencia: <code>.iv-u-sr-only</code>, la única regla del paquete que usa <code>!important</code>, no se puede sobrescribir desde tu CSS sin capa en <code>ivolt.css</code>, mientras que en <code>ivolt.flat.css</code> sí se puede.</li>
-    </ol>
-    <p>Así que las capas ordenan iVOLT por dentro y te facilitan sobrescribirlo; no lo defienden. Dilo en voz alta una vez y la depuración se acorta mucho.</p>
+/* … */` }]} />
+      <p>Los módulos fuente no declaran capa propia, y eso es lo que permite que el mismo archivo sirva para la compilación en capas, la plana y un import por componente. De ahí se derivan tres reglas, y la tercera es la que muerde:</p>
+      <ol>
+        <li><strong>Dentro de las capas, gana la última.</strong> <code>iv.utilities</code> gana a <code>iv.components</code> incluso con menos especificidad. Por eso <code>iv-u-gap-4</code> sobrescribe de forma fiable a un modificador de componente.</li>
+        <li><strong>Cualquier declaración normal (sin <code>!important</code>) que esté fuera de las capas gana a todas las declaraciones normales que estén en capas, sea cual sea su especificidad.</strong> Un solo <code>button &#123; background: red &#125;</code> en un tema heredado sobrescribe <code>.iv-button</code> en <code>ivolt.css</code>. Esto no es un error de iVOLT ni de tu navegador; es así como la cascada ordena las reglas sin capa: como si estuvieran en una capa final implícita.</li>
+        <li><strong>Entre declaraciones <code>!important</code> el orden se invierte por completo.</strong> Ganan las capas iniciales y las declaraciones sin capa pasan a ser las más débiles. Consecuencia: <code>.iv-u-sr-only</code>, la única regla del paquete que usa <code>!important</code>, no se puede sobrescribir desde tu CSS sin capa en <code>ivolt.css</code>, mientras que en <code>ivolt.flat.css</code> sí se puede.</li>
+      </ol>
+      <p>Así que las capas ordenan iVOLT por dentro y te facilitan sobrescribirlo; no lo defienden. Dilo en voz alta una vez y la depuración se acorta mucho.</p>
 
-    <h3>Elegir una estrategia</h3>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Tu situación</th><th>Usa</th><th>Por qué</th></tr></thead>
-        <tbody>
-          <tr><td>Página nueva, controlas el CSS</td><td><code>css/ivolt.css</code></td><td>Orden por capas, y es fácil sobrescribir desde tus propias reglas sin capa</td></tr>
-          <tr><td>Hoja heredada que no puedes editar</td><td><code>css/ivolt.flat.css</code></td><td>Sin <code>@layer</code>: compite por especificidad y orden de origen como cualquier otra hoja</td></tr>
-          <tr><td>Hoja heredada que sí puedes importar</td><td><code>ivolt.css</code> + envolver la hoja heredada en una capa</td><td>Pone el CSS antiguo por debajo de iVOLT sin reescribirlo</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p>El truco de envolverla, con el orden de capas declarado antes que las de iVOLT para que las reglas heredadas queden por debajo:</p>
-<pre><code>@layer legacy, iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides;
+      <h3>Elegir una estrategia</h3>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Tu situación</th><th>Usa</th><th>Por qué</th></tr></thead>
+          <tbody>
+            <tr><td>Página nueva, controlas el CSS</td><td><code>css/ivolt.css</code></td><td>Orden por capas, y es fácil sobrescribir desde tus propias reglas sin capa</td></tr>
+            <tr><td>Hoja heredada que no puedes editar</td><td><code>css/ivolt.flat.css</code></td><td>Sin <code>@layer</code>: compite por especificidad y orden de origen como cualquier otra hoja</td></tr>
+            <tr><td>Hoja heredada que sí puedes importar</td><td><code>ivolt.css</code> + envolver la hoja heredada en una capa</td><td>Pone el CSS antiguo por debajo de iVOLT sin reescribirlo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>El truco de envolverla, con el orden de capas declarado antes que las de iVOLT para que las reglas heredadas queden por debajo:</p>
+      <Code label="css" panels={[{ key: "src", label: "CSS", code: `@layer legacy, iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides;
 @import url("legacy-theme.css") layer(legacy);
-@import url("ivolt/css/ivolt.css");</code></pre>
-    <p>En cuanto la hoja heredada está en una capa, pierde su privilegio de estar fuera de las capas y los componentes de iVOLT ganan. Tus reglas nuevas, escritas sin capa, siguen ganando a ambas, que suele ser justo lo que quieres.</p>
-    <p>Para sobrescribir a propósito dentro de la compilación en capas, la capa <code>iv.overrides</code> existe exactamente para eso y se declara la última:</p>
-<pre><code>@layer iv.overrides &#123;
-  .iv-button &#123; border-radius: 0; &#125;
-&#125;</code></pre>
-    <p>Ninguna regla del paquete usa <code>!important</code> salvo <code>.iv-u-sr-only</code>, y los selectores de componente se quedan en <code>(0,2,0)</code> de especificidad o por debajo — las dos cosas las hacen cumplir pruebas de contrato —, así que con una clase propia y corriente basta para ganar cuando las capas lo permiten.</p>
+@import url("ivolt/css/ivolt.css");` }]} />
+      <p>En cuanto la hoja heredada está en una capa, pierde su privilegio de estar fuera de las capas y los componentes de iVOLT ganan. Tus reglas nuevas, escritas sin capa, siguen ganando a ambas, que suele ser justo lo que quieres.</p>
+      <p>Para sobrescribir a propósito dentro de la compilación en capas, la capa <code>iv.overrides</code> existe exactamente para eso y se declara la última:</p>
+      <Code label="css" panels={[{ key: "src", label: "CSS", code: `@layer iv.overrides {
+  .iv-button { border-radius: 0; }
+}` }]} />
+      <p>Ninguna regla del paquete usa <code>!important</code> salvo <code>.iv-u-sr-only</code>, y los selectores de componente se quedan en <code>(0,2,0)</code> de especificidad o por debajo — las dos cosas las hacen cumplir pruebas de contrato —, así que con una clase propia y corriente basta para ganar cuando las capas lo permiten.</p>
+    </Section>
 
-    <h2>El reset opcional</h2>
-    <p><code>css/reset.css</code> se distribuye sin capa a propósito. Enlazado tal cual quedaría fuera de todas las capas y, por la regla 2 de arriba, ganaría a los componentes bajo los que se supone que debe estar. Usa una de las dos formas admitidas:</p>
-<pre><code>@import url("ivolt/css/reset.css") layer(iv.reset);   /* le asignas tú la capa */
-&lt;link rel="stylesheet" href="ivolt/css/reset.layer.css"&gt;  &lt;!-- ya viene envuelto --&gt;</code></pre>
-    <p>En un sitio que ya existe, lo normal es que no quieras ningún reset: el sitio ya tiene uno, y una segunda normalización es el origen habitual de los cambios de espaciado inexplicables. Los estilos base no dependen de él: <code>.iv-root</code> fija su propio <code>box-sizing</code>, así que la garantía se mantiene en cualquier caso.</p>
+    <Section title="El reset opcional" num={3}>
+      <p><code>css/reset.css</code> se distribuye sin capa a propósito. Enlazado tal cual quedaría fuera de todas las capas y, por la regla 2 de arriba, ganaría a los componentes bajo los que se supone que debe estar. Usa una de las dos formas admitidas:</p>
+      <Code label="css" panels={[{ key: "src", label: "CSS", code: `@import url("ivolt/css/reset.css") layer(iv.reset);   /* le asignas tú la capa */
+<link rel="stylesheet" href="ivolt/css/reset.layer.css">  <!-- ya viene envuelto -->` }]} />
+      <p>En un sitio que ya existe, lo normal es que no quieras ningún reset: el sitio ya tiene uno, y una segunda normalización es el origen habitual de los cambios de espaciado inexplicables. Los estilos base no dependen de él: <code>.iv-root</code> fija su propio <code>box-sizing</code>, así que la garantía se mantiene en cualquier caso.</p>
+    </Section>
 
-    <h2>WordPress y otros sitios en PHP</h2>
-    <p>No hay ningún paso de compilación que añadir. Copia <code>packages/ivolt/dist</code> dentro del tema (por ejemplo en <code>assets/ivolt/</code>) y encola los archivos.</p>
-<pre><code>function theme_ivolt_assets() &#123;
+    <Section title="WordPress y otros sitios en PHP" num={4} lead={`No hay ningún paso de compilación que añadir. Copia packages/ivolt/dist dentro del tema (por ejemplo en assets/ivolt/) y encola los archivos.`}>
+      <Code label="php" panels={[{ key: "src", label: "PHP", code: `function theme_ivolt_assets() {
   $base = get_template_directory_uri() . '/assets/ivolt';
   wp_enqueue_style('ivolt', $base . '/css/ivolt.flat.css', array(), '0.5.0-beta');
   wp_enqueue_script('ivolt', $base . '/js/auto.js', array(), '0.5.0-beta', true);
-&#125;
-add_action('wp_enqueue_scripts', 'theme_ivolt_assets');</code></pre>
-    <p>Notas propias de este entorno:</p>
-    <ul>
-      <li><strong>Usa mejor la compilación plana.</strong> Los temas y los plugins casi nunca usan capas, así que con <code>ivolt.css</code> sus reglas de elemento sin capa sobrescribirían a iVOLT en todas partes.</li>
-      <li><strong>Pon <code>iv-root</code> en un contenedor, no en <code>&lt;html&gt;</code></strong>, salvo que estés convirtiendo el tema entero. Un contenedor alrededor del área de contenido deja que la barra de administración, los widgets de los plugins y las plantillas antiguas conserven sus estilos.</li>
-      <li><strong>Registra el script como módulo</strong> si usas <code>auto.js</code> (WordPress necesita <code>type="module"</code>, que las versiones recientes admiten mediante las estrategias de script o un filtro <code>script_loader_tag</code>). Si eso te resulta incómodo, encola <code>js/ivolt.iife.min.js</code> y llama tú a <code>IVOLT.init()</code>: no inicializa nada al cargar.</li>
-      <li><strong>No hay escáner de clases ni paso de purga.</strong> La matriz de utilidades es finita y está generada por completo, así que las clases escritas dentro de plantillas PHP, shortcodes, el editor de bloques o un campo de la base de datos funcionan todas. Nada tiene que ver tu marcado en tiempo de compilación.</li>
-      <li><strong>Contenido del editor.</strong> Si el contenido de las entradas se renderiza dentro de <code>.iv-root</code>, los títulos, listas, tablas y código de ese contenido reciben los estilos base. Eso suele ser lo deseable; si no lo es, pon <code>iv-root</code> en la estructura de la página y no en el cuerpo de la entrada.</li>
-    </ul>
+}
+add_action('wp_enqueue_scripts', 'theme_ivolt_assets');` }]} />
+      <p>Notas propias de este entorno:</p>
+      <ul>
+        <li><strong>Usa mejor la compilación plana.</strong> Los temas y los plugins casi nunca usan capas, así que con <code>ivolt.css</code> sus reglas de elemento sin capa sobrescribirían a iVOLT en todas partes.</li>
+        <li><strong>Pon <code>iv-root</code> en un contenedor, no en <code>&lt;html&gt;</code></strong>, salvo que estés convirtiendo el tema entero. Un contenedor alrededor del área de contenido deja que la barra de administración, los widgets de los plugins y las plantillas antiguas conserven sus estilos.</li>
+        <li><strong>Registra el script como módulo</strong> si usas <code>auto.js</code> (WordPress necesita <code>type="module"</code>, que las versiones recientes admiten mediante las estrategias de script o un filtro <code>script_loader_tag</code>). Si eso te resulta incómodo, encola <code>js/ivolt.iife.min.js</code> y llama tú a <code>IVOLT.init()</code>: no inicializa nada al cargar.</li>
+        <li><strong>No hay escáner de clases ni paso de purga.</strong> La matriz de utilidades es finita y está generada por completo, así que las clases escritas dentro de plantillas PHP, shortcodes, el editor de bloques o un campo de la base de datos funcionan todas. Nada tiene que ver tu marcado en tiempo de compilación.</li>
+        <li><strong>Contenido del editor.</strong> Si el contenido de las entradas se renderiza dentro de <code>.iv-root</code>, los títulos, listas, tablas y código de ese contenido reciben los estilos base. Eso suele ser lo deseable; si no lo es, pon <code>iv-root</code> en la estructura de la página y no en el cuerpo de la entrada.</li>
+      </ul>
+    </Section>
 
-    <h2>Astro, Vite y otros empaquetadores</h2>
-    <p>Instala el tarball que produce <code>npm pack</code> dentro de <code>packages/ivolt</code> e importa a través de los <code>exports</code> del paquete. Las rutas profundas dentro de <code>dist/</code> no forman parte de la API y pueden moverse.</p>
-<pre><code>import "@intervolutions/ivolt/css/ivolt.css";
-import &#123; init &#125; from "@intervolutions/ivolt";
+    <Section title="Astro, Vite y otros empaquetadores" num={5} lead={`Instala el tarball que produce npm pack dentro de packages/ivolt e importa a través de los exports del paquete. Las rutas profundas dentro de dist/ no forman parte de la API y pueden moverse.`}>
+      <Code label="javascript" panels={[{ key: "src", label: "JAVASCRIPT", code: `import "@intervolutions/ivolt/css/ivolt.css";
+import { init } from "@intervolutions/ivolt";
 
-if (typeof document !== "undefined") init(document);</code></pre>
-    <p>Lo que importa cuando un framework renderiza en el servidor:</p>
-    <ul>
-      <li><strong>Ningún módulo toca <code>document</code>, <code>window</code>, <code>navigator</code> ni <code>matchMedia</code> en el momento de importarlo</strong>, así que importar el paquete durante el renderizado en servidor no lanza. Una prueba unitaria lo verifica en un entorno de Node.</li>
-      <li><strong>Importar <code>@intervolutions/ivolt</code> no tiene efectos secundarios.</strong> Solo <code>@intervolutions/ivolt/auto</code> inicializa al cargar, y antes comprueba que hay un documento. Prefiere el <code>init()</code> explícito en un script de cliente cuando sea el framework quien controle la hidratación.</li>
-      <li><strong><code>init()</code> es idempotente</strong> y solo promociona los elementos marcados con <code>data-iv-component</code>, así que volver a llamarlo tras una navegación en el cliente o un renderizado parcial es seguro. Cuando desmontes una zona, llama a <code>destroy()</code> para que se restauren los atributos.</li>
-      <li><strong>El paquete está anotado respecto a efectos secundarios</strong>, así que un empaquetador elimina por tree-shaking los componentes que no importas; la prueba de humo del empaquetado lo verifica.</li>
-      <li><strong>Islas.</strong> El marcado renderizado por un componente que nunca se hidrata sigue funcionando para las familias de solo CSS, y conserva las alternativas con <code>&lt;details&gt;</code> y <code>:target</code> para las interactivas.</li>
-    </ul>
+if (typeof document !== "undefined") init(document);` }]} />
+      <p>Lo que importa cuando un framework renderiza en el servidor:</p>
+      <ul>
+        <li><strong>Ningún módulo toca <code>document</code>, <code>window</code>, <code>navigator</code> ni <code>matchMedia</code> en el momento de importarlo</strong>, así que importar el paquete durante el renderizado en servidor no lanza. Una prueba unitaria lo verifica en un entorno de Node.</li>
+        <li><strong>Importar <code>@intervolutions/ivolt</code> no tiene efectos secundarios.</strong> Solo <code>@intervolutions/ivolt/auto</code> inicializa al cargar, y antes comprueba que hay un documento. Prefiere el <code>init()</code> explícito en un script de cliente cuando sea el framework quien controle la hidratación.</li>
+        <li><strong><code>init()</code> es idempotente</strong> y solo promociona los elementos marcados con <code>data-iv-component</code>, así que volver a llamarlo tras una navegación en el cliente o un renderizado parcial es seguro. Cuando desmontes una zona, llama a <code>destroy()</code> para que se restauren los atributos.</li>
+        <li><strong>El paquete está anotado respecto a efectos secundarios</strong>, así que un empaquetador elimina por tree-shaking los componentes que no importas; la prueba de humo del empaquetado lo verifica.</li>
+        <li><strong>Islas.</strong> El marcado renderizado por un componente que nunca se hidrata sigue funcionando para las familias de solo CSS, y conserva las alternativas con <code>&lt;details&gt;</code> y <code>:target</code> para las interactivas.</li>
+      </ul>
+    </Section>
 
-    <h2>Content-Security-Policy</h2>
-    <p>El paquete funciona bajo <code>script-src 'self'</code>. No contiene <code>eval</code>, ni <code>new Function</code>, ni <code>innerHTML</code> con datos externos, ni atributos <code>on*</code>, y no hace peticiones de red, no carga fuentes remotas y no envía telemetría.</p>
-    <p>Hay una excepción que conviene prever. Si usas el script de lectura previa del tema — ese script en línea diminuto que lee la preferencia guardada antes del primer pintado, para que la página no parpadee con el tema equivocado —, es en línea por necesidad, y una política estricta necesita su hash o un nonce:</p>
-<pre><code>&lt;script&gt;{themeSnippet}&lt;/script&gt;</code></pre>
-<pre><code>Content-Security-Policy: default-src 'self'; script-src 'self' '{cspHash}'; style-src 'self'</code></pre>
-    <p>El hash de arriba se calcula al compilar a partir del fragmento exacto que inyecta este sitio (<code id="csp-hash">{cspHash}</code>), así que los dos no pueden divergir.</p>
-    <p>Esta documentación publica el hash del fragmento que distribuye. Si modificas el fragmento aunque sea en un carácter, el hash cambia: vuelve a generarlo o sirve el script con un nonce. Saltarse el fragmento por completo también es una opción válida: el tema se aplica entonces después de que se hayan ejecutado la hoja de estilo y el script.</p>
-    <p>El único estilo dinámico que aplica el paquete es fijar propiedades personalizadas mediante <code>style.setProperty</code>, que cuenta como un atributo de estilo en línea. Si tu <code>style-src</code> los prohíbe, eso es lo que hay que probar.</p>
+    <Section title="Content-Security-Policy" num={6} lead={`El paquete funciona bajo script-src 'self'. No contiene eval, ni new Function, ni innerHTML con datos externos, ni atributos on*, y no hace peticiones de red, no carga fuentes remotas y no envía telemetría.`}>
+      <p>Hay una excepción que conviene prever. Si usas el script de lectura previa del tema — ese script en línea diminuto que lee la preferencia guardada antes del primer pintado, para que la página no parpadee con el tema equivocado —, es en línea por necesidad, y una política estricta necesita su hash o un nonce:</p>
+      <Code label="html" panels={[{ key: "src", label: "HTML", code: `<script>${themeSnippet}</script>` }]} />
+      <Code label="http" panels={[{ key: "src", label: "HTTP HEADER", code: `Content-Security-Policy: default-src 'self'; script-src 'self' '${cspHash}'; style-src 'self'` }]} />
+      <p>El hash de arriba se calcula al compilar a partir del fragmento exacto que inyecta este sitio (<code id="csp-hash">{cspHash}</code>), así que los dos no pueden divergir.</p>
+      <p>Esta documentación publica el hash del fragmento que distribuye. Si modificas el fragmento aunque sea en un carácter, el hash cambia: vuelve a generarlo o sirve el script con un nonce. Saltarse el fragmento por completo también es una opción válida: el tema se aplica entonces después de que se hayan ejecutado la hoja de estilo y el script.</p>
+      <p>El único estilo dinámico que aplica el paquete es fijar propiedades personalizadas mediante <code>style.setProperty</code>, que cuenta como un atributo de estilo en línea. Si tu <code>style-src</code> los prohíbe, eso es lo que hay que probar.</p>
+    </Section>
   </article>
 </Base>
