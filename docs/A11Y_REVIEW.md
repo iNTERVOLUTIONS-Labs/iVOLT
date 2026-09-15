@@ -445,3 +445,13 @@ Verificado por herramienta y por pruebas de navegador en Chromium, Firefox y Web
 - **Texto**: el revelado por líneas es texto real partido por el autor (sin JS que rompa palabras), visible sin JS y bajo reduced motion; outline y shimmer vuelven a texto normal en `forced-colors`.
 
 Sin verificar: anuncio real del contador del visor y del cambio de imagen con NVDA/VoiceOver; gesto de arrastre con zoom en pantallas táctiles reales; parallax con lápiz o trackpad de alta frecuencia.
+
+## 14. Ciclo v0.8 (2026-09-15): endurecimiento
+
+- **Foco** (`core/focus`): el foco inicial de diálogos, drawers y popovers ya no cae al `<body>` cuando el primer control es `input[type=hidden]`, está en un subárbol `[hidden]` o en un `fieldset[disabled]`; `summary`, `iframe`, `contenteditable` y medios con `controls` entran en el orden de foco (`tests/unit/hardening-runtime.test.js`).
+- **DOM tras `destroy`** en las 87 fixtures: idéntico al servido, incluido el atributo `style` (`tests/unit/hardening.test.js`, 261 casos).
+- **RTL** (`tests/browser/qa-rtl.spec.js`, tres motores): carrusel, drawer, marquesina, megamenú, popover, `range`, brillo y exploración corregidos; ninguna de las 86 fixtures desborda a 320 ni 390 px en `dir="rtl"`.
+- **Colores forzados** (`qa-forced-colors.spec.js`): progreso con `Highlight`, opción activa del combobox y fila de la paleta marcadas, cristal opaco con borde; el resto de estados revisados con sondeos (pestaña activa por `::after`, paso actual, barra de lectura).
+- **Impresión** (`qa-print.spec.js`): sin pegajosos ni fijos, sin sombras ni animaciones, superposiciones fuera.
+
+Sin verificar: lector de pantalla real; pasada propia de reduced motion del revisor B (se apoya en `motion.spec.js` y `text.spec.js`); el paso hecho y el actual del stepper comparten `Highlight` y se distinguen por el glifo.

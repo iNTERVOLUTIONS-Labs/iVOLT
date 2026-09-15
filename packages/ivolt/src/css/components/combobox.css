@@ -125,3 +125,14 @@
 .iv-combobox__empty[hidden] {
   display: none;
 }
+
+/* Forced colours: the active option is a tint plus an inset box shadow, and the
+   user agent drops both. The system highlight carries the state instead. */
+@media (forced-colors: active) {
+  .iv-combobox__option[aria-selected="true"] {
+    color: HighlightText;
+    background-color: Highlight;
+    box-shadow: none;
+    forced-color-adjust: none;
+  }
+}

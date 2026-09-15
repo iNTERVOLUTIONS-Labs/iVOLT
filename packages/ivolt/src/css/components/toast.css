@@ -138,3 +138,10 @@
   margin-block-start: calc(var(--iv-space-1) * -1);
   margin-inline-end: calc(var(--iv-space-2) * -1);
 }
+
+/* Print: the toast region is an overlay; nothing in it belongs on paper. */
+@media print {
+  .iv-toast-region {
+    display: none;
+  }
+}

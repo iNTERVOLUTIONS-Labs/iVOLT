@@ -105,15 +105,18 @@ export class Dialog extends IvComponent {
       );
     }
     super(el, /** @type {Record<string, unknown>} */ (options));
-
+    // `_setup` already ran inside `super`, and so did `iv:init`: a listener of
+    // that event may already have opened the dialog. These assignments only
+    // declare the types of the fields `_setup` created, they never discard
+    // their values.
     /** @type {Element|null} Element focus returns to on close. */
-    this._trigger = null;
+    this._trigger = this._trigger ?? null;
     /** @type {DialogReason|null} Reason of a close started by this instance. */
-    this._closingReason = null;
+    this._closingReason = this._closingReason ?? null;
     /** @type {boolean} Whether this instance added a temporary `tabindex`. */
-    this._addedTabindex = false;
+    this._addedTabindex = this._addedTabindex ?? false;
     /** @type {boolean} Whether the instance is being destroyed. */
-    this._destroying = false;
+    this._destroying = this._destroying ?? false;
     /** @type {EventTarget|null} Where the press behind the current click landed. */
     this._pressTarget = this._pressTarget ?? null;
   }
@@ -158,6 +161,12 @@ export class Dialog extends IvComponent {
 
   /** @returns {void} */
   _setup() {
+    this._trigger = null;
+    this._closingReason = null;
+    this._addedTabindex = false;
+    this._destroying = false;
+    this._pressTarget = null;
+
     this._listen(this._element, "cancel", (event) => {
       // Always intercept: the native Esc close is not cancelable through iv:close.
       event.preventDefault();

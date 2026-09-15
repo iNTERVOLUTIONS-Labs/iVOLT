@@ -126,6 +126,10 @@ export class Drawer extends IvComponent {
       throw new IvError("invalid-element", "Drawer requires a <dialog> element.");
     }
     super(el, /** @type {Record<string, unknown>} */ (options));
+    // `_setup` already ran inside `super`; this assignment only declares the
+    // type of the field it created, it never discards its value.
+    /** @type {string|null} `data-iv-static` exactly as served. */
+    this._servedStatic = this._servedStatic ?? null;
   }
 
   /**
@@ -201,6 +205,8 @@ export class Drawer extends IvComponent {
     this._pressTarget = null;
     /** @type {MediaQueryList|null} Watcher of the static breakpoint. */
     this._mql = null;
+    /** @type {string|null} `data-iv-static` exactly as served. */
+    this._servedStatic = this._element.getAttribute(STATIC_ATTR);
 
     this._applyPlacement();
     this._setupStatic();
@@ -442,7 +448,11 @@ export class Drawer extends IvComponent {
    */
   _teardown() {
     this._mql = null;
-    this._element.removeAttribute(STATIC_ATTR);
+    // Only what this instance wrote goes away: an author who served
+    // `data-iv-static` keeps it (§5.2).
+    if (this._servedStatic === null) this._element.removeAttribute(STATIC_ATTR);
+    else this._element.setAttribute(STATIC_ATTR, this._servedStatic);
+    this._servedStatic = null;
     if (this._addedEndClass) {
       this._addedEndClass = false;
       this._element.classList.remove(END_CLASS);

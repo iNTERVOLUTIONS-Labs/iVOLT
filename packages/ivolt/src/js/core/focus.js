@@ -5,13 +5,18 @@
  * @module core/focus
  */
 
-/** Standard focusable candidates. */
+/** Standard focusable candidates (§5.2, enmienda v0.8). */
 const FOCUSABLE_SELECTOR = [
   "a[href]",
   "button",
   "input",
   "select",
   "textarea",
+  "summary",
+  "iframe",
+  '[contenteditable]:not([contenteditable="false"])',
+  "audio[controls]",
+  "video[controls]",
   "[tabindex]",
 ].join(",");
 
@@ -23,10 +28,26 @@ const FOCUSABLE_SELECTOR = [
  */
 function isFocusable(el) {
   if (el.hasAttribute("disabled")) return false;
-  if (el.hasAttribute("hidden")) return false;
+  // A hidden ancestor hides its subtree too, and `focus()` on an unrendered
+  // element is a silent no-op that drops focus to <body>.
+  if (el.closest("[hidden]")) return false;
+  // `type="hidden"` inputs are never focusable, and a form inside a dialog very
+  // often starts with one; jsdom still reports `tabIndex === 0` for them.
+  if (el.tagName === "INPUT" && /** @type {HTMLInputElement} */ (el).type === "hidden") {
+    return false;
+  }
   if (el.getAttribute("aria-hidden") === "true") return false;
-  if (el.tabIndex < 0) return false;
+  // `tabIndex` is only authoritative when the author wrote `tabindex`: engines
+  // disagree on what they report for natively focusable tags (jsdom says -1 for
+  // `contenteditable` and for media with controls), and every tag in the
+  // selector above is focusable by itself once it is rendered and enabled.
+  if (el.hasAttribute("tabindex") && el.tabIndex < 0) return false;
   if (el.closest("[inert]")) return false;
+  // A disabled <fieldset> disables every control in it but its first legend.
+  const fieldset = el.closest("fieldset[disabled]");
+  if (fieldset && !el.closest("fieldset[disabled] > legend:first-of-type")) {
+    return false;
+  }
   return true;
 }
 

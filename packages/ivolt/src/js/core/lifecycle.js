@@ -117,8 +117,8 @@ function createTriggerHandler() {
 
     /** @type {Openable|null} */
     let instance = null;
-    /** @type {"open"|"close"|"toggle"} */
-    let action = "open";
+    /** @type {"open"|"close"|"toggle"|null} */
+    let action = null;
 
     // Empty values are state, not triggers (the megamenu marks its open item with `data-iv-open=""`).
     if (openId) {
@@ -139,6 +139,9 @@ function createTriggerHandler() {
       }
     }
 
+    // Only a real trigger loses its navigation: a link that merely carries the
+    // empty state marker keeps its href (§5.4).
+    if (action === null) return;
     if (trigger.tagName === "A") event.preventDefault();
     if (!instance) return;
 

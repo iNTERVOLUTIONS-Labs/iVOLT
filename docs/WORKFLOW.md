@@ -42,6 +42,8 @@ Límites iniciales: revisión ≤ 8 turnos, implementación ≤ 20 turnos. Una t
 3. Tras dos intentos fallidos en el mismo error: parar, diagnosticar con evidencia (logs acotados, bisección), decidir; no repetir a ciegas. Escalar esfuerzo solo para ese bloqueo.
 4. Cerrar hito: suite del gate, `PROJECT_STATE.md` (estado, archivos, verificaciones, fallos abiertos, siguiente acción, decisiones), commit.
 
+Dos agentes que ejecutan Playwright en el mismo árbol a la vez comparten `test-results/` y se borran los artefactos mutuamente (fallos fantasma con `ENOENT … .playwright-artifacts`): cada encargo con pruebas de navegador concurrentes usa `--output=/tmp/<nombre-del-agente>` y `--trace=off`, o las pasadas se serializan. Registrado en v0.8 tras dos revisores simultáneos.
+
 ## 5. Control de coste
 
 - Los topes económicos viven en el proveedor o en la herramienta (`/usage` en la herramienta de agentes). Este documento limita alcance y acciones, no facturación.

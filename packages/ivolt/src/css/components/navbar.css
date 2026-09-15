@@ -495,3 +495,15 @@
     border-block-end: var(--iv-border-width) solid CanvasText;
   }
 }
+
+/* Print: a pinned header repeats or covers the page; on paper it is the first
+   block of the document and nothing else. */
+@media print {
+  /* The sticky rule is `[data-iv-sticky="true"]`, so the print rule matches it. */
+  .iv-navbar[data-iv-sticky] {
+    position: static;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

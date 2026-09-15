@@ -253,6 +253,12 @@
   transition: transform var(--iv-motion-base) var(--iv-ease-out);
 }
 
+/* The two logical borders draw the mirrored corner in a right-to-left
+   document, so the same +45deg would point the chevron upwards. */
+:where([dir="rtl"]) .iv-megamenu__meta::after {
+  transform: rotate(-45deg);
+}
+
 @media (hover: hover) {
   .iv-megamenu__card:hover {
     background-color: var(--iv-color-surface-raised);
@@ -260,6 +266,12 @@
 
   :where(.iv-megamenu__card:hover) .iv-megamenu__meta::after {
     transform: translateX(0.2rem) rotate(45deg);
+  }
+
+  /* `translateX` is physical and the corner the two logical borders draw is
+     mirrored, so the chevron needs the opposite rotation and nudge. */
+  :where([dir="rtl"] .iv-megamenu__card:hover) .iv-megamenu__meta::after {
+    transform: translateX(-0.2rem) rotate(-45deg);
   }
 }
 

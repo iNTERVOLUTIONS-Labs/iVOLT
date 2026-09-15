@@ -62,9 +62,11 @@ test.describe("Countup", () => {
 
     // The frames really counted: intermediate figures were painted, each of them
     // formatted with the decimals of the figure it was heading for.
+    // How many frames land in 900 ms depends on the engine and on the machine's load (a loaded
+    // three-engine run gave WebKit three), so the assertion is that some were painted, not how many.
     const frames = await page.evaluate(() => window.__frames);
-    expect(frames.filter((t) => /^\d+\.\d{2}$/.test(t) && !["2.60", "25.64", "39.04"].includes(t)).length).toBeGreaterThan(3);
-    expect(frames.filter((t) => /^\d{1,3}$/.test(t) && t !== "641").length).toBeGreaterThan(3);
+    expect(frames.filter((t) => /^\d+\.\d{2}$/.test(t) && !["2.60", "25.64", "39.04"].includes(t)).length).toBeGreaterThan(0);
+    expect(frames.filter((t) => /^\d{1,3}$/.test(t) && t !== "641").length).toBeGreaterThan(0);
   });
 
   test("keeps prefix, suffix and the separators of the language", async ({ page }) => {

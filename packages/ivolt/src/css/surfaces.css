@@ -203,6 +203,23 @@
   transition: transform 700ms var(--iv-ease-out);
 }
 
+/* The sweep and its gradient are physical: both are mirrored so the light
+ * crosses in the reading direction. */
+:where([dir="rtl"]) .iv-shine::after {
+  background-image: linear-gradient(
+    -100deg,
+    transparent 34%,
+    var(--iv-shine-color) 50%,
+    transparent 66%
+  );
+  transform: translateX(120%);
+}
+
+:where([dir="rtl"]) .iv-shine:hover::after,
+:where([dir="rtl"]) .iv-shine:focus-visible::after {
+  transform: translateX(-120%);
+}
+
 /* Elevation ------------------------------------------------------------ */
 
 .iv-elevate {
@@ -237,5 +254,35 @@
 
   .iv-elevate {
     --iv-elevate-lift: 0px;
+  }
+}
+
+/* Forced colours: translucency and a blur are not readable against a system
+   palette. The glass becomes an opaque panel with a visible edge, and the
+   decorative meshes, sheen and grain step aside. */
+@media (forced-colors: active) {
+  .iv-glass {
+    background-color: Canvas;
+    border-color: CanvasText;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    forced-color-adjust: none;
+  }
+
+  .iv-shine::after,
+  .iv-texture-grain::after,
+  .iv-mesh::before {
+    display: none;
+  }
+}
+
+/* Print: a blur over white paper is a grey box. */
+@media print {
+  .iv-glass {
+    background-color: #fff;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }

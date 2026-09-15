@@ -113,6 +113,12 @@
   rotate: 45deg;
 }
 
+/* `clip-path` is physical: without the mirrored polygon the kept triangle drops
+   the logical inline-start border in a right-to-left document. */
+:where([dir="rtl"]) .iv-popover--arrow::before {
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
 .iv-popover--arrow[data-iv-placement="top"]::before {
   inset-block: 100% auto;
   translate: 0 -50%;

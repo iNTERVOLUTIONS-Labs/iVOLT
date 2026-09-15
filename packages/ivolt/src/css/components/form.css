@@ -108,7 +108,7 @@ textarea.iv-input {
   background-position: right var(--iv-space-3) center;
 }
 
-.iv-select:dir(rtl) {
+:where([dir="rtl"]) .iv-select {
   background-position: left var(--iv-space-3) center;
 }
 
@@ -549,6 +549,12 @@ textarea.iv-input {
   background-image: linear-gradient(to right, var(--iv-color-primary) 0 var(--iv-range-value), var(--iv-color-border) var(--iv-range-value) 100%);
 }
 
+/* A gradient has no logical direction: the native thumb starts on the right in
+   a right-to-left document, so the filled part has to start there too. */
+:where([dir="rtl"]) .iv-range::-webkit-slider-runnable-track {
+  background-image: linear-gradient(to left, var(--iv-color-primary) 0 var(--iv-range-value), var(--iv-color-border) var(--iv-range-value) 100%);
+}
+
 .iv-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -598,6 +604,10 @@ textarea.iv-input {
     background-image: linear-gradient(to right, Highlight 0 var(--iv-range-value), Canvas var(--iv-range-value) 100%);
     border: var(--iv-border-width) solid CanvasText;
     forced-color-adjust: none;
+  }
+
+  :where([dir="rtl"]) .iv-range::-webkit-slider-runnable-track {
+    background-image: linear-gradient(to left, Highlight 0 var(--iv-range-value), Canvas var(--iv-range-value) 100%);
   }
 
   .iv-range::-webkit-slider-thumb {
@@ -707,8 +717,8 @@ textarea.iv-input {
   padding-inline-end: 2.5rem;
 }
 
-.iv-field--invalid .iv-input:where(:dir(rtl)),
-.iv-field--invalid .iv-textarea:where(:dir(rtl)) {
+:where([dir="rtl"]) .iv-field--invalid .iv-input,
+:where([dir="rtl"]) .iv-field--invalid .iv-textarea {
   background-position: left var(--iv-space-3) top 0.7rem;
 }
 

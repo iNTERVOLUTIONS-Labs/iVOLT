@@ -123,3 +123,44 @@
     animation: none;
   }
 }
+
+/* Forced colours: the filled part is a background image, which the user agent
+   removes, leaving every bar an identical empty groove. The fill is repainted
+   with the system highlight and the element opts out so the value stays
+   readable; the indeterminate bar keeps no travelling gradient. */
+@media (forced-colors: active) {
+  /* The host keeps the forced palette: opting the whole element out would let
+     the tone colour leak back into `color`. Only the filled part opts out. */
+  .iv-progress {
+    background-color: Canvas;
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+
+  .iv-progress::-webkit-progress-bar {
+    background-color: Canvas;
+  }
+
+  .iv-progress::-webkit-progress-value {
+    background-image: none;
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .iv-progress::-moz-progress-bar {
+    background-image: none;
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .iv-progress:indeterminate {
+    background-image: none;
+    background-color: Canvas;
+    animation: none;
+  }
+
+  .iv-progress:indeterminate::-webkit-progress-value,
+  .iv-progress:indeterminate::-moz-progress-bar {
+    background-color: transparent;
+  }
+}

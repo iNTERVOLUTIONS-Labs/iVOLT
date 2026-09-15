@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-14 · Ciclo **v0.7 «Media & motion» cerrado** → hito `0.7.0-beta.0` (`ROADMAP.md` §10, ADR-042) · v0.6 cerrado el mismo día (§9, ADR-041) · **`0.7.0-beta.0` publicada en npm el 2026-09-14 con la etiqueta `beta` (ADR-043); nada desplegado**
+Última actualización: 2026-09-15 · Ciclo **v0.8 «Hardening» cerrado** → `0.8.0-beta.0` (`ROADMAP.md` §11, ADR-044/045), camino a `1.0.0-rc.0` · `0.7.0-beta.0` publicada en npm el 2026-09-14 (`beta`, ADR-043); 0.8 sin publicar; nada desplegado
 
 ## Estado por fase e hito
 
@@ -9,11 +9,29 @@
 | 0–4 (v0.1.0-alpha.0) | hechas, no publicada | `docs/RELEASE.md` §1–§4 |
 | Betas 0.2 a 0.5 (`ROADMAP.md` §5–§7) y ronda visual (§8) | cerradas, no publicadas | combobox, data table, carrusel, selector, formularios, superficies, megamenú, efectos, hero, datepicker, tooltip, popover, paleta, constructor de temas, rediseño de la web |
 | v0.6 «Structure» (§9, ADR-041) | cerrado, no publicado | tokens con nombre, navbar, stepper, toast declarativo, timeline/stat/avatar; 94 páginas en dos idiomas; gate en tres motores |
-| **v0.7 «Media & motion»** (§10, ADR-042) | cerrado y **publicado** (`npm install @intervolutions/ivolt@beta`) | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
+| v0.7 «Media & motion» (§10, ADR-042) | cerrado y publicado (`npm install @intervolutions/ivolt@beta`) |
+| **v0.8 «Hardening»** (§11, ADR-044/045) | cerrado, sin publicar | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
 
 ## Petición del propietario que abrió estos ciclos (2026-09-14)
 
 «Sigue trabajando hasta 0.7.» Método en ambos ciclos: contratos escritos y congelados antes de implementar (§8.15–§8.23), dos implementadores Opus con archivos disjuntos y capturas propias, un tercero para la web, el líder integra, registra las enmiendas de implementación en el contrato y pasa el gate. Ninguna afirmación visual sin captura (ADR-039).
+
+## Entregas de v0.8 (camino a 1.0)
+
+| Bloque | Verificación |
+|---|---|
+| Revisión adversaria JS (revisor A): `core/style.js` repone el `style` servido; foco inicial correcto con campos ocultos y `fieldset[disabled]`; enfocables nuevos (`summary`, `iframe`, `contenteditable`, medios); enlaces con disparador vacío conservan la navegación; booleanos sin valor; `Drawer` y `Dialog` limpios; SSR de 32 módulos y de `dist` | `hardening.test.js` (261 casos sobre 87 fixtures), `hardening-runtime.test.js`, `ssr.test.js`; 982 unitarias; specs de diálogo/drawer/popover/paleta × 3 motores |
+| Revisión adversaria CSS (revisor B): RTL (carrusel, drawer, marquesina, megamenú, popover, `range`, brillo, exploración), colores forzados (progreso, combobox, paleta, cristal), impresión, 320 px; `?dir=rtl` en el servidor de fixtures | `qa-rtl.spec.js`, `qa-forced-colors.spec.js`, `qa-print.spec.js` × 3 motores; 67 líneas base sin cambio |
+| Integrador: módulos raíz emitidos sueltos, `npm run sizes` por módulo (ADR-044), portada de la receta en 800 px para móvil, `STABILITY.md` (borrador para 1.0), generador de la referencia (`scripts/build-reference.mjs`), convención `:where([dir="rtl"])`, regla de `--output` por agente | `verify`; Lighthouse |
+
+Presupuestos (`npm run sizes`): `ivolt.min.css` 28,6 KiB (≤ 40), JS agrupado 43,0 KiB (≤ 48; techo confirmado en ADR-044).
+
+## Verificaciones ejecutadas en v0.8
+
+| Check | Resultado |
+|---|---|
+| `IVOLT_ALL_BROWSERS=1 npm run verify` | exit 0 en la segunda pasada (la primera dejó una aserción de fotogramas del contador que dependía de la carga en WebKit; la prueba exige ahora fotogramas intermedios, no una cantidad): build · 982 unitarias · 1464 pruebas de navegador superadas y 138 omitidas (visuales fuera de Chromium y el pseudoelemento del progreso fuera de Chromium) en tres motores · tamaños · pack-smoke (`intervolutions-ivolt-0.8.0-beta.0.tgz`, 134 archivos) · docs (102 páginas) · ejemplos (5) |
+| Lighthouse | `/` y `/es`: móvil 97, escritorio 100; receta showcase móvil 98 (antes 87; LCP 2,4 s con la portada de 800 px), escritorio 99 (`docs/LIGHTHOUSE.md`) |
 
 ## Entregas de v0.7
 
@@ -53,7 +71,7 @@ Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title`
 
 ## Siguiente acción
 
-Revisión del propietario de v0.6 y v0.7 con la web construida (`npm run build && npm run dev:docs`): navbar, stepper, bloques de contenido, galería y visor, movimiento, texto, contador y la receta «showcase» (`/examples/showcase/index.html`). Candidatos para 0.8 en `ROADMAP.md` §8 y §10 (relevo por tarjeta en la baraja, tokens pendientes, `Picker` con etiqueta hermana, decisión sobre el presupuesto de JS o la importación por módulo, servir a la home solo los módulos que usa). La web sigue sin desplegar (solo con autorización).
+v0.9 «Complete» (`ROADMAP.md` §11): referencia generada en la web, página de localización, candidatos aceptados, decisión sobre los módulos de la home, `STABILITY.md` definitivo; después `1.0.0-rc.0` (publicación con OTP del propietario). Revisión del propietario de v0.6 y v0.7 con la web construida (`npm run build && npm run dev:docs`): navbar, stepper, bloques de contenido, galería y visor, movimiento, texto, contador y la receta «showcase» (`/examples/showcase/index.html`). Candidatos para 0.8 en `ROADMAP.md` §8 y §10 (relevo por tarjeta en la baraja, tokens pendientes, `Picker` con etiqueta hermana, decisión sobre el presupuesto de JS o la importación por módulo, servir a la home solo los módulos que usa). La web sigue sin desplegar (solo con autorización).
 
 ## Decisiones que no deben perderse
 

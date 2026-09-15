@@ -18,6 +18,7 @@
 import { IvComponent, isElement } from "../core/component.js";
 import { getInstance } from "../core/registry.js";
 import { emit } from "../core/events.js";
+import { rememberStyle, restoreStyles } from "../core/style.js";
 import {
   KEY_ARROW_LEFT,
   KEY_ARROW_RIGHT,
@@ -152,8 +153,8 @@ export class Stepper extends IvComponent {
     this._notes = this._notes ?? new Map();
     /** @type {HTMLElement|null} The live region this instance added. */
     this._status = this._status ?? null;
-    /** @type {string|null} Inline progress value the author had written. */
-    this._progress = this._progress ?? null;
+    /** @type {Map<Element, string|null>} `style` attributes as served. */
+    this._styles = this._styles ?? new Map();
   }
 
   /**
@@ -212,7 +213,6 @@ export class Stepper extends IvComponent {
     this._overrides = new Map();
     this._notes = new Map();
     this._status = null;
-    this._progress = null;
 
     const root = this._element;
     const doc = root.ownerDocument;
@@ -262,8 +262,8 @@ export class Stepper extends IvComponent {
     root.appendChild(status);
     this._status = status;
 
-    const style = /** @type {HTMLElement} */ (root).style;
-    this._progress = style ? style.getPropertyValue(PROGRESS_PROPERTY) : null;
+    /** @type {Map<Element, string|null>} `style` attributes as served. */
+    this._styles = new Map();
 
     this._render();
 
@@ -283,12 +283,7 @@ export class Stepper extends IvComponent {
       this._status.remove();
       this._status = null;
     }
-    const style = /** @type {HTMLElement} */ (this._element).style;
-    if (style) {
-      if (this._progress) style.setProperty(PROGRESS_PROPERTY, this._progress);
-      else style.removeProperty(PROGRESS_PROPERTY);
-    }
-    this._progress = null;
+    restoreStyles(this._styles);
     this._entries = [];
     this._overrides.clear();
     for (const [el, attributes] of this._saved) {
@@ -445,6 +440,7 @@ export class Stepper extends IvComponent {
     const style = /** @type {HTMLElement} */ (this._element).style;
     if (style) {
       const ratio = total > 1 ? this._index / (total - 1) : 1;
+      rememberStyle(this._styles, this._element);
       style.setProperty(PROGRESS_PROPERTY, String(Math.round(ratio * 1000) / 1000));
     }
 

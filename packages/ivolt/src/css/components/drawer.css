@@ -45,6 +45,17 @@
   animation: iv-drawer-in var(--iv-motion-base) var(--iv-ease-out);
 }
 
+/* `translateX` is physical: the drawer anchored at the inline start sits on the
+ * right in a right-to-left document and has to arrive from the right. Flipping
+ * the local keeps one keyframe for both directions. */
+:where([dir="rtl"]) .iv-drawer {
+  --iv-drawer-from: 100%;
+}
+
+:where([dir="rtl"]) .iv-drawer--end {
+  --iv-drawer-from: -100%;
+}
+
 @keyframes iv-drawer-in {
   from {
     transform: translateX(var(--iv-drawer-from));

@@ -299,3 +299,14 @@
     background-color: var(--iv-color-surface-raised);
   }
 }
+
+/* Forced colours: the highlighted row is a tint the user agent removes, so the
+   keyboard position is repainted with the system highlight. */
+@media (forced-colors: active) {
+  .iv-command__item[aria-selected="true"] {
+    color: HighlightText;
+    background-color: Highlight;
+    box-shadow: none;
+    forced-color-adjust: none;
+  }
+}

@@ -24,6 +24,7 @@
  */
 
 import { IvComponent } from "../core/component.js";
+import { rememberStyle, restoreStyles } from "../core/style.js";
 
 /**
  * @typedef {object} ScrollMotionOptions
@@ -58,19 +59,6 @@ function unit(value) {
  */
 function round(value) {
   return String(Math.round(value * 10000) / 10000);
-}
-
-/**
- * Removes a property and the style attribute itself when nothing else was
- * using it.
- *
- * @param {HTMLElement} el Element to clean.
- * @param {string} name Custom property to remove.
- * @returns {void}
- */
-function clearProperty(el, name) {
-  el.style.removeProperty(name);
-  if (el.getAttribute("style") === "") el.removeAttribute("style");
 }
 
 /**
@@ -128,6 +116,8 @@ export class ScrollMotion extends IvComponent {
     this._frame = this._frame ?? 0;
     /** @type {boolean} Whether a frame is scheduled. */
     this._pending = this._pending ?? false;
+    /** @type {Map<Element, string|null>} `style` attributes as served. */
+    this._styles = this._styles ?? new Map();
   }
 
   /**
@@ -154,6 +144,8 @@ export class ScrollMotion extends IvComponent {
   /** @returns {void} */
   _setup() {
     this._touched = new Set();
+    /** @type {Map<Element, string|null>} `style` attributes as served. */
+    this._styles = new Map();
     this._frame = 0;
     this._pending = false;
     this._native = false;
@@ -179,9 +171,8 @@ export class ScrollMotion extends IvComponent {
   /** @returns {void} */
   _teardown() {
     this._cancel();
-    for (const el of this._touched) clearProperty(el, VIEW_PROPERTY);
     this._touched.clear();
-    clearProperty(/** @type {HTMLElement} */ (this._element), SCROLL_PROPERTY);
+    restoreStyles(this._styles);
     this._active = false;
   }
 
@@ -245,6 +236,7 @@ export class ScrollMotion extends IvComponent {
     if (scroller) {
       const travel = scroller.scrollHeight - scroller.clientHeight;
       const progress = travel > 0 ? unit(scroller.scrollTop / travel) : 0;
+      rememberStyle(this._styles, this._element);
       /** @type {HTMLElement} */ (this._element).style.setProperty(
         SCROLL_PROPERTY,
         round(progress)
@@ -255,6 +247,7 @@ export class ScrollMotion extends IvComponent {
       const rect = el.getBoundingClientRect();
       const span = height + rect.height;
       const progress = span > 0 ? unit((height - rect.top) / span) : 0.5;
+      rememberStyle(this._styles, el);
       el.style.setProperty(VIEW_PROPERTY, round(progress));
       this._touched.add(el);
     }

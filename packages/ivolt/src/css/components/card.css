@@ -90,3 +90,10 @@
   background-color: var(--iv-color-hover-surface);
   border-block-start: var(--iv-border-width) solid var(--iv-color-border);
 }
+
+/* Print: the lift is ink that carries no information. */
+@media print {
+  .iv-card {
+    box-shadow: none;
+  }
+}

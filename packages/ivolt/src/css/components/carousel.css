@@ -21,6 +21,9 @@
   --iv-carousel-radius: var(--iv-radius-lg);
   --iv-carousel-gap: var(--iv-space-4);
   --iv-carousel-parallax: 10cqi;
+  /* The track moves with a physical transform: +1 travels left-to-right, -1 mirrors
+     the travel for a right-to-left document. */
+  --iv-carousel-sign: 1;
   --iv-carousel-scrim: color-mix(in srgb, var(--iv-palette-neutral-1000) 92%, transparent);
 
   position: relative;
@@ -451,6 +454,12 @@
   to { transform: scale(1.08) translate3d(-1.5%, -1%, 0); }
 }
 
+/* The travel is a physical transform, so a right-to-left document runs it the
+   other way; the native scrolling fallback is already mirrored by the engine. */
+:where([dir="rtl"]) .iv-carousel {
+  --iv-carousel-sign: -1;
+}
+
 /* Enhanced: the track no longer scrolls, JavaScript owns the position ---- */
 
 /* With JavaScript the track is no longer a scroll container: `overflow:
@@ -464,7 +473,7 @@
 }
 
 :where([data-iv-js] .iv-carousel[data-iv-effect="slide"]) .iv-carousel__track {
-  transform: translate3d(calc(var(--iv-carousel-index, 0) * -100%), 0, 0);
+  transform: translate3d(calc(var(--iv-carousel-index, 0) * -100% * var(--iv-carousel-sign, 1)), 0, 0);
   transition: transform var(--iv-carousel-duration) var(--iv-carousel-ease);
 }
 
@@ -473,7 +482,10 @@
    and 1 or more for every other one, which opacity clamps to 0. */
 :where([data-iv-js] .iv-carousel[data-iv-effect="slide"]) .iv-carousel__caption {
   transform: translate3d(
-    calc((var(--iv-carousel-index, 0) - var(--iv-carousel-slide, 0)) * var(--iv-carousel-parallax)),
+    calc(
+      (var(--iv-carousel-index, 0) - var(--iv-carousel-slide, 0)) * var(--iv-carousel-parallax) *
+        var(--iv-carousel-sign, 1)
+    ),
     0,
     0
   );

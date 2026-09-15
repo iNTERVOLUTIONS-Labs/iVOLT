@@ -2,7 +2,8 @@
  * Option resolution: `defaults < data-iv-*  < JavaScript options`.
  *
  * Attribute values are coerced with a tiny, explicit grammar: `"true"`/`"false"`
- * become booleans, plain numbers become numbers, everything else stays a string.
+ * become booleans, a valueless attribute is `true` for a boolean option, plain
+ * numbers become numbers, everything else stays a string.
  * No JSON, no expressions. A value whose coerced type does not match the type of
  * the default is ignored and warned about once per component and option.
  *
@@ -110,7 +111,12 @@ export function resolveOptions(el, defaults, jsOptions) {
     const attr = `data-iv-${kebab(key)}`;
     if (el.hasAttribute(attr)) {
       const raw = el.getAttribute(attr) ?? "";
-      const coerced = coerce(raw);
+      // `data-iv-sticky` with no value is the HTML spelling of `true`, exactly
+      // like `disabled` or `hidden`; only a boolean option reads it that way, so
+      // an empty string stays an empty string wherever one is meaningful
+      // (`data-iv-placeholder=""` is "use the served placeholder").
+      const coerced =
+        raw === "" && typeof fallback === "boolean" ? true : coerce(raw);
       if (matchesType(coerced, fallback)) value = coerced;
       else warnOnce(component, key, raw);
     }

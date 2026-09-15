@@ -165,11 +165,11 @@ Petición del propietario: «sigue hasta 1.0 release candidate». Un candidato a
 
 | Orden | Elemento | Responsable | Estado |
 |---|---|---|---|
-| 1 | Revisión adversaria de los 24 componentes JS (teclado, foco, `destroy`, precedencia de opciones, eventos contra contrato, carreras, SSR por módulo) con corrección | revisor A (Opus) | abierto |
-| 2 | Revisión adversaria de las 36 hojas: RTL (`dir="rtl"`) con capturas, `forced-colors` en todos los módulos (hoy 13 de 36), impresión, 320 px, `[hidden]`, especificidad | revisor B (Opus) | abierto |
-| 3 | Emisión por módulo de `surfaces`, `effects`, `motion` y `text` en `dist/css`; cifras por módulo en `QUALITY.md` | integrador | abierto |
-| 4 | Presupuesto de JS: medir importación por módulo y decidir por ADR (subir el umbral o recomendar módulos) | integrador | abierto |
-| 5 | Receta showcase: portada con variante de 800 px para móvil (`<picture>`), LCP medido | integrador | abierto |
+| 1 | Revisión adversaria de los 24 componentes JS (teclado, foco, `destroy`, precedencia de opciones, eventos contra contrato, carreras, SSR por módulo) con corrección | revisor A (Opus) | hecho (2026-09-15, ADR-045) |
+| 2 | Revisión adversaria de las 36 hojas: RTL (`dir="rtl"`) con capturas, `forced-colors` en todos los módulos (hoy 13 de 36), impresión, 320 px, `[hidden]`, especificidad | revisor B (Opus) | hecho (2026-09-15, ADR-045) |
+| 3 | Emisión por módulo de `surfaces`, `effects`, `motion` y `text` en `dist/css`; cifras por módulo en `QUALITY.md` | integrador | hecho (2026-09-15) |
+| 4 | Presupuesto de JS: medir importación por módulo y decidir por ADR (subir el umbral o recomendar módulos) | integrador | hecho (2026-09-15) |
+| 5 | Receta showcase: portada con variante de 800 px para móvil (`<picture>`), LCP medido | integrador | hecho (2026-09-15) |
 | 6 | Cierre: gate en tres motores, líneas base, Lighthouse, changelog, estado | integrador | abierto |
 
 ### v0.9 «Complete» → `0.9.0-beta.0`

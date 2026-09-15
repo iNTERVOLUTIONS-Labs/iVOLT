@@ -4,6 +4,13 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 
 ## 0.8.0-beta.0 (unreleased)
 
+### Fixed
+- Right-to-left: the carousel track, the drawer entrance, the marquee loop, the megamenu chevron, the popover arrow, the range fill, the sheen and the scan line mirror under `[dir="rtl"]`; every fixture stays inside 320 px in both directions.
+- Forced colours: progress bars, the active combobox option, the highlighted command row and glass panels keep a visible state with system colours; a first `@media print` block removes sticky and fixed chrome, shadows and animations.
+- Focus: hidden inputs, hidden subtrees and disabled fieldsets are skipped when a dialog, drawer or popover chooses its first focusable; `summary`, `iframe`, `contenteditable` and media with controls are focusable.
+- `destroy` restores the served `style` attribute exactly (stepper, scroll motion); the drawer keeps a served `data-iv-static`; a dialog opened from its own `iv:init` listener leaves no orphan `tabindex`; a link that only carries an empty trigger attribute keeps its navigation.
+- A `data-iv-*` attribute without a value reads as `true` for boolean options.
+
 ### Changed
 - `surfaces.css`, `effects.css`, `motion.css` and `text.css` are also emitted as standalone minified modules in `dist/css/`, like the components.
 

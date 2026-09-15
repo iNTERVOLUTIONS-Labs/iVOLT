@@ -146,6 +146,11 @@ class Dialog {
 
 Toda opción se puede fijar por atributo con su nombre en kebab-case (`data-iv-close-on-select="false"`).
 
+
+Enmiendas v0.8 (2026-09-15, revisión adversaria, ADR-045): un atributo `data-iv-*` **sin valor** vale `true` cuando el default de la opción es booleano (ortografía HTML de los booleanos, como `disabled` o `hidden`); para opciones de cadena, `""` sigue siendo la cadena vacía. Un `<a>` que lleva un atributo de disparador **vacío** (`data-iv-open=""`, marca de estado del megamenú) conserva su navegación: el delegador solo cancela el enlace cuando resuelve una acción. `getFocusable` excluye `input[type=hidden]`, subárboles `[hidden]` y controles de un `fieldset[disabled]` (salvo su primer `legend`), e incluye `summary`, `iframe`, `[contenteditable]` y medios con `controls`. `destroy` repone el atributo `style` servido tal cual (o lo retira si no existía). En `getFocusable`, `tabIndex` solo es autoritativo cuando el autor escribió `tabindex` (jsdom y algunos motores informan −1 para `contenteditable` y medios con `controls`); un `tabindex="-1"` explícito sigue excluyendo. `Drawer` repone `data-iv-static` tal como se sirvió; `Dialog` inicializa su estado en `_setup`, así que un oyente de `iv:init` puede abrirlo sin dejar restos tras `destroy`.
+
+Escritura de derecha a izquierda (v0.8, ADR-045): todas las hojas usan propiedades lógicas; lo que es físico por naturaleza (traslaciones con signo, gradientes direccionales, máscaras de flechas, `clip-path`, keyframes) se espeja bajo `:where([dir="rtl"])` a especificidad cero, nunca con `:dir()`, y exige `dir="rtl"` en un ancestro (normalmente `<html>`); `scripts/serve.mjs` sirve cualquier fixture con `?dir=rtl`. Colores forzados: cada estado que solo se distinguía por fondo, imagen o sombra (progreso, opción activa, fila resaltada, cristal) tiene su regla `forced-colors: active` con colores de sistema. Impresión: `base.css` apaga sombras, animaciones y superposiciones, y los módulos con posición pegajosa o fija (navbar, barra de lectura, toast) se desanclan en su propio bloque `@media print`, porque la capa `iv.base` no puede vencer a `iv.components`.
+
 ### 5.3 Eventos
 
 Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despachados en `instance.element`, con `detail.instance` y campos específicos.

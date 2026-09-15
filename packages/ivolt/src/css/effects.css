@@ -192,6 +192,32 @@
   }
 }
 
+/* `translateX` is physical: the horizontal scan crosses in the reading
+ * direction, so a right-to-left document runs the mirrored keyframes. */
+:where([dir="rtl"]) .iv-scan:not(.iv-scan--v)::after {
+  animation-name: iv-scan-h-rtl;
+}
+
+@keyframes iv-scan-h-rtl {
+  from {
+    transform: translateX(10%);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: var(--iv-scan-opacity, 1);
+  }
+
+  90% {
+    opacity: var(--iv-scan-opacity, 1);
+  }
+
+  to {
+    transform: translateX(-110%);
+    opacity: 0;
+  }
+}
+
 @keyframes iv-scan-v {
   from {
     transform: translateY(-10%);

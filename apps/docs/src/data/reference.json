@@ -396,6 +396,7 @@
       "iv-glass--strong",
       "iv-glow",
       "iv-gradient-text",
+      "iv-mesh",
       "iv-shine",
       "iv-texture-aurora",
       "iv-texture-grain",
@@ -421,6 +422,7 @@
       "iv-parallax",
       "iv-parallax--media",
       "iv-parallax-frame",
+      "iv-parallax__layer",
       "iv-scroll-progress",
       "iv-stack-cards",
       "iv-stack-cards__card"
@@ -954,6 +956,7 @@
       "--iv-carousel-parallax",
       "--iv-carousel-radius",
       "--iv-carousel-scrim",
+      "--iv-carousel-sign",
       "--iv-carousel-slide"
     ],
     "components/combobox": [

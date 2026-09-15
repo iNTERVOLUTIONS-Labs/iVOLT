@@ -223,3 +223,37 @@
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: var(--iv-focus-offset);
 }
+
+/* Print ---------------------------------------------------------------- */
+
+/* Paper has no viewport: anything pinned to one covers the page or prints
+ * where it was pinned. Overlays, decoration and motion carry no information on
+ * paper, so the sheet keeps the text and the rules between rows. */
+@media print {
+  .iv-root,
+  .iv-root body {
+    color: #000;
+    background: #fff;
+  }
+
+  .iv-root dialog::backdrop {
+    display: none;
+  }
+
+  /* The base layer cannot reach a component that pins or shades itself: those
+   * modules carry their own print rule. */
+  .iv-root *,
+  .iv-root *::before,
+  .iv-root *::after {
+    box-shadow: none;
+    text-shadow: none;
+    animation: none;
+    transition: none;
+  }
+
+  /* The base rule above sets `display` on a few elements; a hidden element
+   * stays hidden on paper. */
+  .iv-root [hidden] {
+    display: none;
+  }
+}
