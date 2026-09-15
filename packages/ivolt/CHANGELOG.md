@@ -2,7 +2,7 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
-## 1.0.0-rc.1 (unreleased)
+## 1.0.0-rc.1 — 2026-09-15 (npm, tag `next`)
 
 ### Changed
 - `Megamenu` rebuilt from scratch (contract §8.9 v2, ADR-048) after the owner's review: the panel gains a head with title, count and close, a directory with counts, discovery tabs with ranked art cards, a cloud, a feature box, an aside with recent items and facets, an in-panel filter, a foot with crumb and terminal-style status line, a ticker, a caret under the trigger and a staggered entrance; `--full`, `--glass` and `--dense`; new events `iv:change` (panel tabs) and `iv:filter`, methods `selectTab` and `filter`, options `filter`, `emptyText`, `countText`, `closeText`. Hover intent, keyboard, overlay, inert panels and the mobile accordion stay. Migration: `__inner` → `__body`, `__group` → `__directory`, `__links` → `__dirlist`, `__bottom` → `__foot`.
