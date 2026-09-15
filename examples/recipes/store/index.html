@@ -95,8 +95,16 @@
       align-items: start;
     }
 
+    /* The public local of the family. On a phone the slide goes taller, so the caption
+       has room under the controls instead of sharing the line with them. */
     .sr-carousel {
-      --iv-carousel-ratio: 16 / 10;
+      --iv-carousel-aspect: 16 / 10;
+    }
+
+    @media (max-width: 47.99em) {
+      .sr-carousel {
+        --iv-carousel-aspect: 4 / 5;
+      }
     }
 
     .sr-card-media {
@@ -190,7 +198,7 @@
               <span class="iv-carousel__scrim" aria-hidden="true"></span>
               <div class="iv-carousel__caption">
                 <span class="iv-badge iv-badge--primary iv-badge--solid">Frame 1</span>
-                <h3>Glass and steel on the counter</h3>
+                <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">Glass and steel on the counter</h3>
                 <p>A stock photograph of a glass pot, close to the invented product this page describes. Photograph by Vee O.</p>
               </div>
             </li>
@@ -201,7 +209,7 @@
               <span class="iv-carousel__scrim" aria-hidden="true"></span>
               <div class="iv-carousel__caption">
                 <span class="iv-badge iv-badge--primary iv-badge--solid">Frame 2</span>
-                <h3>The pour</h3>
+                <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">The pour</h3>
                 <p>A different pot and a different kitchen: this is not the product either. Photograph by Karl Fredrickson.</p>
               </div>
             </li>
@@ -212,7 +220,7 @@
               <span class="iv-carousel__scrim" aria-hidden="true"></span>
               <div class="iv-carousel__caption">
                 <span class="iv-badge iv-badge--primary iv-badge--solid">Frame 3</span>
-                <h3>The counter</h3>
+                <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">The counter</h3>
                 <p>What the invented shop would like its mornings to look like. Photograph by Carli Jean.</p>
               </div>
             </li>
@@ -223,7 +231,7 @@
               <span class="iv-carousel__scrim" aria-hidden="true"></span>
               <div class="iv-carousel__caption">
                 <span class="iv-badge iv-badge--primary iv-badge--solid">Frame 4</span>
-                <h3>The shop that does not exist</h3>
+                <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">The shop that does not exist</h3>
                 <p>A stock photograph standing in for the invented storefront. Photograph by Clark Street Mercantile.</p>
               </div>
             </li>
