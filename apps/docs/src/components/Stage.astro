@@ -4,6 +4,7 @@
 // project — but now the preview is the framework running, not a fragment pasted into this page.
 import { readFixture, readContract, localsSnippet, optionsSnippet } from "../lib/fixtures.js";
 import Code from "./Code.astro";
+import "../styles/stage.css";
 import { t as en } from "../i18n/en.js";
 import { t as es } from "../i18n/es.js";
 
@@ -76,7 +77,7 @@ const widths = [
         data-stage-frame
         src={src}
         title={t.stageFrame(title)}
-        loading={primary ? "eager" : "lazy"}
+        loading="lazy"
         data-stage-max={String(maxHeight)}
         style={`min-block-size:${minHeight}`}
       ></iframe>

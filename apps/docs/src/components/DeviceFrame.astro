@@ -5,6 +5,7 @@
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { repoRoot } from "../lib/fixtures.js";
+import "../styles/device.css";
 const { slug, title, href, device = "desktop", alt, missing = "Not built yet" } = Astro.props;
 const stem = `/shots/${slug}-${device === "phone" ? "390" : "1440"}`;
 const on = (f) => existsSync(resolve(repoRoot(), "apps/docs/public", f.slice(1)));

@@ -12,7 +12,7 @@ test.describe("Live stage", () => {
       expect(res.status(), name).toBe(200);
       const html = await res.text();
       expect(html, name).toContain('class="iv-root"');
-      expect(html, name).toContain("/examples/ivolt/css/ivolt.css");
+      expect(html, name).toContain("/examples/ivolt/css/ivolt.min.css"); // round 3: the stage links the minified sheet, like the snippet the site publishes
       expect(html, name).toContain("/examples/ivolt/js/auto.js");
       expect(html, name).toContain("/stage/boot.js");
     }
@@ -24,7 +24,7 @@ test.describe("Live stage", () => {
     await expect(root).toHaveAttribute("data-iv-theme", "light");
     await expect(root).toHaveAttribute("dir", "rtl");
     await expect(root).toHaveAttribute("data-stage-motion", "reduce");
-    await expect(page.locator("#stage-sheet")).toHaveAttribute("href", /ivolt\.flat\.css/);
+    await expect(page.locator("#stage-sheet")).toHaveAttribute("href", /ivolt\.flat\.min\.css/);
   });
 
   test("the controls change the theme, the direction and the width of the frame", async ({ page }) => {
@@ -50,7 +50,7 @@ test.describe("Live stage", () => {
     await stage.locator("[data-stage-motion]").check();
     await expect(frame.locator("html")).toHaveAttribute("data-stage-motion", "reduce");
     await stage.locator("[data-stage-flat]").check();
-    await expect(frame.locator("#stage-sheet")).toHaveAttribute("href", /ivolt\.flat\.css/);
+    await expect(frame.locator("#stage-sheet")).toHaveAttribute("href", /ivolt\.flat\.min\.css/);
   });
 
   test("the frame takes the height its own page reports", async ({ page }) => {

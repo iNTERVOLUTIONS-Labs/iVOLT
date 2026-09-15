@@ -262,17 +262,3 @@
 .docs-lost p { color: var(--iv-color-text-muted); max-inline-size: 48ch; margin-block-start: var(--iv-space-4); }
 .docs-kbd-inline { font-family: var(--iv-font-mono); font-size: .85em; border: 1px solid var(--iv-color-border-strong); border-radius: var(--iv-radius-sm); padding: 0 .4em; }
 .docs-lost__links small { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); }
-
-/* ---------- theme builder ---------- */
-.docs-tb { display: grid; gap: var(--iv-space-6); align-items: start; margin-block: var(--iv-space-6); }
-@media (min-width: 64em) {
-  .docs-tb { grid-template-columns: minmax(0, 19rem) minmax(0, 1fr); gap: var(--iv-space-8); }
-  /* the controls follow the preview instead of leaving half a screen of nothing beside it */
-  .docs-tb__controls { position: sticky; inset-block-start: 5.25rem; max-block-size: calc(100dvh - 7.5rem); overflow-y: auto; overscroll-behavior: contain; padding-inline-end: var(--iv-space-2); }
-}
-.docs-tb__grid { display: grid; gap: var(--iv-space-2); grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); }
-.docs-tb__color { display: inline-flex; align-items: center; gap: var(--iv-space-2); font-size: var(--iv-text-sm); }
-.docs-tb__color input { inline-size: 2.25rem; block-size: 2.25rem; padding: 0; border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-md); background: none; cursor: pointer; }
-.docs-tb__preview { min-width: 0; padding: var(--iv-space-4); border-radius: var(--iv-radius-lg); border: 1px solid var(--iv-color-border); }
-.docs-tb__preview .docs-fixture { margin-block: 0 var(--iv-space-4); }
-.docs-tb__preview .docs-fixture__code { display: none; }

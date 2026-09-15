@@ -298,3 +298,23 @@ Mismo método (Lighthouse 13.4.1, HeadlessChrome, build del gate `verify` en 432
 | `/es` | escritorio | 100 | 100 | 100 | 100 | 521 ms | 0 | 0 ms | 387 ms |
 | `/examples/showcase/index.html` | móvil | 98 | 100 | 100 | 100 | 2258 ms | 0 | 0 ms | 1305 ms |
 | `/examples/showcase/index.html` | escritorio | 100 | 100 | 100 | 100 | 748 ms | 0 | 0 ms | 372 ms |
+
+## Ronda 3 — web y ejemplos nuevos (2026-09-15, ADR-047/049)
+
+Mismo método (Lighthouse 13.4.1, HeadlessChrome, build del gate `verify` en 4327, una pasada por ruta y preajuste, estrangulamiento móvil real).
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS |
+|---|---|---|---|---|---|---|---|
+| `/` | móvil | HOME_MOBILE |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 556 ms | 0 |
+| `/es` | móvil | ES_MOBILE |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 536 ms | 0 |
+| `/components/button` | móvil | 96 | 100 | 100 | 100 | 2115 ms | 0,067 |
+| `/components/button` | escritorio | 100 | 100 | 100 | 100 | 621 ms | 0,023 |
+| `/examples/studio/index.html` | móvil | 99 | 100 | 100 | 100 | 1959 ms | 0 |
+| `/examples/console/index.html` | móvil | 100 | 100 | 100 | 100 | 1358 ms | 0 |
+| `/examples/journal/index.html` | móvil | 99 | 100 | 100 | 100 | 1956 ms | 0 |
+| `/examples/store/index.html` | móvil | 99 | 100 | 100 | 100 | 2048 ms | 0 |
+| las cuatro recetas | escritorio | 100 | 100 | 100 | 100 | 420–768 ms | ≤ 0,013 |
+
+Primera medida de la portada nueva en móvil: 90 (LCP 3,3 s) por una hoja de la web de 44 KB gzip que bloqueaba el render, el CSS del paquete enlazado sin minificar y 50 KB de JS agrupado con 40 KB sin uso en esa página. PERF_NOTE

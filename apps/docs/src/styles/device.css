@@ -1,0 +1,30 @@
+/* iVOLT docs — device frames and the recipe gallery.
+   Shared by the home and the examples index, so it travels with DeviceFrame.astro instead of
+   riding in the shell sheet every page pays for. */
+.docs-device { position: relative; display: block; border-radius: var(--iv-radius-lg); overflow: hidden; background: var(--iv-color-surface); box-shadow: 0 1px 0 var(--docs-hair) inset, 0 40px 80px -50px rgb(0 0 0 / .85), 0 0 0 1px rgb(128 128 128 / .08); }
+.docs-device__bar { display: block; block-size: 1.6rem; background: linear-gradient(180deg, var(--iv-color-surface-raised), var(--iv-color-surface)); position: relative; }
+.docs-device__bar::before { content: ""; position: absolute; inset-block-start: 50%; inset-inline-start: .8rem; translate: 0 -50%; inline-size: 2.4rem; block-size: .35rem; border-radius: 1rem; background: var(--iv-color-border-strong); opacity: .7; }
+.docs-device__shot { display: block; inline-size: 100%; block-size: auto; }
+.docs-device--phone { max-inline-size: 15rem; border-radius: 1.6rem; }
+.docs-device--phone .docs-device__bar { block-size: 1.1rem; }
+.docs-device__empty { display: grid; place-items: center; min-block-size: 14rem; padding: var(--iv-space-6); text-align: center; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .1em; text-transform: uppercase; color: var(--iv-color-text-muted); }
+.docs-device__link { position: absolute; inset: 0; }
+.docs-device__link:focus-visible { outline: var(--iv-focus-width) solid var(--iv-color-focus); outline-offset: -3px; }
+
+/* Gallery of recipes: two device frames per piece, desktop leading, phone overlapping. */
+.docs-gallery { display: grid; gap: clamp(2.5rem, 6vw, 4.5rem); }
+.docs-gallery__item { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); align-items: center; }
+@media (min-width: 64em) {
+  .docs-gallery__item { grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); }
+  .docs-gallery__item:nth-child(even) .docs-gallery__frames { order: 2; }
+}
+.docs-gallery__frames { position: relative; min-inline-size: 0; }
+.docs-gallery__frames .docs-device--phone { position: absolute; inset-block-end: -1.5rem; inset-inline-end: -1rem; inline-size: 30%; max-inline-size: 11rem; }
+@media (max-width: 40em) { .docs-gallery__frames .docs-device--phone { display: none; } }
+.docs-gallery__body h3 { font-family: var(--docs-display); font-size: clamp(1.6rem, 1rem + 2vw, 2.6rem); line-height: 1.02; letter-spacing: -.035em; font-weight: 500; margin: 0; }
+.docs-gallery__body p { color: var(--iv-color-text-muted); max-inline-size: 46ch; margin-block-start: var(--iv-space-4); }
+.docs-gallery__go { display: inline-flex; align-items: center; gap: .5rem; margin-block-start: var(--iv-space-5); font-family: var(--docs-display); color: var(--iv-color-primary); text-decoration: none; }
+.docs-gallery__go::after { content: "→"; transition: transform 320ms var(--docs-ease-out); }
+.docs-gallery__item a:hover .docs-gallery__go::after, .docs-gallery__go:hover::after { transform: translateX(4px); }
+
+/* Six components rotating in one frame: tabs of a gallery over a single stage. */

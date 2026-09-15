@@ -14,9 +14,10 @@ export function getStaticPaths() {
 const { name } = Astro.props;
 const html = readFixture(name);
 // Both sheets ship in /examples/ivolt (synced from the built package): the stage can swap to the
-// layer-free one live, which is the point of the "flat" control.
-const layered = "/examples/ivolt/css/ivolt.css";
-const flat = "/examples/ivolt/css/ivolt.flat.css";
+// layer-free one live, which is the point of the "flat" control. Minified, which is what the
+// getting started and the home snippet tell a consumer to link — and 50 KB less per frame.
+const layered = "/examples/ivolt/css/ivolt.min.css";
+const flat = "/examples/ivolt/css/ivolt.flat.min.css";
 ---
 <!DOCTYPE html>
 <html lang="en" dir="ltr" class="iv-root" data-iv-theme="dark" data-base-lang="en">

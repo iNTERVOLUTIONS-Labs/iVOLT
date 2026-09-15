@@ -5,6 +5,7 @@
 // drift from the code. Strings come in as props; the tables themselves are language-independent.
 import reference from "../data/reference.json";
 import { families } from "../i18n/en.js";
+import "../styles/reference.css";
 
 const { lang = "en", s } = Astro.props;
 const base = lang === "es" ? "/es" : "";

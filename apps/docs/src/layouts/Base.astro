@@ -1,5 +1,5 @@
 ---
-import "@intervolutions/ivolt/css/ivolt.css";
+import "@intervolutions/ivolt/css/ivolt.min.css";
 import "../styles/docs.css";
 import { ClientRouter } from "astro:transitions";
 import * as en from "../i18n/en.js";
@@ -272,24 +272,32 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     import { t as tEs } from "../i18n/es.js";
     const tr = () => (document.documentElement.lang === "es" ? tEs : tEn);
     import { mountEffects } from "../scripts/effects.js";
-    import { mountStage } from "../scripts/stage.js";
 
     const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = () => matchMedia("(hover: hover) and (pointer: fine)").matches;
 
     let teardown = [];
-    function release() { teardown.forEach((fn) => { try { fn(); } catch {} }); teardown = []; }
+    // Every mount belongs to one page: a chunk that lands after the page was swapped out must not
+    // attach itself to the new document, and its teardown must not outlive the page it belongs to.
+    let epoch = 0;
+    function release() { epoch++; teardown.forEach((fn) => { try { fn(); } catch {} }); teardown = []; }
 
     function setup() {
       init(document); // idempotent: instances survive, new page nodes get theirs
       release();
+      const mine = epoch;
       teardown.push(mountEffects(document));
-      teardown.push(mountStage(document));
+
+      // The stage driver (frames, controls, the showreel tabs) only travels with the pages that
+      // have a stage: every other page stops paying for it.
+      if (document.querySelector("[data-stage], [data-showreel]")) {
+        import("../scripts/stage.js").then((m) => { if (epoch === mine) teardown.push(m.mountStage(document)); });
+      }
 
       // The arc field: one canvas, home only, fine pointers only, never under reduced motion.
       const arcs = document.querySelector("[data-docs-arcs]");
       if (arcs && finePointer() && !reduced()) {
-        import("../scripts/arcs.js").then((m) => { if (document.contains(arcs)) teardown.push(m.mountArcs(arcs)); });
+        import("../scripts/arcs.js").then((m) => { if (epoch === mine && document.contains(arcs)) teardown.push(m.mountArcs(arcs)); });
       }
 
       // Theme switch (persisted opt-in), both header and nav dialog groups.
