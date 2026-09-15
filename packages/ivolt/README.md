@@ -2,7 +2,7 @@
 
 A hybrid frontend framework: semantic components as the fast path, a finite utility set for composition, design tokens as the visual contract and optional JavaScript for behaviour. No runtime dependencies. Alpha.
 
-Install the beta with `npm install @intervolutions/ivolt@beta`, or build it from the repository (`npm ci && npm run build`) and copy `dist/` into your project.
+Install the release candidate with `npm install @intervolutions/ivolt@next` (the beta stays at `@beta`), or build it from the repository (`npm ci && npm run build`) and copy `dist/` into your project.
 
 ```html
 <html class="iv-root" data-iv-theme="system">

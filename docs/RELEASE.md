@@ -2,7 +2,9 @@
 
 Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
 
-## 0f. `1.0.0-rc.0` (candidato; pasos)
+## 0f. `1.0.0-rc.0` (publicada el 2026-09-15 con etiqueta `next`)
+
+Publicación ejecutada con autorización del propietario y su token granular (sin OTP), cargado en un `userconfig` temporal borrado tras el comando: `npm publish --access public --tag next -w @intervolutions/ivolt` (134 archivos, shasum `d6e6e80e…`); `dist-tags`: `latest` y `beta` en `0.7.0-beta.0`, `next` en `1.0.0-rc.0`; etiqueta git `v1.0.0-rc.0` en origin; instalación verificada en un consumidor limpio (`npm install @intervolutions/ivolt@next`, importación ESM, 24 componentes). Pasos que se siguieron:
 
 1. Contrato congelado (`docs/API_CONTRACT.md` cabecera) y `docs/STABILITY.md` definitivo; changelog consolidado 0.1 → 1.0; avisos de la web «release candidate».
 2. Versión `1.0.0-rc.0` en `packages/ivolt/package.json`, `src/js/index.js` y `apps/docs/package.json`; `npm install` para el lockfile.

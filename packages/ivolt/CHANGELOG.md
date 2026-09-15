@@ -2,7 +2,7 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
-## 1.0.0-rc.0 (unreleased; release candidate)
+## 1.0.0-rc.0 — 2026-09-15 (npm, tag `next`)
 
 The contract of `docs/API_CONTRACT.md` is frozen for 1.0 and `docs/STABILITY.md` says what is public and how it changes. Nothing new lands before 1.0.0, only fixes. What 1.0 ships, cycle by cycle:
 

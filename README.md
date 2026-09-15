@@ -27,6 +27,6 @@ npm run verify           # everything above plus examples and the docs build
 
 ## Use it today
 
-`npm install @intervolutions/ivolt@beta` (published 2026-09-14 as `0.7.0-beta.0`), or build the package and copy `packages/ivolt/dist` next to your page. See `apps/docs` (getting started) for the details. Publishing steps live in `docs/RELEASE.md`.
+`npm install @intervolutions/ivolt@next` (release candidate `1.0.0-rc.0`, published 2026-09-15; `@beta` still resolves to `0.7.0-beta.0`), or build the package and copy `packages/ivolt/dist` next to your page. See `apps/docs` (getting started) for the details. Publishing steps live in `docs/RELEASE.md`.
 
 MIT © 2026 iNTERVOLUTIONS
