@@ -1,6 +1,6 @@
 {
   "name": "@intervolutions/ivolt",
-  "version": "0.8.0-beta.0",
+  "version": "0.9.0-beta.0",
   "description": "A hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript.",
   "license": "MIT",
   "type": "module",

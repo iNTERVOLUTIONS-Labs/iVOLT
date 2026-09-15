@@ -2,6 +2,13 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 0.9.0-beta.0 (unreleased)
+
+### Changed
+- `iv-stack-cards` hands over card by card: each card shrinks and fades exactly while the next one arrives (named view timeline, `--iv-i` and `--iv-stack-count`).
+- The picker keeps a sibling `<label>` next to its visible field, so floating labels and sibling selectors work without a compensating rule.
+- `.iv-dialog__title` keeps its size in the flat stylesheet too.
+
 ## 0.8.0-beta.0 (unreleased)
 
 ### Fixed
