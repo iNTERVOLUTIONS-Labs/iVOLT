@@ -35,7 +35,14 @@
   padding: var(--iv-space-3) var(--iv-space-4) var(--iv-space-2);
 }
 .docs-stage__title { font-family: var(--docs-display); font-weight: var(--iv-weight-medium); letter-spacing: -.01em; min-inline-size: 0; overflow-wrap: anywhere; }
-.docs-stage__path { grid-column: 1; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); min-inline-size: 0; overflow-wrap: anywhere; }
+/* A path is one token: it is truncated with an ellipsis, never broken mid-word, and below sm
+   it steps aside entirely — the title and "open alone" already say which fixture this is. */
+.docs-stage__path {
+  grid-column: 1; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs);
+  color: var(--iv-color-text-muted); min-inline-size: 0;
+  overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+@media (max-width: 30em) { .docs-stage__path { display: none; } }
 .docs-stage__open {
   grid-column: 2; grid-row: 1 / span 2; align-self: center;
   font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .12em; text-transform: uppercase;
@@ -63,6 +70,17 @@
 .docs-stage__toggle { display: inline-flex; align-items: center; gap: .45rem; font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); cursor: pointer; }
 .docs-stage__toggle input { accent-color: var(--iv-color-primary); inline-size: .95rem; block-size: .95rem; }
 .docs-stage__toggle:hover { color: var(--iv-color-text); }
+.docs-stage__all {
+  appearance: none; border: 0; cursor: pointer; font: inherit;
+  font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--iv-color-text-muted); background: var(--iv-color-surface);
+  padding: .3rem .8rem; border-radius: var(--iv-radius-full);
+  box-shadow: 0 0 0 1px var(--iv-color-border) inset;
+  transition: color var(--iv-motion-fast) var(--docs-ease), box-shadow var(--iv-motion-fast) var(--docs-ease);
+}
+.docs-stage__all[hidden] { display: none; }
+.docs-stage__all:hover { color: var(--iv-color-text); box-shadow: 0 0 0 1px var(--iv-color-border-strong) inset; }
+.docs-stage__all[aria-pressed="true"] { color: var(--iv-color-primary); box-shadow: 0 0 0 1px var(--iv-color-primary-border, var(--iv-color-primary)) inset; }
 
 /* ---------- the screen ---------- */
 .docs-stage__port {
@@ -122,3 +140,15 @@
 /* A stage taller than its cap scrolls inside its own frame; the edge says so. */
 .docs-stage[data-stage-capped] .docs-stage__screen { position: relative; }
 .docs-stage[data-stage-capped] .docs-stage__screen::after { content: ""; position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 2.5rem; pointer-events: none; background: linear-gradient(180deg, transparent, var(--iv-color-bg)); opacity: .9; }
+
+
+/* Focus on the bar: the segmented buttons, the toggles and the open link carry no border of
+   their own, so the ring is drawn explicitly and never clipped by the pill radius. */
+.docs-stage__seg button:focus-visible,
+.docs-stage__all:focus-visible,
+.docs-stage__open:focus-visible,
+.docs-stage__toggle input:focus-visible,
+.docs-stage__tabs .docs-code__tab:focus-visible {
+  outline: var(--iv-focus-width, 2px) solid var(--iv-color-focus, var(--iv-color-primary));
+  outline-offset: 2px;
+}

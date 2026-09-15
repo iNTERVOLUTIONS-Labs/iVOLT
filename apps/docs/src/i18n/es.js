@@ -58,6 +58,8 @@ export const t = {
   stageFlat: "Hoja plana",
   stageFrame: (title) => `${title}, funcionando en vivo`,
   stageSource: (title) => `Código de ${title}`,
+  stageShowAll: "Ver todo",
+  stageShowLess: "Ver menos",
   stageTabHtml: "HTML",
   stageTabCss: "Locales CSS",
   stageTabJs: "Opciones JS",

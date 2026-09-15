@@ -22,7 +22,7 @@
   --docs-halo: rgb(41 245 154 / 0.34);
   --docs-line: rgb(41 245 154 / 0.24);
   --docs-hair: rgb(41 245 154 / 0.14);
-  --docs-glass: rgb(8 19 16 / 0.74);
+  --docs-glass: rgb(8 19 16 / 0.95);
   --docs-paper: var(--iv-color-bg);
   --docs-zebra: rgb(255 255 255 / 0.028);
   --docs-invert-bg: #29f59a;
@@ -61,7 +61,7 @@
   --docs-halo: rgb(10 106 67 / 0.20);
   --docs-line: rgb(10 106 67 / 0.26);
   --docs-hair: rgb(10 106 67 / 0.14);
-  --docs-glass: rgb(247 250 248 / 0.82);
+  --docs-glass: rgb(247 250 248 / 0.97);
   --docs-paper: #f6f9f7;
   --docs-zebra: rgb(10 106 67 / 0.035);
   --docs-arc-core: #0a6a43;
@@ -75,7 +75,7 @@
     --docs-halo: rgb(41 245 154 / 0.34);
     --docs-line: rgb(41 245 154 / 0.24);
     --docs-hair: rgb(41 245 154 / 0.14);
-    --docs-glass: rgb(8 19 16 / 0.74);
+    --docs-glass: rgb(8 19 16 / 0.95);
     --docs-paper: var(--iv-color-bg);
     --docs-zebra: rgb(255 255 255 / 0.028);
     --docs-arc-core: #ffffff;

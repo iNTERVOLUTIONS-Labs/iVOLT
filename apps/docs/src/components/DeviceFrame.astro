@@ -6,8 +6,12 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { repoRoot } from "../lib/fixtures.js";
 const { slug, title, href, device = "desktop", alt, missing = "Not built yet" } = Astro.props;
-const file = `/shots/${slug}-${device === "phone" ? "390" : "1440"}.png`;
-const has = existsSync(resolve(repoRoot(), "apps/docs/public", file.slice(1)));
+const stem = `/shots/${slug}-${device === "phone" ? "390" : "1440"}`;
+const on = (f) => existsSync(resolve(repoRoot(), "apps/docs/public", f.slice(1)));
+// JPEG since the review of round 3 (the PNGs were up to 1.2 MB each); a PNG left over from an
+// earlier build is still honoured, so the frame never empties because of a change of format.
+const file = on(`${stem}.jpg`) ? `${stem}.jpg` : `${stem}.png`;
+const has = on(file);
 const size = device === "phone" ? { w: 390, h: 844 } : { w: 1440, h: 900 };
 ---
 <div class:list={["docs-device", `docs-device--${device}`]}>

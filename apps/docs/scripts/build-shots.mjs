@@ -38,7 +38,9 @@ for (const slug of present) {
     const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: "reduce" });
     await page.goto(`http://127.0.0.1:${port}/examples/recipes/${slug}/index.html`, { waitUntil: "load" });
     await page.waitForTimeout(700);
-    await page.screenshot({ path: resolve(out, `${slug}-${w}.png`) });
+    // JPEG, not PNG: these are photographs of photographic pages. The studio cover alone was
+    // 1.2 MB as a PNG, and eight of them sat on the home and the gallery.
+    await page.screenshot({ path: resolve(out, `${slug}-${w}.jpg`), type: "jpeg", quality: 82 });
     await page.close();
     console.log(`build-shots: ${slug} at ${w}`);
   }

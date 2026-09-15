@@ -2274,11 +2274,30 @@
         {
           "key": "closeOthers",
           "default": "true"
+        },
+        {
+          "key": "filter",
+          "default": "true"
+        },
+        {
+          "key": "emptyText",
+          "default": "\"No matches\""
+        },
+        {
+          "key": "countText",
+          "default": "\"{count} results\""
+        },
+        {
+          "key": "closeText",
+          "default": "\"Close\""
         }
       ],
       "events": [
+        "iv:change",
+        "iv:changed",
         "iv:close",
         "iv:closed",
+        "iv:filter",
         "iv:open",
         "iv:opened"
       ]
@@ -2657,6 +2676,7 @@
     "data-iv-summary-title",
     "data-iv-swap",
     "data-iv-swipe",
+    "data-iv-tab-default",
     "data-iv-template",
     "data-iv-threshold",
     "data-iv-timeout",

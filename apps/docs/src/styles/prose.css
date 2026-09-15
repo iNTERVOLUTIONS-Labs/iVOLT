@@ -319,3 +319,31 @@
 .docs-code__panel pre { margin: 0; }
 .docs-code__copy { position: absolute; inset-block-start: var(--iv-space-2); inset-inline-end: var(--iv-space-2); opacity: 0; transition: opacity var(--iv-motion-fast) var(--docs-ease); }
 .docs-code-block:hover .docs-code__copy, .docs-code__copy:focus-visible, .docs-code__panel:focus-within .docs-code__copy { opacity: 1; }
+
+
+/* ================================================================
+   ROUND 3 REVIEW — the lead-only section and generated Markdown
+   ================================================================ */
+/* A section whose whole body is its lead was reading as a stranded caption: given the page to
+   itself, it becomes a statement — display scale, full measure, the fillet under the numeral. */
+.docs-sec--statement > .docs-sec__lead {
+  font-family: var(--docs-display);
+  font-size: clamp(1.25rem, 1rem + 1.1vw, 1.9rem);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--iv-color-text);
+  max-inline-size: 42ch;
+  text-wrap: pretty;
+  margin-block-start: var(--iv-space-5);
+}
+.docs-sec--statement > .docs-sec__head > .docs-sec__num { -webkit-text-stroke-color: var(--iv-color-primary); }
+
+/* A block written from Markdown keeps the rhythm of the article, because the wrapper that holds
+   it is one child and the rules above only reach direct children of the prose. */
+.docs-md > * + * { margin-block-start: var(--docs-flow); }
+.docs-md > * + h3 { margin-block-start: var(--docs-sub); }
+.docs-md > :is(p, ul, ol) { max-inline-size: var(--docs-measure); }
+.docs-md > ul { padding-inline-start: 1.35rem; }
+.docs-md > ul li::marker { color: var(--iv-color-accent); }
+.docs-md > h3 { font-size: var(--iv-text-sm); letter-spacing: .14em; text-transform: uppercase; font-family: var(--iv-font-mono); color: var(--iv-color-text-muted); font-weight: var(--iv-weight-semibold); }
+.docs-meta.docs-md > p { margin: 0; }

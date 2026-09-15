@@ -33,12 +33,19 @@
   function height() {
     var b = document.body;
     if (!b) return 0;
-    return Math.ceil(Math.max(b.scrollHeight, b.offsetHeight, document.documentElement.scrollHeight));
+    // The root element is deliberately left out: it always fills the frame, so including it turns
+    // the measurement into a ratchet — the frame could grow but never shrink back to its content,
+    // and a 60 px row of buttons kept the 16 rem the placeholder had reserved.
+    return Math.ceil(Math.max(b.scrollHeight, b.offsetHeight));
   }
   var last = 0;
-  function report() {
+  // `force` exists because the host can miss the first report: an eager frame may finish loading
+  // and announce its height before the page that embeds it has attached its listener. Without a
+  // forced repeat the "same height as last time" guard would silence every retry, and the frame
+  // would keep the placeholder minimum for ever — a hole under the example.
+  function report(force) {
     var h = height();
-    if (h && Math.abs(h - last) > 1) { last = h; post({ type: "stage-height", height: h }); }
+    if (h && (force || Math.abs(h - last) > 1)) { last = h; post({ type: "stage-height", height: h }); }
   }
 
   addEventListener("message", function (e) {
@@ -48,15 +55,18 @@
     if (d.dir) { root.setAttribute("dir", d.dir); root.setAttribute("lang", d.dir === "rtl" ? "ar" : document.documentElement.dataset.baseLang || "en"); }
     if ("motion" in d) { if (d.motion === "reduce") root.setAttribute("data-stage-motion", "reduce"); else root.removeAttribute("data-stage-motion"); }
     if ("flat" in d) applyFlat(!!d.flat);
-    requestAnimationFrame(report);
+    requestAnimationFrame(function () { report(true); });
   });
 
   addEventListener("DOMContentLoaded", function () {
-    report();
-    if (window.ResizeObserver) new ResizeObserver(report).observe(document.body);
-    addEventListener("load", report);
+    // Announce: the host answers with the theme, direction, motion and sheet it is showing. Without
+    // this, a frame that finished loading before the host script ran would keep its own defaults.
+    post({ type: "stage-ready" });
+    report(true);
+    if (window.ResizeObserver) new ResizeObserver(function () { report(false); }).observe(document.body);
+    addEventListener("load", function () { report(true); });
     // Components settle after init (a carousel measures, a navbar folds): report once more.
-    setTimeout(report, 120);
-    setTimeout(report, 600);
+    setTimeout(function () { report(true); }, 120);
+    setTimeout(function () { report(true); }, 600);
   });
 })();

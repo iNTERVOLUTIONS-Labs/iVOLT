@@ -49,12 +49,30 @@ export function mountStage(root = document) {
   const byId = new Map();
   const cleanup = [];
 
+  // A stage taller than its cap scrolls inside its own frame and says so — but a reader who wants
+  // the whole thing gets it: "Show all" lifts the cap for that stage only.
+  const applyHeight = (entry) => {
+    if (!entry.reported) return;
+    const cap = Number(entry.frame.dataset.stageMax) || 544;
+    const capped = entry.reported > cap + 1;
+    const h = Math.max(120, entry.expanded ? entry.reported : Math.min(cap, entry.reported));
+    entry.frame.style.blockSize = `${h}px`;
+    // The reserved minimum existed only to keep the layout from jumping while the frame loaded.
+    // Once the page inside has measured itself, a 16rem floor is just a hole under the example.
+    entry.frame.style.minBlockSize = "0px";
+    entry.stage.toggleAttribute("data-stage-capped", capped && !entry.expanded);
+    const button = entry.stage.querySelector("[data-stage-all]");
+    if (!button) return;
+    button.hidden = !capped;
+    button.setAttribute("aria-pressed", String(entry.expanded));
+    button.textContent = entry.expanded ? button.dataset.labelLess : button.dataset.labelAll;
+  };
+
   for (const stage of stages) {
     const frame = stage.querySelector("[data-stage-frame]");
     const screen = stage.querySelector("[data-stage-screen]");
     const controls = stage.querySelector("[data-stage-controls]");
     if (!frame) continue;
-    byId.set(stage.id, { stage, frame });
 
     const state = {
       theme: resolveTheme(),
@@ -63,11 +81,16 @@ export function mountStage(root = document) {
       flat: false,
       width: stage.dataset.stageWidth || "full",
     };
+    // `chosen` is the difference between "this stage shows the site theme" and "the reader picked
+    // a theme here": only the first follows the switch in the header.
+    const entry = { stage, frame, state, reported: 0, expanded: false, chosen: false };
+    byId.set(stage.id, entry);
 
     const post = (patch) => {
       Object.assign(state, patch);
       try { frame.contentWindow?.postMessage({ type: "stage-set", ...state }, location.origin); } catch {}
     };
+    entry.post = post;
 
     const paint = () => {
       if (!controls) return;
@@ -75,6 +98,7 @@ export function mountStage(root = document) {
       controls.querySelectorAll("[data-stage-dir]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.stageDir === state.dir)));
       controls.querySelectorAll("[data-stage-set-width]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.stageSetWidth === state.width)));
     };
+    entry.paint = paint;
 
     const setWidth = (w) => {
       state.width = w;
@@ -88,9 +112,10 @@ export function mountStage(root = document) {
       controls.addEventListener("click", (e) => {
         const b = e.target.closest("button");
         if (!b) return;
-        if (b.dataset.stageTheme) { post({ theme: b.dataset.stageTheme }); paint(); }
+        if (b.dataset.stageTheme) { entry.chosen = true; post({ theme: b.dataset.stageTheme }); paint(); }
         else if (b.dataset.stageDir) { post({ dir: b.dataset.stageDir }); paint(); }
         else if (b.dataset.stageSetWidth) setWidth(b.dataset.stageSetWidth);
+        else if ("stageAll" in b.dataset) { entry.expanded = !entry.expanded; applyHeight(entry); }
       });
       controls.addEventListener("change", (e) => {
         const input = e.target;
@@ -100,34 +125,46 @@ export function mountStage(root = document) {
     }
     setWidth(state.width);
 
-    // The frame starts in the theme the site is showing, whatever that is.
+    // The frame starts in the theme the site is showing, whatever that is. Three ways in, because
+    // an eager frame can finish loading before this module runs: the page announces itself when it
+    // boots (stage-ready), the load event covers a frame that arrives later, and this first call
+    // covers a frame that was already complete and had announced itself before anyone listened.
     frame.addEventListener("load", () => post({}));
+    post({});
+  }
 
+  // A lazy frame that only loads when it is already on screen leaves a hole where the example
+  // should be: it is asked for well before the reader arrives, and stays lazy while its panel is
+  // hidden (a hidden tab has no box, so it never intersects).
+  const lazy = stages.map((s) => s.querySelector('[data-stage-frame][loading="lazy"]')).filter(Boolean);
+  if (lazy.length && typeof IntersectionObserver === "function") {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.loading = "eager"; io.unobserve(e.target); }
+    }, { rootMargin: "1200px 0px 1200px 0px" });
+    lazy.forEach((f) => io.observe(f));
+    cleanup.push(() => io.disconnect());
   }
 
   const onMessage = (e) => {
-    if (e.origin !== location.origin || !e.data || e.data.type !== "stage-height") return;
+    if (e.origin !== location.origin || !e.data) return;
     const entry = byId.get(e.data.id);
     if (!entry) return;
-    // A fixture that is a page of its own (a sticky header needs screens of filler) must not add
-    // three screens to the article: past the cap the stage scrolls inside its own frame.
-    const cap = Number(entry.frame.dataset.stageMax) || 544;
-    const reported = Number(e.data.height) || 0;
-    const h = Math.max(120, Math.min(cap, reported));
-    entry.frame.style.blockSize = `${h}px`;
-    entry.frame.closest("[data-stage]")?.toggleAttribute("data-stage-capped", reported > cap + 1);
+    if (e.data.type === "stage-ready") { entry.post({}); return; }
+    if (e.data.type !== "stage-height") return;
+    entry.reported = Number(e.data.height) || 0;
+    applyHeight(entry);
   };
   addEventListener("message", onMessage);
   cleanup.push(() => removeEventListener("message", onMessage));
 
-  // The site theme changes: every stage follows, without reloading its page.
+  // The site theme changes: every stage follows, without reloading its page. A stage whose theme
+  // the reader picked by hand keeps that choice — that is the only exception.
   const onTheme = () => {
     const theme = resolveTheme();
-    for (const { stage, frame } of byId.values()) {
-      const pressed = stage.querySelector("[data-stage-theme][aria-pressed=true]");
-      if (pressed && pressed.dataset.stageTheme !== theme) continue; // the reader chose; leave it alone
-      try { frame.contentWindow?.postMessage({ type: "stage-set", theme }, location.origin); } catch {}
-      stage.querySelectorAll("[data-stage-theme]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.stageTheme === theme)));
+    for (const entry of byId.values()) {
+      if (entry.chosen) continue;
+      entry.post({ theme });
+      entry.paint();
     }
   };
   document.addEventListener("iv:themechange", onTheme);

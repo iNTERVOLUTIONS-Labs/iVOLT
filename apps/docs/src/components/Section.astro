@@ -3,8 +3,11 @@
 // display scale of DIRECTION_R3 §4. The heading is a real <h2>, so the anchors, the table of
 // contents and the contract test keep working exactly as they do on an unmigrated page.
 const { title, id, num, lead } = Astro.props;
+// A section whose whole body is its lead reads as an abandoned caption at body size: it takes
+// the statement treatment instead, at display scale, with the fillet carrying the eye across.
+const leadOnly = Boolean(lead) && !Astro.slots.has("default");
 ---
-<section class="docs-sec" id={id ? `sec-${id}` : undefined}>
+<section class:list={["docs-sec", leadOnly && "docs-sec--statement"]} id={id ? `sec-${id}` : undefined}>
   <div class="docs-sec__head">
     {num && <span class="docs-sec__num" aria-hidden="true">{String(num).padStart(2, "0")}</span>}
     <h2 id={id}>{title}</h2>

@@ -58,6 +58,8 @@ export const t = {
   stageFlat: "Flat sheet",
   stageFrame: (title) => `${title}, running live`,
   stageSource: (title) => `Source of ${title}`,
+  stageShowAll: "Show all",
+  stageShowLess: "Show less",
   stageTabHtml: "HTML",
   stageTabCss: "CSS locals",
   stageTabJs: "JS options",
