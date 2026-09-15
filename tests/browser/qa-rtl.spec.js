@@ -106,15 +106,14 @@ test.describe("mirrored in a right-to-left document", () => {
     }
   });
 
-  test("the megamenu chevron points at the inline end", async ({ page }) => {
-    // rotate(45deg) and rotate(-45deg) differ in the sign of the two off-diagonal terms.
-    for (const [dir, sign] of [["ltr", 1], ["rtl", -1]]) {
+  test("the megamenu arrows point at the inline end", async ({ page }) => {
+    // Megamenu v2 (ADR-048) draws its arrows as a masked glyph on `__all`, `__foot-link` and `__arrow`;
+    // under [dir="rtl"] the glyph is flipped with `scale: -1 1`, so the computed scale reads -1 on the x axis.
+    for (const [dir, sx] of [["ltr", 1], ["rtl", -1]]) {
       await page.goto(`/fixture/megamenu/basic?dir=${dir}`);
-      const matrix = await page.evaluate(() =>
-        getComputedStyle(document.querySelector(".iv-megamenu__meta"), "::after").transform,
-      );
-      const [, b] = matrix.match(/matrix\(([-\d.]+), ([-\d.]+)/).slice(1).map(Number);
-      expect(Math.sign(b), `chevron rotation in ${dir}`).toBe(sign);
+      const scale = await page.evaluate(() => getComputedStyle(document.querySelector(".iv-megamenu__all"), "::after").scale);
+      const x = scale === "none" ? 1 : Number(String(scale).split(" ")[0]);
+      expect(x, `arrow scale in ${dir}`).toBe(sx);
     }
   });
 
