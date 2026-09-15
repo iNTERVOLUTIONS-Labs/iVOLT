@@ -254,6 +254,8 @@ export class Megamenu extends IvComponent {
     this._order = this._order ?? new Map();
     /** @type {Map<Element, string|null>} Served `style` attributes. */
     this._styles = this._styles ?? new Map();
+    /** @type {Map<HTMLInputElement, string>} Served filter queries. */
+    this._values = this._values ?? new Map();
     /** @type {Element[]} Elements this instance added to the DOM. */
     this._generated = this._generated ?? [];
     /** @type {MegamenuEntry[]} The bar items, in document order. */
@@ -304,6 +306,7 @@ export class Megamenu extends IvComponent {
     this._saved = new Map();
     this._order = new Map();
     this._styles = new Map();
+    this._values = new Map();
     this._generated = [];
     this._entries = [];
     this._openItems = [];
@@ -397,6 +400,10 @@ export class Megamenu extends IvComponent {
     // Escape closes wherever focus is, including when the panel was opened by
     // hover and focus never entered it.
     this._listen(doc, "keydown", (event) => this._onDocumentKeydown(event));
+    // The panel is centred on the page while the toggle is not: a resize moves
+    // one and not the other, so the caret is measured again.
+    const view = doc.defaultView;
+    if (view) this._listen(view, "resize", () => this._syncCarets());
   }
 
   /** @returns {void} */
@@ -416,6 +423,10 @@ export class Megamenu extends IvComponent {
       }
     }
     this._saved.clear();
+    // A filter left running must not survive the component: the query goes
+    // back to what the author served.
+    for (const [input, value] of this._values) input.value = value;
+    this._values.clear();
     for (const [el, names] of this._order) restoreAttributeOrder(el, names);
     this._order.clear();
     restoreStyles(this._styles);
@@ -523,6 +534,7 @@ export class Megamenu extends IvComponent {
     const input = /** @type {HTMLInputElement|null} */ (panel.querySelector(INPUT_SELECTOR));
     if (!box || !input) return;
     entry.input = input;
+    if (!this._values.has(input)) this._values.set(input, input.value);
     this._order.set(
       box,
       Array.from(box.attributes).map((attribute) => attribute.name)
@@ -797,6 +809,18 @@ export class Megamenu extends IvComponent {
   }
 
   /**
+   * Points the caret again for whatever is open.
+   *
+   * @returns {void}
+   */
+  _syncCarets() {
+    for (const item of this._openItems) {
+      const entry = this._entryFor(item);
+      if (entry) this._syncCaret(entry);
+    }
+  }
+
+  /**
    * Whether the component reads right to left.
    *
    * @returns {boolean} `true` in a right-to-left context.
@@ -981,7 +1005,9 @@ export class Megamenu extends IvComponent {
     const entry = inside && this._isOpen(inside.item) ? inside : this._entryFor(
       /** @type {HTMLElement} */ (this.openItem)
     );
-    event.preventDefault();
+    // The key is only claimed when focus is inside the menu: a dialog opened above a
+    // hover-opened panel keeps its own Escape, and the panel still closes underneath.
+    if (inside) event.preventDefault();
     if (entry && entry.input && entry.input.value !== "") {
       entry.input.value = "";
       this._applyFilter(entry, "");
@@ -1146,12 +1172,24 @@ export class Megamenu extends IvComponent {
           const keywords = el.getAttribute("data-iv-keywords") ?? "";
           const hay = fold(`${el.textContent ?? ""} ${keywords}`);
           const match = needle === "" || hay.includes(needle);
-          const box = /** @type {HTMLElement} */ (el.closest("li") ?? el);
+          // The row of a group, never an ancestor outside it: the entries of a
+          // `__cloud` are bare links, and `closest("li")` would climb out of
+          // the panel and hide the whole bar item.
+          const row = el.closest("li");
+          const box = /** @type {HTMLElement} */ (
+            row && group.contains(row) ? row : el
+          );
+          this._remember(box, "hidden");
           box.hidden = !match;
           if (match) shown += 1;
         }
+        this._remember(group, "hidden");
         group.hidden = needle !== "" && shown === 0;
-        visible += shown;
+        // Cards of a tab that is not on screen match all the same, so the set
+        // is already filtered when the reader switches to it, but they are not
+        // counted: the announcement and the empty message describe what is
+        // visible right now.
+        if (!this._inHiddenSet(group)) visible += shown;
       }
     }
     if (entry.empty) entry.empty.hidden = needle === "" || visible > 0;
@@ -1167,6 +1205,17 @@ export class Megamenu extends IvComponent {
       query,
       visible,
     });
+  }
+
+  /**
+   * Whether a group sits inside a `__set` that the tab strip keeps hidden.
+   *
+   * @param {HTMLElement} group A filtered group.
+   * @returns {boolean} `true` when the group is off screen.
+   */
+  _inHiddenSet(group) {
+    const set = group.closest(SET_SELECTOR);
+    return set !== null && /** @type {HTMLElement} */ (set).hidden === true;
   }
 
   /**

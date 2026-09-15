@@ -105,6 +105,12 @@ const MARKUP = `
                 </ul>
               </div>
             </div>
+              <section id="cloud-a" class="iv-megamenu__cloud">
+                <h3 class="iv-megamenu__heading">Studios</h3>
+                <a id="chip-a" href="#mm-note">LucasArts <small>24</small></a>
+                <a id="chip-b" href="#mm-note">Sierra <small>9</small></a>
+              </section>
+            </div>
           </div>
           <footer class="iv-megamenu__foot">
             <span class="iv-megamenu__crumb">Archive <b aria-hidden="true">/</b> Games</span>
@@ -768,6 +774,51 @@ describe("Megamenu", () => {
       expect(root.getAttribute("style")).toBe(null);
     });
 
+    // The chips of a `__cloud` are bare links: `closest("li")` climbed out of
+    // the panel and hid the `__item` of the bar, taking the whole entry with it.
+    it("hides the chip of a cloud and never the bar item around it", () => {
+      const { mm } = setup();
+      mm.filter(0, "lucas");
+      expect(byId("chip-a").hidden).toBe(false);
+      expect(byId("chip-b").hidden).toBe(true);
+      expect(byId("item-a").hidden).toBe(false);
+      expect(byId("cloud-a").hidden).toBe(false);
+      mm.filter(0, "zzzz");
+      expect(byId("item-a").hidden).toBe(false);
+      expect(byId("cloud-a").hidden).toBe(true);
+    });
+
+    // A card of a tab that is not on screen is filtered all the same, but it is
+    // not part of the count: announcing a match the reader cannot see left the
+    // panel empty with no message.
+    it("counts only what the visible set shows", () => {
+      const { mm, root } = setup();
+      /** @type {unknown[]} */
+      const seen = [];
+      root.addEventListener("iv:filter", (e) => seen.push(/** @type {CustomEvent} */ (e).detail));
+      mm.filter(0, "summit");
+      expect(byId("card-a2").hidden).toBe(false);
+      expect(/** @type {{ visible: number }} */ (seen[0]).visible).toBe(0);
+      const empty = root.querySelector(".iv-megamenu__empty");
+      expect(/** @type {HTMLElement} */ (empty).hidden).toBe(false);
+      const status = root.querySelector(".iv-megamenu__status.iv-u-sr-only");
+      expect(/** @type {HTMLElement} */ (status).textContent).toBe("0 results");
+      // Switching to the tab that holds the match re-runs the filter and counts it.
+      click(byId("tab-a1"));
+      expect(/** @type {{ visible: number }} */ (seen[seen.length - 1]).visible).toBe(1);
+      expect(/** @type {HTMLElement} */ (empty).hidden).toBe(true);
+    });
+
+    it("destroy puts back the rows the filter hid and the query it typed", () => {
+      const before = byId("panel-a").outerHTML;
+      const { mm } = setup();
+      mm.filter(0, "orbit");
+      expect(byId("card-a1").hidden).toBe(true);
+      mm.destroy();
+      expect(byId("panel-a").outerHTML).toBe(before);
+      expect(byId("q-a").value).toBe("");
+    });
+
     it("opening points the caret at the toggle and destroy drops it", () => {
       // jsdom lays nothing out: the offsets the caret reads are stubbed.
       const box = (el, left, width) => {
@@ -784,6 +835,24 @@ describe("Megamenu", () => {
       mm.destroy();
       expect(root.getAttribute("style")).toBe(null);
     });
+  });
+
+  it("claims Escape only while focus is inside; a panel opened by hover still closes without preventDefault", () => {
+    installMatchMedia({ wide: true });
+    const { mm } = setup();
+    mm.open(0);
+    document.body.focus();
+    const outside = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    document.dispatchEvent(outside);
+    expect(outside.defaultPrevented).toBe(false);
+    expect(mm.openItem).toBe(null);
+    mm.open(0);
+    byId("toggle-a").focus();
+    const inside = new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true });
+    document.dispatchEvent(inside);
+    expect(inside.defaultPrevented).toBe(true);
+    expect(mm.openItem).toBe(null);
+    mm.destroy();
   });
 
 });

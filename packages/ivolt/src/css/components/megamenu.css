@@ -1126,13 +1126,15 @@
     content: "";
     position: absolute;
     inset-block-start: -7px;
-    inset-inline-start: var(--iv-megamenu-caret-x);
+    /* Half the caret is subtracted from the inline offset instead of being
+     * translated away: a percentage translation is physical, so under
+     * `[dir="rtl"]` it moved the caret a whole caret width off its toggle. */
+    inset-inline-start: calc(var(--iv-megamenu-caret-x) - 8px);
     inline-size: 16px;
     block-size: 8px;
     background-color: var(--iv-color-accent);
     clip-path: polygon(50% 0, 100% 100%, 0 100%);
     opacity: 0;
-    translate: -50% 0;
     transition: opacity var(--iv-motion-base) var(--iv-ease-out);
   }
 

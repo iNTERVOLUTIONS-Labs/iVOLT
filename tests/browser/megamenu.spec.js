@@ -94,23 +94,61 @@ test.describe("Megamenu", () => {
     await expect(toggle).toBeFocused();
   });
 
-  test("the caret lands under the open toggle", async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto("/fixture/megamenu/basic");
+  // The caret is a pseudo-element, so it is measured from its used `left` /
+  // `right` against the box of the panel: the three engines resolve both.
+  const caretCentre = (page, index) =>
+    page.evaluate((n) => {
+      const panel = document.querySelectorAll(".iv-megamenu__panel")[n];
+      const style = getComputedStyle(panel, "::after");
+      const rect = panel.getBoundingClientRect();
+      return rect.x + Number.parseFloat(style.left) + Number.parseFloat(style.width) / 2;
+    }, index);
+
+  test("the caret lands under the open toggle, in both directions", async ({ page }) => {
+    // `dir=rtl` used to put it a whole caret width off its toggle: the half-width
+    // step was a percentage translation, which is physical and does not mirror.
+    for (const dir of ["ltr", "rtl"]) {
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await page.goto(`/fixture/megamenu/basic?dir=${dir}`);
+      const root = page.locator(".iv-megamenu").first();
+      const toggles = root.locator(".iv-megamenu__toggle");
+      await toggles.nth(1).click();
+      // The panel lands with a scale: its box is only final once it settles.
+      await expect(root.locator(".iv-megamenu__panel").nth(1)).toHaveCSS("opacity", "1");
+      await page.waitForTimeout(300);
+      const caret = await page.evaluate(() => {
+        const el = document.querySelector(".iv-megamenu");
+        return el.style.getPropertyValue("--iv-megamenu-caret-x");
+      });
+      expect(caret, `caret variable in ${dir}`).not.toBe("");
+      const mark = await toggles.nth(1).boundingBox();
+      const centre = await caretCentre(page, 1);
+      expect(
+        Math.abs(centre - (mark.x + mark.width / 2)),
+        `caret against its toggle in ${dir}`
+      ).toBeLessThanOrEqual(4);
+    }
+  });
+
+  test("the caret follows its toggle across a resize", async ({ page }) => {
+    // In a header the bar is not centred on the page and the panel is: a resize
+    // moves one and not the other, and the caret was measured only on opening.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/fixture/navbar/megamenu");
     const root = page.locator(".iv-megamenu").first();
-    const toggles = root.locator(".iv-megamenu__toggle");
-    await toggles.nth(1).click();
-    // The panel lands with a scale: its box is only final once it settles.
-    await expect(root.locator(".iv-megamenu__panel").nth(1)).toHaveCSS("opacity", "1");
+    const toggle = root.locator(".iv-megamenu__toggle").first();
+    // Opened from the keyboard on purpose: a click parks the pointer on the
+    // toggle, and the resize would slide the item out from under it and close
+    // the panel by hover intent halfway through the measurement.
+    await toggle.focus();
+    await page.keyboard.press("Enter");
+    await expect(root.locator(".iv-megamenu__panel").first()).toHaveCSS("opacity", "1");
     await page.waitForTimeout(300);
-    const caret = await page.evaluate(() => {
-      const el = document.querySelector(".iv-megamenu");
-      return el.style.getPropertyValue("--iv-megamenu-caret-x");
-    });
-    const x = Number.parseFloat(caret);
-    const panel = await root.locator(".iv-megamenu__panel").nth(1).boundingBox();
-    const mark = await toggles.nth(1).boundingBox();
-    expect(Math.abs(panel.x + x - (mark.x + mark.width / 2))).toBeLessThanOrEqual(4);
+    await page.setViewportSize({ width: 1180, height: 900 });
+    await page.waitForTimeout(400);
+    const mark = await toggle.boundingBox();
+    const centre = await caretCentre(page, 0);
+    expect(Math.abs(centre - (mark.x + mark.width / 2))).toBeLessThanOrEqual(4);
   });
 
   test("intentional hover opens after the delay and the bridge keeps it open", async ({ page }) => {
