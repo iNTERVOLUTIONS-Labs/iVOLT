@@ -5,6 +5,7 @@ Copies of six documentation assets so the recipe works offline and inside its zi
 | File | Author | Unsplash page |
 |---|---|---|
 | `p1018.jpg` | Andrew Ridley | https://unsplash.com/photos/Kt5hRENuotI |
+| `p1018-800.jpg` (800×500 copy of the same photograph for narrow screens) | Andrew Ridley | https://unsplash.com/photos/Kt5hRENuotI |
 | `p1036.jpg` | Wolfgang Lutz | https://unsplash.com/photos/yOujaSETXlo |
 | `p1043.jpg` | Christian Joudrey | https://unsplash.com/photos/mWRR1xj95hg |
 | `p1050.jpg` | Joseph Barrientos | https://unsplash.com/photos/xcC5ozHk_N8 |

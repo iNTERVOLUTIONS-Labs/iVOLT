@@ -34,6 +34,21 @@ for (const r of rows) {
   lines.push(`| ${r.label} | ${(r.raw / KiB).toFixed(2)} KiB | ${(r.gzip / KiB).toFixed(2)} KiB | ${r.budget} KiB | ${r.ok ? "yes" : "NO"} |`);
   if (!r.ok) fail = true;
 }
+// Per-module cost: each component bundled on its own with the core it pulls in (what a consumer
+// importing `@intervolutions/ivolt/<name>` pays), informational, no budget.
+import { readdirSync } from "node:fs";
+lines.push("", "Per-module JavaScript (each component bundled alone with its share of the core; no budget):", "", "| Module | gzip |", "|---|---|");
+const comps = readdirSync(join(root, "src/js/components")).filter((f) => f.endsWith(".js")).sort();
+for (const f of comps) {
+  const one = await build({ entryPoints: [join(root, "src/js/components", f)], bundle: true, minify: true, format: "esm", write: false, define: { __IVOLT_VERSION__: JSON.stringify(pkg.version) } });
+  lines.push(`| ${f.replace(".js", "")} | ${(gz(Buffer.from(one.outputFiles[0].contents)) / KiB).toFixed(2)} KiB |`);
+}
+const cssMods = readdirSync(join(root, "dist/css/components")).filter((f) => f.endsWith(".css") && !f.endsWith(".min.css")).sort();
+lines.push("", "Per-module CSS (`dist/css/components/*.css` and the root sheets, minified, gzip):", "", "| Module | gzip |", "|---|---|");
+for (const f of [...cssMods.map((f) => `components/${f}`), "surfaces.css", "effects.css", "motion.css", "text.css"]) {
+  const file = join(root, "dist/css", f);
+  if (existsSync(file)) lines.push(`| ${f.replace(".css", "")} | ${(gz(readFileSync(file)) / KiB).toFixed(2)} KiB |`);
+}
 const text = lines.join("\n") + "\n";
 console.log(text);
 writeFileSync(join(root, "dist/SIZES.md"), text);
