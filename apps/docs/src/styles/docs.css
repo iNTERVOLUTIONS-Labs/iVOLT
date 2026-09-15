@@ -5,3 +5,18 @@
 @import "./shell.css";
 @import "./home.css";
 @import "./motion.css";
+
+/* Reference page (v0.9): the generated surface. One filter over many tables; the tables
+   themselves are the shared .docs-scroller, so the vertical scale stays the page's own. */
+.docs-ref-lead { font-family: var(--iv-font-mono); font-size: var(--iv-text-sm); }
+.docs-prose .docs-ref-search { margin-block: var(--docs-block); position: sticky; inset-block-start: 4rem; z-index: 2; padding-block: 0.85rem; background: var(--iv-color-bg); box-shadow: 0 1rem 1rem -1rem var(--iv-color-bg), 0 -1rem 0 0 var(--iv-color-bg); }
+.docs-ref-sheet { margin-block-start: var(--docs-block); }
+.docs-prose .docs-ref-sheet > h3 { margin-block-end: 0.6rem; }
+.docs-ref-count { font-size: var(--iv-text-sm); font-weight: 400; }
+.docs-ref-locals { font-size: var(--iv-text-sm); margin-block-start: 0.6rem; }
+.docs-ref-value { color: var(--iv-color-text-muted); overflow-wrap: anywhere; }
+.docs-scroller td > code { overflow-wrap: anywhere; }
+.docs-ref-empty { margin-block-start: var(--docs-block); color: var(--iv-color-text-muted); }
+@media (max-width: 40rem) {
+  .docs-prose .docs-ref-search { position: static; box-shadow: none; }
+}

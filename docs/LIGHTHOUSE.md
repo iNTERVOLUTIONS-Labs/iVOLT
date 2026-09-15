@@ -270,3 +270,18 @@ Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome, `scripts/docs-server
 | `/examples/showcase/index.html` | escritorio | 99 | 100 | 100 | 100 | 869 ms | 0 | 0 ms | 459 ms |
 
 La receta en móvil pasa de 87 a 98: el LCP baja de 4,1 s a 2,4 s con la portada de 72 KB en lugar de 143 KB. La home no cambia; servir solo los módulos que usa se decide en v0.9.
+
+## Ciclo v0.9 — remedición al cerrar `0.9.0-beta.0` (2026-09-15)
+
+Mismo método (Lighthouse 13.4.1, HeadlessChrome, build del gate `verify` en 4327, una pasada por ruta y preajuste).
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS | TBT | Speed Index |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 97 | 100 | 100 | 100 | 2379 ms | 0 | 14 ms | 1588 ms |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 521 ms | 0 | 0 ms | 388 ms |
+| `/es` | móvil | 97 | 100 | 100 | 100 | 2368 ms | 0 | 10 ms | 1582 ms |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 518 ms | 0 | 0 ms | 387 ms |
+| `/examples/showcase/index.html` | móvil | 99 | 100 | 100 | 100 | 2260 ms | 0 | 0 ms | 1243 ms |
+| `/examples/showcase/index.html` | escritorio | 100 | 100 | 100 | 100 | 748 ms | 0 | 0 ms | 385 ms |
+
+Sin cambios de nota en la home (ADR-046 mantiene la hoja completa); la receta sube a 99/100.

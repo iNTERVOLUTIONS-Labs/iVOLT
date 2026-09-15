@@ -1,0 +1,43 @@
+---
+import Base from "../layouts/Base.astro";
+import Reference from "../components/Reference.astro";
+const s = {
+  counts: (c, t, comp, a) => `${c} classes · ${t} tokens · ${comp} JavaScript components · ${a} data attributes.`,
+  built: (v) => `Generated from the sources of ${v} when this site was built.`,
+  filterLabel: "Filter the reference",
+  filterPlaceholder: "iv-card, --iv-color-primary, placement…",
+  filterHint: "Type to narrow every table below. The filter runs in the page; nothing is sent anywhere.",
+  matches: "{n} of {total} rows match.",
+  none: "Nothing matches that filter.",
+  classesTitle: "Classes, stylesheet by stylesheet",
+  classesLead: "Every class the published stylesheets define, grouped by the file that defines it. The second column links to the page that documents the family; a class with no page of its own is documented in the API contract of the repository.",
+  nClasses: (n) => `${n} ${n === 1 ? "class" : "classes"}`,
+  thClass: "Class",
+  thDocumented: "Documented in",
+  seePage: "See the page",
+  contractOnly: "API contract",
+  localsTitle: "Public locals:",
+  tokensTitle: "Tokens",
+  tokensLead: "Names and values of every custom property tokens.css emits, in the light theme and in the dark one. Names are public; values may be tuned in a minor version without changing their meaning.",
+  thToken: "Token",
+  thLight: "Light",
+  thDark: "Dark",
+  componentsTitle: "Components, options and events",
+  componentsLead: "Read from the JavaScript sources: the defaults of each component, the data attribute that sets each option in the served HTML, and the events the component emits. Precedence is defaults, then data-iv-*, then the options passed in JavaScript.",
+  thOption: "Option or event",
+  thDefault: "Default",
+  thAttribute: "Attribute",
+  emitted: "Emitted event",
+  noOptions: "No options: the component reads the served HTML.",
+  attributesTitle: "Data attributes",
+  attributesLead: "Every data-iv-* the package writes or reads, from the stylesheets and from the JavaScript, including the attribute form of every option.",
+};
+---
+<Base title="Reference" description="The complete generated surface of iVOLT: classes per stylesheet, tokens with their light and dark values, component options and events, and every data-iv-* attribute, with a filter that runs in the page.">
+  <article class="docs-prose">
+    <h1>Reference</h1>
+    <p>This page is not written by hand. A script reads the stylesheets and the JavaScript of the package when the site is built and writes what it finds; the tables below render that file. If a class exists in the package it is here, whether or not anyone remembered to mention it in prose.</p>
+    <p>Use it to check a name, to see the value a token takes in each theme, or to find which page explains a family. For how the surface is allowed to change between versions, see <a href="/foundations/stability">stability</a>; for the strings components write on screen, see <a href="/foundations/localisation">localisation</a>.</p>
+    <Reference lang="en" s={s} />
+  </article>
+</Base>

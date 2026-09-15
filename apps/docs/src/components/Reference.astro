@@ -1,0 +1,182 @@
+---
+// Renders apps/docs/src/data/reference.json: every class per stylesheet, every token with its
+// light and dark value, the options and events of every component, the data attributes and the
+// public locals. The data is generated from the package sources at prebuild, so this page cannot
+// drift from the code. Strings come in as props; the tables themselves are language-independent.
+import reference from "../data/reference.json";
+import { families } from "../i18n/en.js";
+
+const { lang = "en", s } = Astro.props;
+const base = lang === "es" ? "/es" : "";
+
+// Where a class is documented. The root of the name wins (iv-toast__dismiss → toast); when no
+// component page owns it, the stylesheet decides (utilities → layout, motion → scroll motion…).
+const alias = { accordion: "disclosure", tooltip: "popover", counter: "form", field: "form", label: "form", input: "form", select: "form", textarea: "form", checkbox: "form", radio: "form", switch: "form", "input-group": "form", fieldset: "form", help: "form", error: "form", required: "form", container: "layout", grid: "layout", stack: "layout", cluster: "layout" };
+const sheetPage = {
+  base: "/foundations/typography",
+  utilities: "/foundations/layout",
+  surfaces: "/foundations/surfaces",
+  effects: "/foundations/effects",
+  motion: "/foundations/motion",
+  text: "/foundations/text",
+};
+const pageFor = (cls, sheet) => {
+  const root = cls.replace(/^iv-/, "").split(/__|--/)[0];
+  const target = families[root] ? root : families[alias[root]] ? alias[root] : null;
+  if (target) return `${base}/components/${target}`;
+  if (alias[root] === "layout") return `${base}/foundations/layout`;
+  if (sheet.startsWith("layout/")) return `${base}/foundations/layout`;
+  if (sheet.startsWith("components/")) {
+    const slug = sheet.slice("components/".length);
+    const page = families[slug] ? slug : families[alias[slug]] ? alias[slug] : null;
+    if (page) return `${base}/components/${page}`;
+  }
+  return sheetPage[sheet] ? `${base}${sheetPage[sheet]}` : null;
+};
+
+const sheets = Object.entries(reference.sheets).map(([sheet, list]) => ({
+  sheet,
+  id: `sheet-${sheet.replace(/[^a-z0-9]+/g, "-")}`,
+  classes: list.map((c) => ({ name: c, href: pageFor(c, sheet) })),
+  locals: reference.locals[sheet] || [],
+}));
+const classCount = sheets.reduce((n, s) => n + s.classes.length, 0);
+const rows = classCount + reference.tokens.length + reference.attributes.length + reference.components.reduce((n, c) => n + c.options.length + c.events.length, 0);
+---
+<p class="docs-ref-lead">{s.counts(classCount, reference.tokens.length, reference.components.length, reference.attributes.length)} <span class="iv-u-text-muted">{s.built(reference.version)}</span></p>
+
+<div class="iv-field docs-ref-search">
+  <label class="iv-label" for="ref-filter">{s.filterLabel}</label>
+  <input class="iv-input" id="ref-filter" type="search" autocomplete="off" spellcheck="false" placeholder={s.filterPlaceholder} aria-describedby="ref-filter-status" data-ref-filter data-total={rows} data-matches={s.matches}>
+  <p class="iv-field__help iv-u-m-0" id="ref-filter-status" role="status" data-ref-status>{s.filterHint}</p>
+</div>
+
+<section data-ref-section>
+  <h2 id="classes">{s.classesTitle}</h2>
+  <p>{s.classesLead}</p>
+  {sheets.map((sheet) => (
+    <div class="docs-ref-sheet" data-ref-group>
+      <h3 id={sheet.id}><code>{sheet.sheet}.css</code> <span class="iv-u-text-muted docs-ref-count">{s.nClasses(sheet.classes.length)}</span></h3>
+      <div class="docs-scroller" tabindex="0">
+        <table>
+          <thead><tr><th>{s.thClass}</th><th>{s.thDocumented}</th></tr></thead>
+          <tbody>
+            {sheet.classes.map((c) => (
+              <tr data-ref-row data-ref-key={c.name}>
+                <td><code>{c.name}</code></td>
+                <td>{c.href ? <a href={c.href}>{s.seePage}</a> : <span class="iv-u-text-muted">{s.contractOnly}</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {sheet.locals.length > 0 && (
+        <p class="docs-ref-locals" data-ref-row data-ref-key={sheet.locals.join(" ")}><b>{s.localsTitle}</b> {sheet.locals.map((l, i) => <><code>{l}</code>{i < sheet.locals.length - 1 ? ", " : ""}</>)}</p>
+      )}
+    </div>
+  ))}
+</section>
+
+<section data-ref-section>
+  <h2 id="tokens">{s.tokensTitle}</h2>
+  <p>{s.tokensLead}</p>
+  <div class="docs-ref-sheet" data-ref-group>
+    <div class="docs-scroller" tabindex="0">
+      <table>
+        <thead><tr><th>{s.thToken}</th><th>{s.thLight}</th><th>{s.thDark}</th></tr></thead>
+        <tbody>
+          {reference.tokens.map((t) => (
+            <tr data-ref-row data-ref-key={t.name}>
+              <td><code>{t.name}</code></td>
+              <td><code class="docs-ref-value">{t.light}</code></td>
+              <td><code class="docs-ref-value">{t.dark}</code></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section data-ref-section>
+  <h2 id="components">{s.componentsTitle}</h2>
+  <p>{s.componentsLead}</p>
+  {reference.components.map((c) => (
+    <div class="docs-ref-sheet" data-ref-group>
+      <h3 id={`component-${c.name}`}><code>{c.class}</code> <span class="iv-u-text-muted docs-ref-count"><code>{c.module}</code></span></h3>
+      <div class="docs-scroller" tabindex="0">
+        <table>
+          <thead><tr><th>{s.thOption}</th><th>{s.thDefault}</th><th>{s.thAttribute}</th></tr></thead>
+          <tbody>
+            {c.options.length === 0 && <tr data-ref-row data-ref-key={c.name}><td colspan="3">{s.noOptions}</td></tr>}
+            {c.options.map((o) => (
+              <tr data-ref-row data-ref-key={`${c.name} ${c.class} ${o.key}`}>
+                <td><code>{o.key}</code></td>
+                <td><code class="docs-ref-value">{o.default}</code></td>
+                <td><code>{`data-iv-${o.key.replace(/[A-Z]/g, (ch) => `-${ch.toLowerCase()}`)}`}</code></td>
+              </tr>
+            ))}
+            {c.events.map((e) => (
+              <tr data-ref-row data-ref-key={`${c.name} ${c.class} ${e}`}>
+                <td><code>{e}</code></td>
+                <td colspan="2">{s.emitted}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  ))}
+</section>
+
+<section data-ref-section>
+  <h2 id="attributes">{s.attributesTitle}</h2>
+  <p>{s.attributesLead}</p>
+  <div class="docs-ref-sheet" data-ref-group>
+    <div class="docs-scroller" tabindex="0">
+      <table>
+        <thead><tr><th>{s.thAttribute}</th></tr></thead>
+        <tbody>
+          {reference.attributes.map((a) => <tr data-ref-row data-ref-key={a}><td><code>{a}</code></td></tr>)}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<p class="docs-ref-empty" data-ref-empty hidden>{s.none}</p>
+
+<script>
+  // Local filter: no package JavaScript, no index, no network. It hides rows whose key does not
+  // contain the query, then hides the groups and sections left without a visible row.
+  function mountReferenceFilter() {
+    const input = document.querySelector("[data-ref-filter]");
+    if (!input) return;
+    const status = document.querySelector("[data-ref-status]");
+    const empty = document.querySelector("[data-ref-empty]");
+    const rows = [...document.querySelectorAll("[data-ref-row]")];
+    const groups = [...document.querySelectorAll("[data-ref-group]")];
+    const sections = [...document.querySelectorAll("[data-ref-section]")];
+    const hint = status ? status.textContent : "";
+    const total = Number(input.dataset.total || rows.length);
+    const label = input.dataset.matches || "";
+    let timer = 0;
+    const apply = () => {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      for (const row of rows) {
+        const hit = !q || (row.dataset.refKey || "").toLowerCase().includes(q);
+        row.hidden = !hit;
+        if (hit) shown++;
+      }
+      for (const g of groups) g.hidden = !!q && !g.querySelector("[data-ref-row]:not([hidden])");
+      for (const s of sections) s.hidden = !!q && !s.querySelector("[data-ref-row]:not([hidden])");
+      if (empty) empty.hidden = !q || shown > 0;
+      if (status) status.textContent = q ? label.replace("{n}", String(shown)).replace("{total}", String(total)) : hint;
+    };
+    input.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(apply, 80); });
+    input.addEventListener("search", apply);
+    if (input.value) apply();
+  }
+  document.addEventListener("astro:page-load", mountReferenceFilter);
+</script>

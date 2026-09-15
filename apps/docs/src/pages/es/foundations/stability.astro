@@ -1,0 +1,74 @@
+---
+import Base from "../../../layouts/Base.astro";
+---
+<Base title="Estabilidad" description="Qué promete @intervolutions/ivolt a partir de 1.0: la superficie pública, las reglas de SemVer, cómo funcionan las deprecaciones, las etiquetas de npm, los navegadores, lo que no se promete y cómo se comprueba todo.">
+  <article class="docs-prose">
+    <h1>Estabilidad y versiones</h1>
+    <p>Esta página dice qué promete el paquete a partir de <code>1.0.0</code> y cómo cambia esa promesa. Hasta que la candidata la congele es un borrador que todavía puede moverse; y donde se mueva, el registro de cambios lo dirá.</p>
+    <p>En corto: lo que está documentado es público, lo demás es detalle de implementación; un nombre solo se retira en una versión mayor; y detrás de cada publicación hay una pasada completa de la puerta de calidad.</p>
+
+    <h2>Qué es público</h2>
+    <p>Lo que aparece en el contrato de API y en esta web, y nada más. La <a href="/es/reference">referencia</a> renderiza esa superficie entera, generada desde las fuentes.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Superficie</th><th>Público</th><th>No público</th></tr></thead>
+        <tbody>
+          <tr><td>CSS</td><td>Clases <code>iv-*</code> documentadas y sus modificadores; las propiedades locales <code>--iv-&lt;bloque&gt;-*</code> listadas como locales públicos; los atributos de estado <code>data-iv-*</code> documentados</td><td>Orden interno de las reglas, pseudoelementos, nombres de <code>@keyframes</code>, valores concretos de sombras y transiciones</td></tr>
+          <tr><td>Tokens</td><td>Todos los <code>--iv-*</code> que emite <code>tokens.css</code>: el nombre y su semántica</td><td>Lo que no aparece en <code>tokens.json</code>. Un valor puede afinarse en una versión menor mientras el significado se mantenga</td></tr>
+          <tr><td>JavaScript</td><td>Los <code>exports</code> del paquete (<code>.</code>, <code>./auto</code>, <code>./theme</code>, <code>./&lt;componente&gt;</code>, <code>./iife</code>, <code>./css/*</code>, <code>./tokens.json</code>); clases, métodos, getters, opciones y valores por defecto; los eventos <code>iv:*</code> y su <code>detail</code>; la precedencia <code>defaults &lt; data-iv-* &lt; opciones JS</code></td><td>Miembros que empiezan por <code>_</code>, rutas profundas dentro de <code>dist/</code>, orden de los listeners, temporizaciones exactas</td></tr>
+          <tr><td>HTML servido</td><td>La estructura que espera cada componente y su comportamiento sin nada de JavaScript</td><td>El marcado que genera <code>init</code>: puede cambiar de forma mientras conserve la semántica documentada</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Versionado</h2>
+    <p>SemVer estricto desde <code>1.0.0</code>.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Publicación</th><th>Puede contener</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Mayor</strong></td><td>Retirar o renombrar cualquier cosa pública, cambiar un valor por defecto, cambiar el <code>detail</code> de un evento, subir el mínimo de navegadores</td></tr>
+          <tr><td><strong>Menor</strong></td><td>Añadir clases, tokens, opciones, métodos, eventos o módulos; afinar valores de tokens sin cambiar su semántica; ampliar el soporte de navegadores</td></tr>
+          <tr><td><strong>Parche</strong></td><td>Correcciones que no cambian la superficie pública. Una corrección de accesibilidad puede cambiar marcado generado y sigue siendo parche</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Leído al revés: si tu página solo usa clases documentadas, atributos documentados y los módulos exportados, una subida menor es un cambio de número y nada más.</p>
+
+    <h3>Deprecaciones</h3>
+    <p>Nada público desaparece sin aviso. Una deprecación se anuncia en el registro de cambios y en esta web una versión menor antes de retirarse en la siguiente mayor, y mientras vive el código avisa una vez por página:</p>
+<pre><code>[iVOLT] deprecated: &lt;qué&gt; — usa &lt;reemplazo&gt; (se retira en 2.0)</code></pre>
+    <p>El aviso es un solo <code>console.warn</code>, nunca un error lanzado ni un cambio visible en la página. Al escribir esto no hay ninguna deprecación pendiente.</p>
+
+    <h3>Etiquetas de npm</h3>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Etiqueta</th><th>A qué apunta</th><th>Instalación</th></tr></thead>
+        <tbody>
+          <tr><td><code>latest</code></td><td>La versión estable vigente</td><td><code>npm install @intervolutions/ivolt</code></td></tr>
+          <tr><td><code>next</code></td><td>Candidatas a publicación</td><td><code>npm install @intervolutions/ivolt@next</code></td></tr>
+          <tr><td><code>beta</code></td><td>Betas del ciclo en curso</td><td><code>npm install @intervolutions/ivolt@beta</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Una salvedad mientras el paquete es anterior a 1.0: npm no admite un paquete sin <code>latest</code>, así que <code>latest</code> apunta hoy a la última beta publicada. Fija una versión exacta si eso te importa.</p>
+
+    <h2>Navegadores</h2>
+    <p>El mínimo es Chromium 113, Firefox 113 y Safari 16.4, con sus versiones móviles, y cada publicación se prueba en Chromium, Firefox y WebKit. Subir ese mínimo es un cambio mayor.</p>
+    <p>Varias funciones son mejora progresiva y así están declaradas: el atributo <code>popover</code>, <code>text-wrap: balance</code>, <code>animation-timeline</code> (en Firefox el mismo movimiento llega por la reserva de movimiento por scroll), <code>position-anchor</code>, <code>backdrop-filter</code> y <code>field-sizing</code>. Ninguna función pública depende de ellas; un motor antiguo obtiene un resultado más sobrio, no uno roto.</p>
+
+    <h2>Lo que no se promete</h2>
+    <ul>
+      <li><strong>Igualdad al píxel entre versiones.</strong> Las líneas base visuales son de la suite de pruebas del proyecto; no son un contrato contigo.</li>
+      <li><strong>Los nombres de archivo dentro de <code>dist/</code>.</strong> Solo son estables las rutas listadas en <code>exports</code>. Una importación profunda puede romperse en un parche.</li>
+      <li><strong>Las fixtures del paquete como API.</strong> Son material de prueba y de documentación.</li>
+      <li><strong>El comportamiento con lector de pantalla más allá de lo verificado.</strong> La revisión de accesibilidad registra qué se probó y declara con claridad qué no se ejecutó.</li>
+    </ul>
+
+    <h2>Cómo se comprueba</h2>
+    <p>Cada publicación pasa por un solo comando, y una salida distinta de cero es una publicación que no ocurre:</p>
+<pre><code>npm run verify</code></pre>
+    <p>Construye el paquete, corre las unitarias y las de contrato, lanza la suite de navegador en los tres motores, mide los paquetes contra su presupuesto, empaqueta el tarball y lo instala en un consumidor desechable, y después construye esta web y los ejemplos. Encima de eso, una prueba de contrato regenera la referencia y falla si una clase, opción, evento o token público no está documentado en ningún sitio: por eso la <a href="/es/reference">referencia</a> y las páginas no pueden separarse.</p>
+    <p>Lo que una pasada no pudo verificar se escribe en vez de taparse: esa lista vive junto al estado del proyecto, al lado de los resultados.</p>
+  </article>
+</Base>

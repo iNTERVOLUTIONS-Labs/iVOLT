@@ -28,7 +28,7 @@ const family = slug ? families[slug] : null;
 const items = nav.flatMap((g) => g.items);
 // "css" or "js" beside a component link: 33 entries are only scannable when the kind is visible.
 const kindOf = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return m ? families[m[1]] : null; };
-const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
+const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/foundations/stability", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
 // The footer carries the real sitemap: four columns taken from the same navigation as the
 // sidebar, so a link can never exist in one and be missing from the other. The long column
 // takes two tracks and lists its links in two files instead of being cut short.

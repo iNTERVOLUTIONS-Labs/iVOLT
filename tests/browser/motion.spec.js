@@ -109,8 +109,10 @@ test.describe("Marquee", () => {
     const before = await track.evaluate((el) => getComputedStyle(el).transform);
     await expect.poll(() => track.evaluate((el) => getComputedStyle(el).transform)).not.toBe(before);
 
-    const box = await track.boundingBox();
-    await page.mouse.move(box.x + 40, box.y + box.height / 2);
+    // The track keeps travelling while the test runs, so its own box drifts off screen under load;
+    // the hover target is the marquee window, which stays put.
+    const box = await page.locator(".iv-marquee").first().boundingBox();
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await expect.poll(() => track.evaluate((el) => el.getAnimations().map((a) => a.playState))).toEqual(["paused"]);
     await page.mouse.move(5, 780);
     await expect.poll(() => track.evaluate((el) => el.getAnimations().map((a) => a.playState))).toEqual(["running"]);

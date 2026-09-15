@@ -455,3 +455,12 @@ Sin verificar: anuncio real del contador del visor y del cambio de imagen con NV
 - **Impresión** (`qa-print.spec.js`): sin pegajosos ni fijos, sin sombras ni animaciones, superposiciones fuera.
 
 Sin verificar: lector de pantalla real; pasada propia de reduced motion del revisor B (se apoya en `motion.spec.js` y `text.spec.js`); el paso hecho y el actual del stepper comparten `Highlight` y se distinguen por el glifo.
+
+## 15. Ciclo v0.9 (2026-09-15): nada fijado en inglés, hoja plana y relevo
+
+- **Cadenas**: las seis que quedaban fijas (cerrar del toast, limpiar y quitar del selector, etiqueta y contador del carrusel, contador del visor) son opciones `data-iv-*`; los contadores formatean los dígitos con `Intl.NumberFormat` del `lang`; la página de localización de la web lista cada cadena con un ejemplo en español (`tests/unit/{toast,picker,carousel,lightbox}.test.js`).
+- **Hoja plana**: los 52 elementos que diferían entre `ivolt.css` e `ivolt.flat.css` (títulos y colores de enlaces de componente) se igualaron; `qa-flat.spec.js` compara 28 estilos calculados.
+- **Selector**: la etiqueta sigue siendo hermana del campo visible y `for` apunta al control visible; el campo flotante es indistinguible con y sin JS.
+- **Baraja**: el relevo por tarjeta es solo CSS y queda estático bajo reduced motion, como antes.
+
+Sin verificar: lector de pantalla real (se mantiene la deuda desde v0.1; ver §6).

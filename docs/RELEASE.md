@@ -2,6 +2,18 @@
 
 Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
 
+## 0f. `1.0.0-rc.0` (candidato; pasos)
+
+1. Contrato congelado (`docs/API_CONTRACT.md` cabecera) y `docs/STABILITY.md` definitivo; changelog consolidado 0.1 → 1.0; avisos de la web «release candidate».
+2. Versión `1.0.0-rc.0` en `packages/ivolt/package.json`, `src/js/index.js` y `apps/docs/package.json`; `npm install` para el lockfile.
+3. `IVOLT_ALL_BROWSERS=1 npm run verify`, Lighthouse, capturas finales en tres anchos y dos temas.
+4. Publicación con autorización y OTP o token del propietario: `npm publish --access public --tag next -w @intervolutions/ivolt`; `latest` sigue en `0.7.0-beta.0` hasta `1.0.0`; etiqueta git `v1.0.0-rc.0`.
+5. Tras publicar: página de inicio con `npm install @intervolutions/ivolt@next`, README, `PROJECT_STATE.md`.
+
+## 0e. Notas de versión 0.8.0-beta.0 y 0.9.0-beta.0 (cerradas el 2026-09-15, sin publicar) y plan de `1.0.0-rc.0`
+
+**0.8 «Hardening»** (ADR-044/045): dos revisiones adversarias (JS y CSS) con 19 defectos corregidos y probados: DOM idéntico tras `destroy`, foco inicial correcto, RTL en ocho módulos, colores forzados, impresión, 320 px; módulos raíz sueltos, costes por módulo, portada de la receta en 800 px. **0.9 «Complete»** (ADR-046): relevo por tarjeta, etiqueta hermana del selector, hoja plana igualada, todas las cadenas configurables, referencia generada con prueba de contrato, páginas de localización y estabilidad. Ninguna de las dos se publica: la siguiente publicación es `1.0.0-rc.0` con etiqueta `next` (`latest` sigue en `0.7.0-beta.0` hasta `1.0.0`), que requiere el OTP o un token del propietario, la congelación del contrato y el gate completo.
+
 ## 0d. Notas de versión 0.7.0-beta.0 (publicada el 2026-09-14)
 
 **0.7 «Media & motion»** (ADR-042): **Lightbox** (galería en rejilla, masonry o tira; visor a pantalla completa sobre el diálogo con teclado, gesto, zoom, pies, contador y precarga), **movimiento por scroll** (`motion.css`: parallax, barra de lectura, marquesina, tarjetas apiladas con animaciones dirigidas por scroll y `ScrollMotion` como reserva para navegadores sin ellas), **texto** (`text.css`: revelado por líneas, brillo, contorno, destello) y **Countup** (cifras servidas que cuentan al entrar, formateadas por `Intl`), más la receta **showcase** con fotografías propias acreditadas. Todo estático bajo reduced motion salvo la barra de lectura, que es estado. Tamaños: CSS 28,1 KiB, JS 42,8 KiB gzip (presupuestos 40 y 48).

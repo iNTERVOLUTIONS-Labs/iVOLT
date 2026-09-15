@@ -176,12 +176,12 @@ Petición del propietario: «sigue hasta 1.0 release candidate». Un candidato a
 
 | Orden | Elemento | Notas |
 |---|---|---|
-| 1 | Referencia completa generada de clases, tokens, atributos y eventos (una página por idioma, comprobada contra el CSS construido) | garantiza que nada público queda sin documentar |
-| 2 | Página «Localisation»: todas las cadenas de texto de los componentes y cómo traducirlas por `data-iv-*` | sin JS nuevo |
-| 3 | Candidatos aceptados: relevo por tarjeta en `iv-stack-cards`, `Picker` con etiqueta hermana, `.iv-dialog__title` en la hoja plana | los demás candidatos se descartan con motivo |
-| 4 | Home de la web con solo los módulos que usa (o decisión razonada de no hacerlo) | Lighthouse móvil |
-| 5 | Política de versiones y estabilidad (`docs/STABILITY.md`): qué es público, SemVer, deprecaciones, soporte de navegadores medido | requisito de 1.0 |
-| 6 | Cierre `0.9.0-beta.0` | mismo gate |
+| 1 | Referencia completa generada de clases, tokens, atributos y eventos (una página por idioma, comprobada contra el CSS construido) | hecho (2026-09-15): `/reference`, `tests/contracts/reference.test.js`, 71 clases documentadas que faltaban |
+| 2 | Página «Localisation»: todas las cadenas de texto de los componentes y cómo traducirlas por `data-iv-*` | hecho (2026-09-15); destapó seis cadenas fijas que pasaron a opciones (§5.2b) |
+| 3 | Candidatos aceptados: relevo por tarjeta en `iv-stack-cards`, `Picker` con etiqueta hermana, `.iv-dialog__title` en la hoja plana | hecho (2026-09-15, ADR-046); la auditoría de la hoja plana amplió el arreglo a 12 títulos y 9 componentes-enlace |
+| 4 | Home de la web con solo los módulos que usa (o decisión razonada de no hacerlo) | decidido: no (ADR-046) |
+| 5 | Política de versiones y estabilidad (`docs/STABILITY.md`): qué es público, SemVer, deprecaciones, soporte de navegadores medido | hecho (2026-09-15) y publicado en la web (`/foundations/stability`) |
+| 6 | Cierre `0.9.0-beta.0` | hecho (2026-09-15); sin publicar |
 
 ### `1.0.0-rc.0`
 

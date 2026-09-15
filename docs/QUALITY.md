@@ -12,6 +12,8 @@ Estado: criterios de aceptación de fase 0. Nada de lo listado está medido toda
 
 Coste por módulo en v0.5 (2026-09-14, gzip 9, sin el core): tooltip 1,8 KiB JS + 0,5 KiB CSS, popover 2,0 KiB JS + 0,8 KiB CSS; el agrupado de 21 componentes con `init` conjunto supera los 32 KiB, de ahí ADR-037 (48 KiB). Quien importe por componente (`exports` por módulo, verificado por `pack-smoke`) paga solo lo que usa: `theme` 926 B, `dialog` 6,3 KiB.
 
+Cierre de v0.9 (2026-09-15): `ivolt.min.css` 28,81 KiB, `ivolt.flat.min.css` 28,74, `core.min.css` 2,65, JS agrupado 43,36 (≤ 48), IIFE 43,65. Los remates del ciclo (hoja plana, cadenas configurables) costaron +0,15 KiB CSS y +0,20 KiB JS.
+
 Desde v0.8 (ADR-044) `npm run sizes` imprime, además de los artefactos con presupuesto, el coste gzip de cada componente JS agrupado por separado (1,9–6,6 KiB) y de cada hoja de `dist/css` (0,4–3,5 KiB), y `dist/SIZES.md` conserva la tabla; los módulos raíz `surfaces`, `effects`, `motion` y `text` se emiten sueltos como los componentes.
 
 Coste medido en v0.7 (2026-09-14, gzip 9): `lightbox.css` 2,2 KiB, `motion.css` 1,2, `text.css` 0,9 (lightningcss `--minify` + gzip; los módulos de nivel raíz no se emiten sueltos en `dist/`), `lightbox.js` 2,8, `countup.js` 1,6, `scroll-motion.js` ≈ 1 (esbuild `--minify`, sin el core). Totales `ivolt.min.css` 28,13 KiB (≤ 40; 25,64 en v0.6), `ivolt.flat.min.css` 28,08, `core.min.css` 2,60, JS agrupado 42,79 (≤ 48; 39,04 en v0.6), IIFE 43,08. El JS agrupado queda a 5 KiB del presupuesto: el siguiente ciclo con componentes JS debe decidir entre subir el umbral con ADR o recomendar la importación por módulo (ya verificada por `pack-smoke`).

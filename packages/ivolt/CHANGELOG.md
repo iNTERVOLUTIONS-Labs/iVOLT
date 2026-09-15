@@ -7,7 +7,11 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 ### Changed
 - `iv-stack-cards` hands over card by card: each card shrinks and fades exactly while the next one arrives (named view timeline, `--iv-i` and `--iv-stack-count`).
 - The picker keeps a sibling `<label>` next to its visible field, so floating labels and sibling selectors work without a compensating rule.
-- `.iv-dialog__title` keeps its size in the flat stylesheet too.
+- Titles (dialog, drawer, card, popover, tabs, command, megamenu, timeline, hero, stat) and every link-shaped component (button, navbar, megamenu, pagination, stepper, tabs, dropdown, command, gallery) keep their type and colour in the flat stylesheet; `tests/browser/qa-flat.spec.js` compares computed styles between the two sheets.
+
+### Added
+- Every string a component writes is an option: `dismissText` (toast region), `clearText` and `removeText` (picker), `slideText` and `counterText` (carousel), `counterText` (lightbox); counters format their digits with `Intl.NumberFormat` from the element's language.
+- Documentation: a generated reference of every class, local, token, option, event and attribute, checked by a contract test; a localisation page; a stability and versioning page.
 
 ## 0.8.0-beta.0 (unreleased)
 

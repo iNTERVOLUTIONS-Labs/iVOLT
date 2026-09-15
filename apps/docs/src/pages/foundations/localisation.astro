@@ -1,0 +1,145 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+<Base title="Localisation" description="Every string iVOLT writes on screen, where it comes from — Intl, a data-iv-* option or the served HTML — and how to translate it, with a Spanish example per component.">
+  <article class="docs-prose">
+    <h1>Localisation</h1>
+    <p>iVOLT ships no translation layer, no locale files and no runtime dictionary. It writes very little text of its own, and almost all of it is an option you set in the HTML you already serve. Numbers, dates and sorting come from <code>Intl</code>, which reads the language of the document. This page lists the whole surface so a translator can see it at once.</p>
+    <p>Three sources, in order of how often you will touch them:</p>
+    <ol>
+      <li><strong>The served HTML.</strong> Labels, headings, options, captions and messages are yours; the package moves them around but never rewrites them.</li>
+      <li><strong>A <code>data-iv-*</code> option.</strong> The handful of strings the JavaScript generates — an empty state, a status line, the label of a button it creates — are defaults you override per element, or in JavaScript when you initialise the component.</li>
+      <li><strong><code>Intl</code>.</strong> Month and weekday names, the full date a day cell announces, grouped numbers and the collation used when a column is sorted. The locale is <code>lang</code> on the closest element that declares it, so <code>&lt;html lang="es"&gt;</code> is usually all the configuration there is.</li>
+    </ol>
+
+    <h2>Start with the language of the document</h2>
+    <p>Set <code>lang</code> and everything driven by <code>Intl</code> follows. A Spanish page needs no option at all for dates to read as dates in Spanish:</p>
+<pre><code>&lt;html lang="es" class="iv-root" data-iv-theme="system"&gt;</code></pre>
+    <p>A region in another language declares it on the region, and the components inside it pick it up:</p>
+<pre><code>&lt;section lang="es"&gt;
+  &lt;input class="iv-input" type="date" data-iv-component="datepicker"&gt;
+&lt;/section&gt;</code></pre>
+    <p>Two components accept an explicit override when the visible language and the data language differ: <code>data-iv-locale</code> on the data table (for the collator that sorts) and on the datepicker (for the calendar).</p>
+
+    <h2>Every generated string</h2>
+    <p>The full list. Everything in this table is an option: put it on the element as <code>data-iv-&lt;option&gt;</code>, or pass it to <code>getOrCreate</code>. Placeholders in braces are replaced by the component and must survive translation.</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Component</th><th>Option</th><th>Default</th><th>Where it shows</th></tr></thead>
+        <tbody>
+          <tr><td><a href="/components/carousel">Carousel</a></td><td><code>pauseText</code>, <code>playText</code>, <code>slideText</code>, <code>counterText</code></td><td><code>"Pause"</code>, <code>"Play"</code>, <code>"&#123;index&#125; of &#123;total&#125;"</code>, <code>"&#123;index&#125; / &#123;total&#125;"</code></td><td>Label of the autoplay button, swapped as it toggles; the accessible name of each slide; the visible position counter, whose digits go through <code>Intl.NumberFormat</code></td></tr>
+          <tr><td><a href="/components/combobox">Combobox</a></td><td><code>emptyText</code></td><td><code>"No matches"</code></td><td>The listbox when nothing matches what was typed</td></tr>
+          <tr><td><a href="/components/command">Command</a></td><td><code>recentText</code>, <code>emptyText</code>, <code>placeholder</code></td><td><code>"Recent"</code>, <code>"No results"</code>, <code>""</code></td><td>Heading of the remembered commands, empty state, and the placeholder of the input</td></tr>
+          <tr><td><a href="/components/validation">Counter</a></td><td><code>template</code>, <code>overText</code></td><td><code>""</code>, <code>"Too long"</code></td><td>The count under a field (<code>&#123;count&#125;</code>, <code>&#123;max&#125;</code>, <code>&#123;remaining&#125;</code>) and what is announced over the limit</td></tr>
+          <tr><td><a href="/components/datatable">DataTable</a></td><td><code>emptyText</code>, <code>statusText</code>, <code>locale</code></td><td><code>"No rows match"</code>, <code>"&#123;visible&#125; of &#123;total&#125; rows"</code>, the document language</td><td>Empty state and the live region read after a filter or a sort</td></tr>
+          <tr><td><a href="/components/datepicker">Datepicker</a></td><td><code>openText</code>, <code>dialogText</code>, <code>prevText</code>, <code>nextText</code>, <code>todayText</code>, <code>clearText</code>, <code>locale</code>, <code>firstDay</code></td><td><code>"Open calendar"</code>, <code>"Choose a date"</code>, <code>"Previous month"</code>, <code>"Next month"</code>, <code>"Today"</code>, <code>"Clear"</code></td><td>The toggle, the label of the calendar, its two navigation buttons and its footer. Month names, weekday initials and the full date each day announces come from <code>Intl</code></td></tr>
+          <tr><td><a href="/components/form">Form</a></td><td><code>summaryTitle</code></td><td><code>"Please fix the following"</code></td><td>Heading of the error summary. The message of each field is the browser's own <code>validationMessage</code>, already in the user's language, unless you serve your own text</td></tr>
+          <tr><td><a href="/components/lightbox">Lightbox</a></td><td><code>closeText</code>, <code>prevText</code>, <code>nextText</code>, <code>zoomText</code>, <code>galleryLabel</code>, <code>counterText</code></td><td><code>"Close"</code>, <code>"Previous"</code>, <code>"Next"</code>, <code>"Zoom"</code>, <code>"Image viewer"</code>, <code>"&#123;index&#125; / &#123;total&#125;"</code></td><td>The four buttons of the viewer, the accessible name of the dialog, and the position counter (digits through <code>Intl.NumberFormat</code>)</td></tr>
+          <tr><td><a href="/components/picker">Picker</a></td><td><code>placeholder</code>, <code>searchPlaceholder</code>, <code>emptyText</code>, <code>countText</code>, <code>clearText</code>, <code>removeText</code></td><td>the empty <code>&lt;option&gt;</code> or <code>"Select…"</code>, <code>"Search"</code>, <code>"No matches"</code>, <code>"&#123;count&#125; selected"</code>, <code>"Clear selection"</code>, <code>"Remove &#123;label&#125;"</code></td><td>The closed control, the search field, the empty state, the summary of a multiple selection, and the accessible names of the clear button and of the remove button on every chip</td></tr>
+          <tr><td><a href="/components/stepper">Stepper</a></td><td><code>statusText</code></td><td><code>"Step &#123;index&#125; of &#123;total&#125;: &#123;label&#125;"</code></td><td>The live region announced on every step change</td></tr>
+          <tr><td><a href="/components/toast">Toast</a></td><td><code>dismissText</code> (on the region)</td><td><code>"Dismiss"</code></td><td>Accessible name of the close button of every notice. Title and message come from your call to <code>show()</code> or from the <code>data-iv-message</code> of the trigger</td></tr>
+          <tr><td><a href="/components/countup">Countup</a></td><td><code>grouping</code>, <code>decimals</code></td><td><code>true</code>, <code>-1</code></td><td>No text: the figure is formatted with <code>Intl.NumberFormat</code> in the language of the document, so a Spanish page counts through <code>1.234,5</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>A Spanish example per component</h2>
+    <p>Real markup, the way a Spanish page would serve it. Only the generated strings appear here: the visible content is authored in Spanish to begin with.</p>
+<pre><code>&lt;!-- Carousel --&gt;
+&lt;div class="iv-carousel" data-iv-component="carousel" data-iv-autoplay="5000"
+     data-iv-pause-text="Pausar" data-iv-play-text="Reproducir"
+     data-iv-slide-text="&#123;index&#125; de &#123;total&#125;" data-iv-counter-text="&#123;index&#125; de &#123;total&#125;"&gt;…&lt;/div&gt;
+
+&lt;!-- Combobox --&gt;
+&lt;div class="iv-combobox" data-iv-component="combobox" data-iv-empty-text="Sin coincidencias"&gt;…&lt;/div&gt;
+
+&lt;!-- Command palette --&gt;
+&lt;dialog class="iv-command" data-iv-component="command" data-iv-recent-text="Recientes"
+        data-iv-empty-text="Sin resultados" data-iv-placeholder="Escribe un comando…"&gt;…&lt;/dialog&gt;
+
+&lt;!-- Counter --&gt;
+&lt;textarea class="iv-textarea" data-iv-component="counter" data-iv-max="280"
+          data-iv-template="&#123;remaining&#125; caracteres restantes" data-iv-over-text="Demasiado largo"&gt;&lt;/textarea&gt;
+
+&lt;!-- Data table --&gt;
+&lt;table class="iv-table" data-iv-component="datatable" data-iv-locale="es"
+       data-iv-empty-text="Ninguna fila coincide"
+       data-iv-status-text="&#123;visible&#125; de &#123;total&#125; filas"&gt;…&lt;/table&gt;
+
+&lt;!-- Datepicker --&gt;
+&lt;input class="iv-input" type="date" data-iv-component="datepicker"
+       data-iv-open-text="Abrir el calendario" data-iv-dialog-text="Elige una fecha"
+       data-iv-prev-text="Mes anterior" data-iv-next-text="Mes siguiente"
+       data-iv-today-text="Hoy" data-iv-clear-text="Limpiar"&gt;
+
+&lt;!-- Form --&gt;
+&lt;form class="iv-form" data-iv-component="form" data-iv-summary="true"
+      data-iv-summary-title="Corrige lo siguiente"&gt;…&lt;/form&gt;
+
+&lt;!-- Lightbox --&gt;
+&lt;div class="iv-gallery" data-iv-component="lightbox" data-iv-gallery-label="Visor de imágenes"
+     data-iv-close-text="Cerrar" data-iv-prev-text="Anterior" data-iv-next-text="Siguiente"
+     data-iv-zoom-text="Ampliar" data-iv-counter-text="&#123;index&#125; de &#123;total&#125;"&gt;…&lt;/div&gt;
+
+&lt;!-- Picker --&gt;
+&lt;select class="iv-select" multiple data-iv-component="picker"
+        data-iv-search-placeholder="Buscar" data-iv-empty-text="Sin coincidencias"
+        data-iv-count-text="&#123;count&#125; seleccionados"
+        data-iv-clear-text="Limpiar la selección" data-iv-remove-text="Quitar &#123;label&#125;"&gt;
+  &lt;option value=""&gt;Elige un país&lt;/option&gt;
+&lt;/select&gt;
+
+&lt;!-- Toast region --&gt;
+&lt;div class="iv-toast-region" id="avisos" data-iv-component="toast"
+     data-iv-dismiss-text="Descartar"&gt;&lt;/div&gt;
+
+&lt;!-- Stepper --&gt;
+&lt;div class="iv-stepper" data-iv-component="stepper"
+     data-iv-status-text="Paso &#123;index&#125; de &#123;total&#125;: &#123;label&#125;"&gt;…&lt;/div&gt;</code></pre>
+    <p>The same in JavaScript, when the markup is produced by a framework and the strings live in your own catalogue:</p>
+<pre><code>import &#123; Picker &#125; from "@intervolutions/ivolt/picker";
+
+Picker.getOrCreate(el, &#123;
+  searchPlaceholder: t("search"),
+  emptyText: t("noMatches"),
+  countText: t("nSelected"), // keep the &#123;count&#125; placeholder
+&#125;);</code></pre>
+    <p>Precedence is <code>defaults &lt; data-iv-* &lt; options in JavaScript</code>, so a per-page default in the markup can still be overridden by the catalogue at initialisation.</p>
+
+    <h2>Placeholders, and what not to translate</h2>
+    <ul>
+      <li><strong>Keep the braces.</strong> <code>&#123;count&#125;</code>, <code>&#123;visible&#125;</code>, <code>&#123;total&#125;</code>, <code>&#123;index&#125;</code>, <code>&#123;label&#125;</code>, <code>&#123;max&#125;</code> and <code>&#123;remaining&#125;</code> are replaced verbatim; a translated brace is printed as text.</li>
+      <li><strong>Word order is free.</strong> The replacement is positional only in the sense that every placeholder is substituted wherever it appears, so <code>"&#123;visible&#125; de &#123;total&#125; filas"</code> is as valid as the English order.</li>
+      <li><strong>Plurals are yours.</strong> The package does not pick a plural form. When one string has to serve one and many, write it so both read well, or set the option from your own catalogue, which does know.</li>
+      <li><strong>Option values are not text.</strong> <code>placement</code>, <code>effect</code>, <code>filter</code>, <code>activation</code> and the rest take fixed keywords; translating them disables the option.</li>
+    </ul>
+
+    <h2>Right to left</h2>
+    <p>Set <code>dir="rtl"</code> on the document or on a region. The stylesheets are written with logical properties and the components that have a direction — carousel, drawer, marquee, megamenu, popover, range, and the light and scan effects — mirror themselves; no option is involved. Arrow keys follow the writing direction too. It is tested in all three engines.</p>
+
+    <h2>Nothing is left hard-coded</h2>
+    <p>Until 0.9 six strings were written by the JavaScript with no option behind them — the close button of a notice, the clear and remove buttons of the picker, the accessible name of a carousel slide and the two position counters. They are options now, so a page can be translated end to end without touching generated markup:</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Component</th><th>Option</th><th>Default</th><th>Spanish</th></tr></thead>
+        <tbody>
+          <tr><td>Toast (region)</td><td><code>dismissText</code></td><td><code>"Dismiss"</code></td><td><code>data-iv-dismiss-text="Descartar"</code></td></tr>
+          <tr><td>Picker</td><td><code>clearText</code></td><td><code>"Clear selection"</code></td><td><code>data-iv-clear-text="Limpiar la selección"</code></td></tr>
+          <tr><td>Picker</td><td><code>removeText</code></td><td><code>"Remove &#123;label&#125;"</code></td><td><code>data-iv-remove-text="Quitar &#123;label&#125;"</code></td></tr>
+          <tr><td>Carousel</td><td><code>slideText</code></td><td><code>"&#123;index&#125; of &#123;total&#125;"</code></td><td><code>data-iv-slide-text="&#123;index&#125; de &#123;total&#125;"</code></td></tr>
+          <tr><td>Carousel</td><td><code>counterText</code></td><td><code>"&#123;index&#125; / &#123;total&#125;"</code></td><td><code>data-iv-counter-text="&#123;index&#125; de &#123;total&#125;"</code></td></tr>
+          <tr><td>Lightbox</td><td><code>counterText</code></td><td><code>"&#123;index&#125; / &#123;total&#125;"</code></td><td><code>data-iv-counter-text="&#123;index&#125; de &#123;total&#125;"</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The two counters also format their digits with <code>Intl.NumberFormat</code> in the language of the document, so a locale with its own numerals gets them without any further configuration. The <code>×</code> glyph of the dismiss button stays as it is: it is decorative, hidden from assistive technology, and what is announced is <code>dismissText</code>.</p>
+
+    <h2>Checking a translation</h2>
+    <ul>
+      <li>Open the page with the language set and read the live regions with the developer tools, not only the visible text: the status of the data table and of the stepper are announced, not printed.</li>
+      <li>Check the calendar with a locale whose week starts on Monday and one where it starts on Sunday; <code>firstDay</code> exists for runtimes that do not expose the week information.</li>
+      <li>Check a long translation in the narrow layout: German and Spanish labels are often half again as long as the English ones, and the buttons of the viewer and the carousel sit in a row.</li>
+      <li>Check that a number still reads correctly when the counter animates: the format is chosen once, from the language of the document.</li>
+    </ul>
+  </article>
+</Base>

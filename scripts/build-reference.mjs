@@ -48,7 +48,11 @@ for (const f of readdirSync(jsDir).filter((f) => f.endsWith(".js")).sort()) {
   const src = readFileSync(join(jsDir, f), "utf8");
   const name = (src.match(/static componentName = "([a-z-]+)"/) || [])[1] || f.replace(".js", "");
   const cls = (src.match(/export class (\w+) extends/) || [])[1] || name;
-  const defaultsBlock = (src.match(/static defaults = Object\.freeze\(\{([\s\S]*?)\}\);/) || [])[1] || "";
+  // Two shapes in the sources: `Object.freeze({ … })` and, when the block carries a type
+  // annotation, `Object.freeze(/** @type {X} */ ({ … }))`. Take the whole call and keep what
+  // lies between the first "{" and the last "}" so both parse.
+  const freezeCall = (src.match(/static defaults = Object\.freeze\(([\s\S]*?)\n  \);?\n/) || src.match(/static defaults = Object\.freeze\(([\s\S]*?)\);/) || [])[1] || "";
+  const defaultsBlock = freezeCall.slice(freezeCall.indexOf("{") + 1, freezeCall.lastIndexOf("}"));
   const options = [...defaultsBlock.matchAll(/^\s*([a-zA-Z]+):\s*([^,\n]+)/gm)].map(([, key, value]) => ({ key, default: value.trim().replace(/,$/, "") }));
   const events = [...new Set([...src.matchAll(/emit\(\s*[^,]+,\s*"([a-z-]+)"/g)].map((m) => `iv:${m[1]}`))].sort();
   for (const a of src.match(/data-iv-[a-zA-Z0-9-]+/g) || []) attributes.add(a);

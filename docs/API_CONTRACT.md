@@ -1,6 +1,6 @@
-# iVOLT — Contrato de API (v0.1)
+# iVOLT — Contrato de API (1.0)
 
-Estado: **congelado en fase 0**. Ejemplos, estilos, JS, docs y pruebas usan exactamente esta gramática. Cambiarla exige ADR.
+Estado: **congelado para 1.0 desde `1.0.0-rc.0` (2026-09-15)**: la gramática de §1–§6 y las familias de §8 son la superficie pública que `docs/STABILITY.md` promete; hasta `1.0.0` solo entran correcciones, y después cualquier cambio sigue SemVer. Las filas «Enmiendas de implementación» de cada familia forman parte del contrato. Ejemplos, estilos, JS, docs y pruebas usan exactamente esta gramática. Cambiarla exige ADR.
 
 ## 1. Gramática de nombres
 
