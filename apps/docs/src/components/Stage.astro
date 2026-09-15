@@ -1,6 +1,8 @@
 ---
 // The live stage: the component runs in its own page, inside an iframe, with real controls over
-// it. Same file for the preview, the snippet and the browser test — the documentation rule of the
+// it. That page links the published stylesheet (ivolt.min.css) and the published script in its
+// single-file form (ivolt.iife.min.js, started with IVOLT.init after DOMContentLoaded): one
+// request each, the same files a consumer downloads, instead of the unminified module graph. Same file for the preview, the snippet and the browser test — the documentation rule of the
 // project — but now the preview is the framework running, not a fragment pasted into this page.
 import { readFixture, readContract, localsSnippet, optionsSnippet } from "../lib/fixtures.js";
 import Code from "./Code.astro";

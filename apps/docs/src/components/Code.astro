@@ -8,6 +8,11 @@ const lang = Astro.url.pathname === "/es" || Astro.url.pathname.startsWith("/es/
 const t = lang === "es" ? es : en;
 const list = panels.filter((p) => p && p.code);
 const base = id || `code-${Math.abs([...label].reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 7))}`;
+// A panel of more than two dozen lines used to run to its full length: on /components/megamenu the
+// HTML alone made the page 9 227 px tall and the stage stopped being the protagonist. Over the
+// threshold the panel is folded to a readable height with an edge that says so, and a button
+// opens it. Copy is untouched: it always writes the whole block, folded or not.
+const FOLD_LINES = 24;
 ---
 {list.length > 0 && (
   <div class="docs-code-block" data-code-block>
@@ -19,8 +24,11 @@ const base = id || `code-${Math.abs([...label].reduce((a, c) => (a * 31 + c.char
       </div>
     )}
     {list.map((p, i) => (
-      <div class="docs-code__panel" id={`${base}-panel-${p.key}`} role={list.length > 1 ? "tabpanel" : undefined} aria-labelledby={list.length > 1 ? `${base}-tab-${p.key}` : undefined} data-code-panel={p.key}>
+      <div class:list={["docs-code__panel", p.code.split("\n").length > FOLD_LINES && "docs-code__panel--fold"]} id={`${base}-panel-${p.key}`} role={list.length > 1 ? "tabpanel" : undefined} aria-labelledby={list.length > 1 ? `${base}-tab-${p.key}` : undefined} data-code-panel={p.key}>
         <pre tabindex="0" aria-label={`${p.label}${label ? ` — ${label}` : ""}`}><code id={`${base}-code-${p.key}`}>{p.code}</code></pre>
+        {p.code.split("\n").length > FOLD_LINES && (
+          <button class="docs-code__expand" type="button" data-code-expand aria-expanded="false" aria-controls={`${base}-panel-${p.key}`} data-label-more={t.codeExpand} data-label-less={t.codeCollapse}>{t.codeExpand}</button>
+        )}
         {copy && <button class="iv-button iv-button--secondary iv-button--sm docs-copy docs-code__copy" type="button" data-copy-target={`${base}-code-${p.key}`} aria-describedby={`${base}-status-${p.key}`}>{t.copyCode}</button>}
         {copy && <span class="iv-u-sr-only" id={`${base}-status-${p.key}`} role="status" aria-live="polite"></span>}
       </div>

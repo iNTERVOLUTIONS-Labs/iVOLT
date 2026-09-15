@@ -11,12 +11,22 @@ const { intro, releases } = readChangelog();
   <article class="docs-prose">
     <h1>Cambios</h1>
     <p>Esta página se genera en el build desde el <code>CHANGELOG.md</code> del paquete, así que lo que lees aquí es exactamente lo que viaja en el tarball. Solo hay fecha en las versiones publicadas; el resto dice <em>unreleased</em> y no se inventa ninguna.</p>
-    <p class="docs-note"><span class="docs-note__title">Idioma</span>El registro de cambios se conserva en su idioma original, el inglés, porque está versionado junto al código y una traducción paralela se desincronizaría sin avisar. El resto de la documentación sí tiene gemela en español.</p>
-    <div class="docs-meta docs-md" set:html={intro}></div>
-    {releases.map((r, i) => (
-      <Section title={r.title} id={r.id} num={i + 1}>
-        <div class="docs-md" set:html={r.html}></div>
-      </Section>
-    ))}
+    <p class="docs-note"><span class="docs-note__title">Idioma</span>El registro se conserva en inglés; resumen de la candidata:</p>
+    <ul class="docs-changelog-es">
+      <li><strong>1.0.0-rc.1</strong> — Megamenú reconstruido desde cero (contrato §8.9 v2, ADR-048): cabecera con título, cuenta y cierre, directorio, pestañas de descubrimiento con arte, nube, caja destacada, filtro dentro del panel, pie con miga y línea de estado, y cursor bajo el disparador. Migración: <code>__inner</code> → <code>__body</code>, <code>__group</code> → <code>__directory</code>, <code>__links</code> → <code>__dirlist</code>, <code>__bottom</code> → <code>__foot</code>.</li>
+      <li><strong>1.0.0-rc.0</strong> — El contrato de 1.0 queda congelado y la página de estabilidad dice qué es público y cómo puede cambiar. Antes de 1.0.0 solo entran correcciones.</li>
+      <li><strong>0.9.0-beta.0</strong> — Relevo tarjeta a tarjeta en la pila, etiqueta hermana en el picker, la hoja plana igual a la de capas, todas las cadenas como opción y la referencia generada.</li>
+    </ul>
+    <p>El registro completo, versión por versión, está abajo en inglés: es el texto que viaja dentro del paquete y no se traduce para que no se desincronice en silencio.</p>
+    {/* El cuerpo es inglés: fuera del índice de búsqueda español, que si no devuelve el changelog
+        para cualquier término técnico y ensucia la paleta de /es. */}
+    <div data-pagefind-ignore>
+      <div class="docs-meta docs-md" set:html={intro}></div>
+      {releases.map((r, i) => (
+        <Section title={r.title} id={r.id} num={i + 1}>
+          <div class="docs-md" set:html={r.html}></div>
+        </Section>
+      ))}
+    </div>
   </article>
 </Base>

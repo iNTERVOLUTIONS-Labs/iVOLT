@@ -126,7 +126,7 @@
   border-radius: var(--iv-radius-lg);
   font-size: var(--iv-text-xs); line-height: 1.7;
   white-space: pre-wrap; overflow-wrap: break-word; overflow: auto;
-  max-block-size: 24rem; scrollbar-gutter: stable;
+  scrollbar-gutter: stable;
   box-shadow: 0 1px 0 var(--docs-hair) inset;
 }
 

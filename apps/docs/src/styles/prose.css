@@ -347,3 +347,46 @@
 .docs-md > ul li::marker { color: var(--iv-color-accent); }
 .docs-md > h3 { font-size: var(--iv-text-sm); letter-spacing: .14em; text-transform: uppercase; font-family: var(--iv-font-mono); color: var(--iv-color-text-muted); font-weight: var(--iv-weight-semibold); }
 .docs-meta.docs-md > p { margin: 0; }
+
+/* ================================================================
+   ROUND 3 REVIEW — a long code panel folds (external review, finding 4)
+   The source is the point of the documentation, but 500 lines of it after the stage turned an
+   interior page into a scroll: over two dozen lines the panel is folded to a readable height with
+   an edge that admits it, and one button opens it. `pre` keeps its whole text, so copy and find
+   in page are unaffected by the fold.
+   ================================================================ */
+.docs-code__panel--fold { --docs-fold: 22rem; }
+.docs-code__panel--fold > pre { max-block-size: var(--docs-fold); overflow: hidden; padding-block-end: var(--iv-space-8, 3rem); }
+.docs-code__panel--fold::after {
+  content: ""; position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 7rem;
+  pointer-events: none; border-end-start-radius: var(--iv-radius-lg); border-end-end-radius: var(--iv-radius-lg);
+  background: linear-gradient(180deg, transparent, var(--iv-color-surface) 78%);
+}
+.docs-code__panel--fold[data-expanded] > pre { max-block-size: none; overflow: auto; padding-block-end: var(--iv-space-8, 3rem); }
+.docs-code__panel--fold[data-expanded]::after { content: none; }
+.docs-code__expand {
+  position: absolute; inset-block-end: var(--iv-space-3); inset-inline-start: 50%; translate: -50% 0; z-index: 1;
+  appearance: none; border: 0; cursor: pointer; font: inherit;
+  font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--iv-color-text-muted); background: var(--iv-color-surface-raised);
+  padding: .35rem .9rem; border-radius: var(--iv-radius-full);
+  box-shadow: 0 0 0 1px var(--iv-color-border) inset, 0 8px 20px -12px rgb(0 0 0 / .8);
+  transition: color var(--iv-motion-fast) var(--docs-ease), box-shadow var(--iv-motion-fast) var(--docs-ease);
+}
+.docs-code__expand:hover { color: var(--iv-color-text); box-shadow: 0 0 0 1px var(--iv-color-border-strong) inset, 0 8px 20px -12px rgb(0 0 0 / .8); }
+.docs-code__expand:focus-visible { outline: var(--iv-focus-width, 2px) solid var(--iv-color-focus, var(--iv-color-primary)); outline-offset: 2px; }
+
+/* ---------- interior rhythm (external review, verdict) ----------
+   On a component page the stage is the argument and the source is the footnote: the stage gets
+   the air of a section break above and below it, while the panel under the frame stays attached
+   to the frame it documents. Tables breathe with the stage instead of with the paragraphs. */
+.docs-sec > * + .docs-stage, .docs-prose > * + .docs-stage { margin-block-start: clamp(2.5rem, 4.5vw, 3.75rem); }
+.docs-sec > .docs-stage + :not(h2, h3), .docs-prose > .docs-stage + :not(h2, h3) { margin-block-start: clamp(2.5rem, 4.5vw, 3.75rem); }
+.docs-sec > * + .docs-scroller, .docs-prose > * + .docs-scroller { margin-block-start: clamp(2rem, 3.6vw, 2.75rem); }
+.docs-sec > .docs-scroller + :not(h2, h3) { margin-block-start: clamp(2rem, 3.6vw, 2.75rem); }
+
+/* The Spanish changelog keeps the English record but leads with a short summary of the candidate
+   (external review, finding 2): a list of three, not a second translation to keep in sync. */
+.docs-changelog-es { margin-block: var(--iv-space-4) 0; padding-inline-start: 1.1rem; }
+.docs-changelog-es > li + li { margin-block-start: var(--iv-space-3); }
+.docs-changelog-es strong { font-family: var(--docs-display); color: var(--iv-color-text); }

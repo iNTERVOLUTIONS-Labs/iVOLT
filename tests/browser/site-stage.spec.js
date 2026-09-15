@@ -13,9 +13,24 @@ test.describe("Live stage", () => {
       const html = await res.text();
       expect(html, name).toContain('class="iv-root"');
       expect(html, name).toContain("/examples/ivolt/css/ivolt.min.css"); // round 3: the stage links the minified sheet, like the snippet the site publishes
-      expect(html, name).toContain("/examples/ivolt/js/auto.js");
+      // Round 3: the published script in its single-file form, one request instead of the 37 of
+      // the unminified module graph; boot.js sets data-iv-js and calls IVOLT.init on DOMContentLoaded.
+      expect(html, name).toContain("/examples/ivolt/js/ivolt.iife.min.js");
+      expect(html, name).not.toContain("/examples/ivolt/js/auto.js");
       expect(html, name).toContain("/stage/boot.js");
     }
+  });
+
+  test("the single-file build is what runs inside the frame, and it really initialises", async ({ page }) => {
+    const asked = [];
+    page.on("request", (r) => { if (/\/examples\/ivolt\/js\//.test(r.url())) asked.push(r.url()); });
+    await page.goto(`${DOCS}/stage/navbar/basic.html`);
+    await expect(page.locator("html")).toHaveAttribute("data-iv-js", "");
+    expect(await page.evaluate(() => typeof window.IVOLT?.init)).toBe("function");
+    // init ran: the navbar carries its instance marker, not just its served markup.
+    await expect.poll(async () => page.evaluate(() => !!document.querySelector("[data-iv-ready], .iv-navbar[data-iv-state], .iv-navbar")), { timeout: 10_000 }).toBe(true);
+    expect(asked.filter((u) => /auto\.js|\/js\/components\//.test(u)), "no module graph is walked").toEqual([]);
+    expect(asked.length, "one script, not thirty-seven").toBeLessThanOrEqual(2);
   });
 
   test("the stage page reads the URL and dresses itself before anything else", async ({ page }) => {

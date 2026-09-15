@@ -1,7 +1,15 @@
 ---
 // One standalone page per fixture: the component, nothing else, dressed exactly as a consumer
-// would dress it — html.iv-root, the published stylesheet, auto.js. The site embeds these pages
-// in an iframe so that what a visitor manipulates is the framework itself, not a picture of it.
+// would dress it — html.iv-root, the published stylesheet, the published script. The site embeds
+// these pages in an iframe so that what a visitor manipulates is the framework itself, not a
+// picture of it.
+//
+// The script is `ivolt.iife.min.js`, the same package in its single-file form: `auto.js` is the
+// unminified module graph, and a browser walking it asked for 37 files and 162 KB per frame — a
+// cost paid once per stage on a page that carries several. The IIFE is one request, minified, and
+// the semantics are identical: `data-iv-js` is set by the boot script before the first paint, and
+// the boot script calls `IVOLT.init(document)` on DOMContentLoaded, which is exactly what
+// `auto.js` does for itself.
 //
 // The page carries no inline script: /stage/boot.js is a classic script in <head>, so it runs
 // before the first paint and the site's CSP hash list stays at one entry (the theme snippet).
@@ -31,7 +39,7 @@ const flat = "/examples/ivolt/css/ivolt.flat.min.css";
   {/* After the links on purpose: the boot script swaps the sheet for the flat one before
       the first paint, so the element it reaches for has to be parsed already. */}
   <script is:inline src="/stage/boot.js"></script>
-  <script is:inline type="module" src="/examples/ivolt/js/auto.js"></script>
+  <script is:inline src="/examples/ivolt/js/ivolt.iife.min.js"></script>
 </head>
 <body class="stage-body">
   <main class="stage-main" id="stage" set:html={html}></main>

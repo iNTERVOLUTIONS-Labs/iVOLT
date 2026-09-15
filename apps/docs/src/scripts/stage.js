@@ -51,9 +51,18 @@ export function mountStage(root = document) {
 
   // A stage taller than its cap scrolls inside its own frame and says so — but a reader who wants
   // the whole thing gets it: "Show all" lifts the cap for that stage only.
+  // Below `sm` a fixed 544 px cap cut every example in half — on a 390 phone the frame showed a
+  // third of the navbar and two thirds of nothing. There the cap follows the screen instead, and
+  // "Show all" is still the way to the rest.
+  const capOf = (frame) => {
+    const declared = Number(frame.dataset.stageMax) || 544;
+    if (innerWidth >= 640) return declared;
+    return Math.round(Math.min(innerHeight * 0.8, 720));
+  };
+
   const applyHeight = (entry) => {
     if (!entry.reported) return;
-    const cap = Number(entry.frame.dataset.stageMax) || 544;
+    const cap = capOf(entry.frame);
     const capped = entry.reported > cap + 1;
     const h = Math.max(120, entry.expanded ? entry.reported : Math.min(cap, entry.reported));
     entry.frame.style.blockSize = `${h}px`;
@@ -144,6 +153,16 @@ export function mountStage(root = document) {
     lazy.forEach((f) => io.observe(f));
     cleanup.push(() => io.disconnect());
   }
+
+  // The cap is a function of the viewport now, so a rotation or a resized window re-applies it.
+  let resizeTick = false;
+  const onResize = () => {
+    if (resizeTick) return;
+    resizeTick = true;
+    requestAnimationFrame(() => { resizeTick = false; byId.forEach((entry) => applyHeight(entry)); });
+  };
+  addEventListener("resize", onResize, { passive: true });
+  cleanup.push(() => removeEventListener("resize", onResize));
 
   const onMessage = (e) => {
     if (e.origin !== location.origin || !e.data) return;

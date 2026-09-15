@@ -1,6 +1,11 @@
 // The shell: header, search, theme, copy, navigation, footer site map, CSP hash, no sitemap
 // without SITE_URL, and no sideways scroll at any width. Against the built site on 4321.
 import { test, expect } from "@playwright/test";
+import { readFileSync } from "node:fs";
+
+// Read, not typed: the footer said 1.0.0-rc.0 for a whole cycle after the package was tagged
+// 1.0.0-rc.1, and a literal in this file would have agreed with it.
+const version = JSON.parse(readFileSync(new URL("../../packages/ivolt/package.json", import.meta.url), "utf8")).version;
 
 const DOCS = "http://127.0.0.1:4321";
 const overflow = (page) => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
@@ -63,6 +68,20 @@ test.describe("Site shell", () => {
       await page.goto(DOCS + route);
       expect(await page.locator(".docs-sitemap__col").count(), route).toBe(4);
       await expect(page.locator(`.docs-sitemap a:text-is("${start}")`)).toHaveCount(1);
+    }
+  });
+
+  test("the footer and the home publish the version of the package, derived at build time", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    for (const route of ["/components/button", "/es/components/button"]) {
+      await page.goto(DOCS + route);
+      await expect(page.locator(".docs-footer__inner"), route).toContainText(`iVOLT v${version}`);
+      await expect(page.locator(".docs-footer__inner"), route).toContainText(version);
+      expect(await page.locator(`.docs-footer :text("1.0.0-rc.0")`).count(), route).toBe(0);
+    }
+    for (const route of ["/", "/es"]) {
+      await page.goto(DOCS + route);
+      await expect(page.locator(".docs-invert__foot"), route).toContainText(version);
     }
   });
 

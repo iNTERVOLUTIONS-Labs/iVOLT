@@ -59,6 +59,10 @@
   });
 
   addEventListener("DOMContentLoaded", function () {
+    // The page links ivolt.iife.min.js, the published single file, instead of walking the module
+    // graph of auto.js: one request instead of 37. auto.js also called init for itself on this
+    // very event, so the moment the components come alive has not moved.
+    try { if (window.IVOLT && typeof IVOLT.init === "function") IVOLT.init(document); } catch (e) {}
     // Announce: the host answers with the theme, direction, motion and sheet it is showing. Without
     // this, a frame that finished loading before the host script ran would keep its own defaults.
     post({ type: "stage-ready" });

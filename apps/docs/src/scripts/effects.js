@@ -130,6 +130,18 @@ export function mountEffects(doc = document) {
     box.append(table);
   });
 
+  /* ---- a folded code panel opens on request (external review, finding 4) ---- */
+  doc.querySelectorAll("[data-code-expand]").forEach((btn) => {
+    const panel = btn.closest(".docs-code__panel");
+    if (!panel) return;
+    on(btn, "click", () => {
+      const open = btn.getAttribute("aria-expanded") !== "true";
+      btn.setAttribute("aria-expanded", String(open));
+      panel.toggleAttribute("data-expanded", open);
+      btn.textContent = open ? btn.dataset.labelLess : btn.dataset.labelMore;
+    });
+  });
+
   /* ---- copy buttons on prose code blocks, built here so the markup stays plain ---- */
   doc.querySelectorAll(".docs-prose > pre").forEach((pre, i) => {
     if (pre.parentElement.classList.contains("docs-pre")) return;
