@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en" class="iv-root" data-iv-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arclight Console — a fictional grid operator panel (iVOLT recipe)</title>
+  <meta name="description" content="Dense product panel for an invented grid operator, built only with the published iVOLT package: navbar with megamenu, side drawer, counted figures, tabs, sortable data table, skeletons that resolve, toasts, a confirmation dialog, a command palette on Ctrl+K, a date field and a validated form. All data is made up.">
+  <link rel="icon" href="data:,">
+  <!-- ADR-042: mark the root before the stylesheet paints, so the navbar panel starts folded
+       on narrow screens instead of being folded after the first paint (a layout shift). -->
+  <script>document.documentElement.setAttribute("data-iv-js", "");</script>
+  <link rel="stylesheet" href="../ivolt/css/ivolt.min.css">
+  <script type="module" src="../ivolt/js/auto.js"></script>
+  <style>
+    /* Recipe-only layout. Components keep their package styles. */
+
+    .cn-shell {
+      --cn-gutter: clamp(1rem, 3vw, 2.5rem);
+    }
+
+    .cn-wide {
+      inline-size: min(100%, 96rem);
+      margin-inline: auto;
+      padding-inline: var(--cn-gutter);
+    }
+
+    .cn-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+      padding-block: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .cn-layout > * {
+      min-inline-size: 0;
+    }
+
+    @media (min-width: 64em) {
+      .cn-layout {
+        grid-template-columns: 15rem minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .cn-aside {
+        position: sticky;
+        inset-block-start: 5rem;
+      }
+    }
+
+    .cn-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--iv-space-4) var(--iv-space-8);
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .cn-title {
+      font-size: clamp(1.875rem, 4.5vw, 3.25rem);
+      line-height: 1.04;
+      letter-spacing: -0.028em;
+      margin: 0;
+      overflow-wrap: break-word;
+    }
+
+    .cn-eyebrow {
+      margin: 0 0 var(--iv-space-2);
+      font-family: var(--iv-font-mono);
+      font-size: var(--iv-text-xs);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--iv-color-accent);
+    }
+
+    .cn-panel {
+      padding: clamp(1.25rem, 3vw, 2rem);
+      border-radius: var(--iv-radius-lg);
+      background-color: var(--iv-color-surface);
+      box-shadow: var(--iv-shadow-ambient);
+    }
+
+    .cn-panel__head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--iv-space-3) var(--iv-space-6);
+      align-items: baseline;
+      justify-content: space-between;
+      margin-block-end: var(--iv-space-6);
+    }
+
+    .cn-panel__head h2,
+    .cn-panel__head h3 {
+      margin: 0;
+      font-size: var(--iv-text-xl);
+      letter-spacing: var(--iv-tracking-tight);
+    }
+
+    .cn-nav {
+      display: grid;
+      gap: var(--iv-space-1);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cn-nav a {
+      display: block;
+      padding: var(--iv-space-2) var(--iv-space-3);
+      border-radius: var(--iv-radius-md);
+      color: var(--iv-color-text-muted);
+      text-decoration: none;
+    }
+
+    .cn-nav a:hover,
+    .cn-nav a:focus-visible {
+      color: var(--iv-color-text);
+      background-color: var(--iv-color-surface-raised);
+    }
+
+    .cn-nav a[aria-current="true"] {
+      color: var(--iv-color-text);
+      background-color: var(--iv-color-surface-raised);
+      box-shadow: inset 2px 0 0 var(--iv-color-primary);
+    }
+
+    .cn-nav__group {
+      margin: var(--iv-space-5) 0 var(--iv-space-2);
+      font-family: var(--iv-font-mono);
+      font-size: var(--iv-text-xs);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--iv-color-text-subtle, var(--iv-color-text-muted));
+    }
+
+    .cn-hint {
+      display: none;
+    }
+
+    [data-iv-js] .cn-hint {
+      display: block;
+    }
+
+    [data-iv-js] .cn-js-only {
+      display: inline-flex;
+    }
+
+    /* The drawer opener needs JavaScript and only exists below lg, where the drawer is modal.
+       It carries its own rule because the js-only rule outranks the utility class. */
+    [data-iv-js] .cn-drawer-open {
+      display: inline-flex;
+    }
+
+    @media (min-width: 64em) {
+      [data-iv-js] .cn-drawer-open {
+        display: none;
+      }
+    }
+
+    .cn-js-only {
+      display: none;
+    }
+
+    [data-iv-js] .cn-theme {
+      display: inline-flex;
+    }
+
+    .cn-theme {
+      display: none;
+    }
+
+    .cn-footer {
+      padding-block: clamp(2rem, 5vw, 3.5rem);
+      color: var(--iv-color-text-muted);
+      border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+    }
+  </style>
+</head>
+<body class="cn-shell">
+<a class="iv-button iv-button--secondary iv-u-sr-only-focusable" href="#main">Skip to content</a>
+
+<div class="iv-toast-region" id="cn-toasts" role="region" data-iv-component="toast" aria-label="Notifications"></div>
+
+<header class="iv-navbar" data-iv-component="navbar" data-iv-sticky="true">
+  <div class="iv-navbar__inner">
+    <a class="iv-navbar__brand" href="#main" aria-label="Arclight Console, top of the page">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <defs><linearGradient id="cn-brand" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#29F59A"/><stop offset="1" stop-color="#0A6A43"/></linearGradient></defs>
+        <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#cn-brand)"/>
+        <path d="M10 21.5 16 9l6 12.5" fill="none" stroke="#081310" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Arclight</span>
+    </a>
+    <button class="iv-navbar__toggle" type="button" aria-expanded="false" aria-controls="cn-nav" hidden>
+      <span class="iv-u-sr-only">Menu</span>
+      <span class="iv-navbar__burger" aria-hidden="true"></span>
+    </button>
+    <div class="iv-navbar__panel" id="cn-nav">
+      <nav class="iv-megamenu" data-iv-component="megamenu" data-iv-overlay="false" aria-label="Main. Every section and figure below is made up for this demo.">
+        <ul class="iv-megamenu__list">
+          <li class="iv-megamenu__item">
+            <a class="iv-megamenu__link" href="#overview">Operations</a>
+            <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="cn-mm-ops" hidden><span class="iv-u-sr-only">Open Operations</span></button>
+            <div class="iv-megamenu__panel" id="cn-mm-ops">
+              <div class="iv-megamenu__inner">
+                <section class="iv-megamenu__group">
+                  <h3 class="iv-megamenu__heading">Watch</h3>
+                  <ul class="iv-megamenu__links">
+                    <li><a href="#overview">Live load</a></li>
+                    <li><a href="#feeders">Feeders</a></li>
+                    <li><a href="#alerts">Alerts</a></li>
+                  </ul>
+                </section>
+                <section class="iv-megamenu__group">
+                  <h3 class="iv-megamenu__heading">Act</h3>
+                  <ul class="iv-megamenu__links">
+                    <li><a href="#jobs">Job queue</a></li>
+                    <li><a href="#window">Maintenance window</a></li>
+                  </ul>
+                </section>
+                <footer class="iv-megamenu__bottom">
+                  <p class="iv-u-m-0">Invented sections; every link stays on this page.</p>
+                  <a class="iv-button iv-button--primary iv-button--sm" href="#overview">Back to the overview</a>
+                </footer>
+              </div>
+            </div>
+          </li>
+          <li class="iv-megamenu__item">
+            <a class="iv-megamenu__link" href="#jobs">Jobs</a>
+          </li>
+          <li class="iv-megamenu__item">
+            <a class="iv-megamenu__link" href="#window">Scheduling</a>
+          </li>
+        </ul>
+      </nav>
+      <div class="iv-navbar__actions">
+        <button class="iv-button iv-button--secondary iv-button--sm cn-js-only" type="button" data-iv-open="cn-cmd" aria-keyshortcuts="Control+K Meta+K">Search <kbd>Ctrl</kbd>+<kbd>K</kbd></button>
+        <div class="cn-theme iv-button-group" role="group" aria-label="Colour theme">
+          <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="dark" aria-pressed="true">Dark</button>
+          <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="light" aria-pressed="false">Light</button>
+          <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="system" aria-pressed="false">System</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="cn-wide cn-layout" id="main">
+  <aside class="cn-aside">
+    <a class="iv-button iv-button--secondary iv-button--sm cn-js-only cn-drawer-open" href="#cn-drawer" data-iv-open="cn-drawer">Open the section list</a>
+    <dialog class="iv-drawer" id="cn-drawer" data-iv-component="drawer" aria-label="Console sections">
+      <div class="iv-drawer__panel">
+        <header class="iv-drawer__header">
+          <h2 class="iv-drawer__title">Sections</h2>
+          <button class="iv-button iv-button--ghost iv-button--icon iv-u-lg-hidden" type="button" data-iv-close aria-label="Close">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </header>
+        <div class="iv-drawer__body">
+          <nav aria-label="Console sections">
+            <p class="cn-nav__group">Watch</p>
+            <ul class="cn-nav">
+              <li><a href="#overview" aria-current="true">Overview</a></li>
+              <li><a href="#feeders">Feeders</a></li>
+              <li><a href="#alerts">Alerts</a></li>
+            </ul>
+            <p class="cn-nav__group">Act</p>
+            <ul class="cn-nav">
+              <li><a href="#jobs">Job queue</a></li>
+              <li><a href="#window">Maintenance window</a></li>
+            </ul>
+          </nav>
+        </div>
+        <footer class="iv-drawer__footer">
+          <a class="iv-button iv-button--ghost iv-button--sm iv-u-lg-hidden" href="#overview" data-iv-close>Close</a>
+        </footer>
+      </div>
+    </dialog>
+  </aside>
+
+  <main class="iv-stack iv-u-gap-8">
+    <div class="cn-head" id="overview">
+      <div>
+        <p class="cn-eyebrow">Substation 4 · Northern ring</p>
+        <h1 class="cn-title">Grid operations</h1>
+      </div>
+      <div class="iv-cluster iv-u-gap-3">
+        <button class="iv-button iv-button--secondary cn-js-only" type="button" data-iv-toast="cn-toasts" data-iv-message="Sample data reloaded. Nothing was fetched." data-iv-title="Demo" data-iv-variant="success" data-iv-timeout="4000" id="cn-reload">Reload sample data</button>
+        <button class="iv-button iv-button--danger cn-js-only" type="button" data-iv-open="cn-confirm">Trip feeder F-12</button>
+      </div>
+    </div>
+
+    <div class="iv-alert iv-alert--info" role="status">
+      <span class="iv-alert__icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9" y="8.5" width="2" height="6" rx="1"/><circle cx="10" cy="5.75" r="1.25"/></svg>
+      </span>
+      <p class="iv-alert__title">Every reading on this page is invented</p>
+      <div class="iv-alert__body">
+        <p class="iv-u-m-0">Arclight is not a company and this console is not connected to anything. There is no network request, no account, no telemetry and no data about any real person or utility. The numbers, names and timestamps were written by hand for this example.</p>
+      </div>
+    </div>
+
+    <section class="cn-panel" aria-labelledby="figures-title">
+      <div class="cn-panel__head">
+        <h2 id="figures-title">Right now (sample)</h2>
+        <span class="iv-badge iv-badge--success iv-pulse-glow">Nominal — sample state</span>
+      </div>
+      <div class="iv-stat-group">
+        <div class="iv-stat iv-stat--card iv-stat--glow">
+          <span class="iv-stat__label">Load on the ring</span>
+          <strong class="iv-stat__value iv-count" data-iv-component="countup">412.6<span class="iv-u-text-sm"> MW</span></strong>
+          <span class="iv-stat__delta" data-iv-tone="up">+2.1 % vs the same hour yesterday</span>
+          <span class="iv-stat__hint">Made-up figure</span>
+        </div>
+        <div class="iv-stat iv-stat--card">
+          <span class="iv-stat__label">Feeders online</span>
+          <strong class="iv-stat__value iv-count" data-iv-component="countup" data-iv-duration="1200">46</strong>
+          <span class="iv-stat__delta" data-iv-tone="flat">of 48<span class="iv-u-sr-only"> feeders in total</span></span>
+          <span class="iv-stat__hint">Two out for maintenance</span>
+        </div>
+        <div class="iv-stat iv-stat--card">
+          <span class="iv-stat__label">Open alerts</span>
+          <strong class="iv-stat__value iv-count" data-iv-component="countup" data-iv-duration="900">3</strong>
+          <span class="iv-stat__delta" data-iv-tone="down">one more than at 06:00</span>
+          <span class="iv-stat__hint">All of severity “watch”</span>
+        </div>
+        <div class="iv-stat iv-stat--card">
+          <span class="iv-stat__label">Frequency</span>
+          <strong class="iv-stat__value iv-count" data-iv-component="countup">49.98<span class="iv-u-text-sm"> Hz</span></strong>
+          <span class="iv-stat__hint">Invented reading, inside the sample band</span>
+        </div>
+      </div>
+
+      <div class="iv-stack iv-u-gap-5 iv-u-mt-8">
+        <div class="iv-stack iv-u-gap-2">
+          <label class="iv-u-text-sm" for="cn-capacity">Ring capacity used — 412.6 MW of 520 MW</label>
+          <progress class="iv-progress" id="cn-capacity" value="412.6" max="520"></progress>
+        </div>
+        <div class="iv-stack iv-u-gap-2">
+          <label class="iv-u-text-sm" for="cn-reserve">Spinning reserve — 61 MW of 80 MW</label>
+          <progress class="iv-progress iv-progress--success" id="cn-reserve" value="61" max="80"></progress>
+        </div>
+        <div class="iv-stack iv-u-gap-2">
+          <label class="iv-u-text-sm" for="cn-transformer">Transformer T-2 oil temperature — 78 °C of a 90 °C limit</label>
+          <progress class="iv-progress iv-progress--warning" id="cn-transformer" value="78" max="90"></progress>
+        </div>
+      </div>
+    </section>
+
+    <section class="cn-panel" id="feeders" aria-labelledby="feeders-title">
+      <div class="cn-panel__head">
+        <h2 id="feeders-title">Feeders</h2>
+        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0 cn-hint">Type to filter; click a header to sort.</p>
+      </div>
+      <div class="iv-tabs" data-iv-component="tabs" data-iv-activation="automatic">
+        <div class="iv-tabs__list" aria-label="Feeder views">
+          <a class="iv-tabs__tab" href="#cn-tab-table" id="cn-t-table">Table</a>
+          <a class="iv-tabs__tab" href="#cn-tab-queue" id="cn-t-queue">Job queue</a>
+          <a class="iv-tabs__tab" href="#cn-tab-notes" id="cn-t-notes">Shift notes</a>
+        </div>
+        <section class="iv-tabs__panel" id="cn-tab-table">
+          <h3 class="iv-tabs__heading">Table</h3>
+          <div class="iv-datatable" data-iv-component="datatable" data-iv-status-text="Showing {visible} of {total} feeders">
+            <div class="iv-datatable__filter">
+              <label class="iv-label" for="cn-filter">Filter feeders</label>
+              <input class="iv-input" id="cn-filter" type="search" autocomplete="off" placeholder="Name, district or state" data-iv-datatable-filter>
+            </div>
+            <div class="iv-table-wrap" role="region" aria-labelledby="cn-feeders-caption" tabindex="0">
+              <table class="iv-table iv-table--striped">
+                <caption id="cn-feeders-caption">Invented feeder list. Nothing here describes a real network, a real customer or a real outage.</caption>
+                <thead>
+                  <tr>
+                    <th scope="col" data-iv-sort>Feeder</th>
+                    <th scope="col" data-iv-sort="text">District</th>
+                    <th scope="col" class="iv-u-text-end" data-iv-sort="number" data-iv-sorted="desc">Load (MW)</th>
+                    <th scope="col" data-iv-sort="date">Last switched</th>
+                    <th scope="col" data-iv-sort="text">State</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">F-04 Harbour</th>
+                    <td>East</td>
+                    <td class="iv-u-text-end" data-iv-value="31.4">31.4</td>
+                    <td><time datetime="2026-09-14">14 Sep 2026</time></td>
+                    <td><span class="iv-badge iv-badge--success">Closed</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">F-07 Mill Lane</th>
+                    <td>North</td>
+                    <td class="iv-u-text-end" data-iv-value="18.9">18.9</td>
+                    <td><time datetime="2026-09-02">2 Sep 2026</time></td>
+                    <td><span class="iv-badge iv-badge--success">Closed</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">F-12 Quarry Road</th>
+                    <td>West</td>
+                    <td class="iv-u-text-end" data-iv-value="44.2">44.2</td>
+                    <td><time datetime="2026-09-15">15 Sep 2026</time></td>
+                    <td><span class="iv-badge iv-badge--warning">Watch</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">F-18 Beacon Hill</th>
+                    <td>North</td>
+                    <td class="iv-u-text-end" data-iv-value="7.6">7.6</td>
+                    <td><time datetime="2026-08-28">28 Aug 2026</time></td>
+                    <td><span class="iv-badge">Open for work</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">F-21 Saltings</th>
+                    <td>East</td>
+                    <td class="iv-u-text-end" data-iv-value="26.0">26.0</td>
+                    <td><time datetime="2026-09-11">11 Sep 2026</time></td>
+                    <td><span class="iv-badge iv-badge--success">Closed</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">F-29 Fell Side</th>
+                    <td>West</td>
+                    <td class="iv-u-text-end" data-iv-value="52.8">52.8</td>
+                    <td><time datetime="2026-09-13">13 Sep 2026</time></td>
+                    <td><span class="iv-badge iv-badge--danger">Fault logged</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">F-33 Airfield</th>
+                    <td>South</td>
+                    <td class="iv-u-text-end" data-iv-value="12.1">12.1</td>
+                    <td><time datetime="2026-07-30">30 Jul 2026</time></td>
+                    <td><span class="iv-badge iv-badge--success">Closed</span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">F-41 Old Dock</th>
+                    <td>South</td>
+                    <td class="iv-u-text-end" data-iv-value="38.5">38.5</td>
+                    <td><time datetime="2026-09-09">9 Sep 2026</time></td>
+                    <td><span class="iv-badge iv-badge--warning">Watch</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <section class="iv-tabs__panel" id="cn-tab-queue">
+          <h3 class="iv-tabs__heading">Job queue</h3>
+          <div id="jobs">
+            <div class="iv-grid iv-u-gap-4 iv-u-grid-cols-1 iv-u-md-grid-cols-2" id="cn-skeletons" aria-busy="true" hidden>
+              <span class="iv-u-sr-only">Loading the sample job queue</span>
+              <article class="iv-card">
+                <div class="iv-card__body iv-stack iv-u-gap-3">
+                  <div class="iv-skeleton iv-skeleton--title" aria-hidden="true"></div>
+                  <div class="iv-skeleton iv-skeleton--text" aria-hidden="true"></div>
+                  <div class="iv-skeleton iv-skeleton--text" aria-hidden="true" style="inline-size: 70%"></div>
+                </div>
+              </article>
+              <article class="iv-card">
+                <div class="iv-card__body iv-stack iv-u-gap-3">
+                  <div class="iv-skeleton iv-skeleton--title" aria-hidden="true"></div>
+                  <div class="iv-skeleton iv-skeleton--text" aria-hidden="true"></div>
+                  <div class="iv-skeleton iv-skeleton--text" aria-hidden="true" style="inline-size: 55%"></div>
+                </div>
+              </article>
+            </div>
+            <div class="iv-grid iv-u-gap-4 iv-u-grid-cols-1 iv-u-md-grid-cols-2" id="cn-jobs">
+              <article class="iv-card">
+                <div class="iv-card__body iv-stack iv-u-gap-3">
+                  <h4 class="iv-card__title iv-u-m-0">Reclose test, F-12</h4>
+                  <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Queued 08:40 · operator AM · sample entry</p>
+                  <div class="iv-stack iv-u-gap-2">
+                    <label class="iv-u-text-sm" for="cn-job-1">Progress — 62 % of the sample job</label>
+                    <progress class="iv-progress iv-progress--sm" id="cn-job-1" value="62" max="100"></progress>
+                  </div>
+                </div>
+              </article>
+              <article class="iv-card">
+                <div class="iv-card__body iv-stack iv-u-gap-3">
+                  <h4 class="iv-card__title iv-u-m-0">Thermal survey, T-2</h4>
+                  <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Queued 09:15 · operator CW · sample entry</p>
+                  <div class="iv-stack iv-u-gap-2">
+                    <label class="iv-u-text-sm" for="cn-job-2">Progress — 17 % of the sample job</label>
+                    <progress class="iv-progress iv-progress--sm" id="cn-job-2" value="17" max="100"></progress>
+                  </div>
+                </div>
+              </article>
+            </div>
+            <p class="iv-u-text-sm iv-u-text-muted iv-u-mt-4 cn-hint"><strong>Reload sample data</strong> at the top of the page swaps these two cards for loading skeletons for about a second and puts them back. It is a demonstration of the skeleton component: nothing is fetched and the cards never change.</p>
+          </div>
+        </section>
+        <section class="iv-tabs__panel" id="cn-tab-notes">
+          <h3 class="iv-tabs__heading">Shift notes</h3>
+          <ol class="iv-timeline">
+            <li class="iv-timeline__item" data-iv-state="done">
+              <time class="iv-timeline__time" datetime="2026-09-15T06:00">06:00</time>
+              <div class="iv-timeline__body">
+                <h4 class="iv-timeline__title">Handover from the night shift</h4>
+                <p class="iv-u-m-0 iv-u-text-sm">Two feeders left open for planned work. Invented note.</p>
+              </div>
+            </li>
+            <li class="iv-timeline__item" data-iv-state="done">
+              <time class="iv-timeline__time" datetime="2026-09-15T08:40">08:40</time>
+              <div class="iv-timeline__body">
+                <h4 class="iv-timeline__title">Reclose test queued on F-12</h4>
+                <p class="iv-u-m-0 iv-u-text-sm">Requested by the district team. Invented note.</p>
+              </div>
+            </li>
+            <li class="iv-timeline__item" data-iv-state="current">
+              <time class="iv-timeline__time" datetime="2026-09-15T09:15">09:15</time>
+              <div class="iv-timeline__body">
+                <h4 class="iv-timeline__title">Thermal survey under way on T-2</h4>
+                <p class="iv-u-m-0 iv-u-text-sm">Oil temperature watched every ten minutes. Invented note.</p>
+              </div>
+            </li>
+            <li class="iv-timeline__item" data-iv-state="upcoming">
+              <time class="iv-timeline__time" datetime="2026-09-15T14:00">14:00</time>
+              <div class="iv-timeline__body">
+                <h4 class="iv-timeline__title">Maintenance window opens</h4>
+                <p class="iv-u-m-0 iv-u-text-sm">Nothing is scheduled: this console schedules nothing.</p>
+              </div>
+            </li>
+          </ol>
+        </section>
+      </div>
+    </section>
+
+    <section class="cn-panel" id="alerts" aria-labelledby="alerts-title" data-iv-component="tooltip">
+      <div class="cn-panel__head">
+        <h2 id="alerts-title">Alerts and notes</h2>
+        <button class="iv-button iv-button--secondary iv-button--sm cn-js-only" type="button" popovertarget="cn-pop-severity">What do the levels mean?</button>
+      </div>
+      <div class="iv-stack iv-u-gap-4">
+        <div class="iv-alert iv-alert--warning" role="status">
+          <span class="iv-alert__icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5 19 17.5H1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><rect x="9" y="7" width="2" height="6" rx="1"/><circle cx="10" cy="15" r="1.1"/></svg>
+          </span>
+          <p class="iv-alert__title">Watch: oil temperature rising on T-2</p>
+          <div class="iv-alert__body">
+            <p>78 °C against a 90 °C limit, up 4 degrees in an hour. Invented reading.</p>
+          </div>
+          <div class="iv-alert__actions">
+            <button class="iv-button iv-button--secondary iv-button--sm cn-js-only" type="button" data-iv-toast="cn-toasts" data-iv-message="Acknowledged. Nothing was recorded anywhere." data-iv-title="Demo" data-iv-timeout="4000" data-iv-tooltip="Shows a toast and changes nothing">Acknowledge (demo)</button>
+          </div>
+        </div>
+        <div class="iv-alert iv-alert--danger" role="alert">
+          <span class="iv-alert__icon" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="2"/><rect x="9" y="5" width="2" height="7" rx="1"/><circle cx="10" cy="14.5" r="1.1"/></svg>
+          </span>
+          <p class="iv-alert__title">Fault logged on F-29 Fell Side</p>
+          <div class="iv-alert__body">
+            <p>Earth fault at 04:12, cleared by the protection. Invented event.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="iv-popover iv-popover--arrow" id="cn-pop-severity" popover data-iv-component="popover">
+      <h3 class="iv-popover__title">Severity levels (invented)</h3>
+      <p class="iv-u-text-sm iv-u-m-0"><strong>Watch</strong> is a reading drifting towards a limit, <strong>fault</strong> is a protection operation already cleared. Both scales were made up for this example; no utility uses them.</p>
+    </div>
+
+    <section class="cn-panel" id="window" aria-labelledby="window-title">
+      <div class="cn-panel__head">
+        <h2 id="window-title">Request a maintenance window</h2>
+        <span class="iv-badge">Demo form</span>
+      </div>
+      <form class="iv-form" data-iv-component="form" data-iv-summary="true" data-iv-validate-on="blur" novalidate aria-describedby="cn-form-note" id="cn-form">
+        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0" id="cn-form-note">Nothing is submitted, booked or stored. The fields validate in the browser so the messages can be seen; submitting shows a toast and stops there.</p>
+        <div class="iv-grid iv-u-gap-5 iv-u-grid-cols-1 iv-u-md-grid-cols-2">
+          <div class="iv-field">
+            <label class="iv-label" for="cn-feeder">Feeder <span class="iv-label__required" aria-hidden="true">*</span></label>
+            <div class="iv-picker" data-iv-component="picker">
+              <select class="iv-select" id="cn-feeder" name="feeder" required data-iv-error-value-missing="Choose one of the sample feeders.">
+                <option value="">Choose a feeder</option>
+                <option value="f04">F-04 Harbour</option>
+                <option value="f07">F-07 Mill Lane</option>
+                <option value="f12">F-12 Quarry Road</option>
+                <option value="f18">F-18 Beacon Hill</option>
+                <option value="f21">F-21 Saltings</option>
+                <option value="f29" disabled>F-29 Fell Side (fault logged)</option>
+                <option value="f33">F-33 Airfield</option>
+                <option value="f41">F-41 Old Dock</option>
+              </select>
+            </div>
+          </div>
+          <div class="iv-field iv-datepicker" data-iv-component="datepicker" data-iv-native="off">
+            <label class="iv-label" for="cn-date">Start date <span class="iv-label__required" aria-hidden="true">*</span></label>
+            <input class="iv-input" id="cn-date" name="date" type="date" min="2026-09-16" max="2026-12-31" required
+              data-iv-error-value-missing="Pick the day the window should open."
+              data-iv-error-range-underflow="Pick a day from 16 September 2026 onwards.">
+          </div>
+          <div class="iv-field">
+            <label class="iv-label" for="cn-crew">Crew lead <span class="iv-label__required" aria-hidden="true">*</span></label>
+            <input class="iv-input" id="cn-crew" name="crew" type="text" required minlength="2" autocomplete="off"
+              data-iv-error-value-missing="Write a name for the sample record."
+              data-iv-error-too-short="Two characters or more, please.">
+          </div>
+          <div class="iv-field">
+            <label class="iv-label" for="cn-hours">Hours requested <span class="iv-label__required" aria-hidden="true">*</span></label>
+            <input class="iv-input" id="cn-hours" name="hours" type="number" min="1" max="12" required inputmode="numeric" value="4"
+              data-iv-error-value-missing="How many hours?"
+              data-iv-error-range-overflow="Twelve hours is the sample maximum."
+              data-iv-error-range-underflow="At least one hour.">
+          </div>
+        </div>
+        <div class="iv-field" data-iv-component="counter" data-iv-mode="chars">
+          <label class="iv-label" for="cn-reason">Reason</label>
+          <textarea class="iv-textarea" id="cn-reason" name="reason" maxlength="240" rows="3" placeholder="What the crew is going to do"></textarea>
+        </div>
+        <fieldset class="iv-fieldset">
+          <legend class="iv-fieldset__legend">Notifications for this sample request</legend>
+          <div class="iv-checks">
+            <label class="iv-switch">
+              <input type="checkbox" name="notify-district" role="switch" checked>
+              <span class="iv-switch__track"><span class="iv-switch__thumb"></span></span>
+              <span>Tell the district team (demo)</span>
+            </label>
+            <label class="iv-switch">
+              <input type="checkbox" name="notify-sms" role="switch" disabled>
+              <span class="iv-switch__track"><span class="iv-switch__thumb"></span></span>
+              <span>SMS to the crew (not part of this demo)</span>
+            </label>
+          </div>
+        </fieldset>
+        <div class="iv-cluster">
+          <button class="iv-button iv-button--primary" type="submit">Request the window (demo)</button>
+          <button class="iv-button iv-button--ghost" type="reset">Reset</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+
+<dialog class="iv-dialog" id="cn-confirm" data-iv-component="dialog" aria-labelledby="cn-confirm-title">
+  <form method="dialog" class="iv-dialog__panel">
+    <header class="iv-dialog__header">
+      <h2 class="iv-dialog__title" id="cn-confirm-title">Trip feeder F-12?</h2>
+      <button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <div class="iv-dialog__body iv-stack">
+      <p class="iv-u-m-0">On a real console this would open a breaker and cut supply to a district. <strong>Here it does nothing at all</strong>: there is no breaker, no district and no connection. Confirming only shows a notification.</p>
+    </div>
+    <footer class="iv-dialog__footer">
+      <button class="iv-button iv-button--ghost" type="button" data-iv-close>Cancel</button>
+      <button class="iv-button iv-button--danger" value="confirm" id="cn-confirm-go">Trip it (demo)</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog class="iv-dialog iv-command" id="cn-cmd" data-iv-component="command" aria-label="Command palette">
+  <div class="iv-dialog__panel">
+    <div class="iv-command__field">
+      <label class="iv-u-sr-only" for="cn-cmd-q">Search sections and actions</label>
+      <input class="iv-input iv-command__input" id="cn-cmd-q" type="search" autocomplete="off" placeholder="Type a section or a command…">
+    </div>
+    <nav class="iv-command__groups">
+      <section class="iv-command__group" data-iv-group="Sections">
+        <h3 class="iv-command__heading">Sections</h3>
+        <ul class="iv-command__list">
+          <li>
+            <a class="iv-command__item" href="#overview" data-iv-keywords="load frequency figures stats">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 18V9M10 18V5M16 18v-6M22 18H2"/></svg></span>
+              <span class="iv-command__label">Overview</span>
+              <kbd class="iv-command__kbd">G O</kbd>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#feeders" data-iv-keywords="table sort filter districts">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18v14H3zM3 10h18M9 10v9"/></svg></span>
+              <span class="iv-command__label">Feeders</span>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#jobs" data-iv-keywords="queue progress skeleton">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h10M4 17h13"/></svg></span>
+              <span class="iv-command__label">Job queue</span>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#alerts" data-iv-keywords="warning fault severity">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3 22 20H2z"/><path d="M12 10v4M12 17h.01"/></svg></span>
+              <span class="iv-command__label">Alerts</span>
+            </a>
+          </li>
+          <li>
+            <a class="iv-command__item" href="#window" data-iv-keywords="form date maintenance request">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+              <span class="iv-command__label">Maintenance window</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section class="iv-command__group" data-iv-group="Actions">
+        <h3 class="iv-command__heading">Actions</h3>
+        <ul class="iv-command__list">
+          <li>
+            <button class="iv-command__item" type="button" data-iv-command="reload-sample" data-iv-keywords="refresh skeleton loading">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg></span>
+              <span class="iv-command__label">Reload sample data</span>
+            </button>
+          </li>
+          <li>
+            <button class="iv-command__item" type="button" data-iv-command="toggle-theme" data-iv-keywords="dark light appearance">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M20 14a8 8 0 1 1-10-10 7 7 0 0 0 10 10z"/></svg></span>
+              <span class="iv-command__label">Switch between dark and light</span>
+            </button>
+          </li>
+          <li>
+            <button class="iv-command__item" type="button" data-iv-command="print-page" data-iv-keywords="paper pdf export">
+              <span class="iv-command__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 9V4h10v5M7 18H5v-6h14v6h-2M8 14h8v6H8z"/></svg></span>
+              <span class="iv-command__label">Print this page</span>
+            </button>
+          </li>
+        </ul>
+      </section>
+    </nav>
+    <p class="iv-command__empty" hidden>No results</p>
+    <footer class="iv-command__hints" aria-hidden="true"><kbd>↑↓</kbd> navigate <kbd>↵</kbd> open <kbd>esc</kbd> close</footer>
+  </div>
+</dialog>
+
+<footer class="cn-wide cn-footer iv-stack iv-u-gap-4">
+  <p class="iv-u-m-0"><strong>Arclight Console is fictional.</strong> It is a demonstration page for the iVOLT framework: no utility, substation, feeder, crew, reading or timestamp on it is real, it is not connected to anything, and it sends, stores and fetches nothing. The command palette, the table and the forms operate only on the text that was served with the page.</p>
+  <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Built with the published package: <code>ivolt.min.css</code> and <code>auto.js</code>, plus one local stylesheet. No photographs are used on this page.</p>
+</footer>
+
+<script type="module">
+  import { setTheme } from "../ivolt/js/theme.js";
+  import { Toast } from "../ivolt/js/index.js";
+
+  const applyTheme = (value) => {
+    setTheme(value);
+    for (const item of document.querySelectorAll(".cn-theme [data-theme]")) {
+      item.setAttribute("aria-pressed", String(item.dataset.theme === value));
+    }
+  };
+
+  const group = document.querySelector(".cn-theme");
+  if (group) {
+    group.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-theme]");
+      if (button) applyTheme(button.dataset.theme);
+    });
+  }
+
+  // The skeleton demonstration: swap the two job cards for their skeletons for a moment.
+  // Nothing is fetched; the cards that come back are the ones that were already there.
+  const skeletons = document.getElementById("cn-skeletons");
+  const jobs = document.getElementById("cn-jobs");
+  let pending = 0;
+  const replaySkeletons = () => {
+    if (!skeletons || !jobs || pending) return;
+    skeletons.hidden = false;
+    jobs.hidden = true;
+    pending = window.setTimeout(() => {
+      skeletons.hidden = true;
+      jobs.hidden = false;
+      pending = 0;
+    }, 1100);
+  };
+
+  document.getElementById("cn-reload")?.addEventListener("click", replaySkeletons);
+
+  document.addEventListener("iv:command", (event) => {
+    const command = event.detail?.command;
+    if (command === "reload-sample") replaySkeletons();
+    else if (command === "toggle-theme") {
+      const current = document.documentElement.getAttribute("data-iv-theme");
+      applyTheme(current === "light" ? "dark" : "light");
+    } else if (command === "print-page") window.print();
+  });
+
+  // The demo form: say that nothing was sent, and stop there.
+  const form = document.getElementById("cn-form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (!form.checkValidity()) return;
+    const region = document.getElementById("cn-toasts");
+    if (region && typeof Toast?.get === "function") {
+      Toast.get(region).show({
+        title: "Demo",
+        message: "Nothing was requested: this console has no service behind it.",
+        timeout: 5000,
+      });
+    }
+  });
+</script>
+</body>
+</html>

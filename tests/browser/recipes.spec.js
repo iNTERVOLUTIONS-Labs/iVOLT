@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const DOCS = "http://127.0.0.1:4321";
-const recipes = ["landing", "catalog", "admin", "showcase"];
+const recipes = ["studio", "console", "journal", "store"];
 
 for (const r of recipes) {
   test(`recipe ${r}: no console errors, no overflow, no serious axe findings`, async ({ page }) => {
@@ -26,26 +26,52 @@ for (const r of recipes) {
   });
 }
 
-test("catalog filters and sorting work", async ({ page }) => {
-  await page.goto(`${DOCS}/examples/catalog/index.html`);
-  const status = page.locator("#catalog-status");
-  await expect(status).toContainText("9 of 9");
-  await page.locator("input[type=checkbox]").first().uncheck();
-  await expect(status).not.toContainText("9 of 9");
-  expect(await page.locator(".iv-card[hidden]").count()).toBeGreaterThan(0);
+test("console: the command palette opens on Ctrl+K and only moves within the page", async ({ page }) => {
+  await page.goto(`${DOCS}/examples/console/index.html`);
+  await page.locator("#cn-cmd-q").waitFor({ state: "attached" });
+  await page.keyboard.press("Control+k");
+  const dialog = page.locator("#cn-cmd");
+  await expect(dialog).toHaveAttribute("open", "");
+  await page.locator("#cn-cmd-q").fill("feeders");
+  const first = dialog.locator(".iv-command__item:visible").first();
+  await expect(first).toContainText("Feeders");
+  await first.click();
+  await expect(dialog).not.toHaveAttribute("open", "");
+  expect(page.url()).toContain("#feeders");
 });
 
-test("admin drawer, form toast and delete confirmation", async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto(`${DOCS}/examples/admin/index.html`);
-  await page.locator("[data-iv-open=admin-nav]").first().click();
-  await expect(page.locator("#admin-nav")).toHaveAttribute("open", "");
+test("studio: the gallery opens the viewer and Escape returns focus to the tile", async ({ page }) => {
+  await page.goto(`${DOCS}/examples/studio/index.html`);
+  const tile = page.locator(".iv-gallery__item").first();
+  await tile.waitFor();
+  await tile.click();
+  const viewer = page.locator("dialog[open]").first();
+  await expect(viewer).toBeVisible();
   await page.keyboard.press("Escape");
-  await expect(page.locator("#admin-nav")).not.toHaveAttribute("open", "");
-  await page.locator("form button[type=submit]").first().click();
-  await expect(page.locator(".iv-toast--success")).toBeVisible();
-  await page.locator(".iv-button--danger[data-iv-open]").first().click();
-  await page.locator("dialog[open] button[value=confirm], dialog[open] .iv-button--danger").last().click();
-  await expect(page.locator(".iv-toast--danger")).toBeVisible();
-  await expect(page.locator(".iv-toast--danger")).toHaveAttribute("role", "alert");
+  await expect(viewer).toBeHidden();
+  await expect(tile).toBeFocused();
+});
+
+test("store: the basket drawer opens, says nothing can be bought and closes again", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(`${DOCS}/examples/store/index.html`);
+  // On a phone the basket link lives inside the folded navbar panel, so open it first.
+  await page.locator(".iv-navbar__toggle").click();
+  await page.locator("[data-iv-open=sr-cart]").first().click();
+  const drawer = page.locator("#sr-cart");
+  await expect(drawer).toHaveAttribute("open", "");
+  await expect(drawer).toContainText("Nothing here can be bought");
+  await drawer.locator("[data-iv-close]").first().click();
+  await expect(drawer).not.toHaveAttribute("open", "");
+});
+
+test("journal: the reading bar grows as the page scrolls", async ({ page }) => {
+  await page.goto(`${DOCS}/examples/journal/index.html`);
+  const bar = page.locator(".iv-scroll-progress");
+  await bar.waitFor({ state: "attached" });
+  const width = async () => (await bar.boundingBox())?.width ?? 0;
+  const before = await width();
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(400);
+  expect(await width()).toBeGreaterThan(before);
 });

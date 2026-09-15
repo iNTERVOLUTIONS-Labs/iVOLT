@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en" class="iv-root" data-iv-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Quiet Column — a fictional journal (iVOLT recipe)</title>
+  <meta name="description" content="Editorial issue for an invented journal, built only with the published iVOLT package: a typographic cover, a reading progress bar, a long read with notes in popovers, a masonry gallery with the viewer, pagination and a print stylesheet. Every article, author and date is made up.">
+  <link rel="icon" href="data:,">
+  <!-- ADR-042: mark the root before the stylesheet paints, so the navbar panel starts folded
+       on narrow screens instead of being folded after the first paint (a layout shift). -->
+  <script>document.documentElement.setAttribute("data-iv-js", "");</script>
+  <link rel="stylesheet" href="../ivolt/css/ivolt.min.css">
+  <script type="module" src="../ivolt/js/auto.js"></script>
+  <style>
+    /* Recipe-only layout and art. Components keep their package styles. */
+
+    .jr-page {
+      --jr-gutter: clamp(1.25rem, 5vw, 4.5rem);
+      --jr-measure: 66ch;
+    }
+
+    .jr-wide {
+      inline-size: min(100%, 84rem);
+      margin-inline: auto;
+      padding-inline: var(--jr-gutter);
+    }
+
+    .jr-read {
+      inline-size: min(100%, var(--jr-measure));
+      margin-inline: auto;
+    }
+
+    .jr-section {
+      padding-block: clamp(3rem, 8vw, 6.5rem);
+    }
+
+    .jr-masthead {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--iv-space-3) var(--iv-space-6);
+      align-items: baseline;
+      justify-content: space-between;
+      padding-block: clamp(2.5rem, 6vw, 4.5rem) var(--iv-space-6);
+      font-family: var(--iv-font-mono);
+      font-size: var(--iv-text-xs);
+      letter-spacing: 0.1em;
+      color: var(--iv-color-text-muted);
+    }
+
+    .jr-cover-title {
+      font-size: clamp(2.5rem, 10.5vw, 9.5rem);
+      line-height: 0.86;
+      letter-spacing: -0.04em;
+      margin: 0 0 clamp(1.5rem, 4vw, 3rem);
+      overflow-wrap: normal;
+      hyphens: none;
+    }
+
+    .jr-standfirst {
+      font-size: clamp(1.125rem, 2.2vw, 1.75rem);
+      line-height: 1.4;
+      max-inline-size: 34ch;
+      margin: 0;
+      color: var(--iv-color-text-muted);
+    }
+
+    .jr-cover-grid {
+      display: grid;
+      gap: clamp(1.5rem, 4vw, 3rem);
+      align-items: end;
+    }
+
+    @media (min-width: 48em) {
+      .jr-cover-grid {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      }
+    }
+
+    .jr-cover-figure {
+      margin: 0;
+    }
+
+    .jr-cover-figure img {
+      inline-size: 100%;
+      block-size: auto;
+      border-radius: var(--iv-radius-lg);
+      display: block;
+    }
+
+    .jr-caption {
+      margin: var(--iv-space-3) 0 0;
+      font-size: var(--iv-text-sm);
+      color: var(--iv-color-text-muted);
+    }
+
+    .jr-article h2 {
+      font-size: clamp(1.5rem, 3.2vw, 2.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.024em;
+      margin: clamp(2.5rem, 6vw, 4rem) 0 var(--iv-space-4);
+    }
+
+    .jr-article p {
+      margin: 0 0 var(--iv-space-5);
+      font-size: 1.0625rem;
+      line-height: 1.7;
+    }
+
+    .jr-article > p:first-of-type::first-letter {
+      float: inline-start;
+      font-size: 3.6em;
+      line-height: 0.82;
+      padding-inline-end: 0.08em;
+      padding-block-start: 0.04em;
+      font-weight: 600;
+      color: var(--iv-color-primary);
+    }
+
+    .jr-quote {
+      margin: clamp(2rem, 5vw, 3.5rem) 0;
+      padding-inline-start: clamp(1rem, 3vw, 2rem);
+      border-inline-start: 3px solid var(--iv-color-primary);
+      font-size: clamp(1.25rem, 2.6vw, 2rem);
+      line-height: 1.28;
+      letter-spacing: -0.02em;
+    }
+
+    .jr-quote p {
+      margin: 0;
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    .jr-quote footer {
+      margin-block-start: var(--iv-space-3);
+      font-size: var(--iv-text-sm);
+      letter-spacing: 0;
+      color: var(--iv-color-text-muted);
+    }
+
+    .jr-note-button {
+      font: inherit;
+      color: var(--iv-color-primary);
+      background: none;
+      border: 0;
+      padding: 0 0.1em;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+
+    .jr-index {
+      display: grid;
+      gap: 0;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .jr-index li {
+      border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+    }
+
+    .jr-index a {
+      display: grid;
+      gap: var(--iv-space-1) var(--iv-space-6);
+      padding-block: clamp(1rem, 2.5vw, 1.75rem);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    @media (min-width: 48em) {
+      .jr-index a {
+        grid-template-columns: 4rem minmax(0, 1fr) 10rem;
+        align-items: baseline;
+      }
+    }
+
+    .jr-index a:hover .jr-index__title,
+    .jr-index a:focus-visible .jr-index__title {
+      color: var(--iv-color-primary);
+    }
+
+    .jr-index__no {
+      font-family: var(--iv-font-mono);
+      font-size: var(--iv-text-xs);
+      letter-spacing: 0.18em;
+      color: var(--iv-color-text-muted);
+    }
+
+    .jr-index__title {
+      font-size: clamp(1.25rem, 2.6vw, 2rem);
+      line-height: 1.12;
+      letter-spacing: -0.022em;
+      transition: color var(--iv-motion-fast) var(--iv-ease-out);
+    }
+
+    .jr-index__meta {
+      font-size: var(--iv-text-sm);
+      color: var(--iv-color-text-muted);
+    }
+
+    .jr-theme {
+      display: none;
+    }
+
+    [data-iv-js] .jr-theme {
+      display: inline-flex;
+    }
+
+    .jr-footer {
+      padding-block: clamp(2.5rem, 6vw, 4rem);
+      border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+      color: var(--iv-color-text-muted);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .jr-index__title {
+        transition: none;
+      }
+    }
+
+    @media print {
+      .iv-navbar,
+      .iv-scroll-progress,
+      .jr-theme,
+      .iv-gallery,
+      .iv-pagination {
+        display: none;
+      }
+
+      .jr-page {
+        --jr-gutter: 0;
+      }
+
+      .jr-article p,
+      .jr-read {
+        max-inline-size: none;
+      }
+
+      .jr-cover-title {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="jr-page">
+<a class="iv-button iv-button--secondary iv-u-sr-only-focusable" href="#main">Skip to content</a>
+
+<div data-iv-component="scroll-motion">
+  <div class="iv-scroll-progress" aria-hidden="true"></div>
+
+  <header class="iv-navbar" data-iv-component="navbar" data-iv-sticky="true">
+    <div class="iv-navbar__inner">
+      <a class="iv-navbar__brand" href="#cover" aria-label="The Quiet Column, top of the page">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 8v16M20 8v16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>
+        </svg>
+        <span>The Quiet Column</span>
+      </a>
+      <button class="iv-navbar__toggle" type="button" aria-expanded="false" aria-controls="jr-nav" hidden>
+        <span class="iv-u-sr-only">Menu</span>
+        <span class="iv-navbar__burger" aria-hidden="true"></span>
+      </button>
+      <div class="iv-navbar__panel" id="jr-nav">
+        <nav class="iv-navbar__nav" aria-label="Main">
+          <ul class="iv-navbar__links">
+            <li><a class="iv-navbar__link" href="#cover" aria-current="page">Cover</a></li>
+            <li><a class="iv-navbar__link" href="#read">The long read</a></li>
+            <li><a class="iv-navbar__link" href="#plates">Plates</a></li>
+            <li><a class="iv-navbar__link" href="#index">In this issue</a></li>
+          </ul>
+        </nav>
+        <div class="iv-navbar__actions">
+          <a class="iv-button iv-button--primary iv-button--sm" href="#read">Start reading</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="jr-wide" id="cover" aria-labelledby="cover-title">
+      <p class="jr-masthead">
+        <span>Issue 14 — Autumn 2026</span>
+        <span>A fictional journal</span>
+        <span>A demonstration page — nothing here is for sale</span>
+      </p>
+      <h1 class="jr-cover-title" id="cover-title">Reading at the<br><span class="iv-gradient-text">edge</span> of the page</h1>
+      <div class="jr-cover-grid">
+        <div class="iv-stack iv-u-gap-6">
+          <p class="jr-standfirst" style="max-inline-size: 42ch">Margins, measure, and the things that survive being read on a phone at three in the morning — an invented issue in six pieces.</p>
+          <ol class="iv-timeline" style="max-inline-size: 30rem">
+            <li class="iv-timeline__item" data-iv-state="current">
+              <time class="iv-timeline__time" datetime="2026-09">Out now</time>
+              <div class="iv-timeline__body">
+                <h2 class="iv-timeline__title" style="font-size: var(--iv-text-lg)">Issue 14 — the measure</h2>
+                <p class="iv-u-m-0 iv-u-text-sm">One feature, five plates and a back page, all invented.</p>
+              </div>
+            </li>
+            <li class="iv-timeline__item" data-iv-state="upcoming">
+              <time class="iv-timeline__time" datetime="2026-12">December</time>
+              <div class="iv-timeline__body">
+                <h2 class="iv-timeline__title" style="font-size: var(--iv-text-lg)">Issue 15 — the gutter</h2>
+                <p class="iv-u-m-0 iv-u-text-sm">Nothing is commissioned: there is no journal behind this page.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="iv-stack iv-u-gap-6">
+          <div class="iv-cluster iv-u-gap-3">
+            <span class="iv-badge iv-badge--primary">Typography</span>
+            <span class="iv-badge">Long read</span>
+            <span class="iv-badge">Plates</span>
+          </div>
+          <figure class="jr-cover-figure">
+            <picture>
+              <source media="(max-width: 47.99em)" srcset="photos/p1073-800.jpg" width="800" height="500">
+              <img src="photos/p1073.jpg" width="1280" height="800" alt="Dozens of open paperback books laid face down side by side, filling the frame with printed pages" fetchpriority="high" decoding="async">
+            </picture>
+            <figcaption class="jr-caption">Plate I — the reference wall. Photograph by Patrick Tomasso on Unsplash.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <div class="jr-wide">
+      <nav class="iv-breadcrumb" aria-label="Breadcrumb">
+        <ol class="iv-breadcrumb__list">
+          <li class="iv-breadcrumb__item"><a href="#cover">Issue 14</a></li>
+          <li class="iv-breadcrumb__item"><a href="#index">Features</a></li>
+          <li class="iv-breadcrumb__item" aria-current="page">The long read</li>
+        </ol>
+      </nav>
+    </div>
+
+    <article class="jr-wide jr-section" id="read" aria-labelledby="read-title">
+      <div class="jr-read">
+        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0" style="font-family: var(--iv-font-mono); letter-spacing: 0.18em; text-transform: uppercase">Feature — 12 minutes</p>
+        <h2 class="iv-u-mt-4" id="read-title" style="font-size: clamp(2rem, 6vw, 4.25rem); line-height: 1.02; letter-spacing: -0.03em; margin-block-end: var(--iv-space-6)">The measure is the argument</h2>
+        <p class="iv-u-text-sm iv-u-text-muted">By <strong>Bruno Oteiza</strong> — an invented byline. Illustrated with photographs credited at the end.</p>
+      </div>
+
+      <div class="jr-read jr-article" data-iv-component="tooltip">
+        <p>Every decision a page makes about reading is made twice: once for the eye that scans it and once for the eye that gets tired. A column of sixty-six characters is not a rule handed down from a print shop; it is the width at which a reader can find the beginning of the next line without thinking about it. Miss it by twenty characters in either direction and the reader starts doing work the designer should have done.</p>
+
+        <p>This article is invented, and so is the journal that publishes it. What is real is the page you are reading it on: one stylesheet, one optional script, no fonts fetched from anywhere, no analytics, no requests at all. The bar at the top of the window is the reading position. The pale underline under the words below opens a note.</p>
+
+        <p>The argument for a narrow measure <button class="jr-note-button" type="button" popovertarget="jr-note-1">has a long history</button>, and most of it is recycled from typesetters who never had to think about a phone held at arm's length in a bus. The useful part survives anyway: shorter lines, more leading, and a body size that does not shrink on the device where most of the reading happens.</p>
+
+        <blockquote class="jr-quote">
+          <p>“A page is not a container for text. It is an instrument for a particular kind of attention, and attention is the thing in short supply.”</p>
+          <footer>— an invented quotation, attributed to nobody</footer>
+        </blockquote>
+
+        <h2>What a margin is for</h2>
+
+        <p>A margin is not empty. It is the part of the page that tells the eye where the text is not, and that job matters more as the screen gets smaller. When a layout runs its text to both edges it has not gained space; it has removed the frame that made the column readable in the first place.</p>
+
+        <p>The gutters on this page are set with a single clamp, so the same rule produces twenty pixels on a phone and seventy-two on a wide screen. The reading column never grows past sixty-six characters no matter how much room there is, because a wide screen is <button class="jr-note-button" type="button" popovertarget="jr-note-2">an invitation, not an instruction</button>.</p>
+
+        <h2>Notes in the margin, not in a new tab</h2>
+
+        <p>The two underlined phrases above open small panels anchored to the word that raised them. They are native popovers, so they open without any JavaScript at all; with the script they position themselves next to their button and the keyboard can reach and dismiss them. Nothing is fetched to fill them: the text was served with the page.</p>
+
+        <p>The gallery below is the plate section of this invented issue. Each plate is a link to its own file, so it works before any script runs; with the script a click opens the viewer, the arrow keys walk the set and <kbd>Esc</kbd> returns focus to the plate you came from.</p>
+      </div>
+    </article>
+
+    <div class="iv-popover iv-popover--arrow" id="jr-note-1" popover data-iv-component="popover">
+      <h3 class="iv-popover__title">Note</h3>
+      <p class="iv-u-text-sm iv-u-m-0">Invented note, for this example. The figures usually quoted for an ideal measure come from studies of printed text and disagree with each other by about twenty characters, which is roughly the size of the effect they are arguing about.</p>
+    </div>
+
+    <div class="iv-popover iv-popover--arrow" id="jr-note-2" popover data-iv-component="popover" data-iv-align="end">
+      <h3 class="iv-popover__title">Note</h3>
+      <p class="iv-u-text-sm iv-u-m-0">Invented note, for this example. On this page the extra width goes to the plates and to the index, both of which are looked at rather than read line by line.</p>
+    </div>
+
+    <section class="jr-wide jr-section" id="plates" aria-labelledby="plates-title">
+      <h2 class="iv-u-m-0" id="plates-title" style="font-size: clamp(1.75rem, 5vw, 3.5rem); line-height: 1.04; letter-spacing: -0.028em">Plates II–VI</h2>
+      <p class="iv-u-mt-5 iv-u-mb-10 iv-u-text-muted" style="max-inline-size: 52ch">Five photographs, flowed through CSS columns so each keeps its own height. Every caption says what is in the frame and who made it.</p>
+      <div class="iv-gallery iv-gallery--masonry" data-iv-component="lightbox" data-iv-gallery-label="Plates of this issue, image viewer">
+        <a class="iv-gallery__item" href="photos/p1045.jpg" data-iv-caption="Plate II — cloud on the ridge. Photograph by Aleksandra Boguslawska on Unsplash.">
+          <img class="iv-gallery__img" src="photos/p1045.jpg" alt="A steep rocky mountain ridge half swallowed by low white cloud" width="800" height="1000" loading="lazy">
+        </a>
+        <a class="iv-gallery__item" href="photos/p1042.jpg" data-iv-caption="Plate III — star trails. Photograph by Jeremy Thomas on Unsplash.">
+          <img class="iv-gallery__img" src="photos/p1042.jpg" alt="A long exposure of the night sky, the stars drawn into white spiral trails above a dark silhouette" width="800" height="520" loading="lazy">
+        </a>
+        <a class="iv-gallery__item" href="photos/p1057.jpg" data-iv-caption="Plate IV — the coast road. Photograph by Stefan Kunze on Unsplash.">
+          <img class="iv-gallery__img" src="photos/p1057.jpg" alt="A wooded hillside dropping to a calm sea, with terraced houses along the slope in evening light" width="800" height="560" loading="lazy">
+        </a>
+        <a class="iv-gallery__item" href="photos/p1070.jpg" data-iv-caption="Plate V — the dashboard. Photograph by Sean Stratton on Unsplash.">
+          <img class="iv-gallery__img" src="photos/p1070.jpg" alt="The interior of an abandoned turquoise car: a thin steering wheel, dials and a windscreen full of green leaves" width="800" height="1000" loading="lazy">
+        </a>
+        <a class="iv-gallery__item" href="photos/p1060.jpg" data-iv-caption="Plate VI — the pour. Photograph by Karl Fredrickson on Unsplash.">
+          <img class="iv-gallery__img" src="photos/p1060.jpg" alt="Water poured from a steel kettle into a paper filter over a glass coffee carafe on a dark counter" width="800" height="620" loading="lazy">
+        </a>
+      </div>
+      <p class="jr-caption iv-u-mt-6">Photographs by Aleksandra Boguslawska, Jeremy Thomas, Stefan Kunze, Sean Stratton and Karl Fredrickson, published on Unsplash under the Unsplash License. Copies live in <code>photos/</code> next to this page.</p>
+    </section>
+
+    <section class="jr-wide jr-section" id="index" aria-labelledby="index-title">
+      <h2 class="iv-u-m-0" id="index-title" style="font-size: clamp(1.75rem, 5vw, 3.5rem); line-height: 1.04; letter-spacing: -0.028em">In this issue</h2>
+      <p class="iv-u-mt-5 iv-u-mb-8 iv-u-text-muted" style="max-inline-size: 52ch">Six invented pieces. Every link stays on this page: there are no other pages behind this example.</p>
+      <ul class="jr-index">
+        <li>
+          <a href="#read">
+            <span class="jr-index__no">01</span>
+            <span class="jr-index__title">The measure is the argument</span>
+            <span class="jr-index__meta">Feature · 12 min</span>
+          </a>
+        </li>
+        <li>
+          <a href="#plates">
+            <span class="jr-index__no">02</span>
+            <span class="jr-index__title">Plates from a wall of open books</span>
+            <span class="jr-index__meta">Portfolio · 5 min</span>
+          </a>
+        </li>
+        <li>
+          <a href="#read">
+            <span class="jr-index__no">03</span>
+            <span class="jr-index__title">Against the second column</span>
+            <span class="jr-index__meta">Essay · 8 min</span>
+          </a>
+        </li>
+        <li>
+          <a href="#read">
+            <span class="jr-index__no">04</span>
+            <span class="jr-index__title">Notes on reading in the dark</span>
+            <span class="jr-index__meta">Field note · 4 min</span>
+          </a>
+        </li>
+        <li>
+          <a href="#plates">
+            <span class="jr-index__no">05</span>
+            <span class="jr-index__title">Six kettles and one argument</span>
+            <span class="jr-index__meta">Portfolio · 3 min</span>
+          </a>
+        </li>
+        <li>
+          <a href="#cover">
+            <span class="jr-index__no">06</span>
+            <span class="jr-index__title">Letters we did not receive</span>
+            <span class="jr-index__meta">Back page · 2 min</span>
+          </a>
+        </li>
+      </ul>
+
+      <nav class="iv-pagination iv-u-mt-10" aria-label="Issues">
+        <ul class="iv-pagination__list">
+          <li><span class="iv-pagination__link" aria-disabled="true">Older</span></li>
+          <li><a class="iv-pagination__link" href="#cover" aria-current="page" aria-label="Issue 14, current issue">14</a></li>
+          <li><a class="iv-pagination__link" href="#cover" aria-label="Issue 13">13</a></li>
+          <li><a class="iv-pagination__link" href="#cover" aria-label="Issue 12">12</a></li>
+          <li><span class="iv-pagination__ellipsis" aria-hidden="true">…</span></li>
+          <li><a class="iv-pagination__link" href="#cover" aria-label="Issue 1">1</a></li>
+          <li><a class="iv-pagination__link" href="#cover" aria-label="Newer issues">Newer</a></li>
+        </ul>
+      </nav>
+      <p class="jr-caption">Every issue link returns to the cover of this one: there is no archive behind this example.</p>
+    </section>
+  </main>
+
+  <footer class="jr-wide jr-footer iv-stack iv-u-gap-5">
+    <p class="iv-u-m-0" style="max-inline-size: 60ch"><strong>The Quiet Column is a fictional journal.</strong> The issue number, the articles, the bylines, the reading times and the quotation are all invented for this example. Nothing is sold, no subscription exists and no form on this page sends anything anywhere.</p>
+    <div class="iv-cluster iv-u-gap-6 iv-u-items-center">
+      <div class="jr-theme iv-button-group" role="group" aria-label="Colour theme">
+        <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="light" aria-pressed="true">Light</button>
+        <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="dark" aria-pressed="false">Dark</button>
+        <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="system" aria-pressed="false">System</button>
+      </div>
+      <p class="iv-u-text-sm iv-u-m-0">Built with the published iVOLT package: <code>ivolt.min.css</code> and <code>auto.js</code>, plus one local stylesheet. The page carries a print stylesheet: the bar, the plates and the pagination are dropped and the column is set to the paper.</p>
+    </div>
+    <p class="iv-u-text-sm iv-u-m-0">Photographs by Patrick Tomasso, Aleksandra Boguslawska, Jeremy Thomas, Stefan Kunze, Sean Stratton and Karl Fredrickson, published on Unsplash under the Unsplash License. Credits and links are in <code>README.md</code>.</p>
+  </footer>
+</div>
+
+<script type="module">
+  import { setTheme } from "../ivolt/js/theme.js";
+
+  const group = document.querySelector(".jr-theme");
+  if (group) {
+    group.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-theme]");
+      if (!button) return;
+      const value = button.dataset.theme;
+      setTheme(value);
+      for (const item of group.querySelectorAll("[data-theme]")) {
+        item.setAttribute("aria-pressed", String(item === button));
+      }
+    });
+  }
+</script>
+</body>
+</html>
