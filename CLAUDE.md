@@ -14,7 +14,7 @@ Framework frontend (CSS + HTML + JS opcional) de iNTERVOLUTIONS. Coordinación e
 - Paleta, escalas, estados, arte: `docs/DESIGN_SYSTEM.md`
 - Presupuestos, navegadores, pruebas, gates: `docs/QUALITY.md`
 - Agentes, propiedad de archivos, coste: `docs/WORKFLOW.md`
-- ADR: `docs/DECISIONS.md` · Fuentes y versiones: `docs/SOURCES.md`
+- ADR: `docs/DECISIONS.md` · Fuentes y versiones: `docs/SOURCES.md` · Estabilidad y SemVer desde 1.0: `docs/STABILITY.md`
 - Lámina visual provisional: `docs/design/brand-board.html`
 
 ## Reglas duras
