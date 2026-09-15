@@ -13,7 +13,7 @@ let dir = process.cwd();
 while (!existsSync(resolve(dir, "packages/ivolt/dist")) && dirname(dir) !== dir) dir = dirname(dir);
 const dist = resolve(dir, "packages/ivolt/dist");
 const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.json"), "utf8")).version;
-const stage = /beta/.test(version) ? "beta" : /alpha/.test(version) ? "alpha" : "";
+const stage = /-rc/.test(version) ? "release candidate" : /beta/.test(version) ? "beta" : /alpha/.test(version) ? "alpha" : "";
 const kib = (rel) => existsSync(resolve(dist, rel)) ? (gzipSync(readFileSync(resolve(dist, rel)), { level: 9 }).length / 1024).toFixed(1) : null;
 const facts = [
   { value: "0", label: "runtime dependencies" },
