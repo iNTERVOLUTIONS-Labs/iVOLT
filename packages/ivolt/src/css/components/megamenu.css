@@ -1,28 +1,45 @@
-/* iVOLT — components/megamenu
- * Navigation bar whose items unfold a wide panel. Mobile first: the panel is a
- * block in the flow (open without JavaScript, an accordion once `data-iv-js`
- * is on the root). From `lg` upwards it floats under the bar, centred on the
- * root, revealed by `:hover` / `:focus-within` without JavaScript and by
+/* iVOLT — components/megamenu (v2, API_CONTRACT §8.9)
+ * Navigation bar whose items unfold a wide editorial panel: head with count and
+ * close, directory with tabular counts, discovery with tabs and ranked art
+ * cards, cloud, feature, aside with recent rows and facets, in-panel filter,
+ * foot with crumb and terminal status line, and a numbered headline ticker.
+ *
+ * Mobile first: the panel is a block in the flow (open without JavaScript, an
+ * accordion once `data-iv-js` is on the root, collapsed by the `0fr` row of the
+ * item grid). From `lg` upwards it floats under the bar, centred on the root,
+ * revealed by `:hover` / `:focus-within` without JavaScript and by
  * `data-iv-open` on the item with it.
+ *
  * Locals: --iv-megamenu-width --iv-megamenu-offset --iv-megamenu-cols
- *         --iv-megamenu-card-span --iv-megamenu-overlay-bg
+ *         --iv-megamenu-art-ratio --iv-megamenu-accent --iv-megamenu-caret-x
+ *         --iv-megamenu-overlay-bg --iv-i
  * Ancestor state lives inside `:where()` so a descendant rule stays at (0,1,0)
- * and wins by source order alone, never by specificity.
+ * and wins by source order alone, never by specificity (ADR-042).
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
  */
 
 .iv-megamenu {
-  --iv-megamenu-width: min(64rem, 100vw - 2rem);
+  --iv-megamenu-width: min(80rem, 100vw - 2rem);
   --iv-megamenu-offset: 0.75rem;
   --iv-megamenu-cols: 4;
-  --iv-megamenu-card-span: 3;
+  --iv-megamenu-art-ratio: 3 / 4;
+  --iv-megamenu-accent: var(--iv-color-primary);
+  --iv-megamenu-caret-x: 50%;
   --iv-megamenu-overlay-bg: var(--iv-color-overlay);
 
   position: relative;
 }
 
-/* Bar ----------------------------------------------------------------- */
+/* One rule for every part the component hides: the module layer would
+ * otherwise outrank the `[hidden]` rule of the base layer, and in the flat
+ * sheet there are no layers at all. Kept above the parts so any later rule of
+ * equal weight that needs to win can. */
+.iv-megamenu [hidden] {
+  display: none;
+}
+
+/* Bar ------------------------------------------------------------------ */
 
 .iv-megamenu__list {
   display: flex;
@@ -33,16 +50,19 @@
   list-style: none;
 }
 
+/* Two columns and two rows: link and toggle share the first row, the panel
+ * spans the second one. That second row is the single box the accordion
+ * collapses, which is why the panel needs no wrapper of its own. */
 .iv-megamenu__item {
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
   align-items: center;
 }
 
 .iv-megamenu__link {
   display: inline-flex;
-  flex: 1 1 auto;
   align-items: center;
   gap: var(--iv-space-2);
   min-block-size: 2.75rem;
@@ -84,137 +104,419 @@
   transition: transform var(--iv-motion-base) var(--iv-ease-out);
 }
 
-/* The component layer wins over the `[hidden]` rule of the base layer, so the
- * toggle has to hide itself until `init` shows it. */
-.iv-megamenu__toggle[hidden] {
-  display: none;
-}
-
 .iv-megamenu__toggle[aria-expanded="true"] {
-  color: var(--iv-color-primary);
+  color: var(--iv-megamenu-accent);
 }
 
 .iv-megamenu__toggle[aria-expanded="true"]::after {
   transform: translateY(0.12em) rotate(-135deg);
 }
 
-@media (hover: hover) {
-  .iv-megamenu__link:hover {
-    color: var(--iv-color-primary);
-    background-color: var(--iv-color-surface);
-  }
+:where(.iv-megamenu__item[data-iv-open]) > .iv-megamenu__link {
+  color: var(--iv-megamenu-accent);
+}
 
+@media (hover: hover) {
+  .iv-megamenu__link:hover,
   .iv-megamenu__toggle:hover {
-    color: var(--iv-color-primary);
-    background-color: var(--iv-color-surface);
+    color: var(--iv-megamenu-accent);
+    background-color: var(--iv-color-hover-surface);
   }
 }
 
-/* Panel --------------------------------------------------------------- */
+/* Panel ---------------------------------------------------------------- */
 
 .iv-megamenu__panel {
   position: relative;
-  flex-basis: 100%;
+  grid-column: 1 / -1;
+  align-self: stretch;
   min-inline-size: 0;
   color: var(--iv-color-text);
-  background-color: var(--iv-color-surface);
-  border-radius: var(--iv-radius-lg);
-}
 
-/* Luminous top rule, the seam between the bar and the panel. */
-.iv-megamenu__panel::before {
-  content: "";
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline: 0;
-  block-size: 2px;
+  /* Surface plus the luminous 2px rule that seams the bar to the panel. Both
+   * pseudo-elements are taken: `::before` bridges the gap, `::after` is the
+   * caret. */
+  background-color: var(--iv-color-surface);
   background-image: linear-gradient(
     90deg,
     transparent,
-    var(--iv-color-accent),
+    var(--iv-megamenu-accent) 22%,
+    var(--iv-color-accent) 50%,
+    var(--iv-megamenu-accent) 78%,
     transparent
   );
-  border-start-start-radius: inherit;
-  border-start-end-radius: inherit;
-  opacity: 0.8;
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+  border-radius: var(--iv-radius-lg);
 }
 
-.iv-megamenu__inner {
+/* Head ----------------------------------------------------------------- */
+
+.iv-megamenu__head {
   display: grid;
-  gap: var(--iv-space-5);
-  padding: var(--iv-space-5);
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--iv-space-1) var(--iv-space-4);
+  align-items: start;
+  padding: var(--iv-space-5) var(--iv-space-5) var(--iv-space-4);
+  background-image: radial-gradient(
+    120% 180% at 0% 0%,
+    var(--iv-glow-primary),
+    transparent 60%
+  );
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
 }
 
-.iv-megamenu__group {
-  min-inline-size: 0;
-}
-
-.iv-megamenu .iv-megamenu__heading {
-  margin-block: 0 var(--iv-space-3);
+.iv-megamenu__overline {
+  grid-column: 1;
+  margin: 0;
+  font-family: var(--iv-font-mono);
   font-size: var(--iv-text-xs);
-  font-weight: var(--iv-weight-semibold);
-  letter-spacing: 0.12em;
+  letter-spacing: var(--iv-tracking-caps);
   text-transform: uppercase;
   color: var(--iv-color-text-muted);
 }
 
-.iv-megamenu__links {
-  display: grid;
-  gap: var(--iv-space-1);
+.iv-megamenu .iv-megamenu__title {
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: 1;
+  align-items: center;
+  gap: var(--iv-space-3);
+  margin: 0;
+  font-size: var(--iv-text-3xl);
+  font-weight: var(--iv-weight-bold);
+  line-height: var(--iv-leading-tight);
+  letter-spacing: var(--iv-tracking-tight);
+  color: var(--iv-color-text);
+}
+
+.iv-megamenu__count {
+  padding-block: 0.15em;
+  padding-inline: var(--iv-space-2);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-medium);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--iv-tracking-caps);
+  color: var(--iv-megamenu-accent);
+  background-color: var(--iv-color-primary-subtle);
+  border: var(--iv-border-width) solid var(--iv-color-primary-border);
+  border-radius: var(--iv-radius-full);
+}
+
+.iv-megamenu__tagline {
+  grid-column: 1;
+  margin: 0;
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+}
+
+.iv-megamenu__close {
+  grid-row: 1 / 3;
+  grid-column: 2;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  padding: 0;
+  color: var(--iv-color-text-muted);
+  background-color: transparent;
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-md);
+  cursor: pointer;
+  transition:
+    color var(--iv-motion-base) var(--iv-ease-out),
+    border-color var(--iv-motion-base) var(--iv-ease-out),
+    box-shadow var(--iv-motion-base) var(--iv-ease-out);
+}
+
+/* Cross drawn with two gradients: no glyph to announce, no extra element. */
+.iv-megamenu__close::after {
+  content: "";
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  background-image:
+    linear-gradient(currentcolor, currentcolor),
+    linear-gradient(currentcolor, currentcolor);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.75rem 1.5px, 1.5px 0.75rem;
+  rotate: 45deg;
+  transition: rotate var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-megamenu__close:hover {
+    color: var(--iv-megamenu-accent);
+    border-color: var(--iv-color-primary-border);
+    box-shadow: var(--iv-focus-halo);
+  }
+
+  :where(.iv-megamenu__close:hover)::after {
+    rotate: 135deg;
+  }
+}
+
+/* Filter --------------------------------------------------------------- */
+
+.iv-megamenu__filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-2);
+  padding: var(--iv-space-3) var(--iv-space-5);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* Magnifier by mask: one shape, painted with the current colour, no glyph. */
+.iv-megamenu__filter::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(var(--iv-space-5) + var(--iv-space-3));
+  inline-size: 1rem;
+  block-size: 1rem;
+  background-color: var(--iv-color-text-muted);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.8'%3E%3Ccircle cx='7' cy='7' r='4.6'/%3E%3Cpath d='m10.5 10.5 4 4' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  pointer-events: none;
+}
+
+.iv-megamenu .iv-megamenu__filter-input {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  padding-inline-start: var(--iv-space-8);
+  font-size: var(--iv-text-sm);
+}
+
+.iv-megamenu__kbd {
+  flex: none;
+  padding-block: 0.1em;
+  padding-inline: var(--iv-space-2);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  letter-spacing: var(--iv-tracking-caps);
+  color: var(--iv-color-text-muted);
+  background-color: var(--iv-color-surface);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-sm);
+}
+
+/* Body ----------------------------------------------------------------- */
+
+.iv-megamenu__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--iv-space-5);
+  padding: var(--iv-space-5);
+}
+
+.iv-megamenu .iv-megamenu__heading {
+  margin-block: 0 var(--iv-space-3);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
+/* Directory ------------------------------------------------------------ */
+
+.iv-megamenu__directory,
+.iv-megamenu__aside,
+.iv-megamenu__discover {
+  min-inline-size: 0;
+}
+
+.iv-megamenu__dirlist,
+.iv-megamenu__facets,
+.iv-megamenu__recent {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.iv-megamenu__links a {
-  display: block;
+.iv-megamenu__dirlist a,
+.iv-megamenu__facets a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--iv-space-3);
   padding-block: var(--iv-space-2);
-  padding-inline: var(--iv-space-2);
   font-size: var(--iv-text-sm);
   color: var(--iv-color-text);
   text-decoration: none;
-  border-radius: var(--iv-radius-sm);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
   transition:
     color var(--iv-motion-base) var(--iv-ease-out),
-    background-color var(--iv-motion-base) var(--iv-ease-out);
+    padding-inline-start var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-megamenu__dirlist small,
+.iv-megamenu__facets small {
+  flex: none;
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--iv-color-text-muted);
 }
 
 @media (hover: hover) {
-  .iv-megamenu__links a:hover {
-    color: var(--iv-color-primary);
-    background-color: var(--iv-color-surface-raised);
+  .iv-megamenu__dirlist a:hover,
+  .iv-megamenu__facets a:hover {
+    padding-inline-start: var(--iv-space-1);
+    color: var(--iv-megamenu-accent);
   }
 }
 
-/* Cards --------------------------------------------------------------- */
+.iv-megamenu__all {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--iv-space-3);
+  margin-block-start: var(--iv-space-4);
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-space-3);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--iv-color-text);
+  text-decoration: none;
+  background-color: var(--iv-color-hover-surface);
+  border: var(--iv-border-width) solid var(--iv-color-border-strong);
+  border-radius: var(--iv-radius-md);
+  transition:
+    color var(--iv-motion-base) var(--iv-ease-out),
+    border-color var(--iv-motion-base) var(--iv-ease-out),
+    box-shadow var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-megamenu__all::after,
+.iv-megamenu__foot-link::after,
+.iv-megamenu__arrow::after {
+  content: "";
+  flex: none;
+  inline-size: 1rem;
+  block-size: 1rem;
+  background-color: currentcolor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg fill='none' stroke='%23000' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8h11M9 3.5 13.5 8 9 12.5'/%3E%3C/g%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  transition: translate var(--iv-motion-base) var(--iv-ease-out);
+}
+
+:where([dir="rtl"]) .iv-megamenu__all::after,
+:where([dir="rtl"]) .iv-megamenu__foot-link::after,
+:where([dir="rtl"]) .iv-megamenu__arrow::after {
+  scale: -1 1;
+}
+
+@media (hover: hover) {
+  .iv-megamenu__all:hover {
+    color: var(--iv-megamenu-accent);
+    border-color: var(--iv-color-primary-border);
+    box-shadow: var(--iv-focus-halo);
+  }
+
+  :where(.iv-megamenu__all:hover)::after {
+    translate: 0.25rem 0;
+  }
+}
+
+/* Discovery: tabs ------------------------------------------------------- */
+
+.iv-megamenu__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-space-5);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-megamenu__tab {
+  position: relative;
+  padding-block: var(--iv-space-2);
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+/* Luminous underline, drawn on the shared rule of the tab strip. */
+.iv-megamenu__tab::after {
+  content: "";
+  position: absolute;
+  inset-block-end: -1px;
+  inset-inline: 0;
+  block-size: 2px;
+  background-image: linear-gradient(
+    90deg,
+    var(--iv-megamenu-accent),
+    var(--iv-color-accent)
+  );
+  box-shadow: 0 0 10px var(--iv-glow-primary);
+  opacity: 0;
+  transition: opacity var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-megamenu__tab[aria-selected="true"] {
+  color: var(--iv-color-text);
+}
+
+.iv-megamenu__tab[aria-selected="true"]::after {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .iv-megamenu__tab:hover {
+    color: var(--iv-color-text);
+  }
+}
+
+.iv-megamenu__set {
+  min-inline-size: 0;
+}
+
+/* Cards ----------------------------------------------------------------- */
 
 .iv-megamenu__cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
-  gap: var(--iv-space-3);
-  min-inline-size: 0;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: var(--iv-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .iv-megamenu__card {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  display: grid;
   gap: var(--iv-space-2);
   min-inline-size: 0;
-  padding: var(--iv-space-2);
   color: inherit;
   text-decoration: none;
-  border-radius: var(--iv-radius-md);
-  transition:
-    background-color var(--iv-motion-base) var(--iv-ease-out),
-    transform var(--iv-motion-base) var(--iv-ease-out);
 }
 
 .iv-megamenu__art {
+  position: relative;
   display: block;
   overflow: hidden;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: var(--iv-megamenu-art-ratio);
   background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
   border-radius: var(--iv-radius-md);
+  box-shadow: var(--iv-shadow-1);
+  transition:
+    translate var(--iv-motion-slow) var(--iv-ease-out),
+    box-shadow var(--iv-motion-slow) var(--iv-ease-out),
+    border-color var(--iv-motion-slow) var(--iv-ease-out);
 }
 
 .iv-megamenu__art img,
@@ -225,69 +527,437 @@
   object-fit: cover;
 }
 
+/* Veil at the foot of the art so the rank keeps AA over any artwork. */
+.iv-megamenu__art::before {
+  content: "";
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  block-size: 55%;
+  background-image: linear-gradient(transparent, rgb(3 8 6 / 0.72));
+  pointer-events: none;
+}
+
+/* Sweep of light, one pass of 800ms on hover. */
+.iv-megamenu__art::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: -60%;
+  inline-size: 45%;
+  background-image: linear-gradient(
+    75deg,
+    transparent,
+    rgb(255 255 255 / 0.22),
+    transparent
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+.iv-megamenu__rank {
+  position: absolute;
+  inset-block-end: var(--iv-space-2);
+  inset-inline-start: var(--iv-space-2);
+  z-index: 1;
+  padding-block: 0.1em;
+  padding-inline: 0.45em;
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: #f3faf6;
+  background-color: rgb(3 8 6 / 0.72);
+  border: var(--iv-border-width) solid rgb(243 250 246 / 0.28);
+  border-radius: var(--iv-radius-sm);
+}
+
+.iv-megamenu__arrow {
+  position: absolute;
+  inset-block-start: var(--iv-space-2);
+  inset-inline-end: var(--iv-space-2);
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  color: var(--iv-color-on-accent);
+  background-color: var(--iv-color-accent);
+  border-radius: var(--iv-radius-full);
+  box-shadow: 0 0 0 6px var(--iv-glow-primary);
+  opacity: 0;
+  translate: -0.35rem 0.35rem;
+  transition:
+    opacity var(--iv-motion-base) var(--iv-ease-out),
+    translate var(--iv-motion-base) var(--iv-ease-out);
+}
+
 .iv-megamenu__name {
   font-size: var(--iv-text-sm);
   font-weight: var(--iv-weight-semibold);
   line-height: var(--iv-leading-snug);
+  color: var(--iv-color-text);
+  transition: color var(--iv-motion-base) var(--iv-ease-out);
 }
 
 .iv-megamenu__meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--iv-space-2);
+  font-family: var(--iv-font-mono);
   font-size: var(--iv-text-xs);
   color: var(--iv-color-text-muted);
 }
 
-/* Arrow of the card: same border chevron, pointing to the inline end. */
-.iv-megamenu__meta::after {
-  content: "";
-  flex: none;
-  inline-size: 0.4rem;
-  block-size: 0.4rem;
-  border-block-start: 2px solid currentcolor;
-  border-inline-end: 2px solid currentcolor;
-  transform: rotate(45deg);
-  opacity: 0.6;
-  transition: transform var(--iv-motion-base) var(--iv-ease-out);
+@media (hover: hover) {
+  :where(.iv-megamenu__card:hover) .iv-megamenu__art,
+  :where(.iv-megamenu__card:focus-visible) .iv-megamenu__art {
+    translate: 0 -3px;
+    border-color: var(--iv-color-primary-border);
+    box-shadow: var(--iv-shadow-2);
+  }
+
+  :where(.iv-megamenu__card:hover) .iv-megamenu__art::after {
+    animation: iv-megamenu-sweep 800ms var(--iv-ease-out);
+  }
+
+  :where(.iv-megamenu__card:hover) .iv-megamenu__arrow,
+  :where(.iv-megamenu__card:focus-visible) .iv-megamenu__arrow {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  :where(.iv-megamenu__card:hover) .iv-megamenu__name {
+    color: var(--iv-megamenu-accent);
+  }
 }
 
-/* The two logical borders draw the mirrored corner in a right-to-left
-   document, so the same +45deg would point the chevron upwards. */
-:where([dir="rtl"]) .iv-megamenu__meta::after {
-  transform: rotate(-45deg);
+@keyframes iv-megamenu-sweep {
+  from {
+    opacity: 1;
+    translate: 0 0;
+  }
+
+  to {
+    opacity: 1;
+    translate: 380% 0;
+  }
+}
+
+/* Cloud and feature ------------------------------------------------------ */
+
+.iv-megamenu__cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: start;
+  gap: var(--iv-space-2);
+  min-inline-size: 0;
+}
+
+.iv-megamenu__cloud .iv-megamenu__heading {
+  flex-basis: 100%;
+  margin-block-end: 0;
+}
+
+.iv-megamenu__cloud a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--iv-space-2);
+  padding-block: var(--iv-space-1);
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text);
+  text-decoration: none;
+  background-color: var(--iv-color-hover-surface);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-full);
+  transition:
+    color var(--iv-motion-base) var(--iv-ease-out),
+    border-color var(--iv-motion-base) var(--iv-ease-out),
+    background-color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-megamenu__cloud small {
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--iv-color-text-muted);
 }
 
 @media (hover: hover) {
-  .iv-megamenu__card:hover {
-    background-color: var(--iv-color-surface-raised);
-  }
-
-  :where(.iv-megamenu__card:hover) .iv-megamenu__meta::after {
-    transform: translateX(0.2rem) rotate(45deg);
-  }
-
-  /* `translateX` is physical and the corner the two logical borders draw is
-     mirrored, so the chevron needs the opposite rotation and nudge. */
-  :where([dir="rtl"] .iv-megamenu__card:hover) .iv-megamenu__meta::after {
-    transform: translateX(-0.2rem) rotate(-45deg);
+  .iv-megamenu__cloud a:hover {
+    color: var(--iv-megamenu-accent);
+    background-color: var(--iv-color-primary-subtle);
+    border-color: var(--iv-color-primary-border);
   }
 }
 
-/* Bottom bar ---------------------------------------------------------- */
+.iv-megamenu__feature {
+  display: grid;
+  gap: var(--iv-space-2);
+  align-content: start;
+  min-inline-size: 0;
+  padding: var(--iv-space-4);
+  color: inherit;
+  text-decoration: none;
+  background-color: var(--iv-color-hover-surface);
+  border-inline-start: var(--iv-border-width-strong) solid var(--iv-megamenu-accent);
+  border-radius: var(--iv-radius-md);
+  transition: background-color var(--iv-motion-base) var(--iv-ease-out);
+}
 
-.iv-megamenu__bottom {
+.iv-megamenu__flag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-2);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+  color: var(--iv-megamenu-accent);
+}
+
+.iv-megamenu__flag::before {
+  content: "";
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  background-color: currentcolor;
+  border-radius: var(--iv-radius-full);
+  animation: iv-megamenu-pulse 2s var(--iv-ease-out) infinite;
+}
+
+@keyframes iv-megamenu-pulse {
+  50% {
+    opacity: 0.25;
+    scale: 0.7;
+  }
+}
+
+.iv-megamenu__feature-title {
+  font-size: var(--iv-text-lg);
+  font-weight: var(--iv-weight-semibold);
+  line-height: var(--iv-leading-snug);
+  letter-spacing: var(--iv-tracking-tight);
+  color: var(--iv-color-text);
+}
+
+.iv-megamenu__feature-meta {
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+}
+
+.iv-megamenu__feature-meta b {
+  font-family: var(--iv-font-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--iv-megamenu-accent);
+}
+
+@media (hover: hover) {
+  .iv-megamenu__feature:hover {
+    background-color: var(--iv-color-primary-subtle);
+  }
+}
+
+/* Aside ------------------------------------------------------------------ */
+
+.iv-megamenu__recent a {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: var(--iv-space-1) var(--iv-space-3);
+  padding-block: var(--iv-space-3);
+  color: var(--iv-color-text);
+  text-decoration: none;
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-megamenu__thumb {
+  grid-row: 1 / 3;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background-color: var(--iv-color-surface-raised);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-sm);
+}
+
+.iv-megamenu__thumb img,
+.iv-megamenu__thumb svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.iv-megamenu__recent-title {
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-medium);
+  line-height: var(--iv-leading-snug);
+  transition: color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-megamenu__date {
+  align-self: end;
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-megamenu__facets {
+  margin-block-start: var(--iv-space-5);
+}
+
+@media (hover: hover) {
+  :where(.iv-megamenu__recent a:hover) .iv-megamenu__recent-title {
+    color: var(--iv-megamenu-accent);
+  }
+}
+
+/* Foot -------------------------------------------------------------------- */
+
+.iv-megamenu__foot {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--iv-space-3);
-  padding-block-start: var(--iv-space-4);
+  gap: var(--iv-space-3) var(--iv-space-5);
+  padding: var(--iv-space-3) var(--iv-space-5);
+  background-color: var(--iv-color-hover-surface);
   border-block-start: var(--iv-border-width) solid var(--iv-color-border);
 }
 
-/* Overlay ------------------------------------------------------------- */
+.iv-megamenu__crumb {
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+  color: var(--iv-color-text-muted);
+}
+
+.iv-megamenu__crumb b {
+  margin-inline: var(--iv-space-2);
+  font-weight: var(--iv-weight-normal);
+  color: var(--iv-megamenu-accent);
+}
+
+.iv-megamenu__foot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-2);
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text);
+  text-decoration: none;
+  transition: color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-megamenu__foot-link:hover {
+    color: var(--iv-megamenu-accent);
+  }
+
+  :where(.iv-megamenu__foot-link:hover)::after {
+    translate: 0.25rem 0;
+  }
+}
+
+.iv-megamenu__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--iv-space-2);
+  margin: 0;
+  margin-inline-start: auto;
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  color: var(--iv-color-text-muted);
+}
+
+.iv-megamenu__prompt {
+  color: var(--iv-megamenu-accent);
+}
+
+.iv-megamenu__cmd {
+  color: var(--iv-color-text);
+}
+
+.iv-megamenu__caret-blink {
+  inline-size: 0.5em;
+  block-size: 1em;
+  background-color: currentcolor;
+  animation: iv-megamenu-blink 0.6s steps(1) infinite;
+}
+
+.iv-megamenu__hint {
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+}
+
+@keyframes iv-megamenu-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Ticker ------------------------------------------------------------------ */
+
+.iv-megamenu__ticker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-megamenu__ticker a {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--iv-space-2);
+  padding: var(--iv-space-4) var(--iv-space-4) var(--iv-space-5);
+  font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-snug);
+  color: var(--iv-color-text-muted);
+  text-decoration: none;
+  transition: color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+/* Progress rule under each headline: decorative, fills on hover. */
+.iv-megamenu__ticker a::after {
+  content: "";
+  position: absolute;
+  inset-block-end: var(--iv-space-3);
+  inset-inline: var(--iv-space-4);
+  block-size: 2px;
+  background-color: var(--iv-color-border);
+  transition: background-color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+.iv-megamenu__ticker .iv-megamenu__rank {
+  position: static;
+  padding: 0;
+  color: var(--iv-color-text-muted);
+  background-color: transparent;
+  border: 0;
+}
+
+@media (hover: hover) {
+  .iv-megamenu__ticker a:hover {
+    color: var(--iv-color-text);
+  }
+
+  :where(.iv-megamenu__ticker a:hover)::after {
+    background-color: var(--iv-megamenu-accent);
+  }
+}
+
+/* Empty state and overlay -------------------------------------------------- */
+
+.iv-megamenu__empty {
+  margin: 0;
+  padding: var(--iv-space-6) var(--iv-space-5);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+  text-align: center;
+}
 
 .iv-megamenu__overlay {
   position: fixed;
@@ -295,12 +965,6 @@
   z-index: calc(var(--iv-z-dropdown) - 1);
   background-color: var(--iv-megamenu-overlay-bg);
   animation: iv-megamenu-overlay-in var(--iv-motion-slow) var(--iv-ease-out);
-}
-
-/* Redundant where `.iv-root [hidden]` applies, required where it does not:
- * a fixed overlay that ignores `hidden` would cover the page. */
-.iv-megamenu__overlay[hidden] {
-  display: none;
 }
 
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -316,60 +980,110 @@
   }
 }
 
-/* Accordion, with JavaScript, below the `staticFrom` breakpoint ---------
+/* Staggered entrance ------------------------------------------------------- */
+
+.iv-megamenu__cards > :nth-child(1),
+.iv-megamenu__dirlist > :nth-child(1),
+.iv-megamenu__recent > :nth-child(1) { --iv-i: 0; }
+
+.iv-megamenu__cards > :nth-child(2),
+.iv-megamenu__dirlist > :nth-child(2),
+.iv-megamenu__recent > :nth-child(2) { --iv-i: 1; }
+
+.iv-megamenu__cards > :nth-child(3),
+.iv-megamenu__dirlist > :nth-child(3),
+.iv-megamenu__recent > :nth-child(3) { --iv-i: 2; }
+
+.iv-megamenu__cards > :nth-child(4),
+.iv-megamenu__dirlist > :nth-child(4),
+.iv-megamenu__recent > :nth-child(4) { --iv-i: 3; }
+
+.iv-megamenu__cards > :nth-child(5),
+.iv-megamenu__dirlist > :nth-child(5),
+.iv-megamenu__recent > :nth-child(5) { --iv-i: 4; }
+
+.iv-megamenu__cards > :nth-child(6),
+.iv-megamenu__dirlist > :nth-child(6),
+.iv-megamenu__recent > :nth-child(6) { --iv-i: 5; }
+
+.iv-megamenu__cards > :nth-child(7),
+.iv-megamenu__dirlist > :nth-child(7),
+.iv-megamenu__recent > :nth-child(7) { --iv-i: 6; }
+
+.iv-megamenu__cards > :nth-child(8),
+.iv-megamenu__dirlist > :nth-child(8),
+.iv-megamenu__recent > :nth-child(8) { --iv-i: 7; }
+
+.iv-megamenu__cards > :nth-child(9),
+.iv-megamenu__dirlist > :nth-child(9),
+.iv-megamenu__recent > :nth-child(9) { --iv-i: 8; }
+
+.iv-megamenu__cards > :nth-child(10),
+.iv-megamenu__dirlist > :nth-child(10),
+.iv-megamenu__recent > :nth-child(10) { --iv-i: 9; }
+
+.iv-megamenu__cards > :nth-child(11),
+.iv-megamenu__dirlist > :nth-child(11),
+.iv-megamenu__recent > :nth-child(11) { --iv-i: 10; }
+
+.iv-megamenu__cards > :nth-child(12),
+.iv-megamenu__dirlist > :nth-child(12),
+.iv-megamenu__recent > :nth-child(12) { --iv-i: 11; }
+
+/* Accordion, with JavaScript, below the `staticFrom` breakpoint -------------
  * Without JavaScript the panels stay open in the flow. `visibility` takes the
  * collapsed content out of the tab order, which needs no attribute and so
- * nothing to restore on `destroy`.
+ * nothing to restore on `destroy`. The row of the item grid is what animates.
  */
 
-:where(:root[data-iv-js]) .iv-megamenu__panel {
-  display: grid;
-  grid-template-rows: 0fr;
-  visibility: hidden;
+:where(:root[data-iv-js]) .iv-megamenu__item {
+  grid-template-rows: auto 0fr;
   transition: grid-template-rows var(--iv-motion-slow) var(--iv-ease-out);
 }
 
-:where(:root[data-iv-js]) .iv-megamenu__inner {
-  overflow: hidden;
+:where(:root[data-iv-js]) .iv-megamenu__panel {
   min-block-size: 0;
+  overflow: hidden;
+  visibility: hidden;
 }
 
-:where(:root[data-iv-js] .iv-megamenu__item[data-iv-open]) .iv-megamenu__panel {
-  grid-template-rows: 1fr;
+:where(:root[data-iv-js]) .iv-megamenu__item[data-iv-open] {
+  grid-template-rows: auto 1fr;
+}
+
+:where(:root[data-iv-js] .iv-megamenu__item[data-iv-open]) > .iv-megamenu__panel {
   visibility: visible;
 }
 
-/* Floating panel ------------------------------------------------------- */
+/* Floating panel ------------------------------------------------------------ */
 
 @media (--iv-lg) {
-  .iv-megamenu__list {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-
   /* The bar and its panel travel above the overlay together. The list is the
    * one positioned box, so it is also the containing block of the panel: same
    * centring as the root, since it fills the root's content box. */
   .iv-megamenu__list {
     position: relative;
     z-index: var(--iv-z-dropdown);
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: var(--iv-space-2);
+    align-items: center;
   }
 
   .iv-megamenu__item {
     position: static;
+    display: flex;
+    grid-template-rows: none;
+    align-items: center;
+    transition: none;
   }
 
   /* The links are transparent: while the page is dimmed the bar takes the
    * surface of the panel, so the navigation keeps its AA contrast instead of
    * reading through the scrim. */
-  :where(:root[data-iv-js] .iv-megamenu:has(> .iv-megamenu__list > .iv-megamenu__item[data-iv-open])) .iv-megamenu__list {
+  :where(:root[data-iv-js]) .iv-megamenu__item[data-iv-open] {
     background-color: var(--iv-color-surface-raised);
-  }
-
-  .iv-megamenu__link {
-    flex: 0 0 auto;
+    border-radius: var(--iv-radius-md);
   }
 
   .iv-megamenu__panel {
@@ -378,25 +1092,27 @@
     inset-inline: 0;
     z-index: var(--iv-z-dropdown);
     display: block;
-    grid-template-rows: none;
-    visibility: visible;
+    min-block-size: 0;
     inline-size: var(--iv-megamenu-width);
     margin-inline: auto;
-    overflow: hidden;
+    overflow: visible;
+    visibility: visible;
     background-color: var(--iv-color-surface-raised);
     border: var(--iv-border-width) solid var(--iv-color-border);
     box-shadow: var(--iv-shadow-3);
     opacity: 0;
-    transform: translateY(8px);
+    scale: 0.985;
+    translate: 0 8px;
     pointer-events: none;
     transition:
       opacity var(--iv-motion-slow) var(--iv-ease-out),
-      transform var(--iv-motion-slow) var(--iv-ease-out);
+      translate var(--iv-motion-slow) var(--iv-ease-out),
+      scale var(--iv-motion-slow) var(--iv-ease-out);
   }
 
   /* Bridge over the offset, so the pointer can travel from the bar to the
-   * panel without the pure CSS `:hover` dropping on the way. */
-  .iv-megamenu__panel::after {
+   * panel without the hover intent dropping on the way. */
+  .iv-megamenu__panel::before {
     content: "";
     position: absolute;
     inset-block-end: 100%;
@@ -404,28 +1120,109 @@
     block-size: var(--iv-megamenu-offset);
   }
 
-  .iv-megamenu__inner {
-    grid-template-columns: repeat(var(--iv-megamenu-cols), minmax(0, 1fr));
-    gap: var(--iv-space-6);
-    padding: var(--iv-space-6);
+  /* Caret: a triangle that points from the panel back at the open toggle,
+   * painted in the accent so it reads as the tip of the luminous top rule. */
+  .iv-megamenu__panel::after {
+    content: "";
+    position: absolute;
+    inset-block-start: -7px;
+    inset-inline-start: var(--iv-megamenu-caret-x);
+    inline-size: 16px;
+    block-size: 8px;
+    background-color: var(--iv-color-accent);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    opacity: 0;
+    translate: -50% 0;
+    transition: opacity var(--iv-motion-base) var(--iv-ease-out);
   }
 
-  .iv-megamenu__cards {
-    grid-column: span var(--iv-megamenu-card-span);
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .iv-megamenu__head,
+  .iv-megamenu__filter,
+  .iv-megamenu__body,
+  .iv-megamenu__foot {
+    padding-inline: var(--iv-space-8);
   }
 
-  .iv-megamenu__bottom {
+  .iv-megamenu__head {
+    padding-block: var(--iv-space-6) var(--iv-space-5);
+  }
+
+  .iv-megamenu__body {
+    flex-direction: row;
+    gap: var(--iv-space-8);
+    align-items: stretch;
+    padding-block: var(--iv-space-6);
+  }
+
+  .iv-megamenu__directory {
+    flex: 0 0 14rem;
+    padding-inline-end: var(--iv-space-8);
+    border-inline-end: var(--iv-border-width) solid var(--iv-color-border);
+  }
+
+  .iv-megamenu__aside {
+    flex: 0 0 16rem;
+    padding-inline-start: var(--iv-space-8);
+    border-inline-start: var(--iv-border-width) solid var(--iv-color-border);
+  }
+
+  .iv-megamenu__discover {
+    display: grid;
+    flex: 1 1 auto;
+    grid-auto-flow: row dense;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--iv-space-5);
+    align-content: start;
+  }
+
+  .iv-megamenu__tabs,
+  .iv-megamenu__set {
     grid-column: 1 / -1;
   }
 
+  .iv-megamenu__cloud {
+    grid-column: 1 / -1;
+  }
+
+  /* Followed by a cloud the feature keeps the first column and the cloud
+   * backfills the second one: the dense flow puts them on the same row. */
+  .iv-megamenu__feature {
+    grid-column: 1;
+  }
+
+  .iv-megamenu__feature ~ .iv-megamenu__cloud {
+    grid-column: 2 / -1;
+  }
+
+  .iv-megamenu__cards {
+    grid-template-columns: repeat(var(--iv-megamenu-cols), minmax(0, 1fr));
+  }
+
+  .iv-megamenu__ticker {
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    padding-inline: var(--iv-space-4);
+  }
+
   /* Open: without JavaScript by hover and focus, with it by the attribute. */
-  :where(:root:not([data-iv-js]) .iv-megamenu__item:hover) .iv-megamenu__panel,
-  :where(:root:not([data-iv-js]) .iv-megamenu__item:focus-within) .iv-megamenu__panel,
-  :where(:root[data-iv-js] .iv-megamenu__item[data-iv-open]) .iv-megamenu__panel {
+  :where(:root:not([data-iv-js]) .iv-megamenu__item:hover) > .iv-megamenu__panel,
+  :where(:root:not([data-iv-js]) .iv-megamenu__item:focus-within) > .iv-megamenu__panel,
+  :where(:root[data-iv-js] .iv-megamenu__item[data-iv-open]) > .iv-megamenu__panel {
     opacity: 1;
-    transform: none;
+    scale: 1;
+    translate: none;
     pointer-events: auto;
+  }
+
+  :where(:root[data-iv-js] .iv-megamenu__item[data-iv-open]) > .iv-megamenu__panel::after {
+    opacity: 1;
+  }
+
+  /* Cards and rows rise as the panel lands, one after the other. */
+  :where(.iv-megamenu__item[data-iv-open]) .iv-megamenu__card,
+  :where(.iv-megamenu__item[data-iv-open]) .iv-megamenu__dirlist li,
+  :where(.iv-megamenu__item[data-iv-open]) .iv-megamenu__recent li {
+    animation: iv-megamenu-rise 420ms var(--iv-ease-out) backwards;
+    animation-delay: calc(var(--iv-i, 0) * 35ms);
   }
 
   /* Edge to edge: the panel takes the whole bar and drops its top corners. */
@@ -436,41 +1233,148 @@
 
   .iv-megamenu--full .iv-megamenu__panel {
     border-inline: 0;
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
+    border-radius: 0;
+  }
+
+  .iv-megamenu--full .iv-megamenu__panel::after {
+    inset-block-start: -6px;
   }
 }
 
+@keyframes iv-megamenu-rise {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+}
+
+/* Modifiers ------------------------------------------------------------------ */
+
+.iv-megamenu--glass .iv-megamenu__panel {
+  background-color: var(--iv-glass-bg-strong);
+  border-color: var(--iv-glass-border);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .iv-megamenu--glass .iv-megamenu__panel {
+    -webkit-backdrop-filter: blur(var(--iv-blur-lg)) saturate(1.4);
+    backdrop-filter: blur(var(--iv-blur-lg)) saturate(1.4);
+  }
+}
+
+.iv-megamenu--dense {
+  --iv-megamenu-art-ratio: 16 / 10;
+  --iv-megamenu-cols: 3;
+}
+
+.iv-megamenu--dense .iv-megamenu__name {
+  font-size: var(--iv-text-sm);
+}
+
+.iv-megamenu--dense .iv-megamenu__cards {
+  gap: var(--iv-space-3);
+}
+
+/* Reduced motion --------------------------------------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
-  .iv-megamenu__panel {
-    transform: none;
-    transition: none;
-  }
-
+  .iv-megamenu__item,
+  .iv-megamenu__panel,
   .iv-megamenu__link,
-  .iv-megamenu__links a,
-  .iv-megamenu__card,
   .iv-megamenu__toggle::after,
-  .iv-megamenu__meta::after {
+  .iv-megamenu__close,
+  .iv-megamenu__close::after,
+  .iv-megamenu__tab,
+  .iv-megamenu__tab::after,
+  .iv-megamenu__art,
+  .iv-megamenu__arrow,
+  .iv-megamenu__arrow::after,
+  .iv-megamenu__all,
+  .iv-megamenu__all::after,
+  .iv-megamenu__foot-link::after,
+  .iv-megamenu__dirlist a,
+  .iv-megamenu__facets a,
+  .iv-megamenu__cloud a,
+  .iv-megamenu__ticker a::after {
     transition: none;
   }
 
+  .iv-megamenu__panel {
+    scale: none;
+    translate: none;
+  }
+
+  .iv-megamenu__art::after,
+  .iv-megamenu__flag::before,
+  .iv-megamenu__caret-blink,
   .iv-megamenu__overlay {
+    animation: none;
+  }
+
+  .iv-megamenu__arrow,
+  .iv-megamenu__arrow::after {
+    translate: none;
+  }
+
+  :where(.iv-megamenu__item[data-iv-open]) .iv-megamenu__card,
+  :where(.iv-megamenu__item[data-iv-open]) .iv-megamenu__dirlist li,
+  :where(.iv-megamenu__item[data-iv-open]) .iv-megamenu__recent li {
     animation: none;
   }
 }
 
-/* Bridge: while a panel is open, the gap between the bar and the panel counts as panel, so the pointer can
-   cross it without triggering the close delay. */
-:where(.iv-megamenu__item[data-iv-open]) > .iv-megamenu__panel::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  inset-block-end: 100%;
-  block-size: var(--iv-megamenu-offset);
+/* Forced colours ---------------------------------------------------------------- */
+
+@media (forced-colors: active) {
+  .iv-megamenu__panel {
+    border: 1px solid CanvasText;
+  }
+
+  .iv-megamenu__art,
+  .iv-megamenu__thumb,
+  .iv-megamenu__count,
+  .iv-megamenu__rank,
+  .iv-megamenu__kbd,
+  .iv-megamenu__all,
+  .iv-megamenu__cloud a {
+    border: 1px solid CanvasText;
+  }
+
+  .iv-megamenu__tab[aria-selected="true"] {
+    color: Highlight;
+  }
+
+  .iv-megamenu__tab[aria-selected="true"]::after {
+    background-color: Highlight;
+    background-image: none;
+    box-shadow: none;
+  }
+
+  .iv-megamenu__rank {
+    color: CanvasText;
+    background-color: Canvas;
+  }
+
+  .iv-megamenu__arrow::after {
+    background-color: CanvasText;
+  }
 }
 
-/* Layer-free stylesheet (ADR-046) -----------------------------------------
+/* No-JavaScript tab sets ----------------------------------------------------------
+ * The tabs are plain links to their set. Targeting one shows it and hides the
+ * others; with JavaScript the component owns `hidden` and these rules are out
+ * of scope. Both selectors sit after the `[hidden]` rule on purpose.
+ */
+
+:where(:root:not([data-iv-js]) .iv-megamenu__discover:has(> .iv-megamenu__set:target)) .iv-megamenu__set {
+  display: none;
+}
+
+:where(:root:not([data-iv-js])) .iv-megamenu__set:target {
+  display: block;
+}
+
+/* Layer-free stylesheet (ADR-046) -------------------------------------------------
  * Without `@layer` only specificity and order decide, and the base link rules
  * `.iv-root a` (0,1,1) and `.iv-root a:hover` (0,2,1) outrank a component
  * written as a single class: an anchor would be repainted with the link colour.
@@ -485,6 +1389,24 @@ a.iv-megamenu__link:hover {
 }
 
 a.iv-megamenu__card,
-a.iv-megamenu__card:hover {
+a.iv-megamenu__card:hover,
+a.iv-megamenu__feature,
+a.iv-megamenu__feature:hover {
   color: inherit;
+}
+
+a.iv-megamenu__all,
+a.iv-megamenu__all:hover,
+a.iv-megamenu__foot-link,
+a.iv-megamenu__foot-link:hover {
+  color: var(--iv-color-text);
+}
+
+a.iv-megamenu__tab,
+a.iv-megamenu__tab:hover {
+  color: var(--iv-color-text-muted);
+}
+
+a.iv-megamenu__tab[aria-selected="true"] {
+  color: var(--iv-color-text);
 }

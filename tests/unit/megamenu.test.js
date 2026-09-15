@@ -70,24 +70,58 @@ const MARKUP = `
       <li id="item-a" class="iv-megamenu__item">
         <a id="link-a" class="iv-megamenu__link" href="#mm-note">Games</a>
         <button id="toggle-a" class="iv-megamenu__toggle" type="button" hidden aria-expanded="false" aria-controls="panel-a"><span class="iv-u-sr-only">Open Games</span></button>
-        <div id="panel-a" class="iv-megamenu__panel">
-          <div class="iv-megamenu__inner">
-            <section class="iv-megamenu__group">
-              <h3 class="iv-megamenu__heading">Genres</h3>
-              <ul class="iv-megamenu__links"><li><a id="inner-a" href="#mm-note">Signal puzzles</a></li></ul>
-            </section>
-            <footer class="iv-megamenu__bottom"><a class="iv-button iv-button--primary" href="#mm-note">Browse everything</a></footer>
+        <section id="panel-a" class="iv-megamenu__panel" aria-labelledby="title-a">
+          <header class="iv-megamenu__head">
+            <p class="iv-megamenu__overline">Explore the archive</p>
+            <h2 id="title-a" class="iv-megamenu__title">Games <span class="iv-megamenu__count">959</span></h2>
+            <button id="close-a" class="iv-megamenu__close" type="button" hidden></button>
+          </header>
+          <div id="filter-a" class="iv-megamenu__filter" hidden>
+            <label class="iv-u-sr-only" for="q-a">Filter Games</label>
+            <input id="q-a" class="iv-input iv-megamenu__filter-input" type="search">
           </div>
-        </div>
+          <div class="iv-megamenu__body">
+            <aside class="iv-megamenu__directory">
+              <h3 class="iv-megamenu__heading">Genres</h3>
+              <ul class="iv-megamenu__dirlist">
+                <li id="dir-a"><a id="inner-a" href="#mm-note"><span>Signal puzzles</span><small>12</small></a></li>
+                <li id="dir-b"><a href="#mm-note"><span>Slow strategy</span><small>8</small></a></li>
+              </ul>
+            </aside>
+            <div class="iv-megamenu__discover">
+              <div class="iv-megamenu__tabs" role="tablist" aria-label="Selections">
+                <a id="tab-a0" class="iv-megamenu__tab" role="tab" href="#set-a0" aria-selected="true">Most popular</a>
+                <a id="tab-a1" class="iv-megamenu__tab" role="tab" href="#set-a1" aria-selected="false">Best rated</a>
+              </div>
+              <div id="set-a0" class="iv-megamenu__set" role="tabpanel" aria-labelledby="tab-a0">
+                <ul class="iv-megamenu__cards">
+                  <li id="card-a0"><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="rpg 1997"><span class="iv-megamenu__name">Orbit Signal</span></a></li>
+                  <li id="card-a1"><a class="iv-megamenu__card" href="#mm-note"><span class="iv-megamenu__name">Quiet Harbour</span></a></li>
+                </ul>
+              </div>
+              <div id="set-a1" class="iv-megamenu__set" role="tabpanel" aria-labelledby="tab-a1" hidden>
+                <ul class="iv-megamenu__cards">
+                  <li id="card-a2"><a class="iv-megamenu__card" href="#mm-note"><span class="iv-megamenu__name">Paper Summit</span></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <footer class="iv-megamenu__foot">
+            <span class="iv-megamenu__crumb">Archive <b aria-hidden="true">/</b> Games</span>
+            <a class="iv-megamenu__foot-link" href="#mm-note">Suggest a classic</a>
+          </footer>
+        </section>
       </li>
       <li id="item-b" class="iv-megamenu__item">
         <a id="link-b" class="iv-megamenu__link" href="#mm-note">Studio</a>
         <button id="toggle-b" class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="panel-b" hidden><span class="iv-u-sr-only">Open Studio</span></button>
-        <div id="panel-b" class="iv-megamenu__panel">
-          <div class="iv-megamenu__inner">
-            <ul class="iv-megamenu__links"><li><a id="inner-b" href="#mm-note">How we work</a></li></ul>
+        <section id="panel-b" class="iv-megamenu__panel">
+          <div class="iv-megamenu__body">
+            <aside class="iv-megamenu__directory">
+              <ul class="iv-megamenu__dirlist"><li><a id="inner-b" href="#mm-note">How we work</a></li></ul>
+            </aside>
           </div>
-        </div>
+        </section>
       </li>
       <li id="item-c" class="iv-megamenu__item">
         <a id="link-c" class="iv-megamenu__link" href="#mm-note">Support</a>
@@ -311,12 +345,12 @@ describe("Megamenu", () => {
   });
 
   describe("keyboard", () => {
-    it("ArrowDown on the toggle opens and focuses the first link", () => {
+    it("ArrowDown on the toggle opens and focuses the first control of the panel", () => {
       const { mm } = setup();
       const event = press(byId("toggle-a"), "ArrowDown");
       expect(event.defaultPrevented).toBe(true);
       expect(mm.openItem).toBe(byId("item-a"));
-      expect(document.activeElement).toBe(byId("inner-a"));
+      expect(document.activeElement).toBe(byId("close-a"));
     });
 
     it("Escape closes and returns focus to the toggle", () => {
@@ -579,4 +613,177 @@ describe("Megamenu", () => {
       expect(byId("panel-b").hasAttribute("inert")).toBe(true);
     });
   });
+
+  describe("panel head, tabs and filter (v2)", () => {
+    it("shows the close button and closes from it, back to the toggle", () => {
+      const { mm } = setup();
+      expect(byId("close-a").hidden).toBe(false);
+      mm.open(0);
+      byId("toggle-a").focus();
+      click(byId("close-a"));
+      expect(byId("toggle-a").getAttribute("aria-expanded")).toBe("false");
+      expect(document.activeElement).toBe(byId("toggle-a"));
+    });
+
+    it("names a close button that has none with closeText", () => {
+      setup({ closeText: "Dismiss" });
+      expect(byId("close-a").getAttribute("aria-label")).toBe("Dismiss");
+    });
+
+    it("runs the APG tab pattern: roving tabindex, one visible set", () => {
+      setup();
+      expect(byId("tab-a0").getAttribute("tabindex")).toBe("0");
+      expect(byId("tab-a1").getAttribute("tabindex")).toBe("-1");
+      expect(byId("set-a0").hidden).toBe(false);
+      expect(byId("set-a1").hidden).toBe(true);
+    });
+
+    it("clicking a tab shows its set and emits iv:change then iv:changed", () => {
+      const { mm, root } = setup();
+      /** @type {string[]} */
+      const seen = [];
+      /** @type {unknown[]} */
+      const details = [];
+      root.addEventListener("iv:change", (e) => {
+        seen.push("change");
+        details.push(/** @type {CustomEvent} */ (e).detail);
+      });
+      root.addEventListener("iv:changed", () => seen.push("changed"));
+      click(byId("tab-a1"));
+      expect(seen).toEqual(["change", "changed"]);
+      const detail = /** @type {{ item: Element, tab: Element, set: Element, previousTab: Element }} */ (details[0]);
+      expect(detail.item).toBe(byId("item-a"));
+      expect(detail.tab).toBe(byId("tab-a1"));
+      expect(detail.set).toBe(byId("set-a1"));
+      expect(detail.previousTab).toBe(byId("tab-a0"));
+      expect(byId("set-a1").hidden).toBe(false);
+      expect(byId("set-a0").hidden).toBe(true);
+      expect(mm.openItem).toBe(null);
+    });
+
+    it("a cancelled iv:change leaves the tabs alone", () => {
+      const { root } = setup();
+      root.addEventListener("iv:change", (e) => e.preventDefault());
+      click(byId("tab-a1"));
+      expect(byId("tab-a1").getAttribute("aria-selected")).toBe("false");
+      expect(byId("set-a1").hidden).toBe(true);
+    });
+
+    it("ArrowRight, Home and End move and select along the tab strip", () => {
+      setup();
+      press(byId("tab-a0"), "ArrowRight");
+      expect(byId("tab-a1").getAttribute("aria-selected")).toBe("true");
+      press(byId("tab-a1"), "Home");
+      expect(byId("tab-a0").getAttribute("aria-selected")).toBe("true");
+      press(byId("tab-a0"), "End");
+      expect(byId("tab-a1").getAttribute("aria-selected")).toBe("true");
+    });
+
+    it("data-iv-tab-default picks the first visible set", () => {
+      byId("tab-a1").setAttribute("data-iv-tab-default", "");
+      setup();
+      expect(byId("set-a1").hidden).toBe(false);
+      expect(byId("set-a0").hidden).toBe(true);
+    });
+
+    it("selectTab is a no-op on an item without tabs", () => {
+      const { mm } = setup();
+      expect(() => mm.selectTab(1, 0)).not.toThrow();
+    });
+
+    it("shows the filter and hides what does not match, groups included", () => {
+      const { mm } = setup();
+      expect(byId("filter-a").hidden).toBe(false);
+      mm.filter(0, "harbour");
+      expect(byId("card-a0").hidden).toBe(true);
+      expect(byId("card-a1").hidden).toBe(false);
+      expect(byId("dir-a").hidden).toBe(true);
+      expect(byId("q-a").value).toBe("harbour");
+    });
+
+    it("matches data-iv-keywords and folds diacritics", () => {
+      const { mm } = setup();
+      mm.filter(0, "RPG");
+      expect(byId("card-a0").hidden).toBe(false);
+      mm.filter(0, "");
+      const card = byId("card-a1").querySelector(".iv-megamenu__name");
+      /** @type {HTMLElement} */ (card).textContent = "Bahía";
+      mm.filter(0, "bahia");
+      expect(byId("card-a1").hidden).toBe(false);
+    });
+
+    it("announces the count and shows the empty message with no matches", () => {
+      const { mm, root } = setup({ emptyText: "Nothing", countText: "{count} hits" });
+      mm.filter(0, "orbit");
+      const status = root.querySelector(".iv-megamenu__status.iv-u-sr-only");
+      expect(/** @type {HTMLElement} */ (status).textContent).toBe("1 hits");
+      const empty = root.querySelector(".iv-megamenu__empty");
+      expect(/** @type {HTMLElement} */ (empty).hidden).toBe(true);
+      mm.filter(0, "zzzz");
+      expect(/** @type {HTMLElement} */ (empty).hidden).toBe(false);
+      expect(/** @type {HTMLElement} */ (empty).textContent).toBe("Nothing");
+      expect(/** @type {HTMLElement} */ (status).textContent).toBe("0 hits");
+    });
+
+    it("emits iv:filter with the item, the query and the count", () => {
+      const { mm, root } = setup();
+      /** @type {unknown[]} */
+      const seen = [];
+      root.addEventListener("iv:filter", (e) => seen.push(/** @type {CustomEvent} */ (e).detail));
+      mm.filter(0, "orbit");
+      expect(seen).toHaveLength(1);
+      const detail = /** @type {{ item: Element, query: string, visible: number }} */ (seen[0]);
+      expect(detail.item).toBe(byId("item-a"));
+      expect(detail.query).toBe("orbit");
+      expect(detail.visible).toBe(1);
+    });
+
+    it("Escape empties a filter that still holds text before it closes", () => {
+      const { mm } = setup();
+      mm.open(0);
+      byId("q-a").value = "orbit";
+      byId("q-a").focus();
+      press(byId("q-a"), "Escape");
+      expect(byId("q-a").value).toBe("");
+      expect(byId("toggle-a").getAttribute("aria-expanded")).toBe("true");
+      press(byId("q-a"), "Escape");
+      expect(byId("toggle-a").getAttribute("aria-expanded")).toBe("false");
+    });
+
+    it("adds no filter with filter: false", () => {
+      const { root } = setup({ filter: false });
+      expect(byId("filter-a").hidden).toBe(true);
+      expect(root.querySelector(".iv-megamenu__empty")).toBe(null);
+    });
+
+    it("destroy removes the generated message and live region", () => {
+      const { mm, root } = setup();
+      expect(root.querySelector(".iv-megamenu__empty")).not.toBe(null);
+      mm.destroy();
+      expect(root.querySelector(".iv-megamenu__empty")).toBe(null);
+      expect(root.querySelector(".iv-megamenu__status.iv-u-sr-only")).toBe(null);
+      expect(byId("filter-a").hidden).toBe(true);
+      expect(byId("close-a").hidden).toBe(true);
+      expect(byId("set-a1").hidden).toBe(true);
+      expect(root.getAttribute("style")).toBe(null);
+    });
+
+    it("opening points the caret at the toggle and destroy drops it", () => {
+      // jsdom lays nothing out: the offsets the caret reads are stubbed.
+      const box = (el, left, width) => {
+        Object.defineProperty(el, "offsetParent", { value: byId("mm") });
+        Object.defineProperty(el, "offsetLeft", { value: left });
+        Object.defineProperty(el, "offsetWidth", { value: width });
+      };
+      box(byId("panel-a"), 0, 800);
+      box(byId("toggle-a"), 80, 40);
+      const { mm, root } = setup();
+      mm.open(0);
+      expect(root.style.getPropertyValue("--iv-megamenu-caret-x")).toBe("100px");
+      expect(root.style.getPropertyValue("--iv-megamenu-caret-x")).not.toBe("");
+      mm.destroy();
+      expect(root.getAttribute("style")).toBe(null);
+    });
+  });
+
 });

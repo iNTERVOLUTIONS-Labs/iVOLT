@@ -1,13 +1,17 @@
 /**
- * Megamenu: a navigation bar whose items can unfold a wide panel.
+ * Megamenu (v2): a navigation bar whose items unfold a wide editorial panel.
  *
- * The served HTML works without JavaScript: the bar is a list of links, each
- * `__toggle` is `hidden` and the CSS reveals the panel on `:hover` /
- * `:focus-within` from the `staticFrom` breakpoint upwards, while below it the
- * panels are static and open inline. `init` shows the toggles, moves the state
- * to `data-iv-open` on the `__item` (the pure CSS hover is scoped with
+ * The served HTML works without JavaScript: the bar is a list of links, the
+ * `__toggle`, the `__close` and the `__filter` are `hidden`, the tabs are plain
+ * links to their `__set` (shown by `:target`) and the CSS reveals the panel on
+ * `:hover` / `:focus-within` from the `staticFrom` breakpoint upwards, while
+ * below it the panels are static and open inline.
+ *
+ * `init` shows the toggles, the close button and the filter, moves the state to
+ * `data-iv-open` on the `__item` (the pure CSS hover is scoped with
  * `:root:not([data-iv-js])`), adds the page overlay, marks the closed panels
- * `inert` and adds intentional hover, keyboard support and the cancelable
+ * `inert`, points a caret at the open toggle, runs the APG tab pattern inside
+ * the panel and adds intentional hover, keyboard support and the cancelable
  * `iv:open` / `iv:close` events.
  *
  * Below `staticFrom` the very same markup behaves as an accordion: the panel
@@ -22,13 +26,16 @@ import { IvComponent, isElement } from "../core/component.js";
 import { IvError, getInstance } from "../core/registry.js";
 import { emit } from "../core/events.js";
 import { breakpoints } from "../core/breakpoints.js";
+import { rememberStyle, restoreStyles } from "../core/style.js";
 import {
   KEY_ARROW_DOWN,
   KEY_ARROW_LEFT,
   KEY_ARROW_RIGHT,
   KEY_END,
+  KEY_ENTER,
   KEY_ESCAPE,
   KEY_HOME,
+  KEY_SPACE,
 } from "../core/keys.js";
 
 /**
@@ -39,10 +46,22 @@ import {
  * @property {string} staticFrom Breakpoint name from which the panels float; below it they are an accordion. `"none"` keeps them floating.
  * @property {boolean} overlay Dim the page behind an open panel.
  * @property {boolean} closeOthers Close the open item when another one opens.
+ * @property {boolean} filter Run the in-panel filter when the panel has a `__filter`.
+ * @property {string} emptyText Message shown when nothing matches the filter.
+ * @property {string} countText Live announcement of the filter, with `{count}`.
+ * @property {string} closeText Accessible name given to a `__close` that has none.
  */
 
 /**
  * @typedef {"trigger"|"hover"|"escape"|"external"|"api"|"sibling"} MegamenuReason
+ */
+
+/**
+ * A tab of a panel and the set it shows.
+ *
+ * @typedef {object} MegamenuTab
+ * @property {HTMLElement} tab The `__tab` element.
+ * @property {HTMLElement|null} set Its `__set`, when the `href` resolves to one.
  */
 
 /**
@@ -53,7 +72,13 @@ import {
  * @property {HTMLElement|null} link Its `__link`, when it has one.
  * @property {HTMLElement|null} toggle Its `__toggle`, when it has one.
  * @property {HTMLElement|null} panel Its `__panel`, when it has one.
- * @property {boolean} [armed] Whether the next pointer movement may open the panel by hover.
+ * @property {HTMLElement|null} close The `__close` of its panel, when it has one.
+ * @property {HTMLInputElement|null} input The filter input of its panel, when it has one.
+ * @property {MegamenuTab[]} tabs The tabs of its panel, in document order.
+ * @property {number} tabIndex Index of the selected tab, or `-1`.
+ * @property {HTMLElement|null} empty Generated "no matches" message.
+ * @property {HTMLElement|null} status Generated live region of the filter.
+ * @property {boolean} armed Whether the next pointer movement may open the panel by hover.
  */
 
 const LIST_SELECTOR = ".iv-megamenu__list";
@@ -61,14 +86,42 @@ const ITEM_SELECTOR = ".iv-megamenu__item";
 const LINK_SELECTOR = ".iv-megamenu__link";
 const TOGGLE_SELECTOR = ".iv-megamenu__toggle";
 const PANEL_SELECTOR = ".iv-megamenu__panel";
+const CLOSE_SELECTOR = ".iv-megamenu__close";
+const FILTER_SELECTOR = ".iv-megamenu__filter";
+const INPUT_SELECTOR = ".iv-megamenu__filter-input";
+const TAB_SELECTOR = ".iv-megamenu__tab";
+const SET_SELECTOR = ".iv-megamenu__set";
 const OVERLAY_CLASS = "iv-megamenu__overlay";
+const EMPTY_CLASS = "iv-megamenu__empty";
+const STATUS_CLASS = "iv-megamenu__status";
+const BODY_SELECTOR = ".iv-megamenu__body";
 const OPEN_ATTR = "data-iv-open";
+const CARET_PROPERTY = "--iv-megamenu-caret-x";
 const POINTER_QUERY = "(hover: hover) and (pointer: fine)";
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+/** Groups the filter walks, and the selector of the entries inside each one. */
+const FILTER_GROUPS = [
+  [".iv-megamenu__cards", ".iv-megamenu__card"],
+  [".iv-megamenu__dirlist", "a"],
+  [".iv-megamenu__cloud", "a"],
+  [".iv-megamenu__recent", "a"],
+  [".iv-megamenu__ticker", "a"],
+];
+const DIACRITICS = /[\u0300-\u036f]/g;
 
 /** Breakpoint names already reported as unknown. */
 const warnedBreakpoints = new Set();
+
+/**
+ * Folds a string for comparison: no case, no diacritics, no edge whitespace.
+ *
+ * @param {string} text Raw text.
+ * @returns {string} The folded text.
+ */
+function fold(text) {
+  return text.normalize("NFD").replace(DIACRITICS, "").toLowerCase().trim();
+}
 
 /**
  * Returns an id that is free in the document.
@@ -142,6 +195,10 @@ export class Megamenu extends IvComponent {
     staticFrom: "lg",
     overlay: true,
     closeOthers: true,
+    filter: true,
+    emptyText: "No matches",
+    countText: "{count} results",
+    closeText: "Close",
   });
 
   /**
@@ -195,6 +252,10 @@ export class Megamenu extends IvComponent {
     this._saved = this._saved ?? new Map();
     /** @type {Map<Element, string[]>} Original attribute order, per element. */
     this._order = this._order ?? new Map();
+    /** @type {Map<Element, string|null>} Served `style` attributes. */
+    this._styles = this._styles ?? new Map();
+    /** @type {Element[]} Elements this instance added to the DOM. */
+    this._generated = this._generated ?? [];
     /** @type {MegamenuEntry[]} The bar items, in document order. */
     this._entries = this._entries ?? [];
     /** @type {HTMLElement[]} Items currently open, in opening order. */
@@ -211,6 +272,8 @@ export class Megamenu extends IvComponent {
     this._mql = this._mql ?? null;
     /** @type {MediaQueryList|null} Watcher of the fine-pointer query. */
     this._pointer = this._pointer ?? null;
+    /** @type {number} Serial used by the generated ids. */
+    this._uid = this._uid ?? 0;
   }
 
   /**
@@ -240,6 +303,8 @@ export class Megamenu extends IvComponent {
   _setup() {
     this._saved = new Map();
     this._order = new Map();
+    this._styles = new Map();
+    this._generated = [];
     this._entries = [];
     this._openItems = [];
     this._overlay = null;
@@ -248,6 +313,7 @@ export class Megamenu extends IvComponent {
     this._accordion = false;
     this._mql = null;
     this._pointer = null;
+    this._uid = 0;
 
     const root = this._element;
     const doc = root.ownerDocument;
@@ -256,31 +322,41 @@ export class Megamenu extends IvComponent {
       ? Array.from(list.children).filter((child) => child.matches(ITEM_SELECTOR))
       : [];
 
-    let n = 0;
     for (const node of items) {
       const item = /** @type {HTMLElement} */ (node);
+      /** @type {MegamenuEntry} */
       const entry = {
         item,
         link: this._ownPart(item, LINK_SELECTOR),
         toggle: this._ownPart(item, TOGGLE_SELECTOR),
         panel: this._ownPart(item, PANEL_SELECTOR),
+        close: null,
+        input: null,
+        tabs: [],
+        tabIndex: -1,
+        empty: null,
+        status: null,
         armed: false,
       };
       this._entries.push(entry);
       const { toggle, panel } = entry;
       if (!toggle || !panel) continue;
 
-      n += 1;
+      this._uid += 1;
       this._order.set(
         toggle,
         Array.from(toggle.attributes).map((attribute) => attribute.name)
       );
-      if (!panel.id) this._set(panel, "id", uniqueId(doc, `iv-mm-${n}-panel`));
+      if (!panel.id) this._set(panel, "id", uniqueId(doc, `iv-mm-${this._uid}-panel`));
       this._unset(toggle, "hidden");
       this._set(toggle, "aria-expanded", "false");
       this._set(toggle, "aria-controls", panel.id);
       this._remember(item, OPEN_ATTR);
       item.removeAttribute(OPEN_ATTR);
+
+      this._setupClose(entry);
+      this._setupTabs(entry);
+      this._setupFilter(entry);
 
       // Hover intent needs real movement: a pointer that merely rests on the item after a page
       // swap or a scroll must not open the panel. `pointerenter` arms, the first `pointermove` fires.
@@ -307,6 +383,7 @@ export class Megamenu extends IvComponent {
       overlay.hidden = true;
       root.appendChild(overlay);
       this._overlay = overlay;
+      this._generated.push(overlay);
       this._listen(overlay, "click", () => this.close("external"));
     }
 
@@ -325,10 +402,9 @@ export class Megamenu extends IvComponent {
   /** @returns {void} */
   _teardown() {
     this._clearTimers();
-    if (this._overlay) {
-      this._overlay.remove();
-      this._overlay = null;
-    }
+    for (const el of this._generated) el.remove();
+    this._generated = [];
+    this._overlay = null;
     this._openItems = [];
     this._entries = [];
     this._mql = null;
@@ -342,6 +418,137 @@ export class Megamenu extends IvComponent {
     this._saved.clear();
     for (const [el, names] of this._order) restoreAttributeOrder(el, names);
     this._order.clear();
+    restoreStyles(this._styles);
+    // Chromium materializes the `style` attribute lazily: a property written
+    // through `element.style` may leave an attribute that `removeAttribute`
+    // never saw, which then serializes as `style=""`. Reading it forces the
+    // attribute into existence, so an empty one can be dropped for good.
+    if (this._element.getAttribute("style") === "") {
+      this._element.removeAttribute("style");
+    }
+  }
+
+  /**
+   * Shows the close button of a panel and gives it a name when it has none.
+   *
+   * @param {MegamenuEntry} entry The item.
+   * @returns {void}
+   */
+  _setupClose(entry) {
+    const panel = /** @type {HTMLElement} */ (entry.panel);
+    const close = /** @type {HTMLElement|null} */ (panel.querySelector(CLOSE_SELECTOR));
+    if (!close) return;
+    entry.close = close;
+    this._order.set(
+      close,
+      Array.from(close.attributes).map((attribute) => attribute.name)
+    );
+    this._unset(close, "hidden");
+    if (!close.getAttribute("aria-label") && !close.textContent?.trim()) {
+      this._set(close, "aria-label", String(this.options.closeText));
+    }
+    this._listen(close, "click", () => {
+      this._clearTimers();
+      if (this._closeItem(entry.item, "trigger") && entry.toggle) {
+        entry.toggle.focus();
+      }
+    });
+  }
+
+  /**
+   * Wires the APG tab pattern of a panel: roving `tabindex`, `aria-selected`
+   * and one visible `__set` at a time.
+   *
+   * @param {MegamenuEntry} entry The item.
+   * @returns {void}
+   */
+  _setupTabs(entry) {
+    const panel = /** @type {HTMLElement} */ (entry.panel);
+    const tabs = Array.from(panel.querySelectorAll(TAB_SELECTOR));
+    if (tabs.length === 0) return;
+    const doc = panel.ownerDocument;
+    let n = 0;
+    for (const node of tabs) {
+      const tab = /** @type {HTMLElement} */ (node);
+      const href = tab.getAttribute("href") ?? "";
+      const id = href.startsWith("#") ? href.slice(1) : "";
+      const set = id ? doc.getElementById(id) : null;
+      entry.tabs.push({ tab, set: set && set.matches(SET_SELECTOR) ? set : null });
+      if (!tab.id) this._set(tab, "id", uniqueId(doc, `iv-mm-${this._uid}-tab-${n}`));
+      if (set) this._set(tab, "aria-controls", set.id);
+      if (tab.hasAttribute("data-iv-tab-default")) entry.tabIndex = n;
+      n += 1;
+    }
+    if (entry.tabIndex < 0) {
+      const selected = entry.tabs.findIndex(
+        (pair) => pair.tab.getAttribute("aria-selected") === "true"
+      );
+      entry.tabIndex = selected >= 0 ? selected : 0;
+    }
+    for (const pair of entry.tabs) {
+      if (pair.set) this._remember(pair.set, "hidden");
+      this._remember(pair.tab, "aria-selected");
+      this._remember(pair.tab, "tabindex");
+    }
+    this._reflectTabs(entry);
+  }
+
+  /**
+   * Reflects the selected tab on the tabs and their sets.
+   *
+   * @param {MegamenuEntry} entry The item.
+   * @returns {void}
+   */
+  _reflectTabs(entry) {
+    let n = 0;
+    for (const { tab, set } of entry.tabs) {
+      const active = n === entry.tabIndex;
+      tab.setAttribute("aria-selected", active ? "true" : "false");
+      tab.setAttribute("tabindex", active ? "0" : "-1");
+      if (set) set.hidden = !active;
+      n += 1;
+    }
+  }
+
+  /**
+   * Shows the filter of a panel and prepares its empty message and live region.
+   *
+   * @param {MegamenuEntry} entry The item.
+   * @returns {void}
+   */
+  _setupFilter(entry) {
+    if (this.options.filter === false) return;
+    const panel = /** @type {HTMLElement} */ (entry.panel);
+    const box = /** @type {HTMLElement|null} */ (panel.querySelector(FILTER_SELECTOR));
+    const input = /** @type {HTMLInputElement|null} */ (panel.querySelector(INPUT_SELECTOR));
+    if (!box || !input) return;
+    entry.input = input;
+    this._order.set(
+      box,
+      Array.from(box.attributes).map((attribute) => attribute.name)
+    );
+    this._unset(box, "hidden");
+
+    const doc = panel.ownerDocument;
+    const empty = doc.createElement("p");
+    empty.className = EMPTY_CLASS;
+    empty.textContent = String(this.options.emptyText);
+    empty.hidden = true;
+    const body = panel.querySelector(BODY_SELECTOR);
+    if (body) body.after(empty);
+    else panel.appendChild(empty);
+    this._generated.push(empty);
+    entry.empty = empty;
+
+    const status = doc.createElement("p");
+    status.className = `${STATUS_CLASS} iv-u-sr-only`;
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+    empty.after(status);
+    this._generated.push(status);
+    entry.status = status;
+
+    this._listen(input, "input", () => this._applyFilter(entry, input.value));
   }
 
   /**
@@ -566,6 +773,42 @@ export class Megamenu extends IvComponent {
   }
 
   /**
+   * Points the caret of the panel at the centre of its toggle.
+   *
+   * @param {MegamenuEntry} entry The open item.
+   * @returns {void}
+   */
+  _syncCaret(entry) {
+    const { toggle, panel } = entry;
+    if (!toggle || !panel || this._accordion) return;
+    // Offsets, not client rects: the panel lands with a scale, and a rect taken
+    // mid-transition would put the caret a few pixels off its toggle. Both
+    // parts hang from the same positioned ancestor, so their offsets cancel.
+    if (!panel.offsetParent || panel.offsetParent !== toggle.offsetParent) return;
+    const width = panel.offsetWidth;
+    if (!width) return;
+    const root = /** @type {HTMLElement} */ (this._element);
+    const centre = toggle.offsetLeft + toggle.offsetWidth / 2;
+    const x = this._isRtl()
+      ? panel.offsetLeft + width - centre
+      : centre - panel.offsetLeft;
+    rememberStyle(this._styles, root);
+    root.style.setProperty(CARET_PROPERTY, `${Math.round(x)}px`);
+  }
+
+  /**
+   * Whether the component reads right to left.
+   *
+   * @returns {boolean} `true` in a right-to-left context.
+   */
+  _isRtl() {
+    const root = this._element;
+    const view = root.ownerDocument.defaultView;
+    if (!view || typeof view.getComputedStyle !== "function") return false;
+    return view.getComputedStyle(root).direction === "rtl";
+  }
+
+  /**
    * Opens one item. Emits the cancelable `iv:open` first.
    *
    * @param {MegamenuEntry} entry The item.
@@ -591,6 +834,7 @@ export class Megamenu extends IvComponent {
     entry.toggle.setAttribute("aria-expanded", "true");
     this._syncInert();
     this._syncOverlay();
+    this._syncCaret(entry);
     emit(this._element, "opened", {
       instance: this,
       item: entry.item,
@@ -667,9 +911,9 @@ export class Megamenu extends IvComponent {
   }
 
   /**
-   * Moves focus along the bar.
+   * Moves focus along a ring of controls.
    *
-   * @param {HTMLElement[]} controls The bar controls.
+   * @param {HTMLElement[]} controls The controls.
    * @param {number} index Target index; wraps around.
    * @returns {void}
    */
@@ -681,7 +925,7 @@ export class Megamenu extends IvComponent {
   }
 
   /**
-   * Opens and closes on the toggles.
+   * Opens and closes on the toggles, and switches tabs inside a panel.
    *
    * @param {Event} event Click event.
    * @returns {void}
@@ -689,6 +933,18 @@ export class Megamenu extends IvComponent {
   _onClick(event) {
     const target = event.target;
     if (!isElement(target)) return;
+    const tab = target.closest(TAB_SELECTOR);
+    if (tab) {
+      const owner = this._entryFor(tab);
+      const index = owner
+        ? owner.tabs.findIndex((pair) => pair.tab === tab)
+        : -1;
+      if (index >= 0) {
+        event.preventDefault();
+        this._selectTab(/** @type {MegamenuEntry} */ (owner), index);
+      }
+      return;
+    }
     const toggle = target.closest(TOGGLE_SELECTOR);
     if (!toggle) return;
     const entry = this._entryFor(toggle);
@@ -712,7 +968,7 @@ export class Megamenu extends IvComponent {
   }
 
   /**
-   * Escape closes and hands focus back to the toggle.
+   * Escape clears a filter that still holds text, and closes otherwise.
    *
    * @param {Event} event Keydown event.
    * @returns {void}
@@ -720,12 +976,18 @@ export class Megamenu extends IvComponent {
   _onDocumentKeydown(event) {
     if (/** @type {KeyboardEvent} */ (event).key !== KEY_ESCAPE) return;
     if (this._openItems.length === 0) return;
-    event.preventDefault();
     const active = this._element.ownerDocument.activeElement;
     const inside = active && this._element.contains(active) ? this._entryFor(active) : null;
     const entry = inside && this._isOpen(inside.item) ? inside : this._entryFor(
       /** @type {HTMLElement} */ (this.openItem)
     );
+    event.preventDefault();
+    if (entry && entry.input && entry.input.value !== "") {
+      entry.input.value = "";
+      this._applyFilter(entry, "");
+      entry.input.focus();
+      return;
+    }
     this.close("escape");
     if (entry && entry.toggle && typeof entry.toggle.focus === "function") {
       entry.toggle.focus();
@@ -733,7 +995,7 @@ export class Megamenu extends IvComponent {
   }
 
   /**
-   * Arrow keys along the bar and `↓` to enter a panel.
+   * Arrow keys along the bar and along the tab strip, and `↓` to enter a panel.
    *
    * @param {Event} event Keydown event.
    * @returns {void}
@@ -744,6 +1006,13 @@ export class Megamenu extends IvComponent {
     if (!isElement(target)) return;
     const entry = this._entryFor(target);
     if (!entry) return;
+
+    const tab = target.closest(TAB_SELECTOR);
+    if (tab && entry.tabs.length > 0) {
+      this._onTabKeydown(event, entry, tab);
+      return;
+    }
+
     const onToggle = entry.toggle !== null && entry.toggle.contains(target);
     const onLink = entry.link !== null && entry.link.contains(target);
 
@@ -780,6 +1049,124 @@ export class Megamenu extends IvComponent {
       event.preventDefault();
       this._focusControl(controls, controls.length - 1);
     }
+  }
+
+  /**
+   * The APG tab keyboard: `← →` move and select, `Home`/`End` jump, `Enter`
+   * and `Space` select without following the link.
+   *
+   * @param {Event} event Keydown event.
+   * @param {MegamenuEntry} entry The item that owns the tabs.
+   * @param {Element} tab The focused tab.
+   * @returns {void}
+   */
+  _onTabKeydown(event, entry, tab) {
+    const key = /** @type {KeyboardEvent} */ (event).key;
+    const tabs = entry.tabs.map((pair) => pair.tab);
+    const index = tabs.indexOf(/** @type {HTMLElement} */ (tab));
+    if (index < 0) return;
+    /** @type {Record<string, number|undefined>} */
+    const moves = {
+      [KEY_ARROW_RIGHT]: index + 1,
+      [KEY_ARROW_LEFT]: index - 1,
+      [KEY_HOME]: 0,
+      [KEY_END]: tabs.length - 1,
+    };
+    const next = moves[key];
+    if (next !== undefined) {
+      event.preventDefault();
+      const bounded = ((next % tabs.length) + tabs.length) % tabs.length;
+      this._selectTab(entry, bounded);
+      this._focusControl(tabs, bounded);
+      return;
+    }
+    if (key === KEY_ENTER || key === KEY_SPACE) {
+      event.preventDefault();
+      this._selectTab(entry, index);
+    }
+  }
+
+  /**
+   * Selects a tab. Emits the cancelable `iv:change` first.
+   *
+   * @param {MegamenuEntry} entry The item that owns the tabs.
+   * @param {number} index Index of the tab.
+   * @returns {void}
+   */
+  _selectTab(entry, index) {
+    const pair = entry.tabs[index];
+    if (!pair || index === entry.tabIndex) return;
+    const previous = entry.tabs[entry.tabIndex];
+    const allowed = emit(
+      this._element,
+      "change",
+      {
+        instance: this,
+        item: entry.item,
+        tab: pair.tab,
+        set: pair.set,
+        previousTab: previous ? previous.tab : null,
+      },
+      { cancelable: true }
+    );
+    if (!allowed) return;
+    entry.tabIndex = index;
+    this._reflectTabs(entry);
+    if (entry.input && entry.input.value !== "") {
+      this._applyFilter(entry, entry.input.value);
+    }
+    emit(this._element, "changed", {
+      instance: this,
+      item: entry.item,
+      tab: pair.tab,
+      set: pair.set,
+      previousTab: previous ? previous.tab : null,
+    });
+  }
+
+  /**
+   * Hides everything in the panel that does not match `query`, shows the empty
+   * message when nothing is left and announces the count.
+   *
+   * @param {MegamenuEntry} entry The item that owns the panel.
+   * @param {string} query Raw query.
+   * @returns {void}
+   */
+  _applyFilter(entry, query) {
+    const panel = entry.panel;
+    if (!panel) return;
+    const needle = fold(query);
+    let visible = 0;
+    for (const [groupSelector, itemSelector] of FILTER_GROUPS) {
+      for (const node of panel.querySelectorAll(groupSelector)) {
+        const group = /** @type {HTMLElement} */ (node);
+        let shown = 0;
+        for (const candidate of group.querySelectorAll(itemSelector)) {
+          const el = /** @type {HTMLElement} */ (candidate);
+          const keywords = el.getAttribute("data-iv-keywords") ?? "";
+          const hay = fold(`${el.textContent ?? ""} ${keywords}`);
+          const match = needle === "" || hay.includes(needle);
+          const box = /** @type {HTMLElement} */ (el.closest("li") ?? el);
+          box.hidden = !match;
+          if (match) shown += 1;
+        }
+        group.hidden = needle !== "" && shown === 0;
+        visible += shown;
+      }
+    }
+    if (entry.empty) entry.empty.hidden = needle === "" || visible > 0;
+    if (entry.status) {
+      entry.status.textContent =
+        needle === ""
+          ? ""
+          : String(this.options.countText).replace("{count}", String(visible));
+    }
+    emit(this._element, "filter", {
+      instance: this,
+      item: entry.item,
+      query,
+      visible,
+    });
   }
 
   /**
@@ -851,5 +1238,32 @@ export class Megamenu extends IvComponent {
     this._clearTimers();
     if (this._isOpen(entry.item)) this._closeItem(entry.item, "api");
     else this._openEntry(entry, "api");
+  }
+
+  /**
+   * Selects a tab of the panel of an item.
+   *
+   * @param {Element|number} itemOrIndex The item or its index in the bar.
+   * @param {number} index Index of the tab inside that panel.
+   * @returns {void}
+   */
+  selectTab(itemOrIndex, index) {
+    const entry = this._resolve(itemOrIndex);
+    if (!entry) return;
+    this._selectTab(entry, index);
+  }
+
+  /**
+   * Filters the panel of an item, as typing in its filter input would.
+   *
+   * @param {Element|number} itemOrIndex The item or its index in the bar.
+   * @param {string} query Raw query; an empty string restores everything.
+   * @returns {void}
+   */
+  filter(itemOrIndex, query) {
+    const entry = this._resolve(itemOrIndex);
+    if (!entry) return;
+    if (entry.input) entry.input.value = query;
+    this._applyFilter(entry, query);
   }
 }

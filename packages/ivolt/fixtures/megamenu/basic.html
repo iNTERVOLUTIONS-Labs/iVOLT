@@ -1,138 +1,198 @@
-<nav class="iv-megamenu" data-iv-component="megamenu" aria-label="Sample main navigation. Every section, title and figure below is made up for this demo.">
+<nav class="iv-megamenu" data-iv-component="megamenu" aria-label="Sample main navigation. Every section, title, count and studio below is made up for this demo.">
   <ul class="iv-megamenu__list">
     <li class="iv-megamenu__item">
       <a class="iv-megamenu__link" href="#mm-note">Games</a>
       <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="mm-games" hidden><span class="iv-u-sr-only">Open Games</span></button>
-      <div class="iv-megamenu__panel" id="mm-games">
-        <div class="iv-megamenu__inner">
-          <section class="iv-megamenu__group">
-            <h3 class="iv-megamenu__heading">Genres</h3>
-            <ul class="iv-megamenu__links">
-              <li><a href="#mm-note">Signal puzzles</a></li>
-              <li><a href="#mm-note">Slow strategy</a></li>
-              <li><a href="#mm-note">Text adventures</a></li>
-              <li><a href="#mm-note">Co-op survival</a></li>
+      <section class="iv-megamenu__panel" id="mm-games" aria-labelledby="mm-games-title">
+        <header class="iv-megamenu__head">
+          <p class="iv-megamenu__overline">Explore the archive</p>
+          <h2 class="iv-megamenu__title" id="mm-games-title">Games <span class="iv-megamenu__count">959</span></h2>
+          <p class="iv-megamenu__tagline">Your next game starts here. Nothing on this page is a real catalogue.</p>
+          <button class="iv-megamenu__close" type="button" aria-label="Close Games" hidden></button>
+        </header>
+        <div class="iv-megamenu__body">
+          <aside class="iv-megamenu__directory">
+            <h3 class="iv-megamenu__heading">Pick a genre</h3>
+            <ul class="iv-megamenu__dirlist">
+            <li><a href="#mm-note"><span>Graphic adventure</span><small>131</small></a></li>
+            <li><a href="#mm-note"><span>Adventure</span><small>182</small></a></li>
+            <li><a href="#mm-note"><span>Racing</span><small>58</small></a></li>
+            <li><a href="#mm-note"><span>Sport</span><small>32</small></a></li>
+            <li><a href="#mm-note"><span>Shooters</span><small>162</small></a></li>
+            <li><a href="#mm-note"><span>Strategy</span><small>139</small></a></li>
+            <li><a href="#mm-note"><span>Board games</span><small>23</small></a></li>
+            <li><a href="#mm-note"><span>Role-playing</span><small>79</small></a></li>
             </ul>
-          </section>
-          <section class="iv-megamenu__group">
-            <h3 class="iv-megamenu__heading">Platforms</h3>
-            <ul class="iv-megamenu__links">
-              <li><a href="#mm-note">Desktop</a></li>
-              <li><a href="#mm-note">Handheld</a></li>
-              <li><a href="#mm-note">Browser</a></li>
-            </ul>
-          </section>
-          <div class="iv-megamenu__cards" style="--iv-megamenu-card-span: 2">
-            <a class="iv-megamenu__card" href="#mm-note">
-              <span class="iv-megamenu__art">
-                <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                  <defs><linearGradient id="mm-g1" x1="0" y1="0" x2="300" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#081310"/></linearGradient></defs>
-                  <rect width="300" height="400" fill="url(#mm-g1)"/>
-                  <circle cx="150" cy="176" r="86" fill="none" stroke="#29F59A" stroke-opacity=".75" stroke-width="3"/>
-                  <circle cx="150" cy="176" r="34" fill="#29F59A" fill-opacity=".28"/>
-                  <path d="M0 316h300" stroke="#6FB3FF" stroke-opacity=".45" stroke-width="2"/>
-                </svg>
-              </span>
-              <span class="iv-megamenu__name">Orbit Signal</span>
-              <span class="iv-megamenu__meta">12 chapters</span>
-            </a>
-            <a class="iv-megamenu__card" href="#mm-note">
-              <span class="iv-megamenu__art">
-                <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                  <defs><linearGradient id="mm-g2" x1="0" y1="400" x2="300" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#12201A"/><stop offset="1" stop-color="#0B8A55"/></linearGradient></defs>
-                  <rect width="300" height="400" fill="url(#mm-g2)"/>
-                  <path d="M-10 300 90 190l70 78 80-120 80 96v156H-10z" fill="#081310" fill-opacity=".7"/>
-                  <circle cx="226" cy="92" r="30" fill="#C6F9E1" fill-opacity=".8"/>
-                </svg>
-              </span>
-              <span class="iv-megamenu__name">Quiet Harbour</span>
-              <span class="iv-megamenu__meta">8 chapters</span>
-            </a>
-            <a class="iv-megamenu__card" href="#mm-note">
-              <span class="iv-megamenu__art">
-                <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                  <defs><radialGradient id="mm-g3" cx="150" cy="140" r="220" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#04301F"/></radialGradient></defs>
-                  <rect width="300" height="400" fill="url(#mm-g3)"/>
-                  <path d="M20 380 150 40l130 340z" fill="#29F59A" fill-opacity=".22"/>
-                  <path d="M96 380 150 236l54 144z" fill="#E8FDF3" fill-opacity=".5"/>
-                </svg>
-              </span>
-              <span class="iv-megamenu__name">Paper Summit</span>
-              <span class="iv-megamenu__meta">5 chapters</span>
-            </a>
+            <a class="iv-megamenu__all" href="#mm-note">Browse the catalogue</a>
+          </aside>
+          <div class="iv-megamenu__discover">
+            <div class="iv-megamenu__tabs" role="tablist" aria-label="Game selections">
+              <a class="iv-megamenu__tab" role="tab" id="mm-games-tab-0" href="#mm-games-set-0" aria-selected="true">Most popular</a>
+              <a class="iv-megamenu__tab" role="tab" id="mm-games-tab-1" href="#mm-games-set-1" aria-selected="false">Best rated</a>
+            </div>
+            <div class="iv-megamenu__set" id="mm-games-set-0" role="tabpanel" aria-labelledby="mm-games-tab-0">
+              <ul class="iv-megamenu__cards">
+        <li><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="adventure signal">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb1" x1="0" y1="0" x2="300" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb1)"/><circle cx="150" cy="176" r="87" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="150" cy="176" r="33" fill="#29F59A" fill-opacity=".3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Orbit Signal</span>
+          <span class="iv-megamenu__meta">Adventure · 1997</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="strategy harbour">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb2" x1="0" y1="400" x2="300" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#12201A"/><stop offset="1" stop-color="#0B8A55"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb2)"/><path d="M-10 304 90 192l69 80 81-120 81 96v160H-10z" fill="#030806" fill-opacity=".72"/><circle cx="225" cy="92" r="30" fill="#C6F9E1" fill-opacity=".85"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Quiet Harbour</span>
+          <span class="iv-megamenu__meta">Strategy · 1999</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="role summit">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="mmb3" cx="150" cy="140" r="240" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#04301F"/></radialGradient></defs><rect width="300" height="400" fill="url(#mmb3)"/><path d="M21 400 150 40 279 400z" fill="#29F59A" fill-opacity=".22"/><path d="M96 400 150 236 204 400z" fill="#E8FDF3" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Paper Summit</span>
+          <span class="iv-megamenu__meta">Role-playing · 2003</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="shooter dial">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb4" x1="0" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#030806"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb4)"/><path d="M30 248q60-136 120 0t120 0" fill="none" stroke="#29F59A" stroke-opacity=".75" stroke-width="4"/><path d="M30 312q60-88 120 0t120 0" fill="none" stroke="#6FB3FF" stroke-opacity=".5" stroke-width="3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">04</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Long Dial</span>
+          <span class="iv-megamenu__meta">Shooters · 2004</span>
+        </a></li>
+              </ul>
+            </div>
+            <div class="iv-megamenu__set" id="mm-games-set-1" role="tabpanel" aria-labelledby="mm-games-tab-1" hidden>
+              <ul class="iv-megamenu__cards">
+        <li><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="board notes">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb5" x1="300" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#084D32"/><stop offset="1" stop-color="#12201A"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb5)"/><rect x="48" y="96" width="204" height="200" rx="10" fill="none" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M90 248h60M90 200h120M90 152h90" stroke="#C6F9E1" stroke-opacity=".65" stroke-width="6" stroke-linecap="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Field Notes</span>
+          <span class="iv-megamenu__meta">Board games · 1994</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="racing sun">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb6" x1="0" y1="0" x2="300" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb6)"/><circle cx="108" cy="144" r="66" fill="#6FB3FF" fill-opacity=".4"/><circle cx="198" cy="224" r="90" fill="#29F59A" fill-opacity=".25"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Second Sun</span>
+          <span class="iv-megamenu__meta">Racing · 1998</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="adventure kite">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb7" x1="0" y1="400" x2="300" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#030806"/><stop offset="1" stop-color="#0A6A43"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb7)"/><path d="M150 56 258 200 150 344 42 200z" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="150" cy="200" r="24" fill="#29F59A" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Hollow Kite</span>
+          <span class="iv-megamenu__meta">Adventure · 2001</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note" data-iv-keywords="sport meridian">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb8" x1="0" y1="0" x2="300" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset=".55" stop-color="#0B8A55"/><stop offset="1" stop-color="#12201A"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb8)"/><path d="M0 280h300" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M60 280 102 152 150 231 198 104 245 280" fill="none" stroke="#E8FDF3" stroke-opacity=".8" stroke-width="4" stroke-linejoin="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">04</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Tin Meridian</span>
+          <span class="iv-megamenu__meta">Sport · 2006</span>
+        </a></li>
+              </ul>
+            </div>
+            <section class="iv-megamenu__cloud">
+              <h3 class="iv-megamenu__heading">The names behind the games</h3>
+          <a href="#mm-note">Northlight <small>24</small></a>
+          <a href="#mm-note">Paper Anvil <small>18</small></a>
+          <a href="#mm-note">Dinamic Hall <small>15</small></a>
+          <a href="#mm-note">Slow Signal <small>12</small></a>
+          <a href="#mm-note">Blue Meridian <small>9</small></a>
+          <a href="#mm-note">Hollow Works <small>7</small></a>
+            </section>
           </div>
-          <footer class="iv-megamenu__bottom">
-            <p class="iv-u-m-0">Three made-up titles, no catalogue behind them.</p>
-            <a class="iv-button iv-button--primary" href="#mm-note">Browse everything</a>
-          </footer>
         </div>
-      </div>
+        <footer class="iv-megamenu__foot">
+          <span class="iv-megamenu__crumb">Archive <b aria-hidden="true">/</b> Games</span>
+          <a class="iv-megamenu__foot-link" href="#mm-note">Suggest a classic</a>
+          <p class="iv-megamenu__status" aria-hidden="true"><span class="iv-megamenu__prompt">archive:~$</span><span class="iv-megamenu__cmd">ls /games</span><span class="iv-megamenu__caret-blink"></span><span class="iv-megamenu__hint">Esc to close</span></p>
+        </footer>
+      </section>
     </li>
     <li class="iv-megamenu__item">
-      <a class="iv-megamenu__link" href="#mm-note">Studio</a>
-      <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="mm-studio" hidden><span class="iv-u-sr-only">Open Studio</span></button>
-      <div class="iv-megamenu__panel" id="mm-studio">
-        <div class="iv-megamenu__inner">
-          <section class="iv-megamenu__group">
-            <h3 class="iv-megamenu__heading">The team</h3>
-            <ul class="iv-megamenu__links">
-              <li><a href="#mm-note">How we work</a></li>
-              <li><a href="#mm-note">Open positions</a></li>
-              <li><a href="#mm-note">Press kit</a></li>
-              <li><a href="#mm-note">Contact</a></li>
+      <a class="iv-megamenu__link" href="#mm-note">Films</a>
+      <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="mm-films" hidden><span class="iv-u-sr-only">Open Films</span></button>
+      <section class="iv-megamenu__panel" id="mm-films" aria-labelledby="mm-films-title">
+        <header class="iv-megamenu__head">
+          <p class="iv-megamenu__overline">Explore the archive</p>
+          <h2 class="iv-megamenu__title" id="mm-films-title">Films <span class="iv-megamenu__count">412</span></h2>
+          <p class="iv-megamenu__tagline">Invented titles, invented years, invented studios.</p>
+          <button class="iv-megamenu__close" type="button" aria-label="Close Films" hidden></button>
+        </header>
+        <div class="iv-megamenu__body">
+          <aside class="iv-megamenu__directory">
+            <h3 class="iv-megamenu__heading">Pick a genre</h3>
+            <ul class="iv-megamenu__dirlist">
+            <li><a href="#mm-note"><span>Noir</span><small>44</small></a></li>
+            <li><a href="#mm-note"><span>Science fiction</span><small>61</small></a></li>
+            <li><a href="#mm-note"><span>Documentary</span><small>28</small></a></li>
+            <li><a href="#mm-note"><span>Animation</span><small>37</small></a></li>
+            <li><a href="#mm-note"><span>Shorts</span><small>19</small></a></li>
             </ul>
-          </section>
-          <div class="iv-megamenu__cards">
-            <a class="iv-megamenu__card" href="#mm-note">
-              <span class="iv-megamenu__art">
-                <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                  <defs><linearGradient id="mm-g4" x1="0" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#081310"/></linearGradient></defs>
-                  <rect width="300" height="400" fill="url(#mm-g4)"/>
-                  <rect x="40" y="120" width="220" height="160" rx="12" fill="#081310" fill-opacity=".55" stroke="#29F59A" stroke-opacity=".5" stroke-width="2"/>
-                  <path d="M70 250h60M70 216h160M70 182h120" stroke="#C6F9E1" stroke-opacity=".6" stroke-width="6" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <span class="iv-megamenu__name">Field notes</span>
-              <span class="iv-megamenu__meta">Weekly</span>
-            </a>
-            <a class="iv-megamenu__card" href="#mm-note">
-              <span class="iv-megamenu__art">
-                <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                  <defs><linearGradient id="mm-g5" x1="300" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#12201A"/></linearGradient></defs>
-                  <rect width="300" height="400" fill="url(#mm-g5)"/>
-                  <circle cx="150" cy="150" r="64" fill="#6FB3FF" fill-opacity=".35"/>
-                  <path d="M40 330c40-70 180-70 220 0" fill="none" stroke="#E8F1FD" stroke-opacity=".7" stroke-width="8" stroke-linecap="round"/>
-                </svg>
-              </span>
-              <span class="iv-megamenu__name">The people</span>
-              <span class="iv-megamenu__meta">14 profiles</span>
-            </a>
-            <a class="iv-megamenu__card" href="#mm-note">
-              <span class="iv-megamenu__art">
-                <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                  <defs><linearGradient id="mm-g6" x1="0" y1="0" x2="300" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#084D32"/><stop offset="1" stop-color="#030806"/></linearGradient></defs>
-                  <rect width="300" height="400" fill="url(#mm-g6)"/>
-                  <path d="M150 60 246 200l-96 140-96-140z" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/>
-                  <circle cx="150" cy="200" r="22" fill="#29F59A" fill-opacity=".5"/>
-                </svg>
-              </span>
-              <span class="iv-megamenu__name">Studio log</span>
-              <span class="iv-megamenu__meta">Since 2019</span>
-            </a>
+            <a class="iv-megamenu__all" href="#mm-note">Browse the shelf</a>
+          </aside>
+          <div class="iv-megamenu__discover">
+            <div class="iv-megamenu__tabs" role="tablist" aria-label="Film selections">
+              <a class="iv-megamenu__tab" role="tab" id="mm-films-tab-0" href="#mm-films-set-0" aria-selected="true">Most watched</a>
+              <a class="iv-megamenu__tab" role="tab" id="mm-films-tab-1" href="#mm-films-set-1" aria-selected="false">Restored</a>
+            </div>
+            <div class="iv-megamenu__set" id="mm-films-set-0" role="tabpanel" aria-labelledby="mm-films-tab-0">
+              <ul class="iv-megamenu__cards">
+        <li><a class="iv-megamenu__card" href="#mm-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="mmb9" cx="150" cy="140" r="240" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#04301F"/></radialGradient></defs><rect width="300" height="400" fill="url(#mmb9)"/><path d="M21 400 150 40 279 400z" fill="#29F59A" fill-opacity=".22"/><path d="M96 400 150 236 204 400z" fill="#E8FDF3" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Cold Aperture</span>
+          <span class="iv-megamenu__meta">Noir · 1962</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb10" x1="0" y1="0" x2="300" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb10)"/><circle cx="150" cy="176" r="87" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="150" cy="176" r="33" fill="#29F59A" fill-opacity=".3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Signal Drift</span>
+          <span class="iv-megamenu__meta">Science fiction · 1978</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb11" x1="300" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#084D32"/><stop offset="1" stop-color="#12201A"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb11)"/><rect x="48" y="96" width="204" height="200" rx="10" fill="none" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M90 248h60M90 200h120M90 152h90" stroke="#C6F9E1" stroke-opacity=".65" stroke-width="6" stroke-linecap="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">The Slow Room</span>
+          <span class="iv-megamenu__meta">Documentary · 1985</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb12" x1="0" y1="400" x2="300" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#030806"/><stop offset="1" stop-color="#0A6A43"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb12)"/><path d="M150 56 258 200 150 344 42 200z" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="150" cy="200" r="24" fill="#29F59A" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">04</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Paper Moonlight</span>
+          <span class="iv-megamenu__meta">Animation · 1991</span>
+        </a></li>
+              </ul>
+            </div>
+            <div class="iv-megamenu__set" id="mm-films-set-1" role="tabpanel" aria-labelledby="mm-films-tab-1" hidden>
+              <ul class="iv-megamenu__cards">
+        <li><a class="iv-megamenu__card" href="#mm-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb13" x1="0" y1="0" x2="300" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb13)"/><circle cx="108" cy="144" r="66" fill="#6FB3FF" fill-opacity=".4"/><circle cx="198" cy="224" r="90" fill="#29F59A" fill-opacity=".25"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Second Reel</span>
+          <span class="iv-megamenu__meta">Shorts · 1969</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb14" x1="0" y1="400" x2="300" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#12201A"/><stop offset="1" stop-color="#0B8A55"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb14)"/><path d="M-10 304 90 192l69 80 81-120 81 96v160H-10z" fill="#030806" fill-opacity=".72"/><circle cx="225" cy="92" r="30" fill="#C6F9E1" fill-opacity=".85"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Quiet Tide</span>
+          <span class="iv-megamenu__meta">Noir · 1974</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb15" x1="0" y1="0" x2="300" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset=".55" stop-color="#0B8A55"/><stop offset="1" stop-color="#12201A"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb15)"/><path d="M0 280h300" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M60 280 102 152 150 231 198 104 245 280" fill="none" stroke="#E8FDF3" stroke-opacity=".8" stroke-width="4" stroke-linejoin="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Wire and Salt</span>
+          <span class="iv-megamenu__meta">Documentary · 1988</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmb16" x1="0" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#030806"/></linearGradient></defs><rect width="300" height="400" fill="url(#mmb16)"/><path d="M30 248q60-136 120 0t120 0" fill="none" stroke="#29F59A" stroke-opacity=".75" stroke-width="4"/><path d="M30 312q60-88 120 0t120 0" fill="none" stroke="#6FB3FF" stroke-opacity=".5" stroke-width="3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">04</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Blue Orbit</span>
+          <span class="iv-megamenu__meta">Science fiction · 1994</span>
+        </a></li>
+              </ul>
+            </div>
+            <section class="iv-megamenu__cloud">
+              <h3 class="iv-megamenu__heading">Distributors</h3>
+          <a href="#mm-note">Lumen Reels <small>14</small></a>
+          <a href="#mm-note">Anvil Pictures <small>11</small></a>
+          <a href="#mm-note">Slow Frame <small>8</small></a>
+          <a href="#mm-note">Hollow Lab <small>6</small></a>
+            </section>
           </div>
-          <footer class="iv-megamenu__bottom">
-            <p class="iv-u-m-0">Fictional studio, fictional dates.</p>
-            <a class="iv-button iv-button--primary" href="#mm-note">Meet the team</a>
-          </footer>
         </div>
-      </div>
+        <footer class="iv-megamenu__foot">
+          <span class="iv-megamenu__crumb">Archive <b aria-hidden="true">/</b> Films</span>
+          <a class="iv-megamenu__foot-link" href="#mm-note">Suggest a print</a>
+          <p class="iv-megamenu__status" aria-hidden="true"><span class="iv-megamenu__prompt">archive:~$</span><span class="iv-megamenu__cmd">ls /films</span><span class="iv-megamenu__caret-blink"></span><span class="iv-megamenu__hint">Esc to close</span></p>
+        </footer>
+      </section>
     </li>
     <li class="iv-megamenu__item">
-      <a class="iv-megamenu__link" href="#mm-note">Support</a>
+      <a class="iv-megamenu__link" href="#mm-note">Stories</a>
     </li>
     <li class="iv-megamenu__item">
-      <a class="iv-megamenu__link" href="#mm-note">Blog</a>
+      <a class="iv-megamenu__link" href="#mm-note">Forums</a>
     </li>
   </ul>
 </nav>
-<p id="mm-note">Sample navigation, not a real site: every link above points to this note. Without JavaScript the two panels open on hover and on keyboard focus from the <code>lg</code> breakpoint upwards, and stay open inline below it. With JavaScript the chevrons appear, the page dims behind the open panel and the panels become an accordion on narrow screens.</p>
+<p id="mm-note">Sample navigation, not a real site: every link above points to this note, and the counts, titles, years and studios are invented for the demo. Without JavaScript the two panels open on hover and on keyboard focus from the <code>lg</code> breakpoint upwards, the tabs are links that reveal their own set, and everything stays open inline below that breakpoint. With JavaScript the chevrons and the close button appear, a caret points at the open item, the page dims behind the panel and the panels become an accordion on narrow screens.</p>

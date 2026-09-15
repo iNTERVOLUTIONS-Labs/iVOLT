@@ -55,8 +55,12 @@ test.describe("Navbar", () => {
     await page.mouse.wheel(0, 400);
     expect(await condensed).toBe(true);
     await expect(header).toHaveAttribute("data-iv-condensed", "");
+    // The condensed height arrives with a transition, so the box right after
+    // the event is still the tall one: wait until it has actually shrunk.
+    await expect
+      .poll(async () => (await header.boundingBox()).height)
+      .toBeLessThan(tall.height);
     const short = await header.boundingBox();
-    expect(short.height).toBeLessThan(tall.height);
     // Sticky: the header is still at the top of the viewport after scrolling.
     expect(short.y).toBeLessThanOrEqual(1);
 

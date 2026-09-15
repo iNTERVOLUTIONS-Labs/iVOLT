@@ -1,135 +1,186 @@
-<div class="iv-texture-mesh" style="min-height: 34rem; padding: var(--iv-space-6) var(--iv-space-6) var(--iv-space-16); border-radius: var(--iv-radius-lg)">
-  <nav class="iv-megamenu iv-megamenu--full" data-iv-component="megamenu" aria-label="Sample edge-to-edge navigation. Every section and figure below is made up for this demo.">
-    <ul class="iv-megamenu__list">
-      <li class="iv-megamenu__item">
-        <a class="iv-megamenu__link" href="#mmf-note">Catalogue</a>
-        <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="mmf-catalogue" hidden><span class="iv-u-sr-only">Open Catalogue</span></button>
-        <div class="iv-megamenu__panel iv-glass" id="mmf-catalogue">
-          <div class="iv-megamenu__inner">
-            <section class="iv-megamenu__group">
-              <h3 class="iv-megamenu__heading">Collections</h3>
-              <ul class="iv-megamenu__links">
-                <li><a href="#mmf-note">Restored prints</a></li>
-                <li><a href="#mmf-note">Silent era</a></li>
-                <li><a href="#mmf-note">Short films</a></li>
-                <li><a href="#mmf-note">Late sessions</a></li>
-              </ul>
-            </section>
-            <div class="iv-megamenu__cards">
-              <a class="iv-megamenu__card" href="#mmf-note">
-                <span class="iv-megamenu__art">
-                  <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                    <defs><linearGradient id="mmf-g1" x1="0" y1="0" x2="300" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0B8A55"/><stop offset="1" stop-color="#081310"/></linearGradient></defs>
-                    <rect width="300" height="400" fill="url(#mmf-g1)"/>
-                    <circle cx="150" cy="150" r="70" fill="#E8FDF3" fill-opacity=".75"/>
-                    <path d="M0 300h300M0 340h300" stroke="#29F59A" stroke-opacity=".5" stroke-width="3"/>
-                  </svg>
-                </span>
-                <span class="iv-megamenu__name">Night Reel</span>
-                <span class="iv-megamenu__meta">6 films</span>
-              </a>
-              <a class="iv-megamenu__card" href="#mmf-note">
-                <span class="iv-megamenu__art">
-                  <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                    <defs><radialGradient id="mmf-g2" cx="90" cy="110" r="300" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#030806"/></radialGradient></defs>
-                    <rect width="300" height="400" fill="url(#mmf-g2)"/>
-                    <rect x="54" y="120" width="192" height="130" rx="10" fill="#081310" fill-opacity=".6" stroke="#6FB3FF" stroke-opacity=".6" stroke-width="2"/>
-                    <path d="M120 152v66l60-33z" fill="#C6F9E1" fill-opacity=".85"/>
-                  </svg>
-                </span>
-                <span class="iv-megamenu__name">Projection Room</span>
-                <span class="iv-megamenu__meta">11 films</span>
-              </a>
-              <a class="iv-megamenu__card" href="#mmf-note">
-                <span class="iv-megamenu__art">
-                  <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                    <defs><linearGradient id="mmf-g3" x1="300" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#29F59A"/><stop offset="1" stop-color="#04301F"/></linearGradient></defs>
-                    <rect width="300" height="400" fill="url(#mmf-g3)"/>
-                    <path d="M-10 250c90-120 220-40 320-150v310H-10z" fill="#081310" fill-opacity=".72"/>
-                    <circle cx="228" cy="96" r="26" fill="#FFF4E0" fill-opacity=".85"/>
-                  </svg>
-                </span>
-                <span class="iv-megamenu__name">Sea Archive</span>
-                <span class="iv-megamenu__meta">9 films</span>
-              </a>
+<nav class="iv-megamenu iv-megamenu--full" data-iv-component="megamenu" style="--iv-megamenu-art-ratio: 16 / 10; --iv-megamenu-cols: 3" aria-label="Sample magazine navigation. Every headline, date, count and tag below is made up for this demo.">
+  <ul class="iv-megamenu__list">
+    <li class="iv-megamenu__item">
+      <a class="iv-megamenu__link" href="#mm-full-note">Video games</a>
+      <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="mm-vg" hidden><span class="iv-u-sr-only">Open Video games</span></button>
+      <section class="iv-megamenu__panel" id="mm-vg" aria-labelledby="mm-vg-title">
+        <header class="iv-megamenu__head">
+          <p class="iv-megamenu__overline">// Section</p>
+          <h2 class="iv-megamenu__title" id="mm-vg-title">Video games <span class="iv-megamenu__count">75 reviews</span></h2>
+          <p class="iv-megamenu__tagline">Made-up reviews of made-up hardware, written for this demo.</p>
+          <button class="iv-megamenu__close" type="button" aria-label="Close Video games" hidden></button>
+        </header>
+        <div class="iv-megamenu__body">
+          <aside class="iv-megamenu__directory">
+            <h3 class="iv-megamenu__heading">And before that</h3>
+            <ul class="iv-megamenu__dirlist">
+            <li><a href="#mm-full-note"><span>World of Warcraft: the hard genre, made easy</span><small>04</small></a></li>
+            <li><a href="#mm-full-note"><span>Taito Station: the arcade as an urban service</span><small>05</small></a></li>
+            <li><a href="#mm-full-note"><span>Game Boy Advance: the handheld that bought its own catalogue</span><small>06</small></a></li>
+            </ul>
+            <a class="iv-megamenu__all" href="#mm-full-note">See the section</a>
+          </aside>
+          <div class="iv-megamenu__discover">
+            <div class="iv-megamenu__tabs" role="tablist" aria-label="Video game selections">
+              <a class="iv-megamenu__tab" role="tab" id="mm-vg-tab-0" href="#mm-vg-set-0" aria-selected="true">Latest</a>
+              <a class="iv-megamenu__tab" role="tab" id="mm-vg-tab-1" href="#mm-vg-set-1" aria-selected="false">From the archive</a>
             </div>
-            <footer class="iv-megamenu__bottom">
-              <p class="iv-u-m-0">Made-up collections on a glass panel over a gradient mesh.</p>
-              <a class="iv-button iv-button--primary" href="#mmf-note">Browse the catalogue</a>
-            </footer>
+            <div class="iv-megamenu__set" id="mm-vg-set-0" role="tabpanel" aria-labelledby="mm-vg-tab-0">
+              <ul class="iv-megamenu__cards">
+        <li><a class="iv-megamenu__card" href="#mm-full-note" data-iv-keywords="sandbox rules">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf1" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf1)"/><circle cx="160" cy="92" r="60" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="160" cy="92" r="22" fill="#29F59A" fill-opacity=".32"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Minecraft: few rules, applied without exception</span>
+          <span class="iv-megamenu__meta">30 Aug 2026</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-full-note" data-iv-keywords="arcade friction">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf2" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#12201A"/><stop offset="1" stop-color="#0B8A55"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf2)"/><path d="M-10 160 96 88 176 136 249 60 330 144V210H-10z" fill="#030806" fill-opacity=".7"/><circle cx="243" cy="48" r="24" fill="#C6F9E1" fill-opacity=".85"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Air hockey: the machine that only removes friction</span>
+          <span class="iv-megamenu__meta">22 Aug 2026</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-full-note" data-iv-keywords="handheld power">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf3" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#04301F"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf3)"/><path d="M19 200 160 24 300 200z" fill="#29F59A" fill-opacity=".24"/><path d="M105 200 160 120 214 200z" fill="#E8FDF3" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Handhelds: winning without competing on power</span>
+          <span class="iv-megamenu__meta">2 Aug 2026</span>
+        </a></li>
+              </ul>
+            </div>
+            <div class="iv-megamenu__set" id="mm-vg-set-1" role="tabpanel" aria-labelledby="mm-vg-tab-1" hidden>
+              <ul class="iv-megamenu__cards">
+        <li><a class="iv-megamenu__card" href="#mm-full-note" data-iv-keywords="format cartridge">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf4" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#030806"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf4)"/><path d="M25 132q67-72 134 0t134 0" fill="none" stroke="#29F59A" stroke-opacity=".75" stroke-width="4"/><path d="M25 164q67-48 134 0t134 0" fill="none" stroke="#6FB3FF" stroke-opacity=".5" stroke-width="3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Cartridges: the format that refused to die</span>
+          <span class="iv-megamenu__meta">18 Jul 2026</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-full-note" data-iv-keywords="sound chip">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf5" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#084D32"/><stop offset="1" stop-color="#12201A"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf5)"/><rect x="48" y="40" width="224" height="115" rx="10" fill="none" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M89 124h64M89 98h140M89 72h102" stroke="#C6F9E1" stroke-opacity=".65" stroke-width="6" stroke-linecap="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Sound chips: three voices and a whole decade</span>
+          <span class="iv-megamenu__meta">9 Jul 2026</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-full-note" data-iv-keywords="isometric dimension">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf6" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#030806"/><stop offset="1" stop-color="#0A6A43"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf6)"/><circle cx="108" cy="76" r="52" fill="#6FB3FF" fill-opacity=".38"/><circle cx="217" cy="120" r="68" fill="#29F59A" fill-opacity=".26"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Isometry: the trick that faked a third dimension</span>
+          <span class="iv-megamenu__meta">1 Jul 2026</span>
+        </a></li>
+              </ul>
+            </div>
+            <a class="iv-megamenu__feature" href="#mm-full-note">
+              <span class="iv-megamenu__flag">Most read</span>
+              <span class="iv-megamenu__feature-title">I Have No Mouth, and I Must Scream: the game that turned guilt into a mechanic</span>
+              <span class="iv-megamenu__feature-meta"><b>2,381</b> reads</span>
+            </a>
+            <section class="iv-megamenu__cloud">
+              <h3 class="iv-megamenu__heading">Search by</h3>
+          <a href="#mm-full-note">Retro <small>90</small></a>
+          <a href="#mm-full-note">Arcades <small>32</small></a>
+          <a href="#mm-full-note">Eighties games <small>20</small></a>
+          <a href="#mm-full-note">Peripherals <small>15</small></a>
+          <a href="#mm-full-note">Nineties games <small>15</small></a>
+          <a href="#mm-full-note">History of technology <small>11</small></a>
+          <a href="#mm-full-note">Consoles <small>9</small></a>
+            </section>
           </div>
         </div>
-      </li>
-      <li class="iv-megamenu__item">
-        <a class="iv-megamenu__link" href="#mmf-note">Sessions</a>
-        <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="mmf-sessions" hidden><span class="iv-u-sr-only">Open Sessions</span></button>
-        <div class="iv-megamenu__panel iv-glass" id="mmf-sessions">
-          <div class="iv-megamenu__inner">
-            <section class="iv-megamenu__group">
-              <h3 class="iv-megamenu__heading">This month</h3>
-              <ul class="iv-megamenu__links">
-                <li><a href="#mmf-note">Opening night</a></li>
-                <li><a href="#mmf-note">Matinee</a></li>
-                <li><a href="#mmf-note">Late session</a></li>
-              </ul>
-            </section>
-            <section class="iv-megamenu__group">
-              <h3 class="iv-megamenu__heading">Venues</h3>
-              <ul class="iv-megamenu__links">
-                <li><a href="#mmf-note">Main hall</a></li>
-                <li><a href="#mmf-note">Terrace</a></li>
-              </ul>
-            </section>
-            <div class="iv-megamenu__cards" style="--iv-megamenu-card-span: 2">
-              <a class="iv-megamenu__card" href="#mmf-note">
-                <span class="iv-megamenu__art">
-                  <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                    <defs><linearGradient id="mmf-g4" x1="0" y1="400" x2="300" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#14D882"/></linearGradient></defs>
-                    <rect width="300" height="400" fill="url(#mmf-g4)"/>
-                    <path d="M150 90v220M40 200h220" stroke="#081310" stroke-opacity=".55" stroke-width="10"/>
-                  </svg>
-                </span>
-                <span class="iv-megamenu__name">Friday</span>
-                <span class="iv-megamenu__meta">3 sessions</span>
-              </a>
-              <a class="iv-megamenu__card" href="#mmf-note">
-                <span class="iv-megamenu__art">
-                  <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                    <defs><linearGradient id="mmf-g5" x1="0" y1="0" x2="0" y2="400" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6FB3FF"/><stop offset="1" stop-color="#12201A"/></linearGradient></defs>
-                    <rect width="300" height="400" fill="url(#mmf-g5)"/>
-                    <circle cx="150" cy="230" r="90" fill="#030806" fill-opacity=".5"/>
-                    <path d="M60 120h180" stroke="#E8F1FD" stroke-opacity=".8" stroke-width="6" stroke-linecap="round"/>
-                  </svg>
-                </span>
-                <span class="iv-megamenu__name">Saturday</span>
-                <span class="iv-megamenu__meta">5 sessions</span>
-              </a>
-              <a class="iv-megamenu__card" href="#mmf-note">
-                <span class="iv-megamenu__art">
-                  <svg viewBox="0 0 300 400" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice">
-                    <defs><radialGradient id="mmf-g6" cx="210" cy="300" r="260" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0FB56C"/><stop offset="1" stop-color="#081310"/></radialGradient></defs>
-                    <rect width="300" height="400" fill="url(#mmf-g6)"/>
-                    <path d="M40 340 150 80l110 260z" fill="#C6F9E1" fill-opacity=".25"/>
-                  </svg>
-                </span>
-                <span class="iv-megamenu__name">Sunday</span>
-                <span class="iv-megamenu__meta">2 sessions</span>
-              </a>
+        <footer class="iv-megamenu__foot">
+          <span class="iv-megamenu__crumb">Magazine <b aria-hidden="true">/</b> Video games</span>
+          <a class="iv-megamenu__foot-link" href="#mm-full-note">Pitch a review</a>
+          <p class="iv-megamenu__status" aria-hidden="true"><span class="iv-megamenu__prompt">magazine:~$</span><span class="iv-megamenu__cmd">ls /video-games</span><span class="iv-megamenu__caret-blink"></span><span class="iv-megamenu__hint">Esc to close</span></p>
+        </footer>
+        <ol class="iv-megamenu__ticker">
+    <li><a href="#mm-full-note"><span class="iv-megamenu__rank" aria-hidden="true">01</span>Adobe Audition: the editor that fixes what is not broken</a></li>
+    <li><a href="#mm-full-note"><span class="iv-megamenu__rank" aria-hidden="true">02</span>Folding phones: a moving part under the screen</a></li>
+    <li><a href="#mm-full-note"><span class="iv-megamenu__rank" aria-hidden="true">03</span>Minecraft: few rules, applied without exception</a></li>
+    <li><a href="#mm-full-note"><span class="iv-megamenu__rank" aria-hidden="true">04</span>BlackBerry: the network that tied its own hands</a></li>
+    <li><a href="#mm-full-note"><span class="iv-megamenu__rank" aria-hidden="true">05</span>Wrist sensors: measuring the light that comes back</a></li>
+    <li><a href="#mm-full-note"><span class="iv-megamenu__rank" aria-hidden="true">06</span>Mechanical keyboards: the sound of a decision</a></li>
+        </ol>
+      </section>
+    </li>
+    <li class="iv-megamenu__item">
+      <a class="iv-megamenu__link" href="#mm-full-note">Hardware</a>
+      <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="mm-hw" hidden><span class="iv-u-sr-only">Open Hardware</span></button>
+      <section class="iv-megamenu__panel" id="mm-hw" aria-labelledby="mm-hw-title">
+        <header class="iv-megamenu__head">
+          <p class="iv-megamenu__overline">// Section</p>
+          <h2 class="iv-megamenu__title" id="mm-hw-title">Hardware <span class="iv-megamenu__count">48 reviews</span></h2>
+          <p class="iv-megamenu__tagline">Nothing here was tested: the bench figures are invented.</p>
+          <button class="iv-megamenu__close" type="button" aria-label="Close Hardware" hidden></button>
+        </header>
+        <div class="iv-megamenu__body">
+          <aside class="iv-megamenu__directory">
+            <h3 class="iv-megamenu__heading">And before that</h3>
+            <ul class="iv-megamenu__dirlist">
+              <li><a href="#mm-full-note"><span>Thermal paste: the half degree nobody feels</span><small>04</small></a></li>
+              <li><a href="#mm-full-note"><span>Fan curves: quiet is a setting, not a feature</span><small>05</small></a></li>
+              <li><a href="#mm-full-note"><span>Power supplies: the part that is only noticed once</span><small>06</small></a></li>
+            </ul>
+            <a class="iv-megamenu__all" href="#mm-full-note">See the section</a>
+          </aside>
+          <div class="iv-megamenu__discover">
+            <div class="iv-megamenu__tabs" role="tablist" aria-label="Hardware selections">
+              <a class="iv-megamenu__tab" role="tab" id="mm-hw-tab-0" href="#mm-hw-set-0" aria-selected="true">Latest</a>
+              <a class="iv-megamenu__tab" role="tab" id="mm-hw-tab-1" href="#mm-hw-set-1" aria-selected="false">Bench notes</a>
             </div>
-            <footer class="iv-megamenu__bottom">
-              <p class="iv-u-m-0">No tickets are sold here: the times are invented.</p>
-              <a class="iv-button iv-button--primary" href="#mmf-note">See the full programme</a>
-            </footer>
+            <div class="iv-megamenu__set" id="mm-hw-set-0" role="tabpanel" aria-labelledby="mm-hw-tab-0">
+              <ul class="iv-megamenu__cards">
+        <li><a class="iv-megamenu__card" href="#mm-full-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf7" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#084D32"/><stop offset="1" stop-color="#12201A"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf7)"/><rect x="48" y="40" width="224" height="115" rx="10" fill="none" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M89 124h64M89 98h140M89 72h102" stroke="#C6F9E1" stroke-opacity=".65" stroke-width="6" stroke-linecap="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Keyboards: the sound of a decision</span>
+          <span class="iv-megamenu__meta">28 Aug 2026</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-full-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf8" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#030806"/><stop offset="1" stop-color="#0A6A43"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf8)"/><circle cx="108" cy="76" r="52" fill="#6FB3FF" fill-opacity=".38"/><circle cx="217" cy="120" r="68" fill="#29F59A" fill-opacity=".26"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Monitors: the frame that arrives too late</span>
+          <span class="iv-megamenu__meta">19 Aug 2026</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-full-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf9" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf9)"/><circle cx="160" cy="92" r="60" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="160" cy="92" r="22" fill="#29F59A" fill-opacity=".32"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Docks: one cable, six compromises</span>
+          <span class="iv-megamenu__meta">7 Aug 2026</span>
+        </a></li>
+              </ul>
+            </div>
+            <div class="iv-megamenu__set" id="mm-hw-set-1" role="tabpanel" aria-labelledby="mm-hw-tab-1" hidden>
+              <ul class="iv-megamenu__cards">
+        <li><a class="iv-megamenu__card" href="#mm-full-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf10" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#12201A"/><stop offset="1" stop-color="#0B8A55"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf10)"/><path d="M-10 160 96 88 176 136 249 60 330 144V210H-10z" fill="#030806" fill-opacity=".7"/><circle cx="243" cy="48" r="24" fill="#C6F9E1" fill-opacity=".85"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Idle draw: the watt that never sleeps</span>
+          <span class="iv-megamenu__meta">12 Jul 2026</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-full-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf11" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#04301F"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf11)"/><path d="M19 200 160 24 300 200z" fill="#29F59A" fill-opacity=".24"/><path d="M105 200 160 120 214 200z" fill="#E8FDF3" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Fan noise: measuring what the ear forgives</span>
+          <span class="iv-megamenu__meta">3 Jul 2026</span>
+        </a></li>
+        <li><a class="iv-megamenu__card" href="#mm-full-note">
+          <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="mmf12" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#030806"/></linearGradient></defs><rect width="320" height="200" fill="url(#mmf12)"/><path d="M25 132q67-72 134 0t134 0" fill="none" stroke="#29F59A" stroke-opacity=".75" stroke-width="4"/><path d="M25 164q67-48 134 0t134 0" fill="none" stroke="#6FB3FF" stroke-opacity=".5" stroke-width="3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+          <span class="iv-megamenu__name">Screen coatings: light that leaves twice</span>
+          <span class="iv-megamenu__meta">26 Jun 2026</span>
+        </a></li>
+              </ul>
+            </div>
+            <section class="iv-megamenu__cloud">
+              <h3 class="iv-megamenu__heading">Search by</h3>
+              <a href="#mm-full-note">Keyboards <small>21</small></a>
+              <a href="#mm-full-note">Displays <small>17</small></a>
+              <a href="#mm-full-note">Storage <small>12</small></a>
+              <a href="#mm-full-note">Cooling <small>8</small></a>
+            </section>
           </div>
         </div>
-      </li>
-      <li class="iv-megamenu__item">
-        <a class="iv-megamenu__link" href="#mmf-note">Membership</a>
-      </li>
-      <li class="iv-megamenu__item">
-        <a class="iv-megamenu__link" href="#mmf-note">Journal</a>
-      </li>
-    </ul>
-  </nav>
-</div>
-<p id="mmf-note">Sample navigation, not a real cinema: every link above points to this note. <code>iv-megamenu--full</code> takes the panel to the edges of the bar and squares its top corners; the panel itself carries <code>iv-glass</code>, so it frosts the gradient mesh behind it. Where <code>backdrop-filter</code> is missing the panel falls back to an opaque surface.</p>
+        <footer class="iv-megamenu__foot">
+          <span class="iv-megamenu__crumb">Magazine <b aria-hidden="true">/</b> Hardware</span>
+          <a class="iv-megamenu__foot-link" href="#mm-full-note">Pitch a review</a>
+          <p class="iv-megamenu__status" aria-hidden="true"><span class="iv-megamenu__prompt">magazine:~$</span><span class="iv-megamenu__cmd">ls /hardware</span><span class="iv-megamenu__caret-blink"></span><span class="iv-megamenu__hint">Esc to close</span></p>
+        </footer>
+      </section>
+    </li>
+    <li class="iv-megamenu__item">
+      <a class="iv-megamenu__link" href="#mm-full-note">Software</a>
+    </li>
+  </ul>
+</nav>
+<p id="mm-full-note">Sample magazine header, not a real publication: every headline, date, read count and tag is invented, and every link on this page points to this note. The panel opens edge to edge under the bar (<code>iv-megamenu--full</code>) and closes the row with a strip of six numbered headlines.</p>
+<section class="iv-stack" style="min-block-size: 60vh">
+  <h2>Room below the bar</h2>
+  <p>Filler text, so the full-width panel has a page to cover while it is open. Nothing on this page is fetched from anywhere.</p>
+</section>

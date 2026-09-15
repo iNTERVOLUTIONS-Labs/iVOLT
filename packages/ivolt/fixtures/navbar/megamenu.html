@@ -13,55 +13,152 @@
       <span class="iv-navbar__burger" aria-hidden="true"></span>
     </button>
     <div class="iv-navbar__panel" id="mega-nav">
-      <nav class="iv-megamenu" data-iv-component="megamenu" data-iv-overlay="false" aria-label="Main. Every section and figure below is made up for this demo.">
+      <nav class="iv-megamenu" data-iv-component="megamenu" data-iv-overlay="false" style="--iv-megamenu-width: min(56rem, 100vw - 2rem)" aria-label="Main. Every section, count and figure below is made up for this demo.">
         <ul class="iv-megamenu__list">
           <li class="iv-megamenu__item">
             <a class="iv-megamenu__link" href="#nav-mm-note">Platform</a>
             <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="nav-mm-platform" hidden><span class="iv-u-sr-only">Open Platform</span></button>
-            <div class="iv-megamenu__panel" id="nav-mm-platform">
-              <div class="iv-megamenu__inner">
-                <section class="iv-megamenu__group">
-                  <h3 class="iv-megamenu__heading">Build</h3>
-                  <ul class="iv-megamenu__links">
-                    <li><a href="#nav-mm-note">Components</a></li>
-                    <li><a href="#nav-mm-note">Tokens</a></li>
-                    <li><a href="#nav-mm-note">Themes</a></li>
+            <section class="iv-megamenu__panel" id="nav-mm-platform" aria-labelledby="nav-mm-platform-title">
+              <header class="iv-megamenu__head">
+                <p class="iv-megamenu__overline">Explore the platform</p>
+                <h2 class="iv-megamenu__title" id="nav-mm-platform-title">Platform <span class="iv-megamenu__count">24 parts</span></h2>
+                <p class="iv-megamenu__tagline">Made-up sections, no catalogue behind them.</p>
+                <button class="iv-megamenu__close" type="button" aria-label="Close Platform" hidden></button>
+              </header>
+              <div class="iv-megamenu__body">
+                <aside class="iv-megamenu__directory">
+                  <h3 class="iv-megamenu__heading">Where to start</h3>
+                  <ul class="iv-megamenu__dirlist">
+                    <li><a href="#nav-mm-note"><span>Components</span><small>24</small></a></li>
+                    <li><a href="#nav-mm-note"><span>Tokens</span><small>133</small></a></li>
+                    <li><a href="#nav-mm-note"><span>Themes</span><small>4</small></a></li>
+                    <li><a href="#nav-mm-note"><span>Layouts</span><small>9</small></a></li>
                   </ul>
-                </section>
-                <section class="iv-megamenu__group">
-                  <h3 class="iv-megamenu__heading">Ship</h3>
-                  <ul class="iv-megamenu__links">
-                    <li><a href="#nav-mm-note">Bundles</a></li>
-                    <li><a href="#nav-mm-note">Budgets</a></li>
-                    <li><a href="#nav-mm-note">Checks</a></li>
-                  </ul>
-                </section>
-                <footer class="iv-megamenu__bottom">
-                  <p class="iv-u-m-0">Made-up sections, no catalogue behind them.</p>
-                  <a class="iv-button iv-button--primary iv-button--sm" href="#nav-mm-note">Browse the sample</a>
-                </footer>
+                  <a class="iv-megamenu__all" href="#nav-mm-note">Browse the sample</a>
+                </aside>
+                <div class="iv-megamenu__discover">
+                  <div class="iv-megamenu__tabs" role="tablist" aria-label="Platform selections">
+                    <a class="iv-megamenu__tab" role="tab" id="nav-mm-platform-tab-0" href="#nav-mm-platform-set-0" aria-selected="true">Build</a>
+                    <a class="iv-megamenu__tab" role="tab" id="nav-mm-platform-tab-1" href="#nav-mm-platform-set-1" aria-selected="false">Ship</a>
+                  </div>
+                  <div class="iv-megamenu__set" id="nav-mm-platform-set-0" role="tabpanel" aria-labelledby="nav-mm-platform-tab-0">
+                    <ul class="iv-megamenu__cards">
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm1" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm1)"/><circle cx="160" cy="100" r="58" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="160" cy="100" r="22" fill="#29F59A" fill-opacity=".3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Components</span>
+                        <span class="iv-megamenu__meta">24 parts</span>
+                      </a></li>
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm2" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#12201A"/><stop offset="1" stop-color="#0B8A55"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm2)"/><path d="M-10 170 90 92l70 52 80-66 100 74v50H-10z" fill="#030806" fill-opacity=".7"/><circle cx="246" cy="48" r="26" fill="#C6F9E1" fill-opacity=".85"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Tokens</span>
+                        <span class="iv-megamenu__meta">133 values</span>
+                      </a></li>
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm3" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#04301F"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm3)"/><path d="M16 200 160 24l144 176z" fill="#29F59A" fill-opacity=".24"/><path d="M108 200 160 120l52 80z" fill="#E8FDF3" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Themes</span>
+                        <span class="iv-megamenu__meta">4 presets</span>
+                      </a></li>
+                    </ul>
+                  </div>
+                  <div class="iv-megamenu__set" id="nav-mm-platform-set-1" role="tabpanel" aria-labelledby="nav-mm-platform-tab-1" hidden>
+                    <ul class="iv-megamenu__cards">
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm4" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#030806"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm4)"/><rect x="56" y="44" width="208" height="112" rx="10" fill="none" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M88 124h64M88 100h144M88 76h104" stroke="#C6F9E1" stroke-opacity=".65" stroke-width="6" stroke-linecap="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Bundles</span>
+                        <span class="iv-megamenu__meta">2 entries</span>
+                      </a></li>
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm5" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm5)"/><circle cx="160" cy="100" r="58" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="160" cy="100" r="22" fill="#29F59A" fill-opacity=".3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Budgets</span>
+                        <span class="iv-megamenu__meta">2 ceilings</span>
+                      </a></li>
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm6" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#12201A"/><stop offset="1" stop-color="#0B8A55"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm6)"/><path d="M-10 170 90 92l70 52 80-66 100 74v50H-10z" fill="#030806" fill-opacity=".7"/><circle cx="246" cy="48" r="26" fill="#C6F9E1" fill-opacity=".85"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Checks</span>
+                        <span class="iv-megamenu__meta">3 engines</span>
+                      </a></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
+              <footer class="iv-megamenu__foot">
+                <span class="iv-megamenu__crumb">Vantage <b aria-hidden="true">/</b> Platform</span>
+                <a class="iv-megamenu__foot-link" href="#nav-mm-note">Open the sample</a>
+                <p class="iv-megamenu__status" aria-hidden="true"><span class="iv-megamenu__prompt">vantage:~$</span><span class="iv-megamenu__cmd">ls /platform</span><span class="iv-megamenu__caret-blink"></span><span class="iv-megamenu__hint">Esc to close</span></p>
+              </footer>
+            </section>
           </li>
           <li class="iv-megamenu__item">
             <a class="iv-megamenu__link" href="#nav-mm-note">Resources</a>
             <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="nav-mm-resources" hidden><span class="iv-u-sr-only">Open Resources</span></button>
-            <div class="iv-megamenu__panel" id="nav-mm-resources">
-              <div class="iv-megamenu__inner">
-                <section class="iv-megamenu__group">
-                  <h3 class="iv-megamenu__heading">Learn</h3>
-                  <ul class="iv-megamenu__links">
-                    <li><a href="#nav-mm-note">Guides</a></li>
-                    <li><a href="#nav-mm-note">Recipes</a></li>
-                    <li><a href="#nav-mm-note">Field notes</a></li>
+            <section class="iv-megamenu__panel" id="nav-mm-resources" aria-labelledby="nav-mm-resources-title">
+              <header class="iv-megamenu__head">
+                <p class="iv-megamenu__overline">Explore the library</p>
+                <h2 class="iv-megamenu__title" id="nav-mm-resources-title">Resources <span class="iv-megamenu__count">38 pages</span></h2>
+                <p class="iv-megamenu__tagline">Fictional library, fictional dates.</p>
+                <button class="iv-megamenu__close" type="button" aria-label="Close Resources" hidden></button>
+              </header>
+              <div class="iv-megamenu__body">
+                <aside class="iv-megamenu__directory">
+                  <h3 class="iv-megamenu__heading">Where to start</h3>
+                  <ul class="iv-megamenu__dirlist">
+                    <li><a href="#nav-mm-note"><span>Guides</span><small>12</small></a></li>
+                    <li><a href="#nav-mm-note"><span>Recipes</span><small>5</small></a></li>
+                    <li><a href="#nav-mm-note"><span>Field notes</span><small>21</small></a></li>
                   </ul>
-                </section>
-                <footer class="iv-megamenu__bottom">
-                  <p class="iv-u-m-0">Fictional library, fictional dates.</p>
-                  <a class="iv-button iv-button--primary iv-button--sm" href="#nav-mm-note">Open the sample</a>
-                </footer>
+                  <a class="iv-megamenu__all" href="#nav-mm-note">Browse the sample</a>
+                </aside>
+                <div class="iv-megamenu__discover">
+                  <div class="iv-megamenu__tabs" role="tablist" aria-label="Resources selections">
+                    <a class="iv-megamenu__tab" role="tab" id="nav-mm-resources-tab-0" href="#nav-mm-resources-set-0" aria-selected="true">Learn</a>
+                    <a class="iv-megamenu__tab" role="tab" id="nav-mm-resources-tab-1" href="#nav-mm-resources-set-1" aria-selected="false">Watch</a>
+                  </div>
+                  <div class="iv-megamenu__set" id="nav-mm-resources-set-0" role="tabpanel" aria-labelledby="nav-mm-resources-tab-0">
+                    <ul class="iv-megamenu__cards">
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm7" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#04301F"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm7)"/><path d="M16 200 160 24l144 176z" fill="#29F59A" fill-opacity=".24"/><path d="M108 200 160 120l52 80z" fill="#E8FDF3" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Guides</span>
+                        <span class="iv-megamenu__meta">12 pages</span>
+                      </a></li>
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm8" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#030806"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm8)"/><rect x="56" y="44" width="208" height="112" rx="10" fill="none" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M88 124h64M88 100h144M88 76h104" stroke="#C6F9E1" stroke-opacity=".65" stroke-width="6" stroke-linecap="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Recipes</span>
+                        <span class="iv-megamenu__meta">5 samples</span>
+                      </a></li>
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm9" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04301F"/><stop offset="1" stop-color="#081310"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm9)"/><circle cx="160" cy="100" r="58" fill="none" stroke="#29F59A" stroke-opacity=".7" stroke-width="3"/><circle cx="160" cy="100" r="22" fill="#29F59A" fill-opacity=".3"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Field notes</span>
+                        <span class="iv-megamenu__meta">21 posts</span>
+                      </a></li>
+                    </ul>
+                  </div>
+                  <div class="iv-megamenu__set" id="nav-mm-resources-set-1" role="tabpanel" aria-labelledby="nav-mm-resources-tab-1" hidden>
+                    <ul class="iv-megamenu__cards">
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm10" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#12201A"/><stop offset="1" stop-color="#0B8A55"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm10)"/><path d="M-10 170 90 92l70 52 80-66 100 74v50H-10z" fill="#030806" fill-opacity=".7"/><circle cx="246" cy="48" r="26" fill="#C6F9E1" fill-opacity=".85"/></svg><span class="iv-megamenu__rank" aria-hidden="true">01</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Walkthroughs</span>
+                        <span class="iv-megamenu__meta">7 clips</span>
+                      </a></li>
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm11" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1D5FB8"/><stop offset="1" stop-color="#04301F"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm11)"/><path d="M16 200 160 24l144 176z" fill="#29F59A" fill-opacity=".24"/><path d="M108 200 160 120l52 80z" fill="#E8FDF3" fill-opacity=".55"/></svg><span class="iv-megamenu__rank" aria-hidden="true">02</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Sessions</span>
+                        <span class="iv-megamenu__meta">4 clips</span>
+                      </a></li>
+                      <li><a class="iv-megamenu__card" href="#nav-mm-note">
+                        <span class="iv-megamenu__art"><svg viewBox="0 0 320 200" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="nmm12" x1="0" y1="0" x2="320" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0A6A43"/><stop offset="1" stop-color="#030806"/></linearGradient></defs><rect width="320" height="200" fill="url(#nmm12)"/><rect x="56" y="44" width="208" height="112" rx="10" fill="none" stroke="#29F59A" stroke-opacity=".6" stroke-width="3"/><path d="M88 124h64M88 100h144M88 76h104" stroke="#C6F9E1" stroke-opacity=".65" stroke-width="6" stroke-linecap="round"/></svg><span class="iv-megamenu__rank" aria-hidden="true">03</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                        <span class="iv-megamenu__name">Talks</span>
+                        <span class="iv-megamenu__meta">3 clips</span>
+                      </a></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div>
+              <footer class="iv-megamenu__foot">
+                <span class="iv-megamenu__crumb">Vantage <b aria-hidden="true">/</b> Resources</span>
+                <a class="iv-megamenu__foot-link" href="#nav-mm-note">Open the sample</a>
+                <p class="iv-megamenu__status" aria-hidden="true"><span class="iv-megamenu__prompt">vantage:~$</span><span class="iv-megamenu__cmd">ls /resources</span><span class="iv-megamenu__caret-blink"></span><span class="iv-megamenu__hint">Esc to close</span></p>
+              </footer>
+            </section>
           </li>
           <li class="iv-megamenu__item">
             <a class="iv-megamenu__link" href="#nav-mm-note">Pricing</a>
@@ -75,7 +172,7 @@
     </div>
   </div>
 </header>
-<p id="nav-mm-note">Sample header with a megamenu inside its panel: every link points to this note, nothing is signed in and nothing is bought. The menu runs without its page overlay: inside a header the bar is already the elevated surface, and a scrim under it would dim the header itself. From the <code>lg</code> breakpoint upwards the megamenu panels float under the whole bar; below it, the navbar folds and the same panels behave as an accordion inside it.</p>
+<p id="nav-mm-note">Sample header with a megamenu inside its panel: every link points to this note, nothing is signed in and nothing is bought. The panel is capped at <code>56rem</code> through <code>--iv-megamenu-width</code>, because inside a header the bar is not centred on the page and a full-width panel would hang off the viewport. The menu runs without its page overlay: inside a header the bar is already the elevated surface, and a scrim under it would dim the header itself. From the <code>lg</code> breakpoint upwards the megamenu panels float under the whole bar; below it, the navbar folds and the same panels behave as an accordion inside it.</p>
 <!-- The filler is a screen and a half tall on purpose: a sticky header needs something to scroll over. -->
 <section id="nav-mm-scroll" class="iv-stack" style="min-block-size: 150vh">
   <h2>Room to scroll</h2>
