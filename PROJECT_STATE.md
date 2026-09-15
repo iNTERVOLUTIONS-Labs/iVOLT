@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-15 · Ciclos **v0.8 «Hardening» y v0.9 «Complete» cerrados** → `0.9.0-beta.0` (`ROADMAP.md` §11, ADR-044/045/046); siguiente: `1.0.0-rc.0` · `0.7.0-beta.0` publicada en npm el 2026-09-14 (`beta`, ADR-043); 0.8 sin publicar; nada desplegado
+Última actualización: 2026-09-15 · **`1.0.0-rc.0` preparada y verificada** (contrato congelado para 1.0, `ROADMAP.md` §11); v0.8 y v0.9 cerrados el mismo día (ADR-044/045/046); publicación del rc pendiente del OTP o token del propietario · `0.7.0-beta.0` publicada en npm el 2026-09-14 (`beta`, ADR-043); 0.8 sin publicar; nada desplegado
 
 ## Estado por fase e hito
 
@@ -11,7 +11,8 @@
 | v0.6 «Structure» (§9, ADR-041) | cerrado, no publicado | tokens con nombre, navbar, stepper, toast declarativo, timeline/stat/avatar; 94 páginas en dos idiomas; gate en tres motores |
 | v0.7 «Media & motion» (§10, ADR-042) | cerrado y publicado (`npm install @intervolutions/ivolt@beta`) |
 | v0.8 «Hardening» (§11, ADR-044/045) | cerrado, sin publicar |
-| **v0.9 «Complete»** (§11, ADR-046) | cerrado, sin publicar | `verify` exit 0 en la segunda pasada (la primera dejó una prueba de la marquesina en WebKit que apuntaba el puntero a la pista en movimiento; ahora apunta a la ventana): 1008 unitarias · 1580 pruebas de navegador y 139 omitidas en tres motores · pack-smoke (`0.9.0-beta.0.tgz`, 134 archivos) · 108 páginas · 5 ejemplos | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
+| v0.9 «Complete» (§11, ADR-046) | cerrado, sin publicar |
+| **`1.0.0-rc.0`** (§11) | verificada, sin publicar: gate exit 0 (1008 unitarias, 1580 navegador × 3 motores, pack-smoke 134 archivos, 108 páginas), Lighthouse 97/100 home y 98/100 receta, 30 capturas finales en tres anchos y dos temas | contrato congelado (`API_CONTRACT.md` cabecera), `STABILITY.md`, changelog consolidado 0.1 → 1.0, avisos «release candidate» en la web | `verify` exit 0 en la segunda pasada (la primera dejó una prueba de la marquesina en WebKit que apuntaba el puntero a la pista en movimiento; ahora apunta a la ventana): 1008 unitarias · 1580 pruebas de navegador y 139 omitidas en tres motores · pack-smoke (`0.9.0-beta.0.tgz`, 134 archivos) · 108 páginas · 5 ejemplos | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
 
 ## Petición del propietario que abrió estos ciclos (2026-09-14)
 
@@ -80,7 +81,7 @@ Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title`
 
 ## Siguiente acción
 
-`1.0.0-rc.0` (`ROADMAP.md` §11): congelar el contrato para 1.0, changelog consolidado, avisos «release candidate» en la web, gate y capturas finales, publicación con etiqueta `next` (requiere OTP o token del propietario). Revisión del propietario de v0.6 y v0.7 con la web construida (`npm run build && npm run dev:docs`): navbar, stepper, bloques de contenido, galería y visor, movimiento, texto, contador y la receta «showcase» (`/examples/showcase/index.html`). Candidatos para 0.8 en `ROADMAP.md` §8 y §10 (relevo por tarjeta en la baraja, tokens pendientes, `Picker` con etiqueta hermana, decisión sobre el presupuesto de JS o la importación por módulo, servir a la home solo los módulos que usa). La web sigue sin desplegar (solo con autorización).
+Publicar `1.0.0-rc.0` con `npm publish --access public --tag next -w @intervolutions/ivolt` (requiere OTP o token del propietario; `latest` sigue en `0.7.0-beta.0`), etiqueta git `v1.0.0-rc.0`, página de inicio con `@next`. Después: revisión del propietario del candidato y, sin hallazgos, `1.0.0`. Revisión del propietario de v0.6 y v0.7 con la web construida (`npm run build && npm run dev:docs`): navbar, stepper, bloques de contenido, galería y visor, movimiento, texto, contador y la receta «showcase» (`/examples/showcase/index.html`). Candidatos para 0.8 en `ROADMAP.md` §8 y §10 (relevo por tarjeta en la baraja, tokens pendientes, `Picker` con etiqueta hermana, decisión sobre el presupuesto de JS o la importación por módulo, servir a la home solo los módulos que usa). La web sigue sin desplegar (solo con autorización).
 
 ## Decisiones que no deben perderse
 

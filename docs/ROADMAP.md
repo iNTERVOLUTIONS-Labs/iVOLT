@@ -187,6 +187,6 @@ Petición del propietario: «sigue hasta 1.0 release candidate». Un candidato a
 
 | Orden | Elemento | Notas |
 |---|---|---|
-| 1 | Congelación del contrato para 1.0 (`API_CONTRACT.md` cabecera), changelog consolidado 0.1 → 1.0, avisos de la web «release candidate» | sin cambios de API salvo correcciones |
-| 2 | Gate completo, Lighthouse, revisión final de capturas en tres anchos y dos temas | |
+| 1 | Congelación del contrato para 1.0 (`API_CONTRACT.md` cabecera), changelog consolidado 0.1 → 1.0, avisos de la web «release candidate» | hecho (2026-09-15) |
+| 2 | Gate completo, Lighthouse, revisión final de capturas en tres anchos y dos temas | hecho (2026-09-15): `verify` exit 0 (1008 unitarias, 1580 navegador en tres motores), Lighthouse 97/100 home y 98/100 receta, 30 capturas |
 | 3 | Publicación `1.0.0-rc.0` con etiqueta `next` (requiere OTP del propietario) y etiqueta git | `latest` sigue en la beta hasta 1.0.0 |

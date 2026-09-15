@@ -2,6 +2,20 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 1.0.0-rc.0 (unreleased; release candidate)
+
+The contract of `docs/API_CONTRACT.md` is frozen for 1.0 and `docs/STABILITY.md` says what is public and how it changes. Nothing new lands before 1.0.0, only fixes. What 1.0 ships, cycle by cycle:
+
+- 0.1 — tokens, themes, base, layout, utilities matrix, button, card, form, dialog, badge, alert, table, breadcrumb, pagination, progress, skeleton, disclosure, tabs, dropdown, drawer, toast.
+- 0.2 — combobox, data table, Spanish documentation.
+- 0.3 — carousel, picker, form validation and counter, surfaces (glass, grain, mesh, aurora, glow).
+- 0.4 — megamenu, edge effects with proximity and reveal, hero.
+- 0.5 — datepicker, tooltip, popover, command palette, theme builder.
+- 0.6 — navbar, stepper, timeline, stat, avatar, declarative toasts, the expressive-layer tokens.
+- 0.7 — lightbox, scroll motion with a JavaScript fallback, text effects, countup, the showcase recipe.
+- 0.8 — hardening: destroy restores the served DOM, focus chosen correctly, right-to-left, forced colours, print, 320 px.
+- 0.9 — card-by-card stack relay, sibling labels in the picker, the flat stylesheet equal to the layered one, every string an option, generated reference, localisation and stability pages.
+
 ## 0.9.0-beta.0 (unreleased)
 
 ### Changed

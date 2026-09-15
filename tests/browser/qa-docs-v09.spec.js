@@ -37,9 +37,9 @@ test.describe("Docs v0.9", () => {
         expect(await page.locator(`.docs-sidebar a[href="${href}"], .docs-sitemap a[href="${href}"]`).count(), `${home} links ${href}`).toBeGreaterThan(0);
       }
       await expect(page.locator(".docs-footer__links"), `${home} footer stability link`).toContainText(home === "/es" ? "Estabilidad" : "Stability");
-      await expect(page.locator(".docs-footer__inner"), `${home} version`).toContainText("v0.9 beta");
-      await expect(page.locator(".docs-footer__inner"), `${home} beta notice`).toContainText("0.9.0");
-      await expect(page.locator(".docs-invert__foot"), `${home} home notice`).toContainText("0.9");
+      await expect(page.locator(".docs-footer__inner"), `${home} version`).toContainText("v1.0.0-rc.0");
+      await expect(page.locator(".docs-footer__inner"), `${home} beta notice`).toContainText("1.0.0");
+      await expect(page.locator(".docs-invert__foot"), `${home} home notice`).toContainText("1.0");
     }
   });
 

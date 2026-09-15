@@ -112,9 +112,9 @@ test.describe("Docs v0.6", () => {
         await expect(page.locator(`#docs-mm-components a[href="${href}"]`), `header menu misses ${href}`).toHaveCount(1);
         await expect(page.locator(`.docs-sitemap a[href="${href}"]`), `site map misses ${href}`).toHaveCount(1);
       }
-      // The beta notice and the footer follow the current cycle (0.9 in this cycle), not the previous one.
-      await expect(page.locator(".docs-footer__inner")).toContainText("v0.9");
-      await expect(page.locator(".docs-footer__inner")).toContainText("0.9.0");
+      // The notice and the footer follow the current version (the 1.0 release candidate).
+      await expect(page.locator(".docs-footer__inner")).toContainText("v1.0.0-rc.0");
+      await expect(page.locator(".docs-footer__inner")).toContainText("1.0.0");
     }
   });
 

@@ -285,3 +285,16 @@ Mismo método (Lighthouse 13.4.1, HeadlessChrome, build del gate `verify` en 432
 | `/examples/showcase/index.html` | escritorio | 100 | 100 | 100 | 100 | 748 ms | 0 | 0 ms | 385 ms |
 
 Sin cambios de nota en la home (ADR-046 mantiene la hoja completa); la receta sube a 99/100.
+
+## `1.0.0-rc.0` — medición del candidato (2026-09-15)
+
+Mismo método (Lighthouse 13.4.1, HeadlessChrome, build del gate `verify` en 4327, una pasada por ruta y preajuste).
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS | TBT | Speed Index |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 97 | 100 | 100 | 100 | 2377 ms | 0 | 11 ms | 1588 ms |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 521 ms | 0 | 0 ms | 389 ms |
+| `/es` | móvil | 97 | 100 | 100 | 100 | 2359 ms | 0 | 0 ms | 1587 ms |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 521 ms | 0 | 0 ms | 387 ms |
+| `/examples/showcase/index.html` | móvil | 98 | 100 | 100 | 100 | 2258 ms | 0 | 0 ms | 1305 ms |
+| `/examples/showcase/index.html` | escritorio | 100 | 100 | 100 | 100 | 748 ms | 0 | 0 ms | 372 ms |
