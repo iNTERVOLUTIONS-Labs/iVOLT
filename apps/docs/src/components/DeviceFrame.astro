@@ -1,0 +1,19 @@
+---
+// A recipe shown in a device frame. The screenshot is generated at build time by
+// apps/docs/scripts/build-shots.mjs; when the recipe has not been built yet the frame stays
+// empty and says so, because an invented picture of a page that does not exist is a lie.
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
+import { repoRoot } from "../lib/fixtures.js";
+const { slug, title, href, device = "desktop", alt, missing = "Not built yet" } = Astro.props;
+const file = `/shots/${slug}-${device === "phone" ? "390" : "1440"}.png`;
+const has = existsSync(resolve(repoRoot(), "apps/docs/public", file.slice(1)));
+const size = device === "phone" ? { w: 390, h: 844 } : { w: 1440, h: 900 };
+---
+<div class:list={["docs-device", `docs-device--${device}`]}>
+  <span class="docs-device__bar" aria-hidden="true"></span>
+  {has
+    ? <img class="docs-device__shot" src={file} width={size.w} height={size.h} alt={alt || `${title}, ${device === "phone" ? "on a phone" : "on a desktop"}`} loading="lazy" decoding="async">
+    : <span class="docs-device__empty">{missing}</span>}
+  {href && <a class="docs-device__link" href={href}><span class="iv-u-sr-only">{title}</span></a>}
+</div>

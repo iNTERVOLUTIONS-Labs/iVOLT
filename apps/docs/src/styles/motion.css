@@ -12,5 +12,8 @@
   .docs-fixture__code::after { opacity: 0; }
   .docs-lockup__line { opacity: 0; }
   .docs-meter__fill { transform: scaleX(var(--docs-scroll, 0)); }
+  .docs-stage__screen { transition: none; }
+  .docs-code__copy { opacity: 1; }
+  .docs-code-block .docs-copy { opacity: 1; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
 }

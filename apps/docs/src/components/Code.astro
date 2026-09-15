@@ -1,0 +1,29 @@
+---
+// A code block with the luminous top edge, an optional row of tabs and a copy button.
+// One or more panels: { key, label, code }. With a single panel the tabs are not drawn.
+import { t as en } from "../i18n/en.js";
+import { t as es } from "../i18n/es.js";
+const { panels = [], label = "", id, copy = true, tabs: tabsClass = "docs-code__tabs" } = Astro.props;
+const lang = Astro.url.pathname === "/es" || Astro.url.pathname.startsWith("/es/") ? "es" : "en";
+const t = lang === "es" ? es : en;
+const list = panels.filter((p) => p && p.code);
+const base = id || `code-${Math.abs([...label].reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 7))}`;
+---
+{list.length > 0 && (
+  <div class="docs-code-block" data-code-block>
+    {list.length > 1 && (
+      <div class={tabsClass} role="tablist" aria-label={label} data-code-tabs>
+        {list.map((p, i) => (
+          <button class="docs-code__tab" type="button" role="tab" id={`${base}-tab-${p.key}`} aria-controls={`${base}-panel-${p.key}`} aria-selected={String(i === 0)} tabindex={i === 0 ? "0" : "-1"}>{p.label}</button>
+        ))}
+      </div>
+    )}
+    {list.map((p, i) => (
+      <div class="docs-code__panel" id={`${base}-panel-${p.key}`} role={list.length > 1 ? "tabpanel" : undefined} aria-labelledby={list.length > 1 ? `${base}-tab-${p.key}` : undefined} data-code-panel={p.key}>
+        <pre tabindex="0" aria-label={`${p.label}${label ? ` — ${label}` : ""}`}><code id={`${base}-code-${p.key}`}>{p.code}</code></pre>
+        {copy && <button class="iv-button iv-button--secondary iv-button--sm docs-copy docs-code__copy" type="button" data-copy-target={`${base}-code-${p.key}`} aria-describedby={`${base}-status-${p.key}`}>{t.copyCode}</button>}
+        {copy && <span class="iv-u-sr-only" id={`${base}-status-${p.key}`} role="status" aria-live="polite"></span>}
+      </div>
+    ))}
+  </div>
+)}

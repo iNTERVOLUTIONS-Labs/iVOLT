@@ -1,23 +1,23 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Stage from "../../components/Stage.astro";
 ---
 <Base title="Navbar" description="iVOLT navbar: a site header with brand, links and actions that folds into a panel on narrow screens, sticks and condenses on scroll, and serves every link without JavaScript.">
   <article class="docs-prose">
     <h1>Navbar</h1>
     <p>The header of a site: brand, links, actions and, on narrow screens, a panel that folds. The server sends it working — above the collapse breakpoint it is a bar, below it the panel is served open and stacked under the brand, so no link is ever out of reach. On <code>init</code> the burger appears, the panel folds, Escape and a click outside close it, and a sticky header condenses once the page scrolls. It is not a drawer: the panel is content in the flow, it traps no focus and never locks the page.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/navbar.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/navbar</code> or <code>auto.js</code>. Added in v0.6.</p>
-    <Fixture name="navbar/basic" title="Sticky header" viewport="30rem" />
+    <Stage primary name="navbar/basic" title="Sticky header"/>
     <div class="docs-note">
       <span class="docs-note__title">Reading this page</span>
-      <p>Each header below lives in its own scroll port, so the filler that a sticky header needs does not add three screens to this article. Scroll inside a preview to see the bar hold its place. The condensed state reads the scroll position of the document, not of the port, so on this page the bars are already condensed by the time you reach them; open <code>fixtures/navbar/basic.html</code> on its own to watch the transition.</p>
+      <p>Each header below runs in a page of its own, embedded here: the bar sticks, condenses and folds against that page, not against this article. Scroll inside a stage to watch the bar hold its place, change its width to 390 to see it fold, or open it alone from the bar above it.</p>
     </div>
     <h2>A megamenu inside the panel</h2>
     <p>A <a href="/components/megamenu">megamenu</a> can live inside <code>iv-navbar__panel</code>. From the <code>lg</code> breakpoint up its panels float under the whole bar; below it the navbar folds and the same panels behave as an accordion inside it. Pass <code>data-iv-overlay="false"</code> to the hosted menu: inside a header the bar is already the raised surface, and a scrim under it would dim the header itself.</p>
-    <Fixture name="navbar/megamenu" title="Navbar hosting a megamenu" viewport="34rem" />
+    <Stage name="navbar/megamenu" title="Navbar hosting a megamenu"/>
     <h2>Transparent over a cover</h2>
     <p><code>iv-navbar--transparent</code> drops the background and borrows light text while the header sits over a hero; the moment it condenses or its panel opens, the surface and the page colours come back, because a transparent bar over content is unreadable. <code>iv-navbar--glass</code> keeps the blurred surface at every scroll position, and <code>iv-navbar--center</code> centres the links with the actions at the end.</p>
-    <Fixture name="navbar/transparent" title="Transparent over a cover" viewport="34rem" />
+    <Stage name="navbar/transparent" title="Transparent over a cover"/>
     <h2>Options</h2>
     <div class="docs-scroller">
       <table>

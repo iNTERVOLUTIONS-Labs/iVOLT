@@ -5,7 +5,7 @@ import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 const root = resolve(fileURLToPath(new URL("../../..", import.meta.url)));
-for (const s of ["scripts/ensure-dist.mjs", "scripts/sync-examples.mjs", "scripts/build-downloads.mjs", "scripts/build-og.mjs", "scripts/build-reference.mjs"]) {
+for (const s of ["scripts/ensure-dist.mjs", "scripts/sync-examples.mjs", "scripts/build-downloads.mjs", "scripts/build-og.mjs", "scripts/build-reference.mjs", "apps/docs/scripts/build-shots.mjs"]) {
   const file = resolve(root, s);
   if (!existsSync(file)) { console.warn(`prebuild: ${s} not found, skipped`); continue; }
   execFileSync(process.execPath, [file], { stdio: "inherit", cwd: root });

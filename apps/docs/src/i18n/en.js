@@ -46,6 +46,22 @@ export const t = {
   copiedStatus: "HTML copied to clipboard",
   selected: "Selected — press Ctrl+C",
   selectedStatus: "Clipboard unavailable; code selected for manual copy",
+  // The live stage (round 3): a fixture running in its own page with real controls over it.
+  tableScroll: "Table, scrollable",
+  stageOpen: "Open alone",
+  stageDirection: "Text direction",
+  stageWidth: "Stage width",
+  stageWidthPhone: "Phone, 390 pixels",
+  stageWidthTablet: "Tablet, 768 pixels",
+  stageWidthFull: "Full width",
+  stageMotion: "Reduced motion",
+  stageFlat: "Flat sheet",
+  stageFrame: (title) => `${title}, running live`,
+  stageSource: (title) => `Source of ${title}`,
+  stageTabHtml: "HTML",
+  stageTabCss: "CSS locals",
+  stageTabJs: "JS options",
+  stageHint: "Change the theme, the direction, the width or the motion of the example itself.",
 };
 export const nav = [
   { group: "Start", items: [

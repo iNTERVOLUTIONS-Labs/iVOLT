@@ -1,3 +1,5 @@
+// Fixture-level CSS audit rescued from qa-docs-css.spec.js when the documentation suite was
+// rewritten (round 3): it asserts the package stylesheet, not the site, and its coverage stays.
 // Adversarial review of the CSS that needs no JavaScript: hostile content, crowded input groups and
 // forced colours. These run against the fixture server on 4180 (the Playwright baseURL).
 import { test, expect } from "@playwright/test";

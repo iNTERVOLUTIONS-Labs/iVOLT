@@ -46,6 +46,22 @@ export const t = {
   copiedStatus: "HTML copiado al portapapeles",
   selected: "Seleccionado — pulsa Ctrl+C",
   selectedStatus: "Portapapeles no disponible; código seleccionado para copiarlo a mano",
+  // El escenario vivo (ronda 3): una fixture corriendo en su propia página con controles reales.
+  tableScroll: "Tabla, desplazable",
+  stageOpen: "Abrir sola",
+  stageDirection: "Dirección del texto",
+  stageWidth: "Ancho del escenario",
+  stageWidthPhone: "Móvil, 390 píxeles",
+  stageWidthTablet: "Tableta, 768 píxeles",
+  stageWidthFull: "Ancho completo",
+  stageMotion: "Movimiento reducido",
+  stageFlat: "Hoja plana",
+  stageFrame: (title) => `${title}, funcionando en vivo`,
+  stageSource: (title) => `Código de ${title}`,
+  stageTabHtml: "HTML",
+  stageTabCss: "Locales CSS",
+  stageTabJs: "Opciones JS",
+  stageHint: "Cambia el tema, la dirección, el ancho o el movimiento del propio ejemplo.",
 };
 // Nombre en español de cada familia de componentes, en el orden de la navegación. Lo usan
 // la barra lateral y la portada; las claves son las mismas que las de `families` en en.js.

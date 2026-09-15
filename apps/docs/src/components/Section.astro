@@ -1,0 +1,14 @@
+---
+// A section of an interior page: an outlined numeral, a conductor fillet and the heading at the
+// display scale of DIRECTION_R3 §4. The heading is a real <h2>, so the anchors, the table of
+// contents and the contract test keep working exactly as they do on an unmigrated page.
+const { title, id, num, lead } = Astro.props;
+---
+<section class="docs-sec" id={id ? `sec-${id}` : undefined}>
+  <div class="docs-sec__head">
+    {num && <span class="docs-sec__num" aria-hidden="true">{String(num).padStart(2, "0")}</span>}
+    <h2 id={id}>{title}</h2>
+  </div>
+  {lead && <p class="docs-sec__lead">{lead}</p>}
+  <slot />
+</section>

@@ -1,6 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Stage from "../../components/Stage.astro";
 import tokens from "@intervolutions/ivolt/tokens.json";
 const val = (k, mode) => { const v = tokens[k].value; return typeof v === "string" ? v : v[mode]; };
 const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color-") && !k.startsWith("--iv-palette"));
@@ -18,7 +18,7 @@ const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color
 
     <h2>Themes</h2>
     <p><code>data-iv-theme</code> accepts <code>light</code> (default when absent), <code>dark</code> and <code>system</code>. Scopes nest and the nearest explicit value wins; <code>system</code> follows <code>prefers-color-scheme</code> without JavaScript or storage.</p>
-    <Fixture name="theme/nested" title="Nested scopes" />
+    <Stage primary name="theme/nested" title="Nested scopes" />
     <p>The optional <code>theme</code> module adds <code>getTheme()</code>, <code>setTheme(theme, &#123; persist &#125;)</code>, <code>resolveTheme()</code> and <code>restoreTheme()</code>, and dispatches <code>iv:themechange</code> on <code>document</code>. Persistence is opt-in. To avoid a flash before the stored theme applies, add a tiny inline script in <code>&lt;head&gt;</code>; with a strict CSP allow it by hash or nonce.</p>
 
     <h2>Semantic colours</h2>

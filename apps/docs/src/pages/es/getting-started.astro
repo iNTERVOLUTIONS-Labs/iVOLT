@@ -1,59 +1,79 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Code from "../../components/Code.astro";
+import Stage from "../../components/Stage.astro";
+import { readFileSync, existsSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+// La versión de esta página es la versión que hay en disco: una línea de instalación escrita a mano envejece.
+let dir = process.cwd();
+while (!existsSync(resolve(dir, "packages/ivolt/package.json")) && dirname(dir) !== dir) dir = dirname(dir);
+const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.json"), "utf8")).version;
+const tag = /-rc/.test(version) ? "next" : /beta/.test(version) ? "beta" : "latest";
 ---
 <Base lang="es" title="Primeros pasos" description="Usa iVOLT desde archivos locales sin paso de compilación, o como módulos ES con exports reales del paquete. Navegadores admitidos y convivencia con tu CSS.">
   <article class="docs-prose">
     <h1>Primeros pasos</h1>
-    <p>iVOLT se distribuye como CSS y JavaScript ya compilados. El paquete está publicado en npm como beta bajo la etiqueta <code>beta</code>; también puedes construirlo desde el repositorio.</p>
+    <p>iVOLT se distribuye como CSS y JavaScript ya compilados. Con dos archivos basta: una hoja de estilo y un módulo. No hay paso de compilación, ni archivo de configuración, ni dependencias en ejecución.</p>
+    <p class="docs-meta"><strong>Versión:</strong> <code>{version}</code>. <strong>Licencia:</strong> MIT. <strong>Motores probados:</strong> Chromium, Firefox, WebKit.</p>
 
-    <h2>Instalar desde npm</h2>
-<pre><code>npm install @intervolutions/ivolt@beta</code></pre>
-    <p>Beta: los contratos están congelados para el ciclo y los detalles pueden cambiar antes de <code>0.7.0</code>. Fija la versión exacta en producción.</p>
+    <Stage primary name="button/variants" title="El framework, funcionando en su propia página" />
 
-    <h2>Compila el paquete</h2>
-<pre><code>git clone https://github.com/iNTERVOLUTIONS-Labs/iVOLT
+    <Section title="Instalar desde npm" lead="La candidata a versión se publica bajo la etiqueta next; el contrato de 1.0 está congelado y antes solo entran correcciones.">
+      <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `npm install @intervolutions/ivolt@${tag}` }]} />
+      <p>Fija la versión exacta en producción. Qué es público y cómo puede cambiar está escrito en <a href="/es/foundations/stability">estabilidad</a>.</p>
+    </Section>
+
+    <Section title="Compila el paquete" lead="Desde un clon, los mismos archivos que sirve el registro.">
+      <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `git clone https://github.com/iNTERVOLUTIONS-Labs/iVOLT
 cd iVOLT
 npm ci
-npm run build          # escribe packages/ivolt/dist</code></pre>
+npm run build          # escribe packages/ivolt/dist` }]} />
+    </Section>
 
-    <h2>HTML plano, sin Node</h2>
-    <p>Copia <code>packages/ivolt/dist</code> dentro de tu proyecto (la plantilla inicial llama a la carpeta <code>ivolt/</code>) y enlaza los archivos. Añade la clase <code>iv-root</code> allí donde deba aplicarse la tipografía base: en <code>&lt;html&gt;</code> para una página entera, o en un contenedor cuando lo integres en un sitio existente.</p>
-<pre><code>&lt;!DOCTYPE html&gt;
-&lt;html lang="es" class="iv-root" data-iv-theme="system"&gt;
-&lt;head&gt;
-  &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
-  &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;
-&lt;/head&gt;</code></pre>
-    <p>¿Prefieres un script clásico? <code>ivolt/js/ivolt.iife.min.js</code> expone un único global, <code>IVOLT</code>, y no inicializa nada hasta que llamas a <code>IVOLT.init()</code>.</p>
+    <Section title="HTML plano, sin Node" lead="Copia packages/ivolt/dist junto a tu página y enlaza los archivos.">
+      <p>Añade la clase <code>iv-root</code> allí donde deba aplicarse la tipografía base: en <code>&lt;html&gt;</code> para una página entera, o en un contenedor cuando lo integres en un sitio existente.</p>
+      <Code label="index.html" panels={[{ key: "src", label: "INDEX.HTML", code: `<!DOCTYPE html>
+<html lang="es" class="iv-root" data-iv-theme="system">
+<head>
+  <link rel="stylesheet" href="ivolt/css/ivolt.min.css">
+  <script type="module" src="ivolt/js/auto.js"></script>
+</head>` }]} />
+      <p>¿Prefieres un script clásico? <code>ivolt/js/ivolt.iife.min.js</code> expone un único global, <code>IVOLT</code>, y no inicializa nada hasta que llamas a <code>IVOLT.init()</code>.</p>
+    </Section>
 
-    <h2>Módulos ES con un empaquetador</h2>
-    <p>Instala el paquete desde npm (arriba) o, desde un clon, un tarball creado con <code>npm pack</code> dentro de <code>packages/ivolt</code>. Los <code>exports</code> del paquete son la API pública; las rutas profundas dentro de <code>dist/</code> no lo son.</p>
-<pre><code>import "@intervolutions/ivolt/css/ivolt.css";
-import &#123; init, Dialog &#125; from "@intervolutions/ivolt";
-import &#123; setTheme &#125; from "@intervolutions/ivolt/theme";
+    <Section title="Módulos ES con un empaquetador" lead="Los exports del paquete son la API pública; las rutas profundas dentro de dist/ no lo son.">
+      <Code label="javascript" panels={[{ key: "src", label: "JAVASCRIPT", code: `import "@intervolutions/ivolt/css/ivolt.css";
+import { init, Dialog } from "@intervolutions/ivolt";
+import { setTheme } from "@intervolutions/ivolt/theme";
 
 init(document);                       // explícito e idempotente
-const dialog = Dialog.get(document.querySelector("#signup"));</code></pre>
-    <p>Importar <code>@intervolutions/ivolt</code> no tiene efectos secundarios; solo <code>@intervolutions/ivolt/auto</code> inicializa al cargar. Los módulos nunca tocan <code>document</code> en el momento de importarlos, así que son seguros en renderizado en servidor.</p>
+const dialog = Dialog.get(document.querySelector("#signup"));` }]} />
+      <p>Importar <code>@intervolutions/ivolt</code> no tiene efectos secundarios; solo <code>@intervolutions/ivolt/auto</code> inicializa al cargar. Los módulos nunca tocan <code>document</code> en el momento de importarlos, así que son seguros en renderizado en servidor.</p>
+    </Section>
 
-    <h2>Elige el CSS que necesitas</h2>
-    <div class="docs-scroller">
-      <table>
-        <thead><tr><th>Archivo</th><th>Contiene</th></tr></thead>
-        <tbody>
-          <tr><td><code>css/ivolt.css</code></td><td>Todo, organizado en capas de cascada <code>iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides</code>.</td></tr>
-          <tr><td><code>css/ivolt.flat.css</code></td><td>Las mismas reglas sin <code>@layer</code>, para sitios cuyo CSS no está en capas y tiene que seguir compitiendo por especificidad.</td></tr>
-          <tr><td><code>css/core.css</code></td><td>Solo tokens, base y maquetación.</td></tr>
-          <tr><td><code>css/components/*.css</code></td><td>Un archivo por componente, sin capa. Impórtalo después de <code>core.css</code> y asígnale tú la capa si lo usas: <code>@import url("…/components/button.css") layer(iv.components);</code></td></tr>
-          <tr><td><code>css/reset.css</code></td><td>Normalización opcional. No lleva capa: impórtalo con <code>@import url("…/reset.css") layer(iv.reset)</code>, o enlaza <code>css/reset.layer.css</code>, que ya viene envuelto.</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <Section title="Elige el CSS que necesitas">
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Archivo</th><th>Contiene</th></tr></thead>
+          <tbody>
+            <tr><td><code>css/ivolt.css</code></td><td>Todo, organizado en capas de cascada <code>iv.reset, iv.tokens, iv.base, iv.layout, iv.components, iv.utilities, iv.overrides</code>.</td></tr>
+            <tr><td><code>css/ivolt.flat.css</code></td><td>Las mismas reglas sin <code>@layer</code>, para sitios cuyo CSS no está en capas y tiene que seguir compitiendo por especificidad.</td></tr>
+            <tr><td><code>css/core.css</code></td><td>Solo tokens, base y maquetación.</td></tr>
+            <tr><td><code>css/components/*.css</code></td><td>Un archivo por componente, sin capa. Impórtalo después de <code>core.css</code> y asígnale tú la capa si lo usas: <code>@import url("…/components/button.css") layer(iv.components);</code></td></tr>
+            <tr><td><code>css/reset.css</code></td><td>Normalización opcional. No lleva capa: impórtalo con <code>@import url("…/reset.css") layer(iv.reset)</code>, o enlaza <code>css/reset.layer.css</code>, que ya viene envuelto.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Las dos hojas están en el escenario de arriba: el control <b>hoja plana</b> cambia la hoja en capas por la hoja sin capas en una página que ya está funcionando.</p>
+    </Section>
 
-    <h2>Convivir con tu CSS</h2>
-    <p>Las capas de cascada ordenan las reglas propias de iVOLT; no lo aíslan. Cualquier regla normal (sin <code>!important</code>) fuera de una capa gana a todas las reglas en capas, sea cual sea su especificidad. Por eso una regla de tema como <code>button &#123; background: red &#125;</code> sobrescribe <code>.iv-button</code> en <code>ivolt.css</code>. Hay dos salidas: usar <code>ivolt.flat.css</code>, o envolver la hoja heredada en una capa declarada antes que las de iVOLT: <code>@import url("theme.css") layer(legacy);</code>. Los estilos de elemento solo se aplican dentro de <code>.iv-root</code>, así que los títulos, enlaces y campos que estén fuera quedan intactos.</p>
+    <Section title="Convivir con tu CSS">
+      <p>Las capas de cascada ordenan las reglas propias de iVOLT; no lo aíslan. Cualquier regla normal (sin <code>!important</code>) fuera de una capa gana a todas las reglas en capas, sea cual sea su especificidad. Por eso una regla de tema como <code>button &#123; background: red &#125;</code> sobrescribe <code>.iv-button</code> en <code>ivolt.css</code>. Hay dos salidas: usar <code>ivolt.flat.css</code>, o envolver la hoja heredada en una capa declarada antes que las de iVOLT: <code>@import url("theme.css") layer(legacy);</code>. Los estilos de elemento solo se aplican dentro de <code>.iv-root</code>, así que los títulos, enlaces y campos que estén fuera quedan intactos.</p>
+    </Section>
 
-    <h2>Navegadores admitidos</h2>
-    <p>Diseñado para Chrome y Edge 111+, Firefox 113+, Safari e iOS 16.4+, Samsung Internet 22+. La compilación apunta a esas versiones; las consultas de contenedor y <code>popover</code> son mejoras progresivas. Sin Internet Explorer. Las pruebas automáticas se ejecutan en Chromium, Firefox y WebKit a través de Playwright, que no es lo mismo que probar en cada dispositivo físico.</p>
+    <Section title="Navegadores admitidos">
+      <p>Diseñado para Chrome y Edge 111+, Firefox 113+, Safari e iOS 16.4+, Samsung Internet 22+. La compilación apunta a esas versiones; las consultas de contenedor y <code>popover</code> son mejoras progresivas. Sin Internet Explorer. Las pruebas automáticas se ejecutan en Chromium, Firefox y WebKit a través de Playwright, que no es lo mismo que probar en cada dispositivo físico.</p>
+    </Section>
   </article>
 </Base>

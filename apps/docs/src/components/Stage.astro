@@ -1,0 +1,88 @@
+---
+// The live stage: the component runs in its own page, inside an iframe, with real controls over
+// it. Same file for the preview, the snippet and the browser test — the documentation rule of the
+// project — but now the preview is the framework running, not a fragment pasted into this page.
+import { readFixture, readContract, localsSnippet, optionsSnippet } from "../lib/fixtures.js";
+import Code from "./Code.astro";
+import { t as en } from "../i18n/en.js";
+import { t as es } from "../i18n/es.js";
+
+const {
+  name,
+  title = name,
+  primary = false,
+  minHeight = "16rem",
+  maxHeight = 544,
+  bleed = false,
+  copy = true,
+  theme: initialTheme = null,
+  width: initialWidth = "full",
+} = Astro.props;
+
+const lang = Astro.url.pathname === "/es" || Astro.url.pathname.startsWith("/es/") ? "es" : "en";
+const t = lang === "es" ? es : en;
+const html = readFixture(name);
+const contract = readContract(html);
+const css = localsSnippet(contract);
+const js = optionsSnippet(contract);
+const id = `fx-${name.replace(/\W+/g, "-")}`;
+const src = `/stage/${name}.html?id=${id}${initialTheme ? `&theme=${initialTheme}` : ""}${bleed ? "&bleed=1" : ""}`;
+const panels = [
+  { key: "html", label: t.stageTabHtml, code: html },
+  css && { key: "css", label: t.stageTabCss, code: css },
+  js && { key: "js", label: t.stageTabJs, code: js },
+].filter(Boolean);
+const widths = [
+  { value: "390", label: t.stageWidthPhone, hint: "390" },
+  { value: "768", label: t.stageWidthTablet, hint: "768" },
+  { value: "full", label: t.stageWidthFull, hint: "100%" },
+];
+---
+<figure class:list={["docs-stage", primary && "docs-stage--primary"]} id={id} data-stage data-stage-name={name} data-stage-width={initialWidth}>
+  <figcaption class="docs-stage__bar">
+    <span class="docs-stage__title">{title}</span>
+    <span class="docs-stage__path">fixtures/{name}.html</span>
+    <a class="docs-stage__open" href={src} target="_blank" rel="noopener">{t.stageOpen}<span class="iv-u-sr-only"> — {title}</span></a>
+  </figcaption>
+
+  <!-- The controls only appear once the script that drives them is running: a switch that does
+       nothing is worse than no switch. Without JavaScript the stage is the component, full width,
+       in the theme the site is already showing. -->
+  <div class="docs-stage__controls" data-stage-controls hidden>
+    <div class="docs-stage__seg" role="group" aria-label={t.theme}>
+      <button type="button" data-stage-theme="light" aria-pressed="false">{t.light}</button>
+      <button type="button" data-stage-theme="dark" aria-pressed="false">{t.dark}</button>
+    </div>
+    <div class="docs-stage__seg" role="group" aria-label={t.stageDirection}>
+      <button type="button" data-stage-dir="ltr" aria-pressed="true">LTR</button>
+      <button type="button" data-stage-dir="rtl" aria-pressed="false">RTL</button>
+    </div>
+    <div class="docs-stage__seg" role="group" aria-label={t.stageWidth}>
+      {widths.map((w) => <button type="button" data-stage-set-width={w.value} aria-pressed={String(w.value === initialWidth)}><span class="iv-u-sr-only">{w.label}</span><span aria-hidden="true">{w.hint}</span></button>)}
+    </div>
+    <div class="docs-stage__toggles">
+      <label class="docs-stage__toggle"><input type="checkbox" data-stage-motion> <span>{t.stageMotion}</span></label>
+      <label class="docs-stage__toggle"><input type="checkbox" data-stage-flat> <span>{t.stageFlat}</span></label>
+    </div>
+  </div>
+
+  <div class="docs-stage__port">
+    <div class="docs-stage__screen" data-stage-screen>
+      <iframe
+        class="docs-stage__frame"
+        data-stage-frame
+        src={src}
+        title={t.stageFrame(title)}
+        loading={primary ? "eager" : "lazy"}
+        data-stage-max={String(maxHeight)}
+        style={`min-block-size:${minHeight}`}
+      ></iframe>
+    </div>
+  </div>
+
+  {copy && panels.length > 0 && (
+    <div class="docs-stage__code">
+      <Code panels={panels} label={t.stageSource(title)} id={id} tabs="docs-stage__tabs" />
+    </div>
+  )}
+</figure>

@@ -1,55 +1,70 @@
 ---
 import Base from "../../layouts/Base.astro";
+import DeviceFrame from "../../components/DeviceFrame.astro";
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { repoRoot } from "../../lib/fixtures.js";
+
 const recipes = [
-  { slug: "landing", title: "Landing de empresa", text: "Portada, beneficios, precios de ejemplo, preguntas frecuentes y un diálogo de contacto.", uses: ["container", "grid", "card", "button", "disclosure", "dialog"] },
-  { slug: "catalog", title: "Catálogo editorial", text: "Rejilla de tarjetas con filtros y ordenación que funcionan, más una vista de detalle. Portadas de marcador de posición etiquetadas.", uses: ["card", "badge", "breadcrumb", "pagination", "tabs"] },
-  { slug: "admin", title: "Panel de administración", text: "Panel lateral, indicadores, tabla adaptable, formularios, alertas, progreso y avisos. Datos ficticios, sin servidor.", uses: ["drawer", "table", "form", "alert", "progress", "toast"] },
-  { slug: "showcase", title: "Escaparate de producto", text: "Una página de producto completa: barra transparente sobre un hero cinematográfico con parallax, marquesina, cifras que cuentan, galería de fotos con visor, baraja pegajosa, contacto en tres pasos que no envía nada y la hoja de ruta real.", uses: ["navbar", "hero", "parallax", "marquee", "countup", "lightbox", "stepper", "timeline"] },
+  { slug: "studio", title: "Studio", lead: "Un estudio creativo: navbar transparente sobre una portada cinematográfica con parallax, marquesina, tarjetas de servicios apiladas, galería con visor, equipo con avatares, línea de tiempo y stepper de contacto.", uses: ["navbar", "hero", "marquee", "card", "lightbox", "avatar", "timeline", "stepper"] },
+  { slug: "console", title: "Console", lead: "Un panel de producto: megamenú, cajón lateral, cifras con contador, tabla de datos con filtro y orden, pestañas, progreso, esqueletos, toasts, diálogos, paleta de comandos, selector de fecha y formulario validado.", uses: ["megamenu", "drawer", "countup", "datatable", "tabs", "command", "datepicker", "toast"] },
+  { slug: "journal", title: "Journal", lead: "Una revista editorial: la tipografía como protagonista, portada, masonry de artículos, efectos de texto, barra de lectura, visor, paginación, migas, tooltips y popovers para notas, y una impresión cuidada.", uses: ["typography", "text", "progress", "lightbox", "pagination", "breadcrumb", "popover"] },
+  { slug: "store", title: "Store", lead: "Un catálogo y una compra que no compra nada: filtros con selector enriquecido y combobox, carrusel de producto, insignias, precios como stat, stepper de compra con fecha de entrega, cajón de carrito, diálogo de confirmación y toast.", uses: ["picker", "combobox", "carousel", "badge", "stat", "stepper", "drawer", "dialog"] },
 ];
+const root = repoRoot();
+const manifestPath = resolve(root, "apps/docs/public/downloads/manifest.json");
+const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, "utf8")) : { zips: [] };
+const zipOf = (slug) => manifest.zips.find((z) => z.name === `ivolt-recipe-${slug}.zip`);
+const kib = (b) => (b ? `${(b / 1024).toFixed(0)} KiB` : null);
+const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "index.html"));
 ---
-<Base lang="es" title="Ejemplos" description="Cuatro recetas completas hechas solo con iVOLT: una landing de empresa, un catálogo editorial, un panel de administración estático y un escaparate de producto. Ábrelas, descárgalas en zip o copia las carpetas.">
+<Base lang="es" title="Ejemplos" description="Cuatro páginas completas hechas solo con iVOLT: un estudio creativo, un panel de producto, una revista editorial y una tienda. Ábrelas, descárgalas en zip o copia la carpeta.">
   <article class="docs-prose">
-    <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
+        <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
       <div class="iv-hero__media"><img src="/photos/p1059.jpg" width="1280" height="800" alt="" fetchpriority="high" decoding="async"></div>
       <div class="iv-hero__scrim"></div>
       <div class="iv-hero__content">
-        <p class="iv-hero__kicker">Cuatro páginas · un paquete · sin paso de compilación</p>
-        <h1 class="iv-hero__title" id="examples-title">Ejemplos</h1>
-        <p class="iv-hero__lead">Cuatro páginas completas que comparten el framework pero no la composición. Cada receta es un archivo HTML independiente que enlaza los archivos ya compilados desde una carpeta <code>ivolt/</code> hermana, igual que la plantilla de HTML plano.</p>
+        <p class="iv-hero__kicker">Cuatro páginas · un paquete · sin compilación</p>
+        <h1 class="iv-hero__title" id="examples-title">Cuatro páginas, un paquete</h1>
+        <p class="iv-hero__lead">Cuatro páginas completas que comparten el framework y nada más: composición, densidad y tema por defecto distintos en cada una. Cada una es un HTML independiente que enlaza los archivos compilados de una carpeta hermana <code>ivolt/</code>: sin paso de compilación, sin red y sin dependencias.</p>
         <div class="iv-hero__actions">
-          <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/landing/index.html">Abrir la receta de landing</a>
-          <a class="iv-button iv-button--secondary" href="#descargas">Descargas</a>
+          <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/studio/index.html">Abrir la receta Studio</a>
+          <a class="iv-button iv-button--secondary" href="#downloads">Descargas</a>
         </div>
       </div>
     </section>
-    <p class="docs-photo-credit">Fotografía de Clark Street Mercantile en Unsplash. Los datos y los formularios de las recetas son demostraciones: no se envía nada a ninguna parte.</p>
+    <p class="docs-photo-credit">Fotografía de Clark Street Mercantile en Unsplash. Los datos y los formularios de las recetas son demostraciones: no se envía nada y no se compra nada.</p>
 
-    <h2>Las cuatro recetas</h2>
-    <p>Ábrelas en una página aparte para leer el código, o llévate el zip y trabaja sin conexión. Se construyen con las mismas fixtures que esta documentación, así que no pueden desviarse del paquete.</p>
-    <div class="docs-cards">
-      {recipes.map((r, i) => (
-        <article class="iv-card iv-edge-near docs-card">
-          <div class="iv-card__body">
-            <p class="docs-card__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
-            <h3 class="iv-card__title">{r.title}</h3>
-            <p class="iv-u-m-0">{r.text}</p>
-            <ul class="docs-chips" aria-label={`Componentes que usa la receta ${r.title}`}>
-              {r.uses.map((u) => <li>{u}</li>)}
-            </ul>
+    <p class="docs-meta"><strong>Hecho desde:</strong> <code>examples/recipes/&lt;name&gt;/index.html</code>. <strong>Archivos:</strong> <code>examples/recipes/ivolt/</code>, que escribe <code>node scripts/sync-examples.mjs</code>. Las capturas de abajo se toman de las páginas reales durante la compilación del sitio.</p>
+
+    <h2>Las recetas</h2>
+    <div class="docs-gallery">
+      {recipes.map((r) => (
+        <section class="docs-gallery__item">
+          <div class="docs-gallery__frames">
+            <DeviceFrame slug={r.slug} title={r.title} href={built(r.slug) ? `/examples/${r.slug}/index.html` : undefined} device="desktop" missing="Aún no compilada" />
+            <DeviceFrame slug={r.slug} title={r.title} device="phone" missing="—" />
           </div>
-          <div class="iv-card__footer">
-            <a class="iv-button iv-button--primary iv-button--sm" href={`/examples/${r.slug}/index.html`}>Abrir</a>
-            <a class="iv-button iv-button--secondary iv-button--sm" href={`/downloads/ivolt-recipe-${r.slug}.zip`} download>Descargar .zip</a>
+          <div class="docs-gallery__body">
+            <h3>{r.title}</h3>
+            <p>{r.lead}</p>
+            <ul class="docs-chips" aria-label={`Componentes que usa la receta ${r.title}`}>{r.uses.map((u) => <li>{u}</li>)}</ul>
+            <p class="iv-cluster" style="margin-block-start:var(--iv-space-5)">
+              {built(r.slug)
+                ? <a class="iv-button iv-button--primary iv-button--sm" href={`/examples/${r.slug}/index.html`}>Abrir {r.title}</a>
+                : <span class="iv-u-text-muted iv-u-text-sm">Esta receta todavía no está en esta compilación.</span>}
+              {zipOf(r.slug) && <a class="iv-button iv-button--secondary iv-button--sm" href={`/downloads/ivolt-recipe-${r.slug}.zip`} download>Descargar .zip · {kib(zipOf(r.slug).bytes)}</a>}
+            </p>
           </div>
-        </article>
+        </section>
       ))}
     </div>
 
-    <h2 id="descargas">Descargas</h2>
-    <p>Cada archivo comprimido se genera durante la compilación del sitio a partir de las mismas fuentes que las páginas de arriba, así que siempre corresponde a esta versión. El zip de cada receta lleva su propia copia de los archivos de <code>ivolt/</code>: descomprímelo y abre <code>index.html</code>, sin paso de compilación y sin red.</p>
+    <h2 id="downloads">Descargas</h2>
+    <p>Cada archivo se genera durante la compilación del sitio desde las mismas fuentes que las páginas de arriba, así que siempre corresponde a esta versión. Cada zip de receta lleva su propia copia de <code>ivolt/</code>: descomprime y abre <code>index.html</code>.</p>
     <div class="docs-downloads">
       <div class="docs-download">
-        <a class="iv-button iv-button--secondary iv-button--sm" href="/downloads/ivolt-starter-plain-html.zip" download>Plantilla de HTML plano</a>
+        <a class="iv-button iv-button--secondary iv-button--sm" href="/downloads/ivolt-starter-plain-html.zip" download>Plantilla HTML mínima</a>
         <span><code>index.html</code>, <code>README.md</code> y <code>ivolt/</code>.</span>
       </div>
       <div class="docs-download">
@@ -59,11 +74,11 @@ const recipes = [
     </div>
     <p class="iv-u-text-sm iv-u-text-muted">Los tamaños y las listas de archivos están en <a href="/downloads/manifest.json">manifest.json</a>.</p>
 
-    <h2>Copiar una receta en tu proyecto</h2>
-    <p>Cada receta vive en <code>examples/recipes/&lt;nombre&gt;/index.html</code> dentro del repositorio. Copia esa carpeta junto con <code>examples/recipes/ivolt/</code> (que crea <code>node scripts/sync-examples.mjs</code> después de compilar) y abre la página. La plantilla de <code>examples/plain-html</code> es la versión más pequeña posible del mismo montaje.</p>
+    <h2>Copiar una receta a tu proyecto</h2>
+    <p>Cada receta vive en <code>examples/recipes/&lt;nombre&gt;/index.html</code> dentro del repositorio. Copia esa carpeta junto con <code>examples/recipes/ivolt/</code> y abre la página. La plantilla de <code>examples/plain-html</code> es la versión más pequeña posible del mismo montaje.</p>
     <div class="docs-note">
       <span class="docs-note__title">Demostración honesta</span>
-      <p class="iv-u-m-0">Las recetas llevan datos ficticios. Los formularios validan y muestran su propia respuesta, pero no envían nada, y los precios y nombres están inventados para la maqueta.</p>
+      <p class="iv-u-m-0">Las recetas llevan marcas y datos ficticios. Los formularios validan y muestran su propia respuesta, pero no envían nada a ningún sitio; no se compra nada y ninguna petición sale de la página.</p>
     </div>
   </article>
 </Base>

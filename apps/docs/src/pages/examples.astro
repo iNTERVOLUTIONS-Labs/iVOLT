@@ -1,52 +1,67 @@
 ---
 import Base from "../layouts/Base.astro";
+import DeviceFrame from "../components/DeviceFrame.astro";
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { repoRoot } from "../lib/fixtures.js";
+
 const recipes = [
-  { slug: "landing", title: "Business landing", text: "Hero, benefits, example pricing, an FAQ accordion and a contact dialog.", uses: ["container", "grid", "card", "button", "disclosure", "dialog"] },
-  { slug: "catalog", title: "Editorial catalogue", text: "Card grid with working filters and sorting, plus a detail view. Labelled placeholder covers.", uses: ["card", "badge", "breadcrumb", "pagination", "tabs"] },
-  { slug: "admin", title: "Admin panel", text: "Sidebar drawer, KPIs, a responsive table, forms, alerts, progress and toasts. Fictional data, no backend.", uses: ["drawer", "table", "form", "alert", "progress", "toast"] },
-  { slug: "showcase", title: "Product showcase", text: "A full product page: transparent navbar over a cinematic hero with parallax, a marquee, counted figures, a photo gallery with the viewer, a sticky deck, a three-step contact wizard that sends nothing, and the real roadmap.", uses: ["navbar", "hero", "parallax", "marquee", "countup", "lightbox", "stepper", "timeline"] },
+  { slug: "studio", title: "Studio", lead: "A creative studio: a transparent navbar over a cinematic cover with parallax, a marquee, stacked service cards, a gallery with the viewer, a team of avatars, a timeline and a contact stepper.", uses: ["navbar", "hero", "marquee", "card", "lightbox", "avatar", "timeline", "stepper"] },
+  { slug: "console", title: "Console", lead: "A product console: a megamenu, a side drawer, counted figures, a data table with filter and sort, tabs, progress, skeletons, toasts, dialogs, a command palette, a datepicker and a validated form.", uses: ["megamenu", "drawer", "countup", "datatable", "tabs", "command", "datepicker", "toast"] },
+  { slug: "journal", title: "Journal", lead: "An editorial magazine: typography as the subject, a cover, a masonry of articles, text effects, a reading bar, the viewer, pagination, breadcrumbs, tooltips and popovers for notes, and a printed layout that works.", uses: ["typography", "text", "progress", "lightbox", "pagination", "breadcrumb", "popover"] },
+  { slug: "store", title: "Store", lead: "A catalogue and a purchase that buys nothing: filters with a rich picker and a combobox, a product carousel, badges, prices as stats, a checkout stepper with a delivery date, a cart drawer, a confirmation dialog and a toast.", uses: ["picker", "combobox", "carousel", "badge", "stat", "stepper", "drawer", "dialog"] },
 ];
+const root = repoRoot();
+const manifestPath = resolve(root, "apps/docs/public/downloads/manifest.json");
+const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, "utf8")) : { zips: [] };
+const zipOf = (slug) => manifest.zips.find((z) => z.name === `ivolt-recipe-${slug}.zip`);
+const kib = (b) => (b ? `${(b / 1024).toFixed(0)} KiB` : null);
+const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "index.html"));
 ---
-<Base title="Examples" description="Four complete recipes built only with iVOLT: a business landing page, an editorial catalogue, a static admin panel and a product showcase. Open them, download them as a zip or copy the folders.">
+<Base title="Examples" description="Four complete pages built only with iVOLT: a creative studio, a product console, an editorial journal and a store. Open them, download them as a zip, or copy the folder.">
   <article class="docs-prose">
-    <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
+        <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
       <div class="iv-hero__media"><img src="/photos/p1059.jpg" width="1280" height="800" alt="" fetchpriority="high" decoding="async"></div>
       <div class="iv-hero__scrim"></div>
       <div class="iv-hero__content">
         <p class="iv-hero__kicker">Four pages · one package · no build step</p>
-        <h1 class="iv-hero__title" id="examples-title">Examples</h1>
-        <p class="iv-hero__lead">Four complete pages that share the framework but not the composition. Each recipe is a standalone HTML file linking the prebuilt assets from a sibling <code>ivolt/</code> folder, exactly like the plain HTML starter.</p>
+        <h1 class="iv-hero__title" id="examples-title">Four pages, one package</h1>
+        <p class="iv-hero__lead">Four complete pages that share the framework and nothing else: a different composition, a different density and a different default theme each. Every one is a standalone HTML file linking the prebuilt assets from a sibling <code>ivolt/</code> folder — no build step, no network, no dependency.</p>
         <div class="iv-hero__actions">
-          <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/landing/index.html">Open the landing recipe</a>
+          <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/studio/index.html">Open the Studio recipe</a>
           <a class="iv-button iv-button--secondary" href="#downloads">Downloads</a>
         </div>
       </div>
     </section>
-    <p class="docs-photo-credit">Photograph by Clark Street Mercantile on Unsplash. Data and forms in the recipes are demonstrations: nothing is sent anywhere.</p>
+    <p class="docs-photo-credit">Photograph by Clark Street Mercantile on Unsplash. Data and forms in the recipes are demonstrations: nothing is sent anywhere and nothing is bought.</p>
 
-    <h2>The four recipes</h2>
-    <p>Open one in a new page to read the source, or take the zip and work offline. They are built from the same fixtures as this documentation, so they cannot drift from the package.</p>
-    <div class="docs-cards">
-      {recipes.map((r, i) => (
-        <article class="iv-card iv-edge-near docs-card">
-          <div class="iv-card__body">
-            <p class="docs-card__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</p>
-            <h3 class="iv-card__title">{r.title}</h3>
-            <p class="iv-u-m-0">{r.text}</p>
-            <ul class="docs-chips" aria-label={`Components used by the ${r.title} recipe`}>
-              {r.uses.map((u) => <li>{u}</li>)}
-            </ul>
+    <p class="docs-meta"><strong>Built from:</strong> <code>examples/recipes/&lt;name&gt;/index.html</code>. <strong>Assets:</strong> <code>examples/recipes/ivolt/</code>, written by <code>node scripts/sync-examples.mjs</code>. The screenshots below are taken from the real pages during the site build.</p>
+
+    <h2>The recipes</h2>
+    <div class="docs-gallery">
+      {recipes.map((r) => (
+        <section class="docs-gallery__item">
+          <div class="docs-gallery__frames">
+            <DeviceFrame slug={r.slug} title={r.title} href={built(r.slug) ? `/examples/${r.slug}/index.html` : undefined} device="desktop" missing="Not built yet" />
+            <DeviceFrame slug={r.slug} title={r.title} device="phone" missing="—" />
           </div>
-          <div class="iv-card__footer">
-            <a class="iv-button iv-button--primary iv-button--sm" href={`/examples/${r.slug}/index.html`}>Open</a>
-            <a class="iv-button iv-button--secondary iv-button--sm" href={`/downloads/ivolt-recipe-${r.slug}.zip`} download>Download .zip</a>
+          <div class="docs-gallery__body">
+            <h3>{r.title}</h3>
+            <p>{r.lead}</p>
+            <ul class="docs-chips" aria-label={`Components used by the ${r.title} recipe`}>{r.uses.map((u) => <li>{u}</li>)}</ul>
+            <p class="iv-cluster" style="margin-block-start:var(--iv-space-5)">
+              {built(r.slug)
+                ? <a class="iv-button iv-button--primary iv-button--sm" href={`/examples/${r.slug}/index.html`}>Open {r.title}</a>
+                : <span class="iv-u-text-muted iv-u-text-sm">This recipe is not in this build yet.</span>}
+              {zipOf(r.slug) && <a class="iv-button iv-button--secondary iv-button--sm" href={`/downloads/ivolt-recipe-${r.slug}.zip`} download>Download .zip · {kib(zipOf(r.slug).bytes)}</a>}
+            </p>
           </div>
-        </article>
+        </section>
       ))}
     </div>
 
     <h2 id="downloads">Downloads</h2>
-    <p>Every archive is generated during the site build from the same sources as the pages above, so it always matches this version. Each recipe zip carries its own copy of the <code>ivolt/</code> assets: unzip it and open <code>index.html</code>, no build step and no network needed.</p>
+    <p>Every archive is generated during the site build from the same sources as the pages above, so it always matches this version. Each recipe zip carries its own copy of the <code>ivolt/</code> assets: unzip it and open <code>index.html</code>.</p>
     <div class="docs-downloads">
       <div class="docs-download">
         <a class="iv-button iv-button--secondary iv-button--sm" href="/downloads/ivolt-starter-plain-html.zip" download>Plain HTML starter</a>
@@ -60,10 +75,10 @@ const recipes = [
     <p class="iv-u-text-sm iv-u-text-muted">Sizes and file lists are listed in <a href="/downloads/manifest.json">manifest.json</a>.</p>
 
     <h2>Copy a recipe into your project</h2>
-    <p>Each recipe lives in <code>examples/recipes/&lt;name&gt;/index.html</code> in the repository. Copy that folder together with <code>examples/recipes/ivolt/</code> (created by <code>node scripts/sync-examples.mjs</code> after a build) and open the page. The plain starter in <code>examples/plain-html</code> is the smallest possible version of the same setup.</p>
+    <p>Each recipe lives in <code>examples/recipes/&lt;name&gt;/index.html</code> in the repository. Copy that folder together with <code>examples/recipes/ivolt/</code> and open the page. The plain starter in <code>examples/plain-html</code> is the smallest possible version of the same setup.</p>
     <div class="docs-note">
       <span class="docs-note__title">Honest demo</span>
-      <p class="iv-u-m-0">The recipes carry fictional data. Forms validate and show their own feedback, but they submit to nothing, and the prices and names are invented for the layout.</p>
+      <p class="iv-u-m-0">The recipes carry fictional brands and fictional data. Forms validate and show their own feedback, but they submit to nothing; nothing is bought, and no request leaves the page.</p>
     </div>
   </article>
 </Base>

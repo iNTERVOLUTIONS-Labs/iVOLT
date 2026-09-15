@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
-import Fixture from "../../components/Fixture.astro";
+import Stage from "../../components/Stage.astro";
+import DeviceFrame from "../../components/DeviceFrame.astro";
 import Arcs from "../../components/Arcs.astro";
 import ThemeCut from "../../components/ThemeCut.astro";
 import { families } from "../../i18n/en.js";
@@ -15,11 +16,12 @@ while (!existsSync(resolve(dir, "packages/ivolt/dist")) && dirname(dir) !== dir)
 const dist = resolve(dir, "packages/ivolt/dist");
 const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.json"), "utf8")).version;
 const stage = /-rc/.test(version) ? "candidata" : /beta/.test(version) ? "beta" : /alpha/.test(version) ? "alpha" : "";
+const esNum = (n) => String(n).replace(".", ",");
 const kib = (rel) => existsSync(resolve(dist, rel)) ? (gzipSync(readFileSync(resolve(dist, rel)), { level: 9 }).length / 1024).toFixed(1) : null;
 const facts = [
   { value: "0", label: "dependencias de ejecución" },
-  { value: kib("css/ivolt.min.css") ? `${kib("css/ivolt.min.css")} KiB` : "—", label: "CSS, min + gzip" },
-  { value: kib("js/ivolt.iife.min.js") ? `${kib("js/ivolt.iife.min.js")} KiB` : "—", label: "JS (IIFE), min + gzip" },
+  { value: kib("css/ivolt.min.css") ? `${esNum(kib("css/ivolt.min.css"))} KiB` : "—", label: "CSS, min + gzip" },
+  { value: kib("js/ivolt.iife.min.js") ? `${esNum(kib("js/ivolt.iife.min.js"))} KiB` : "—", label: "JS (IIFE), min + gzip" },
   { value: "3", label: "motores en la suite de pruebas" },
 ];
 const points = [
@@ -40,14 +42,23 @@ const panels = [
   { fixture: "surfaces/glass", name: "Superficies", slug: "surfaces", href: "/foundations/surfaces", kind: "css" },
   { fixture: "combobox/basic", name: "Combobox", slug: "combobox", kind: "js" },
 ];
+const reel = [
+  { fixture: "button/variants", name: "Button", slug: "button" },
+  { fixture: "form/float", name: "Form", slug: "form" },
+  { fixture: "tabs/basic", name: "Tabs", slug: "tabs" },
+  { fixture: "dialog/basic", name: "Dialog", slug: "dialog" },
+  { fixture: "combobox/basic", name: "Combobox", slug: "combobox" },
+  { fixture: "carousel/photos", name: "Carousel", slug: "carousel" },
+];
 const components = Object.entries(families);
 const recipes = [
-  { slug: "landing", title: "Landing de empresa", text: "Portada, beneficios, precios de ejemplo, acordeón de preguntas frecuentes y un diálogo de contacto." },
-  { slug: "catalog", title: "Catálogo editorial", text: "Rejilla de tarjetas con filtros y ordenación que funcionan, miga de pan, insignias, paginación y pestañas." },
-  { slug: "admin", title: "Panel de administración", text: "Panel lateral estático, indicadores, tabla adaptable, formulario con avisos y un diálogo de confirmación." },
+  { slug: "studio", title: "Studio", text: "Un estudio creativo: portada cinematográfica con parallax, marquesina, tarjetas de servicios apiladas, galería con visor y stepper de contacto." },
+  { slug: "console", title: "Console", text: "Un panel de producto: megamenú, cajón, cifras con contador, tabla con filtro y orden, paleta de comandos y formulario validado." },
+  { slug: "journal", title: "Journal", text: "Una revista editorial: la tipografía como protagonista, masonry de artículos, barra de lectura, notas en popovers e impresión cuidada." },
+  { slug: "store", title: "Store", text: "Un catálogo y una compra que no compra nada: filtros ricos, carrusel de producto, stepper de compra, cajón de carrito y diálogo de confirmación." },
 ];
 ---
-<Base lang="es" title="La interfaz empieza aquí" description="iVOLT es un framework frontend híbrido de CSS, HTML y JS: componentes semánticos, un conjunto finito de utilidades, tokens de diseño y JavaScript opcional. Sin dependencias de ejecución. En alfa." sidebar={false} bleed={true}>
+<Base lang="es" title="La interfaz empieza aquí" description="iVOLT es un framework frontend híbrido de CSS, HTML y JS: componentes semánticos, un conjunto finito de utilidades, tokens de diseño y JavaScript opcional. Sin dependencias de ejecución. Candidata a 1.0." sidebar={false} bleed={true}>
   <section class="docs-hero" aria-labelledby="hero-title">
     <Arcs />
     <div class="docs-hero__inner">
@@ -62,7 +73,7 @@ const recipes = [
         <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/es/components/button">Explorar los componentes</a>
       </div>
       <ul class="docs-facts">
-        {facts.map((f) => <li class="docs-fact"><strong data-count>{f.value}</strong><span>{f.label}</span></li>)}
+        {facts.map((f) => <li class="docs-fact"><strong class="iv-count" data-iv-component="countup">{f.value}</strong><span>{f.label}</span></li>)}
       </ul>
     </div>
   </section>
@@ -87,21 +98,21 @@ const recipes = [
   </section>
 
   <section class="docs-cabinet" aria-labelledby="components-title">
-    <div class="docs-cabinet__pin">
     <div class="docs-cabinet__head docs-wrap">
       <span class="docs-num">02 — Componentes</span>
       <h2 class="docs-why__title" id="components-title">Catorce familias de contenido,<br>diecinueve interactivas.</h2>
     </div>
-    <div class="docs-cabinet__sticky">
-      <div class="docs-cabinet__track">
-        {panels.map((p) => (
-          <article class="docs-panel">
-            <Fixture name={p.fixture} title={p.name} />
-            <p class="docs-panel__meta"><a href={p.href ? `/es${p.href}` : `/es/components/${p.slug}`}>{p.name}</a><small>{p.kind}</small></p>
-          </article>
+    <div class="docs-wrap docs-showreel" data-showreel>
+      <div class="docs-showreel__tabs" role="tablist" aria-label="Componentes en escena">
+        {reel.map((r, i) => (
+          <button class="docs-showreel__tab" type="button" role="tab" id={`reel-tab-${r.slug}`} aria-controls={`reel-panel-${r.slug}`} aria-selected={String(i === 0)} tabindex={i === 0 ? "0" : "-1"}>{r.name}</button>
         ))}
       </div>
-    </div>
+      {reel.map((r, i) => (
+        <div class="docs-showreel__panel" id={`reel-panel-${r.slug}`} role="tabpanel" aria-labelledby={`reel-tab-${r.slug}`} hidden={i !== 0}>
+          <Stage name={r.fixture} title={r.name} primary={i === 0} minHeight="18rem" />
+        </div>
+      ))}
     </div>
     <div class="docs-wrap">
       <nav class="docs-families" aria-label="Componentes">
@@ -135,12 +146,12 @@ const recipes = [
   <section class="docs-section docs-wrap" aria-labelledby="recipes-title">
     <div class="docs-reveal">
       <span class="docs-num">04 — Recetas</span>
-      <h2 class="docs-why__title" id="recipes-title">Tres páginas completas, un solo paquete.</h2>
+      <h2 class="docs-why__title" id="recipes-title">Cuatro páginas completas, un paquete.</h2>
     </div>
     <div class="docs-recipes" style="margin-block-start:clamp(3rem,7vh,5rem)">
       {recipes.map((r, i) => (
         <a class="docs-recipe docs-reveal" href={`/examples/${r.slug}/index.html`}>
-          <div class="docs-recipe__frame iv-edge-near"><iframe src={`/examples/${r.slug}/index.html`} title={`Vista previa de la receta ${r.title}`} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin"></iframe></div>
+          <div class="docs-recipe__frame iv-edge-near"><DeviceFrame slug={r.slug} title={r.title} device="desktop" /></div>
           <div class="docs-recipe__body">
             <h3>{r.title}</h3>
             <p>{r.text}</p>
@@ -156,9 +167,10 @@ const recipes = [
       <div class="docs-invert__head">
       <span class="docs-num">05 — Empezar</span>
       <h2 id="start-title">Dos archivos. Sin paso de build.</h2>
-      <p>Compila el paquete una vez, copia <code>dist/</code> junto a tu página y enlaza una hoja de estilo y un módulo. La plantilla inicial y las recetas son exactamente esto.</p>
+      <p>Instálalo desde npm, o compila el paquete una vez y copia <code>dist/</code> junto a tu página. Después enlaza una hoja de estilo y un módulo. La plantilla inicial y las cuatro recetas son exactamente esto, nada más.</p>
       </div>
       <div class="docs-invert__side">
+      <pre class="docs-code" tabindex="0"><code>npm install @intervolutions/ivolt@next</code></pre>
       <pre class="docs-code" tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
   &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
   &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>

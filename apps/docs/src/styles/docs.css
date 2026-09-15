@@ -1,8 +1,10 @@
 /* iVOLT documentation site — presentation layer (round 2, "Voltage").
-   Split for legibility: base tokens and prose, the shell, the home composition, and the
-   reduced-motion contract last so it wins. Components come from the package. */
-@import "./base.css";
+   Split for legibility: site tokens, the prose rhythm, the shell, the live stage, the home
+   composition, and the reduced-motion contract last so it wins. Components come from the package. */
+@import "./tokens-site.css";
+@import "./prose.css";
 @import "./shell.css";
+@import "./stage.css";
 @import "./home.css";
 @import "./motion.css";
 

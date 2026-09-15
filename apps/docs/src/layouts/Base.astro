@@ -238,6 +238,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     import { t as tEs } from "../i18n/es.js";
     const tr = () => (document.documentElement.lang === "es" ? tEs : tEn);
     import { mountEffects } from "../scripts/effects.js";
+    import { mountStage } from "../scripts/stage.js";
 
     const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
     const finePointer = () => matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -249,6 +250,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
       init(document); // idempotent: instances survive, new page nodes get theirs
       release();
       teardown.push(mountEffects(document));
+      teardown.push(mountStage(document));
 
       // The arc field: one canvas, home only, fine pointers only, never under reduced motion.
       const arcs = document.querySelector("[data-docs-arcs]");
@@ -280,12 +282,30 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
         });
       });
 
+      // A block that scrolls is a scrollable region: WCAG 2.1.1 asks for a keyboard to reach it.
+      // Measured after the fonts settle, so only the blocks that really overflow take a tab stop.
+      const markScrollers = () => {
+        document.querySelectorAll(".docs-prose pre:not([tabindex])").forEach((pre) => {
+          if (pre.scrollWidth > pre.clientWidth + 1 || pre.scrollHeight > pre.clientHeight + 1) pre.tabIndex = 0;
+        });
+        document.querySelectorAll(".docs-scroller:not([tabindex])").forEach((box) => {
+          if (box.scrollWidth <= box.clientWidth + 1) return;
+          box.tabIndex = 0;
+          box.setAttribute("role", "group");
+          if (!box.getAttribute("aria-label")) box.setAttribute("aria-label", tr().tableScroll);
+        });
+      };
+      (document.fonts?.ready || Promise.resolve()).then(markScrollers);
+      markScrollers();
+      addEventListener("resize", markScrollers, { passive: true });
+      teardown.push(() => removeEventListener("resize", markScrollers));
+
       // Heading anchors + "On this page" table of contents.
       const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
       const seen = new Set();
       // Only the page's own sections: a heading inside a card, an alert or a fixture is content,
       // not a landmark, and must not reach the anchors or the table of contents.
-      const headings = [...document.querySelectorAll(".docs-prose > h2, .docs-prose > h3, .docs-prose > section > h2, .docs-prose > section > h3")];
+      const headings = [...document.querySelectorAll(".docs-prose > h2, .docs-prose > h3, .docs-prose section h2, .docs-prose section h3")];
       headings.forEach((h) => {
         if (!h.id) { let id = slug(h.textContent) || "section"; let n = 2; while (seen.has(id) || document.getElementById(id)) id = `${slug(h.textContent)}-${n++}`; h.id = id; }
         seen.add(h.id);

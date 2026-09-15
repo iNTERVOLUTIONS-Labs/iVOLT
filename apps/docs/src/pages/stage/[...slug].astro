@@ -1,0 +1,38 @@
+---
+// One standalone page per fixture: the component, nothing else, dressed exactly as a consumer
+// would dress it — html.iv-root, the published stylesheet, auto.js. The site embeds these pages
+// in an iframe so that what a visitor manipulates is the framework itself, not a picture of it.
+//
+// The page carries no inline script: /stage/boot.js is a classic script in <head>, so it runs
+// before the first paint and the site's CSP hash list stays at one entry (the theme snippet).
+import { listFixtures, readFixture } from "../../lib/fixtures.js";
+
+export function getStaticPaths() {
+  return listFixtures().map((f) => ({ params: { slug: f.name }, props: { name: f.name } }));
+}
+
+const { name } = Astro.props;
+const html = readFixture(name);
+// Both sheets ship in /examples/ivolt (synced from the built package): the stage can swap to the
+// layer-free one live, which is the point of the "flat" control.
+const layered = "/examples/ivolt/css/ivolt.css";
+const flat = "/examples/ivolt/css/ivolt.flat.css";
+---
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="iv-root" data-iv-theme="dark" data-base-lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{name} · iVOLT stage</title>
+  <meta name="robots" content="noindex">
+  <link id="stage-sheet" rel="stylesheet" href={layered} data-layered={layered} data-flat={flat}>
+  <link rel="stylesheet" href="/stage/stage-frame.css">
+  {/* After the links on purpose: the boot script swaps the sheet for the flat one before
+      the first paint, so the element it reaches for has to be parsed already. */}
+  <script is:inline src="/stage/boot.js"></script>
+  <script is:inline type="module" src="/examples/ivolt/js/auto.js"></script>
+</head>
+<body class="stage-body">
+  <main class="stage-main" id="stage" set:html={html}></main>
+</body>
+</html>

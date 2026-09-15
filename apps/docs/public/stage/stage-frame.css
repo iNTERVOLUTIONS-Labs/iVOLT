@@ -1,0 +1,18 @@
+/* The only styling the stage itself carries: room around the component and the reduced-motion
+   switch the host page can flip. Everything else on the page is the published framework. */
+.stage-body { margin: 0; padding: clamp(1rem, 3.5vw, 2rem); background: var(--iv-color-bg); min-block-size: 0; }
+.stage-main { display: block; }
+/* Fixtures that are a page of their own (a site header, a hero) fill the frame edge to edge. */
+.stage-body[data-stage-bleed] { padding: 0; }
+
+/* The host's "reduced motion" control: the same contract the media query gets, on demand.
+   This is the documentation site's own sheet, so the exception the project allows for the
+   reduced-motion block applies here too. */
+[data-stage-motion="reduce"] *,
+[data-stage-motion="reduce"] *::before,
+[data-stage-motion="reduce"] *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 1ms !important;
+  scroll-behavior: auto !important;
+}

@@ -1,6 +1,6 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Stage from "../../../components/Stage.astro";
 import tokens from "@intervolutions/ivolt/tokens.json";
 const val = (k, mode) => { const v = tokens[k].value; return typeof v === "string" ? v : v[mode]; };
 const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color-") && !k.startsWith("--iv-palette"));
@@ -18,7 +18,7 @@ const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color
 
     <h2>Temas</h2>
     <p><code>data-iv-theme</code> acepta <code>light</code> (el valor por defecto cuando falta), <code>dark</code> y <code>system</code>. Los ámbitos se anidan y gana el valor explícito más cercano; <code>system</code> sigue a <code>prefers-color-scheme</code> sin JavaScript ni almacenamiento.</p>
-    <Fixture name="theme/nested" title="Ámbitos anidados" />
+    <Stage primary name="theme/nested" title="Ámbitos anidados" />
     <p>El módulo opcional <code>theme</code> añade <code>getTheme()</code>, <code>setTheme(theme, &#123; persist &#125;)</code>, <code>resolveTheme()</code> y <code>restoreTheme()</code>, y emite <code>iv:themechange</code> sobre <code>document</code>. La persistencia hay que pedirla expresamente. Para evitar un parpadeo antes de que se aplique el tema guardado, añade un pequeño script en línea dentro de <code>&lt;head&gt;</code>; con una CSP estricta, permítelo por hash o por nonce.</p>
 
     <h2>Colores semánticos</h2>

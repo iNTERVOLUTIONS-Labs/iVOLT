@@ -1,0 +1,124 @@
+/* The stage: the one spectacular moment of an interior page. A frame with contact shadow and a
+   conductor fillet, a bar of real controls over it, and the source of the very same file below.
+   No 1px cage, no grid, no dot pattern. */
+
+.docs-stage {
+  --docs-stage-w: 100%;
+  margin: 0;
+  min-inline-size: 0;
+  position: relative;
+  border-radius: var(--iv-radius-xl, 1.25rem);
+  background: var(--iv-color-surface-raised);
+  box-shadow: 0 1px 0 var(--docs-hair) inset, 0 40px 80px -52px rgb(0 0 0 / .8), 0 0 0 1px rgb(128 128 128 / .07);
+  isolation: isolate;
+}
+.docs-stage::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: 2px;
+  border-radius: var(--iv-radius-xl, 1.25rem) var(--iv-radius-xl, 1.25rem) 0 0;
+  background: linear-gradient(90deg, transparent, var(--iv-color-accent) 22%, var(--iv-color-accent) 78%, transparent);
+  opacity: .55;
+  z-index: 2;
+}
+.docs-stage--primary { box-shadow: 0 1px 0 var(--docs-line) inset, 0 60px 110px -60px var(--docs-halo), 0 0 0 1px var(--docs-hair); }
+
+/* ---------- bar: what this is, where it lives, how to open it alone ---------- */
+.docs-stage__bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: var(--iv-space-3);
+  row-gap: 2px;
+  padding: var(--iv-space-3) var(--iv-space-4) var(--iv-space-2);
+}
+.docs-stage__title { font-family: var(--docs-display); font-weight: var(--iv-weight-medium); letter-spacing: -.01em; min-inline-size: 0; overflow-wrap: anywhere; }
+.docs-stage__path { grid-column: 1; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); min-inline-size: 0; overflow-wrap: anywhere; }
+.docs-stage__open {
+  grid-column: 2; grid-row: 1 / span 2; align-self: center;
+  font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--iv-color-text-muted); text-decoration: none; white-space: nowrap;
+  padding: .35rem .6rem; border-radius: var(--iv-radius-full);
+}
+.docs-stage__open:hover, .docs-stage__open:focus-visible { color: var(--iv-color-primary); background: var(--iv-color-surface); }
+
+/* ---------- controls: segmented, quiet, real ---------- */
+.docs-stage__controls {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--iv-space-2) var(--iv-space-3);
+  padding: 0 var(--iv-space-4) var(--iv-space-3);
+}
+.docs-stage__controls[hidden] { display: none; }
+.docs-stage__seg { display: inline-flex; padding: 2px; gap: 2px; border-radius: var(--iv-radius-full); background: var(--iv-color-surface); box-shadow: 0 0 0 1px var(--iv-color-border) inset; }
+.docs-stage__seg button {
+  appearance: none; border: 0; background: none; cursor: pointer;
+  font: inherit; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .08em;
+  color: var(--iv-color-text-muted); padding: .3rem .7rem; border-radius: var(--iv-radius-full);
+  transition: color var(--iv-motion-fast) var(--docs-ease), background-color var(--iv-motion-fast) var(--docs-ease);
+}
+.docs-stage__seg button:hover { color: var(--iv-color-text); }
+.docs-stage__seg button[aria-pressed="true"] { background: var(--iv-color-primary); color: var(--iv-color-on-primary); }
+.docs-stage__toggles { display: inline-flex; flex-wrap: wrap; gap: var(--iv-space-3); margin-inline-start: auto; }
+.docs-stage__toggle { display: inline-flex; align-items: center; gap: .45rem; font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); cursor: pointer; }
+.docs-stage__toggle input { accent-color: var(--iv-color-primary); inline-size: .95rem; block-size: .95rem; }
+.docs-stage__toggle:hover { color: var(--iv-color-text); }
+
+/* ---------- the screen ---------- */
+.docs-stage__port {
+  position: relative;
+  padding: 0 var(--iv-space-2) var(--iv-space-2);
+  background: linear-gradient(180deg, transparent, var(--iv-color-bg) 8%);
+  border-end-start-radius: var(--iv-radius-xl, 1.25rem);
+  border-end-end-radius: var(--iv-radius-xl, 1.25rem);
+}
+.docs-stage__screen {
+  inline-size: var(--docs-stage-w, 100%);
+  max-inline-size: 100%;
+  margin-inline: auto;
+  border-radius: var(--iv-radius-lg);
+  overflow: hidden;
+  background: var(--iv-color-bg);
+  box-shadow: 0 0 0 1px rgb(128 128 128 / .10), 0 24px 48px -36px rgb(0 0 0 / .9);
+  transition: inline-size 420ms var(--docs-ease-out);
+}
+.docs-stage__frame { display: block; inline-size: 100%; border: 0; background: transparent; }
+.docs-stage[data-stage-width="390"] .docs-stage__screen,
+.docs-stage[data-stage-width="768"] .docs-stage__screen { box-shadow: 0 0 0 1px var(--docs-hair), 0 34px 60px -40px rgb(0 0 0 / .9); }
+
+/* ---------- source, in tabs, from the same file ---------- */
+.docs-stage__code { position: relative; padding: 0 var(--iv-space-2) var(--iv-space-2); }
+.docs-stage__tabs { display: flex; gap: var(--iv-space-1); padding: var(--iv-space-2) var(--iv-space-2) var(--iv-space-1); }
+.docs-stage__tabs .docs-code__tab {
+  appearance: none; border: 0; background: none; cursor: pointer; font: inherit;
+  font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--iv-color-text-muted); padding: .35rem .7rem; border-radius: var(--iv-radius-sm);
+  position: relative;
+}
+.docs-stage__tabs .docs-code__tab::after { content: ""; position: absolute; inset-inline: .5rem; inset-block-end: 0; block-size: 2px; background: var(--iv-color-accent); transform: scaleX(0); transform-origin: left; transition: transform 280ms var(--docs-ease-out); }
+.docs-stage__tabs .docs-code__tab[aria-selected="true"] { color: var(--iv-color-text); }
+.docs-stage__tabs .docs-code__tab[aria-selected="true"]::after { transform: scaleX(1); }
+.docs-stage__code .docs-code__panel pre {
+  margin: 0; padding: var(--iv-space-4) var(--iv-space-5);
+  background: var(--iv-color-surface);
+  border-radius: var(--iv-radius-lg);
+  font-size: var(--iv-text-xs); line-height: 1.7;
+  white-space: pre-wrap; overflow-wrap: break-word; overflow: auto;
+  max-block-size: 24rem; scrollbar-gutter: stable;
+  box-shadow: 0 1px 0 var(--docs-hair) inset;
+}
+
+/* A stage may bleed past the reading column when the page gives it room. */
+.docs-prose > .docs-stage { margin-block: var(--docs-block); max-inline-size: none; }
+/* The one spectacular moment of the page is allowed past the reading column. */
+@media (min-width: 80em) {
+  .docs-prose > .docs-stage--primary { margin-inline: calc(var(--docs-bleed, 0rem) * -1); }
+}
+@media (max-width: 40em) {
+  .docs-stage__controls { gap: var(--iv-space-2); }
+  .docs-stage__toggles { margin-inline-start: 0; }
+}
+
+/* A stage taller than its cap scrolls inside its own frame; the edge says so. */
+.docs-stage[data-stage-capped] .docs-stage__screen { position: relative; }
+.docs-stage[data-stage-capped] .docs-stage__screen::after { content: ""; position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 2.5rem; pointer-events: none; background: linear-gradient(180deg, transparent, var(--iv-color-bg)); opacity: .9; }

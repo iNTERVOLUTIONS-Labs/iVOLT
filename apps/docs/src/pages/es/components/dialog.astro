@@ -1,13 +1,13 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Diálogo" description="Diálogo de iVOLT: <dialog> nativo con showModal, gestión del foco, Escape, cierre por fondo y por formulario, eventos cancelables, alternativa sin JS y opciones.">
   <article class="docs-prose">
     <h1>Diálogo (dialog)</h1>
     <p>Un modal construido sobre el elemento nativo <code>&lt;dialog&gt;</code>. El navegador aporta la capa superior, el fondo inerte y Escape; iVOLT añade la colocación del foco, su devolución, el cierre al pulsar el fondo, los disparadores declarativos y los eventos cancelables.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/dialog.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/dialog</code> o <code>auto.js</code>.</p>
-    <Fixture name="dialog/basic" />
+    <Stage primary name="dialog/basic" />
     <h2>Marcado</h2>
     <p>Dale al diálogo <code>data-iv-component="dialog"</code>, un <code>id</code> y un nombre accesible (<code>aria-labelledby</code>). Los disparadores usan <code>data-iv-open="id"</code>; cualquier elemento interior con <code>data-iv-close</code> lo cierra. Un <code>&lt;form method="dialog"&gt;</code> hace que los botones cierren el diálogo con su <code>value</code> como valor de retorno.</p>
     <h2>JavaScript</h2>

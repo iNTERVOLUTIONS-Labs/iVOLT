@@ -1,6 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
-import Fixture from "../components/Fixture.astro";
+import Stage from "../components/Stage.astro";
+import DeviceFrame from "../components/DeviceFrame.astro";
 import Arcs from "../components/Arcs.astro";
 import ThemeCut from "../components/ThemeCut.astro";
 import { families } from "../i18n/en.js";
@@ -39,14 +40,23 @@ const panels = [
   { fixture: "surfaces/glass", name: "Surfaces", slug: "surfaces", href: "/foundations/surfaces", kind: "css" },
   { fixture: "combobox/basic", name: "Combobox", slug: "combobox", kind: "js" },
 ];
+const reel = [
+  { fixture: "button/variants", name: "Button", slug: "button" },
+  { fixture: "form/float", name: "Form", slug: "form" },
+  { fixture: "tabs/basic", name: "Tabs", slug: "tabs" },
+  { fixture: "dialog/basic", name: "Dialog", slug: "dialog" },
+  { fixture: "combobox/basic", name: "Combobox", slug: "combobox" },
+  { fixture: "carousel/photos", name: "Carousel", slug: "carousel" },
+];
 const components = Object.entries(families);
 const recipes = [
-  { slug: "landing", title: "Business landing", text: "Hero, benefits, example pricing, FAQ accordion and a contact dialog." },
-  { slug: "catalog", title: "Editorial catalogue", text: "Card grid with working filters and sorting, breadcrumb, badges, pagination and tabs." },
-  { slug: "admin", title: "Admin panel", text: "Static sidebar drawer, KPIs, responsive table, form with toasts and a confirmation dialog." },
+  { slug: "studio", title: "Studio", text: "A creative studio: cinematic cover with parallax, a marquee, stacked service cards, a gallery with the viewer and a contact stepper." },
+  { slug: "console", title: "Console", text: "A product console: megamenu, drawer, counted figures, a data table with filter and sort, a command palette and a validated form." },
+  { slug: "journal", title: "Journal", text: "An editorial magazine: typography as the subject, a masonry of articles, a reading bar, notes in popovers and a printed layout that works." },
+  { slug: "store", title: "Store", text: "A catalogue and a purchase that buys nothing: rich filters, a product carousel, a checkout stepper, a cart drawer and a confirmation dialog." },
 ];
 ---
-<Base title="The interface starts here" description="iVOLT is a hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript. No runtime dependencies. Alpha." sidebar={false} bleed={true}>
+<Base title="The interface starts here" description="iVOLT is a hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript. No runtime dependencies. Release candidate for 1.0." sidebar={false} bleed={true}>
   <section class="docs-hero" aria-labelledby="hero-title">
     <Arcs />
     <div class="docs-hero__inner">
@@ -61,7 +71,7 @@ const recipes = [
         <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/components/button">Explore components</a>
       </div>
       <ul class="docs-facts">
-        {facts.map((f) => <li class="docs-fact"><strong data-count>{f.value}</strong><span>{f.label}</span></li>)}
+        {facts.map((f) => <li class="docs-fact"><strong class="iv-count" data-iv-component="countup">{f.value}</strong><span>{f.label}</span></li>)}
       </ul>
     </div>
   </section>
@@ -86,21 +96,21 @@ const recipes = [
   </section>
 
   <section class="docs-cabinet" aria-labelledby="components-title">
-    <div class="docs-cabinet__pin">
     <div class="docs-cabinet__head docs-wrap">
       <span class="docs-num">02 — Components</span>
       <h2 class="docs-why__title" id="components-title">Fourteen content families,<br>nineteen interactive ones.</h2>
     </div>
-    <div class="docs-cabinet__sticky">
-      <div class="docs-cabinet__track">
-        {panels.map((p) => (
-          <article class="docs-panel">
-            <Fixture name={p.fixture} title={p.name} />
-            <p class="docs-panel__meta"><a href={p.href ? `${p.href}` : `/components/${p.slug}`}>{p.name}</a><small>{p.kind}</small></p>
-          </article>
+    <div class="docs-wrap docs-showreel" data-showreel>
+      <div class="docs-showreel__tabs" role="tablist" aria-label="Components on stage">
+        {reel.map((r, i) => (
+          <button class="docs-showreel__tab" type="button" role="tab" id={`reel-tab-${r.slug}`} aria-controls={`reel-panel-${r.slug}`} aria-selected={String(i === 0)} tabindex={i === 0 ? "0" : "-1"}>{r.name}</button>
         ))}
       </div>
-    </div>
+      {reel.map((r, i) => (
+        <div class="docs-showreel__panel" id={`reel-panel-${r.slug}`} role="tabpanel" aria-labelledby={`reel-tab-${r.slug}`} hidden={i !== 0}>
+          <Stage name={r.fixture} title={r.name} primary={i === 0} minHeight="18rem" />
+        </div>
+      ))}
     </div>
     <div class="docs-wrap">
       <nav class="docs-families" aria-label="Components">
@@ -134,12 +144,12 @@ const recipes = [
   <section class="docs-section docs-wrap" aria-labelledby="recipes-title">
     <div class="docs-reveal">
       <span class="docs-num">04 — Recipes</span>
-      <h2 class="docs-why__title" id="recipes-title">Three complete pages, one package.</h2>
+      <h2 class="docs-why__title" id="recipes-title">Four complete pages, one package.</h2>
     </div>
     <div class="docs-recipes" style="margin-block-start:clamp(3rem,7vh,5rem)">
       {recipes.map((r, i) => (
         <a class="docs-recipe docs-reveal" href={`/examples/${r.slug}/index.html`}>
-          <div class="docs-recipe__frame iv-edge-near"><iframe src={`/examples/${r.slug}/index.html`} title={`${r.title} recipe preview`} loading="lazy" tabindex="-1" aria-hidden="true" sandbox="allow-scripts allow-same-origin"></iframe></div>
+          <div class="docs-recipe__frame iv-edge-near"><DeviceFrame slug={r.slug} title={r.title} device="desktop" /></div>
           <div class="docs-recipe__body">
             <h3>{r.title}</h3>
             <p>{r.text}</p>
@@ -155,9 +165,10 @@ const recipes = [
       <div class="docs-invert__head">
       <span class="docs-num">05 — Start</span>
       <h2 id="start-title">Two files. No build step.</h2>
-      <p>Build the package once, copy <code>dist/</code> next to your page and link a stylesheet and a module. The starter and the recipes are exactly this.</p>
+      <p>Install it from npm, or build the package once and copy <code>dist/</code> next to your page. Then link a stylesheet and a module. The starter and the four recipes are exactly this, nothing more.</p>
       </div>
       <div class="docs-invert__side">
+      <pre class="docs-code" tabindex="0"><code>npm install @intervolutions/ivolt@next</code></pre>
       <pre class="docs-code" tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
   &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
   &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>

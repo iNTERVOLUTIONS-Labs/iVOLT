@@ -70,9 +70,9 @@
    The rails never steal width from the column below 80em; they disappear instead. */
 .docs-shell { padding-block: var(--iv-space-8) var(--iv-space-10); }
 .docs-shell--sidebar { display: grid; gap: var(--iv-space-8); }
-@media (min-width: 64em) { .docs-shell--sidebar { grid-template-columns: 14rem minmax(0, 1fr); gap: clamp(2rem, 3.2vw, 4rem); padding-block-start: var(--iv-space-10); } }
-@media (min-width: 80em) { .docs-shell--sidebar { grid-template-columns: 14rem minmax(0, 1fr) 12rem; } }
-@media (min-width: 100em) { .docs-shell--sidebar { grid-template-columns: 15rem minmax(0, 1fr) 14rem; gap: 4.5rem; } }
+@media (min-width: 64em) { .docs-shell--sidebar { grid-template-columns: var(--docs-rail) minmax(0, 1fr); gap: clamp(2rem, 3.2vw, 4rem); padding-block-start: var(--iv-space-10); } }
+@media (min-width: 80em) { .docs-shell--sidebar { grid-template-columns: var(--docs-rail) minmax(0, 1fr) var(--docs-index); --docs-bleed: clamp(0rem, 1.5vw, 2.5rem); } }
+@media (min-width: 100em) { .docs-shell--sidebar { grid-template-columns: var(--docs-rail) minmax(0, 1fr) calc(var(--docs-index) + 2rem); gap: 4.5rem; --docs-bleed: clamp(0rem, 2vw, 3.5rem); } }
 .docs-sidebar { display: none; }
 @media (min-width: 64em) {
   .docs-sidebar {

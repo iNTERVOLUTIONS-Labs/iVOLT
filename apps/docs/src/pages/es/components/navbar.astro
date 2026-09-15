@@ -1,23 +1,23 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import Fixture from "../../../components/Fixture.astro";
+import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Barra de navegación" description="Barra de navegación de iVOLT: cabecera de sitio con marca, enlaces y acciones que se pliega en pantallas estrechas, se queda pegada y se condensa al hacer scroll, y sirve todos los enlaces sin JavaScript.">
   <article class="docs-prose">
     <h1>Barra de navegación (navbar)</h1>
     <p>La cabecera de un sitio: marca, enlaces, acciones y, en pantallas estrechas, un panel que se pliega. El servidor la envía funcionando: por encima del punto de plegado es una barra, y por debajo el panel llega abierto y apilado bajo la marca, así que ningún enlace queda fuera del alcance. En <code>init</code> aparece el botón de hamburguesa, el panel se pliega, Escape y un clic fuera lo cierran, y una cabecera pegajosa se condensa en cuanto la página baja. No es un panel lateral: este panel es contenido en el flujo, no atrapa el foco y nunca bloquea la página.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/navbar.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/navbar</code> o <code>auto.js</code>. Añadido en la v0.6.</p>
-    <Fixture name="navbar/basic" title="Cabecera pegajosa" viewport="30rem" />
+    <Stage primary name="navbar/basic" title="Cabecera pegajosa"/>
     <div class="docs-note">
       <span class="docs-note__title">Cómo leer esta página</span>
-      <p>Cada cabecera vive en su propio recuadro con scroll, para que el relleno que necesita una barra pegajosa no añada tres pantallas a este artículo. Desplázate dentro de una vista previa y verás cómo la barra se queda fija. El estado condensado lee el scroll del documento, no el del recuadro, así que aquí las barras ya llegan condensadas; abre <code>fixtures/navbar/basic.html</code> por separado para ver la transición.</p>
+      <p>Cada cabecera de abajo funciona en una página propia, embebida aquí: la barra se fija, se condensa y se pliega contra esa página, no contra este artículo. Desplázate dentro de un escenario para ver la barra sostenerse, cambia su ancho a 390 para verla plegarse, o ábrela sola desde su barra de controles.</p>
     </div>
     <h2>Un megamenú dentro del panel</h2>
     <p>Un <a href="/es/components/megamenu">megamenú</a> puede vivir dentro de <code>iv-navbar__panel</code>. Desde el punto de ruptura <code>lg</code> hacia arriba sus paneles flotan bajo toda la barra; por debajo, la cabecera se pliega y esos mismos paneles se comportan como un acordeón dentro de ella. Pasa <code>data-iv-overlay="false"</code> al menú alojado: dentro de una cabecera la barra ya es la superficie elevada, y un velo por debajo oscurecería la propia cabecera.</p>
-    <Fixture name="navbar/megamenu" title="Cabecera con megamenú" viewport="34rem" />
+    <Stage name="navbar/megamenu" title="Cabecera con megamenú"/>
     <h2>Transparente sobre una portada</h2>
     <p><code>iv-navbar--transparent</code> quita el fondo y toma texto claro mientras la cabecera está sobre un hero; en cuanto se condensa o abre su panel, vuelven la superficie y los colores de la página, porque una barra transparente sobre contenido no se lee. <code>iv-navbar--glass</code> mantiene la superficie de cristal en cualquier posición de scroll, y <code>iv-navbar--center</code> centra los enlaces y deja las acciones al final.</p>
-    <Fixture name="navbar/transparent" title="Transparente sobre una portada" viewport="34rem" />
+    <Stage name="navbar/transparent" title="Transparente sobre una portada"/>
     <h2>Opciones</h2>
     <div class="docs-scroller">
       <table>
