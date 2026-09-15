@@ -1,0 +1,2562 @@
+{
+  "version": "0.8.0-beta.0",
+  "sheets": {
+    "base": [
+      "iv-root"
+    ],
+    "utilities": [
+      "iv-u-block",
+      "iv-u-col-span-1",
+      "iv-u-col-span-12",
+      "iv-u-col-span-2",
+      "iv-u-col-span-3",
+      "iv-u-col-span-4",
+      "iv-u-col-span-5",
+      "iv-u-col-span-6",
+      "iv-u-col-span-full",
+      "iv-u-flex",
+      "iv-u-flex-col",
+      "iv-u-flex-nowrap",
+      "iv-u-flex-row",
+      "iv-u-flex-wrap",
+      "iv-u-font-bold",
+      "iv-u-font-medium",
+      "iv-u-font-normal",
+      "iv-u-font-semibold",
+      "iv-u-gap-0",
+      "iv-u-gap-1",
+      "iv-u-gap-10",
+      "iv-u-gap-12",
+      "iv-u-gap-2",
+      "iv-u-gap-3",
+      "iv-u-gap-4",
+      "iv-u-gap-5",
+      "iv-u-gap-6",
+      "iv-u-gap-8",
+      "iv-u-gap-x-0",
+      "iv-u-gap-x-1",
+      "iv-u-gap-x-10",
+      "iv-u-gap-x-12",
+      "iv-u-gap-x-2",
+      "iv-u-gap-x-3",
+      "iv-u-gap-x-4",
+      "iv-u-gap-x-5",
+      "iv-u-gap-x-6",
+      "iv-u-gap-x-8",
+      "iv-u-gap-y-0",
+      "iv-u-gap-y-1",
+      "iv-u-gap-y-10",
+      "iv-u-gap-y-12",
+      "iv-u-gap-y-2",
+      "iv-u-gap-y-3",
+      "iv-u-gap-y-4",
+      "iv-u-gap-y-5",
+      "iv-u-gap-y-6",
+      "iv-u-gap-y-8",
+      "iv-u-grid",
+      "iv-u-grid-cols-1",
+      "iv-u-grid-cols-12",
+      "iv-u-grid-cols-2",
+      "iv-u-grid-cols-3",
+      "iv-u-grid-cols-4",
+      "iv-u-grid-cols-5",
+      "iv-u-grid-cols-6",
+      "iv-u-grow",
+      "iv-u-hidden",
+      "iv-u-inline",
+      "iv-u-inline-block",
+      "iv-u-inline-flex",
+      "iv-u-items-baseline",
+      "iv-u-items-center",
+      "iv-u-items-end",
+      "iv-u-items-start",
+      "iv-u-items-stretch",
+      "iv-u-justify-around",
+      "iv-u-justify-between",
+      "iv-u-justify-center",
+      "iv-u-justify-end",
+      "iv-u-justify-start",
+      "iv-u-lg-block",
+      "iv-u-lg-col-span-1",
+      "iv-u-lg-col-span-12",
+      "iv-u-lg-col-span-2",
+      "iv-u-lg-col-span-3",
+      "iv-u-lg-col-span-4",
+      "iv-u-lg-col-span-5",
+      "iv-u-lg-col-span-6",
+      "iv-u-lg-col-span-full",
+      "iv-u-lg-flex",
+      "iv-u-lg-flex-col",
+      "iv-u-lg-flex-row",
+      "iv-u-lg-gap-0",
+      "iv-u-lg-gap-1",
+      "iv-u-lg-gap-10",
+      "iv-u-lg-gap-12",
+      "iv-u-lg-gap-2",
+      "iv-u-lg-gap-3",
+      "iv-u-lg-gap-4",
+      "iv-u-lg-gap-5",
+      "iv-u-lg-gap-6",
+      "iv-u-lg-gap-8",
+      "iv-u-lg-grid",
+      "iv-u-lg-grid-cols-1",
+      "iv-u-lg-grid-cols-12",
+      "iv-u-lg-grid-cols-2",
+      "iv-u-lg-grid-cols-3",
+      "iv-u-lg-grid-cols-4",
+      "iv-u-lg-grid-cols-5",
+      "iv-u-lg-grid-cols-6",
+      "iv-u-lg-hidden",
+      "iv-u-lg-inline",
+      "iv-u-lg-inline-block",
+      "iv-u-lg-inline-flex",
+      "iv-u-lg-text-center",
+      "iv-u-lg-text-end",
+      "iv-u-lg-text-start",
+      "iv-u-m-0",
+      "iv-u-m-1",
+      "iv-u-m-10",
+      "iv-u-m-12",
+      "iv-u-m-2",
+      "iv-u-m-3",
+      "iv-u-m-4",
+      "iv-u-m-5",
+      "iv-u-m-6",
+      "iv-u-m-8",
+      "iv-u-m-auto",
+      "iv-u-max-w-content",
+      "iv-u-max-w-measure",
+      "iv-u-mb-0",
+      "iv-u-mb-1",
+      "iv-u-mb-10",
+      "iv-u-mb-12",
+      "iv-u-mb-2",
+      "iv-u-mb-3",
+      "iv-u-mb-4",
+      "iv-u-mb-5",
+      "iv-u-mb-6",
+      "iv-u-mb-8",
+      "iv-u-mb-auto",
+      "iv-u-md-block",
+      "iv-u-md-col-span-1",
+      "iv-u-md-col-span-12",
+      "iv-u-md-col-span-2",
+      "iv-u-md-col-span-3",
+      "iv-u-md-col-span-4",
+      "iv-u-md-col-span-5",
+      "iv-u-md-col-span-6",
+      "iv-u-md-col-span-full",
+      "iv-u-md-flex",
+      "iv-u-md-flex-col",
+      "iv-u-md-flex-row",
+      "iv-u-md-gap-0",
+      "iv-u-md-gap-1",
+      "iv-u-md-gap-10",
+      "iv-u-md-gap-12",
+      "iv-u-md-gap-2",
+      "iv-u-md-gap-3",
+      "iv-u-md-gap-4",
+      "iv-u-md-gap-5",
+      "iv-u-md-gap-6",
+      "iv-u-md-gap-8",
+      "iv-u-md-grid",
+      "iv-u-md-grid-cols-1",
+      "iv-u-md-grid-cols-12",
+      "iv-u-md-grid-cols-2",
+      "iv-u-md-grid-cols-3",
+      "iv-u-md-grid-cols-4",
+      "iv-u-md-grid-cols-5",
+      "iv-u-md-grid-cols-6",
+      "iv-u-md-hidden",
+      "iv-u-md-inline",
+      "iv-u-md-inline-block",
+      "iv-u-md-inline-flex",
+      "iv-u-md-text-center",
+      "iv-u-md-text-end",
+      "iv-u-md-text-start",
+      "iv-u-me-0",
+      "iv-u-me-1",
+      "iv-u-me-10",
+      "iv-u-me-12",
+      "iv-u-me-2",
+      "iv-u-me-3",
+      "iv-u-me-4",
+      "iv-u-me-5",
+      "iv-u-me-6",
+      "iv-u-me-8",
+      "iv-u-me-auto",
+      "iv-u-ms-0",
+      "iv-u-ms-1",
+      "iv-u-ms-10",
+      "iv-u-ms-12",
+      "iv-u-ms-2",
+      "iv-u-ms-3",
+      "iv-u-ms-4",
+      "iv-u-ms-5",
+      "iv-u-ms-6",
+      "iv-u-ms-8",
+      "iv-u-ms-auto",
+      "iv-u-mt-0",
+      "iv-u-mt-1",
+      "iv-u-mt-10",
+      "iv-u-mt-12",
+      "iv-u-mt-2",
+      "iv-u-mt-3",
+      "iv-u-mt-4",
+      "iv-u-mt-5",
+      "iv-u-mt-6",
+      "iv-u-mt-8",
+      "iv-u-mt-auto",
+      "iv-u-mx-0",
+      "iv-u-mx-1",
+      "iv-u-mx-10",
+      "iv-u-mx-12",
+      "iv-u-mx-2",
+      "iv-u-mx-3",
+      "iv-u-mx-4",
+      "iv-u-mx-5",
+      "iv-u-mx-6",
+      "iv-u-mx-8",
+      "iv-u-mx-auto",
+      "iv-u-my-0",
+      "iv-u-my-1",
+      "iv-u-my-10",
+      "iv-u-my-12",
+      "iv-u-my-2",
+      "iv-u-my-3",
+      "iv-u-my-4",
+      "iv-u-my-5",
+      "iv-u-my-6",
+      "iv-u-my-8",
+      "iv-u-my-auto",
+      "iv-u-p-0",
+      "iv-u-p-1",
+      "iv-u-p-10",
+      "iv-u-p-12",
+      "iv-u-p-2",
+      "iv-u-p-3",
+      "iv-u-p-4",
+      "iv-u-p-5",
+      "iv-u-p-6",
+      "iv-u-p-8",
+      "iv-u-pb-0",
+      "iv-u-pb-1",
+      "iv-u-pb-10",
+      "iv-u-pb-12",
+      "iv-u-pb-2",
+      "iv-u-pb-3",
+      "iv-u-pb-4",
+      "iv-u-pb-5",
+      "iv-u-pb-6",
+      "iv-u-pb-8",
+      "iv-u-pe-0",
+      "iv-u-pe-1",
+      "iv-u-pe-10",
+      "iv-u-pe-12",
+      "iv-u-pe-2",
+      "iv-u-pe-3",
+      "iv-u-pe-4",
+      "iv-u-pe-5",
+      "iv-u-pe-6",
+      "iv-u-pe-8",
+      "iv-u-ps-0",
+      "iv-u-ps-1",
+      "iv-u-ps-10",
+      "iv-u-ps-12",
+      "iv-u-ps-2",
+      "iv-u-ps-3",
+      "iv-u-ps-4",
+      "iv-u-ps-5",
+      "iv-u-ps-6",
+      "iv-u-ps-8",
+      "iv-u-pt-0",
+      "iv-u-pt-1",
+      "iv-u-pt-10",
+      "iv-u-pt-12",
+      "iv-u-pt-2",
+      "iv-u-pt-3",
+      "iv-u-pt-4",
+      "iv-u-pt-5",
+      "iv-u-pt-6",
+      "iv-u-pt-8",
+      "iv-u-px-0",
+      "iv-u-px-1",
+      "iv-u-px-10",
+      "iv-u-px-12",
+      "iv-u-px-2",
+      "iv-u-px-3",
+      "iv-u-px-4",
+      "iv-u-px-5",
+      "iv-u-px-6",
+      "iv-u-px-8",
+      "iv-u-py-0",
+      "iv-u-py-1",
+      "iv-u-py-10",
+      "iv-u-py-12",
+      "iv-u-py-2",
+      "iv-u-py-3",
+      "iv-u-py-4",
+      "iv-u-py-5",
+      "iv-u-py-6",
+      "iv-u-py-8",
+      "iv-u-shrink-0",
+      "iv-u-sm-block",
+      "iv-u-sm-col-span-1",
+      "iv-u-sm-col-span-12",
+      "iv-u-sm-col-span-2",
+      "iv-u-sm-col-span-3",
+      "iv-u-sm-col-span-4",
+      "iv-u-sm-col-span-5",
+      "iv-u-sm-col-span-6",
+      "iv-u-sm-col-span-full",
+      "iv-u-sm-flex",
+      "iv-u-sm-flex-col",
+      "iv-u-sm-flex-row",
+      "iv-u-sm-gap-0",
+      "iv-u-sm-gap-1",
+      "iv-u-sm-gap-10",
+      "iv-u-sm-gap-12",
+      "iv-u-sm-gap-2",
+      "iv-u-sm-gap-3",
+      "iv-u-sm-gap-4",
+      "iv-u-sm-gap-5",
+      "iv-u-sm-gap-6",
+      "iv-u-sm-gap-8",
+      "iv-u-sm-grid",
+      "iv-u-sm-grid-cols-1",
+      "iv-u-sm-grid-cols-12",
+      "iv-u-sm-grid-cols-2",
+      "iv-u-sm-grid-cols-3",
+      "iv-u-sm-grid-cols-4",
+      "iv-u-sm-grid-cols-5",
+      "iv-u-sm-grid-cols-6",
+      "iv-u-sm-hidden",
+      "iv-u-sm-inline",
+      "iv-u-sm-inline-block",
+      "iv-u-sm-inline-flex",
+      "iv-u-sm-text-center",
+      "iv-u-sm-text-end",
+      "iv-u-sm-text-start",
+      "iv-u-sr-only",
+      "iv-u-sr-only-focusable",
+      "iv-u-text-2xl",
+      "iv-u-text-center",
+      "iv-u-text-end",
+      "iv-u-text-lg",
+      "iv-u-text-md",
+      "iv-u-text-muted",
+      "iv-u-text-sm",
+      "iv-u-text-start",
+      "iv-u-text-xl",
+      "iv-u-text-xs",
+      "iv-u-truncate",
+      "iv-u-w-auto",
+      "iv-u-w-full",
+      "iv-u-xl-block",
+      "iv-u-xl-col-span-1",
+      "iv-u-xl-col-span-12",
+      "iv-u-xl-col-span-2",
+      "iv-u-xl-col-span-3",
+      "iv-u-xl-col-span-4",
+      "iv-u-xl-col-span-5",
+      "iv-u-xl-col-span-6",
+      "iv-u-xl-col-span-full",
+      "iv-u-xl-flex",
+      "iv-u-xl-flex-col",
+      "iv-u-xl-flex-row",
+      "iv-u-xl-gap-0",
+      "iv-u-xl-gap-1",
+      "iv-u-xl-gap-10",
+      "iv-u-xl-gap-12",
+      "iv-u-xl-gap-2",
+      "iv-u-xl-gap-3",
+      "iv-u-xl-gap-4",
+      "iv-u-xl-gap-5",
+      "iv-u-xl-gap-6",
+      "iv-u-xl-gap-8",
+      "iv-u-xl-grid",
+      "iv-u-xl-grid-cols-1",
+      "iv-u-xl-grid-cols-12",
+      "iv-u-xl-grid-cols-2",
+      "iv-u-xl-grid-cols-3",
+      "iv-u-xl-grid-cols-4",
+      "iv-u-xl-grid-cols-5",
+      "iv-u-xl-grid-cols-6",
+      "iv-u-xl-hidden",
+      "iv-u-xl-inline",
+      "iv-u-xl-inline-block",
+      "iv-u-xl-inline-flex",
+      "iv-u-xl-text-center",
+      "iv-u-xl-text-end",
+      "iv-u-xl-text-start"
+    ],
+    "surfaces": [
+      "iv-elevate",
+      "iv-glass",
+      "iv-glass--strong",
+      "iv-glow",
+      "iv-gradient-text",
+      "iv-shine",
+      "iv-texture-aurora",
+      "iv-texture-grain",
+      "iv-texture-mesh"
+    ],
+    "effects": [
+      "iv-edge-glint",
+      "iv-edge-near",
+      "iv-pulse-glow",
+      "iv-reveal",
+      "iv-rise",
+      "iv-scan",
+      "iv-scan--v",
+      "iv-spark"
+    ],
+    "motion": [
+      "iv-marquee",
+      "iv-marquee--fade",
+      "iv-marquee--reverse",
+      "iv-marquee--vertical",
+      "iv-marquee__item",
+      "iv-marquee__track",
+      "iv-parallax",
+      "iv-parallax--media",
+      "iv-parallax-frame",
+      "iv-scroll-progress",
+      "iv-stack-cards",
+      "iv-stack-cards__card"
+    ],
+    "text": [
+      "iv-count",
+      "iv-text-glow",
+      "iv-text-glow--pulse",
+      "iv-text-outline",
+      "iv-text-outline--fill",
+      "iv-text-reveal",
+      "iv-text-reveal__line",
+      "iv-text-shimmer",
+      "iv-text-shimmer--once"
+    ],
+    "layout/cluster": [
+      "iv-cluster"
+    ],
+    "layout/container": [
+      "iv-container",
+      "iv-container--narrow",
+      "iv-container--wide"
+    ],
+    "layout/grid": [
+      "iv-grid",
+      "iv-grid--auto"
+    ],
+    "layout/stack": [
+      "iv-stack",
+      "iv-stack--center"
+    ],
+    "components/alert": [
+      "iv-alert",
+      "iv-alert--danger",
+      "iv-alert--info",
+      "iv-alert--success",
+      "iv-alert--warning",
+      "iv-alert__actions",
+      "iv-alert__body",
+      "iv-alert__icon",
+      "iv-alert__title"
+    ],
+    "components/avatar": [
+      "iv-avatar",
+      "iv-avatar--lg",
+      "iv-avatar--ring",
+      "iv-avatar--sm",
+      "iv-avatar--square",
+      "iv-avatar--xl",
+      "iv-avatar-group",
+      "iv-avatar-group__more",
+      "iv-avatar__img",
+      "iv-avatar__status"
+    ],
+    "components/badge": [
+      "iv-badge",
+      "iv-badge--danger",
+      "iv-badge--info",
+      "iv-badge--primary",
+      "iv-badge--solid",
+      "iv-badge--success",
+      "iv-badge--warning"
+    ],
+    "components/breadcrumb": [
+      "iv-breadcrumb",
+      "iv-breadcrumb__item",
+      "iv-breadcrumb__list"
+    ],
+    "components/button": [
+      "iv-button",
+      "iv-button--danger",
+      "iv-button--ghost",
+      "iv-button--icon",
+      "iv-button--lg",
+      "iv-button--primary",
+      "iv-button--secondary",
+      "iv-button--sm",
+      "iv-button-group"
+    ],
+    "components/card": [
+      "iv-card",
+      "iv-card--flat",
+      "iv-card__body",
+      "iv-card__footer",
+      "iv-card__media",
+      "iv-card__title"
+    ],
+    "components/carousel": [
+      "iv-carousel",
+      "iv-carousel--contained",
+      "iv-carousel--tall",
+      "iv-carousel__caption",
+      "iv-carousel__controls",
+      "iv-carousel__counter",
+      "iv-carousel__dots",
+      "iv-carousel__dots--thumbs",
+      "iv-carousel__media",
+      "iv-carousel__next",
+      "iv-carousel__prev",
+      "iv-carousel__progress",
+      "iv-carousel__scrim",
+      "iv-carousel__slide",
+      "iv-carousel__toggle",
+      "iv-carousel__track",
+      "iv-carousel__viewport"
+    ],
+    "components/combobox": [
+      "iv-combobox",
+      "iv-combobox__empty",
+      "iv-combobox__input",
+      "iv-combobox__list",
+      "iv-combobox__option"
+    ],
+    "components/command": [
+      "iv-command",
+      "iv-command--glass",
+      "iv-command__empty",
+      "iv-command__field",
+      "iv-command__group",
+      "iv-command__groups",
+      "iv-command__heading",
+      "iv-command__hints",
+      "iv-command__icon",
+      "iv-command__input",
+      "iv-command__item",
+      "iv-command__item--active",
+      "iv-command__kbd",
+      "iv-command__label",
+      "iv-command__list",
+      "iv-command__status",
+      "iv-dialog__panel"
+    ],
+    "components/datatable": [
+      "iv-datatable",
+      "iv-datatable__empty",
+      "iv-datatable__filter",
+      "iv-datatable__sort",
+      "iv-datatable__status",
+      "iv-table--stack"
+    ],
+    "components/datepicker": [
+      "iv-datepicker",
+      "iv-datepicker__control",
+      "iv-datepicker__day",
+      "iv-datepicker__day--outside",
+      "iv-datepicker__day--today",
+      "iv-datepicker__footer",
+      "iv-datepicker__grid",
+      "iv-datepicker__header",
+      "iv-datepicker__icon",
+      "iv-datepicker__nav",
+      "iv-datepicker__popover",
+      "iv-datepicker__title",
+      "iv-datepicker__toggle",
+      "iv-datepicker__weekday",
+      "iv-input"
+    ],
+    "components/dialog": [
+      "iv-dialog",
+      "iv-dialog__body",
+      "iv-dialog__footer",
+      "iv-dialog__header",
+      "iv-dialog__panel",
+      "iv-dialog__title"
+    ],
+    "components/disclosure": [
+      "iv-accordion",
+      "iv-disclosure",
+      "iv-disclosure__content",
+      "iv-disclosure__summary"
+    ],
+    "components/drawer": [
+      "iv-drawer",
+      "iv-drawer--end",
+      "iv-drawer__body",
+      "iv-drawer__footer",
+      "iv-drawer__header",
+      "iv-drawer__panel",
+      "iv-drawer__title"
+    ],
+    "components/dropdown": [
+      "iv-dropdown",
+      "iv-dropdown--end",
+      "iv-dropdown__item",
+      "iv-dropdown__menu",
+      "iv-dropdown__separator"
+    ],
+    "components/form": [
+      "iv-check",
+      "iv-checks",
+      "iv-checks--inline",
+      "iv-counter",
+      "iv-counter--over",
+      "iv-counter--warn",
+      "iv-counter__value",
+      "iv-field",
+      "iv-field--float",
+      "iv-field--invalid",
+      "iv-field--valid",
+      "iv-field__error",
+      "iv-field__help",
+      "iv-fieldset",
+      "iv-fieldset__legend",
+      "iv-file",
+      "iv-file__zone",
+      "iv-form",
+      "iv-form__summary",
+      "iv-form__summary-list",
+      "iv-form__summary-title",
+      "iv-input",
+      "iv-input--lg",
+      "iv-input--sm",
+      "iv-input-group",
+      "iv-input-group__addon",
+      "iv-input-group__addon--button",
+      "iv-label",
+      "iv-label__required",
+      "iv-picker",
+      "iv-picker__field",
+      "iv-picker__placeholder",
+      "iv-range",
+      "iv-select",
+      "iv-shake",
+      "iv-switch",
+      "iv-switch__thumb",
+      "iv-switch__track",
+      "iv-textarea"
+    ],
+    "components/hero": [
+      "iv-hero",
+      "iv-hero--center",
+      "iv-hero--cinematic",
+      "iv-hero--compact",
+      "iv-hero--kenburns",
+      "iv-hero--light",
+      "iv-hero--split",
+      "iv-hero--terminal",
+      "iv-hero__actions",
+      "iv-hero__aside",
+      "iv-hero__content",
+      "iv-hero__facts",
+      "iv-hero__kicker",
+      "iv-hero__lead",
+      "iv-hero__media",
+      "iv-hero__scrim",
+      "iv-hero__title"
+    ],
+    "components/lightbox": [
+      "iv-gallery",
+      "iv-gallery--masonry",
+      "iv-gallery--strip",
+      "iv-gallery__img",
+      "iv-gallery__item",
+      "iv-lightbox",
+      "iv-lightbox__button",
+      "iv-lightbox__caption",
+      "iv-lightbox__close",
+      "iv-lightbox__counter",
+      "iv-lightbox__img",
+      "iv-lightbox__next",
+      "iv-lightbox__panel",
+      "iv-lightbox__prev",
+      "iv-lightbox__stage",
+      "iv-lightbox__zoom"
+    ],
+    "components/megamenu": [
+      "iv-megamenu",
+      "iv-megamenu--full",
+      "iv-megamenu__art",
+      "iv-megamenu__bottom",
+      "iv-megamenu__card",
+      "iv-megamenu__cards",
+      "iv-megamenu__group",
+      "iv-megamenu__heading",
+      "iv-megamenu__inner",
+      "iv-megamenu__item",
+      "iv-megamenu__link",
+      "iv-megamenu__links",
+      "iv-megamenu__list",
+      "iv-megamenu__meta",
+      "iv-megamenu__name",
+      "iv-megamenu__overlay",
+      "iv-megamenu__panel",
+      "iv-megamenu__toggle"
+    ],
+    "components/navbar": [
+      "iv-megamenu",
+      "iv-megamenu__list",
+      "iv-navbar",
+      "iv-navbar--center",
+      "iv-navbar--glass",
+      "iv-navbar--transparent",
+      "iv-navbar__actions",
+      "iv-navbar__brand",
+      "iv-navbar__burger",
+      "iv-navbar__inner",
+      "iv-navbar__link",
+      "iv-navbar__links",
+      "iv-navbar__nav",
+      "iv-navbar__panel",
+      "iv-navbar__toggle"
+    ],
+    "components/pagination": [
+      "iv-pagination",
+      "iv-pagination__ellipsis",
+      "iv-pagination__link",
+      "iv-pagination__list"
+    ],
+    "components/picker": [
+      "iv-picker",
+      "iv-picker--glass",
+      "iv-picker__caret",
+      "iv-picker__chip",
+      "iv-picker__chip-label",
+      "iv-picker__chip-remove",
+      "iv-picker__chips",
+      "iv-picker__clear",
+      "iv-picker__control",
+      "iv-picker__empty",
+      "iv-picker__field",
+      "iv-picker__group",
+      "iv-picker__group-label",
+      "iv-picker__group-list",
+      "iv-picker__list",
+      "iv-picker__native",
+      "iv-picker__option",
+      "iv-picker__option--active",
+      "iv-picker__placeholder",
+      "iv-picker__popover",
+      "iv-picker__search",
+      "iv-picker__value"
+    ],
+    "components/popover": [
+      "iv-popover",
+      "iv-popover--arrow",
+      "iv-popover--glass",
+      "iv-popover__title"
+    ],
+    "components/progress": [
+      "iv-progress",
+      "iv-progress--danger",
+      "iv-progress--lg",
+      "iv-progress--sm",
+      "iv-progress--success",
+      "iv-progress--warning"
+    ],
+    "components/skeleton": [
+      "iv-skeleton",
+      "iv-skeleton--circle",
+      "iv-skeleton--rect",
+      "iv-skeleton--text",
+      "iv-skeleton--title"
+    ],
+    "components/stat": [
+      "iv-stat",
+      "iv-stat--card",
+      "iv-stat--glow",
+      "iv-stat--lg",
+      "iv-stat-group",
+      "iv-stat__delta",
+      "iv-stat__hint",
+      "iv-stat__label",
+      "iv-stat__value"
+    ],
+    "components/stepper": [
+      "iv-stepper",
+      "iv-stepper--compact",
+      "iv-stepper--vertical",
+      "iv-stepper__controls",
+      "iv-stepper__hint",
+      "iv-stepper__label",
+      "iv-stepper__list",
+      "iv-stepper__marker",
+      "iv-stepper__panel",
+      "iv-stepper__panels",
+      "iv-stepper__progress",
+      "iv-stepper__step",
+      "iv-stepper__trigger"
+    ],
+    "components/table": [
+      "iv-table",
+      "iv-table--bordered",
+      "iv-table--compact",
+      "iv-table--stack",
+      "iv-table--striped",
+      "iv-table-wrap"
+    ],
+    "components/tabs": [
+      "iv-tabs",
+      "iv-tabs--vertical",
+      "iv-tabs__heading",
+      "iv-tabs__list",
+      "iv-tabs__panel",
+      "iv-tabs__tab"
+    ],
+    "components/timeline": [
+      "iv-timeline",
+      "iv-timeline--alternate",
+      "iv-timeline--compact",
+      "iv-timeline--horizontal",
+      "iv-timeline__body",
+      "iv-timeline__item",
+      "iv-timeline__time",
+      "iv-timeline__title"
+    ],
+    "components/toast": [
+      "iv-toast",
+      "iv-toast--danger",
+      "iv-toast--info",
+      "iv-toast--success",
+      "iv-toast--warning",
+      "iv-toast-region",
+      "iv-toast-region--bottom-end",
+      "iv-toast-region--bottom-start",
+      "iv-toast-region--top-end",
+      "iv-toast-region--top-start",
+      "iv-toast__body",
+      "iv-toast__dismiss",
+      "iv-toast__message",
+      "iv-toast__title"
+    ],
+    "components/tooltip": [
+      "iv-tooltip"
+    ]
+  },
+  "locals": {
+    "base": [],
+    "utilities": [],
+    "surfaces": [
+      "--iv-elevate-lift",
+      "--iv-glass-blur",
+      "--iv-glow-angle",
+      "--iv-mesh-1",
+      "--iv-mesh-2",
+      "--iv-mesh-3",
+      "--iv-mesh-size",
+      "--iv-shine-color"
+    ],
+    "effects": [
+      "--iv-glint-angle",
+      "--iv-glint-color",
+      "--iv-glint-duration",
+      "--iv-near-color",
+      "--iv-near-radius",
+      "--iv-reveal-distance",
+      "--iv-reveal-duration",
+      "--iv-rise-distance",
+      "--iv-rise-duration",
+      "--iv-rise-step",
+      "--iv-scan-color",
+      "--iv-scan-duration",
+      "--iv-scan-opacity",
+      "--iv-spark-color",
+      "--iv-spark-size"
+    ],
+    "motion": [
+      "--iv-marquee-duration",
+      "--iv-marquee-gap",
+      "--iv-marquee-size",
+      "--iv-parallax",
+      "--iv-parallax-ratio",
+      "--iv-scroll-progress-color",
+      "--iv-scroll-progress-size",
+      "--iv-stack-fade",
+      "--iv-stack-scale",
+      "--iv-stack-step",
+      "--iv-stack-top"
+    ],
+    "text": [
+      "--iv-text-glow-color",
+      "--iv-text-glow-size",
+      "--iv-text-outline-color",
+      "--iv-text-outline-width",
+      "--iv-text-reveal-distance",
+      "--iv-text-reveal-duration",
+      "--iv-text-reveal-step",
+      "--iv-text-shimmer-color",
+      "--iv-text-shimmer-duration",
+      "--iv-text-shimmer-highlight"
+    ],
+    "layout/cluster": [],
+    "layout/container": [],
+    "layout/grid": [],
+    "layout/stack": [],
+    "components/alert": [
+      "--iv-alert-bg",
+      "--iv-alert-tone"
+    ],
+    "components/avatar": [
+      "--iv-avatar-radius",
+      "--iv-avatar-ring",
+      "--iv-avatar-size",
+      "--iv-avatar-status-color"
+    ],
+    "components/badge": [
+      "--iv-badge-bg",
+      "--iv-badge-border",
+      "--iv-badge-fg",
+      "--iv-badge-on-tone",
+      "--iv-badge-tone",
+      "--iv-badge-tone-subtle"
+    ],
+    "components/breadcrumb": [
+      "--iv-breadcrumb-gap",
+      "--iv-breadcrumb-separator-size"
+    ],
+    "components/button": [
+      "--iv-button-bg",
+      "--iv-button-bg-active",
+      "--iv-button-bg-hover",
+      "--iv-button-border",
+      "--iv-button-border-hover",
+      "--iv-button-fg",
+      "--iv-button-lift",
+      "--iv-button-px",
+      "--iv-button-py",
+      "--iv-button-radius",
+      "--iv-button-shadow",
+      "--iv-button-shadow-hover",
+      "--iv-button-sheen"
+    ],
+    "components/card": [
+      "--iv-card-shadow",
+      "--iv-card-shadow-hover"
+    ],
+    "components/carousel": [
+      "--iv-carousel-aspect",
+      "--iv-carousel-duration",
+      "--iv-carousel-ease",
+      "--iv-carousel-gap",
+      "--iv-carousel-parallax",
+      "--iv-carousel-radius",
+      "--iv-carousel-scrim",
+      "--iv-carousel-slide"
+    ],
+    "components/combobox": [
+      "--iv-combobox-max-height",
+      "--iv-combobox-offset"
+    ],
+    "components/command": [
+      "--iv-command-gutter",
+      "--iv-command-icon",
+      "--iv-command-max-height",
+      "--iv-dialog-width"
+    ],
+    "components/datatable": [
+      "--iv-datatable-gap",
+      "--iv-icon-sort",
+      "--iv-icon-sort-down",
+      "--iv-icon-sort-up"
+    ],
+    "components/datepicker": [
+      "--iv-datepicker-cell",
+      "--iv-datepicker-enter",
+      "--iv-datepicker-max-height",
+      "--iv-datepicker-offset"
+    ],
+    "components/dialog": [],
+    "components/disclosure": [
+      "--iv-disclosure-bg",
+      "--iv-disclosure-px",
+      "--iv-disclosure-py",
+      "--iv-disclosure-radius"
+    ],
+    "components/drawer": [
+      "--iv-drawer-from"
+    ],
+    "components/dropdown": [
+      "--iv-dropdown-min-width",
+      "--iv-dropdown-offset"
+    ],
+    "components/form": [
+      "--iv-icon-alert",
+      "--iv-icon-invalid",
+      "--iv-icon-upload",
+      "--iv-icon-valid",
+      "--iv-range-thumb",
+      "--iv-range-track",
+      "--iv-range-value",
+      "--iv-select-chevron",
+      "--iv-switch-fc-thumb",
+      "--iv-switch-shift"
+    ],
+    "components/hero": [
+      "--iv-hero-accent",
+      "--iv-hero-gap",
+      "--iv-hero-ink",
+      "--iv-hero-max-width",
+      "--iv-hero-min",
+      "--iv-hero-muted",
+      "--iv-hero-scrim",
+      "--iv-mesh-1",
+      "--iv-mesh-2",
+      "--iv-mesh-3"
+    ],
+    "components/lightbox": [
+      "--iv-dialog-width",
+      "--iv-gallery-gap",
+      "--iv-gallery-radius",
+      "--iv-gallery-ratio",
+      "--iv-gallery-scrim",
+      "--iv-lightbox-chip",
+      "--iv-lightbox-chip-bg",
+      "--iv-lightbox-chip-border",
+      "--iv-lightbox-chip-highlight",
+      "--iv-lightbox-chip-text",
+      "--iv-lightbox-icon-close",
+      "--iv-lightbox-icon-expand",
+      "--iv-lightbox-icon-next",
+      "--iv-lightbox-icon-prev",
+      "--iv-lightbox-icon-zoom"
+    ],
+    "components/megamenu": [
+      "--iv-megamenu-card-span",
+      "--iv-megamenu-cols",
+      "--iv-megamenu-offset",
+      "--iv-megamenu-overlay-bg",
+      "--iv-megamenu-width"
+    ],
+    "components/navbar": [
+      "--iv-navbar-bg",
+      "--iv-navbar-gap",
+      "--iv-navbar-height",
+      "--iv-navbar-height-condensed",
+      "--iv-navbar-max",
+      "--iv-navbar-z"
+    ],
+    "components/pagination": [
+      "--iv-pagination-gap",
+      "--iv-pagination-radius",
+      "--iv-pagination-size"
+    ],
+    "components/picker": [
+      "--iv-picker-caret-turn",
+      "--iv-picker-chip-bg",
+      "--iv-picker-enter",
+      "--iv-picker-max-height",
+      "--iv-picker-offset"
+    ],
+    "components/popover": [
+      "--iv-popover-arrow-inset",
+      "--iv-popover-arrow-size",
+      "--iv-popover-bg",
+      "--iv-popover-border",
+      "--iv-popover-enter"
+    ],
+    "components/progress": [
+      "--iv-progress-color",
+      "--iv-progress-groove",
+      "--iv-progress-size",
+      "--iv-progress-track",
+      "--iv-progress-track-subtle"
+    ],
+    "components/skeleton": [
+      "--iv-skeleton-bg",
+      "--iv-skeleton-highlight",
+      "--iv-skeleton-radius"
+    ],
+    "components/stat": [
+      "--iv-stat-align",
+      "--iv-stat-delta-icon",
+      "--iv-stat-gap",
+      "--iv-stat-group-min",
+      "--iv-stat-size"
+    ],
+    "components/stepper": [
+      "--iv-stepper-fill",
+      "--iv-stepper-gap",
+      "--iv-stepper-icon-check",
+      "--iv-stepper-line",
+      "--iv-stepper-marker",
+      "--iv-stepper-step-gap",
+      "--iv-stepper-track"
+    ],
+    "components/table": [
+      "--iv-table-border",
+      "--iv-table-cell-px",
+      "--iv-table-cell-py"
+    ],
+    "components/tabs": [
+      "--iv-tabs-gap",
+      "--iv-tabs-indicator",
+      "--iv-tabs-radius"
+    ],
+    "components/timeline": [
+      "--iv-timeline-gap",
+      "--iv-timeline-line",
+      "--iv-timeline-marker",
+      "--iv-timeline-rail",
+      "--iv-timeline-size",
+      "--iv-timeline-top"
+    ],
+    "components/toast": [
+      "--iv-toast-tone"
+    ],
+    "components/tooltip": [
+      "--iv-tooltip-arrow",
+      "--iv-tooltip-arrow-size",
+      "--iv-tooltip-bg",
+      "--iv-tooltip-enter",
+      "--iv-tooltip-fg"
+    ]
+  },
+  "tokens": [
+    {
+      "name": "--iv-blur-lg",
+      "light": "28px",
+      "dark": "28px"
+    },
+    {
+      "name": "--iv-blur-md",
+      "light": "16px",
+      "dark": "16px"
+    },
+    {
+      "name": "--iv-blur-sm",
+      "light": "8px",
+      "dark": "8px"
+    },
+    {
+      "name": "--iv-border-width",
+      "light": "1px",
+      "dark": "1px"
+    },
+    {
+      "name": "--iv-border-width-strong",
+      "light": "3px",
+      "dark": "3px"
+    },
+    {
+      "name": "--iv-color-accent",
+      "light": "#29f59a",
+      "dark": "#29f59a"
+    },
+    {
+      "name": "--iv-color-bg",
+      "light": "#fff",
+      "dark": "#081310"
+    },
+    {
+      "name": "--iv-color-border",
+      "light": "#cbd8d1",
+      "dark": "#263129"
+    },
+    {
+      "name": "--iv-color-border-strong",
+      "light": "#6e837b",
+      "dark": "#6e837b"
+    },
+    {
+      "name": "--iv-color-danger",
+      "light": "#b2262d",
+      "dark": "#ff7a80"
+    },
+    {
+      "name": "--iv-color-danger-subtle",
+      "light": "#fdecec",
+      "dark": "#ff7a801f"
+    },
+    {
+      "name": "--iv-color-focus",
+      "light": "#0a6a43",
+      "dark": "#29f59a"
+    },
+    {
+      "name": "--iv-color-hover-surface",
+      "light": "#0813100a",
+      "dark": "#e0fff00d"
+    },
+    {
+      "name": "--iv-color-info",
+      "light": "#1d5fb8",
+      "dark": "#6fb3ff"
+    },
+    {
+      "name": "--iv-color-info-subtle",
+      "light": "#e8f1fd",
+      "dark": "#6fb3ff1f"
+    },
+    {
+      "name": "--iv-color-on-accent",
+      "light": "#081310",
+      "dark": "#081310"
+    },
+    {
+      "name": "--iv-color-on-danger",
+      "light": "#fff",
+      "dark": "#081310"
+    },
+    {
+      "name": "--iv-color-on-info",
+      "light": "#fff",
+      "dark": "#081310"
+    },
+    {
+      "name": "--iv-color-on-primary",
+      "light": "#fff",
+      "dark": "#081310"
+    },
+    {
+      "name": "--iv-color-on-success",
+      "light": "#fff",
+      "dark": "#081310"
+    },
+    {
+      "name": "--iv-color-on-warning",
+      "light": "#fff",
+      "dark": "#081310"
+    },
+    {
+      "name": "--iv-color-overlay",
+      "light": "#0813108c",
+      "dark": "#0009"
+    },
+    {
+      "name": "--iv-color-primary",
+      "light": "#0a6a43",
+      "dark": "#29f59a"
+    },
+    {
+      "name": "--iv-color-primary-active",
+      "light": "#04301f",
+      "dark": "#14d882"
+    },
+    {
+      "name": "--iv-color-primary-border",
+      "light": "#0a6a438c",
+      "dark": "#29f59a80"
+    },
+    {
+      "name": "--iv-color-primary-hover",
+      "light": "#084d32",
+      "dark": "#5cf0ae"
+    },
+    {
+      "name": "--iv-color-primary-subtle",
+      "light": "#e8fdf3",
+      "dark": "#29f59a1f"
+    },
+    {
+      "name": "--iv-color-success",
+      "light": "#0a6a43",
+      "dark": "#29f59a"
+    },
+    {
+      "name": "--iv-color-success-subtle",
+      "light": "#e8fdf3",
+      "dark": "#29f59a1f"
+    },
+    {
+      "name": "--iv-color-surface",
+      "light": "#f3faf6",
+      "dark": "#12201a"
+    },
+    {
+      "name": "--iv-color-surface-raised",
+      "light": "#fff",
+      "dark": "#1b2c25"
+    },
+    {
+      "name": "--iv-color-text",
+      "light": "#12201a",
+      "dark": "#f3faf6"
+    },
+    {
+      "name": "--iv-color-text-muted",
+      "light": "#56695f",
+      "dark": "#90a49e"
+    },
+    {
+      "name": "--iv-color-warning",
+      "light": "#8a5200",
+      "dark": "#ffb84d"
+    },
+    {
+      "name": "--iv-color-warning-subtle",
+      "light": "#fff4e0",
+      "dark": "#ffb84d1f"
+    },
+    {
+      "name": "--iv-container-max",
+      "light": "75rem",
+      "dark": "75rem"
+    },
+    {
+      "name": "--iv-content-max",
+      "light": "90rem",
+      "dark": "90rem"
+    },
+    {
+      "name": "--iv-ease-out",
+      "light": "cubic-bezier(.2, .7, .2, 1)",
+      "dark": "cubic-bezier(.2, .7, .2, 1)"
+    },
+    {
+      "name": "--iv-focus-halo",
+      "light": "0 0 0 4px #0a6a4359",
+      "dark": "0 0 0 4px #29f59a73"
+    },
+    {
+      "name": "--iv-focus-offset",
+      "light": "2px",
+      "dark": "2px"
+    },
+    {
+      "name": "--iv-focus-width",
+      "light": "2px",
+      "dark": "2px"
+    },
+    {
+      "name": "--iv-font-mono",
+      "light": "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace",
+      "dark": "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, monospace"
+    },
+    {
+      "name": "--iv-font-sans",
+      "light": "system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif",
+      "dark": "system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif"
+    },
+    {
+      "name": "--iv-glass-bg",
+      "light": "#ffffff8c",
+      "dark": "#12201a73"
+    },
+    {
+      "name": "--iv-glass-bg-strong",
+      "light": "#ffffffc7",
+      "dark": "#12201ab8"
+    },
+    {
+      "name": "--iv-glass-border",
+      "light": "#ffffffa6",
+      "dark": "#ffffff1f"
+    },
+    {
+      "name": "--iv-glass-highlight",
+      "light": "#ffffffe6",
+      "dark": "#fff3"
+    },
+    {
+      "name": "--iv-glow-primary",
+      "light": "#0a6a4359",
+      "dark": "#29f59a73"
+    },
+    {
+      "name": "--iv-glow-secondary",
+      "light": "#1d5fb840",
+      "dark": "#6fb3ff59"
+    },
+    {
+      "name": "--iv-leading-normal",
+      "light": "1.5",
+      "dark": "1.5"
+    },
+    {
+      "name": "--iv-leading-relaxed",
+      "light": "1.65",
+      "dark": "1.65"
+    },
+    {
+      "name": "--iv-leading-snug",
+      "light": "1.25",
+      "dark": "1.25"
+    },
+    {
+      "name": "--iv-leading-tight",
+      "light": "1.1",
+      "dark": "1.1"
+    },
+    {
+      "name": "--iv-measure",
+      "light": "68ch",
+      "dark": "68ch"
+    },
+    {
+      "name": "--iv-motion-base",
+      "light": ".18s",
+      "dark": ".18s"
+    },
+    {
+      "name": "--iv-motion-fast",
+      "light": ".12s",
+      "dark": ".12s"
+    },
+    {
+      "name": "--iv-motion-slow",
+      "light": ".22s",
+      "dark": ".22s"
+    },
+    {
+      "name": "--iv-palette-amber-300",
+      "light": "#ffb84d",
+      "dark": "#ffb84d"
+    },
+    {
+      "name": "--iv-palette-amber-50",
+      "light": "#fff4e0",
+      "dark": "#fff4e0"
+    },
+    {
+      "name": "--iv-palette-amber-700",
+      "light": "#8a5200",
+      "dark": "#8a5200"
+    },
+    {
+      "name": "--iv-palette-blue-300",
+      "light": "#6fb3ff",
+      "dark": "#6fb3ff"
+    },
+    {
+      "name": "--iv-palette-blue-50",
+      "light": "#e8f1fd",
+      "dark": "#e8f1fd"
+    },
+    {
+      "name": "--iv-palette-blue-600",
+      "light": "#1d5fb8",
+      "dark": "#1d5fb8"
+    },
+    {
+      "name": "--iv-palette-green-100",
+      "light": "#c6f9e1",
+      "dark": "#c6f9e1"
+    },
+    {
+      "name": "--iv-palette-green-200",
+      "light": "#93f3c6",
+      "dark": "#93f3c6"
+    },
+    {
+      "name": "--iv-palette-green-300",
+      "light": "#5cf0ae",
+      "dark": "#5cf0ae"
+    },
+    {
+      "name": "--iv-palette-green-400",
+      "light": "#29f59a",
+      "dark": "#29f59a"
+    },
+    {
+      "name": "--iv-palette-green-50",
+      "light": "#e8fdf3",
+      "dark": "#e8fdf3"
+    },
+    {
+      "name": "--iv-palette-green-500",
+      "light": "#14d882",
+      "dark": "#14d882"
+    },
+    {
+      "name": "--iv-palette-green-600",
+      "light": "#0fb56c",
+      "dark": "#0fb56c"
+    },
+    {
+      "name": "--iv-palette-green-700",
+      "light": "#0b8a55",
+      "dark": "#0b8a55"
+    },
+    {
+      "name": "--iv-palette-green-800",
+      "light": "#0a6a43",
+      "dark": "#0a6a43"
+    },
+    {
+      "name": "--iv-palette-green-900",
+      "light": "#084d32",
+      "dark": "#084d32"
+    },
+    {
+      "name": "--iv-palette-green-950",
+      "light": "#04301f",
+      "dark": "#04301f"
+    },
+    {
+      "name": "--iv-palette-neutral-0",
+      "light": "#fff",
+      "dark": "#fff"
+    },
+    {
+      "name": "--iv-palette-neutral-100",
+      "light": "#e4ede8",
+      "dark": "#e4ede8"
+    },
+    {
+      "name": "--iv-palette-neutral-1000",
+      "light": "#030806",
+      "dark": "#030806"
+    },
+    {
+      "name": "--iv-palette-neutral-200",
+      "light": "#cbd8d1",
+      "dark": "#cbd8d1"
+    },
+    {
+      "name": "--iv-palette-neutral-300",
+      "light": "#a9b9b1",
+      "dark": "#a9b9b1"
+    },
+    {
+      "name": "--iv-palette-neutral-400",
+      "light": "#90a49e",
+      "dark": "#90a49e"
+    },
+    {
+      "name": "--iv-palette-neutral-50",
+      "light": "#f3faf6",
+      "dark": "#f3faf6"
+    },
+    {
+      "name": "--iv-palette-neutral-500",
+      "light": "#6e837b",
+      "dark": "#6e837b"
+    },
+    {
+      "name": "--iv-palette-neutral-600",
+      "light": "#56695f",
+      "dark": "#56695f"
+    },
+    {
+      "name": "--iv-palette-neutral-700",
+      "light": "#3f4f47",
+      "dark": "#3f4f47"
+    },
+    {
+      "name": "--iv-palette-neutral-800",
+      "light": "#263129",
+      "dark": "#263129"
+    },
+    {
+      "name": "--iv-palette-neutral-900",
+      "light": "#12201a",
+      "dark": "#12201a"
+    },
+    {
+      "name": "--iv-palette-neutral-950",
+      "light": "#081310",
+      "dark": "#081310"
+    },
+    {
+      "name": "--iv-palette-red-300",
+      "light": "#ff7a80",
+      "dark": "#ff7a80"
+    },
+    {
+      "name": "--iv-palette-red-50",
+      "light": "#fdecec",
+      "dark": "#fdecec"
+    },
+    {
+      "name": "--iv-palette-red-600",
+      "light": "#b2262d",
+      "dark": "#b2262d"
+    },
+    {
+      "name": "--iv-radius-full",
+      "light": "999rem",
+      "dark": "999rem"
+    },
+    {
+      "name": "--iv-radius-lg",
+      "light": ".75rem",
+      "dark": ".75rem"
+    },
+    {
+      "name": "--iv-radius-md",
+      "light": ".5rem",
+      "dark": ".5rem"
+    },
+    {
+      "name": "--iv-radius-sm",
+      "light": ".25rem",
+      "dark": ".25rem"
+    },
+    {
+      "name": "--iv-shadow-1",
+      "light": "0 1px 2px #0813100f",
+      "dark": "0 0 0 1px #1b2c25"
+    },
+    {
+      "name": "--iv-shadow-2",
+      "light": "0 4px 12px #0813101a",
+      "dark": "0 4px 12px #0006"
+    },
+    {
+      "name": "--iv-shadow-3",
+      "light": "0 12px 32px #08131024",
+      "dark": "0 12px 32px #00000080"
+    },
+    {
+      "name": "--iv-shadow-ambient",
+      "light": "0 2px 10px #0813101a",
+      "dark": "0 0 0 1px #1b2c25, 0 2px 10px #00000073"
+    },
+    {
+      "name": "--iv-space-0",
+      "light": "0",
+      "dark": "0"
+    },
+    {
+      "name": "--iv-space-1",
+      "light": ".25rem",
+      "dark": ".25rem"
+    },
+    {
+      "name": "--iv-space-10",
+      "light": "2.5rem",
+      "dark": "2.5rem"
+    },
+    {
+      "name": "--iv-space-12",
+      "light": "3rem",
+      "dark": "3rem"
+    },
+    {
+      "name": "--iv-space-16",
+      "light": "4rem",
+      "dark": "4rem"
+    },
+    {
+      "name": "--iv-space-2",
+      "light": ".5rem",
+      "dark": ".5rem"
+    },
+    {
+      "name": "--iv-space-3",
+      "light": ".75rem",
+      "dark": ".75rem"
+    },
+    {
+      "name": "--iv-space-4",
+      "light": "1rem",
+      "dark": "1rem"
+    },
+    {
+      "name": "--iv-space-5",
+      "light": "1.25rem",
+      "dark": "1.25rem"
+    },
+    {
+      "name": "--iv-space-6",
+      "light": "1.5rem",
+      "dark": "1.5rem"
+    },
+    {
+      "name": "--iv-space-8",
+      "light": "2rem",
+      "dark": "2rem"
+    },
+    {
+      "name": "--iv-text-2xl",
+      "light": "1.5rem",
+      "dark": "1.5rem"
+    },
+    {
+      "name": "--iv-text-3xl",
+      "light": "clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)",
+      "dark": "clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)"
+    },
+    {
+      "name": "--iv-text-4xl",
+      "light": "clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)",
+      "dark": "clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)"
+    },
+    {
+      "name": "--iv-text-lg",
+      "light": "1.125rem",
+      "dark": "1.125rem"
+    },
+    {
+      "name": "--iv-text-md",
+      "light": "1rem",
+      "dark": "1rem"
+    },
+    {
+      "name": "--iv-text-sm",
+      "light": ".875rem",
+      "dark": ".875rem"
+    },
+    {
+      "name": "--iv-text-xl",
+      "light": "1.25rem",
+      "dark": "1.25rem"
+    },
+    {
+      "name": "--iv-text-xs",
+      "light": ".75rem",
+      "dark": ".75rem"
+    },
+    {
+      "name": "--iv-texture-grain-opacity",
+      "light": ".05",
+      "dark": ".09"
+    },
+    {
+      "name": "--iv-tracking-caps",
+      "light": ".06em",
+      "dark": ".06em"
+    },
+    {
+      "name": "--iv-tracking-tight",
+      "light": "-.011em",
+      "dark": "-.011em"
+    },
+    {
+      "name": "--iv-weight-bold",
+      "light": "700",
+      "dark": "700"
+    },
+    {
+      "name": "--iv-weight-medium",
+      "light": "500",
+      "dark": "500"
+    },
+    {
+      "name": "--iv-weight-normal",
+      "light": "400",
+      "dark": "400"
+    },
+    {
+      "name": "--iv-weight-semibold",
+      "light": "600",
+      "dark": "600"
+    },
+    {
+      "name": "--iv-z-dialog",
+      "light": "300",
+      "dark": "300"
+    },
+    {
+      "name": "--iv-z-drawer",
+      "light": "200",
+      "dark": "200"
+    },
+    {
+      "name": "--iv-z-dropdown",
+      "light": "100",
+      "dark": "100"
+    },
+    {
+      "name": "--iv-z-toast",
+      "light": "400",
+      "dark": "400"
+    }
+  ],
+  "components": [
+    {
+      "name": "carousel",
+      "class": "Carousel",
+      "module": "@intervolutions/ivolt/carousel",
+      "options": [
+        {
+          "key": "effect",
+          "default": "\"slide\""
+        },
+        {
+          "key": "autoplay",
+          "default": "0"
+        },
+        {
+          "key": "loop",
+          "default": "true"
+        },
+        {
+          "key": "pauseOnHover",
+          "default": "true"
+        },
+        {
+          "key": "swipe",
+          "default": "true"
+        },
+        {
+          "key": "duration",
+          "default": "600"
+        },
+        {
+          "key": "pauseText",
+          "default": "\"Pause\""
+        },
+        {
+          "key": "playText",
+          "default": "\"Play\""
+        }
+      ],
+      "events": [
+        "iv:change",
+        "iv:changed",
+        "iv:pause",
+        "iv:play"
+      ]
+    },
+    {
+      "name": "combobox",
+      "class": "Combobox",
+      "module": "@intervolutions/ivolt/combobox",
+      "options": [
+        {
+          "key": "filter",
+          "default": "\"contains\""
+        },
+        {
+          "key": "minChars",
+          "default": "0"
+        },
+        {
+          "key": "strict",
+          "default": "false"
+        },
+        {
+          "key": "autoselect",
+          "default": "false"
+        },
+        {
+          "key": "emptyText",
+          "default": "\"No matches\""
+        }
+      ],
+      "events": [
+        "iv:change",
+        "iv:changed",
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "command",
+      "class": "Command",
+      "module": "@intervolutions/ivolt/command",
+      "options": [
+        {
+          "key": "shortcut",
+          "default": "true"
+        },
+        {
+          "key": "slash",
+          "default": "true"
+        },
+        {
+          "key": "remember",
+          "default": "false"
+        },
+        {
+          "key": "recentText",
+          "default": "\"Recent\""
+        },
+        {
+          "key": "emptyText",
+          "default": "\"No results\""
+        },
+        {
+          "key": "placeholder",
+          "default": "\"\""
+        },
+        {
+          "key": "maxRecent",
+          "default": "5"
+        }
+      ],
+      "events": [
+        "iv:command",
+        "iv:commanded",
+        "iv:filter"
+      ]
+    },
+    {
+      "name": "counter",
+      "class": "Counter",
+      "module": "@intervolutions/ivolt/counter",
+      "options": [
+        {
+          "key": "mode",
+          "default": "\"chars\""
+        },
+        {
+          "key": "max",
+          "default": "0"
+        },
+        {
+          "key": "warnAt",
+          "default": "0.9"
+        },
+        {
+          "key": "template",
+          "default": "\"\""
+        },
+        {
+          "key": "overText",
+          "default": "\"Too long\""
+        }
+      ],
+      "events": [
+        "iv:count"
+      ]
+    },
+    {
+      "name": "countup",
+      "class": "Countup",
+      "module": "@intervolutions/ivolt/countup",
+      "options": [
+        {
+          "key": "from",
+          "default": "0"
+        },
+        {
+          "key": "duration",
+          "default": "900"
+        },
+        {
+          "key": "decimals",
+          "default": "-1"
+        },
+        {
+          "key": "grouping",
+          "default": "true"
+        },
+        {
+          "key": "once",
+          "default": "true"
+        },
+        {
+          "key": "autostart",
+          "default": "false"
+        }
+      ],
+      "events": [
+        "iv:count",
+        "iv:counted"
+      ]
+    },
+    {
+      "name": "datatable",
+      "class": "DataTable",
+      "module": "@intervolutions/ivolt/datatable",
+      "options": [
+        {
+          "key": "filterDelay",
+          "default": "150"
+        },
+        {
+          "key": "emptyText",
+          "default": "\"No rows match\""
+        },
+        {
+          "key": "statusText",
+          "default": "\"{visible} of {total} rows\""
+        },
+        {
+          "key": "locale",
+          "default": "null"
+        }
+      ],
+      "events": [
+        "iv:filter",
+        "iv:filtered",
+        "iv:sort",
+        "iv:sorted"
+      ]
+    },
+    {
+      "name": "datepicker",
+      "class": "Datepicker",
+      "module": "@intervolutions/ivolt/datepicker",
+      "options": [],
+      "events": [
+        "iv:change",
+        "iv:changed",
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "dialog",
+      "class": "Dialog",
+      "module": "@intervolutions/ivolt/dialog",
+      "options": [
+        {
+          "key": "closeOnBackdrop",
+          "default": "true"
+        },
+        {
+          "key": "closeOnEscape",
+          "default": "true"
+        },
+        {
+          "key": "initialFocus",
+          "default": "null"
+        },
+        {
+          "key": "returnFocus",
+          "default": "true"
+        }
+      ],
+      "events": [
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "disclosure",
+      "class": "Disclosure",
+      "module": "@intervolutions/ivolt/disclosure",
+      "options": [
+        {
+          "key": "exclusive",
+          "default": "false"
+        },
+        {
+          "key": "closeOnOutside",
+          "default": "false"
+        }
+      ],
+      "events": [
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "drawer",
+      "class": "Drawer",
+      "module": "@intervolutions/ivolt/drawer",
+      "options": [
+        {
+          "key": "placement",
+          "default": "\"start\""
+        },
+        {
+          "key": "staticFrom",
+          "default": "\"lg\""
+        },
+        {
+          "key": "closeOnBackdrop",
+          "default": "true"
+        },
+        {
+          "key": "closeOnEscape",
+          "default": "true"
+        },
+        {
+          "key": "returnFocus",
+          "default": "true"
+        }
+      ],
+      "events": [
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "dropdown",
+      "class": "Dropdown",
+      "module": "@intervolutions/ivolt/dropdown",
+      "options": [
+        {
+          "key": "placement",
+          "default": "\"bottom-start\""
+        },
+        {
+          "key": "closeOnSelect",
+          "default": "true"
+        }
+      ],
+      "events": [
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "form",
+      "class": "Form",
+      "module": "@intervolutions/ivolt/form",
+      "options": [
+        {
+          "key": "validateOn",
+          "default": "\"blur\""
+        },
+        {
+          "key": "summary",
+          "default": "false"
+        },
+        {
+          "key": "summaryTitle",
+          "default": "\"Please fix the following\""
+        },
+        {
+          "key": "focusFirst",
+          "default": "true"
+        },
+        {
+          "key": "scroll",
+          "default": "true"
+        },
+        {
+          "key": "live",
+          "default": "true"
+        }
+      ],
+      "events": [
+        "iv:invalid",
+        "iv:valid",
+        "iv:validate"
+      ]
+    },
+    {
+      "name": "lightbox",
+      "class": "Lightbox",
+      "module": "@intervolutions/ivolt/lightbox",
+      "options": [
+        {
+          "key": "loop",
+          "default": "true"
+        },
+        {
+          "key": "zoom",
+          "default": "true"
+        },
+        {
+          "key": "swipe",
+          "default": "true"
+        },
+        {
+          "key": "preload",
+          "default": "1"
+        },
+        {
+          "key": "counter",
+          "default": "true"
+        },
+        {
+          "key": "captions",
+          "default": "true"
+        },
+        {
+          "key": "closeText",
+          "default": "\"Close\""
+        },
+        {
+          "key": "prevText",
+          "default": "\"Previous\""
+        },
+        {
+          "key": "nextText",
+          "default": "\"Next\""
+        },
+        {
+          "key": "zoomText",
+          "default": "\"Zoom\""
+        },
+        {
+          "key": "galleryLabel",
+          "default": "\"Image viewer\""
+        }
+      ],
+      "events": [
+        "iv:change",
+        "iv:changed",
+        "iv:zoom"
+      ]
+    },
+    {
+      "name": "megamenu",
+      "class": "Megamenu",
+      "module": "@intervolutions/ivolt/megamenu",
+      "options": [
+        {
+          "key": "hover",
+          "default": "true"
+        },
+        {
+          "key": "openDelay",
+          "default": "120"
+        },
+        {
+          "key": "closeDelay",
+          "default": "320"
+        },
+        {
+          "key": "staticFrom",
+          "default": "\"lg\""
+        },
+        {
+          "key": "overlay",
+          "default": "true"
+        },
+        {
+          "key": "closeOthers",
+          "default": "true"
+        }
+      ],
+      "events": [
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "navbar",
+      "class": "Navbar",
+      "module": "@intervolutions/ivolt/navbar",
+      "options": [
+        {
+          "key": "collapseBelow",
+          "default": "\"lg\""
+        },
+        {
+          "key": "sticky",
+          "default": "false"
+        },
+        {
+          "key": "condenseAt",
+          "default": "24"
+        },
+        {
+          "key": "hideOnScroll",
+          "default": "false"
+        },
+        {
+          "key": "closeOnOutside",
+          "default": "true"
+        }
+      ],
+      "events": [
+        "iv:close",
+        "iv:closed",
+        "iv:condense",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "picker",
+      "class": "Picker",
+      "module": "@intervolutions/ivolt/picker",
+      "options": [],
+      "events": [
+        "iv:change",
+        "iv:changed",
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "popover",
+      "class": "Popover",
+      "module": "@intervolutions/ivolt/popover",
+      "options": [
+        {
+          "key": "placement",
+          "default": "\"bottom\""
+        },
+        {
+          "key": "align",
+          "default": "\"start\""
+        },
+        {
+          "key": "offset",
+          "default": "8"
+        },
+        {
+          "key": "focus",
+          "default": "true"
+        }
+      ],
+      "events": [
+        "iv:closed",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "proximity",
+      "class": "Proximity",
+      "module": "@intervolutions/ivolt/proximity",
+      "options": [
+        {
+          "key": "radius",
+          "default": "160"
+        }
+      ],
+      "events": []
+    },
+    {
+      "name": "reveal",
+      "class": "Reveal",
+      "module": "@intervolutions/ivolt/reveal",
+      "options": [
+        {
+          "key": "threshold",
+          "default": "0.15"
+        },
+        {
+          "key": "repeat",
+          "default": "false"
+        },
+        {
+          "key": "stagger",
+          "default": "80"
+        }
+      ],
+      "events": []
+    },
+    {
+      "name": "scroll-motion",
+      "class": "ScrollMotion",
+      "module": "@intervolutions/ivolt/scroll-motion",
+      "options": [
+        {
+          "key": "force",
+          "default": "false"
+        }
+      ],
+      "events": []
+    },
+    {
+      "name": "stepper",
+      "class": "Stepper",
+      "module": "@intervolutions/ivolt/stepper",
+      "options": [
+        {
+          "key": "linear",
+          "default": "true"
+        },
+        {
+          "key": "validate",
+          "default": "true"
+        },
+        {
+          "key": "hash",
+          "default": "false"
+        },
+        {
+          "key": "focus",
+          "default": "\"panel\""
+        },
+        {
+          "key": "statusText",
+          "default": "\"Step {index} of {total}: {label}\""
+        }
+      ],
+      "events": [
+        "iv:change",
+        "iv:changed",
+        "iv:complete"
+      ]
+    },
+    {
+      "name": "tabs",
+      "class": "Tabs",
+      "module": "@intervolutions/ivolt/tabs",
+      "options": [
+        {
+          "key": "activation",
+          "default": "\"automatic\""
+        },
+        {
+          "key": "orientation",
+          "default": "\"horizontal\""
+        }
+      ],
+      "events": [
+        "iv:change",
+        "iv:changed"
+      ]
+    },
+    {
+      "name": "toast",
+      "class": "Toast",
+      "module": "@intervolutions/ivolt/toast",
+      "options": [
+        {
+          "key": "placement",
+          "default": "\"bottom-end\""
+        },
+        {
+          "key": "max",
+          "default": "3"
+        }
+      ],
+      "events": [
+        "iv:close",
+        "iv:closed",
+        "iv:open",
+        "iv:opened"
+      ]
+    },
+    {
+      "name": "tooltip",
+      "class": "Tooltip",
+      "module": "@intervolutions/ivolt/tooltip",
+      "options": [
+        {
+          "key": "delay",
+          "default": "300"
+        },
+        {
+          "key": "placement",
+          "default": "\"top\""
+        }
+      ],
+      "events": [
+        "iv:hidden",
+        "iv:hide",
+        "iv:show",
+        "iv:shown"
+      ]
+    }
+  ],
+  "attributes": [
+    "data-iv-activation",
+    "data-iv-align",
+    "data-iv-auto",
+    "data-iv-autoplay",
+    "data-iv-autoselect",
+    "data-iv-autostart",
+    "data-iv-caption",
+    "data-iv-captions",
+    "data-iv-close-delay",
+    "data-iv-close-on-backdrop",
+    "data-iv-close-on-escape",
+    "data-iv-close-on-outside",
+    "data-iv-close-on-select",
+    "data-iv-close-others",
+    "data-iv-close-text",
+    "data-iv-collapse-below",
+    "data-iv-collapsible",
+    "data-iv-command",
+    "data-iv-component",
+    "data-iv-condense-at",
+    "data-iv-condensed",
+    "data-iv-counter",
+    "data-iv-datatable-filter",
+    "data-iv-date",
+    "data-iv-decimals",
+    "data-iv-delay",
+    "data-iv-dir",
+    "data-iv-duration",
+    "data-iv-effect",
+    "data-iv-empty-text",
+    "data-iv-enhanced",
+    "data-iv-error",
+    "data-iv-error-",
+    "data-iv-exclusive",
+    "data-iv-filter",
+    "data-iv-filter-delay",
+    "data-iv-filter-text",
+    "data-iv-focus",
+    "data-iv-focus-first",
+    "data-iv-force",
+    "data-iv-from",
+    "data-iv-gallery-label",
+    "data-iv-group",
+    "data-iv-grouping",
+    "data-iv-has-clear",
+    "data-iv-hash",
+    "data-iv-hidden",
+    "data-iv-hide-on-scroll",
+    "data-iv-hover",
+    "data-iv-id",
+    "data-iv-initial-focus",
+    "data-iv-inview",
+    "data-iv-js",
+    "data-iv-keywords",
+    "data-iv-label",
+    "data-iv-linear",
+    "data-iv-live",
+    "data-iv-locale",
+    "data-iv-loop",
+    "data-iv-max",
+    "data-iv-max-recent",
+    "data-iv-min-chars",
+    "data-iv-mode",
+    "data-iv-native",
+    "data-iv-next-text",
+    "data-iv-offset",
+    "data-iv-once",
+    "data-iv-open",
+    "data-iv-open-delay",
+    "data-iv-orientation",
+    "data-iv-over-text",
+    "data-iv-overlay",
+    "data-iv-pause-on-hover",
+    "data-iv-pause-text",
+    "data-iv-placeholder",
+    "data-iv-placement",
+    "data-iv-play-text",
+    "data-iv-preload",
+    "data-iv-prev-text",
+    "data-iv-radius",
+    "data-iv-recent-text",
+    "data-iv-remember",
+    "data-iv-repeat",
+    "data-iv-return-focus",
+    "data-iv-reveal",
+    "data-iv-scroll",
+    "data-iv-shortcut",
+    "data-iv-slash",
+    "data-iv-sort",
+    "data-iv-sorted",
+    "data-iv-stagger",
+    "data-iv-state",
+    "data-iv-static",
+    "data-iv-static-from",
+    "data-iv-status-text",
+    "data-iv-step",
+    "data-iv-sticky",
+    "data-iv-strict",
+    "data-iv-summary",
+    "data-iv-summary-title",
+    "data-iv-swap",
+    "data-iv-swipe",
+    "data-iv-template",
+    "data-iv-threshold",
+    "data-iv-timeout",
+    "data-iv-toast",
+    "data-iv-tone",
+    "data-iv-tooltip",
+    "data-iv-validate",
+    "data-iv-validate-on",
+    "data-iv-value",
+    "data-iv-variant",
+    "data-iv-warn-at",
+    "data-iv-zoom",
+    "data-iv-zoom-text",
+    "data-iv-zoomed"
+  ]
+}
