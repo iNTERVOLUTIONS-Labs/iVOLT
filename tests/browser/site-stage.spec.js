@@ -42,10 +42,10 @@ test.describe("Live stage", () => {
 
     const wide = await stage.locator("iframe").evaluate((el) => el.getBoundingClientRect().width);
     await stage.locator("[data-stage-set-width='390']").click();
-    await page.waitForTimeout(600);
+    // The width transitions; poll until it settles instead of guessing how long a loaded engine takes.
+    await expect.poll(async () => Math.round(await stage.locator("iframe").evaluate((el) => el.getBoundingClientRect().width)), { timeout: 10_000 }).toBeLessThanOrEqual(392);
     const narrow = await stage.locator("iframe").evaluate((el) => el.getBoundingClientRect().width);
     expect(narrow).toBeLessThan(wide);
-    expect(Math.round(narrow)).toBeLessThanOrEqual(392);
 
     await stage.locator("[data-stage-motion]").check();
     await expect(frame.locator("html")).toHaveAttribute("data-stage-motion", "reduce");

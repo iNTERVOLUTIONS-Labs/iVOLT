@@ -18,6 +18,8 @@ for (const theme of ["light", "dark"]) {
 }
 
 test("axe dialog open (light and dark)", async ({ page }) => {
+  // The dialog fades in; axe reads the settled state, as every other audit here does.
+  await page.emulateMedia({ reducedMotion: "reduce" });
   for (const theme of ["light", "dark"]) {
     await page.goto(`/fixture/dialog/basic?theme=${theme}`);
     await page.locator("[data-iv-open=signup]").click();
