@@ -100,7 +100,11 @@
   box-shadow: 0 0 0 1px rgb(128 128 128 / .10), 0 24px 48px -36px rgb(0 0 0 / .9);
   transition: inline-size 420ms var(--docs-ease-out);
 }
-.docs-stage__frame { display: block; inline-size: 100%; border: 0; background: transparent; }
+/* The frame is exactly as tall as the page inside it (stage.js applies the reported height), and
+   it travels there instead of snapping: switching the showreel from a tall component to a short
+   one used to leave the old height as a hole under the example for a frame or two. */
+.docs-stage__frame { display: block; inline-size: 100%; border: 0; background: transparent; transition: block-size var(--iv-motion-slow) var(--docs-ease); }
+@media (prefers-reduced-motion: reduce) { .docs-stage__frame { transition: none; } }
 .docs-stage[data-stage-width="390"] .docs-stage__screen,
 .docs-stage[data-stage-width="768"] .docs-stage__screen { box-shadow: 0 0 0 1px var(--docs-hair), 0 34px 60px -40px rgb(0 0 0 / .9); }
 

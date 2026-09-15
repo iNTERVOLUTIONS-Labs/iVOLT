@@ -3,46 +3,80 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Megamenú" description="Megamenú de iVOLT: una barra de navegación cuyos elementos abren paneles anchos con grupos de enlaces y tarjetas, que funciona al pasar el puntero y al enfocar sin JavaScript, y con hover intencional, teclado, superposición y acordeón móvil cuando corre JavaScript.">
+<Base lang="es" title="Megamenú" description="Megamenú de iVOLT: una barra de navegación cuyos elementos abren paneles anchos con cabecera, directorio con recuentos, pestañas con tarjetas numeradas, nube, destacado, lateral, filtro en el panel y pie; funciona al pasar el puntero y al enfocar sin JavaScript, y con hover intencional, teclado, superposición y acordeón móvil cuando corre JavaScript.">
   <article class="docs-prose">
     <h1>Megamenú (megamenu)</h1>
-    <p>Una barra de navegación en la que un elemento puede abrir un panel ancho: grupos de enlaces, tarjetas con arte y recuentos, y una barra inferior con acciones. El servidor envía enlaces y paneles; sin JavaScript los paneles se abren al pasar el puntero y al enfocar en pantallas grandes, y quedan abiertos en línea en las pequeñas. En <code>init</code> aparecen los botones, el hover se vuelve intencional (pequeños retardos de apertura y cierre), el teclado gana flechas y Escape, una superposición oscurece la página y los paneles cerrados quedan inertes. Por debajo del punto de ruptura <code>staticFrom</code> los paneles se convierten en acordeón.</p>
-    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/megamenu.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/megamenu</code> o <code>auto.js</code>. Añadido en la v0.4.</p>
-    <Stage primary name="megamenu/basic" title="Paneles anchos desde una barra" minHeight="34rem" />
-    <Section title="Panel a todo el ancho con cristal" num={1} lead={`iv-megamenu--full extiende el panel de borde a borde de la barra; añade iv-glass a un panel para desenfocar lo que hay detrás.`}>
-      <Stage name="megamenu/full" title="Panel a todo el ancho con cristal" minHeight="34rem" />
+    <p>Una barra de navegación en la que un elemento puede abrir un panel ancho: una cabecera con título y recuento, un directorio con recuentos a un lado, pestañas con selecciones de tarjetas numeradas, una nube de etiquetas, un destacado, un lateral con lo reciente, un filtro dentro del panel y un pie. El servidor envía enlaces y paneles; sin JavaScript los paneles se abren al pasar el puntero y al enfocar en pantallas grandes, y quedan abiertos en línea en las pequeñas. En <code>init</code> aparecen los botones y el cierre, el hover se vuelve intencional (pequeños retardos de apertura y cierre), el teclado gana flechas y Escape, una superposición oscurece la página, los paneles cerrados quedan inertes y un caret apunta al elemento abierto. Por debajo del punto de ruptura <code>staticFrom</code> los paneles se convierten en acordeón.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/megamenu.css</code> (en <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/megamenu</code> o <code>auto.js</code>. Añadido en la v0.4, reconstruido para la 1.0.</p>
+    <Stage primary name="megamenu/full" title="Panel a todo el ancho, tarjetas numeradas y tira" minHeight="34rem" />
+
+    <Section title="Anatomía" num={1} lead={`Dentro de un panel solo son obligatorios iv-megamenu__head e iv-megamenu__body; las demás regiones son opcionales y se combinan libremente.`}>
+      <p>La barra es <code>iv-megamenu</code> con <code>iv-megamenu__list</code>, y cada <code>iv-megamenu__item</code> lleva un <code>iv-megamenu__link</code>, un <code>iv-megamenu__toggle</code> y un <code>iv-megamenu__panel</code>.</p>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Región</th><th>Contiene</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-megamenu__head</code></td><td><code>iv-megamenu__overline</code>, <code>iv-megamenu__title</code> con una píldora <code>iv-megamenu__count</code>, <code>iv-megamenu__tagline</code> y <code>iv-megamenu__close</code> (se sirve <code>hidden</code>; <code>init</code> lo muestra).</td></tr>
+            <tr><td><code>iv-megamenu__filter</code></td><td>Un <code>iv-input</code> de búsqueda con <code>iv-megamenu__filter-input</code> y una pista <code>iv-megamenu__kbd</code>. Se sirve <code>hidden</code>: sin JavaScript no filtraría nada.</td></tr>
+            <tr><td><code>iv-megamenu__body</code></td><td>Hasta tres columnas: <code>iv-megamenu__directory</code> (14rem), <code>iv-megamenu__discover</code> (el resto) e <code>iv-megamenu__aside</code> (16rem).</td></tr>
+            <tr><td><code>iv-megamenu__directory</code></td><td>Un <code>iv-megamenu__heading</code>, un <code>iv-megamenu__dirlist</code> cuyas filas son <code>&lt;span&gt;</code> más <code>&lt;small&gt;</code> (el recuento, en cifras tabulares) y un <code>iv-megamenu__all</code> a lo ancho al pie de la columna.</td></tr>
+            <tr><td><code>iv-megamenu__discover</code></td><td><code>iv-megamenu__tabs</code> con <code>iv-megamenu__tab</code>, un <code>iv-megamenu__set</code> por pestaña con <code>iv-megamenu__cards</code> de <code>iv-megamenu__card</code> (<code>iv-megamenu__art</code> con <code>iv-megamenu__rank</code> e <code>iv-megamenu__arrow</code>, y luego <code>iv-megamenu__name</code> e <code>iv-megamenu__meta</code>), más una <code>iv-megamenu__cloud</code> de etiquetas opcional y un <code>iv-megamenu__feature</code> con su <code>iv-megamenu__flag</code>, <code>iv-megamenu__feature-title</code> e <code>iv-megamenu__feature-meta</code>.</td></tr>
+            <tr><td><code>iv-megamenu__aside</code></td><td>Filas <code>iv-megamenu__recent</code> con <code>iv-megamenu__thumb</code>, <code>iv-megamenu__recent-title</code> e <code>iv-megamenu__date</code>, y <code>iv-megamenu__facets</code>, que se lee como el directorio.</td></tr>
+            <tr><td><code>iv-megamenu__foot</code></td><td><code>iv-megamenu__crumb</code>, <code>iv-megamenu__foot-link</code> y una línea <code>iv-megamenu__status</code> escrita como un terminal: <code>iv-megamenu__prompt</code>, <code>iv-megamenu__cmd</code>, <code>iv-megamenu__caret-blink</code> e <code>iv-megamenu__hint</code>.</td></tr>
+            <tr><td><code>iv-megamenu__ticker</code></td><td>Una tira de hasta seis titulares numerados bajo el panel. Sin JavaScript es una lista ordenada normal.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Otros dos elementos son del componente en marcha y no se escriben a mano: <code>iv-megamenu__overlay</code>, la superposición que <code>init</code> inserta para oscurecer la página tras un panel abierto, e <code>iv-megamenu__empty</code>, la línea que muestra el filtro cuando una consulta no casa con nada.</p>
     </Section>
 
-    <Section title="Opciones" num={2}>
+    <Section title="Una barra con tres paneles" num={2} lead={`El panel por defecto va centrado bajo la barra, limitado por --iv-megamenu-width, con un caret que apunta al elemento abierto.`}>
+      <Stage name="megamenu/basic" title="Paneles anchos desde una barra" minHeight="34rem" />
+    </Section>
+
+    <Section title="Filtro, cristal y tarjetas densas" num={3} lead={`iv-megamenu--glass desenfoca lo que hay detrás del panel, iv-megamenu--dense cambia tamaño de tarjeta por cantidad y el filtro estrecha todo el panel a la vez.`}>
+      <Stage name="megamenu/filter" title="Filtrar dentro del panel" minHeight="34rem" />
+      <p>Al escribir en el filtro solo quedan visibles las tarjetas, las filas del directorio, las etiquetas de la nube, las filas recientes y los titulares de la tira cuyo texto —o <code>data-iv-keywords</code>— casa, ignorando diacríticos. Los grupos que se quedan sin nada se ocultan, aparece <code>iv-megamenu__empty</code> con <code>emptyText</code> y la línea de estado del pie anuncia el recuento con <code>countText</code> a la tecnología asistiva. Escape con texto en el campo lo vacía antes de cerrar el panel.</p>
+    </Section>
+
+    <Section title="Opciones" num={4}>
       <div class="docs-scroller">
         <table>
           <thead><tr><th>Opción</th><th>Atributo</th><th>Por defecto</th><th>Efecto</th></tr></thead>
           <tbody>
-            <tr><td><code>hover</code></td><td><code>data-iv-hover</code></td><td><code>true</code></td><td>Abre con hover intencional en punteros finos; <code>false</code> abre solo con clic y teclado.</td></tr>
-            <tr><td><code>openDelay</code>, <code>closeDelay</code></td><td><code>data-iv-open-delay</code>, <code>data-iv-close-delay</code></td><td><code>120</code>, <code>200</code></td><td>Milisegundos antes de que el hover abra o cierre un panel.</td></tr>
+            <tr><td><code>hover</code></td><td><code>data-iv-hover</code></td><td><code>true</code></td><td>Abre con hover intencional y punteros finos; <code>false</code> abre solo con clic y teclado.</td></tr>
+            <tr><td><code>openDelay</code>, <code>closeDelay</code></td><td><code>data-iv-open-delay</code>, <code>data-iv-close-delay</code></td><td><code>120</code>, <code>320</code></td><td>Milisegundos antes de que un hover abra o cierre un panel.</td></tr>
             <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code></td><td>Punto de ruptura a partir del cual los paneles flotan; por debajo se comportan como acordeón.</td></tr>
-            <tr><td><code>overlay</code></td><td><code>data-iv-overlay</code></td><td><code>true</code></td><td>Oscurece la página tras un panel abierto.</td></tr>
+            <tr><td><code>overlay</code></td><td><code>data-iv-overlay</code></td><td><code>true</code></td><td>Oscurece la página tras un panel abierto. Un megamenú alojado en un navbar debería ponerlo a <code>false</code>: la barra ya es la superficie elevada.</td></tr>
             <tr><td><code>closeOthers</code></td><td><code>data-iv-close-others</code></td><td><code>true</code></td><td>Abrir un elemento cierra los demás.</td></tr>
+            <tr><td><code>filter</code></td><td><code>data-iv-filter</code></td><td><code>true</code></td><td>Muestra y conecta el <code>iv-megamenu__filter</code> del panel que lo tenga. Con <code>false</code> el campo se queda oculto.</td></tr>
+            <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>"No matches"</code></td><td>La línea que aparece cuando una consulta no casa con nada.</td></tr>
+            <tr><td><code>countText</code></td><td><code>data-iv-count-text</code></td><td><code>"&#123;count&#125; results"</code></td><td>Se anuncia tras cada filtrado; <code>&#123;count&#125;</code> se sustituye por el número que queda visible.</td></tr>
+            <tr><td><code>closeText</code></td><td><code>data-iv-close-text</code></td><td><code>"Close"</code></td><td>Nombre accesible de un botón de cierre que no traiga el suyo.</td></tr>
           </tbody>
         </table>
       </div>
+      <p>Locales: <code>--iv-megamenu-width</code>, <code>--iv-megamenu-offset</code>, <code>--iv-megamenu-cols</code>, <code>--iv-megamenu-art-ratio</code> y <code>--iv-megamenu-accent</code>. El componente escribe <code>--iv-megamenu-caret-x</code> en la raíz para situar el caret bajo el toggle abierto, y la hoja cuenta los pasos de entrada con <code>--iv-i</code>. Un megamenú cuya barra no esté centrada en la página —dentro de una cabecera, por ejemplo— debe fijar <code>--iv-megamenu-width</code> en algo como <code>56rem</code>, o el panel se sale del viewport. La cabecera de esta web lo hace.</p>
     </Section>
 
-    <Section title="Métodos y eventos" num={3} lead={`open(itemOrIndex), close(), toggle(item), destroy(); lectura de openItem. Eventos en la raíz: iv:open/iv:close (cancelables) y después iv:opened/iv:closed, con detail.item y un reason.`}>
+    <Section title="Métodos y eventos" num={5}>
+      <p>Métodos: <code>open(itemOrIndex)</code>, <code>close(reason)</code>, <code>toggle(itemOrIndex)</code>, <code>selectTab(item, index)</code> para mostrar una selección desde script, <code>filter(item, query)</code> para filtrar sin teclear y <code>destroy()</code>. Se lee <code>openItem</code>. Los índices cuentan todos los elementos de la barra, y un elemento sin panel no hace nada.</p>
+      <p>Eventos en la raíz: <code>iv:open</code> e <code>iv:close</code> (cancelables) y luego <code>iv:opened</code> e <code>iv:closed</code>, con <code>detail.item</code> y un motivo. <code>iv:change</code> es cancelable y se dispara antes de cambiar de pestaña, seguido de <code>iv:changed</code>, con el elemento y el índice. <code>iv:filter</code> se dispara tras cada filtrado y no es cancelable; su detalle lleva la <code>query</code>, el número de filas que quedan (<code>visible</code>) y el <code>item</code> filtrado.</p>
     </Section>
 
-    <Section title="Teclado y tecnología asistiva" num={4}>
-      <p>Tab recorre enlaces y botones en orden; Enter, Espacio o Abajo en un botón abren su panel, e Izquierda y Derecha se mueven entre botones, Inicio y Fin saltan a los extremos. Escape cierra y devuelve el foco al botón; Tab fuera de un panel lo cierra. Los botones llevan <code>aria-expanded</code> y <code>aria-controls</code>; los paneles cerrados son inertes. Los enlaces siguen siendo enlaces, así que no se usan roles de menú.</p>
+    <Section title="Teclado y tecnología asistiva" num={6}>
+      <p>Tab llega a enlaces y botones en orden; Enter, Espacio o Abajo sobre un toggle abren su panel, Izquierda y Derecha se mueven entre toggles y Inicio y Fin saltan. Escape cierra y devuelve el foco al toggle; salir del panel con Tab lo cierra. Dentro del panel las pestañas son un tablist de verdad: <code>role="tab"</code>, <code>aria-selected</code>, tabindex rotatorio y flechas Izquierda y Derecha. Los toggles llevan <code>aria-expanded</code> y <code>aria-controls</code>; los paneles cerrados quedan inertes. Los enlaces siguen siendo enlaces, así que no se usan roles de menú.</p>
     </Section>
 
-    <Section title="Sin JavaScript" num={5} lead={`Cada enlace navega. En pantallas grandes un panel se muestra mientras su elemento está bajo el puntero o enfocado; en pantallas pequeñas los paneles están abiertos en línea bajo sus enlaces. Los botones quedan ocultos.`}>
+    <Section title="Sin JavaScript" num={7} lead={`Cada enlace navega. Desde staticFrom hacia arriba un panel se muestra mientras su elemento tiene el puntero o el foco; por debajo los paneles quedan abiertos en línea bajo sus enlaces. Los toggles, el cierre y el filtro se quedan ocultos, y una pestaña es un enlace a su propio conjunto, que aparece con :target.`}>
     </Section>
 
-    <Section title="Errores frecuentes" num={6}>
+    <Section title="Errores comunes" num={8}>
       <ul>
-        <li>Poner enlaces esenciales solo dentro de los paneles: el enlace del elemento debe llevar a la sección.</li>
-        <li>Más de cinco o seis elementos: un megamenú es ancho; considera una barra lateral o una búsqueda.</li>
-        <li>Paneles muy altos: mantenlos por debajo de la altura del viewport o tendrán scroll interno.</li>
+        <li>Poner enlaces esenciales solo dentro de los paneles: el propio enlace del elemento debería llevar a la sección.</li>
+        <li>Más de cinco o seis elementos: un megamenú es ancho; considera una barra lateral o un buscador.</li>
+        <li>Recuentos de adorno. Un número junto a un nombre se lee como una promesa; si no es real, mejor no ponerlo.</li>
+        <li>Paneles muy altos: mantenlos por debajo del alto del viewport o tendrán scroll interno.</li>
       </ul>
     </Section>
   </article>

@@ -6,6 +6,7 @@ import * as en from "../i18n/en.js";
 import * as es from "../i18n/es.js";
 import { themeSnippet } from "../theme-snippet.js";
 import { wordmark as brandSvg } from "../brand.js";
+import reference from "../data/reference.json";
 const { title, description, sidebar = true, toc = sidebar, bleed = false, lang: langProp } = Astro.props;
 // Built with format "file": the home is /index.html at build time, /es/index.html in Spanish.
 const path = Astro.url.pathname.replace(/\.html$/, "").replace(/\/index$/, "") || "/";
@@ -46,10 +47,22 @@ const navSections = nav.map((g) => {
 // Component list for the header megamenu (labels per language, kind from the shared families map).
 const labelOf = (slug) => (lang === "es" && es.componentLabels && es.componentLabels[slug]) || slug[0].toUpperCase() + slug.slice(1);
 const componentList = Object.entries(families).map(([slug, kind]) => ({ slug, kind, label: labelOf(slug), href: `${base}/components/${slug}` }));
-const highlights = [
-  { slug: "carousel", label: labelOf("carousel"), meta: lang === "es" ? "Efectos cinema, autoplay, miniaturas" : "Cinema effect, autoplay, thumbnails", href: `${base}/components/carousel` },
-  { slug: "hero", label: labelOf("hero"), meta: lang === "es" ? "Portadas de borde a borde" : "Full-bleed openings", href: `${base}/components/hero` },
-  { slug: "megamenu", label: labelOf("megamenu"), meta: lang === "es" ? "Este mismo menú" : "This very menu", href: `${base}/components/megamenu` },
+// Header megamenu v2: the panel is a directory (families and sections, with counts), two
+// selections of picked components as numbered cards, and the full index of each family as a
+// cloud of chips. Every link goes to a page that exists; the counts are computed, not typed.
+const pick = (slug) => ({ slug, label: labelOf(slug), meta: t.mmPicks[slug], href: `${base}/components/${slug}` });
+const cssCount = componentList.filter((c) => c.kind === "css").length;
+const jsCount = componentList.length - cssCount;
+const referenceCount = new Set(Object.values(reference.sheets).flat()).size;
+const directory = [
+  { label: t.mmContent, count: cssCount, href: `${base}/components/card` },
+  { label: t.mmInteractive, count: jsCount, href: `${base}/components/dialog` },
+  { label: t.mmFoundations, count: (nav.find((g) => g.items.some((i) => i.href.includes("/foundations/")))?.items.length) || 0, href: `${base}/foundations/tokens-and-themes` },
+  { label: t.mmReference, count: referenceCount, href: `${base}/reference` },
+];
+const mmTabs = [
+  { kind: "css", label: t.mmContent, cloud: t.mmCloudCss, picks: ["card", "hero", "timeline"].map(pick) },
+  { kind: "js", label: t.mmInteractive, cloud: t.mmCloudJs, picks: ["carousel", "datatable", "megamenu"].map(pick) },
 ];
 const other = lang === "es" ? "en" : "es";
 // The switch and the alternates point at the twin page only when it exists; otherwise at the other home.
@@ -108,31 +121,52 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
               </a>
               {l.panel && <button class="iv-megamenu__toggle" type="button" aria-expanded="false" aria-controls="docs-mm-components" hidden><span class="iv-u-sr-only">{t.openComponents}</span></button>}
               {l.panel && (
-                <div class="iv-megamenu__panel docs-mm" id="docs-mm-components">
-                  <div class="iv-megamenu__inner">
-                    <section class="iv-megamenu__group">
-                      <h3 class="iv-megamenu__heading">{t.mmContent}</h3>
-                      <ul class="iv-megamenu__links">{componentList.filter((c) => c.kind === "css").map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
-                    </section>
-                    <section class="iv-megamenu__group">
-                      <h3 class="iv-megamenu__heading">{t.mmInteractive}</h3>
-                      <ul class="iv-megamenu__links">{componentList.filter((c) => c.kind === "js").map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
-                    </section>
-                    <div class="iv-megamenu__cards" style="--iv-megamenu-card-span: 2">
-                      {highlights.map((h) => (
-                        <a class="iv-megamenu__card iv-edge-near" href={h.href}>
-                          <span class={`iv-megamenu__art docs-mm__art docs-mm__art--${h.slug}`} aria-hidden="true"></span>
-                          <span class="iv-megamenu__name">{h.label}</span>
-                          <span class="iv-megamenu__meta">{h.meta}</span>
-                        </a>
+                <section class="iv-megamenu__panel docs-mm" id="docs-mm-components" aria-labelledby="docs-mm-title">
+                  <header class="iv-megamenu__head">
+                    <p class="iv-megamenu__overline">{t.mmOverline}</p>
+                    <h2 class="iv-megamenu__title" id="docs-mm-title">{t.components} <span class="iv-megamenu__count">{componentList.length}</span></h2>
+                    <p class="iv-megamenu__tagline">{t.mmTagline}</p>
+                    <button class="iv-megamenu__close" type="button" aria-label={t.mmClose} hidden></button>
+                  </header>
+                  <div class="iv-megamenu__body">
+                    <aside class="iv-megamenu__directory">
+                      <h3 class="iv-megamenu__heading">{t.mmStart}</h3>
+                      <ul class="iv-megamenu__dirlist">
+                        {directory.map((d) => <li><a href={d.href}><span>{d.label}</span><small>{d.count}</small></a></li>)}
+                      </ul>
+                      <a class="iv-megamenu__all" href={`${base}/getting-started`}>{t.mmAll}</a>
+                    </aside>
+                    <div class="iv-megamenu__discover">
+                      <div class="iv-megamenu__tabs" role="tablist" aria-label={t.mmTabs}>
+                        {mmTabs.map((tab, i) => <a class="iv-megamenu__tab" role="tab" id={`docs-mm-tab-${i}`} href={`#docs-mm-set-${i}`} aria-selected={String(i === 0)}>{tab.label}</a>)}
+                      </div>
+                      {mmTabs.map((tab, i) => (
+                        <div class="iv-megamenu__set" id={`docs-mm-set-${i}`} role="tabpanel" aria-labelledby={`docs-mm-tab-${i}`} hidden={i !== 0}>
+                          <ul class="iv-megamenu__cards">
+                            {tab.picks.map((p, n) => (
+                              <li>
+                                <a class="iv-megamenu__card" href={p.href}>
+                                  <span class={`iv-megamenu__art docs-mm__art docs-mm__art--${p.slug}`}><span class="iv-megamenu__rank" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                                  <span class="iv-megamenu__name">{p.label}</span>
+                                  <span class="iv-megamenu__meta">{p.meta}</span>
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                          <section class="iv-megamenu__cloud">
+                            <h3 class="iv-megamenu__heading">{tab.cloud}</h3>
+                            {componentList.filter((c) => c.kind === tab.kind).map((c) => <a href={c.href}>{c.label}</a>)}
+                          </section>
+                        </div>
                       ))}
                     </div>
-                    <footer class="iv-megamenu__bottom">
-                      <span>{t.mmCount(componentList.length)}</span>
-                      <a class="iv-button iv-button--primary iv-button--sm" href={`${base}/components/button`}>{t.mmBrowse}</a>
-                    </footer>
                   </div>
-                </div>
+                  <footer class="iv-megamenu__foot">
+                    <span class="iv-megamenu__crumb">iVOLT <b aria-hidden="true">/</b> {t.components}</span>
+                    <a class="iv-megamenu__foot-link" href={`${base}/components/button`}>{t.mmBrowse}</a>
+                    <p class="iv-megamenu__status" aria-hidden="true"><span class="iv-megamenu__prompt">ivolt:~$</span><span class="iv-megamenu__cmd">ls /components</span><span class="iv-megamenu__caret-blink"></span><span class="iv-megamenu__hint">{t.mmHint}</span></p>
+                  </footer>
+                </section>
               )}
             </li>
           ))}

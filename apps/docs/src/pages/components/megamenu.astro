@@ -3,45 +3,79 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Megamenu" description="iVOLT megamenu: a navigation bar whose items open wide panels with link groups and cards, working on hover and focus without JavaScript, and with intentional hover, keyboard, an overlay and a mobile accordion when JavaScript runs.">
+<Base title="Megamenu" description="iVOLT megamenu: a navigation bar whose items open wide panels with a head, a counted directory, tabbed selections of ranked cards, a cloud, a feature, an aside, an in-panel filter and a foot — working on hover and focus without JavaScript, and with intentional hover, keyboard, an overlay and a mobile accordion when JavaScript runs.">
   <article class="docs-prose">
     <h1>Megamenu</h1>
-    <p>A navigation bar where an item can open a wide panel: groups of links, cards with art and counts, and a bottom bar with actions. The server sends links and panels; without JavaScript the panels open on hover and focus on large screens and sit open inline on small ones. On <code>init</code> the toggles appear, hover becomes intentional (short open and close delays), the keyboard gets arrows and Escape, an overlay dims the page and closed panels become inert. Below the <code>staticFrom</code> breakpoint the panels turn into an accordion.</p>
-    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/megamenu.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/megamenu</code> or <code>auto.js</code>. Added in v0.4.</p>
-    <Stage primary name="megamenu/basic" title="Wide panels from a bar" minHeight="34rem" />
-    <Section title="Full-width panel with glass" num={1} lead={`iv-megamenu--full stretches the panel from edge to edge of the bar; add iv-glass to a panel to blur what sits behind it.`}>
-      <Stage name="megamenu/full" title="Full-width panel with glass" minHeight="34rem" />
+    <p>A navigation bar where an item can open a wide panel: a head with a title and a count, a directory with counts down the side, tabbed selections of ranked cards, a cloud of tags, a feature, an aside with recent items, an in-panel filter and a foot. The server sends links and panels; without JavaScript the panels open on hover and focus on large screens and sit open inline on small ones. On <code>init</code> the toggles and the close button appear, hover becomes intentional (short open and close delays), the keyboard gets arrows and Escape, an overlay dims the page, closed panels become inert and a caret points at the open item. Below the <code>staticFrom</code> breakpoint the panels turn into an accordion.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/megamenu.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/megamenu</code> or <code>auto.js</code>. Added in v0.4, rebuilt for 1.0.</p>
+    <Stage primary name="megamenu/full" title="Full-width panel, ranked cards and a ticker" minHeight="34rem" />
+
+    <Section title="Anatomy" num={1} lead={`Only iv-megamenu__head and iv-megamenu__body are required inside a panel; every other region is optional and they combine freely.`}>
+      <p>The bar is <code>iv-megamenu</code> with <code>iv-megamenu__list</code>, and each <code>iv-megamenu__item</code> carries an <code>iv-megamenu__link</code>, an <code>iv-megamenu__toggle</code> and an <code>iv-megamenu__panel</code>.</p>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th>Region</th><th>Holds</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-megamenu__head</code></td><td><code>iv-megamenu__overline</code>, <code>iv-megamenu__title</code> with an <code>iv-megamenu__count</code> pill, <code>iv-megamenu__tagline</code> and <code>iv-megamenu__close</code> (served <code>hidden</code>; <code>init</code> shows it).</td></tr>
+            <tr><td><code>iv-megamenu__filter</code></td><td>A search <code>iv-input</code> with <code>iv-megamenu__filter-input</code> and an <code>iv-megamenu__kbd</code> hint. Served <code>hidden</code>: without JavaScript it would filter nothing.</td></tr>
+            <tr><td><code>iv-megamenu__body</code></td><td>Up to three columns: <code>iv-megamenu__directory</code> (14rem), <code>iv-megamenu__discover</code> (the rest) and <code>iv-megamenu__aside</code> (16rem).</td></tr>
+            <tr><td><code>iv-megamenu__directory</code></td><td>An <code>iv-megamenu__heading</code>, an <code>iv-megamenu__dirlist</code> whose rows are <code>&lt;span&gt;</code> plus <code>&lt;small&gt;</code> (the count, in tabular figures) and an <code>iv-megamenu__all</code> button across the foot of the column.</td></tr>
+            <tr><td><code>iv-megamenu__discover</code></td><td><code>iv-megamenu__tabs</code> with <code>iv-megamenu__tab</code>, one <code>iv-megamenu__set</code> per tab holding <code>iv-megamenu__cards</code> of <code>iv-megamenu__card</code> (<code>iv-megamenu__art</code> with <code>iv-megamenu__rank</code> and <code>iv-megamenu__arrow</code>, then <code>iv-megamenu__name</code> and <code>iv-megamenu__meta</code>), plus an optional <code>iv-megamenu__cloud</code> of tags and an <code>iv-megamenu__feature</code> with its <code>iv-megamenu__flag</code>, <code>iv-megamenu__feature-title</code> and <code>iv-megamenu__feature-meta</code>.</td></tr>
+            <tr><td><code>iv-megamenu__aside</code></td><td><code>iv-megamenu__recent</code> rows of <code>iv-megamenu__thumb</code>, <code>iv-megamenu__recent-title</code> and <code>iv-megamenu__date</code>, and <code>iv-megamenu__facets</code>, which reads like the dirlist.</td></tr>
+            <tr><td><code>iv-megamenu__foot</code></td><td><code>iv-megamenu__crumb</code>, <code>iv-megamenu__foot-link</code> and an <code>iv-megamenu__status</code> line written as a terminal: <code>iv-megamenu__prompt</code>, <code>iv-megamenu__cmd</code>, <code>iv-megamenu__caret-blink</code> and <code>iv-megamenu__hint</code>.</td></tr>
+            <tr><td><code>iv-megamenu__ticker</code></td><td>A strip of up to six numbered headlines under the panel. A plain ordered list without JavaScript.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Two more elements belong to the running component and are never written by hand: <code>iv-megamenu__overlay</code>, the scrim <code>init</code> inserts to dim the page behind an open panel, and <code>iv-megamenu__empty</code>, the line the filter shows when a query matches nothing.</p>
     </Section>
 
-    <Section title="Options" num={2}>
+    <Section title="A bar with three panels" num={2} lead={`The default panel is centred under the bar, capped at --iv-megamenu-width, with a caret pointing at the open item.`}>
+      <Stage name="megamenu/basic" title="Wide panels from a bar" minHeight="34rem" />
+    </Section>
+
+    <Section title="Filter, glass and dense cards" num={3} lead={`iv-megamenu--glass blurs what sits behind the panel, iv-megamenu--dense trades card size for more of them, and the filter narrows everything in the panel at once.`}>
+      <Stage name="megamenu/filter" title="Filtering inside the panel" minHeight="34rem" />
+      <p>Typing in the filter leaves visible only the cards, dirlist rows, cloud tags, recent rows and ticker headlines whose text — or <code>data-iv-keywords</code> — matches, ignoring diacritics. Groups left with nothing are hidden, <code>iv-megamenu__empty</code> appears with <code>emptyText</code>, and the foot status line announces the count with <code>countText</code> to assistive technology. Escape with text in the field clears it before it closes the panel.</p>
+    </Section>
+
+    <Section title="Options" num={4}>
       <div class="docs-scroller">
         <table>
           <thead><tr><th>Option</th><th>Attribute</th><th>Default</th><th>Effect</th></tr></thead>
           <tbody>
             <tr><td><code>hover</code></td><td><code>data-iv-hover</code></td><td><code>true</code></td><td>Open on intentional hover with fine pointers; <code>false</code> opens only on click and keyboard.</td></tr>
-            <tr><td><code>openDelay</code>, <code>closeDelay</code></td><td><code>data-iv-open-delay</code>, <code>data-iv-close-delay</code></td><td><code>120</code>, <code>200</code></td><td>Milliseconds before a hover opens or closes a panel.</td></tr>
+            <tr><td><code>openDelay</code>, <code>closeDelay</code></td><td><code>data-iv-open-delay</code>, <code>data-iv-close-delay</code></td><td><code>120</code>, <code>320</code></td><td>Milliseconds before a hover opens or closes a panel.</td></tr>
             <tr><td><code>staticFrom</code></td><td><code>data-iv-static-from</code></td><td><code>lg</code></td><td>Breakpoint from which panels float; below it they behave as an accordion.</td></tr>
-            <tr><td><code>overlay</code></td><td><code>data-iv-overlay</code></td><td><code>true</code></td><td>Dim the page behind an open panel.</td></tr>
+            <tr><td><code>overlay</code></td><td><code>data-iv-overlay</code></td><td><code>true</code></td><td>Dim the page behind an open panel. A megamenu hosted in a navbar should set it to <code>false</code>: the bar is already the raised surface.</td></tr>
             <tr><td><code>closeOthers</code></td><td><code>data-iv-close-others</code></td><td><code>true</code></td><td>Opening an item closes the others.</td></tr>
+            <tr><td><code>filter</code></td><td><code>data-iv-filter</code></td><td><code>true</code></td><td>Reveal and wire the <code>iv-megamenu__filter</code> of a panel that has one. <code>false</code> leaves the field hidden.</td></tr>
+            <tr><td><code>emptyText</code></td><td><code>data-iv-empty-text</code></td><td><code>"No matches"</code></td><td>The line shown when a query matches nothing.</td></tr>
+            <tr><td><code>countText</code></td><td><code>data-iv-count-text</code></td><td><code>"&#123;count&#125; results"</code></td><td>Announced after each filter run; <code>&#123;count&#125;</code> is replaced by the number left visible.</td></tr>
+            <tr><td><code>closeText</code></td><td><code>data-iv-close-text</code></td><td><code>"Close"</code></td><td>Accessible name of a close button that has none of its own.</td></tr>
           </tbody>
         </table>
       </div>
+      <p>Locals: <code>--iv-megamenu-width</code>, <code>--iv-megamenu-offset</code>, <code>--iv-megamenu-cols</code>, <code>--iv-megamenu-art-ratio</code> and <code>--iv-megamenu-accent</code>. The component writes <code>--iv-megamenu-caret-x</code> on the root to place the caret under the open toggle, and the sheet counts entrance steps with <code>--iv-i</code>. A megamenu whose bar is not centred on the page — inside a header, for instance — should set <code>--iv-megamenu-width</code> to something like <code>56rem</code>, or the panel hangs off the viewport. The header of this site does exactly that.</p>
     </Section>
 
-    <Section title="Methods and events" num={3} lead={`open(itemOrIndex), close(), toggle(item), destroy(); read openItem. Events on the root: iv:open/iv:close (cancelable) then iv:opened/iv:closed, with detail.item and a reason.`}>
+    <Section title="Methods and events" num={5}>
+      <p>Methods: <code>open(itemOrIndex)</code>, <code>close(reason)</code>, <code>toggle(itemOrIndex)</code>, <code>selectTab(item, index)</code> to show a selection from script, <code>filter(item, query)</code> to run the filter without typing, and <code>destroy()</code>. Read <code>openItem</code>. Indices count every item in the bar, and an item without a panel is a no-op.</p>
+      <p>Events on the root: <code>iv:open</code> and <code>iv:close</code> (cancelable) then <code>iv:opened</code> and <code>iv:closed</code>, with <code>detail.item</code> and a reason. <code>iv:change</code> is cancelable and fires before a tab changes, followed by <code>iv:changed</code>, with the item and the index. <code>iv:filter</code> fires after each filter run and is not cancelable; its detail carries the <code>query</code>, the number of rows left <code>visible</code> and the <code>item</code> being filtered.</p>
     </Section>
 
-    <Section title="Keyboard and assistive technology" num={4}>
-      <p>Tab reaches links and toggles in order; Enter, Space or Down on a toggle opens its panel and Left and Right move between toggles, Home and End jump. Escape closes and returns focus to the toggle; Tab out of a panel closes it. Toggles carry <code>aria-expanded</code> and <code>aria-controls</code>; closed panels are inert. The links stay plain links, so no menu roles are used.</p>
+    <Section title="Keyboard and assistive technology" num={6}>
+      <p>Tab reaches links and toggles in order; Enter, Space or Down on a toggle opens its panel, Left and Right move between toggles and Home and End jump. Escape closes and returns focus to the toggle; Tab out of a panel closes it. Inside a panel the tabs are a proper tablist: <code>role="tab"</code>, <code>aria-selected</code>, a roving tabindex, Left and Right between them. Toggles carry <code>aria-expanded</code> and <code>aria-controls</code>; closed panels are inert. The links stay plain links, so no menu roles are used.</p>
     </Section>
 
-    <Section title="Without JavaScript" num={5} lead={`Each link navigates. On large screens a panel shows while its item is hovered or focused; on small screens the panels are open inline under their links. The toggles are hidden.`}>
+    <Section title="Without JavaScript" num={7} lead={`Each link navigates. From staticFrom up a panel shows while its item is hovered or focused; below it the panels are open inline under their links. The toggles, the close button and the filter stay hidden, and a tab is a link to its own set, shown by :target.`}>
     </Section>
 
-    <Section title="Common mistakes" num={6}>
+    <Section title="Common mistakes" num={8}>
       <ul>
         <li>Putting essential links only inside panels: the item link itself should lead to the section.</li>
         <li>More than five or six items: a megamenu is wide; consider a sidebar or a search.</li>
+        <li>Counts that are decoration. A number beside a name is read as a promise; if it is not real, leave it out.</li>
         <li>Very tall panels: keep them under the viewport height or they will scroll internally.</li>
       </ul>
     </Section>
