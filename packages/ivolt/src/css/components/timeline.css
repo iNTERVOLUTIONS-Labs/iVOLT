@@ -123,7 +123,7 @@
   margin-block: 0;
 }
 
-.iv-timeline__title {
+.iv-timeline .iv-timeline__title {
   font-size: var(--iv-text-md);
   font-weight: var(--iv-weight-semibold);
   line-height: var(--iv-leading-snug);

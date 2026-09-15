@@ -328,3 +328,30 @@ describe("Lightbox", () => {
     expect(instance.index).toBe(0);
   });
 });
+
+// Configurable strings (API_CONTRACT §5.2b, v0.9).
+describe("Lightbox: counterText", () => {
+  it("replaces {index} and {total} and formats the digits with the language of the gallery", () => {
+    document.body.innerHTML = MARKUP;
+    const instance = new Lightbox(gallery());
+    instance.open(1);
+    expect(viewer().querySelector(".iv-lightbox__counter").textContent).toBe("2 / 3");
+    instance.close();
+    instance.destroy();
+
+    gallery().setAttribute("data-iv-counter-text", "{index} de {total}");
+    gallery().setAttribute("lang", "es");
+    const translated = new Lightbox(gallery());
+    translated.open(0);
+    expect(viewer().querySelector(".iv-lightbox__counter").textContent).toBe("1 de 3");
+    translated.close();
+    translated.destroy();
+
+    const forced = new Lightbox(gallery(), { counterText: "Imagen {index} de {total}" });
+    forced.open(2);
+    expect(viewer().querySelector(".iv-lightbox__counter").textContent).toBe("Imagen 3 de 3");
+    forced.close();
+    forced.destroy();
+    expect(document.querySelector(".iv-lightbox")).toBe(null);
+  });
+});

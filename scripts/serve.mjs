@@ -1,5 +1,5 @@
 // Tiny static server for browser tests and manual checks. Serves the repo root and renders
-// /fixture/<component>/<name>[?theme=dark&nojs=1] into a full page around a fixture fragment.
+// /fixture/<component>/<name>[?theme=dark&nojs=1&dir=rtl&flat=1] into a full page around a fixture fragment.
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize, resolve } from "node:path";
@@ -9,12 +9,12 @@ const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const port = Number(process.env.PORT || 4180);
 const types = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".mjs": "text/javascript; charset=utf-8", ".json": "application/json", ".map": "application/json", ".svg": "image/svg+xml", ".png": "image/png", ".ico": "image/x-icon" };
 
-const page = (body, { theme = "light", nojs = false, title = "fixture", dir = "ltr", lang = "en" }) => `<!DOCTYPE html>
+const page = (body, { theme = "light", nojs = false, title = "fixture", dir = "ltr", lang = "en", flat = false }) => `<!DOCTYPE html>
 <html lang="${lang}" dir="${dir}" class="iv-root" data-iv-theme="${theme}">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>
-<link rel="stylesheet" href="/packages/ivolt/dist/css/ivolt.css">
+<link rel="stylesheet" href="/packages/ivolt/dist/css/${flat ? "ivolt.flat.css" : "ivolt.css"}">
 ${nojs ? "" : '<script type="module" src="/packages/ivolt/dist/js/auto.js"></script>'}
 </head>
 <body class="iv-u-p-6">
@@ -34,7 +34,8 @@ createServer(async (req, res) => {
       res.writeHead(200, { "content-type": types[".html"] });
       // `?dir=rtl` renders the same fragment in a right-to-left document (Arabic locale) for the RTL audit.
       const dir = url.searchParams.get("dir") === "rtl" ? "rtl" : "ltr";
-      res.end(page(body, { theme: url.searchParams.get("theme") || "light", nojs: url.searchParams.has("nojs"), title: `${m[1]}/${m[2]}`, dir, lang: dir === "rtl" ? "ar" : "en" }));
+      // `?flat=1` links the layer-free stylesheet, the one a consumer gets where `@layer` is not an option: same rules, no cascade layers.
+      res.end(page(body, { theme: url.searchParams.get("theme") || "light", nojs: url.searchParams.has("nojs"), title: `${m[1]}/${m[2]}`, dir, lang: dir === "rtl" ? "ar" : "en", flat: url.searchParams.has("flat") }));
       return;
     }
     // The documentation site serves /photos from its public folder; fixtures reference the same paths.

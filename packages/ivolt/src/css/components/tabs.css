@@ -136,7 +136,7 @@
 }
 
 /* Served heading of each panel. Visible without JavaScript (panels stacked); `init` hides it with iv-u-sr-only. */
-.iv-tabs__heading {
+.iv-tabs .iv-tabs__heading {
   margin: 0 0 var(--iv-space-2);
   font-size: var(--iv-text-lg);
   font-weight: var(--iv-weight-semibold);
@@ -155,4 +155,22 @@
     background-color: Highlight;
     forced-color-adjust: none;
   }
+}
+
+/* Layer-free stylesheet (ADR-046) -----------------------------------------
+ * Without `@layer` only specificity and order decide, and the base link rules
+ * `.iv-root a` (0,1,1) and `.iv-root a:hover` (0,2,1) outrank a component
+ * written as a single class: an anchor would be repainted with the link colour.
+ * The selectors below match only the anchor form of the component and carry the
+ * value the module already sets, in the module's own order, so they change
+ * nothing where the layers exist and win by source order where they do not.
+ */
+
+a.iv-tabs__tab,
+a.iv-tabs__tab:hover {
+  color: var(--iv-color-text-muted);
+}
+
+a.iv-tabs__tab[aria-selected="true"] {
+  color: var(--iv-color-primary);
 }

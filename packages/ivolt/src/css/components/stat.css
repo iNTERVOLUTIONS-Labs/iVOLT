@@ -30,7 +30,7 @@
   color: var(--iv-color-text-muted);
 }
 
-.iv-stat__value {
+.iv-stat .iv-stat__value {
   font-size: var(--iv-stat-size);
   font-weight: var(--iv-weight-bold);
   line-height: var(--iv-leading-tight);
@@ -107,7 +107,7 @@
   box-shadow: var(--iv-shadow-ambient);
 }
 
-:where(.iv-stat--glow) .iv-stat__value {
+.iv-stat--glow .iv-stat__value {
   background-image: linear-gradient(
     100deg,
     var(--iv-color-primary),
@@ -152,7 +152,7 @@
     background-color: CanvasText;
   }
 
-  :where(.iv-stat--glow) .iv-stat__value {
+  .iv-stat--glow .iv-stat__value {
     background-image: none;
     color: CanvasText;
   }

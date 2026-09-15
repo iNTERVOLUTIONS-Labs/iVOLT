@@ -1,7 +1,7 @@
 <section id="motion-stack" class="iv-stack iv-u-gap-8">
-  <p class="iv-u-m-0 iv-u-max-w-measure">Sample copy for the fixture. Each card sticks one step lower than the one before it, so the deck reads as a deck. Where the engine has scroll-driven animations the card underneath shrinks and dims while the next one covers it; where it does not, the stack is still a stack and nothing is lost. The text of the cards describes this project.</p>
+  <p class="iv-u-m-0 iv-u-max-w-measure">Sample copy for the fixture. Each card sticks one step lower than the one before it, so the deck reads as a deck. Where the engine has scroll-driven animations each card shrinks and dims exactly while the next one rides over it (the deck serves <code>--iv-stack-count</code> and every card its <code>--iv-i</code>); where it does not, the stack is still a stack and nothing is lost. The text of the cards describes this project.</p>
 
-  <div class="iv-stack-cards" style="--iv-stack-top: var(--iv-space-6)">
+  <div class="iv-stack-cards" style="--iv-stack-top: var(--iv-space-6); --iv-stack-count: 4">
     <section class="iv-stack-cards__card iv-card" style="--iv-i: 0">
       <div class="iv-card__body iv-stack iv-u-gap-4 iv-u-py-8">
         <div class="iv-cluster"><span class="iv-badge iv-badge--primary">01</span></div>

@@ -551,3 +551,42 @@ describe("Carousel: options and effects", () => {
     expect(track.getAttribute("role")).toBeNull();
   });
 });
+
+// Configurable strings (API_CONTRACT §5.2b, v0.9).
+describe("Carousel: slideText and counterText", () => {
+  it("labels every slide with {index} and {total}, from the default and from the attribute", () => {
+    const root = mount();
+    const carousel = new Carousel(root);
+    const labels = () =>
+      [...root.querySelectorAll(".iv-carousel__slide")].map((s) => s.getAttribute("aria-label"));
+    expect(labels()).toEqual(["1 of 3", "2 of 3", "3 of 3"]);
+    carousel.destroy();
+    expect(labels()).toEqual([null, null, null]);
+
+    root.setAttribute("data-iv-slide-text", "{index} de {total}");
+    const translated = new Carousel(root);
+    expect(labels()).toEqual(["1 de 3", "2 de 3", "3 de 3"]);
+    translated.destroy();
+
+    const forced = new Carousel(root, { slideText: "Slide {index}/{total}" });
+    expect(labels()).toEqual(["Slide 1/3", "Slide 2/3", "Slide 3/3"]);
+    forced.destroy();
+  });
+
+  it("writes the counter with the digits of the language of the element", () => {
+    vi.useFakeTimers();
+    const root = mount(' data-iv-autoplay="4000" lang="es"');
+    const carousel = new Carousel(root);
+    const counter = /** @type {HTMLElement} */ (root.querySelector(".iv-carousel__counter"));
+    expect(counter.textContent).toBe("01 / 03");
+    carousel.next();
+    expect(counter.textContent).toBe("02 / 03");
+    carousel.destroy();
+
+    root.setAttribute("data-iv-counter-text", "{index} de {total}");
+    const translated = new Carousel(root);
+    expect(root.querySelector(".iv-carousel__counter").textContent).toBe("01 de 03");
+    translated.destroy();
+    vi.useRealTimers();
+  });
+});

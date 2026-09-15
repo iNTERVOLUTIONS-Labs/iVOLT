@@ -88,7 +88,7 @@
   border-block-end: var(--iv-border-width) solid var(--iv-color-border);
 }
 
-.iv-drawer__title {
+.iv-drawer .iv-drawer__title {
   margin: 0;
   font-size: var(--iv-text-lg);
   font-weight: var(--iv-weight-semibold);

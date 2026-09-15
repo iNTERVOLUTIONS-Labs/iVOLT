@@ -87,7 +87,7 @@
   color: var(--iv-hero-accent);
 }
 
-.iv-hero__title {
+.iv-hero .iv-hero__title {
   margin: 0;
   font-size: clamp(2.75rem, 8vw, 7.5rem);
   line-height: 0.92;

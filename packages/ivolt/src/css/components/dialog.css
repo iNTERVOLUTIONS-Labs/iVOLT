@@ -70,7 +70,7 @@
   border-block-end: var(--iv-border-width) solid var(--iv-color-border);
 }
 
-.iv-dialog__title {
+.iv-dialog .iv-dialog__title {
   margin: 0;
   font-size: var(--iv-text-xl);
   font-weight: var(--iv-weight-semibold);

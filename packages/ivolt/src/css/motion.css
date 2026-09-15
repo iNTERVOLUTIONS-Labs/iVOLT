@@ -9,6 +9,7 @@
  *         --iv-scroll-progress-size --iv-scroll-progress-color
  *         --iv-marquee-duration --iv-marquee-gap --iv-marquee-size
  *         --iv-stack-top --iv-stack-step --iv-stack-scale --iv-stack-fade
+ *         --iv-stack-count (served by the author: how many cards the deck has)
  * Written by JavaScript: `--iv-view` (0 entering from the bottom, 1 leaving at
  * the top) and `--iv-scroll` (0 to 1), both from `ScrollMotion`.
  * Timelines live in a rule of their own, right after the animation longhands
@@ -275,16 +276,41 @@
   inset-block-start: calc(var(--iv-stack-top) + var(--iv-i, 0) * var(--iv-stack-step));
 }
 
+/* Card-by-card relay (v0.9): the deck declares one named view timeline and every
+ * card animates on a slice of it, so card N shrinks exactly while card N+1 rides
+ * over it. `--iv-stack-count` is served by the author next to `--iv-i`; without it
+ * the slice falls beyond the end of the timeline, the animation never leaves its
+ * `from` keyframe and the deck is a plain sticky stack. */
 @supports (animation-timeline: view()) {
-  .iv-stack-cards__card {
-    animation-name: iv-stack-cards;
-    animation-timing-function: linear;
-    animation-fill-mode: both;
-    animation-range: exit;
+  .iv-stack-cards {
+    view-timeline-name: --iv-stack;
+    view-timeline-axis: block;
   }
 
   .iv-stack-cards__card {
-    animation-timeline: view();
+    /* Along the deck's timeline 100 % is the deck plus one screen, so the deck
+       itself measures `100% - 100vh` and one card is that over the count. The
+       deck reaches the top of the screen at `100vh`: from there card N is
+       covered during the Nth card-length, which is exactly the travel of card
+       N+1 from below it to on top of it. Without a count the deck is a plain
+       sticky stack: `--iv-stack-relay` is then 0, the range starts past the end
+       of the timeline and the animation never leaves its first keyframe. */
+    --iv-stack-relay: min(1, var(--iv-stack-count, 0));
+    --iv-stack-span: calc((100% - 100vh) / max(1, var(--iv-stack-count, 0)));
+    --iv-stack-start: calc(100vh + 200% * (1 - var(--iv-stack-relay)));
+
+    animation-name: iv-stack-cards;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-range:
+      calc(var(--iv-stack-start) + var(--iv-stack-span) * var(--iv-i, 0))
+      calc(var(--iv-stack-start) + var(--iv-stack-span) * (var(--iv-i, 0) + 1));
+  }
+
+  /* Separate rule on purpose (ADR-042): `animation-timeline` is reset by anything
+     that writes the `animation` shorthand after it. */
+  .iv-stack-cards__card {
+    animation-timeline: --iv-stack;
   }
 }
 

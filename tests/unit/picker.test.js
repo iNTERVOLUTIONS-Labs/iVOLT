@@ -277,6 +277,132 @@ describe("Picker", () => {
     });
   });
 
+  // Sibling label (API_CONTRACT §8.6, v0.9): the label follows the visible field so
+  // that the sibling selectors of `form.css` keep working without a `:has()` patch.
+  describe("sibling label", () => {
+    it("moves the label next to the visible field and points it at the control", () => {
+      const { pk, el } = setup();
+      const label = /** @type {HTMLElement} */ (document.querySelector("label"));
+      const field = /** @type {HTMLElement} */ (el.querySelector(".iv-picker__field"));
+      expect(label.parentElement).toBe(el);
+      // Served above the control, the label stays above it: between the native select
+      // (which the sibling rules read) and the visible field.
+      expect(label.previousElementSibling).toBe(pk.native);
+      expect(label.nextElementSibling).toBe(field);
+      expect(label.getAttribute("for")).toBe(control(pk).id);
+      // The native select is still a previous sibling of the label: that is what the
+      // floating-label rules read.
+      expect(pk.native.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it("follows the field when the label was served after the select", () => {
+      mount(`
+        <div class="iv-field iv-field--float">
+          <div id="pk" class="iv-picker" data-iv-component="picker">
+            <select class="iv-select" id="p-city" name="city">
+              <option value="">Select a city</option>
+              <option value="mad">Madrid</option>
+            </select>
+          </div>
+          <label class="iv-label" for="p-city">City</label>
+        </div>
+      `);
+      const { el } = setup();
+      const label = /** @type {HTMLElement} */ (document.querySelector("label"));
+      const field = /** @type {HTMLElement} */ (el.querySelector(".iv-picker__field"));
+      expect(label.parentElement).toBe(el);
+      expect(label.previousElementSibling).toBe(field);
+    });
+
+    it("puts the label back on the same spot on destroy", () => {
+      const field = /** @type {HTMLElement} */ (document.querySelector(".iv-field"));
+      const label = /** @type {HTMLElement} */ (document.querySelector("label"));
+      const home = label.parentNode;
+      const next = label.nextSibling;
+      const before = field.innerHTML;
+      const { pk } = setup();
+      pk.destroy();
+      expect(document.querySelectorAll("label").length).toBe(1);
+      expect(document.querySelector("label")).toBe(label);
+      expect(label.parentNode).toBe(home);
+      expect(label.nextSibling).toBe(next);
+      expect(field.innerHTML).toBe(before);
+    });
+
+    it("leaves a label that is not a direct sibling where the author put it", () => {
+      mount(`
+        <div class="iv-field">
+          <div class="iv-field__head"><label class="iv-label" for="p-city">City</label></div>
+          <div id="pk" class="iv-picker" data-iv-component="picker">
+            <select class="iv-select" id="p-city" name="city">
+              <option value="">Select a city</option>
+              <option value="mad">Madrid</option>
+            </select>
+          </div>
+        </div>
+      `);
+      const { pk, el } = setup();
+      const label = /** @type {HTMLElement} */ (document.querySelector("label"));
+      expect(label.parentElement?.className).toBe("iv-field__head");
+      expect(el.querySelector("label")).toBe(null);
+      // It is still the accessible name of the control, only not a sibling.
+      expect(control(pk).getAttribute("aria-labelledby")).toContain(label.id);
+      pk.destroy();
+      expect(label.parentElement?.className).toBe("iv-field__head");
+    });
+
+    it("leaves the label alone when the field holds more than one", () => {
+      mount(`
+        <div class="iv-field">
+          <label class="iv-label" for="p-city">City</label>
+          <div id="pk" class="iv-picker" data-iv-component="picker">
+            <select class="iv-select" id="p-city" name="city">
+              <option value="">Select a city</option>
+              <option value="mad">Madrid</option>
+            </select>
+          </div>
+          <label class="iv-label"><input type="checkbox"> Remember it</label>
+        </div>
+      `);
+      const { el } = setup();
+      const label = /** @type {HTMLElement} */ (document.querySelector("label"));
+      expect(label.parentElement?.classList.contains("iv-field")).toBe(true);
+      expect(el.querySelector("label")).toBe(null);
+    });
+  });
+
+  // Configurable strings (API_CONTRACT §5.2b, v0.9).
+  describe("clearText and removeText", () => {
+    it("names the clear button, defaults in English and takes data-iv-clear-text", () => {
+      const { pk, el } = setup();
+      pk.select("mad");
+      expect(el.querySelector(".iv-picker__clear").getAttribute("aria-label")).toBe("Clear selection");
+      pk.destroy();
+      byId("pk").setAttribute("data-iv-clear-text", "Vaciar selección");
+      const other = setup();
+      other.pk.select("mad");
+      expect(el.querySelector(".iv-picker__clear").getAttribute("aria-label")).toBe("Vaciar selección");
+      other.pk.destroy();
+      // JavaScript still wins over the attribute.
+      const forced = setup({ clearText: "Borrar" });
+      forced.pk.select("mad");
+      expect(el.querySelector(".iv-picker__clear").getAttribute("aria-label")).toBe("Borrar");
+      forced.pk.destroy();
+    });
+
+    it("names a chip's remove button with {label} replaced", () => {
+      mount(MULTIPLE);
+      const { pk, el } = setup();
+      expect(el.querySelector(".iv-picker__chip-remove").getAttribute("aria-label")).toBe("Remove Spanish");
+      pk.destroy();
+      byId("pk").setAttribute("data-iv-remove-text", "Quitar {label}");
+      const other = setup();
+      expect(el.querySelector(".iv-picker__chip-remove").getAttribute("aria-label")).toBe("Quitar Spanish");
+      other.pk.destroy();
+      expect(el.querySelector(".iv-picker__chip-remove")).toBe(null);
+    });
+  });
+
   describe("value and placeholder", () => {
     it("shows the text of the empty option as the placeholder", () => {
       const { pk, el } = setup();

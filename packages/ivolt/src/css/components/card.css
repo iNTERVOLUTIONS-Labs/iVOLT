@@ -5,7 +5,7 @@
  *   --iv-card-shadow (resting elevation, default --iv-shadow-ambient)
  *   --iv-card-shadow-hover (pointer elevation, default --iv-shadow-2)
  * Declares no @layer and imports nothing: the entry point does that.
- * Highest specificity used: (0,1,1).
+ * Highest specificity used: (0,2,0).
  */
 
 .iv-card {
@@ -66,7 +66,7 @@
   padding: var(--iv-card-padding, var(--iv-space-5));
 }
 
-.iv-card__title {
+.iv-card .iv-card__title {
   margin-block: 0 var(--iv-space-2);
   font-size: var(--iv-text-lg);
   font-weight: var(--iv-weight-semibold);

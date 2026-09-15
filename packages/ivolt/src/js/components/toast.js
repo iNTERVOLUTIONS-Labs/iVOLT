@@ -19,6 +19,7 @@ import { KEY_ESCAPE } from "../core/keys.js";
  * @typedef {object} ToastOptions
  * @property {"bottom-end"|"bottom-start"|"top-end"|"top-start"} placement Corner the region is anchored to.
  * @property {number} max Maximum number of items visible at the same time.
+ * @property {string} dismissText Accessible name of the dismiss button of every item.
  */
 
 /**
@@ -148,6 +149,7 @@ export class Toast extends IvComponent {
     /** @type {"bottom-end"|"bottom-start"|"top-end"|"top-start"} */
     placement: "bottom-end",
     max: 3,
+    dismissText: "Dismiss",
   });
 
   /**
@@ -420,8 +422,12 @@ export class Toast extends IvComponent {
       button.className =
         "iv-toast__dismiss iv-button iv-button--ghost iv-button--icon iv-button--sm";
       button.type = "button";
-      button.setAttribute("aria-label", "Dismiss");
-      button.textContent = "×";
+      button.setAttribute("aria-label", String(this.options.dismissText));
+      // The glyph is decoration: the accessible name is the option above.
+      const glyph = document.createElement("span");
+      glyph.setAttribute("aria-hidden", "true");
+      glyph.textContent = "×";
+      button.append(glyph);
       el.append(button);
     }
     return el;

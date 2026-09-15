@@ -47,6 +47,8 @@ import {
  * @property {string} searchPlaceholder Placeholder and accessible name of the search field.
  * @property {string} emptyText Text of the "no matches" row.
  * @property {string} countText Label of a multiple control, with `{count}` replaced by the number of chips.
+ * @property {string} clearText Accessible name of the clear button.
+ * @property {string} removeText Accessible name of a chip's remove button; `{label}` is replaced.
  * @property {boolean} clearable Whether a clear button is created.
  * @property {boolean} closeOnSelect Whether choosing an option closes the popover.
  * @property {number} maxItems Maximum number of selected options; `0` means no limit.
@@ -232,6 +234,8 @@ export class Picker extends IvComponent {
       searchPlaceholder: "Search",
       emptyText: "No matches",
       countText: "{count} selected",
+      clearText: "Clear selection",
+      removeText: "Remove {label}",
       clearable: true,
       closeOnSelect: true,
       maxItems: 0,
@@ -327,6 +331,8 @@ export class Picker extends IvComponent {
     this._empty = this._empty ?? doc.createElement("li");
     /** @type {HTMLElement|null} The `<label>` of the select, when there is one. */
     this._label = this._label ?? null;
+    /** @type {{ parent: Node, next: Node|null }|null} Where the moved label came from. */
+    this._labelHome = this._labelHome ?? null;
     /** @type {PickerItem[]} One entry per selectable `<option>`. */
     this._items = this._items ?? [];
     /** @type {PickerGroup[]} One entry per `<optgroup>`. */
@@ -436,6 +442,7 @@ export class Picker extends IvComponent {
 
     const label = select.labels && select.labels.length ? select.labels[0] : null;
     this._label = label;
+    this._labelHome = null;
     let labelId = "";
     if (label) {
       if (!label.id) this._set(label, "id", uniqueId(doc, `iv-pk-${n}-label`));
@@ -487,7 +494,7 @@ export class Picker extends IvComponent {
       clear = doc.createElement("button");
       clear.type = "button";
       clear.className = "iv-picker__clear";
-      clear.setAttribute("aria-label", "Clear selection");
+      clear.setAttribute("aria-label", String(this.options.clearText));
       clear.hidden = true;
     }
 
@@ -541,6 +548,7 @@ export class Picker extends IvComponent {
     if (clear) field.append(clear);
     root.append(field);
     root.append(popover);
+    this._moveLabel(field);
     this._render();
 
     this._listen(control, "click", () => this.toggle());
@@ -566,6 +574,7 @@ export class Picker extends IvComponent {
       clearTimeout(this._resetTimer);
       this._resetTimer = 0;
     }
+    this._restoreLabel();
     this._field.remove();
     this._popover.remove();
     this._items = [];
@@ -587,6 +596,51 @@ export class Picker extends IvComponent {
     if (this._element.hasAttribute("data-iv-auto") && this._element.parentNode) {
       this._element.replaceWith(this._native);
     }
+  }
+
+  /**
+   * Moves the label of the select next to the visible field, so that the sibling
+   * selectors of `form.css` (a floating label, above all) keep matching what the
+   * reader sees instead of the wrapper that hides the native control
+   * (API_CONTRACT §8.6). Only a single label that is a direct sibling of the
+   * picker inside the same `.iv-field` travels: anything else is a layout the
+   * author built on purpose, and moving a node out of it would be a surprise.
+   *
+   * @param {HTMLElement} field The visible field the label becomes a sibling of.
+   * @returns {void}
+   */
+  _moveLabel(field) {
+    const label = this._label;
+    const root = this._element;
+    const parent = root.parentNode;
+    if (!label || !parent || label.parentNode !== parent) return;
+    const scope = /** @type {Element|null} */ (
+      root.closest ? root.closest(".iv-field") : null
+    );
+    // Two labels in the same field are a group (a set of radios, a compound
+    // control): the pairing is the author's, not ours.
+    const home = scope && scope.contains(label) ? scope : parent;
+    if (home.querySelectorAll("label").length !== 1) return;
+    this._labelHome = { parent, next: label.nextSibling };
+    // The label keeps the side it was served on — above the control or below it — and
+    // still follows the native select, which is what the sibling rules read.
+    const above = Boolean(
+      label.compareDocumentPosition(root) & Node.DOCUMENT_POSITION_FOLLOWING
+    );
+    if (above) field.before(label);
+    else field.after(label);
+  }
+
+  /**
+   * Puts a moved label back where it was served: same parent, same next sibling.
+   *
+   * @returns {void}
+   */
+  _restoreLabel() {
+    const home = this._labelHome;
+    this._labelHome = null;
+    if (!home || !this._label) return;
+    home.parent.insertBefore(this._label, home.next);
   }
 
   /**
@@ -833,7 +887,10 @@ export class Picker extends IvComponent {
         const remove = doc.createElement("button");
         remove.type = "button";
         remove.className = "iv-picker__chip-remove";
-        remove.setAttribute("aria-label", `Remove ${item.label}`);
+        remove.setAttribute(
+          "aria-label",
+          String(this.options.removeText).replace(/\{label\}/g, item.label)
+        );
         remove.setAttribute("data-iv-value", item.value);
         chip.append(remove);
         this._chips.set(item.value, chip);

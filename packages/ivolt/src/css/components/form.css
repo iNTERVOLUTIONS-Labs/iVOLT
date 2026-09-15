@@ -304,24 +304,30 @@ textarea.iv-input {
   font-size: var(--iv-text-md);
 }
 
-/* An enriched select is wrapped by `.iv-picker`, so the sibling that carries
-   the state is the wrapper, and the empty option is matched from the wrapper
-   in a single `:has()` — `:has()` cannot be nested inside `:has()`. Without
-   these rules the label stays raised while the picker still shows its
-   placeholder, and the two print on top of each other. */
+/* A picker holds the label of its select inside the wrapper (API_CONTRACT §8.6).
+   The `gap` of the field only separates the wrapper from its neighbours, so the
+   label carries that same distance itself and the field looks exactly as it did
+   with the label outside. A grid item is blockified and a label is inline by
+   default, so it is blockified here too, or the line box would be shorter. A
+   floating label is out of flow and ignores both. */
+.iv-picker > .iv-label {
+  display: block;
+  margin-block-end: 0.375rem;
+}
+
+/* An enriched select keeps its label as a sibling of the visible field inside
+   the wrapper (API_CONTRACT §8.6), so the rule above matches an enriched picker
+   through the very same `~`: the state is read from the native select, which is
+   still the source of truth and still a sibling of the label. The visible field
+   only needs the metric of a floating control. */
 .iv-field--float .iv-picker__field {
   min-block-size: 3.75rem;
   padding-block: 1.55rem 0.45rem;
 }
 
-.iv-field--float :where(.iv-picker:not(:focus-within):has(option[value=""]:checked)) ~ .iv-label {
-  inset-block-start: 1.05rem;
-  font-size: var(--iv-text-md);
-}
-
 /* While the label sits in the middle of the control it is the placeholder;
    the picker's own placeholder text would print underneath it. */
-.iv-field--float :where(.iv-picker:not(:focus-within):has(option[value=""]:checked)) .iv-picker__placeholder {
+.iv-field--float :where(.iv-select:has(option[value=""]:checked)) ~ .iv-picker__field :where(.iv-picker__placeholder) {
   color: transparent;
 }
 

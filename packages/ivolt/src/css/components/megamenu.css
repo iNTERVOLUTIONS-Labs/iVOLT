@@ -149,7 +149,7 @@
   min-inline-size: 0;
 }
 
-.iv-megamenu__heading {
+.iv-megamenu .iv-megamenu__heading {
   margin-block: 0 var(--iv-space-3);
   font-size: var(--iv-text-xs);
   font-weight: var(--iv-weight-semibold);
@@ -468,4 +468,23 @@
   inset-inline: 0;
   inset-block-end: 100%;
   block-size: var(--iv-megamenu-offset);
+}
+
+/* Layer-free stylesheet (ADR-046) -----------------------------------------
+ * Without `@layer` only specificity and order decide, and the base link rules
+ * `.iv-root a` (0,1,1) and `.iv-root a:hover` (0,2,1) outrank a component
+ * written as a single class: an anchor would be repainted with the link colour.
+ * The selectors below match only the anchor form of the component and carry the
+ * value the module already sets, in the module's own order, so they change
+ * nothing where the layers exist and win by source order where they do not.
+ */
+
+a.iv-megamenu__link,
+a.iv-megamenu__link:hover {
+  color: var(--iv-color-text);
+}
+
+a.iv-megamenu__card,
+a.iv-megamenu__card:hover {
+  color: inherit;
 }

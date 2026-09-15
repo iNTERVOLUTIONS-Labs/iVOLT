@@ -100,3 +100,78 @@ test.describe("Counter", () => {
     }
   });
 });
+
+// Floating label with an enriched select (API_CONTRACT §8.6, v0.9): the picker keeps the
+// label as a sibling of the visible field, so `form.css` needs no `:has()` compensation.
+test.describe("Floating label over an enriched select", () => {
+  /** The `.iv-field--float` that holds the plan select. */
+  const plan = (page) => page.locator(".iv-field--float").filter({ has: page.locator("#fl-plan") });
+
+  test("the label lives next to the visible field and floats on the value, not on the wrapper", async ({ page }) => {
+    await page.goto("/fixture/form/float");
+    const field = plan(page);
+    await expect(field.locator(".iv-picker__field")).toBeVisible();
+    const placed = await field.evaluate((el) => {
+      const label = el.querySelector(".iv-label");
+      return {
+        parent: label.parentElement.className,
+        previous: label.previousElementSibling.className,
+        for: label.getAttribute("for"),
+        control: el.querySelector(".iv-picker__control").id,
+      };
+    });
+    expect(placed.parent).toBe("iv-picker");
+    expect(placed.previous).toBe("iv-picker__field");
+    expect(placed.for).toBe(placed.control);
+
+    // Nothing chosen: the label is the placeholder, in the middle and at reading size,
+    // and the picker's own placeholder steps out of the way instead of printing under it.
+    const empty = await field.evaluate((el) => {
+      const label = el.querySelector(".iv-label");
+      return {
+        size: getComputedStyle(label).fontSize,
+        top: Math.round(label.getBoundingClientRect().top - el.getBoundingClientRect().top),
+        placeholder: getComputedStyle(el.querySelector(".iv-picker__placeholder")).color,
+      };
+    });
+    expect(empty.size).toBe("16px");
+    expect(empty.top).toBeGreaterThan(12);
+    expect(empty.placeholder).toBe("rgba(0, 0, 0, 0)");
+
+    // Choosing a plan raises the label and gives the placeholder back its colour.
+    await field.locator(".iv-picker__control").click();
+    await page.locator(".iv-picker__option", { hasText: "Team" }).first().click();
+    await expect(field.locator(".iv-picker__value")).toHaveText("Team");
+    // The label travels with a transition: poll until it has settled at the small size.
+    await expect
+      .poll(() => field.evaluate((el) => getComputedStyle(el.querySelector(".iv-label")).fontSize))
+      .toBe("12px");
+    const chosen = await field.evaluate((el) => {
+      const label = el.querySelector(".iv-label");
+      return { top: Math.round(label.getBoundingClientRect().top - el.getBoundingClientRect().top) };
+    });
+    expect(chosen.top).toBeLessThan(empty.top);
+  });
+
+  test("destroy gives the served markup back, label included", async ({ page }) => {
+    await page.goto("/fixture/form/float");
+    await expect(plan(page).locator(".iv-picker__field")).toBeVisible();
+    const same = await page.evaluate(async () => {
+      const { Picker } = await import("/packages/ivolt/dist/js/components/picker.js");
+      const field = [...document.querySelectorAll(".iv-field--float")].find((f) => f.querySelector("#fl-plan"));
+      const served = '<select class="iv-select" id="fl-plan" name="plan">';
+      Picker.get(field.querySelector(".iv-picker")).destroy();
+      const label = field.querySelector(".iv-label");
+      return {
+        html: field.innerHTML.includes(served),
+        labelParent: label.parentElement.className,
+        labelFor: label.getAttribute("for"),
+        pickers: field.querySelectorAll(".iv-picker").length,
+      };
+    });
+    expect(same.pickers).toBe(0);
+    expect(same.html).toBe(true);
+    expect(same.labelParent).toContain("iv-field--float");
+    expect(same.labelFor).toBe("fl-plan");
+  });
+});

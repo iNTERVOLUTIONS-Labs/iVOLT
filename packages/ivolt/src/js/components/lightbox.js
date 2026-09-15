@@ -39,6 +39,7 @@ import { Dialog } from "./dialog.js";
  * @property {string} nextText Accessible name of the next button.
  * @property {string} zoomText Accessible name of the zoom button.
  * @property {string} galleryLabel Accessible name of the generated dialog.
+ * @property {string} counterText Visible counter; `{index}` and `{total}` are replaced with digits in the language of the gallery.
  */
 
 /**
@@ -67,6 +68,20 @@ const SWAP_ATTRIBUTE = "data-iv-swap";
 const SWIPE_THRESHOLD = 40;
 
 /**
+ * Reads the language that applies to an element: its own `lang`, else the one on
+ * the document. The digits of a counter are formatted with it.
+ *
+ * @param {Element} el Element to read from.
+ * @returns {string|undefined} The tag, or `undefined` for the runtime default.
+ */
+function langOf(el) {
+  const owner = el.closest("[lang]");
+  const tag = owner ? owner.getAttribute("lang") : null;
+  const fallback = el.ownerDocument.documentElement.getAttribute("lang");
+  return tag || fallback || undefined;
+}
+
+/**
  * Full-screen image viewer built on top of a served gallery.
  *
  * @augments IvComponent
@@ -88,6 +103,7 @@ export class Lightbox extends IvComponent {
     nextText: "Next",
     zoomText: "Zoom",
     galleryLabel: "Image viewer",
+    counterText: "{index} / {total}",
   });
 
   /**
@@ -613,7 +629,10 @@ export class Lightbox extends IvComponent {
       this._caption.hidden = !show;
     }
     if (this._counter) {
-      this._counter.textContent = `${this._index + 1} / ${this.items.length}`;
+      const digits = new Intl.NumberFormat(langOf(this._element));
+      this._counter.textContent = String(this.options.counterText)
+        .replace(/\{index\}/g, digits.format(this._index + 1))
+        .replace(/\{total\}/g, digits.format(this.items.length));
     }
   }
 

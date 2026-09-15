@@ -451,3 +451,31 @@ describe("Toast declarative triggers (API_CONTRACT §8.18)", () => {
     toast.destroy();
   });
 });
+
+// Configurable strings (API_CONTRACT §5.2b, v0.9).
+describe("Toast dismissText", () => {
+  it("names the dismiss button and keeps the glyph out of the accessible name", () => {
+    document.body.innerHTML = '<div id="region" data-iv-component="toast"></div>';
+    const region = new Toast(document.getElementById("region"));
+    region.show({ message: "Saved" });
+    const button = document.querySelector(".iv-toast__dismiss");
+    expect(button.getAttribute("aria-label")).toBe("Dismiss");
+    expect(button.querySelector("[aria-hidden='true']").textContent).toBe("\u00d7");
+    region.destroy();
+  });
+
+  it("takes the text from data-iv-dismiss-text and lets JavaScript win", () => {
+    document.body.innerHTML =
+      '<div id="region" data-iv-component="toast" data-iv-dismiss-text="Descartar"></div>';
+    const el = document.getElementById("region");
+    const region = new Toast(el);
+    region.show({ message: "Guardado" });
+    expect(document.querySelector(".iv-toast__dismiss").getAttribute("aria-label")).toBe("Descartar");
+    region.destroy();
+    const overridden = new Toast(el, { dismissText: "Cerrar" });
+    overridden.show({ message: "Guardado" });
+    expect(document.querySelector(".iv-toast__dismiss").getAttribute("aria-label")).toBe("Cerrar");
+    overridden.destroy();
+    expect(document.querySelectorAll(".iv-toast").length).toBe(0);
+  });
+});

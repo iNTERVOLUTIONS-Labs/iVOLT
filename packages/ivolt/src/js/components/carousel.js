@@ -36,6 +36,8 @@ import {
  * @property {number} duration Transition duration in milliseconds.
  * @property {string} pauseText Label of the toggle while the carousel rotates.
  * @property {string} playText Label of the toggle while the carousel is stopped.
+ * @property {string} slideText Accessible name of a slide; `{index}` and `{total}` are replaced.
+ * @property {string} counterText Visible counter; `{index}` and `{total}` are replaced with two-digit numerals in the language of the carousel.
  */
 
 /**
@@ -109,13 +111,17 @@ function findOwn(root, selector) {
 }
 
 /**
- * Two-digit numeral for the counter.
+ * Reads the language that applies to an element: its own `lang`, else the one on
+ * the document. The digits of a counter are formatted with it.
  *
- * @param {number} value Number to pad.
- * @returns {string} The padded numeral.
+ * @param {Element} el Element to read from.
+ * @returns {string|undefined} The tag, or `undefined` for the runtime default.
  */
-function pad(value) {
-  return value < 10 ? `0${value}` : String(value);
+function langOf(el) {
+  const owner = el.closest("[lang]");
+  const tag = owner ? owner.getAttribute("lang") : null;
+  const fallback = el.ownerDocument.documentElement.getAttribute("lang");
+  return tag || fallback || undefined;
 }
 
 /**
@@ -137,6 +143,8 @@ export class Carousel extends IvComponent {
     duration: 600,
     pauseText: "Pause",
     playText: "Play",
+    slideText: "{index} of {total}",
+    counterText: "{index} / {total}",
   });
 
   /**
@@ -497,7 +505,13 @@ export class Carousel extends IvComponent {
       if (!slide.id) this._set(slide, "id", `iv-carousel-slide-${++uid}`);
       this._set(slide, "role", "tabpanel");
       this._set(slide, "aria-roledescription", "slide");
-      this._set(slide, "aria-label", `${index + 1} of ${total}`);
+      this._set(
+        slide,
+        "aria-label",
+        String(this.options.slideText)
+          .replace(/\{index\}/g, String(index + 1))
+          .replace(/\{total\}/g, String(total))
+      );
     });
   }
 
@@ -566,7 +580,14 @@ export class Carousel extends IvComponent {
       tab.button.setAttribute("tabindex", active ? "0" : "-1");
     }
     if (this._counter) {
-      this._counter.textContent = `${pad(this._index + 1)} / ${pad(this._slides.length)}`;
+      // Two digits, in the language of the carousel: "01 / 04", "٠١ / ٠٤".
+      const digits = new Intl.NumberFormat(langOf(this._element), {
+        minimumIntegerDigits: 2,
+        useGrouping: false,
+      });
+      this._counter.textContent = String(this.options.counterText)
+        .replace(/\{index\}/g, digits.format(this._index + 1))
+        .replace(/\{total\}/g, digits.format(this._slides.length));
     }
     const edge = this._slides.length - 1;
     const loop = this.options.loop === true;

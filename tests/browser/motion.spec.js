@@ -154,7 +154,14 @@ test.describe("Stacked cards", () => {
       window.scrollTo(0, deck.getBoundingClientRect().bottom + window.scrollY - window.innerHeight);
     });
     await page.waitForTimeout(150);
-    const tops = await cards.evaluateAll((els) => els.map((el) => Math.round(el.getBoundingClientRect().top)));
+    // The painted box of a card that has already shrunk is smaller and centred on the same
+    // point, so the sticky slot is read from the layout box: centre minus half the laid-out height.
+    const tops = await cards.evaluateAll((els) =>
+      els.map((el) => {
+        const rect = el.getBoundingClientRect();
+        return Math.round(rect.top + rect.height / 2 - el.offsetHeight / 2);
+      })
+    );
     // --iv-stack-top is --iv-space-6 (24px) in this fixture and the step is 1rem.
     expect(tops[0]).toBe(24);
     expect(tops[1]).toBe(40);
@@ -178,6 +185,88 @@ test.describe("Stacked cards", () => {
       // No scroll timelines: the deck is a plain sticky stack, which is the documented fallback.
       expect(state.transform).toBe("none");
       expect(state.opacity).toBe(1);
+    }
+  });
+
+  // v0.9 relay (API_CONTRACT §8.21): the deck names one view timeline and every card
+  // animates on the slice of it where the next card rides over it.
+  test("a card holds its scale until the next one rides over it, and has finished when it lands", async ({ page }) => {
+    await page.setViewportSize({ width: 1000, height: 700 });
+    await page.goto("/fixture/motion/stack");
+    test.skip(!(await nativeTimelines(page)), "no scroll-driven animations on this engine");
+
+    /** Scroll offsets at which cards one and two reach their sticky slot, read from the layout. */
+    const stick = await page.evaluate(() => {
+      const cards = [...document.querySelectorAll(".iv-stack-cards__card")];
+      const slot = (el) => parseFloat(getComputedStyle(el).insetBlockStart);
+      return cards.map((el) => el.getBoundingClientRect().top + window.scrollY - slot(el));
+    });
+
+    /** Scale factor and viewport position of every card, once the scroll-driven styles settle. */
+    const read = () =>
+      page.locator(".iv-stack-cards__card").evaluateAll((els) =>
+        els.map((el) => ({
+          scale: Number((getComputedStyle(el).transform.match(/^matrix\(([\d.]+)/) || [0, 1])[1]),
+          top: Math.round(el.getBoundingClientRect().top),
+        }))
+      );
+
+    /** Scrolls to `y` and reads until two readings agree: a timeline updates on its own frame. */
+    const at = async (y) => {
+      await page.evaluate((to) => window.scrollTo(0, to), y);
+      let previous = null;
+      for (let i = 0; i < 12; i += 1) {
+        await page.waitForTimeout(100);
+        const now = await read();
+        if (previous && JSON.stringify(now) === JSON.stringify(previous)) return now;
+        previous = now;
+      }
+      return /** @type {NonNullable<typeof previous>} */ (previous);
+    };
+
+    // At rest, and while the deck is still walking up the screen, nothing has moved yet.
+    expect((await at(0))[0].scale).toBe(1);
+    const parked = await at(Math.max(0, stick[0] - 40));
+    expect(parked[0].scale).toBe(1);
+    expect(parked[1].top).toBeGreaterThan(parked[0].top);
+
+    // Half way through the second card's ride the first one is on its way down, not there yet.
+    const mid = await at((stick[0] + stick[1]) / 2);
+    expect(mid[0].scale).toBeLessThan(1);
+    expect(mid[0].scale).toBeGreaterThan(0.94);
+    expect(mid[1].top).toBeGreaterThan(mid[0].top);
+
+    // Just before the second card lands: the first is well on its way down and the
+    // cards behind it have not started, because each slice waits for its own turn.
+    const arriving = await at(stick[1] - 20);
+    expect(arriving[0].scale).toBeLessThan(1);
+    expect(arriving[1].scale).toBe(1);
+    expect(arriving[2].scale).toBe(1);
+
+    // By the time the third card lands the first has finished shrinking and dimming
+    // and the second is the one on its way.
+    const landed = await at(stick[2]);
+    expect(landed[0].scale).toBeCloseTo(0.94, 3);
+    expect(landed[1].scale).toBeLessThan(1);
+    const opacity = await page.locator(".iv-stack-cards__card").evaluateAll((els) => els.map((el) => Number(getComputedStyle(el).opacity)));
+    expect(opacity[0]).toBeLessThan(1);
+    expect(opacity[3]).toBe(1);
+  });
+
+  test("a deck without --iv-stack-count is a plain sticky stack", async ({ page }) => {
+    await page.setViewportSize({ width: 1000, height: 700 });
+    await page.goto("/fixture/motion/stack");
+    // The relay is opt-in: the count is what the author serves next to `--iv-i`.
+    await page.locator(".iv-stack-cards").evaluate((el) => el.style.removeProperty("--iv-stack-count"));
+    for (const y of [0, 400, 800, 1200]) {
+      await page.evaluate((to) => window.scrollTo(0, to), y);
+      await page.waitForTimeout(80);
+      // `none` where no animation is attached at all, the identity matrix where one is
+      // held at its first keyframe: both mean the card was never touched.
+      const states = await page.locator(".iv-stack-cards__card").evaluateAll((els) =>
+        els.map((el) => `${getComputedStyle(el).transform.replace("matrix(1, 0, 0, 1, 0, 0)", "none")}/${getComputedStyle(el).opacity}/${getComputedStyle(el).position}`)
+      );
+      expect(states).toEqual(states.map(() => "none/1/sticky"));
     }
   });
 
