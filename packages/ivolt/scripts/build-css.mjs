@@ -45,7 +45,7 @@ write("reset.css", transform({ filename: "reset.css", code: Buffer.from(reset), 
 write("reset.layer.css", transform({ filename: "reset.layer.css", code: Buffer.from(`@layer iv.reset {\n${reset}\n}\n`), ...common }).code.toString());
 
 // standalone modules
-for (const rel of ["tokens.css", "base.css", "utilities.css"]) transformModule(rel);
+for (const rel of ["tokens.css", "base.css", "utilities.css", "surfaces.css", "effects.css", "motion.css", "text.css"]) transformModule(rel);
 for (const dir of ["layout", "components"]) {
   if (!existsSync(join(src, dir))) continue;
   for (const f of readdirSync(join(src, dir))) if (f.endsWith(".css")) transformModule(join(dir, f));

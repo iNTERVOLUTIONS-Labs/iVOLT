@@ -8,7 +8,7 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@intervolutions/ivolt": "0.7.0-beta.0"
+    "@intervolutions/ivolt": "0.8.0-beta.0"
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.7.4",

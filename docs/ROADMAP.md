@@ -156,3 +156,37 @@ Petición del propietario: «sigue trabajando hasta 0.7». Lo que falta para mon
 | 4 | Texto (`text.css`): `iv-text-reveal`, `iv-text-glow`, `iv-text-outline`, `iv-text-shimmer` | §8.22 | implementador B | hecho (2026-09-14, ADR-042) |
 | 5 | Web: páginas nuevas (lightbox, motion, text, countup) en dos idiomas y receta «showcase» (cuarta receta en `examples/recipes`, fotos ya acreditadas en su carpeta) | §8.23 | implementador de docs | hecho (2026-09-14; 102 páginas, receta en `examples/recipes/showcase`) |
 | 6 | Cierre `0.7.0-beta.0`: `verify` en tres motores, líneas base, Lighthouse, changelog, estado | — | integrador | hecho (2026-09-14) |
+
+## 11. Camino a 1.0 (abierto 2026-09-15): v0.8 «Hardening», v0.9 «Complete», `1.0.0-rc.0`
+
+Petición del propietario: «sigue hasta 1.0 release candidate». Un candidato a 1.0 no añade familias: endurece, completa y congela. Sin publicar nada nuevo hasta el rc, que requiere su OTP.
+
+### v0.8 «Hardening» → `0.8.0-beta.0`
+
+| Orden | Elemento | Responsable | Estado |
+|---|---|---|---|
+| 1 | Revisión adversaria de los 24 componentes JS (teclado, foco, `destroy`, precedencia de opciones, eventos contra contrato, carreras, SSR por módulo) con corrección | revisor A (Opus) | abierto |
+| 2 | Revisión adversaria de las 36 hojas: RTL (`dir="rtl"`) con capturas, `forced-colors` en todos los módulos (hoy 13 de 36), impresión, 320 px, `[hidden]`, especificidad | revisor B (Opus) | abierto |
+| 3 | Emisión por módulo de `surfaces`, `effects`, `motion` y `text` en `dist/css`; cifras por módulo en `QUALITY.md` | integrador | abierto |
+| 4 | Presupuesto de JS: medir importación por módulo y decidir por ADR (subir el umbral o recomendar módulos) | integrador | abierto |
+| 5 | Receta showcase: portada con variante de 800 px para móvil (`<picture>`), LCP medido | integrador | abierto |
+| 6 | Cierre: gate en tres motores, líneas base, Lighthouse, changelog, estado | integrador | abierto |
+
+### v0.9 «Complete» → `0.9.0-beta.0`
+
+| Orden | Elemento | Notas |
+|---|---|---|
+| 1 | Referencia completa generada de clases, tokens, atributos y eventos (una página por idioma, comprobada contra el CSS construido) | garantiza que nada público queda sin documentar |
+| 2 | Página «Localisation»: todas las cadenas de texto de los componentes y cómo traducirlas por `data-iv-*` | sin JS nuevo |
+| 3 | Candidatos aceptados: relevo por tarjeta en `iv-stack-cards`, `Picker` con etiqueta hermana, `.iv-dialog__title` en la hoja plana | los demás candidatos se descartan con motivo |
+| 4 | Home de la web con solo los módulos que usa (o decisión razonada de no hacerlo) | Lighthouse móvil |
+| 5 | Política de versiones y estabilidad (`docs/STABILITY.md`): qué es público, SemVer, deprecaciones, soporte de navegadores medido | requisito de 1.0 |
+| 6 | Cierre `0.9.0-beta.0` | mismo gate |
+
+### `1.0.0-rc.0`
+
+| Orden | Elemento | Notas |
+|---|---|---|
+| 1 | Congelación del contrato para 1.0 (`API_CONTRACT.md` cabecera), changelog consolidado 0.1 → 1.0, avisos de la web «release candidate» | sin cambios de API salvo correcciones |
+| 2 | Gate completo, Lighthouse, revisión final de capturas en tres anchos y dos temas | |
+| 3 | Publicación `1.0.0-rc.0` con etiqueta `next` (requiere OTP del propietario) y etiqueta git | `latest` sigue en la beta hasta 1.0.0 |

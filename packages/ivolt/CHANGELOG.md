@@ -2,6 +2,11 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 0.8.0-beta.0 (unreleased)
+
+### Changed
+- `surfaces.css`, `effects.css`, `motion.css` and `text.css` are also emitted as standalone minified modules in `dist/css/`, like the components.
+
 ## 0.7.0-beta.0 — 2026-09-14 (npm, tag `beta`)
 
 ### Added
