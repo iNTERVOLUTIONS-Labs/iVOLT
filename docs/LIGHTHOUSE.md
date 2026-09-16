@@ -305,9 +305,9 @@ Mismo método (Lighthouse 13.4.1, HeadlessChrome, build del gate `verify` en 432
 
 | Ruta | Preajuste | Rendimiento | Accesibilidad | Prácticas rec. | SEO | LCP | CLS |
 |---|---|---|---|---|---|---|---|
-| `/` | móvil | HOME_MOBILE |
+| `/` | móvil | 100 (tras la pasada de rendimiento; 90 en la primera medida) | 100 | 100 | 100 | ≈ 0,5–2,0 s según pasada | 0 |
 | `/` | escritorio | 100 | 100 | 100 | 100 | 556 ms | 0 |
-| `/es` | móvil | ES_MOBILE |
+| `/es` | móvil | 98–100 (tras la pasada de rendimiento; 90 en la primera medida) | 100 | 100 | 100 | 2,0 s | 0 |
 | `/es` | escritorio | 100 | 100 | 100 | 100 | 536 ms | 0 |
 | `/components/button` | móvil | 96 | 100 | 100 | 100 | 2115 ms | 0,067 |
 | `/components/button` | escritorio | 100 | 100 | 100 | 100 | 621 ms | 0,023 |
@@ -317,4 +317,4 @@ Mismo método (Lighthouse 13.4.1, HeadlessChrome, build del gate `verify` en 432
 | `/examples/store/index.html` | móvil | 99 | 100 | 100 | 100 | 2048 ms | 0 |
 | las cuatro recetas | escritorio | 100 | 100 | 100 | 100 | 420–768 ms | ≤ 0,013 |
 
-Primera medida de la portada nueva en móvil: 90 (LCP 3,3 s) por una hoja de la web de 44 KB gzip que bloqueaba el render, el CSS del paquete enlazado sin minificar y 50 KB de JS agrupado con 40 KB sin uso en esa página. PERF_NOTE
+Primera medida de la portada nueva en móvil: 90 (LCP 3,3 s) por una hoja de la web de 44 KB gzip que bloqueaba el render, el CSS del paquete enlazado sin minificar y 50 KB de JS agrupado con 40 KB sin uso en esa página. Correcciones (ADR-049): la primera línea del titular se pinta con el documento (el elemento LCP era un contador de 115×28 px que esperaba al script), hoja común de la web repartida por página (43,5 → 39,4 KB gzip), hojas minificadas en los escenarios, script del escenario cargado bajo demanda y escenarios servidos con el IIFE publicado (168 → 28 peticiones y 778 → 102 KB en una página de componente). Tras ello, móvil: `/` 100, `/components/button` 99 (medidas del rematador con la máquina compartida; LCP 0,5 s).

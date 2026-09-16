@@ -18,6 +18,18 @@
 
 «Sigue trabajando hasta 0.7.» Método en ambos ciclos: contratos escritos y congelados antes de implementar (§8.15–§8.23), dos implementadores Opus con archivos disjuntos y capturas propias, un tercero para la web, el líder integra, registra las enmiendas de implementación en el contrato y pasa el gate. Ninguna afirmación visual sin captura (ADR-039).
 
+## Ronda 3: web y ejemplos desde cero (2026-09-15, ADR-047/049)
+
+| Bloque | Verificación |
+|---|---|
+| Cuatro recetas a medida (`studio`, `console`, `journal`, `store`) con fotografías acreditadas y una prueba de interacción por receta | `recipes.spec.js` 8/8; Lighthouse móvil 99–100 |
+| Sistema nuevo de la web: 92 páginas de escenario (una por fixture) con controles reales (tema, dirección, ancho, movimiento reducido, hoja plana), `Section`, `Code` plegable, `DeviceFrame`, portada con showreel y marcos de dispositivo, referencia, localización, estabilidad, changelog generado | 108 páginas en dos idiomas migradas; `site-*.spec.js` 37/37 en Chromium; `reference.test.js` en verde |
+| Revisión adversaria visual + revisor externo de la web: escenarios que cargan antes de entrar en vista y encogen, «Ver todo», tema por apretón de manos, cabecera opaca, arte sin patrones, versión derivada del paquete en el build, escenarios con el IIFE (168 → 28 peticiones) | capturas en tres anchos, dos temas y dos idiomas; Lighthouse móvil `/` 100, `/components/button` 99 |
+| Megamenú v2 (otra sesión, ADR-048) integrado en cabecera, página y receta `console` | contratos 228/228; `megamenu.spec.js` 36/36 × 3 motores |
+| Incidencia de proceso: dos sesiones escribiendo a la vez sobre `apps/docs` tras un reinicio; resuelta cediendo la integración y con avisos previos a `dist` y al gate | `docs/WORKFLOW.md` regla de `--output` por agente; ADR-049 |
+
+Gate de cierre de la ronda: GATE_R3.
+
 ## Entregas de v0.9
 
 | Bloque | Verificación |

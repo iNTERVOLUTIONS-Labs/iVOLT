@@ -299,13 +299,14 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
       // The stage driver (frames, controls, the showreel tabs) only travels with the pages that
       // have a stage: every other page stops paying for it.
       if (document.querySelector("[data-stage], [data-showreel]")) {
-        import("../scripts/stage.js").then((m) => { if (epoch === mine) teardown.push(m.mountStage(document)); });
+        // A page transition can cancel an in-flight chunk; that is not an error of the page.
+        import("../scripts/stage.js").then((m) => { if (epoch === mine) teardown.push(m.mountStage(document)); }).catch(() => {});
       }
 
       // The arc field: one canvas, home only, fine pointers only, never under reduced motion.
       const arcs = document.querySelector("[data-docs-arcs]");
       if (arcs && finePointer() && !reduced()) {
-        import("../scripts/arcs.js").then((m) => { if (epoch === mine && document.contains(arcs)) teardown.push(m.mountArcs(arcs)); });
+        import("../scripts/arcs.js").then((m) => { if (epoch === mine && document.contains(arcs)) teardown.push(m.mountArcs(arcs)); }).catch(() => {});
       }
 
       // Theme switch (persisted opt-in), both header and nav dialog groups.
