@@ -1,0 +1,6 @@
+{
+  "type": "static",
+  "build": "npm ci --include=dev && npm run build:docs",
+  "outdir": "apps/docs/dist",
+  "spa": false
+}

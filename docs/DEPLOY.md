@@ -11,7 +11,15 @@ npm ci                # Node >= 22, npm >= 10; instala sharp y lightningcss prec
 npm run build:docs    # construye el paquete si falta y después la web (Astro + Pagefind)
 ```
 
-Salida: `apps/docs/dist` (~43 MB con fotografías, capturas y descargas). Si no hay navegadores de Playwright en el servidor, `build-shots.mjs` avisa y conserva las capturas versionadas en `apps/docs/public/shots`; el build termina igual. Con Orbit: `A_OUTDIR='apps/docs/dist'` y los dos comandos anteriores como paso de build antes de publicar.
+Salida: `apps/docs/dist` (~43 MB con fotografías, capturas y descargas). Si no hay navegadores de Playwright en el servidor, `build-shots.mjs` avisa y conserva las capturas versionadas en `apps/docs/public/shots`; el build termina igual.
+
+**Con Orbit** ([iNTERVOLUTIONS-Labs/orbit](https://github.com/iNTERVOLUTIONS-Labs/orbit)) no hay que configurar nada: el repositorio trae `orbit.json` en la raíz y Orbit lo lee en lugar de adivinar. Sin él, la detección automática del monorepo lanzaba `npm run build` desde la raíz, que solo construye el paquete, y nginx apuntaba a una carpeta vacía.
+
+```json
+{ "type": "static", "build": "npm ci --include=dev && npm run build:docs", "outdir": "apps/docs/dist", "spa": false }
+```
+
+Lo que Orbit ya hace por su cuenta con ese descriptor: build desde la raíz de la release (Node 22 de su instalador, `NODE_ENV` sin definir, `CI=1`), `try_files $uri $uri/index.html $uri.html $uri/ =404` (URL limpias sin extensión), `error_page 404 /404.html`, caché inmutable de un año para `css js mjs woff2 svg png jpg webp`, HTTPS y despliegue atómico por symlink. Para una app ya creada antes del descriptor: `orbit deploy ivolt` vuelve a leer el `build`; si la app se creó con la detección antigua, recréala o corrige `A_BUILD`/`A_OUTDIR` en `/etc/orbit/apps/ivolt.conf` con los valores de arriba y ejecuta `orbit nginx-rebuild`.
 
 ## 1. URL pública
 
@@ -21,7 +29,7 @@ Salida: `apps/docs/dist` (~43 MB con fotografías, capturas y descargas). Si no 
 
 | Requisito | Motivo |
 |---|---|
-| URL limpias: `/getting-started` sirve `getting-started.html`, `/es` sirve `es.html`, sin barra final | el build usa `format: "file"` y `trailingSlash: "never"`; los enlaces internos no llevan extensión. Netlify, Cloudflare Pages, Vercel y GitHub Pages lo hacen solos; en nginx: `try_files $uri $uri.html $uri/index.html =404;` |
+| URL limpias: `/getting-started` sirve `getting-started.html`, `/es` sirve `es.html`, sin barra final | el build usa `format: "file"` y `trailingSlash: "never"`; los enlaces internos no llevan extensión. Orbit, Netlify, Cloudflare Pages, Vercel y GitHub Pages lo hacen solos; en nginx a mano: `try_files $uri $uri.html $uri/index.html =404;` |
 | `404.html` como página de error | Astro la genera en la raíz |
 | `Cache-Control: public, max-age=31536000, immutable` para `/_astro/*`, `/fonts/*`, `/photos/*`, `/shots/*`, `/examples/ivolt/*` | nombres con hash o activos que solo cambian con versión |
 | `Cache-Control: no-cache` (o `max-age=0, must-revalidate`) para `*.html`, `robots.txt`, `sitemap*.xml` | para que una publicación se vea al instante |
