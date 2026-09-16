@@ -2,6 +2,11 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 1.0.0-rc.3 (unreleased)
+
+### Fixed
+- `Card`: the media slot and the footer round their own corners (`--iv-card-inner-radius`), so a card wearing `iv-glow`, `iv-edge-glint` or `iv-edge-near`, which switch the card's clip off to show their ring, no longer shows square footer corners over the rounded frame.
+
 ## 1.0.0-rc.2 — 2026-09-16 (npm, tag `next`)
 
 ### Changed

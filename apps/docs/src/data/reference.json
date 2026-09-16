@@ -987,6 +987,7 @@
       "--iv-button-sheen"
     ],
     "components/card": [
+      "--iv-card-inner-radius",
       "--iv-card-shadow",
       "--iv-card-shadow-hover"
     ],

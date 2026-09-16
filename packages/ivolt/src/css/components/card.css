@@ -26,6 +26,10 @@
     var(--iv-card-shadow, var(--iv-shadow-ambient));
   transition: box-shadow var(--iv-motion-base) var(--iv-ease-out);
   overflow: hidden;
+  /* Inner radius for the first and last slots: they round their own corners so
+     they never depend on this clip, which the edge effects (`iv-glow`,
+     `iv-edge-glint`, `iv-edge-near`) switch off to keep their ring visible. */
+  --iv-card-inner-radius: calc(var(--iv-card-radius, var(--iv-radius-lg)) - var(--iv-border-width));
 }
 
 /* A pointer over the card lifts it one step; authors retune or cancel the
@@ -59,6 +63,11 @@
     color-mix(in oklab, var(--iv-color-info) 12%, var(--iv-color-surface))
   );
   overflow: hidden;
+}
+
+.iv-card__media:first-child {
+  border-start-start-radius: var(--iv-card-inner-radius);
+  border-start-end-radius: var(--iv-card-inner-radius);
 }
 
 .iv-card__media img,
@@ -98,6 +107,11 @@
      a second visible box (API_CONTRACT §8.15). */
   background-color: var(--iv-color-hover-surface);
   border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-card__footer:last-child {
+  border-end-start-radius: var(--iv-card-inner-radius);
+  border-end-end-radius: var(--iv-card-inner-radius);
 }
 
 /* Print: the lift is ink that carries no information. */
