@@ -155,6 +155,14 @@
       display: inline-flex;
     }
 
+    /* `ivolt.min.css` declares the reset layer but does not fill it: the reset is an opt-in file
+       of the package ("the optional reset is not included"), so a page that links the stylesheet
+       alone keeps the browser's own 8 px body margin. On a full-bleed cover that margin is a pale
+       frame around the whole page. One line, here, rather than a second request. */
+    body {
+      margin: 0;
+    }
+
     /* The drawer opener needs JavaScript and only exists below lg, where the drawer is modal.
        It carries its own rule because the js-only rule outranks the utility class. */
     [data-iv-js] .cn-drawer-open {
@@ -297,8 +305,11 @@
             </ul>
           </nav>
         </div>
-        <footer class="iv-drawer__footer">
-          <a class="iv-button iv-button--ghost iv-button--sm iv-u-lg-hidden" href="#overview" data-iv-close>Close</a>
+        <!-- From lg the drawer is a static panel in the page and has nothing to close, so the
+             whole footer steps aside instead of leaving its padding behind as an empty strip
+             under the section list. -->
+        <footer class="iv-drawer__footer iv-u-lg-hidden">
+          <a class="iv-button iv-button--ghost iv-button--sm" href="#overview" data-iv-close>Close</a>
         </footer>
       </div>
     </dialog>
@@ -608,8 +619,13 @@
           <div class="iv-field iv-datepicker" data-iv-component="datepicker" data-iv-native="off">
             <label class="iv-label" for="cn-date">Start date <span class="iv-label__required" aria-hidden="true">*</span></label>
             <input class="iv-input" id="cn-date" name="date" type="date" min="2026-09-16" max="2026-12-31" required
+              aria-describedby="cn-date-help"
               data-iv-error-value-missing="Pick the day the window should open."
               data-iv-error-range-underflow="Pick a day from 16 September 2026 onwards.">
+            <!-- The prose on this page writes dates as "16 September 2026"; a native date field
+                 writes them in the format of the browser's own locale, which is not something a
+                 page can promise. The field says so rather than pretending they match. -->
+            <p class="iv-field__help" id="cn-date-help">Between 16 September 2026 and 31 December 2026. The field shows and accepts the date in your browser's own format.</p>
           </div>
           <div class="iv-field">
             <label class="iv-label" for="cn-crew">Crew lead <span class="iv-label__required" aria-hidden="true">*</span></label>

@@ -45,6 +45,49 @@
       padding-block: clamp(3rem, 8vw, 6.5rem);
     }
 
+    /* `ivolt.min.css` declares the reset layer but does not fill it: the reset is an opt-in file
+       of the package ("the optional reset is not included"), so a page that links the stylesheet
+       alone keeps the browser's own 8 px body margin. On a full-bleed cover that margin is a pale
+       frame around the whole page. One line, here, rather than a second request. */
+    body {
+      margin: 0;
+    }
+
+    /* The plates. The family flows its items through CSS columns sized by a minimum width, and
+       at this page's measure that resolved to five columns for five pictures: one picture per
+       column, in a row, which is not a masonry at all. The count is stated instead — one column
+       on a phone, two from sm, three from lg — so the five plates actually flow down the
+       columns and keep their own heights. The gap is set on both axes: the family only spaces
+       the columns, and the vertical space came from the item's own end margin. */
+    .jr-plates {
+      --iv-gallery-gap: clamp(1rem, 2.4vw, 1.75rem);
+
+      columns: 1;
+      column-gap: var(--iv-gallery-gap);
+    }
+
+    @media (min-width: 40em) {
+      .jr-plates { columns: 2; }
+    }
+
+    @media (min-width: 64em) {
+      .jr-plates { columns: 3; }
+    }
+
+    .jr-plates .iv-gallery__item {
+      display: block;
+      break-inside: avoid;
+      margin-block-end: var(--iv-gallery-gap);
+    }
+
+    /* A column box may still be broken by a browser that ignores break-inside on a flow root;
+       the picture is told not to break either, so a plate is never cut in half. */
+    .jr-plates .iv-gallery__img {
+      break-inside: avoid;
+      inline-size: 100%;
+      block-size: auto;
+    }
+
     .jr-masthead {
       display: flex;
       flex-wrap: wrap;
@@ -390,8 +433,8 @@
 
     <section class="jr-wide jr-section" id="plates" aria-labelledby="plates-title">
       <h2 class="iv-u-m-0" id="plates-title" style="font-size: clamp(1.75rem, 5vw, 3.5rem); line-height: 1.04; letter-spacing: -0.028em">Plates II–VI</h2>
-      <p class="iv-u-mt-5 iv-u-mb-10 iv-u-text-muted" style="max-inline-size: 52ch">Five photographs, flowed through CSS columns so each keeps its own height. Every caption says what is in the frame and who made it.</p>
-      <div class="iv-gallery iv-gallery--masonry" data-iv-component="lightbox" data-iv-gallery-label="Plates of this issue, image viewer">
+      <p class="iv-u-mt-5 iv-u-mb-10 iv-u-text-muted" style="max-inline-size: 52ch">Five photographs in three columns, flowed so each keeps its own height. Every caption says what is in the frame and who made it.</p>
+      <div class="iv-gallery iv-gallery--masonry jr-plates" data-iv-component="lightbox" data-iv-gallery-label="Plates of this issue, image viewer">
         <a class="iv-gallery__item" href="photos/p1045.jpg" data-iv-caption="Plate II — cloud on the ridge. Photograph by Aleksandra Boguslawska on Unsplash.">
           <img class="iv-gallery__img" src="photos/p1045.jpg" alt="A steep rocky mountain ridge half swallowed by low white cloud" width="800" height="1000" loading="lazy">
         </a>

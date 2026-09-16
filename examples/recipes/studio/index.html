@@ -49,6 +49,43 @@
       color: var(--iv-color-text);
     }
 
+    /* `ivolt.min.css` declares the reset layer but does not fill it: the reset is an opt-in file
+       of the package ("the optional reset is not included"), so a page that links the stylesheet
+       alone keeps the browser's own 8 px body margin. On a full-bleed cover that margin is a pale
+       frame around the whole page. One line, here, rather than a second request. */
+    body {
+      margin: 0;
+    }
+
+    /* The transparent bar hangs over a photograph, and a photograph is never a background you
+       can rely on: over the white sky of this cover the white links measured 2.2:1. The bar
+       therefore paints its own veil, which fades out the moment the bar condenses and takes a
+       solid plate of its own. It sits behind the content of the bar and catches no clicks. */
+    .st-bar::before {
+      content: "";
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline: 0;
+      block-size: 9rem;
+      z-index: -1;
+      /* Held at full strength for the height of the bar and only then faded out: a gradient that
+         starts fading at the top is weakest exactly where the links are (0.40 at their baseline,
+         2.75:1 against the white sky of this cover). Over the bar the veil is a constant 0.55,
+         which is 4.50:1 for white ink even if the photograph behind it were pure white. */
+      background-image: linear-gradient(to bottom, rgb(4 7 15 / 0.55) 0, rgb(4 7 15 / 0.55) 4rem, transparent 9rem);
+      pointer-events: none;
+      transition: opacity var(--iv-motion-base) var(--iv-ease-out);
+    }
+
+    .st-bar[data-iv-condensed]::before,
+    .st-bar[data-iv-open]::before {
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .st-bar::before { transition: none; }
+    }
+
     /* The cover slides under the transparent bar: the header is 4rem tall. */
     .st-cover {
       margin-block-start: -4rem;
@@ -85,16 +122,22 @@
       overflow-wrap: break-word;
     }
 
-    /* The honesty line is a note, not a headline: small mono, muted, sentence case.
-       It keeps its own class instead of the hero kicker, which is display-sized. */
+    /* The honesty line is a note, not a headline: small mono, sentence case. It carries its own
+       plate, because the cover behind it is a photograph of a white sky: as 82 % white type it
+       measured 2.9:1 there. On the plate it is white on a fixed ink and no longer depends on
+       what the photograph happens to be doing behind that corner. */
     .st-disclosure {
+      display: inline-block;
       margin: 0 0 var(--iv-space-5);
       max-inline-size: 52ch;
+      padding: 0.35rem 0.8rem;
       font-family: var(--iv-font-mono);
       font-size: var(--iv-text-xs);
       letter-spacing: 0.06em;
       line-height: 1.5;
-      color: color-mix(in srgb, currentColor 82%, transparent);
+      color: var(--iv-palette-neutral-0);
+      background-color: rgb(4 7 15 / 0.62);
+      border-radius: var(--iv-radius-full);
     }
 
     .st-lede {
@@ -233,7 +276,7 @@
 <div data-iv-component="scroll-motion">
   <div class="iv-scroll-progress" aria-hidden="true"></div>
 
-  <header class="iv-navbar iv-navbar--transparent" data-iv-component="navbar" data-iv-sticky="true">
+  <header class="iv-navbar iv-navbar--transparent st-bar" data-iv-component="navbar" data-iv-sticky="true">
     <div class="iv-navbar__inner">
       <a class="iv-navbar__brand" href="#cover" aria-label="Meridian Field, top of the page">
         <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">

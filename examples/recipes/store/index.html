@@ -83,6 +83,14 @@
       }
     }
 
+    /* `ivolt.min.css` declares the reset layer but does not fill it: the reset is an opt-in file
+       of the package ("the optional reset is not included"), so a page that links the stylesheet
+       alone keeps the browser's own 8 px body margin. On a full-bleed cover that margin is a pale
+       frame around the whole page. One line, here, rather than a second request. */
+    body {
+      margin: 0;
+    }
+
     /* The honesty line is a note, not a headline: small mono, muted, sentence case. */
     .sr-eyebrow {
       margin: 0 0 var(--iv-space-3);
@@ -110,6 +118,12 @@
        has room under the controls instead of sharing the line with them. */
     .sr-carousel {
       --iv-carousel-aspect: 16 / 10;
+      /* The arrows sit on the photograph, and the glass the package gives them defaults to the
+         lighter of the two tints: over a bright frame the glyph measured under 3:1. The strong
+         tint is a token of the same family, rescoped here, so the control keeps its own look and
+         its own hover while the glyph reads at 10.9:1 on light and 8.1:1 on dark whatever the
+         photograph is doing behind it. */
+      --iv-glass-bg: var(--iv-glass-bg-strong);
     }
 
     @media (max-width: 47.99em) {
@@ -528,7 +542,7 @@
   </section>
 </main>
 
-<dialog class="iv-drawer" id="sr-cart" data-iv-component="drawer" data-iv-side="end" aria-label="Sample basket">
+<dialog class="iv-drawer iv-drawer--end" id="sr-cart" data-iv-component="drawer" data-iv-placement="end" data-iv-static-from="none" aria-label="Sample basket">
   <div class="iv-drawer__panel">
     <header class="iv-drawer__header">
       <h2 class="iv-drawer__title">Sample basket</h2>

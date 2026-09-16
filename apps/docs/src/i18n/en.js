@@ -76,6 +76,8 @@ export const t = {
   stageTabHtml: "HTML",
   stageTabCss: "CSS locals",
   stageTabJs: "JS options",
+  tools: "Tools",
+  stageRender: "Rendering",
   stageHint: "Change the theme, the direction, the width or the motion of the example itself.",
 };
 export const nav = [

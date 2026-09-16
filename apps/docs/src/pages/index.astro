@@ -62,7 +62,7 @@ const recipes = [
     <div class="docs-orbs" aria-hidden="true"><span class="docs-orb docs-orb--a"></span><span class="docs-orb docs-orb--b"></span></div>
     <Arcs />
     <div class="docs-hero__inner">
-      <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} {stage} · MIT · <b>zero runtime dependencies</b></p>
+      <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} {stage} · MIT<span class="docs-hero__kicker-tail"> · <b>zero runtime dependencies</b></span></p>
       <h1 class="docs-hero__title" id="hero-title">
         <span class="docs-mask" style="--i:0"><span>The interface</span></span>
         <span class="docs-mask" style="--i:1"><span>starts <em>here</em><span class="docs-dot">.</span></span></span>
@@ -148,10 +148,10 @@ const recipes = [
       <span class="docs-num">04 — Recipes</span>
       <h2 class="docs-why__title" id="recipes-title">Four complete pages, one package.</h2>
     </div>
-    <div class="docs-recipes" style="margin-block-start:clamp(3rem,7vh,5rem)">
+    <div class="docs-recipes" style="margin-block-start:var(--docs-rhythm-md)">
       {recipes.map((r, i) => (
         <a class="docs-recipe docs-reveal" href={`/examples/${r.slug}/index.html`}>
-          <div class="docs-recipe__frame iv-edge-near"><DeviceFrame slug={r.slug} title={r.title} device="desktop" /></div>
+          <div class="docs-recipe__frame iv-edge-near"><DeviceFrame slug={r.slug} title={r.title} device="desktop" eager={i === 0} /></div>
           <div class="docs-recipe__body">
             <h3>{r.title}</h3>
             <p>{r.text}</p>

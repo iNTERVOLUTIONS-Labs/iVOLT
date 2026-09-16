@@ -62,9 +62,12 @@ test.describe("Live stage", () => {
     const narrow = await stage.locator("iframe").evaluate((el) => el.getBoundingClientRect().width);
     expect(narrow).toBeLessThan(wide);
 
-    await stage.locator("[data-stage-motion]").check();
+    // The two rendering switches are segmented buttons with aria-pressed, like the groups beside them.
+    await stage.locator("button[data-stage-motion]").click();
+    await expect(stage.locator("button[data-stage-motion]")).toHaveAttribute("aria-pressed", "true");
     await expect(frame.locator("html")).toHaveAttribute("data-stage-motion", "reduce");
-    await stage.locator("[data-stage-flat]").check();
+    await stage.locator("button[data-stage-flat]").click();
+    await expect(stage.locator("button[data-stage-flat]")).toHaveAttribute("aria-pressed", "true");
     await expect(frame.locator("#stage-sheet")).toHaveAttribute("href", /ivolt\.flat\.min\.css/);
   });
 

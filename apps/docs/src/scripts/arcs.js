@@ -48,7 +48,10 @@ export function mountArcs(host) {
       halo: cs.getPropertyValue("--docs-arc-halo").trim() || "#73dfff",
       // additive light reads as light on navy; on paper the same blend washes out, so ink is drawn normally
       blend: cs.getPropertyValue("--docs-arc-blend").trim() === "ink" ? "source-over" : "lighter",
-      gain: cs.getPropertyValue("--docs-arc-blend").trim() === "ink" ? 1.6 : 1,
+      // Opacity and stroke weight are tokens, not constants: on paper the field is ink and needs
+      // both raised, which is a decision of the light theme rather than of this loop.
+      gain: parseFloat(cs.getPropertyValue("--docs-arc-gain")) || 1,
+      weight: parseFloat(cs.getPropertyValue("--docs-arc-weight")) || 1,
     };
   };
   let paint = colours();
@@ -99,9 +102,9 @@ export function mountArcs(host) {
   }
 
   function stroke(pts, width, colour, alpha) {
-    ctx.globalAlpha = alpha;
+    ctx.globalAlpha = Math.min(alpha, 1);
     ctx.strokeStyle = colour;
-    ctx.lineWidth = width;
+    ctx.lineWidth = width * paint.weight;
     ctx.beginPath();
     ctx.moveTo(pts[0].x, pts[0].y);
     for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);

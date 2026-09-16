@@ -76,6 +76,8 @@ export const t = {
   stageTabHtml: "HTML",
   stageTabCss: "Locales CSS",
   stageTabJs: "Opciones JS",
+  tools: "Herramientas",
+  stageRender: "Representación",
   stageHint: "Cambia el tema, la dirección, el ancho o el movimiento del propio ejemplo.",
 };
 // Nombre en español de cada familia de componentes, en el orden de la navegación. Lo usan

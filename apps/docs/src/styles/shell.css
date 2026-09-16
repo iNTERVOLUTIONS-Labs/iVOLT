@@ -1,5 +1,15 @@
 /* iVOLT docs — shell: voltage meter, header, navigation, sidebar, table of contents, footer. */
 
+/* ---------- the vertical rhythm of a composed page ----------
+   Three steps, declared once, so a band on the home and a section of an interior page breathe
+   the same way. The reading rhythm of running prose (--docs-flow/block/sub/section) is a
+   different scale and stays in tokens-site.css. */
+.docs {
+  --docs-rhythm-sm: clamp(1.75rem, 4vh, 2.75rem);
+  --docs-rhythm-md: clamp(3rem, 8vh, 6rem);
+  --docs-rhythm-lg: clamp(4.5rem, 10vh, 8.5rem);
+}
+
 /* ---------- voltage meter: scroll progress with a live tip ---------- */
 .docs-meter { position: fixed; inset-block-start: 0; inset-inline: 0; block-size: 2px; z-index: 60; pointer-events: none; background: var(--docs-hair); }
 .docs-meter__fill { position: absolute; inset: 0; background: linear-gradient(90deg, var(--iv-color-primary), var(--iv-color-accent)); transform-origin: left; transform: scaleX(var(--docs-scroll, 0)); }
@@ -19,8 +29,18 @@
 
 /* ---------- skip + header ---------- */
 .docs-skip { position: absolute; inset-block-start: var(--iv-space-2); inset-inline-start: var(--iv-space-2); z-index: 500; }
-.docs-header { position: sticky; inset-block-start: 0; z-index: 50; background: var(--docs-glass); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
-.docs-header::after { content: ""; position: absolute; inset-inline: 0; inset-block-end: 0; block-size: 1px; background: linear-gradient(90deg, transparent, var(--docs-line) 18%, var(--docs-line) 82%, transparent); }
+/* The megamenu places its page scrim inside the bar (`.iv-megamenu__overlay`, fixed, at
+   --iv-z-dropdown minus one) and lifts only its own list above it, so with an open panel the
+   wordmark, the search button and the theme switch were left reading through the dim while the
+   navigation beside them was not. The glass is therefore its own layer and every other child of
+   the bar is raised to the same step as the list: the whole header is above the scrim, and the
+   page below it is the only thing dimmed. */
+.docs-header { position: sticky; inset-block-start: 0; z-index: 50; background: transparent; }
+.docs-header::before { content: ""; position: absolute; inset: 0; z-index: var(--iv-z-dropdown); background: var(--docs-glass); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); pointer-events: none; }
+.docs-header::after { content: ""; position: absolute; inset-inline: 0; inset-block-end: 0; z-index: var(--iv-z-dropdown); block-size: 1px; background: linear-gradient(90deg, transparent, var(--docs-line) 18%, var(--docs-line) 82%, transparent); }
+/* The nav is excluded on purpose: it is the box the scrim lives in, and raising it would take
+   the scrim with it. Its own list is already at this step. */
+.docs-header__inner > :not(.docs-nav) { position: relative; z-index: var(--iv-z-dropdown); }
 .docs-header__inner { display: flex; align-items: center; gap: var(--iv-space-2); min-height: 4rem; }
 @media (min-width: 90em) { .docs-header__inner { gap: var(--iv-space-4); } }
 .docs-brand { color: var(--iv-color-text); display: inline-flex; }
@@ -44,7 +64,15 @@
 .docs-theme .iv-button { --iv-button-radius: var(--iv-radius-full); }
 .docs-theme [aria-pressed="true"] { --iv-button-bg: var(--iv-color-primary); --iv-button-fg: var(--iv-color-on-primary); }
 .docs-nav-dialog .docs-theme { display: inline-flex; }
+/* The switch is the first thing in the drawer, not the last: below it come fifty links, and a
+   control reached by scrolling past all of them is a control nobody finds. */
+.docs-nav-dialog__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--iv-space-3); padding-block-end: var(--iv-space-4); margin-block-end: var(--iv-space-2); border-block-end: 1px solid var(--iv-color-border); }
+.docs-nav-dialog__body { display: block; }
+/* The menu is a system button like the one beside it: small ghost, a glyph, and the word only
+   where there is room for it. */
 .docs-menu-toggle { margin-inline-start: 0; }
+.docs-menu-text { display: none; }
+@media (min-width: 48em) { .docs-menu-text { display: inline; } }
 @media (min-width: 64em) {
   .docs-theme { display: flex; }
   .docs-kbd { display: inline-block; }
@@ -80,7 +108,9 @@
     max-block-size: calc(100dvh - 7.5rem); overflow-y: auto; overscroll-behavior: contain;
     padding-inline-end: var(--iv-space-3); padding-block-end: var(--iv-space-6);
     /* the list is long: fade the cut edge so it reads as "there is more below" */
-    mask-image: linear-gradient(180deg, #000 0, #000 calc(100% - 3rem), transparent 100%);
+    /* A short fade: at 3rem the last link of a group was erased from its baseline up and read
+       as disabled rather than as "there is more below". */
+    mask-image: linear-gradient(180deg, #000 0, #000 calc(100% - 1.25rem), transparent 100%);
     scrollbar-width: thin;
   }
 }
@@ -208,34 +238,16 @@
 /* A megamenu demonstrated inside a fixture is anchored to its own item, not to the page:
    clamp it to the preview so wide panels never widen the document. */
 .docs-fixture__preview .iv-megamenu__panel { --iv-megamenu-width: min(42rem, 100% - 1rem); max-inline-size: calc(100vw - 2rem); }
-/* The picked components are drawn, not photographed: the art of a card is a gradient that
-   suggests the component, painted over the surface the component itself provides. */
-.docs-mm__art { background-color: var(--iv-color-surface); background-image: radial-gradient(120% 90% at 20% 10%, var(--iv-glow-primary), transparent 60%), radial-gradient(80% 80% at 90% 90%, var(--iv-glow-secondary), transparent 65%); }
-.docs-mm__art--carousel { background-image: linear-gradient(120deg, transparent 40%, var(--iv-glow-primary) 41%, transparent 60%), radial-gradient(80% 80% at 90% 90%, var(--iv-glow-secondary), transparent 65%); }
-.docs-mm__art--hero { background-image: linear-gradient(0deg, var(--iv-color-bg), transparent 70%), radial-gradient(120% 90% at 50% 0%, var(--iv-glow-primary), transparent 60%); }
-/* Drawn, not ruled: a bar and the panel that drops from it. A repeating gradient read as lined
-   paper, which ADR-028 does not allow — these are two placed shapes and a glow, nothing repeats. */
-.docs-mm__art--megamenu {
-  background-image:
-    linear-gradient(100deg, var(--iv-color-primary-subtle), transparent 90%),
-    linear-gradient(160deg, var(--iv-color-primary-subtle), transparent 72%),
-    radial-gradient(80% 80% at 10% 100%, var(--iv-glow-secondary), transparent 65%);
-  background-size: 64% 8%, 76% 44%, auto;
-  background-position: 10% 16%, 10% 64%, 0 0;
-  background-repeat: no-repeat;
-}
-.docs-mm__art--card { background-image: linear-gradient(135deg, var(--iv-color-primary-subtle) 0 45%, transparent 45%), radial-gradient(90% 90% at 80% 20%, var(--iv-glow-primary), transparent 60%); }
-.docs-mm__art--timeline { background-image: linear-gradient(90deg, transparent 0 28%, var(--iv-color-primary-border) 28% 31%, transparent 31%), radial-gradient(70% 70% at 30% 80%, var(--iv-glow-secondary), transparent 60%); }
-/* A head and two rules of unequal length: a table, without the crossing bands of graph paper. */
-.docs-mm__art--datatable {
-  background-image:
-    linear-gradient(90deg, var(--iv-color-primary-subtle), transparent 88%),
-    linear-gradient(90deg, var(--iv-color-primary-border), var(--iv-color-primary-border)),
-    linear-gradient(90deg, var(--iv-color-primary-border), transparent);
-  background-size: 78% 13%, 78% 2px, 54% 2px;
-  background-position: 11% 24%, 11% 56%, 11% 78%;
-  background-repeat: no-repeat;
-}
+/* The picked components are drawn: six line drawings of the thing itself, stroked in the brand
+   colour over the surface the component already provides. The blurred gradient blobs they
+   replace said nothing about the component and read as smudges at card size. */
+.docs-mm__art { color: var(--iv-color-primary); background-color: var(--iv-color-surface); }
+/* The package paints a dark scrim over the bottom 55 % of the art so a photograph can carry the
+   rank badge. A drawing does not need it, and the badge has a filled pill of its own. */
+.docs-mm__art::before { background-image: none; }
+.docs-mm__draw { display: block; inline-size: 100%; block-size: 100%; object-fit: contain; opacity: .9; }
+.iv-megamenu__card:hover .docs-mm__draw, .iv-megamenu__card:focus-visible .docs-mm__draw { opacity: 1; }
+
 /* Inside the header the panel is wide but the chips must never push it wider, and the index of
    a family needs air under the three picked cards. */
 .docs-mm .iv-megamenu__cloud { max-inline-size: 100%; margin-block-start: var(--iv-space-5); }

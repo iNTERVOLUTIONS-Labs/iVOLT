@@ -40,9 +40,18 @@ const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { 
 const sitemap = nav.map((g) => ({ group: g.group, items: g.items, wide: g.items.length > 12 }));
 // The components group is the long one: split it by family so the eye lands on the right half
 // before it starts reading names, and keep the kind beside every item.
+// The tools are their own file at the end of Foundations: as the thirteenth item of a
+// thirteen-item list, "Theme builder" sat under the bottom of the rail's fade mask and read as
+// a disabled entry. Under its own label it is plainly a link like any other.
+const toolHrefs = new Set([`${base}/foundations/theme-builder`]);
 const navSections = nav.map((g) => {
   const kinds = g.items.map((i) => kindOf(i.href));
-  if (!kinds.length || !kinds.every(Boolean)) return { group: g.group, blocks: [{ items: g.items }] };
+  if (!kinds.length || !kinds.every(Boolean)) {
+    const tools = g.items.filter((i) => toolHrefs.has(i.href));
+    const rest = g.items.filter((i) => !toolHrefs.has(i.href));
+    if (tools.length && rest.length) return { group: g.group, blocks: [{ items: rest }, { sub: t.tools, items: tools }] };
+    return { group: g.group, blocks: [{ items: g.items }] };
+  }
   return {
     group: g.group,
     blocks: [["css", t.kindCss], ["js", t.kindJs]].map(([kind, label]) => ({ sub: label, items: g.items.filter((i) => kindOf(i.href) === kind) })),
@@ -64,6 +73,17 @@ const directory = [
   { label: t.mmFoundations, count: (nav.find((g) => g.items.some((i) => i.href.includes("/foundations/")))?.items.length) || 0, href: `${base}/foundations/tokens-and-themes` },
   { label: t.mmReference, count: referenceCount, href: `${base}/reference` },
 ];
+// The art of a picked card is a drawing of the component, stroked in the current colour (the
+// docs sheet sets it to --iv-color-primary). Six line drawings, no blurred blobs and no ruled
+// paper: every stroke is a placed shape and nothing repeats (ADR-028).
+const mmArt = {
+  card: '<path d="M22 22h116v76H22z" rx="8"/><path d="M22 22h116v34H22z"/><path d="M34 70h64M34 84h40"/>',
+  hero: '<path d="M14 18h132v84H14z"/><path d="M14 74c22-16 40-8 58 2s38 12 74-10"/><path d="M34 40h62M34 54h34"/><circle cx="118" cy="40" r="9"/>',
+  timeline: '<path d="M34 16v88"/><circle cx="34" cy="30" r="6"/><circle cx="34" cy="60" r="6"/><circle cx="34" cy="90" r="6"/><path d="M50 30h72M50 60h52M50 90h64"/>',
+  carousel: '<path d="M46 26h68v68H46z"/><path d="M18 40h18v40H18zM124 40h18v40h-18z"/><path d="M62 108h6M77 108h6M92 108h6"/>',
+  datatable: '<path d="M18 22h124"/><path d="M18 46h124M18 68h124M18 90h124"/><path d="M18 34h44M84 34h30"/><path d="m126 30 5 6 5-6"/>',
+  megamenu: '<path d="M14 20h132"/><path d="M26 30h20M58 30h22M92 30h18"/><path d="M40 46h92v56H40z"/><path d="M52 58h24v20H52zM84 58h24v20H84zM52 88h56"/>',
+};
 const mmTabs = [
   { kind: "css", label: t.mmContent, cloud: t.mmCloudCss, picks: ["card", "hero", "timeline"].map(pick) },
   { kind: "js", label: t.mmInteractive, cloud: t.mmCloudJs, picks: ["carousel", "datatable", "megamenu"].map(pick) },
@@ -152,7 +172,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
                             {tab.picks.map((p, n) => (
                               <li>
                                 <a class="iv-megamenu__card" href={p.href}>
-                                  <span class={`iv-megamenu__art docs-mm__art docs-mm__art--${p.slug}`}><span class="iv-megamenu__rank" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
+                                  <span class={`iv-megamenu__art docs-mm__art docs-mm__art--${p.slug}`}><svg class="docs-mm__draw" viewBox="0 0 160 120" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" set:html={mmArt[p.slug]}></svg><span class="iv-megamenu__rank" aria-hidden="true">{String(n + 1).padStart(2, "0")}</span><span class="iv-megamenu__arrow" aria-hidden="true"></span></span>
                                   <span class="iv-megamenu__name">{p.label}</span>
                                   <span class="iv-megamenu__meta">{p.meta}</span>
                                 </a>
@@ -185,24 +205,26 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
         <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="dark" aria-pressed="false">{t.dark}</button>
         <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="system" aria-pressed="false">{t.system}</button>
       </div>
-      <button class="iv-button iv-button--ghost iv-button--sm docs-menu-toggle" type="button" data-iv-open="docs-nav">{t.menu}</button>
+      <button class="iv-button iv-button--ghost iv-button--sm docs-menu-toggle" type="button" data-iv-open="docs-nav" aria-label={t.menu}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><span class="docs-menu-text">{t.menu}</span></button>
     </div>
   </header>
 
   <dialog class="iv-dialog docs-nav-dialog" id="docs-nav" data-iv-component="dialog" aria-label={t.docsNav} data-pagefind-ignore>
     <div class="iv-dialog__panel">
       <header class="iv-dialog__header"><h2 class="iv-dialog__title">{t.navigate}</h2><button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label={t.close}>×</button></header>
-      <nav class="iv-dialog__body" aria-label={t.docsNav}>
-        {navSections.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3>{g.blocks.map((b) => <Fragment>{b.sub && <p class="docs-sidebar__sub">{b.sub}</p>}<ul class="docs-sidebar__list">{b.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></Fragment>)}</section>)}
-      </nav>
-      <footer class="iv-dialog__footer iv-u-justify-start">
-        <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>
+      <div class="iv-dialog__body docs-nav-dialog__body">
+      <div class="docs-nav-dialog__top">
         <div class="docs-theme" role="group" aria-label={t.theme}>
           <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="light" aria-pressed="false">{t.light}</button>
           <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="dark" aria-pressed="false">{t.dark}</button>
           <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="system" aria-pressed="false">{t.system}</button>
         </div>
-      </footer>
+        <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>
+      </div>
+      <nav aria-label={t.docsNav}>
+        {navSections.map((g) => <section class="docs-sidebar__group"><h3 class="docs-sidebar__heading">{g.group}</h3>{g.blocks.map((b) => <Fragment>{b.sub && <p class="docs-sidebar__sub">{b.sub}</p>}<ul class="docs-sidebar__list">{b.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></Fragment>)}</section>)}
+      </nav>
+      </div>
     </div>
   </dialog>
 
@@ -384,6 +406,10 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
         else {
           const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -10% 0px", threshold: 0.1 });
           reveals.forEach((el) => io.observe(el));
+          // A capture that never scrolls (a full-page screenshot, print to PDF, a reader view)
+          // never fires the observer, and the page below the fold came out blank. The reveal is
+          // an entrance, not a gate: whatever is still hidden after three seconds is shown.
+          setTimeout(() => { io.disconnect(); reveals.forEach((el) => el.classList.add("is-in")); }, 3000);
         }
       }
 

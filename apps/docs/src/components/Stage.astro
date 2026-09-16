@@ -63,9 +63,15 @@ const widths = [
     <div class="docs-stage__seg" role="group" aria-label={t.stageWidth}>
       {widths.map((w) => <button type="button" data-stage-set-width={w.value} aria-pressed={String(w.value === initialWidth)}><span class="iv-u-sr-only">{w.label}</span><span aria-hidden="true">{w.hint}</span></button>)}
     </div>
+    <!-- The two rendering switches are a third segmented group, not two native tick boxes: at
+         the size the bar uses, a 15 px box beside 12 px mono type was the only unstyled control
+         on the page and read as debug furniture. Same shape and same state model as the theme,
+         direction and width groups beside them. -->
+    <div class="docs-stage__seg docs-stage__seg--render" role="group" aria-label={t.stageRender}>
+      <button type="button" data-stage-motion aria-pressed="false">{t.stageMotion}</button>
+      <button type="button" data-stage-flat aria-pressed="false">{t.stageFlat}</button>
+    </div>
     <div class="docs-stage__toggles">
-      <label class="docs-stage__toggle"><input type="checkbox" data-stage-motion> <span>{t.stageMotion}</span></label>
-      <label class="docs-stage__toggle"><input type="checkbox" data-stage-flat> <span>{t.stageFlat}</span></label>
       <!-- Only drawn once the frame reports that it is taller than its cap: a stage that fits
            needs no button, and a cut example must never be cut in silence. -->
       <button class="docs-stage__all" type="button" data-stage-all aria-pressed="false" data-label-all={t.stageShowAll} data-label-less={t.stageShowLess} hidden>{t.stageShowAll}</button>

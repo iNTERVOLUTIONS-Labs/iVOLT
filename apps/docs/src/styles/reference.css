@@ -13,3 +13,15 @@
 @media (max-width: 40rem) {
   .docs-prose .docs-ref-search { position: static; box-shadow: none; }
 }
+
+/* One rail for consecutive tables. Twenty-four sheet tables and thirty-three component tables
+   follow one another down the page; with automatic layout each sized its first column to its own
+   longest name, so the eye had to find the second column again at every table. From the width
+   where the page is read as a whole, tables of the same kind share their measures. The widths are
+   hints, not `table-layout: fixed`: a name longer than its rail still takes the room it needs
+   instead of spilling out of its cell. */
+@media (min-width: 80em) {
+  .docs-prose { --docs-ref-name: 26rem; --docs-ref-opt: 14rem; }
+  .docs-ref-sheet--names .docs-scroller > table th:first-child { inline-size: var(--docs-ref-name); }
+  .docs-ref-sheet--options .docs-scroller > table th:nth-child(-n+2) { inline-size: var(--docs-ref-opt); }
+}

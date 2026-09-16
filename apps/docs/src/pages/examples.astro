@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
 import DeviceFrame from "../components/DeviceFrame.astro";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -37,7 +38,8 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
 
     <p class="docs-meta"><strong>Built from:</strong> <code>examples/recipes/&lt;name&gt;/index.html</code>. <strong>Assets:</strong> <code>examples/recipes/ivolt/</code>, written by <code>node scripts/sync-examples.mjs</code>. The screenshots below are taken from the real pages during the site build.</p>
 
-    <h2>The recipes</h2>
+    <Section title="The recipes" id="recipes" num={1}>
+
     <div class="docs-gallery">
       {recipes.map((r) => (
         <section class="docs-gallery__item">
@@ -59,8 +61,9 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
         </section>
       ))}
     </div>
+    </Section>
+<Section title="Downloads" id="downloads" num={2}>
 
-    <h2 id="downloads">Downloads</h2>
     <p>Every archive is generated during the site build from the same sources as the pages above, so it always matches this version. Each recipe zip carries its own copy of the <code>ivolt/</code> assets: unzip it and open <code>index.html</code>.</p>
     <div class="docs-downloads">
       <div class="docs-download">
@@ -73,12 +76,15 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
       </div>
     </div>
     <p class="iv-u-text-sm iv-u-text-muted">Sizes and file lists are listed in <a href="/downloads/manifest.json">manifest.json</a>.</p>
+    </Section>
+<Section title="Copy a recipe into your project" id="copy-a-recipe" num={3}>
 
-    <h2>Copy a recipe into your project</h2>
     <p>Each recipe lives in <code>examples/recipes/&lt;name&gt;/index.html</code> in the repository. Copy that folder together with <code>examples/recipes/ivolt/</code> and open the page. The plain starter in <code>examples/plain-html</code> is the smallest possible version of the same setup.</p>
     <div class="docs-note">
       <span class="docs-note__title">Honest demo</span>
       <p class="iv-u-m-0">The recipes carry fictional brands and fictional data. Forms validate and show their own feedback, but they submit to nothing; nothing is bought, and no request leaves the page.</p>
     </div>
+    </Section>
+
   </article>
 </Base>

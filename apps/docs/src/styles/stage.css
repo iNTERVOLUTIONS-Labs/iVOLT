@@ -66,10 +66,10 @@
 }
 .docs-stage__seg button:hover { color: var(--iv-color-text); }
 .docs-stage__seg button[aria-pressed="true"] { background: var(--iv-color-primary); color: var(--iv-color-on-primary); }
+/* The rendering group carries two words, not two glyphs, so it reads at the text size of the bar
+   rather than at the mono size the theme, direction and width groups use. */
+.docs-stage__seg--render button { font-family: inherit; font-size: var(--iv-text-sm); letter-spacing: 0; }
 .docs-stage__toggles { display: inline-flex; flex-wrap: wrap; gap: var(--iv-space-3); margin-inline-start: auto; }
-.docs-stage__toggle { display: inline-flex; align-items: center; gap: .45rem; font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); cursor: pointer; }
-.docs-stage__toggle input { accent-color: var(--iv-color-primary); inline-size: .95rem; block-size: .95rem; }
-.docs-stage__toggle:hover { color: var(--iv-color-text); }
 .docs-stage__all {
   appearance: none; border: 0; cursor: pointer; font: inherit;
   font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .1em; text-transform: uppercase;
@@ -151,7 +151,6 @@
 .docs-stage__seg button:focus-visible,
 .docs-stage__all:focus-visible,
 .docs-stage__open:focus-visible,
-.docs-stage__toggle input:focus-visible,
 .docs-stage__tabs .docs-code__tab:focus-visible {
   outline: var(--iv-focus-width, 2px) solid var(--iv-color-focus, var(--iv-color-primary));
   outline-offset: 2px;

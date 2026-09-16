@@ -106,6 +106,8 @@ export function mountStage(root = document) {
       controls.querySelectorAll("[data-stage-theme]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.stageTheme === state.theme)));
       controls.querySelectorAll("[data-stage-dir]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.stageDir === state.dir)));
       controls.querySelectorAll("[data-stage-set-width]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.stageSetWidth === state.width)));
+      controls.querySelectorAll("button[data-stage-motion]").forEach((b) => b.setAttribute("aria-pressed", String(state.motion === "reduce")));
+      controls.querySelectorAll("button[data-stage-flat]").forEach((b) => b.setAttribute("aria-pressed", String(!!state.flat)));
     };
     entry.paint = paint;
 
@@ -124,12 +126,9 @@ export function mountStage(root = document) {
         if (b.dataset.stageTheme) { entry.chosen = true; post({ theme: b.dataset.stageTheme }); paint(); }
         else if (b.dataset.stageDir) { post({ dir: b.dataset.stageDir }); paint(); }
         else if (b.dataset.stageSetWidth) setWidth(b.dataset.stageSetWidth);
+        else if ("stageMotion" in b.dataset) { post({ motion: state.motion === "reduce" ? "" : "reduce" }); paint(); }
+        else if ("stageFlat" in b.dataset) { post({ flat: !state.flat }); paint(); }
         else if ("stageAll" in b.dataset) { entry.expanded = !entry.expanded; applyHeight(entry); }
-      });
-      controls.addEventListener("change", (e) => {
-        const input = e.target;
-        if (input.matches("[data-stage-motion]")) post({ motion: input.checked ? "reduce" : "" });
-        else if (input.matches("[data-stage-flat]")) post({ flat: input.checked });
       });
     }
     setWidth(state.width);

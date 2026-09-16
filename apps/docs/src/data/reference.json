@@ -2856,6 +2856,7 @@
     "data-iv-state",
     "data-iv-static",
     "data-iv-static-from",
+    "data-iv-static-host",
     "data-iv-status-text",
     "data-iv-step",
     "data-iv-sticky",

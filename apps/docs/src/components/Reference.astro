@@ -56,7 +56,7 @@ const rows = classCount + reference.tokens.length + reference.attributes.length 
   <h2 id="classes">{s.classesTitle}</h2>
   <p>{s.classesLead}</p>
   {sheets.map((sheet) => (
-    <div class="docs-ref-sheet" data-ref-group>
+    <div class="docs-ref-sheet docs-ref-sheet--names" data-ref-group>
       <h3 id={sheet.id}><code>{sheet.sheet}.css</code> <span class="iv-u-text-muted docs-ref-count">{s.nClasses(sheet.classes.length)}</span></h3>
       <div class="docs-scroller" tabindex="0">
         <table>
@@ -81,7 +81,7 @@ const rows = classCount + reference.tokens.length + reference.attributes.length 
 <section data-ref-section>
   <h2 id="tokens">{s.tokensTitle}</h2>
   <p>{s.tokensLead}</p>
-  <div class="docs-ref-sheet" data-ref-group>
+  <div class="docs-ref-sheet docs-ref-sheet--names" data-ref-group>
     <div class="docs-scroller" tabindex="0">
       <table>
         <thead><tr><th>{s.thToken}</th><th>{s.thLight}</th><th>{s.thDark}</th></tr></thead>
@@ -103,7 +103,7 @@ const rows = classCount + reference.tokens.length + reference.attributes.length 
   <h2 id="components">{s.componentsTitle}</h2>
   <p>{s.componentsLead}</p>
   {reference.components.map((c) => (
-    <div class="docs-ref-sheet" data-ref-group>
+    <div class="docs-ref-sheet docs-ref-sheet--options" data-ref-group>
       <h3 id={`component-${c.name}`}><code>{c.class}</code> <span class="iv-u-text-muted docs-ref-count"><code>{c.module}</code></span></h3>
       <div class="docs-scroller" tabindex="0">
         <table>

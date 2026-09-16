@@ -5,13 +5,22 @@
 .docs-wrap { inline-size: 100%; max-inline-size: var(--docs-wrap); margin-inline: auto; padding-inline: var(--docs-gutter); }
 .docs-num { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); font-weight: var(--iv-weight-semibold); letter-spacing: .18em; text-transform: uppercase; color: var(--iv-color-primary); display: inline-flex; align-items: center; gap: .75rem; }
 .docs-num::before { content: ""; inline-size: 2.5rem; block-size: 2px; border-radius: 2px; background: var(--iv-gradient-brand); }
-.docs-section { padding-block: clamp(4.5rem, 10vh, 8.5rem); position: relative; }
+.docs-section { padding-block: var(--docs-rhythm-lg); position: relative; }
 
 /* ---------- 1. hero ---------- */
 .docs-hero { position: relative; isolation: isolate; min-block-size: 85svh; display: flex; flex-direction: column; justify-content: flex-end; padding-block: clamp(4rem, 12vh, 9rem) clamp(3rem, 8vh, 6rem); overflow: hidden; }
 @media (min-width: 48em) { .docs-hero { min-block-size: 100svh; } }
 .docs-hero__inner { position: relative; z-index: 1; inline-size: 100%; max-inline-size: var(--docs-wrap); margin-inline: auto; padding-inline: var(--docs-gutter); }
-.docs-hero__kicker { display: inline-flex; align-items: center; gap: .55rem; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); font-weight: var(--iv-weight-semibold); letter-spacing: .16em; text-transform: uppercase; color: var(--iv-color-text-muted); margin: 0 0 var(--iv-space-6); padding: .4rem 1rem .4rem .8rem; border-radius: var(--iv-radius-full); border: 1px solid var(--docs-card-stroke); background: var(--docs-card-bg); box-shadow: var(--docs-soft-halo); }
+/* The pill is one object: it keeps its round ends instead of breaking across two lines at 390,
+   which it did with .16em of tracking and 1rem of padding inside a 358 px column. */
+.docs-hero__kicker { display: inline-flex; align-items: center; gap: .55rem; flex-wrap: nowrap; white-space: nowrap; max-inline-size: 100%; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); font-weight: var(--iv-weight-semibold); letter-spacing: .12em; text-transform: uppercase; color: var(--iv-color-text-muted); margin: 0 0 var(--iv-space-6); padding: .4rem .85rem .4rem .7rem; border-radius: var(--iv-radius-full); border: 1px solid var(--docs-card-stroke); background: var(--docs-card-bg); box-shadow: var(--docs-soft-halo); }
+/* Below sm the third claim leaves the pill: at .12em of tracking it cannot fit on one line at
+   390 and the pill was cut off mid-word at the gutter. Nothing is lost — "0 runtime
+   dependencies" is the first of the four figures directly underneath. */
+@media (max-width: 30em) {
+  .docs-hero__kicker { font-size: .6875rem; letter-spacing: .12em; padding-inline: .8rem .85rem; }
+  .docs-hero__kicker-tail { display: none; }
+}
 .docs-hero__kicker::before { content: ""; inline-size: .5rem; block-size: .5rem; border-radius: 50%; background: var(--iv-color-accent); box-shadow: 0 0 10px var(--iv-glow-secondary); }
 .docs-hero__kicker b { color: var(--iv-color-primary); font-weight: var(--iv-weight-bold); }
 .docs-hero__title { font-family: var(--docs-display); font-weight: 800; font-size: clamp(3.25rem, 10.5vw, 10rem); line-height: 0.9; letter-spacing: -0.035em; margin: 0; max-inline-size: 16ch; }
@@ -21,6 +30,12 @@
 .docs-hero__title .docs-dot { color: #ff665c; }
 .docs-hero__lead { margin: clamp(1.5rem, 3vh, 2.5rem) 0 0; max-inline-size: 48ch; font-size: clamp(1rem, 1.15vw, 1.2rem); color: var(--iv-color-text-muted); line-height: var(--iv-leading-snug); }
 .docs-hero__actions { display: flex; flex-wrap: wrap; gap: var(--iv-space-3); margin-block-start: var(--iv-space-8); }
+/* On a phone the two calls to action are one grid at full width: wrapped flex left the second
+   one alone on its row at half the width of the first, which read as an afterthought. */
+@media (max-width: 30em) {
+  .docs-hero__actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--iv-space-3); }
+  .docs-hero__actions .iv-button { inline-size: 100%; }
+}
 /* The hero sits over a cobalt orb, and the package's secondary button is now tinted cobalt too:
    cobalt type on a cobalt tint measured 4.15 with axe. The label takes the text colour here, which
    is also what the reference does with its second button. */
@@ -64,6 +79,10 @@
 .docs-orb { position: absolute; border-radius: 50%; filter: blur(90px); }
 .docs-orb--a { inline-size: min(48rem, 78vw); aspect-ratio: 1; inset-block-start: -18%; inset-inline-start: -12%; background: var(--docs-orb-a); }
 .docs-orb--b { inline-size: min(40rem, 66vw); aspect-ratio: 1; inset-block-end: -22%; inset-inline-end: -8%; background: var(--docs-orb-b); }
+/* A cold field over the right third, where the arcs are: on paper the hero was the dark
+   composition with the lights turned down, and this is the light theme's own light. One placed
+   radial, nothing repeats (ADR-028). The token is `none` in the dark theme, which has the orbs. */
+.docs-orbs::after { content: ""; position: absolute; inset: 0; background-image: var(--docs-hero-halo, none); pointer-events: none; }
 @media (max-width: 47.99em) { .docs-orb { filter: blur(64px); } }
 
 /* the arc field: canvas on fine pointers, a static bolt everywhere else */
@@ -79,7 +98,12 @@
 @media (min-width: 64em) { .docs-why { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
 .docs-why__head { align-self: start; }
 @media (min-width: 64em) { .docs-why__head { position: sticky; inset-block-start: 8rem; } }
-.docs-why__figure { display: block; font-family: var(--iv-font-mono); font-size: clamp(6rem, 12vw, 12rem); line-height: .8; font-weight: 700; color: transparent; -webkit-text-stroke: 1px var(--iv-color-border-strong); opacity: .55; margin-block: var(--iv-space-6) var(--iv-space-4); }
+/* The numeral is drawn, not faded. A 1px border-strong hairline at .55 opacity measured about
+   2:1 and disappeared; a 2px stroke does not, but the mix has to carry it. Measured on the
+   rendered page: primary at 55 % gives 2.40:1 on paper, primary at 70 % gives 3.55:1 on paper
+   and 4.72:1 on navy, so 70 % is what ships. */
+.docs-why__figure { display: block; font-family: var(--iv-font-mono); font-size: clamp(4rem, 22vw, 6rem); line-height: .8; font-weight: 700; color: transparent; -webkit-text-stroke: 2px color-mix(in srgb, var(--iv-color-primary) 70%, transparent); margin-block: var(--iv-space-6) var(--iv-space-4); }
+@media (min-width: 48em) { .docs-why__figure { font-size: clamp(6rem, 12vw, 12rem); } }
 .docs-why__title { font-family: var(--docs-display); font-weight: 800; font-size: clamp(2.25rem, 4.6vw, 4rem); line-height: .95; letter-spacing: -0.04em; margin: 0; }
 .docs-why__lead { color: var(--iv-color-text-muted); max-inline-size: 42ch; margin-block-start: var(--iv-space-5); }
 .docs-why__list { display: grid; gap: clamp(2rem, 5vh, 3.5rem); }
@@ -146,10 +170,16 @@
 .docs-cutctl input { flex: 1; min-inline-size: 8rem; accent-color: var(--iv-color-primary); }
 
 /* ---------- 5. recipes ---------- */
-.docs-recipes { display: grid; gap: clamp(3rem, 7vh, 6rem); }
-.docs-recipe { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center; text-decoration: none; color: inherit; }
+/* One row gap for the whole gallery and rows that start together: the frames have a fixed
+   aspect ratio and the bodies do not, so centring each row left 200-300 px of dead page
+   between a short body and the next frame. */
+.docs-recipes { display: grid; row-gap: clamp(4rem, 9vh, 7rem); }
+/* A full-page capture scrolls faster than the observer fires: the first three recipes are never
+   hidden, so the section is on the page whether or not the observer ever runs. */
+.docs-js .docs-recipes > .docs-reveal:nth-child(-n+3) { opacity: 1; transform: none; }
+.docs-recipe { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; text-decoration: none; color: inherit; }
 @media (min-width: 64em) {
-  .docs-recipe { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); }
+  .docs-recipe { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); align-items: center; }
   .docs-recipe:nth-child(even) .docs-recipe__frame { order: 2; }
 }
 .docs-recipe__frame { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--iv-radius-lg); background: var(--iv-color-surface); box-shadow: 0 40px 80px -50px rgb(2 5 12 / .85), 0 0 1px 1px var(--docs-card-stroke); transition: transform 520ms var(--docs-ease-out), box-shadow 520ms var(--docs-ease-out); min-width: 0; }
@@ -165,7 +195,45 @@
 .docs-recipe:hover .docs-recipe__go svg { transform: translateX(6px); }
 
 /* ---------- 6. the inverted block ---------- */
-.docs-invert { background: var(--docs-invert-bg); color: var(--docs-invert-fg); padding-block: clamp(4rem, 11vh, 8.5rem); margin-block-start: clamp(3rem, 8vh, 6rem); position: relative; overflow: hidden; isolation: isolate; --iv-color-text: var(--docs-invert-fg); --iv-color-text-muted: rgb(255 255 255 / .82); --iv-color-bg: #1d4fc4; --iv-color-surface: rgb(255 255 255 / .12); --iv-color-border: rgb(255 255 255 / .3); --iv-color-primary: #ffffff; --iv-color-on-primary: var(--docs-invert-ink); --iv-color-primary-hover: #eaf4ff; --iv-color-focus: #ffffff; }
+/* The band is a scope, not a skin: every token a package component reads is remapped here, so
+   any component dropped inside is correct without a rule of its own. Measured on the darkest
+   stop of the band (#1d4fc4, L 0.1058): white text 6.74:1, muted white .82 5.05:1, the white
+   filet of the secondary 3.11:1, band ink on the white primary 18.4:1. */
+.docs-invert {
+  background: var(--docs-invert-bg); color: var(--docs-invert-fg);
+  padding-block: var(--docs-rhythm-lg); margin-block-start: var(--docs-rhythm-md);
+  position: relative; overflow: hidden; isolation: isolate;
+  /* surfaces and text */
+  --iv-color-text: var(--docs-invert-fg);
+  --iv-color-text-muted: rgb(255 255 255 / .82);
+  --iv-color-text-subtle: rgb(255 255 255 / .7);
+  --iv-color-bg: #1d4fc4;
+  --iv-color-bg-subtle: #1a45b0;
+  --iv-color-surface: rgb(255 255 255 / .12);
+  --iv-color-surface-raised: rgb(255 255 255 / .16);
+  --iv-color-hover-surface: rgb(255 255 255 / .14);
+  --iv-color-border: rgb(255 255 255 / .3);
+  --iv-color-border-strong: rgb(255 255 255 / .55);
+  /* the brand: white on the band, the band's ink on white */
+  --iv-color-primary: #ffffff;
+  --iv-color-on-primary: var(--docs-invert-ink);
+  --iv-color-primary-hover: #eaf4ff;
+  --iv-color-primary-active: #d7e9ff;
+  /* the secondary is a transparent pill with a white filet, not a tinted wash */
+  --iv-color-primary-subtle: transparent;
+  --iv-color-primary-border: rgb(255 255 255 / .55);
+  --iv-color-accent: #8fe3ff;
+  --iv-color-on-accent: var(--docs-invert-ink);
+  /* the gradients a filled control paints with, and the light it casts */
+  --iv-gradient-brand: linear-gradient(120deg, #ffffff, #eaf4ff);
+  --iv-gradient-primary: linear-gradient(120deg, #ffffff, #eaf4ff);
+  --iv-glow-primary: rgb(4 7 15 / .40);
+  --iv-glow-secondary: rgb(255 255 255 / .34);
+  --iv-glow-accent: rgb(143 227 255 / .45);
+  --iv-shadow-ambient: 0 2px 10px rgb(4 7 15 / .35);
+  --iv-color-focus: #ffffff;
+  --iv-focus-halo: 0 0 3px 2px rgb(255 255 255 / .45);
+}
 /* one cyan orb in the corner, the same light the hero uses */
 .docs-invert::before { content: ""; position: absolute; z-index: -1; inline-size: min(46rem, 80vw); aspect-ratio: 1; inset-block-start: -40%; inset-inline-end: -10%; border-radius: 50%; background: rgb(143 227 255 / .22); filter: blur(90px); pointer-events: none; }
 .docs-invert .docs-num { color: rgb(255 255 255 / .85); }
@@ -175,8 +243,6 @@
 .docs-invert h2 + p { margin-block-start: var(--iv-space-6); }
 .docs-invert .docs-code { background: rgb(4 7 15 / .55); color: #eaf4ff; box-shadow: 0 0 1px 1px rgb(255 255 255 / .16) inset; margin-block: var(--iv-space-8); max-inline-size: 44rem; }
 .docs-invert .docs-code::before { background: linear-gradient(90deg, #8fe3ff, transparent 55%); }
-.docs-invert .iv-button--primary { box-shadow: 0 6px 24px rgb(4 7 15 / .45); }
-.docs-invert .iv-button--secondary { --iv-button-fg: #ffffff; --iv-button-border: rgb(255 255 255 / .55); }
 .docs-invert__foot { margin-block-start: var(--iv-space-8); font-size: var(--iv-text-sm); max-inline-size: 70ch; }
 /* Two columns: the statement on the left, the two files and the way in on the right. One column
    left two thirds of a full-bleed band empty. */

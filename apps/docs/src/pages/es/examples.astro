@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
 import DeviceFrame from "../../components/DeviceFrame.astro";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -37,7 +38,8 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
 
     <p class="docs-meta"><strong>Hecho desde:</strong> <code>examples/recipes/&lt;name&gt;/index.html</code>. <strong>Archivos:</strong> <code>examples/recipes/ivolt/</code>, que escribe <code>node scripts/sync-examples.mjs</code>. Las capturas de abajo se toman de las páginas reales durante la compilación del sitio.</p>
 
-    <h2>Las recetas</h2>
+    <Section title="Las recetas" id="recipes" num={1}>
+
     <div class="docs-gallery">
       {recipes.map((r) => (
         <section class="docs-gallery__item">
@@ -59,8 +61,9 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
         </section>
       ))}
     </div>
+    </Section>
+<Section title="Descargas" id="downloads" num={2}>
 
-    <h2 id="downloads">Descargas</h2>
     <p>Cada archivo se genera durante la compilación del sitio desde las mismas fuentes que las páginas de arriba, así que siempre corresponde a esta versión. Cada zip de receta lleva su propia copia de <code>ivolt/</code>: descomprime y abre <code>index.html</code>.</p>
     <div class="docs-downloads">
       <div class="docs-download">
@@ -73,12 +76,15 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
       </div>
     </div>
     <p class="iv-u-text-sm iv-u-text-muted">Los tamaños y las listas de archivos están en <a href="/downloads/manifest.json">manifest.json</a>.</p>
+    </Section>
+<Section title="Copiar una receta a tu proyecto" id="copy-a-recipe" num={3}>
 
-    <h2>Copiar una receta a tu proyecto</h2>
     <p>Cada receta vive en <code>examples/recipes/&lt;nombre&gt;/index.html</code> dentro del repositorio. Copia esa carpeta junto con <code>examples/recipes/ivolt/</code> y abre la página. La plantilla de <code>examples/plain-html</code> es la versión más pequeña posible del mismo montaje.</p>
     <div class="docs-note">
       <span class="docs-note__title">Demostración honesta</span>
       <p class="iv-u-m-0">Las recetas llevan marcas y datos ficticios. Los formularios validan y muestran su propia respuesta, pero no envían nada a ningún sitio; no se compra nada y ninguna petición sale de la página.</p>
     </div>
+    </Section>
+
   </article>
 </Base>

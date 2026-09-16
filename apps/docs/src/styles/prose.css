@@ -137,7 +137,24 @@
 /* ---------- tables: full column, scrollable, readable ----------
    Scoped to .docs-scroller on purpose: a table inside a fixture preview belongs to the package
    and must keep the styling the package gives it. */
-.docs-scroller { overflow-x: auto; min-inline-size: 0; overscroll-behavior-x: contain; border-radius: var(--iv-radius-lg); box-shadow: 0 0 1px 1px var(--iv-color-border); }
+/* A table wider than the phone said nothing about it: the head was cut mid-word and there was no
+   sign that the rest existed. Four layers under the rows say so. Two opaque covers are attached
+   `local`, so they travel with the content and uncover the edge the moment it can be scrolled
+   towards; two soft edges are attached `scroll` and stay pinned to the box. No script, no arrows
+   and nothing to keep in sync. */
+.docs-scroller {
+  overflow-x: auto; min-inline-size: 0; overscroll-behavior-x: contain;
+  border-radius: var(--iv-radius-lg); box-shadow: 0 0 1px 1px var(--iv-color-border);
+  background-image:
+    linear-gradient(90deg, var(--iv-color-bg) 40%, transparent),
+    linear-gradient(270deg, var(--iv-color-bg) 40%, transparent),
+    linear-gradient(90deg, var(--docs-line), transparent),
+    linear-gradient(270deg, var(--docs-line), transparent);
+  background-position: 0 0, 100% 0, 0 0, 100% 0;
+  background-repeat: no-repeat;
+  background-size: 2.5rem 100%, 2.5rem 100%, 1.25rem 100%, 1.25rem 100%;
+  background-attachment: local, local, scroll, scroll;
+}
 .docs-scroller > table {
   inline-size: 100%;
   min-inline-size: 32rem;
@@ -151,7 +168,9 @@
 }
 .docs-scroller thead th {
   text-align: start;
-  background: var(--iv-color-surface-raised);
+  /* Translucent, not opaque: the scroll edges painted on the scroller read through the head as
+     well as through the rows, so the affordance is the height of the whole table. */
+  background: color-mix(in srgb, var(--iv-color-surface-raised) 88%, transparent);
   font-family: var(--docs-display);
   font-weight: var(--iv-weight-semibold);
   letter-spacing: .04em;
