@@ -10,8 +10,17 @@ test("the theme builder applies overrides to the preview and prints the CSS", as
   await expect(page.locator("[data-tb-output]")).toContainText("--iv-color-primary: #ff6600");
   // The button transitions its background: wait for the settled colour.
   await expect(preview.locator(".iv-button--primary").first()).toHaveCSS("background-color", "rgb(255, 102, 0)");
+  // The preview follows the checked radio in both directions: it once read the first radio
+  // of the group and stayed light whatever the reader chose.
+  await expect(preview).toHaveAttribute("data-iv-theme", "dark");
+  await expect(page.locator("[data-tb-output]")).toContainText('[data-iv-theme="dark"]');
   await page.locator('input[name="theme"][value="light"]').check();
   await expect(preview).toHaveAttribute("data-iv-theme", "light");
+  await expect(preview).toHaveCSS("background-color", "rgb(255, 255, 255)");
+  await page.locator('input[name="theme"][value="dark"]').check();
+  await expect(preview).toHaveAttribute("data-iv-theme", "dark");
+  await expect(preview).toHaveCSS("background-color", "rgb(4, 7, 15)");
+  await page.locator('input[name="theme"][value="light"]').check();
   await expect(page.locator("[data-tb-output]")).toContainText(':root, [data-iv-theme="light"]');
   await page.locator("[data-tb-reset]").click();
   await expect(page.locator("[data-tb-output]")).not.toContainText("#ff6600");

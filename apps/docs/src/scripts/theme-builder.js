@@ -12,7 +12,12 @@ const FIELDS = [
 
 function rgbToHex(value) {
   const m = value.match(/rgba?\(([^)]+)\)/);
-  if (!m) return value.startsWith("#") ? value : "#000000";
+  // The built stylesheet is minified, so white arrives as "#fff": <input type="color"> only
+  // accepts the six-digit form, so short hex is expanded before it is written into the field.
+  if (!m) {
+    if (/^#[0-9a-f]{3,4}$/i.test(value)) return "#" + value.slice(1, 4).split("").map((c) => c + c).join("");
+    return /^#[0-9a-f]{6}$/i.test(value) ? value : "#000000";
+  }
   const parts = m[1].split(/[\s,\/]+/).filter(Boolean).slice(0, 3).map((n) => Math.round(parseFloat(n)));
   return "#" + parts.map((n) => n.toString(16).padStart(2, "0")).join("");
 }
@@ -24,17 +29,19 @@ export function mountThemeBuilder(root) {
   const form = root.querySelector("[data-tb-form]");
   if (!preview || !output || !form) return () => {};
   const scope = preview;
-  const computed = getComputedStyle(scope);
   const state = {};
-  // Seed every colour field from the current theme so the reader starts from what they see.
-  for (const f of FIELDS) {
-    const input = form.querySelector(`[name="${f.key}"]`);
-    if (!input) continue;
-    input.value = rgbToHex(computed.getPropertyValue(f.token).trim() || "#000000");
-  }
   const radius = form.querySelector('[name="radius"]');
   const font = form.querySelector('[name="font"]');
-  const theme = form.querySelector('[name="theme"]');
+  // The preview theme is a radio group: read the checked one at render time. Reading the first
+  // radio once pinned the preview to "light" whatever the reader chose.
+  const themeValue = () => form.querySelector('[name="theme"]:checked')?.value || "light";
+  const seed = () => {
+    const live = getComputedStyle(scope);
+    for (const f of FIELDS) {
+      const input = form.querySelector(`[name="${f.key}"]`);
+      if (input && input.dataset.touched !== "true") input.value = rgbToHex(live.getPropertyValue(f.token).trim() || "#000000");
+    }
+  };
 
   const render = () => {
     const lines = [];
@@ -60,8 +67,13 @@ export function mountThemeBuilder(root) {
       scope.style.setProperty("--iv-font-sans", font.value);
       state["--iv-font-sans"] = font.value;
     }
-    if (theme) scope.setAttribute("data-iv-theme", theme.value);
-    const selector = theme && theme.value === "dark" ? '[data-iv-theme="dark"]' : ':root, [data-iv-theme="light"], [data-iv-theme="system"]';
+    const theme = themeValue();
+    if (scope.getAttribute("data-iv-theme") !== theme) {
+      scope.setAttribute("data-iv-theme", theme);
+      // Untouched fields follow the theme now shown, so the reader edits what they see.
+      seed();
+    }
+    const selector = theme === "dark" ? '[data-iv-theme="dark"]' : ':root, [data-iv-theme="light"], [data-iv-theme="system"]';
     const body = Object.entries(state).map(([k, v]) => `  ${k}: ${v};`).join("\n");
     output.textContent = body ? `/* iVOLT theme overrides: load after ivolt.css, or inside @layer iv.overrides */\n${selector} {\n${body}\n}` : "/* Change a control to see the overrides here. */";
   };
@@ -83,6 +95,9 @@ export function mountThemeBuilder(root) {
     render();
   };
   if (reset) reset.addEventListener("click", onReset);
+  // Seed every colour field from the theme the preview starts in, so the reader edits what they see.
+  scope.setAttribute("data-iv-theme", themeValue());
+  seed();
   render();
   return () => { form.removeEventListener("input", onInput); form.removeEventListener("change", onInput); if (reset) reset.removeEventListener("click", onReset); };
 }
