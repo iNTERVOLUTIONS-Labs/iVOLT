@@ -14,6 +14,20 @@
 | v0.9 «Complete» (§11, ADR-046) | cerrado, sin publicar |
 | **`1.0.0-rc.0`** (§11) | **publicada** (`npm install @intervolutions/ivolt@next`): gate exit 0 (1008 unitarias, 1580 navegador × 3 motores, pack-smoke 134 archivos, 108 páginas), Lighthouse 97/100 home y 98/100 receta, 30 capturas finales en tres anchos y dos temas | contrato congelado (`API_CONTRACT.md` cabecera), `STABILITY.md`, changelog consolidado 0.1 → 1.0, avisos «release candidate» en la web | `verify` exit 0 en la segunda pasada (la primera dejó una prueba de la marquesina en WebKit que apuntaba el puntero a la pista en movimiento; ahora apunta a la ventana): 1008 unitarias · 1580 pruebas de navegador y 139 omitidas en tres motores · pack-smoke (`0.9.0-beta.0.tgz`, 134 archivos) · 108 páginas · 5 ejemplos | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
 
+## Ronda adversaria visual → `1.0.0-rc.3` (2026-09-16, ADR-050)
+
+Petición del propietario: «lanza agentes adversos para que te ayuden a mejorar el estilo visual del framework». Antes de la ronda, dos incidencias del propietario resueltas: esquinas rectas del pie de tarjeta bajo efectos de borde (radios propios del medio y del pie) y anillos serrados en Chromium con GPU en Windows (sombras con extensión y desenfoque 0 sustituidas por bordes reales o desenfoque mínimo).
+
+| Bloque | Verificación |
+|---|---|
+| Revisor A (paquete, solo lectura): 212 capturas en dos temas y dos anchos; 20 hallazgos, causa raíz compartida: filete oscuro invisible (1,34:1) | informe con capturas en el directorio temporal del trabajo |
+| Revisor B (web y recetas): 14 rutas y cuatro recetas; 20 hallazgos, dos graves confirmados en el código (secundario de la banda «Start» a 1,11:1; carrito de `store` como bloque estático) | ídem |
+| Integrador: tokens (borde oscuro `neutral.700`, velo `.78`, degradados claros cobalto → índigo, halo de foco), ADR-050, enmiendas del contrato, changelog, aplazamientos a 1.1 | contratos 228/228 |
+| Implementador P (paquete, 16 tareas): fantasma con filete, peligro `red.600`, paginación píldora, alerta sin muescas y tintes al 9 %, migas, canto y aviso del cajón, pestañas, cifras tabulares, insignia neutra, carril del progreso, campos, avatares, malla, tracking, navbar de cristal, raíles | 1039 unitarias; 574 pruebas de navegador en Chromium; 15 líneas base regeneradas y revisadas; contrastes medidos (`A11Y_REVIEW.md` §17) |
+| Implementador W (web y recetas, 17 tareas): banda invertida como mapa completo, carrito, velo de `studio`, mampostería de `journal`, cabecera sobre el velo del megamenú, arte lineal del panel, ritmo tokenizado, tema claro con arte propio, referencia con afordancia y raíl, numerales, CTA móviles, barra del escenario, «Tools», consola, red de seguridad del reveal, cajón móvil con tema e idioma, `body{margin:0}` en las recetas | 38 pruebas de sitio y recetas; Lighthouse móvil `/` 97–98 |
+
+Ver `docs/RELEASE.md` §0i para el gate y la publicación.
+
 ## Rediseño Cobalt → `1.0.0-rc.2` (2026-09-16, ADR-049)
 
 Petición del propietario: «no me gusta nada los verdes […] usa los colores de intervolutions.com y copia las tipografías y elementos de la web; que el framework sea capaz de construir intervolutions.com, brokenufo.com y clasicosbasicos.org». Referencia extraída con capturas y CSS de intervolutions.com (fuera del repositorio).

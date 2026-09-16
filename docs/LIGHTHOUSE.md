@@ -338,3 +338,22 @@ Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome `--headless=new --no-
 
 Sin regresión atribuible al rediseño: las cifras bajas de la primera pasada se repitieron a 98–99 con la máquina descargada; el CLS de `/components/button` (0,067) es el mismo que en la ronda 3 (escenario que ajusta su altura al cargar). JSON en el directorio temporal del trabajo (`lh-rc2-*.json`); no se versionan.
 
+## `1.0.0-rc.3` — ronda adversaria visual (2026-09-16, ADR-050)
+
+Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome `--headless=new --no-sandbox`, `scripts/docs-server.mjs` en 4328 sirviendo el build del gate `verify`, una pasada por ruta y preajuste, sin red real). La máquina compartida estaba a carga 14–19 durante la primera pasada (procesos ajenos al proyecto); las tres rutas más bajas se repitieron a carga 3. `ivolt.min.css` 32,1 KiB gzip, JS agrupado 45,2 KiB. La portada carga ahora el primer marco de receta con prioridad baja en vez de en diferido (red de seguridad del revelado) y las recetas parten de `body{margin:0}`.
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Buenas prácticas | SEO | LCP | CLS |
+|---|---|---|---|---|---|---|---|
+| `/` | móvil | 97 | 100 | 100 | 100 | 2,2 s | 0 |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 0,5 s | 0 |
+| `/es` | móvil | 97 (96 a carga 19) | 100 | 100 | 100 | 2,2 s | 0 |
+| `/components/button` | móvil | 97 | 100 | 100 | 100 | 2,0 s | 0,073 |
+| `/components/megamenu` | móvil | 98 | 100 | 100 | 100 | 2,0 s | 0 |
+| `/reference` | móvil | 99 | 100 | 100 | 100 | 1,9 s | 0 |
+| `/examples/studio/index.html` | móvil | 98 | 100 | 100 | 100 | 2,2 s | 0 |
+| `/examples/console/index.html` | móvil | 96–97 | 100 | 100 | 100 | 2,4–2,6 s | 0 |
+| `/examples/journal/index.html` | móvil | 99 | 100 | 100 | 100 | 2,0 s | 0 |
+| `/examples/store/index.html` | móvil | 97 (95 a carga 19) | 100 | 100 | 100 | 2,5 s | 0 |
+
+Sin regresión atribuible a la ronda: la portada se mantiene en 97–98 con el primer marco de receta a prioridad baja (los tres marcos a prioridad normal costaban 13 puntos, medido por el implementador, y se descartó). El CLS de `/components/button` (0,073) es el del escenario que ajusta su altura al cargar, igual que en rc.2. JSON en el directorio temporal del trabajo (`lh-rc3-*.json`); no se versionan.
+

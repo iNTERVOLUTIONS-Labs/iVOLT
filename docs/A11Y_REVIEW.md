@@ -476,3 +476,22 @@ Sin verificar: lector de pantalla real (se mantiene la deuda desde v0.1; ver §6
 
 Sin verificar: lector de pantalla real (§6); percepción del degradado del botón por personas con baja visión (el rótulo no depende del degradado, pero no se ha probado con usuarios).
 
+## 17. `1.0.0-rc.3` (2026-09-16): ronda adversaria visual (ADR-050)
+
+Toda propuesta de color se entregó con su contraste medido (composición de capas en el navegador, fórmula WCAG 2.x), no estimado.
+
+- **Filete oscuro**: `--iv-color-border` de `neutral.800` (1,34:1 sobre `bg`) a `neutral.700` (1,85:1). No es texto y no necesita 3:1; el objetivo era que tarjetas, paneles, pestañas y raíles se separen de la página. El filete del botón fantasma mide 2,00:1 en oscuro y 1,40:1 en claro: el control se identifica por su rótulo (17,97:1), no por el filete.
+- **Botón de peligro**: sólido `red.600` con blanco en ambos temas, 5,66:1 (hover `red.700`, 6,24:1). En oscuro el coral claro de `--iv-color-danger`, afinado como texto, era como relleno la superficie más luminosa de la pantalla.
+- **Alertas**: tintes al 9 % sobre `surface-raised`; cuerpo 13,05–13,57:1 en oscuro y 14,85–15,15:1 en claro.
+- **Migas** en `text-muted`: 9,58:1 oscuro, 6,75:1 claro. **Insignia neutra** sólida: 16,27 / 18,37. **Campos** con relleno translúcido: texto 16,90 / 18,37. **Progreso**: relleno sobre carril 6,44. **Eyebrow del timeline** en cobalto: 8,92 / 7,08.
+- **Web, banda invertida**: primario blanco con tinta 18,37:1; secundario transparente con rótulo blanco 5,36:1 sobre la banda (filete 3,11). Antes el secundario medía 1,11:1.
+- **Receta `studio`**: enlaces de la cabecera sobre velo 7,71:1 (garantía por construcción 4,5 aunque la foto fuera blanca); píldora de honestidad 10,5:1. Antes 2,2 y 2,9.
+- **Receta `store`**: glifos del carrusel sobre cristal fuerte 7,42:1, ≥ 8,1 sobre cualquier foto.
+- **Numeral en contorno de la portada**: al 70 % del primario, 3,20:1 claro y 4,22:1 oscuro (decorativo).
+- **Foco**: el halo oscuro se suaviza (32 %, 3 px de desenfoque); el anillo sólido de 2 px sigue siendo el que cumple.
+- **Barra del escenario**: las dos casillas nativas pasan a botones `aria-pressed` del mismo grupo segmentado; `site-stage.spec.js` comprueba el estado.
+- **Cajón**: aviso de desarrollo cuando un cajón estático queda fuera de `aside`/`nav`; el carrito de `store` es modal en todos los anchos.
+- axe: 165 fixtures en Chromium bajo reduced motion, cero violaciones tras la ronda; suites `site-pages` y `recipes` con axe en la web y las recetas.
+
+Sin verificar: lector de pantalla real (§6).
+
