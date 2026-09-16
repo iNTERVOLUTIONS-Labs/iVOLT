@@ -2,7 +2,7 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
-## 1.0.0-rc.2 (unreleased)
+## 1.0.0-rc.2 — 2026-09-16 (npm, tag `next`)
 
 ### Changed
 - **Cobalt** (ADR-049): the default palette moves from green to the colours of intervolutions.com: navy-tinted neutrals, cobalt primary, cyan accent, indigo info, lime success, coral danger, amber warning; every semantic pair measured against WCAG in both themes. New tokens `--iv-gradient-brand` and `--iv-gradient-primary`. Radii are 6, 14 and 22 px (`sm`, `md`, `lg`). `--iv-font-sans` lists Outfit first (the package ships no font files; the site serves Outfit under the OFL). Components adopt the treatments of the reference site: pill buttons with the brand gradient and a glow, cobalt-tinted ghost buttons, translucent cards with a hairline stroke, tinted `kbd`, 14 px fields.

@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-16 · **`1.0.0-rc.2` «Cobalt» cerrada** (ADR-049: paleta por defecto de intervolutions.com y Outfit; gate en tres motores exit 0 y Lighthouse 98–100; publicación bajo `next` en curso, ver `docs/RELEASE.md` §0h) · `1.0.0-rc.1` publicada bajo `next` el 2026-09-16 (megamenú v2, ADR-048; ronda 3, ADR-047) · `0.7.0-beta.0` en `latest`/`beta` desde 2026-09-14 · nada desplegado
+Última actualización: 2026-09-16 · **`1.0.0-rc.2` «Cobalt» cerrada** (ADR-049: paleta por defecto de intervolutions.com y Outfit; gate en tres motores exit 0 y Lighthouse 98–100; publicada bajo `next` el 2026-09-16, `docs/RELEASE.md` §0h) · `1.0.0-rc.1` publicada bajo `next` el 2026-09-16 (megamenú v2, ADR-048; ronda 3, ADR-047) · `0.7.0-beta.0` en `latest`/`beta` desde 2026-09-14 · nada desplegado
 
 ## Estado por fase e hito
 
@@ -106,7 +106,7 @@ Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title`
 
 ## Siguiente acción
 
-Publicar `1.0.0-rc.2` bajo `next` (`docs/RELEASE.md` §0h) y recoger la aceptación visual del propietario sobre Cobalt en la web construida; después, solo correcciones hasta `1.0.0` (`latest`). Abiertos: arte oficial en cobalto, tokens candidatos y `iv-eyebrow` (`ROADMAP.md` §11).
+`1.0.0-rc.2` publicada bajo `next` (`docs/RELEASE.md` §0h); recoger la aceptación visual del propietario sobre Cobalt en la web construida; después, solo correcciones hasta `1.0.0` (`latest`). Abiertos: arte oficial en cobalto, tokens candidatos y `iv-eyebrow` (`ROADMAP.md` §11).
 
 ## Decisiones que no deben perderse
 
