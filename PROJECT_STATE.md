@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-15 · **`1.0.0-rc.0` publicada en npm con la etiqueta `next`** (2026-09-15; contrato congelado para 1.0, `ROADMAP.md` §11); v0.8 y v0.9 cerrados el mismo día (ADR-044/045/046); ronda 3 de la web y los ejemplos (ADR-047) en curso en otra sesión · `0.7.0-beta.0` publicada en npm el 2026-09-14 (`beta`, ADR-043); 0.8 sin publicar; nada desplegado
+Última actualización: 2026-09-16 · **`1.0.0-rc.2` «Cobalt» cerrada** (ADR-049: paleta por defecto de intervolutions.com y Outfit; gate en tres motores exit 0 y Lighthouse 98–100; publicación bajo `next` en curso, ver `docs/RELEASE.md` §0h) · `1.0.0-rc.1` publicada bajo `next` el 2026-09-16 (megamenú v2, ADR-048; ronda 3, ADR-047) · `0.7.0-beta.0` en `latest`/`beta` desde 2026-09-14 · nada desplegado
 
 ## Estado por fase e hito
 
@@ -13,6 +13,19 @@
 | v0.8 «Hardening» (§11, ADR-044/045) | cerrado, sin publicar |
 | v0.9 «Complete» (§11, ADR-046) | cerrado, sin publicar |
 | **`1.0.0-rc.0`** (§11) | **publicada** (`npm install @intervolutions/ivolt@next`): gate exit 0 (1008 unitarias, 1580 navegador × 3 motores, pack-smoke 134 archivos, 108 páginas), Lighthouse 97/100 home y 98/100 receta, 30 capturas finales en tres anchos y dos temas | contrato congelado (`API_CONTRACT.md` cabecera), `STABILITY.md`, changelog consolidado 0.1 → 1.0, avisos «release candidate» en la web | `verify` exit 0 en la segunda pasada (la primera dejó una prueba de la marquesina en WebKit que apuntaba el puntero a la pista en movimiento; ahora apunta a la ventana): 1008 unitarias · 1580 pruebas de navegador y 139 omitidas en tres motores · pack-smoke (`0.9.0-beta.0.tgz`, 134 archivos) · 108 páginas · 5 ejemplos | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
+
+## Rediseño Cobalt → `1.0.0-rc.2` (2026-09-16, ADR-049)
+
+Petición del propietario: «no me gusta nada los verdes […] usa los colores de intervolutions.com y copia las tipografías y elementos de la web; que el framework sea capaz de construir intervolutions.com, brokenufo.com y clasicosbasicos.org». Referencia extraída con capturas y CSS de intervolutions.com (fuera del repositorio).
+
+| Bloque | Verificación |
+|---|---|
+| Integrador: `tokens.json` reescrito (neutral azul marino, cobalt, cyan, indigo, green solo éxito, red coral, amber; degradados `brand`/`primary`; radios 6/14/22; Outfit primero), `DESIGN_SYSTEM.md` §2–§3 con contraste WCAG medido, ADR-049, contrato §5.2 enmendado, hero con acento `cyan.400` en ambos temas | 162 tokens emitidos; todos los pares de texto ≥ 4,5 y bordes ≥ 3 en claro y oscuro (tres ajustes tras medir); `reference.test.js` 228/228 |
+| Implementador A (paquete): botón píldora con degradado de marca y halo, secundario y fantasma teñidos, tarjetas translúcidas con trazo fino y brillo, campos de 14 px, `kbd` cian, regla degradada, texto degradado; 219 literales verdes retirados del CSS y del arte SVG de las fixtures; insignias mezcladas hacia el texto para AA | axe 165/165 en Chromium; 71 líneas base regeneradas (23 + 1 modificadas); specs × 3 motores en el gate |
+| Implementador B (web y recetas): Outfit servida en local con pesos 700/800 (Space Grotesk retirada), tokens de la web en cobalto y cian en ambos temas, portada con orbes estáticos, píldora, titular degradado con punto coral y banda de cierre degradada, OG y favicon sobre placa azul marino, lámina de marca, tablas de contraste reescritas con cifras reales, isotipo de `console` recoloreado; 277 literales verdes retirados | `site-*`, `theme`, `theme-builder`, `recipes` 39/39 en Chromium; 40 capturas en dos anchos y dos temas comparadas con la referencia; dos correcciones por la comparación (punto coral, rótulo del segundo botón del hero a `--iv-color-text` por 4,15 sobre el orbe) |
+| Integrador: Outfit en las cuatro recetas (`sync-examples` copia la fuente a `ivolt/fonts/`), hero, dos pruebas con supuestos de la paleta anterior corregidas (radio de 22 px del selector; precisión de `color(srgb)` en WebKit) | `IVOLT_ALL_BROWSERS=1 npm run verify`: build · 1037 unitarias · 1540 superadas + 147 omitidas, cinco fallos de prueba diagnosticados y repetidos en verde (60/60) · tamaños (`core` 3,03, `ivolt.min.css` 31,8, JS 45,0 KiB gzip, todos dentro) · pack-smoke 134 archivos · 205 páginas · 5 ejemplos; Lighthouse móvil 98–100, escritorio 99–100 (`LIGHTHOUSE.md`) |
+
+Sin rejillas ni patrones de puntos (ADR-028) aunque la referencia los use. Pendiente de decisión del propietario: aceptación visual de Cobalt; reemitir el arte oficial de `assets/brand/` en cobalto (hoy remapeado en `brand.js` y `build-og.mjs`); tokens candidatos `--iv-surface-stroke`, `--iv-shadow-halo` y una clase `iv-eyebrow` (`ROADMAP.md` §11).
 
 ## Petición del propietario que abrió estos ciclos (2026-09-14)
 
@@ -84,7 +97,7 @@ Presupuestos (`npm run sizes` @ f6d17ad): `core.min.css` 2,60 KiB (≤ 8), `ivol
 - Lector de pantalla real: sin ejecutar (`A11Y_REVIEW.md` §12–§13).
 - Gestos táctiles reales (arrastre con zoom, panel del navbar), parallax con trackpad de alta frecuencia: solo simulados.
 - `iv-stack-cards` retrocede como baraja completa al salir, no tarjeta a tarjeta (ADR-042, candidato).
-- Aceptación visual del propietario de v0.6 y v0.7: pendiente.
+- Aceptación visual del propietario de v0.6, v0.7 y del rediseño Cobalt: pendiente (capturas en el directorio temporal del trabajo, `cobalt-a/`, `cobalt-b/`).
 - Publicado en npm con autorización del propietario (`docs/RELEASE.md` §0d); el despliegue de la web sigue requiriendo autorización explícita (§3).
 
 ## Fallos abiertos
@@ -93,7 +106,7 @@ Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title`
 
 ## Siguiente acción
 
-Ronda 3 de la web y los ejemplos (ADR-047, `docs/design/DIRECTION_R3.md`): integración en curso en otra sesión (escenarios vivos, migración de páginas, revisión adversaria visual, gate); la página de inicio debe anunciar `npm install @intervolutions/ivolt@next`. Después: revisión del propietario del candidato y, sin hallazgos, `1.0.0` (mueve `latest`). Revisión del propietario de v0.6 y v0.7 con la web construida (`npm run build && npm run dev:docs`): navbar, stepper, bloques de contenido, galería y visor, movimiento, texto, contador y la receta «showcase» (`/examples/showcase/index.html`). Candidatos para 0.8 en `ROADMAP.md` §8 y §10 (relevo por tarjeta en la baraja, tokens pendientes, `Picker` con etiqueta hermana, decisión sobre el presupuesto de JS o la importación por módulo, servir a la home solo los módulos que usa). La web sigue sin desplegar (solo con autorización).
+Publicar `1.0.0-rc.2` bajo `next` (`docs/RELEASE.md` §0h) y recoger la aceptación visual del propietario sobre Cobalt en la web construida; después, solo correcciones hasta `1.0.0` (`latest`). Abiertos: arte oficial en cobalto, tokens candidatos y `iv-eyebrow` (`ROADMAP.md` §11).
 
 ## Decisiones que no deben perderse
 

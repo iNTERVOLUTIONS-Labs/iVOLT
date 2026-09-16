@@ -29,9 +29,11 @@ test.describe("Picker", () => {
     const popover = page.locator(".iv-picker__popover");
     await expect(popover).toBeVisible();
 
+    // A point on the top padding, past the rounded corner: with the 22 px radius of ADR-049 the
+    // old (4, 4) corner point lies outside the box and counts as an outside press that closes it.
     const corner = await popover.evaluate((el) => {
       const rect = el.getBoundingClientRect();
-      return { x: Math.round(rect.left + 4), y: Math.round(rect.top + 4) };
+      return { x: Math.round(rect.left + 32), y: Math.round(rect.top + 4) };
     });
     await page.mouse.click(corner.x, corner.y);
     await page.waitForTimeout(80);

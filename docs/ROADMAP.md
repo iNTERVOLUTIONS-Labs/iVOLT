@@ -190,3 +190,13 @@ Petición del propietario: «sigue hasta 1.0 release candidate». Un candidato a
 | 1 | Congelación del contrato para 1.0 (`API_CONTRACT.md` cabecera), changelog consolidado 0.1 → 1.0, avisos de la web «release candidate» | hecho (2026-09-15) |
 | 2 | Gate completo, Lighthouse, revisión final de capturas en tres anchos y dos temas | hecho (2026-09-15): `verify` exit 0 (1008 unitarias, 1580 navegador en tres motores), Lighthouse 97/100 home y 98/100 receta, 30 capturas |
 | 3 | Publicación `1.0.0-rc.0` con etiqueta `next` (requiere OTP del propietario) y etiqueta git | hecho (2026-09-15); `latest` sigue en la beta hasta 1.0.0 |
+
+### `1.0.0-rc.1` y `1.0.0-rc.2`
+
+| Orden | Elemento | Notas |
+|---|---|---|
+| 1 | Megamenú v2 (ADR-048) y ronda 3 de la web y los ejemplos (ADR-047/049) | hecho (2026-09-16); `1.0.0-rc.1` publicada bajo `next` |
+| 2 | Rediseño Cobalt (ADR-049): tokens, sistema de diseño, tratamientos del paquete, web, recetas, arte, líneas base | hecho (2026-09-16); ver `PROJECT_STATE.md` «Rediseño Cobalt» |
+| 3 | Gate completo, Lighthouse, publicación `1.0.0-rc.2` bajo `next` | ver `docs/RELEASE.md` §0h |
+| 4 | Pendiente para 1.0.0: aceptación visual del propietario sobre Cobalt; decidir si el arte oficial de `assets/brand/` se reemite en cobalto (hoy lo remapean `brand.js` y `build-og.mjs`); tokens candidatos `--iv-surface-stroke` y `--iv-shadow-halo` y una clase `iv-eyebrow` (hoy tres clases de la web) | abierto |
+

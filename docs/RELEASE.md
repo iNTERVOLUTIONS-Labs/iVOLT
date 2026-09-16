@@ -2,6 +2,10 @@
 
 Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
 
+## 0h. `1.0.0-rc.2` (rediseño Cobalt, ADR-049; publicación pendiente en esta sección)
+
+Tercer candidato: la paleta por defecto pasa del verde a los colores de intervolutions.com (tokens medidos, degradados de marca, radios 6/14/22, Outfit primero en la pila), el paquete adopta los tratamientos de referencia (botones píldora con degradado y halo, tarjetas translúcidas, campos de 14 px, `kbd` cian), la web, la lámina de marca, la imagen OG, las fixtures con arte y las cuatro recetas se recolorean, y las recetas sirven Outfit. Gate final en tres motores: 1037 unitarias · 1540 pruebas de navegador superadas y 147 omitidas en la pasada completa, más los dos specs con supuestos de la paleta anterior (esquina de 22 px del selector, precisión de color en WebKit) corregidos y repetidos en verde (60/60) · tamaños dentro de presupuesto (`ivolt.min.css` 31,8 KiB gzip, JS 45,0) · pack-smoke (`intervolutions-ivolt-1.0.0-rc.2.tgz`, 134 archivos) · 205 páginas · 5 ejemplos · Lighthouse `docs/LIGHTHOUSE.md` (rc.2). Cambio de ruptura solo para la beta: `--iv-palette-green-*` de once pasos y `--iv-palette-blue-*` retirados.
+
 ## 0g. `1.0.0-rc.1` (publicada el 2026-09-16 con etiqueta `next`)
 
 Segundo candidato: megamenú v2 reconstruido de cero (ADR-048) y endurecido por revisión adversaria, más la ronda 3 de la web y los ejemplos (ADR-047) integrada por la otra sesión. Gate final en tres motores con tres workers (1037 unitarias, 1545 pruebas de navegador, pack-smoke, 201 páginas, 5 ejemplos). Publicación con el token del propietario en un `userconfig` temporal borrado tras el comando: `npm publish --access public --tag next -w @intervolutions/ivolt` (134 archivos); `dist-tags`: `latest` y `beta` en `0.7.0-beta.0`, `next` en `1.0.0-rc.1`; etiqueta git `v1.0.0-rc.1`; instalación verificada desde el registro (`@next`, ESM, 24 componentes).

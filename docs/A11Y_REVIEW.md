@@ -464,3 +464,15 @@ Sin verificar: lector de pantalla real; pasada propia de reduced motion del revi
 - **Baraja**: el relevo por tarjeta es solo CSS y queda estático bajo reduced motion, como antes.
 
 Sin verificar: lector de pantalla real (se mantiene la deuda desde v0.1; ver §6).
+
+## 16. `1.0.0-rc.2` (2026-09-16): paleta Cobalt (ADR-049)
+
+- **Contraste medido, no estimado**: cada par semántico de `DESIGN_SYSTEM.md` §3 se calculó con la fórmula WCAG 2.x en claro y oscuro: texto ≥ 4,5 (peor caso: 4,13 del acento oscuro sobre la superficie elevada, en rótulos de 24 px o más; en texto normal se usa `--iv-color-accent` solo sobre `--iv-color-bg`), bordes y controles ≥ 3. Tres correcciones salieron de la medida: acento claro `cyan.800` (6,03), aviso claro `#8F5C00` (5,68), peligro `#C22E26` (5,66 sobre blanco, 5,14 sobre su tinte). La tabla de `/foundations/accessibility` (en/es) reproduce las cifras reales.
+- **Botones**: el primario lleva degradado de marca; el rótulo blanco se mide contra el extremo más claro del degradado (cobalto 700 en claro, cobalto 400 en oscuro con tinta `#06122B`), ambos ≥ 4,5. El secundario y el fantasma teñidos dan 4,15 cuando se posan sobre una superficie iluminada (orbe de la portada): la web fija el rótulo del segundo botón del hero a `--iv-color-text`; en el paquete, sobre `bg` y `surface`, quedan ≥ 4,5.
+- **Insignias**: el color de la tonalidad se mezcla un 84 % hacia `--iv-color-text` para que el texto pequeño sobre el tinte pase AA.
+- **Hero**: `--iv-hero-accent` pasa a `cyan.400` en ambos temas; con el acento claro (cian oscuro) la palabra destacada se hundía en el scrim.
+- **Colores forzados e impresión**: sin cambios de regla; `qa-forced-colors.spec.js` y `qa-print.spec.js` siguen en tres motores.
+- **axe**: 165 fixtures en Chromium bajo reduced motion, cero violaciones tras el recoloreado; suites `site-pages` y `recipes` con axe en la web y las cuatro recetas.
+
+Sin verificar: lector de pantalla real (§6); percepción del degradado del botón por personas con baja visión (el rótulo no depende del degradado, pero no se ha probado con usuarios).
+

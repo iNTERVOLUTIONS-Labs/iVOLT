@@ -318,3 +318,23 @@ Mismo método (Lighthouse 13.4.1, HeadlessChrome, build del gate `verify` en 432
 | las cuatro recetas | escritorio | 100 | 100 | 100 | 100 | 420–768 ms | ≤ 0,013 |
 
 Primera medida de la portada nueva en móvil: 90 (LCP 3,3 s) por una hoja de la web de 44 KB gzip que bloqueaba el render, el CSS del paquete enlazado sin minificar y 50 KB de JS agrupado con 40 KB sin uso en esa página. Correcciones (ADR-049): la primera línea del titular se pinta con el documento (el elemento LCP era un contador de 115×28 px que esperaba al script), hoja común de la web repartida por página (43,5 → 39,4 KB gzip), hojas minificadas en los escenarios, script del escenario cargado bajo demanda y escenarios servidos con el IIFE publicado (168 → 28 peticiones y 778 → 102 KB en una página de componente). Tras ello, móvil: `/` 100, `/components/button` 99 (medidas del rematador con la máquina compartida; LCP 0,5 s).
+
+## `1.0.0-rc.2` — paleta Cobalt y Outfit (2026-09-16, ADR-049)
+
+Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome `--headless=new --no-sandbox`, `scripts/docs-server.mjs` en 4328 sirviendo el build del gate `verify`, una pasada por ruta y preajuste, sin red real). La web y las recetas sirven ahora Outfit (variable, 32 KB, precargada) y la portada lleva dos orbes desenfocados estáticos y el titular con texto degradado; `ivolt.min.css` 31,8 KiB gzip, JS agrupado 45,0 KiB.
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Buenas prácticas | SEO | LCP | CLS |
+|---|---|---|---|---|---|---|---|
+| `/` | móvil | 98 (95 en la primera pasada con la máquina compartida a carga 9,5; 98 al repetir a carga 1,9) | 100 | 100 | 100 | 2,1 s | 0 |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 0,5 s | 0 |
+| `/es` | móvil | 98 (95 en la primera pasada, mismo motivo) | 100 | 100 | 100 | 2,1 s | 0 |
+| `/components/button` | móvil | 98 | 100 | 100 | 100 | 2,0 s | 0,067 |
+| `/components/megamenu` | móvil | 98 | 100 | 100 | 100 | 2,1 s | 0 |
+| `/examples/studio/index.html` | móvil | 99 | 100 | 100 | 100 | 2,2 s | 0 |
+| `/examples/studio/index.html` | escritorio | 99 | 100 | 100 | 100 | 0,9 s | 0 |
+| `/examples/console/index.html` | móvil | 100 | 100 | 100 | 100 | 1,6 s | 0 |
+| `/examples/journal/index.html` | móvil | 99 | 100 | 100 | 100 | 2,0 s | 0 |
+| `/examples/store/index.html` | móvil | 99 (97 en la primera pasada) | 100 | 100 | 100 | 2,0 s | 0 |
+
+Sin regresión atribuible al rediseño: las cifras bajas de la primera pasada se repitieron a 98–99 con la máquina descargada; el CLS de `/components/button` (0,067) es el mismo que en la ronda 3 (escenario que ajusta su altura al cargar). JSON en el directorio temporal del trabajo (`lh-rc2-*.json`); no se versionan.
+
