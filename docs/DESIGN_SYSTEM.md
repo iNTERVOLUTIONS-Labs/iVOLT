@@ -9,57 +9,40 @@ Estado: contrato de fase 0. Los valores aquí definidos pasan a `tokens/tokens.j
 - Mensaje: «The interface starts here.» seguido de un ejemplo real con su código, nunca de una lista de promesas.
 - El framework no obliga a ser oscuro ni verde: el tema light es el predeterminado del paquete; la web de marca usa el dark.
 
-## 2. Paleta primitiva (`--iv-palette-*`)
+## 2. Paleta primitiva (`--iv-palette-*`) — «Cobalt», desde 1.0.0-rc.2 (ADR-049)
 
-| Step | green | neutral (verde frío) |
+El verde de las betas se retira. El propietario pidió que el paquete arranque con los colores de intervolutions.com y sirva de base a intervolutions.com, brokenufo.com y clasicosbasicos.org. Extraído de la hoja de intervolutions.com (2026-09-16): fondos `#04070F`, `#070D1C`, `#0C1330`; marca `#66B1FF` (cobalto) y `#73DFFF` (cian); índigo `#6674FF`/`#8B95FF`; coral `#FF665C` (el punto de la marca); ámbar `#FBBF24`; lima `#8BBF3A` como «ok»; degradados `#73DFFF → #6695FF` y `#8FE3FF → #66B1FF → #6D93FF`; tipografía Outfit (OFL).
+
+| Tono | Pasos | Uso |
 |---|---|---|
-| 50 | `#E8FDF3` | `#F3FAF6` (texto claro de marca) |
-| 100 | `#C6F9E1` | `#E4EDE8` |
-| 200 | `#93F3C6` | `#CBD8D1` |
-| 300 | `#5CF0AE` | `#A9B9B1` |
-| 400 | `#29F59A` (verde de marca) | `#90A49E` (secundario de marca) |
-| 500 | `#14D882` | `#6E837B` |
-| 600 | `#0FB56C` | `#56695F` |
-| 700 | `#0B8A55` | `#3F4F47` |
-| 800 | `#0A6A43` | `#263129` |
-| 900 | `#084D32` | `#12201A` |
-| 950 | `#04301F` | `#081310` (fondo de marca) |
+| `neutral` (tintado de azul marino) | `0 50 100 200 300 400 500 600 700 800 900 950 1000` = `#FFFFFF #F5F7FC #E9EDF7 #D3DAEA #B3BDD4 #8F9BB8 #6B7896 #4F5B7A #33406A #1C2544 #0C1330 #070D1C #04070F` | fondos, superficies, bordes, texto |
+| `cobalt` | `50…950` = `#EAF4FF #D6E9FF #B3D6FF #8FC6FF #66B1FF #3D94FF #2266D8 #1D4FC4 #1A3FA8 #172F7A #0F1D4D` | primario (`400` en oscuro, `700` en claro), foco en claro |
+| `cyan` | `50…950` = `#E6FBFF #CDF6FF #A6EFFF #8FE3FF #73DFFF #3FCDF5 #17AAD6 #0E8AB0 #0B6B8A #094D63 #052F3D` | acento (`400` en oscuro, `800` en claro), foco en oscuro, brillos |
+| `indigo` | `50…950` = `#EEF0FF #DFE2FF #C2C8FF #A4ADFF #8B95FF #6674FF #4F5BE6 #3D47C2 #313996 #262C6E #171A45` | info, segundo tono de los degradados, halos |
+| `green` | `50 300 400 700 800` = `#F1F8E4 #C6E28A #8BBF3A #4F7A12 #3F6110` | solo `success` |
+| `red` | `50 300 500 600 700` = `#FFF1F0 #FF9AA4 #FF665C #D63A31 #B52D26` | `danger`; `500` es el coral de la marca (decorativo) |
+| `amber` | `50 300 400 700` = `#FFF8E6 #FFE9A8 #FBBF24 #8F5C00` | `warning` |
 
-Estado: `red-600 #B2262D`, `red-300 #FF7A80`, `amber-700 #8A5200`, `amber-300 #FFB84D`, `blue-600 #1D5FB8`, `blue-300 #6FB3FF`, y superficies sutiles `red-50 #FDECEC`, `amber-50 #FFF4E0`, `blue-50 #E8F1FD`.
+Los tonos `blue` y el `green` de once pasos de las betas desaparecen; `--iv-palette-green-*` conserva solo los cinco pasos de éxito.
 
-## 3. Mapa semántico y contraste previsto
+## 3. Mapa semántico y contraste medido
 
-| Token | Light | Dark | Contraste (light / dark) |
+| Token | Light | Dark | Contraste medido (WCAG) |
 |---|---|---|---|
-| `bg` | `#FFFFFF` | `#081310` | — |
-| `surface` | `#F3FAF6` | `#12201A` | — |
-| `surface-raised` | `#FFFFFF` + sombra | `#1B2C25` | — |
-| `text` | `#12201A` | `#F3FAF6` | 16.8 / 17.8 |
-| `text-muted` | `#56695F` | `#90A49E` | 5.9 / 7.2 (≥ 5.5 sobre surface) |
-| `border` (decorativo) | `#CBD8D1` | `#263129` | no exigido |
-| `border-strong` (controles) | `#6E837B` | `#6E837B` | 4.0 / 4.7 (≥ 3:1) |
-| `primary` | `#0A6A43` | `#29F59A` | como texto sobre bg: 6.7 / 13.2 |
-| `on-primary` | `#FFFFFF` | `#081310` | 6.7 / 13.2 |
-| `primary-subtle` | `#E8FDF3` | `rgb(41 245 154 / .12)` | primary sobre subtle 6.3 / 10.2 |
-| `primary-hover` | `#084D32` | `#5CF0AE` | 9.9 / 13.1 |
-| `primary-active` | `#04301F` | `#14D882` | — / 10.1 |
-| `accent` / `on-accent` | `#29F59A` / `#081310` | igual | 13.2 (botón de marca, no texto pequeño sobre blanco) |
-| `success` / `on-success` | `#0A6A43` / `#FFFFFF` | `#29F59A` / `#081310` | texto sobre bg 6.7 / 13.2; on-* 6.7 / 13.2 |
-| `success-subtle` | `#E8FDF3` | `rgb(41 245 154 / .12)` (≈ `#0C2E21` sobre bg) | success sobre subtle 6.3 / 10.2; text-muted sobre subtle 5.6 (dark) |
-| `danger` / `on-danger` | `#B2262D` / `#FFFFFF` | `#FF7A80` / `#081310` | 6.6 / 7.5; on-* 6.6 / 7.5 |
-| `danger-subtle` | `#FDECEC` | `rgb(255 122 128 / .12)` (≈ `#261F1D`) | 5.7 / 6.4 |
-| `warning` / `on-warning` | `#8A5200` / `#FFFFFF` | `#FFB84D` / `#081310` | 6.4 / 11.0; on-* 6.4 / 11.0 |
-| `warning-subtle` | `#FFF4E0` | `rgb(255 184 77 / .12)` (≈ `#262717`) | 5.9 / 8.8 |
-| `info` / `on-info` | `#1D5FB8` / `#FFFFFF` | `#6FB3FF` / `#081310` | 6.2 / 8.6; on-* 6.2 / 8.6 |
-| `info-subtle` | `#E8F1FD` | `rgb(111 179 255 / .12)` (≈ `#14262D`) | 5.5 / 7.1 |
-| `focus` | `#0A6A43` | `#29F59A` | ≥ 3:1 sobre ambas superficies |
-| `overlay` | `rgb(8 19 16 / .55)` | `rgb(0 0 0 / .6)` | — |
+| `bg` / `surface` / `surface-raised` | `#FFFFFF` / `#F5F7FC` / `#FFFFFF` | `#04070F` / `#070D1C` / `#0C1330` | — |
+| `text` / `text-muted` | `#0B1230` / `#4F5B7A` | `#EEF2FB` / `#A8B3CC` | 18,4 y 6,8 sobre blanco; 18,0 y 9,6 sobre `#04070F` (8,7 sobre la superficie elevada) |
+| `border` / `border-strong` | `#D3DAEA` / `#6B7896` | `#1C2544` / `#6B7896` | strong 4,4 (claro) y 4,6 (oscuro): ≥ 3 para controles |
+| `primary` / `on-primary` | `#1D4FC4` / blanco | `#66B1FF` / `#06122B` | 7,1 (claro) y 8,9 (oscuro; 8,1 sobre elevada); texto sobre primario 7,1 y 8,2 |
+| `primary-hover` / `primary-active` / `primary-subtle` | `#1A3FA8` / `#172F7A` / `#EAF4FF` | `#8FC6FF` / `#3D94FF` / cobalto al 12 % | — |
+| `accent` / `on-accent` | `#0B6B8A` / blanco | `#73DFFF` / `#06122B` | 5,5 (claro), 13,2 (oscuro) |
+| `success` / `danger` / `warning` / `info` | `#4F7A12` / `#D63A31` / `#8F5C00` / `#3D47C2` | `#8BBF3A` / `#FF9AA4` / `#FBBF24` / `#8B95FF` | claro 5,1 / 4,7 / 5,0 / 7,3; oscuro 9,2 / 10,0 / 12,1 / 7,5; `on-*` blanco en claro y `#06122B` en oscuro |
+| `focus` | `#1D4FC4` | `#73DFFF` | anillo de 2 px + halo `--iv-focus-halo` (cobalto 35 % / 45 %) |
+| `overlay` / `hover-surface` / `primary-border` | `rgb(11 18 48 / .55)` / `.04` / cobalto `.55` | `rgb(2 5 12 / .65)` / blanco azulado `.05` / cobalto `.5` | — |
+| `glow-primary` / `glow-secondary` | cobalto `.35` / cian `.3` | cobalto `.45` / cian `.4` | halos de foco, botones y bordes luminosos |
+| `gradient-brand` / `gradient-primary` (nuevos) | cian oscuro → cobalto / cian → cobalto → índigo | `#73DFFF → #6674FF` / `#8FE3FF → #66B1FF → #8B95FF` | botón primario, texto degradado, filetes |
+| `glass-*` | blanco `.55`/`.78`, borde `.65`, brillo `.9` | azul marino `.5`/`.78`, borde blanco `.1`, brillo `.18` | superficies de cristal |
 
-Fondo de medición: salvo indicación, cada ratio se mide sobre `bg`; el peor caso real es sobre `surface-raised`, donde `border-strong` queda en 3.6 (dark) y 3.8 sobre `surface` (light), ambos ≥ 3:1. Los tokens de estado que se usan como fondo sólido (`success`, `danger`, `warning`, `info`) llevan su `on-*`.
-
-Decisión declarada: `primary`, `success` y `focus` comparten el verde (light `#0A6A43`, dark `#29F59A`) y en dark coinciden además con `accent`. Es intencional: el verde es el color de marca y de acción; éxito y foco se diferencian por forma (badge/alert con `success-subtle`, anillo de foco con offset), no por tono. Un consumidor que necesite distinguirlos redefine `--iv-color-success`.
-
-Descartados con evidencia: `green-700 #0B8A55` como primario light (4.4:1 con blanco, insuficiente para texto AA) y `green-600` como anillo de foco en light (2.7:1).
+Las cifras salen de `scripts`-menos: se calcularon con la fórmula WCAG 2.x sobre los valores de la tabla al escribir esta sección (2026-09-16); axe las vuelve a comprobar en cada fixture del gate.
 
 ## 4. Escalas
 
@@ -69,8 +52,8 @@ Descartados con evidencia: `green-700 #0B8A55` como primario light (4.4:1 con bl
 | Tipo (`--iv-text-*`) | `xs sm md lg xl 2xl 3xl 4xl` | `.75 .875 1 1.125 1.25 1.5` rem; `3xl clamp(1.75rem, 1.2rem + 1.5vw, 2.25rem)`; `4xl clamp(2.25rem, 1.5rem + 2.5vw, 3.5rem)` |
 | Interlineado (`--iv-leading-*`) | `tight snug normal relaxed` | `1.1 1.25 1.5 1.65` |
 | Peso (`--iv-weight-*`) | `normal medium semibold bold` | `400 500 600 700` |
-| Fuentes (`--iv-font-*`) | `sans mono` | `system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` · `ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace` |
-| Radio (`--iv-radius-*`) | `sm md lg full` | `.25 .5 .75 999` rem |
+| Fuentes (`--iv-font-*`) | `sans mono` | `"Outfit", "Outfit Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif` (Outfit, OFL, la sirve la web y las recetas en local; el paquete no incluye archivos de fuente y cae a la del sistema) · `ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace` |
+| Radio (`--iv-radius-*`) | `sm md lg full` | `.375 .875 1.375 999` rem (6, 14 y 22 px, como los teclados, campos y tarjetas de intervolutions.com; los botones son píldora) |
 | Borde (`--iv-border-width`, `--iv-border-width-strong`) | — | `1px`, `3px` (acento de alert y toast) |
 | Sombra (`--iv-shadow-*`) | `1 2 3 ambient` (`ambient` desde v0.6: reposo de tarjetas y tablas, con anillo en oscuro) | light: `0 1px 2px rgb(8 19 16/.06)` … `0 12px 32px rgb(8 19 16/.14)`; dark: misma geometría con borde `surface-raised` y opacidad .4 |
 | Foco | `--iv-focus-width 2px`, `--iv-focus-offset 2px`, `--iv-color-focus` | `outline: var(--iv-focus-width) solid var(--iv-color-focus); outline-offset: var(--iv-focus-offset)` solo en `:focus-visible` |
