@@ -32,7 +32,16 @@ const server = createServer(async (req, res) => {
 await new Promise((r) => server.listen(0, r));
 const port = server.address().port;
 
-const browser = await chromium.launch();
+// A checkout without the Playwright browsers (a fresh machine, CI without `npx playwright
+// install`) must still build the site: the frames keep the images already on disk, or stay
+// empty and say so, exactly like the OG image falls back to its SVG.
+let browser;
+try { browser = await chromium.launch(); }
+catch (err) {
+  server.close();
+  console.warn("build-shots: browser not available (" + String(err.message).split("\n")[0] + "); frames keep the last images. Run `npx playwright install chromium` to refresh them.");
+  process.exit(0);
+}
 for (const slug of present) {
   for (const [w, h] of [[1440, 900], [390, 844]]) {
     const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: "reduce" });
