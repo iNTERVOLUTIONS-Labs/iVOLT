@@ -2,6 +2,17 @@
 
 La web es estática: `apps/docs/dist` completo tras `npm run build:docs` (o `npm run verify`). El despliegue lo ejecuta el propietario; este repositorio no despliega nada.
 
+## 0. Build en el servidor (la carpeta `apps/docs/dist` no está en el repositorio)
+
+`dist/` está en `.gitignore`: un checkout no trae la web. El paso de build del despliegue, verificado en un clon limpio (solo Node, sin navegadores):
+
+```sh
+npm ci                # Node >= 22, npm >= 10; instala sharp y lightningcss precompilados
+npm run build:docs    # construye el paquete si falta y después la web (Astro + Pagefind)
+```
+
+Salida: `apps/docs/dist` (~43 MB con fotografías, capturas y descargas). Si no hay navegadores de Playwright en el servidor, `build-shots.mjs` avisa y conserva las capturas versionadas en `apps/docs/public/shots`; el build termina igual. Con Orbit: `A_OUTDIR='apps/docs/dist'` y los dos comandos anteriores como paso de build antes de publicar.
+
 ## 1. URL pública
 
 `apps/docs/astro.config.mjs` fija `site: https://ivolt.intervolutions.com` (la variable `SITE_URL` la sustituye para un host de prueba). Con ella salen absolutos: `<link rel="canonical">`, `hreflang` en/es/x-default entre páginas gemelas, `og:image`, el JSON-LD de las portadas, `sitemap-index.xml` + `sitemap-0.xml` y `robots.txt` (en `apps/docs/public/`). Si el dominio cambia, cambia ese único valor y reconstruye.
