@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-16 · **`1.0.0-rc.3` publicada bajo `next`** (ronda adversaria visual, ADR-050; gate en tres motores exit 0; Lighthouse 96–100; `docs/RELEASE.md` §0i) · rc.2 «Cobalt» (ADR-049) y rc.1 (megamenú v2, ronda 3) también bajo `next` · `0.7.0-beta.0` en `latest`/`beta` desde 2026-09-14 · nada desplegado
+Última actualización: 2026-09-16 · **`1.0.0` publicada en npm bajo `latest`** (primera estable, ADR-051; `next` apunta a la misma versión; gate en tres motores exit 0; Lighthouse 97–100; `docs/RELEASE.md` §0j) · candidatas rc.0–rc.3 y `0.7.0-beta.0` (`beta`) publicadas antes · nada desplegado
 
 ## Estado por fase e hito
 
@@ -13,6 +13,17 @@
 | v0.8 «Hardening» (§11, ADR-044/045) | cerrado, sin publicar |
 | v0.9 «Complete» (§11, ADR-046) | cerrado, sin publicar |
 | **`1.0.0-rc.0`** (§11) | **publicada** (`npm install @intervolutions/ivolt@next`): gate exit 0 (1008 unitarias, 1580 navegador × 3 motores, pack-smoke 134 archivos, 108 páginas), Lighthouse 97/100 home y 98/100 receta, 30 capturas finales en tres anchos y dos temas | contrato congelado (`API_CONTRACT.md` cabecera), `STABILITY.md`, changelog consolidado 0.1 → 1.0, avisos «release candidate» en la web | `verify` exit 0 en la segunda pasada (la primera dejó una prueba de la marquesina en WebKit que apuntaba el puntero a la pista en movimiento; ahora apunta a la ventana): 1008 unitarias · 1580 pruebas de navegador y 139 omitidas en tres motores · pack-smoke (`0.9.0-beta.0.tgz`, 134 archivos) · 108 páginas · 5 ejemplos | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
+
+## `1.0.0` (2026-09-16, ADR-051)
+
+Petición del propietario: vista previa del constructor de temas en oscuro, dos redactores de comunicación empresarial («no nos pasemos de sinceros, no digamos más de lo necesario, un poco de SEO y marketing») y publicación de `1.0.0`.
+
+| Bloque | Verificación |
+|---|---|
+| Constructor de temas: la vista previa leía el primer radio del grupo y quedaba en claro; ahora sigue al radio elegido y resiembra los campos con el tema mostrado; el hex abreviado de la hoja minificada se expande para los campos de color | `theme-builder.spec.js` cubre ambas direcciones |
+| Redactor C1 (web en/es): titular y entradilla con palabra clave, secciones por beneficio, avisos de candidata sustituidos por la promesa de estabilidad, hoja de ruta reescrita en torno a lo que trae 1.0, títulos y descripciones únicos en 108 páginas, títulos descriptivos de componentes, JSON-LD sin datos inventados, un aviso de ficción por página | contratos 228/228; `site-*`, `theme`, `theme-builder` 31/31 |
+| Redactor C2 (README del paquete y raíz, starter, cuatro recetas): propuesta de valor, instalación, tabla de lo que incluye, «Why iVOLT», compatibilidad; recetas escritas como productos con una línea de ficción por página y créditos fotográficos íntegros; `description` y `keywords` del paquete | 1039 unitarias; pack-smoke; recetas con axe e interacción 12/12 |
+| Integrador: versión, changelog, contrato y `STABILITY.md` en vigor, portada de `/examples` en tres tamaños (LCP móvil 3,6 → 2,4 s), publicación | `verify` exit 0 (1039 unitarias · 1545 navegador · 134 archivos · 108 páginas · 5 ejemplos); Lighthouse móvil 97–98, escritorio 100; instalación verificada desde el registro sin etiqueta (`1.0.0`) |
 
 ## Ronda adversaria visual → `1.0.0-rc.3` (2026-09-16, ADR-050)
 
@@ -120,7 +131,7 @@ Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title`
 
 ## Siguiente acción
 
-Aceptación visual del propietario sobre la web construida tras la ronda (`npm run build:docs` y preview) y decisión sobre los aplazados a 1.1 (`ROADMAP.md`: leyenda del datatable, aviso de `data-iv-*` desconocidos, cifras en mono, token de filete, theming de los degradados). Después, solo correcciones hasta `1.0.0` (`latest`).
+`1.0.0` está en `latest`. Pendientes del propietario: rotar el token de npm; decidir el despliegue de la web (requiere autorización explícita, §3 de `RELEASE.md`) y la URL pública (`SITE_URL` activa las `url` absolutas del JSON-LD y `hreflang`); revisar los aplazados a 1.1 (`ROADMAP.md`). Desde aquí, correcciones en `1.0.x` y funciones nuevas en `1.1` (`STABILITY.md`).
 
 ## Decisiones que no deben perderse
 
