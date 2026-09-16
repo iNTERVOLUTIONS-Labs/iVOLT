@@ -2,6 +2,10 @@
 
 Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
 
+## 0g. `1.0.0-rc.1` (publicada el 2026-09-16 con etiqueta `next`)
+
+Segundo candidato: megamenú v2 reconstruido de cero (ADR-048) y endurecido por revisión adversaria, más la ronda 3 de la web y los ejemplos (ADR-047) integrada por la otra sesión. Gate final en tres motores con tres workers (1037 unitarias, 1545 pruebas de navegador, pack-smoke, 201 páginas, 5 ejemplos). Publicación con el token del propietario en un `userconfig` temporal borrado tras el comando: `npm publish --access public --tag next -w @intervolutions/ivolt` (134 archivos); `dist-tags`: `latest` y `beta` en `0.7.0-beta.0`, `next` en `1.0.0-rc.1`; etiqueta git `v1.0.0-rc.1`; instalación verificada desde el registro (`@next`, ESM, 24 componentes).
+
 ## 0f. `1.0.0-rc.0` (publicada el 2026-09-15 con etiqueta `next`)
 
 Publicación ejecutada con autorización del propietario y su token granular (sin OTP), cargado en un `userconfig` temporal borrado tras el comando: `npm publish --access public --tag next -w @intervolutions/ivolt` (134 archivos, shasum `d6e6e80e…`); `dist-tags`: `latest` y `beta` en `0.7.0-beta.0`, `next` en `1.0.0-rc.0`; etiqueta git `v1.0.0-rc.0` en origin; instalación verificada en un consumidor limpio (`npm install @intervolutions/ivolt@next`, importación ESM, 24 componentes). Pasos que se siguieron:
