@@ -2,7 +2,7 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
-## 1.0.0-rc.3 (unreleased; opened 2026-09-16)
+## 1.0.0-rc.3 — 2026-09-16 (npm, tag `next`)
 
 ### Fixed
 - Adversarial visual round (ADR-050), components: ghost buttons wear the hairline at rest (icon-only ghosts stay bare); the danger button is solid `red.600` with white in both themes (5.66:1) instead of the theme's danger colour, which in dark was a light coral brighter than the primary; pagination links are pills with tabular figures; the alert tone bar follows the corner radius and tints sit at 9% over the raised surface (no more olive and brown panels in dark); breadcrumb links are muted until hover; the drawer panel has an edge and warns in development when a static drawer sits outside `aside`/`nav` (`data-iv-static-host` marks an intentional host); the active tab is squared against its indicator; tables and the datatable use tabular figures; the neutral solid badge sits on the raised surface; the progress track is visible in dark; fields have a translucent fill and small fields a 6 px radius; avatar groups no longer clip initials; the third mesh stop is indigo; card titles are bold and `h1`/`h2` tighter; the navbar is glass with a hairline by default (`.iv-navbar--glass` is now the explicit form of the default); stepper and timeline rails share one hairline and the timeline eyebrow is cobalt.

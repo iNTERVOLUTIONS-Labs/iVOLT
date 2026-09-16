@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-16 · **`1.0.0-rc.2` «Cobalt» cerrada** (ADR-049: paleta por defecto de intervolutions.com y Outfit; gate en tres motores exit 0 y Lighthouse 98–100; publicada bajo `next` el 2026-09-16, `docs/RELEASE.md` §0h) · `1.0.0-rc.1` publicada bajo `next` el 2026-09-16 (megamenú v2, ADR-048; ronda 3, ADR-047) · `0.7.0-beta.0` en `latest`/`beta` desde 2026-09-14 · nada desplegado
+Última actualización: 2026-09-16 · **`1.0.0-rc.3` publicada bajo `next`** (ronda adversaria visual, ADR-050; gate en tres motores exit 0; Lighthouse 96–100; `docs/RELEASE.md` §0i) · rc.2 «Cobalt» (ADR-049) y rc.1 (megamenú v2, ronda 3) también bajo `next` · `0.7.0-beta.0` en `latest`/`beta` desde 2026-09-14 · nada desplegado
 
 ## Estado por fase e hito
 
@@ -120,7 +120,7 @@ Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title`
 
 ## Siguiente acción
 
-`1.0.0-rc.2` publicada bajo `next` (`docs/RELEASE.md` §0h); recoger la aceptación visual del propietario sobre Cobalt en la web construida; después, solo correcciones hasta `1.0.0` (`latest`). Abiertos: arte oficial en cobalto, tokens candidatos y `iv-eyebrow` (`ROADMAP.md` §11).
+Aceptación visual del propietario sobre la web construida tras la ronda (`npm run build:docs` y preview) y decisión sobre los aplazados a 1.1 (`ROADMAP.md`: leyenda del datatable, aviso de `data-iv-*` desconocidos, cifras en mono, token de filete, theming de los degradados). Después, solo correcciones hasta `1.0.0` (`latest`).
 
 ## Decisiones que no deben perderse
 
