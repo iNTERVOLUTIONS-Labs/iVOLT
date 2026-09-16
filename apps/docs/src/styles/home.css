@@ -152,11 +152,12 @@
   .docs-recipe { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); }
   .docs-recipe:nth-child(even) .docs-recipe__frame { order: 2; }
 }
-.docs-recipe__frame { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--iv-radius-lg); background: var(--iv-color-surface); box-shadow: 0 40px 80px -50px rgb(2 5 12 / .85), 0 0 0 1px var(--docs-card-stroke); transform: perspective(1200px); transition: transform 520ms var(--docs-ease-out), box-shadow 520ms var(--docs-ease-out); min-width: 0; }
+.docs-recipe__frame { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--iv-radius-lg); background: var(--iv-color-surface); box-shadow: 0 40px 80px -50px rgb(2 5 12 / .85), 0 0 0 1px var(--docs-card-stroke); transition: transform 520ms var(--docs-ease-out), box-shadow 520ms var(--docs-ease-out); min-width: 0; }
 .docs-recipe__frame::before { content: ""; position: absolute; inset-inline: 0; inset-block-start: 0; block-size: 2px; z-index: 2; background: linear-gradient(90deg, transparent, var(--iv-color-accent), transparent); opacity: .6; }
-.docs-recipe__frame iframe { position: absolute; inset-block-start: 0; inset-inline-start: 0; inline-size: 200%; block-size: 200%; border: 0; transform: scale(.5); transform-origin: 0 0; transition: transform 620ms var(--docs-ease-out); }
+/* The tilt is a hover-only 3D transform: at rest the frame stays in the page raster, not on a
+   composited layer (a permanent perspective() kept it on one, where the rounded clip and the
+   downscaled screenshot are resampled by the GPU and can look serrated on some drivers). */
 .docs-recipe:hover .docs-recipe__frame { transform: perspective(1200px) rotateY(-2.5deg) rotateX(1.5deg) translateY(-6px); box-shadow: 0 50px 90px -50px var(--docs-halo), 0 0 0 1px var(--docs-line); }
-.docs-recipe:hover .docs-recipe__frame iframe { transform: scale(.5) translateY(-80px); }
 .docs-recipe__body h3 { font-family: var(--docs-display); font-weight: 700; font-size: clamp(1.9rem, 3.4vw, 3rem); line-height: 1; letter-spacing: -0.03em; margin: 0 0 var(--iv-space-4); }
 .docs-recipe__body p { color: var(--iv-color-text-muted); margin: 0 0 var(--iv-space-5); max-inline-size: 46ch; }
 .docs-recipe__go { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--docs-display); color: var(--iv-color-primary); }

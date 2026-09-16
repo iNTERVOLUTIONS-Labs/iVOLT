@@ -252,7 +252,10 @@
 .docs .iv-button--primary:hover::after { animation: docs-sweep 760ms var(--docs-ease) 1; }
 @keyframes docs-sweep { to { transform: translateX(120%); } }
 .docs .iv-button--lg { padding-inline: 1.7rem; }
-.docs-magnetic { transform: translate3d(var(--mx, 0px), var(--my, 0px), 0); transition: transform 320ms var(--docs-ease-out); }
+/* 2D translate on purpose: translate3d() would pin every magnetic control to its own GPU layer for the
+   whole session, and rounded strokes rasterised on a separate layer are what some Windows drivers
+   draw with serrated edges. */
+.docs-magnetic { transform: translate(var(--mx, 0px), var(--my, 0px)); transition: transform 320ms var(--docs-ease-out); }
 .docs-magnetic.is-pulled { transition: transform 90ms linear; }
 
 /* ================================================================
