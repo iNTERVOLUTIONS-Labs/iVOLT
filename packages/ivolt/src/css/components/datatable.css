@@ -16,6 +16,11 @@
   display: block;
 }
 
+/* Same figures as `.iv-table td`: a sorted column has to stay a column. */
+.iv-datatable td {
+  font-variant-numeric: tabular-nums;
+}
+
 /* Filter --------------------------------------------------------------- */
 
 /* The filter searches one table, so it keeps the width of a search field

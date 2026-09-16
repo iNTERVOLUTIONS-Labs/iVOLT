@@ -14,6 +14,10 @@
   margin: 0;
   padding: 0;
   border: 0;
+  /* The edge of the panel: over a dark page the shadow alone leaves no line
+     where the drawer meets the backdrop, and the static panel needs the same
+     rule against the content beside it. */
+  border-inline-end: var(--iv-border-width) solid var(--iv-color-border);
   inset-block: 0;
   inset-inline-start: 0;
   inset-inline-end: auto;
@@ -37,6 +41,8 @@
 .iv-drawer--end {
   --iv-drawer-from: 100%;
 
+  border-inline-start: var(--iv-border-width) solid var(--iv-color-border);
+  border-inline-end: 0;
   inset-inline-start: auto;
   inset-inline-end: 0;
 }
@@ -127,12 +133,6 @@
   inline-size: var(--iv-drawer-width, 20rem);
   max-inline-size: 100%;
   box-shadow: none;
-  border-inline-end: var(--iv-border-width) solid var(--iv-color-border);
-}
-
-.iv-drawer--end[data-iv-static] {
-  border-inline-start: var(--iv-border-width) solid var(--iv-color-border);
-  border-inline-end: 0;
 }
 
 /* No-JS fallback --------------------------------------------------------

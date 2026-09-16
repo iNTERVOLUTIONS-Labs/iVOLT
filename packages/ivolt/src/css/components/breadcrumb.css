@@ -52,20 +52,26 @@
   -webkit-mask-size: contain;
 }
 
+/* A trail is orientation, not a call to action: at rest the crumbs are quiet
+   text in the muted colour, and the brand plus the underline only arrive where
+   the pointer or the keyboard is. */
 .iv-breadcrumb a {
-  color: var(--iv-color-primary);
-  text-decoration: underline;
+  color: var(--iv-color-text-muted);
+  text-decoration: none;
   text-underline-offset: 0.2em;
   border-radius: var(--iv-radius-sm);
 }
 
 @media (hover: hover) {
   .iv-breadcrumb a:hover {
-    color: var(--iv-color-primary-hover);
+    color: var(--iv-color-primary);
+    text-decoration: underline;
   }
 }
 
 .iv-breadcrumb a:focus-visible {
+  color: var(--iv-color-primary);
+  text-decoration: underline;
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: var(--iv-focus-offset);
   box-shadow: var(--iv-focus-halo);

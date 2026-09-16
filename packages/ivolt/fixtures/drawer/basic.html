@@ -1,25 +1,27 @@
 <a class="iv-button iv-button--secondary iv-u-lg-hidden" href="#site-drawer" data-iv-open="site-drawer">Open navigation</a>
 
-<dialog class="iv-drawer" id="site-drawer" data-iv-component="drawer" aria-label="Site navigation">
-  <div class="iv-drawer__panel">
-    <header class="iv-drawer__header">
-      <h2 class="iv-drawer__title">Sections</h2>
-      <button class="iv-button iv-button--ghost iv-button--icon iv-u-lg-hidden" type="button" data-iv-close aria-label="Close">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
-    </header>
-    <div class="iv-drawer__body">
-      <nav class="iv-stack" aria-label="Sections">
-        <a href="#drawer-note">Overview</a>
-        <a href="#drawer-note">Components</a>
-        <a href="#drawer-note">Tokens</a>
-        <a href="#drawer-note">Accessibility</a>
-      </nav>
+<aside aria-label="Site navigation">
+  <dialog class="iv-drawer" id="site-drawer" data-iv-component="drawer" aria-label="Site navigation">
+    <div class="iv-drawer__panel">
+      <header class="iv-drawer__header">
+        <h2 class="iv-drawer__title">Sections</h2>
+        <button class="iv-button iv-button--ghost iv-button--icon iv-u-lg-hidden" type="button" data-iv-close aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <div class="iv-drawer__body">
+        <nav class="iv-stack iv-u-gap-2" aria-label="Sections">
+          <a class="iv-button iv-button--ghost iv-u-w-full iv-u-justify-start" href="#drawer-note">Overview</a>
+          <a class="iv-button iv-button--ghost iv-u-w-full iv-u-justify-start" href="#drawer-note">Components</a>
+          <a class="iv-button iv-button--ghost iv-u-w-full iv-u-justify-start" href="#drawer-note">Tokens</a>
+          <a class="iv-button iv-button--ghost iv-u-w-full iv-u-justify-start" href="#drawer-note">Accessibility</a>
+        </nav>
+      </div>
+      <footer class="iv-drawer__footer">
+        <a class="iv-button iv-button--ghost iv-button--sm iv-u-lg-hidden" href="#" data-iv-close>Close</a>
+      </footer>
     </div>
-    <footer class="iv-drawer__footer">
-      <a class="iv-button iv-button--ghost iv-button--sm iv-u-lg-hidden" href="#" data-iv-close>Close</a>
-    </footer>
-  </div>
-</dialog>
+  </dialog>
+</aside>
 
-<p id="drawer-note" class="iv-u-text-sm iv-u-text-muted">Demo: below the lg breakpoint the drawer opens as a modal; from lg it is a static panel, so the opening and closing controls are hidden instead of left with nothing to do.</p>
+<p id="drawer-note" class="iv-u-text-sm iv-u-text-muted">Demo: below the lg breakpoint the drawer opens as a modal; from lg it is a static panel, so the opening and closing controls are hidden instead of left with nothing to do. Every row leads back to this note, not to a real page. The panel lives in an <code>&lt;aside&gt;</code>, which is how the component is told that becoming static from a breakpoint upwards is intended.</p>

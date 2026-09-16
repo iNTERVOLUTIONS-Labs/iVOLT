@@ -122,10 +122,11 @@
 .iv-button--ghost {
   --iv-button-bg: transparent;
   --iv-button-fg: var(--iv-color-text);
-  --iv-button-border: transparent;
-  /* Nothing at rest, a cobalt tint and the brand hairline under the pointer:
-     the ghost keeps the neutral foreground because it also serves as the icon
-     button over artwork, where a tinted label would lose contrast. */
+  /* A hairline at rest, no fill: without an edge the ghost is a bare label and
+     nothing says it is a target until the pointer is already on it. The
+     foreground stays neutral because the ghost also serves over artwork, where
+     a tinted label would lose contrast; a cobalt tint arrives on hover. */
+  --iv-button-border: var(--iv-color-border);
   --iv-button-bg-hover: var(--iv-color-primary-subtle);
   --iv-button-border-hover: var(--iv-color-primary-border);
   --iv-button-bg-active: var(--iv-color-primary-subtle);
@@ -134,17 +135,26 @@
   --iv-button-lift: 0px;
 }
 
-/* There are no `danger-hover` / `danger-active` tokens: they are derived
-   from the semantic token itself so no loose color is introduced (see
-   "Proposals"). */
+/* The icon-only ghost is the close of a dialog, a drawer, a megamenu or a
+   toast: it sits inside a panel that already draws its own edge, and a second
+   box around the glyph would read as a control inside a control. */
+.iv-button--ghost.iv-button--icon {
+  --iv-button-border: transparent;
+}
+
+/* The solid red of the palette in both themes, not `--iv-color-danger`: that
+   token is tuned as *text* on the page, so in the dark theme it is a light
+   coral and a button filled with it became the brightest surface on the
+   screen. `red.600` under white measures 5.66:1 and `red.700` 6.24:1, so the
+   label clears AA in either theme and the hover step only deepens it. */
 .iv-button--danger {
-  --iv-button-bg: var(--iv-color-danger);
-  --iv-button-fg: var(--iv-color-on-danger);
-  --iv-button-border: var(--iv-color-danger);
-  --iv-button-bg-hover: color-mix(in oklab, var(--iv-color-danger) 88%, var(--iv-color-text));
-  --iv-button-border-hover: color-mix(in oklab, var(--iv-color-danger) 88%, var(--iv-color-text));
-  --iv-button-bg-active: color-mix(in oklab, var(--iv-color-danger) 76%, var(--iv-color-text));
-  --iv-button-sheen: inset 0 1px 0 color-mix(in oklab, var(--iv-color-on-danger) 26%, transparent);
+  --iv-button-bg: var(--iv-palette-red-600);
+  --iv-button-fg: var(--iv-palette-neutral-0);
+  --iv-button-border: var(--iv-palette-red-600);
+  --iv-button-bg-hover: var(--iv-palette-red-700);
+  --iv-button-border-hover: var(--iv-palette-red-700);
+  --iv-button-bg-active: var(--iv-palette-red-700);
+  --iv-button-sheen: inset 0 1px 0 color-mix(in oklab, var(--iv-palette-neutral-0) 26%, transparent);
 }
 
 /* Sizes -------------------------------------------------------------- */

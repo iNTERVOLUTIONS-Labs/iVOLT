@@ -73,10 +73,12 @@
   --iv-badge-on-tone: var(--iv-color-on-info);
 }
 
-/* Solid: filled with the tone itself. Without a tone variant it falls back
-   to the neutral text colour, so `--solid` alone is still legible. */
+/* Solid: filled with the tone itself. Without a tone variant it is a raised
+   neutral plate with the page text on it and the shared hairline around it —
+   not the text colour as a fill, which in the dark theme painted a near-white
+   pill and made the neutral badge the loudest one in a row of coloured ones. */
 .iv-badge--solid {
-  --iv-badge-bg: var(--iv-badge-tone, var(--iv-color-text));
-  --iv-badge-fg: var(--iv-badge-on-tone, var(--iv-color-bg));
-  --iv-badge-border: transparent;
+  --iv-badge-bg: var(--iv-badge-tone, var(--iv-color-surface-raised));
+  --iv-badge-fg: var(--iv-badge-on-tone, var(--iv-color-text));
+  --iv-badge-border: var(--iv-badge-tone, var(--iv-color-border));
 }

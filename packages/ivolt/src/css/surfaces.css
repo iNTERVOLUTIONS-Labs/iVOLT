@@ -67,7 +67,9 @@
 .iv-texture-aurora {
   --iv-mesh-1: color-mix(in oklab, var(--iv-color-primary) 46%, var(--iv-color-bg));
   --iv-mesh-2: color-mix(in oklab, var(--iv-glow-secondary) 88%, var(--iv-color-bg));
-  --iv-mesh-3: color-mix(in oklab, var(--iv-color-accent) 40%, var(--iv-color-bg));
+  /* Indigo, not the accent: the cyan focus met the cobalt of the first one
+     over the middle of the block and the meeting turned a greenish petrol. */
+  --iv-mesh-3: color-mix(in oklab, var(--iv-color-info) 34%, var(--iv-color-bg));
 
   background-color: var(--iv-color-bg);
   background-image:

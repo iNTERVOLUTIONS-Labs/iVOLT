@@ -87,7 +87,7 @@
 .iv-card .iv-card__title {
   margin-block: 0 var(--iv-space-2);
   font-size: var(--iv-text-lg);
-  font-weight: var(--iv-weight-semibold);
+  font-weight: var(--iv-weight-bold);
   line-height: var(--iv-leading-snug);
   letter-spacing: var(--iv-tracking-tight);
   text-wrap: balance;

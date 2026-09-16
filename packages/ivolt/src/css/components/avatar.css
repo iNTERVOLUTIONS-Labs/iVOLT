@@ -133,14 +133,29 @@
   display: none;
 }
 
-/* The overlap defaults to just under a fifth of the face, so a stack of small or large
-   avatars keeps the same rhythm and the initials behind stay legible; that is
-   -0.45rem at the default size, close to the -0.5rem of the contract and
-   short enough to leave the initials behind readable. `--iv-avatar-overlap` on the group retunes it.
+/* The overlap defaults to an eighth of the face, so a stack of small or large
+   avatars keeps the same rhythm. It used to be 0.18, and with the 2px gap ring
+   on top of it the neighbour ate into the first letter of the initials behind:
+   measured at the default size the covered strip was 9.2px against the 8px the
+   centred glyphs left free. `--iv-avatar-overlap` on the group retunes it.
    The default lives in the fallback, not on the group: a calc() written there
    would resolve `--iv-avatar-size` against the group, which does not set it. */
 :where(.iv-avatar-group) .iv-avatar {
-  margin-inline-start: var(--iv-avatar-overlap, calc(var(--iv-avatar-size) * -0.18));
+  margin-inline-start: var(--iv-avatar-overlap, calc(var(--iv-avatar-size) * -0.125));
+}
+
+/* What is left of a face in a group is its inline end: the one in front covers
+   the start. The initials move with it — the image is a grid item of its own
+   and still fills the whole box. Logical, so a right-to-left stack, where the
+   faces fall away to the left, moves them the other way on its own. */
+:where(.iv-avatar-group) .iv-avatar {
+  justify-items: end;
+  padding-inline-end: calc(var(--iv-avatar-size) * 0.08);
+}
+
+:where(.iv-avatar-group) .iv-avatar__img {
+  inline-size: calc(100% + var(--iv-avatar-size) * 0.08);
+  justify-self: start;
 }
 
 /* The page-colour gap between overlapping faces is a bordered pseudo-element

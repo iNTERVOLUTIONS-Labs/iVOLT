@@ -103,6 +103,9 @@
 
 /* Parts ----------------------------------------------------------------- */
 
+/* The eyebrow carries the brand: it is the only mono, tracked, uppercase line
+   of the component and it marks the moment, so it is read before the title
+   rather than being greyed out under it. */
 .iv-timeline__time {
   display: block;
   margin-block-end: var(--iv-space-1);
@@ -110,7 +113,7 @@
   font-size: var(--iv-text-xs);
   letter-spacing: var(--iv-tracking-caps);
   text-transform: uppercase;
-  color: var(--iv-color-text-muted);
+  color: var(--iv-color-primary);
 }
 
 .iv-timeline__body {

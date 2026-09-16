@@ -10,6 +10,31 @@
   </div>
 
   <div class="iv-stack iv-u-gap-2">
+    <label class="iv-u-text-sm" for="pr-restore">Restoring the index — 96%</label>
+    <progress class="iv-progress iv-progress--lg" id="pr-restore" value="96" max="100"></progress>
+  </div>
+
+  <div class="iv-stack iv-u-gap-2">
+    <label class="iv-u-text-sm" for="pr-indeterminate">Contacting the registry — progress unknown</label>
+    <progress class="iv-progress" id="pr-indeterminate"></progress>
+  </div>
+
+  <p class="iv-u-m-0 iv-u-text-sm">
+    The bar is cobalt by default: a progress bar reports how far along something
+    is, not whether it went well. Each one keeps a visible label that states the
+    value in words; the colour is never the only information. Without a
+    <code>value</code> the bar is indeterminate, and under
+    <code>prefers-reduced-motion</code> it stops moving and stays a full subtle
+    track.
+  </p>
+
+  <h2 class="iv-u-text-lg iv-u-m-0">Semantic tones</h2>
+
+  <p class="iv-u-m-0 iv-u-text-sm">
+    One example each, for the cases where the bar really does carry a verdict.
+  </p>
+
+  <div class="iv-stack iv-u-gap-2">
     <label class="iv-u-text-sm" for="pr-tests">Tests passed — 148 of 152</label>
     <progress class="iv-progress iv-progress--success" id="pr-tests" value="148" max="152"></progress>
   </div>
@@ -23,16 +48,4 @@
     <label class="iv-u-text-sm" for="pr-budget">CSS budget spent — 44.2 kB of 45 kB</label>
     <progress class="iv-progress iv-progress--danger" id="pr-budget" value="44.2" max="45"></progress>
   </div>
-
-  <div class="iv-stack iv-u-gap-2">
-    <label class="iv-u-text-sm" for="pr-indeterminate">Contacting the registry — progress unknown</label>
-    <progress class="iv-progress" id="pr-indeterminate"></progress>
-  </div>
-
-  <p class="iv-u-m-0 iv-u-text-sm">
-    Each bar keeps a visible label that states the value in words; the colour is
-    never the only information. Without a <code>value</code> the bar is
-    indeterminate, and under <code>prefers-reduced-motion</code> it stops moving
-    and stays a full subtle track.
-  </p>
 </div>

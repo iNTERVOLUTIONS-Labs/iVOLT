@@ -55,21 +55,43 @@ function installMatchMedia(matches) {
   return mql;
 }
 
+// The drawer lives in an `<aside>`, which is how a page says that turning into
+// a static panel from a breakpoint upwards is intended; without it the
+// component warns (see the static-host tests at the end of the file).
 const MARKUP = `
   <a id="trigger" href="#d" data-iv-open="d">Open navigation</a>
-  <dialog id="d" class="iv-drawer" data-iv-component="drawer" aria-label="Site navigation">
-    <div class="iv-drawer__panel">
-      <header class="iv-drawer__header">
-        <h2 class="iv-drawer__title">Sections</h2>
-        <button id="close-btn" type="button" data-iv-close aria-label="Close">x</button>
-      </header>
-      <div class="iv-drawer__body">
-        <nav aria-label="Sections"><a id="first" href="#note">Overview</a></nav>
+  <aside id="host" aria-label="Site navigation">
+    <dialog id="d" class="iv-drawer" data-iv-component="drawer" aria-label="Site navigation">
+      <div class="iv-drawer__panel">
+        <header class="iv-drawer__header">
+          <h2 class="iv-drawer__title">Sections</h2>
+          <button id="close-btn" type="button" data-iv-close aria-label="Close">x</button>
+        </header>
+        <div class="iv-drawer__body">
+          <nav aria-label="Sections"><a id="first" href="#note">Overview</a></nav>
+        </div>
       </div>
-    </div>
-  </dialog>
+    </dialog>
+  </aside>
   <p id="note">Note</p>
 `;
+
+/**
+ * Serves a bare drawer, with no side region around it.
+ *
+ * @param {string} [hostAttrs] Attributes for the wrapper element.
+ * @returns {HTMLDialogElement} The drawer element.
+ */
+function serveLooseDrawer(hostAttrs = "") {
+  document.body.innerHTML = `
+    <div ${hostAttrs}>
+      <dialog id="loose" class="iv-drawer" aria-label="Site navigation">
+        <div class="iv-drawer__panel"><button type="button">x</button></div>
+      </dialog>
+    </div>
+  `;
+  return /** @type {HTMLDialogElement} */ (document.getElementById("loose"));
+}
 
 /**
  * @param {Record<string, unknown>} [options] Options passed in JavaScript.
@@ -284,6 +306,33 @@ describe("Drawer", () => {
     const second = setup({ staticFrom: "huge" });
     expect(second.drawer.isStatic).toBe(false);
     expect(warn).toHaveBeenCalledTimes(1);
+  });
+
+  it("warns once per element that the drawer stops being modal from the breakpoint up", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    installMatchMedia(false);
+    const el = serveLooseDrawer();
+    const first = new Drawer(el);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0][0]).toContain('data-iv-static-from="none"');
+    expect(warn.mock.calls[0][0]).toContain('"lg"');
+    first.destroy();
+    // Same element, second instance: the notice is not repeated.
+    new Drawer(el);
+    expect(warn).toHaveBeenCalledTimes(1);
+  });
+
+  it("says nothing when the drawer sits in a side region or stays modal", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    installMatchMedia(false);
+    for (const attrs of ['role="none"', "data-iv-static-host"]) {
+      const el = serveLooseDrawer(attrs);
+      new Drawer(el, attrs === 'role="none"' ? { staticFrom: "none" } : undefined);
+    }
+    // And inside the served `<aside>` of the shared markup.
+    document.body.innerHTML = MARKUP;
+    setup();
+    expect(warn).not.toHaveBeenCalled();
   });
 
   it("destroy removes the media listener and the static attribute", () => {

@@ -29,11 +29,29 @@
   display: block;
   color: var(--iv-color-text);
   background-color: var(--iv-navbar-bg);
+  /* The bar closes on a hairline: without it a glass header over a page of the
+     same family had no edge at all and the content ran into the navigation. */
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
   transition:
     background-color var(--iv-motion-base) var(--iv-ease-out),
     color var(--iv-motion-base) var(--iv-ease-out),
     box-shadow var(--iv-motion-base) var(--iv-ease-out),
     transform var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+/* Glass is the resting ground of the bar: the page passes under a frosted
+   sheet instead of a flat plate. `--iv-navbar-bg` above stays the opaque
+   fallback wherever the blur is not supported, so the links never sit on a
+   translucent background they cannot beat. The transparent modifier is out:
+   it has no ground of its own and blurring a cinematic cover behind it would
+   defeat the modifier itself. */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .iv-navbar:not(.iv-navbar--transparent) {
+    --iv-navbar-bg: var(--iv-glass-bg-strong);
+
+    -webkit-backdrop-filter: blur(var(--iv-blur-md));
+    backdrop-filter: blur(var(--iv-blur-md));
+  }
 }
 
 /* Conductive rule along the bottom edge, lit only once the page scrolls under
@@ -42,8 +60,9 @@
   content: "";
   position: absolute;
   inset-inline: 0;
-  inset-block-end: 0;
-  block-size: 1px;
+  /* Over the hairline, not above it: the seam lights the border itself. */
+  inset-block-end: calc(-1 * var(--iv-border-width));
+  block-size: var(--iv-border-width);
   background-image: linear-gradient(
     90deg,
     transparent,
@@ -418,6 +437,7 @@
   --iv-navbar-bg: transparent;
 
   color: var(--iv-palette-neutral-0);
+  border-block-end-color: transparent;
 }
 
 .iv-navbar--transparent[data-iv-condensed],
@@ -425,6 +445,7 @@
   --iv-navbar-bg: var(--iv-color-bg);
 
   color: var(--iv-color-text);
+  border-block-end-color: var(--iv-color-border);
 }
 
 /* Over a cover the brand colour is not readable and the underline alone marks
@@ -438,24 +459,10 @@
   box-shadow: none;
 }
 
+/* Kept as the explicit spelling of what the bar now does by default; a header
+   written with it behaves exactly as one written without it. */
 .iv-navbar--glass {
   --iv-navbar-bg: var(--iv-glass-bg-strong);
-}
-
-/* Glass needs a real blur behind it; where the browser has none the solid
-   background above is already the fallback. */
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .iv-navbar--glass {
-    -webkit-backdrop-filter: blur(var(--iv-blur-sm)) saturate(140%);
-    backdrop-filter: blur(var(--iv-blur-sm)) saturate(140%);
-  }
-
-  .iv-navbar[data-iv-condensed] {
-    --iv-navbar-bg: var(--iv-glass-bg-strong);
-
-    -webkit-backdrop-filter: blur(var(--iv-blur-sm)) saturate(140%);
-    backdrop-filter: blur(var(--iv-blur-sm)) saturate(140%);
-  }
 }
 
 /* Reduced motion -------------------------------------------------------- */
@@ -491,8 +498,10 @@
     text-underline-offset: 0.25em;
   }
 
-  .iv-navbar[data-iv-condensed] {
-    border-block-end: var(--iv-border-width) solid CanvasText;
+  .iv-navbar {
+    border-block-end-color: CanvasText;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
 

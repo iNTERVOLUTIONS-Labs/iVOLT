@@ -34,8 +34,10 @@
   color: var(--iv-color-text);
   /* Translucent, so a field dropped on a card, on glass or over the hero mesh
      reads as a well cut into that surface rather than a white patch on top of
-     it. `border-strong` is the visible hairline the brand draws around it. */
-  background-color: color-mix(in srgb, var(--iv-color-bg) 72%, transparent);
+     it. The raised surface, not the page background: on navy a field filled
+     with the page colour disappeared into the card behind it.
+     `border-strong` is the visible hairline the brand draws around it. */
+  background-color: color-mix(in srgb, var(--iv-color-surface-raised) 70%, transparent);
   border: var(--iv-border-width) solid var(--iv-color-border-strong);
   border-radius: var(--iv-radius-md);
   min-block-size: 2.5rem;
@@ -231,6 +233,9 @@ textarea.iv-input {
   padding-block: var(--iv-space-1);
   padding-inline: var(--iv-space-3);
   font-size: var(--iv-text-sm);
+  /* The medium radius is cut for a 2rem box: at that height it reads as a
+     lozenge rather than a field. */
+  border-radius: var(--iv-radius-sm);
 }
 
 .iv-input--lg {

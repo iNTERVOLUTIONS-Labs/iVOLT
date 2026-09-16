@@ -39,6 +39,16 @@ const END_CLASS = "iv-drawer--end";
 /** Breakpoint names already reported as unknown. */
 const warnedBreakpoints = new Set();
 
+/** Drawers already told that they turn into a static panel. */
+const warnedStaticHosts = new WeakSet();
+
+/**
+ * Elements that make the static panel a deliberate part of the page: a drawer
+ * inside one of them is read as a side region, not as a dialog that stops
+ * being a dialog.
+ */
+const STATIC_HOST_SELECTOR = "aside, nav, [data-iv-static-host]";
+
 /**
  * Tells whether an element is a `<dialog>`.
  *
@@ -299,6 +309,7 @@ export class Drawer extends IvComponent {
       }
       return;
     }
+    this._warnStaticHost(name);
     const mql = matchMedia(query);
     this._mql = mql;
     this._syncStatic(mql.matches);
@@ -308,6 +319,28 @@ export class Drawer extends IvComponent {
       if (matches && this.isOpen) this.close("viewport");
       this._syncStatic(matches);
     });
+  }
+
+  /**
+   * Warns once per element that the drawer stops being modal from `staticFrom`
+   * upwards. A drawer already living in a side region (`<aside>`, `<nav>` or
+   * any ancestor marked `data-iv-static-host`) is where the static panel is
+   * the point, so it says nothing there.
+   *
+   * @param {string} name Breakpoint name the drawer turns static from.
+   * @returns {void}
+   */
+  _warnStaticHost(name) {
+    const el = this._element;
+    if (warnedStaticHosts.has(el)) return;
+    if (typeof el.closest !== "function") return;
+    if (el.closest(STATIC_HOST_SELECTOR)) return;
+    warnedStaticHosts.add(el);
+    console.warn(
+      `[iVOLT] From the "${name}" breakpoint upwards this drawer is painted as a static panel and is no longer modal; ` +
+        'put it inside <aside> or <nav> (or mark an ancestor with data-iv-static-host) to say that is intended, ' +
+        'or set data-iv-static-from="none" to keep it modal at every width.'
+    );
   }
 
   /**

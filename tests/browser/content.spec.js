@@ -57,8 +57,12 @@ test("the status dot sits in the corner of its avatar", async ({ page }) => {
   const avatar = page.locator(".iv-avatar").filter({ has: page.locator(".iv-avatar__status") }).first();
   const box = await avatar.boundingBox();
   const dot = await avatar.locator(".iv-avatar__status").boundingBox();
-  expect(dot.x + dot.width).toBeLessThanOrEqual(box.x + box.width + 1);
-  expect(dot.y + dot.height).toBeLessThanOrEqual(box.y + box.height + 1);
+  // The page-colour gap around the dot is a real 2px border painted outside it
+  // (avatar.css: a spread shadow came out aliased), so the measured box hangs
+  // that gap over the corner on purpose; the dot itself stays inside.
+  const gap = 2;
+  expect(dot.x + dot.width).toBeLessThanOrEqual(box.x + box.width + gap + 1);
+  expect(dot.y + dot.height).toBeLessThanOrEqual(box.y + box.height + gap + 1);
   expect(dot.y).toBeGreaterThan(box.y + box.height / 2);
 });
 

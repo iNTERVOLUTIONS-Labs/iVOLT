@@ -45,6 +45,12 @@
   color: var(--iv-color-text-muted);
 }
 
+/* Figures of one width: a column of numbers lines up and a value that changes
+   does not shuffle the row. */
+.iv-table td {
+  font-variant-numeric: tabular-nums;
+}
+
 .iv-table th,
 .iv-table td {
   padding-block: var(--iv-table-cell-py);

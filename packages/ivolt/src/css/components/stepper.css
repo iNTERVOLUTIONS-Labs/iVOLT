@@ -25,7 +25,9 @@
   --iv-stepper-gap: var(--iv-space-6);
   --iv-stepper-step-gap: var(--iv-space-5);
   --iv-stepper-fill: var(--iv-color-primary);
-  --iv-stepper-track: 2px;
+  /* The same hairline as the closing rule of the controls and as every other
+     border of the family: one line weight across the component. */
+  --iv-stepper-track: var(--iv-border-width);
   --iv-stepper-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 8.5 6.5 11.5 12.5 4.5'/%3E%3C/svg%3E");
 
   display: grid;

@@ -59,10 +59,16 @@
   border-radius: var(--iv-radius-full);
 }
 
+/* The plate stops square where the indicator runs, so the bar and the tint are
+   one object instead of a rounded tab sitting on a straight line. The vertical
+   variant re-rounds its own bottom-start corner below: there the indicator is
+   on the inline end, not under the tab. */
 .iv-tabs__tab[aria-selected="true"] {
   font-weight: var(--iv-weight-semibold);
   color: var(--iv-color-primary);
   background-color: color-mix(in oklab, var(--iv-color-primary-subtle) 70%, transparent);
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
 }
 
 /* The bar carries a short glow so the selected tab is the brightest thing on

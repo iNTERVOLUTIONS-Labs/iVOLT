@@ -12,7 +12,10 @@
 .iv-progress {
   --iv-progress-size: 0.5rem;
   --iv-progress-color: var(--iv-color-primary);
-  --iv-progress-track: var(--iv-color-surface);
+  /* The groove is a step of the border colour into the page surface: on navy
+     an empty bar painted with `surface` alone was indistinguishable from the
+     page it sat on. */
+  --iv-progress-track: color-mix(in oklab, var(--iv-color-border) 55%, var(--iv-color-surface));
   --iv-progress-track-subtle: var(--iv-color-success-subtle);
   --iv-progress-groove: inset 0 1px 2px var(--iv-color-hover-surface);
 

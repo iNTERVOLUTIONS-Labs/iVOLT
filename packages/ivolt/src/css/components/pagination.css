@@ -10,7 +10,9 @@
 .iv-pagination {
   --iv-pagination-gap: var(--iv-space-2);
   --iv-pagination-size: 2.5rem;
-  --iv-pagination-radius: var(--iv-radius-md);
+  /* Pill, the resting shape of every action in the brand (ADR-049): a page
+     number is a button and reads as one. */
+  --iv-pagination-radius: var(--iv-radius-full);
 
   font-size: var(--iv-text-sm);
 }
@@ -34,6 +36,8 @@
   min-block-size: var(--iv-pagination-size);
   padding-inline: var(--iv-space-2);
   font-weight: var(--iv-weight-medium);
+  /* Figures of the same width, so the row does not shuffle between pages. */
+  font-variant-numeric: tabular-nums;
   line-height: 1.2;
   text-decoration: none;
   border-radius: var(--iv-pagination-radius);

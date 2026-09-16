@@ -38,14 +38,19 @@
   line-height: var(--iv-leading-tight);
 }
 
+/* The two display sizes are tracked in: at 2.25rem and above the default
+   spacing of the face opens the line and the headline stops reading as one
+   object. */
 .iv-root h1 {
   font-size: var(--iv-text-4xl);
   font-weight: var(--iv-weight-bold);
+  letter-spacing: var(--iv-tracking-tight);
 }
 
 .iv-root h2 {
   font-size: var(--iv-text-3xl);
   font-weight: var(--iv-weight-bold);
+  letter-spacing: var(--iv-tracking-tight);
 }
 
 .iv-root h3 {
