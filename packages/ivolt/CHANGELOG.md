@@ -2,12 +2,13 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
-## 1.0.0 (unreleased)
+## 1.0.0 — 2026-09-16 (npm, tag `latest`)
 
 First stable release. The public surface is the one `docs/STABILITY.md` describes: classes, tokens, `data-iv-*` attributes, JavaScript exports and `iv:*` events documented in the contract follow semantic versioning from here. What 1.0 ships is the sum of the cycles listed under 1.0.0-rc.0, the Cobalt palette (rc.2), the megamenu v2 (rc.1) and the visual round (rc.3).
 
 ### Changed
 - Package metadata, README and the documentation site are written for the stable release; the release-candidate notices are gone.
+- Documentation site: the theme builder preview follows the chosen theme; the examples cover is served in three sizes.
 
 ## 1.0.0-rc.3 — 2026-09-16 (npm, tag `next`)
 

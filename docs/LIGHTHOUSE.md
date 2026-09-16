@@ -357,3 +357,21 @@ Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome `--headless=new --no-
 
 Sin regresión atribuible a la ronda: la portada se mantiene en 97–98 con el primer marco de receta a prioridad baja (los tres marcos a prioridad normal costaban 13 puntos, medido por el implementador, y se descartó). El CLS de `/components/button` (0,073) es el del escenario que ajusta su altura al cargar, igual que en rc.2. JSON en el directorio temporal del trabajo (`lh-rc3-*.json`); no se versionan.
 
+## `1.0.0` — primera estable (2026-09-16, ADR-051)
+
+Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome `--headless=new --no-sandbox`, `scripts/docs-server.mjs` en 4328 sirviendo el build del gate `verify`, una pasada por ruta y preajuste, sin red real; máquina compartida a carga 13–17 en la primera pasada y 2–4 en las repeticiones). Novedades desde rc.3: textos y metadatos nuevos en las 108 páginas (títulos, descripciones, JSON-LD en las portadas), vista previa del constructor de temas corregida, y la portada de `/examples` servida en 640/800/1280 px con `srcset` (antes un único JPEG de 1280 px y 132 KB: 90 con LCP 3,6 s en móvil).
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Buenas prácticas | SEO | LCP | CLS |
+|---|---|---|---|---|---|---|---|
+| `/` | móvil | 97 (96 a carga 13) | 100 | 100 | 100 | 2,2 s | 0 |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 0,6 s | 0 |
+| `/es` | móvil | 97 | 100 | 100 | 100 | 2,2 s | 0 |
+| `/getting-started` | móvil | 98 | 100 | 100 | 100 | 2,0 s | 0,051 |
+| `/components/button` | móvil | 97 | 100 | 100 | 100 | 2,0 s | 0,073 |
+| `/examples` | móvil | 97 (90 antes del `srcset`) | 100 | 100 | 100 | 2,4 s | 0 |
+| `/es/examples` | móvil | 97 | 100 | 100 | 100 | 2,4 s | 0 |
+| `/examples/studio/index.html` | móvil | 98 | 100 | 100 | 100 | 2,3 s | 0 |
+| `/examples/store/index.html` | móvil | 97 (86 a carga 17) | 100 | 100 | 100 | 2,5 s | 0 |
+
+JSON en el directorio temporal del trabajo (`lh-100-*.json`); no se versionan.
+

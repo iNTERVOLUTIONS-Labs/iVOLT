@@ -22,7 +22,7 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
 <Base lang="es" title="Ejemplos: cuatro páginas hechas con iVOLT" description="Cuatro páginas completas hechas solo con iVOLT: un estudio creativo, un panel de producto, una revista y una tienda. Ábrelas, descárgalas o copia la carpeta.">
   <article class="docs-prose">
         <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
-      <div class="iv-hero__media"><img src="/photos/p1059.jpg" width="1280" height="800" alt="" fetchpriority="high" decoding="async"></div>
+      <div class="iv-hero__media"><img src="/photos/p1059.jpg" srcset="/photos/p1059-640.jpg 640w, /photos/p1059-800.jpg 800w, /photos/p1059.jpg 1280w" sizes="(max-width: 48em) 100vw, 56rem" width="1280" height="800" alt="" fetchpriority="high" decoding="async"></div>
       <div class="iv-hero__scrim"></div>
       <div class="iv-hero__content">
         <p class="iv-hero__kicker">Cuatro páginas · un paquete · sin compilación</p>

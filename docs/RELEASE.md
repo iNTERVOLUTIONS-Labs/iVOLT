@@ -1,10 +1,10 @@
-# Release: v0.5.0-beta.0 (en preparación) y versiones anteriores (no publicadas)
+# Release: `1.0.0` publicada (2026-09-16) y versiones anteriores
 
-Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
+Estado: **`1.0.0` en `latest`**; las secciones §0a–§0j registran cada publicación y cada cierre sin publicar. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
 
-## 0j. `1.0.0` (en preparación; publicación en esta sección)
+## 0j. `1.0.0` (publicada el 2026-09-16 con etiqueta `latest`; primera estable, ADR-051)
 
-Primera estable. Desde rc.3: corrección del constructor de temas de la web (la vista previa no seguía el radio de tema), ronda de redacción con dos redactores Opus (web en dos idiomas, README del paquete y raíz, starter y recetas: voz comercial, aviso de honestidad una vez por página, SEO en títulos, descripciones, `alt`, `hreflang` y JSON-LD), metadatos del paquete, contrato y `STABILITY.md` en vigor.
+Primera estable. Desde rc.3: corrección del constructor de temas de la web (la vista previa no seguía el radio de tema), ronda de redacción con dos redactores Opus (web en dos idiomas, README del paquete y raíz, starter y recetas: voz comercial, aviso de honestidad una vez por página, SEO en títulos, descripciones, `alt`, `hreflang` y JSON-LD), metadatos del paquete, contrato y `STABILITY.md` en vigor. Portada de `/examples` en tres tamaños. Gate final en tres motores: 1039 unitarias · 1545 pruebas de navegador superadas y 147 omitidas · tamaños dentro de presupuesto (`ivolt.min.css` 32,1 KiB gzip, JS 45,2) · pack-smoke (`intervolutions-ivolt-1.0.0.tgz`, 134 archivos) · 108 páginas · 5 ejemplos · Lighthouse `docs/LIGHTHOUSE.md` (1.0.0). Publicación con el token del propietario en un `userconfig` temporal borrado tras el comando: `npm publish --access public --tag latest -w @intervolutions/ivolt`; `next` movida a `1.0.0` (`npm dist-tag add`); `dist-tags`: `latest` y `next` en `1.0.0`, `beta` en `0.7.0-beta.0`; etiqueta git `v1.0.0`; instalación verificada desde el registro.
 
 ## 0i. `1.0.0-rc.3` (publicada el 2026-09-16 con etiqueta `next`; ronda adversaria visual, ADR-050)
 
