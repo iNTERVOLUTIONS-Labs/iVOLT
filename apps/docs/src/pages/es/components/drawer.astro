@@ -3,7 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Panel lateral" description="Panel lateral de iVOLT: un panel deslizante sobre un único dialog nativo que pasa a ser una barra lateral estática a partir del punto de ruptura lg. Se usa para la navegación en móvil.">
+<Base lang="es" title="Panel lateral y barra fija" description="Panel lateral de iVOLT: un panel deslizante sobre un único dialog nativo que pasa a barra lateral fija a partir del punto de ruptura lg. Ideal en móvil.">
   <article class="docs-prose">
     <h1>Panel lateral (drawer)</h1>
     <p>Un panel deslizante para navegación o filtros. Es un único <code>&lt;dialog&gt;</code>: por debajo del punto de ruptura <code>staticFrom</code> se abre como modal; a partir de ese punto, el CSS lo muestra como un panel estático y el disparador se puede ocultar. Cruzar el punto de ruptura con el modal abierto lo cierra.</p>

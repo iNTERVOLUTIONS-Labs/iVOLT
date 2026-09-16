@@ -3,7 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Movimiento por scroll" description="Movimiento por scroll de iVOLT: marcos con parallax, barra de progreso de lectura, marquesinas y barajas de tarjetas pegajosas con animaciones dirigidas por scroll de CSS, y un componente pequeño de reserva donde no existen.">
+<Base lang="es" title="Movimiento por scroll sin librerías" description="Movimiento por scroll de iVOLT: parallax, barra de progreso de lectura, marquesinas y barajas pegajosas con animaciones CSS, y una reserva mínima.">
   <article class="docs-prose">
     <h1>Movimiento por scroll</h1>
     <p>Cuatro cosas que se mueven porque la página se mueve: una capa que va por detrás de su marco, una barra que mide lo leído, una fila que se desliza y una baraja de tarjetas que se apila al pasar. Donde el motor tiene animaciones dirigidas por scroll de CSS, la hoja de estilos lo mueve todo sola, sin un solo escuchador. Donde no las tiene, un componente pequeño escribe dos propiedades personalizadas y la misma hoja sigue funcionando. Con <code>prefers-reduced-motion: reduce</code>, el parallax, la marquesina y la baraja se quedan quietos.</p>

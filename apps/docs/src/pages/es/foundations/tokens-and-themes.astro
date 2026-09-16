@@ -5,7 +5,7 @@ import tokens from "@intervolutions/ivolt/tokens.json";
 const val = (k, mode) => { const v = tokens[k].value; return typeof v === "string" ? v : v[mode]; };
 const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color-") && !k.startsWith("--iv-palette"));
 ---
-<Base lang="es" title="Tokens y temas" description="Tokens de diseño de iVOLT: paleta primitiva, colores semánticos, espaciado, tipografía, radio, sombra, foco, movimiento y puntos de ruptura, con temas claro, oscuro y del sistema.">
+<Base lang="es" title="Tokens de diseño, modo oscuro y temas" description="Tokens de diseño de iVOLT: paleta, colores semánticos, espaciado, tipografía, radio, sombra, foco, movimiento y breakpoints, con temas claro y oscuro.">
   <article class="docs-prose">
     <h1>Tokens y temas</h1>
     <p>Cada decisión visual es una propiedad personalizada con el prefijo <code>--iv-</code>, generada desde una única fuente JSON. Puedes sobrescribir cualquiera de ellas en <code>:root</code> o en un ámbito concreto; no hay que recompilar nada.</p>

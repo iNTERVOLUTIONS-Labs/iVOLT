@@ -3,10 +3,10 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Code from "../../components/Code.astro";
 ---
-<Base title="Stability" description="What @intervolutions/ivolt promises from 1.0: the public surface, the SemVer rules, how deprecations run, the npm tags, the browsers supported, what is deliberately not promised, and how all of it is checked.">
+<Base title="Stability, SemVer and browser support" description="What @intervolutions/ivolt promises from 1.0: the public surface, the SemVer rules, deprecations, npm tags, supported browsers, and how it is all checked.">
   <article class="docs-prose">
     <h1>Stability and versioning</h1>
-    <p>This page says what the package promises once <code>1.0.0</code> is out, and how that promise changes. Until the release candidate freezes it, it is a draft that can still move — and where it moves, the changelog says so.</p>
+    <p>This page says what the package promises from <code>1.0.0</code> on, and how that promise is allowed to change. If it ever moves, the changelog says where.</p>
     <p class="docs-meta"><strong>Scheme:</strong> SemVer from <code>1.0.0</code>. <strong>Public:</strong> classes, tokens, options, events and package exports. <strong>Private:</strong> deep paths into <code>dist/</code>.</p>
     <p>The short version: what is documented is public, everything else is an implementation detail; names are removed only in a major version, and a full run of the gate stands behind every release.</p>
 
@@ -54,7 +54,7 @@ import Code from "../../components/Code.astro";
           </tbody>
         </table>
       </div>
-      <p>One caveat while the package is pre-1.0: npm cannot serve a package without a <code>latest</code>, so <code>latest</code> currently points at the most recent published beta. Pin an exact version if that matters to you.</p>
+      <p><code>npm install @intervolutions/ivolt</code> gives you the current stable release. Pin an exact version in production.</p>
     </Section>
 
     <Section title="Browsers" num={3} lead={`The floor is Chromium 113, Firefox 113 and Safari 16.4, with their mobile counterparts, and every release is tested in Chromium, Firefox and WebKit. Raising that floor is a major change.`}>

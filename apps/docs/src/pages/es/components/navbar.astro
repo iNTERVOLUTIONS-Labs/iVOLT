@@ -2,7 +2,7 @@
 import Base from "../../../layouts/Base.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Barra de navegación" description="Barra de navegación de iVOLT: cabecera de sitio con marca, enlaces y acciones que se pliega en pantallas estrechas, se queda pegada y se condensa al hacer scroll, y sirve todos los enlaces sin JavaScript.">
+<Base lang="es" title="Barra de navegación que se pliega" description="Barra de navegación de iVOLT: cabecera con marca, enlaces y acciones que se pliega en pantallas estrechas, se queda pegada y se condensa al hacer scroll.">
   <article class="docs-prose">
     <h1>Barra de navegación (navbar)</h1>
     <p>La cabecera de un sitio: marca, enlaces, acciones y, en pantallas estrechas, un panel que se pliega. El servidor la envía funcionando: por encima del punto de plegado es una barra, y por debajo el panel llega abierto y apilado bajo la marca, así que ningún enlace queda fuera del alcance. En <code>init</code> aparece el botón de hamburguesa, el panel se pliega, Escape y un clic fuera lo cierran, y una cabecera pegajosa se condensa en cuanto la página baja. No es un panel lateral: este panel es contenido en el flujo, no atrapa el foco y nunca bloquea la página.</p>

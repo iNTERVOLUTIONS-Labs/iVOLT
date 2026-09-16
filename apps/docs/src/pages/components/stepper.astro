@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Stepper" description="iVOLT stepper: a numbered index, one panel per step, next and back controls, validation before advancing, and every panel served visible without JavaScript.">
+<Base title="Stepper: forms in numbered steps" description="iVOLT stepper: a numbered index, one panel per step, next and back controls, validation before advancing, and every panel served visible without JavaScript.">
   <article class="docs-prose">
     <h1>Stepper</h1>
     <p>A long form cut into steps: a numbered index with state, one panel per step, and controls that move between them. The server sends an ordered list of links and the panels one under the other, so the whole form is readable and fillable without a script. On <code>init</code> only the current panel stays visible, the index marks what is done, current and still to come, and <code>data-iv-step</code> buttons refuse to advance while the fields of the panel are invalid.</p>

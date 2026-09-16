@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Scroll motion" description="iVOLT scroll motion: parallax frames, a reading progress bar, marquees and sticky card decks driven by CSS scroll-driven animations, with one small component as the fallback where they are missing.">
+<Base title="Scroll-driven motion without a library" description="iVOLT scroll motion: parallax frames, a reading progress bar, marquees and sticky card decks on CSS scroll-driven animations, with a tiny fallback.">
   <article class="docs-prose">
     <h1>Scroll motion</h1>
     <p>Four things that move because the page moves: a layer that lags behind its frame, a bar that measures how far you have read, a row that drifts sideways, and a deck of cards that stacks as it goes by. Where the engine has CSS scroll-driven animations the stylesheet drives all of it alone, with no listener anywhere. Where it does not, one small component writes two custom properties and the same stylesheet keeps working. Under <code>prefers-reduced-motion: reduce</code> the parallax, the marquee and the deck stand still.</p>

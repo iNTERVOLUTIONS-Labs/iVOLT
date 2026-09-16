@@ -127,8 +127,12 @@ test.describe("Site shell", () => {
   test("the published CSP hash still matches the one inline script the site ships", async ({ page, request }) => {
     const { createHash } = await import("node:crypto");
     const home = await (await request.get(DOCS + "/")).text();
-    const inline = [...home.matchAll(/<script(?![^>]*\ssrc=)[^>]*>([\s\S]*?)<\/script>/g)].map((m) => m[1]).filter((s) => s.trim());
-    expect(inline.length, "the site ships exactly one inline script").toBe(1);
+    // A JSON-LD block is a data block, not a script block: it never executes and CSP does not
+    // hash it. Only executable inline scripts count against the published hash.
+    const inline = [...home.matchAll(/<script(?![^>]*\ssrc=)[^>]*>([\s\S]*?)<\/script>/g)]
+      .filter((m) => !/type=["']application\/ld\+json["']/.test(m[0]))
+      .map((m) => m[1]).filter((s) => s.trim());
+    expect(inline.length, "the site ships exactly one executable inline script").toBe(1);
     const hash = "sha256-" + createHash("sha256").update(inline[0]).digest("base64");
     await page.goto(DOCS + "/foundations/coexistence");
     await expect(page.locator("#csp-hash")).toHaveText(hash);
@@ -147,16 +151,16 @@ test.describe("Site shell", () => {
     }
     // The table of contents sees the headings inside the sections, not only the top-level ones.
     expect(await page.locator("#docs-toc a, .docs-toc a").count()).toBeGreaterThan(4);
-    // The install line is the one the release candidate really answers to.
+    // The install line is the one the published package really answers to: 1.0 ships on latest.
     // The install line lives in one of the code blocks, whichever order the page settles on.
-    await expect(page.locator(".docs-code-block code", { hasText: "npm install @intervolutions/ivolt@next" }).first()).toBeVisible();
+    await expect(page.locator(".docs-code-block code", { hasText: "npm install @intervolutions/ivolt" }).first()).toBeVisible();
     const block = page.locator(".docs-code-block").first();
     const copy = block.locator(".docs-copy");
     await copy.click();
     await expect(copy).toHaveText(/Copied|Copiado|Selected|Seleccionado/);
     // The Spanish twin says the same thing in Spanish.
     await page.goto(DOCS + "/es/getting-started");
-    await expect(page.locator(".docs-code-block code", { hasText: "npm install @intervolutions/ivolt@next" }).first()).toBeVisible();
+    await expect(page.locator(".docs-code-block code", { hasText: "npm install @intervolutions/ivolt" }).first()).toBeVisible();
     await expect(page.locator(".docs-code-block .docs-copy").first()).toHaveText(/Copiar/);
   });
 

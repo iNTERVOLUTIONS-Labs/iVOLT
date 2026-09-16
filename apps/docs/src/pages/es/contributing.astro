@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Code from "../../components/Code.astro";
 ---
-<Base lang="es" title="Contribuir" description="Cómo compilar, probar y ampliar iVOLT: los comandos, la estructura del repositorio, las reglas que debe cumplir un cambio, las pruebas de contrato que las hacen cumplir y la licencia.">
+<Base lang="es" title="Contribuir a iVOLT" description="Cómo compilar, probar y ampliar iVOLT: los comandos, la estructura del repositorio, las reglas que debe cumplir un cambio, las pruebas y la licencia.">
   <article class="docs-prose">
     <h1>Contribuir</h1>
     <p>iVOLT es una base de código pequeña con reglas estrictas. La mayoría de esas reglas existen porque un sistema de diseño se rompe despacio: una clase sin prefijo, un <code>!important</code>, un componente documentado con marcado que ninguna prueba llega a renderizar. Las pruebas de contrato que vienen más abajo codifican esas reglas para que una pull request falle pronto en lugar de ir derivando.</p>
@@ -122,7 +122,7 @@ npm run dev:docs   # compila el paquete antes si falta dist/       # servidor de
         <li>Ejecuta <code>npm run verify</code> antes de abrir una, y di en la descripción qué comprobaciones pasaste y cuáles no pudiste pasar.</li>
         <li>Mantén el cambio centrado en una familia o en un asunto; las refactorizaciones mezcladas son difíciles de revisar contra un contrato.</li>
         <li>Informa de los errores de accesibilidad y de navegador con el nombre de la fixture, el motor y los pasos: la fixture hace que sea reproducible con un solo comando.</li>
-        <li>El proyecto está en alfa. Un cambio correcto aunque rompa compatibilidad es aceptable si lleva su ADR; un cambio cómodo pero sin registrar, no.</li>
+        <li>Desde la 1.0 la superficie pública sigue SemVer. Un cambio correcto que rompa compatibilidad espera a una versión mayor y se registra antes; un cambio cómodo pero sin registrar no entra nunca.</li>
       </ul>
     </Section>
 

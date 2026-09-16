@@ -2,60 +2,55 @@
 import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 ---
-<Base lang="es" title="Hoja de ruta" description="Dónde está iVOLT dentro del ciclo v0.1, qué queda explícitamente fuera de su alcance y qué viene después, por orden de prioridad y sin fechas ni promesas.">
+<Base lang="es" title="Hoja de ruta: qué trae la 1.0 y qué viene" description="Qué trae iVOLT 1.0, qué queda fuera de su alcance a propósito y qué se está considerando después, por orden de prioridad y sin fechas ni compromisos.">
   <article class="docs-prose">
     <h1>Hoja de ruta</h1>
     <p>Esta página declara un orden, no unas fechas. Nada de lo que hay aquí es un compromiso de entregar en un plazo, y los puntos se mueven cuando la evidencia lo pide. Lo que está marcado como hecho está hecho y se puede comprobar hoy; todo lo demás, no.</p>
     <p class="docs-meta"><strong>Orden:</strong> prioridad, no fechas. <strong>Compromisos:</strong> ninguno. <strong>Hecho:</strong> significa comprobable hoy.</p>
 
-    <Section title="Cómo va la v0.1" num={1}>
+    <Section title="Qué trae la 1.0" num={1}>
       <div class="docs-scroller">
         <table>
-          <thead><tr><th>Etapa</th><th>Estado</th><th>Contenido</th></tr></thead>
+          <thead><tr><th>Área</th><th>Estado</th><th>Contenido</th></tr></thead>
           <tbody>
-            <tr><td>Plano</td><td>hecho</td><td>Contratos, sistema de diseño, listón de calidad y registros de decisión en <code>docs/</code></td></tr>
-            <tr><td>Corte vertical</td><td>hecho</td><td>Tokens, temas, base, maquetación, botón, tarjeta, formulario, diálogo, documentación y plantilla inicial: toda la cadena probada de punta a punta antes de ensanchar</td></tr>
-            <tr><td>Alcance completo de la v0.1</td><td>hecho</td><td>Las familias restantes, los seis componentes con JavaScript, tres recetas y la documentación de componentes</td></tr>
-            <tr><td>Web y experiencia de desarrollo</td><td>en curso</td><td>Búsqueda local, un playground acotado, cambios, contribuir, esta página, navegación y 404, plantillas y recetas descargables, estructura preparada para i18n</td></tr>
-            <tr><td>Candidata a publicación</td><td>sin empezar</td><td>Pasada con lector de pantalla, Lighthouse, el logotipo definitivo, asegurar el ámbito de npm y publicar</td></tr>
+            <tr><td>Componentes</td><td>hecho</td><td>33 familias: 14 solo CSS y 19 con JavaScript opcional, cada una con sus estados, su comportamiento de teclado y una alternativa que funciona sin script</td></tr>
+            <tr><td>Tokens y temas</td><td>hecho</td><td>Tokens de diseño como contrato visual, temas claro, oscuro y del sistema, ámbitos anidados, derecha a izquierda, colores forzados, impresión y movimiento reducido</td></tr>
+            <tr><td>Distribución</td><td>hecho</td><td>CSS en capas y plano, una hoja por componente, módulos ES con exports reales, un IIFE con un solo global, tipos de TypeScript y los tokens en JSON</td></tr>
+            <tr><td>Documentación</td><td>hecho</td><td>Esta web en inglés y español, una referencia generada desde las fuentes, un playground y un constructor de temas</td></tr>
+            <tr><td>Ejemplos</td><td>hecho</td><td>Cuatro páginas completas y una plantilla de HTML plano, cada una descargable en zip</td></tr>
+            <tr><td>Verificación</td><td>hecho</td><td>Pruebas unitarias y de contrato, pruebas de navegador en Chromium, Firefox y WebKit, comprobaciones de accesibilidad con movimiento reducido y presupuestos de tamaño</td></tr>
           </tbody>
         </table>
       </div>
-      <p>Lo que separa este punto de una publicación es la verificación que no se ha hecho, más que añadir componentes: falta la pasada con lector de pantalla, falta la auditoría de Lighthouse y el paquete sigue sin publicar. En la página de <a href="/es/changelog">cambios</a> está la lista completa de limitaciones conocidas.</p>
+      <p>Qué es público, y cómo puede cambiar a partir de aquí, está escrito en <a href="/es/foundations/stability">estabilidad</a>; qué cambió en cada versión está en <a href="/es/changelog">cambios</a>.</p>
     </Section>
 
-    <Section title="Fuera del alcance de la v0.1, a propósito" num={2} lead={`Se excluyeron adrede, no por olvido. Cada uno es un dominio en sí mismo, y entregar media versión de cualquiera de ellos costaría más que omitirlo:`}>
+    <Section title="Fuera del alcance, a propósito" num={2} lead={`Se excluyen adrede, no por olvido. Cada uno es un dominio en sí mismo, y entregar la mitad de cualquiera de ellos costaría más que omitirlo:`}>
       <ul>
-        <li>Combobox y autocompletado, selector de fechas, rejilla de datos, editor de texto enriquecido, arrastrar y soltar, gráficas, carrusel avanzado.</li>
-        <li>Un compilador de utilidades con valores arbitrarios, una CLI que genere plantillas, envoltorios para React y Vue, un editor visual, un constructor de temas.</li>
-        <li>Un catálogo grande de plantillas. El alcance son tres recetas trabajadas; una galería, no.</li>
+        <li>Una rejilla de datos virtualizada, un editor de texto enriquecido, arrastrar y soltar, gráficas.</li>
+        <li>Un compilador de utilidades con valores arbitrarios, un escáner de clases o paso de purga, una CLI que genere plantillas, un editor visual.</li>
+        <li>Envoltorios para React y Vue. El HTML plano ya funciona dentro de los tres.</li>
+        <li>Un catálogo grande de plantillas. El alcance son cuatro páginas trabajadas; una galería, no.</li>
       </ul>
       <p>El principio detrás de la lista: contar variantes no ensancha el alcance. Una familia solo cuenta como terminada cuando tiene estados, comportamiento de teclado, alternativa sin JavaScript, documentación y pruebas.</p>
     </Section>
 
-    <Section title="Pendientes después de la v0.1" num={3} lead={`La prioridad habla del orden de trabajo, no de la importancia que tenga para ti. Los puntos P1 son los que el proyecto considera bloqueantes para poder contar una 1.0 creíble.`}>
+    <Section title="En consideración después de la 1.0" num={3} lead={`La prioridad habla del orden de trabajo, no de la importancia que tenga para ti. Nada de esta lista está prometido, y nada de aquí cambia un nombre público sin una versión mayor.`}>
       <div class="docs-scroller">
         <table>
           <thead><tr><th>Prioridad</th><th>Punto</th><th>Por qué está aquí</th></tr></thead>
           <tbody>
-            <tr><td>P1</td><td>Pasada con lector de pantalla (NVDA, VoiceOver) y las correcciones que salgan</td><td>Valida lo que axe no puede comprobar por su estructura; es el mayor hueco conocido en la accesibilidad</td></tr>
-            <tr><td>P1</td><td>Combobox / autocompletado accesible</td><td>Muy demandado en catálogos y paneles de administración, y un patrón lo bastante complejo como para que una versión apresurada fuera peor que ninguna</td></tr>
-            <tr><td>P1</td><td>Traducción de la documentación al español</td><td>La estructura ya está prevista en el sitio de documentación; el público de la marca es hispanohablante</td></tr>
-            <tr><td>P2</td><td>Tabla de datos con ordenación y filtrado, sin virtualización</td><td>Los paneles de administración la necesitan; la virtualización es otro problema</td></tr>
-            <tr><td>P2</td><td>Selector de fecha nativo mejorado (<code>&lt;input type="date"&gt;</code> con estilo de tokens)</td><td>Formularios; se apoya en el control de la plataforma en vez de sustituirlo</td></tr>
-            <tr><td>P2</td><td>Constructor de temas ligero que exporte <code>tokens.css</code></td><td>Personalización sin paso de compilación, que es justo el sentido de los tokens de diseño</td></tr>
-            <tr><td>P2</td><td>Carrusel accesible sencillo</td><td>Composiciones editoriales</td></tr>
-            <tr><td>P3</td><td>Envoltorios para React, Vue y Astro</td><td>Solo con demanda real: el HTML plano ya funciona en los tres</td></tr>
-            <tr><td>P3</td><td>Compilador de utilidades / purga opcional</td><td>Valores arbitrarios sin obligar a nadie a pasar un escáner de clases</td></tr>
-            <tr><td>P3</td><td>CLI que genere plantillas iniciales</td><td>Comodidad, no capacidad</td></tr>
-            <tr><td>P3</td><td>Rejilla de datos virtualizada, editor enriquecido, arrastrar y soltar, gráficas</td><td>Cada uno es un producto en sí mismo</td></tr>
+            <tr><td>P1</td><td>Una pasada con lector de pantalla (NVDA, VoiceOver) y las correcciones que salgan</td><td>Valida lo que las comprobaciones automáticas no pueden ver; qué está y qué no está verificado se lista en <a href="/es/foundations/accessibility">accesibilidad</a></td></tr>
+            <tr><td>P2</td><td>Más páginas trabajadas y más fixtures de los patrones que la gente pide</td><td>Ahora mismo un patrón documentado vale más que otra familia</td></tr>
+            <tr><td>P2</td><td>Componentes nuevos solo donde un patrón se repita en proyectos reales</td><td>La gramática se mantiene pequeña a propósito: cada añadido tiene que ganarse el nombre</td></tr>
+            <tr><td>P3</td><td>Envoltorios de framework, compilador de utilidades, CLI de plantillas</td><td>Solo con demanda real: son comodidad, no capacidad</td></tr>
           </tbody>
         </table>
       </div>
     </Section>
 
     <Section title="Cómo cambia esta lista" num={4}>
-      <p>Un punto sube cuando hay evidencia: un problema reproducible en un proyecto real, un contrato que resultó estar mal o un hallazgo de accesibilidad. Todo lo que altere una superficie pública — nombres de clase, tokens, opciones, eventos, orden de capas — se registra como decisión en <code>docs/DECISIONS.md</code> antes de entrar, para que el razonamiento sobreviva al cambio. Los informes de error y los casos de uso son la aportación más útil; mira <a href="/es/contributing">contribuir</a>.</p>
+      <p>Un punto sube cuando hay evidencia: un problema reproducible en un proyecto real, un contrato que resultó estar mal o un hallazgo de accesibilidad. Todo lo que altere una superficie pública — nombres de clase, tokens, opciones, eventos, orden de capas — se registra como decisión en el repositorio antes de entrar, para que el razonamiento sobreviva al cambio. Los informes de error y los casos de uso son la aportación más útil; mira <a href="/es/contributing">contribuir</a>.</p>
     </Section>
   </article>
 </Base>

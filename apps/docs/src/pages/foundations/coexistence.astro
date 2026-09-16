@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 import { themeSnippet } from "../../theme-snippet.js";
 const cspHash = "sha256-" + createHash("sha256").update(themeSnippet).digest("base64");
 ---
-<Base title="Coexistence" description="Dropping iVOLT into a site that already has CSS: the .iv-root scope, prefixes, the exact cascade-layer rules, the flat build, WordPress and PHP, Astro and Vite, and Content-Security-Policy.">
+<Base title="Add iVOLT to a site that has CSS" description="Drop iVOLT into an existing site: the .iv-root scope, prefixes, cascade-layer rules, the flat build, WordPress and PHP, Astro and Vite, and CSP.">
   <article class="docs-prose">
     <h1>Coexistence with existing CSS</h1>
     <p>Most pages that adopt a framework are not empty. There is a theme, a legacy stylesheet, a plugin that styles <code>button</code>, and a deadline. This page is about that situation: what iVOLT does to stay out of the way, what it does not do, and the exact rules that decide who wins when two stylesheets disagree.</p>

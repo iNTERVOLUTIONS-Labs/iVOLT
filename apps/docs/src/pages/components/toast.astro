@@ -5,7 +5,7 @@ import Section from "../../components/Section.astro";
 import Code from "../../components/Code.astro";
 import Fixture from "../../components/Fixture.astro";
 ---
-<Base title="Toast" description="iVOLT toast: brief notifications created through an API into a live region, with queueing, pause on hover and focus, keyboard dismissal and no message loss for critical variants.">
+<Base title="Toast: notifications in a live region" description="iVOLT toast: brief notifications created through an API into a live region, with queueing, pause on hover and focus, and keyboard dismissal.">
   <article class="docs-prose">
     <h1>Toast</h1>
     <p>Short notifications created from JavaScript into a region that is already in the page. Messages are inserted as text, never HTML. Informational toasts auto-dismiss; <code>danger</code> ones never do and use <code>role="alert"</code>. When more than <code>max</code> are visible, the rest wait in a queue instead of being dropped.</p>

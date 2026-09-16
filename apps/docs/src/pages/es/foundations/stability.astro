@@ -3,10 +3,10 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Code from "../../../components/Code.astro";
 ---
-<Base title="Estabilidad" description="Qué promete @intervolutions/ivolt a partir de 1.0: la superficie pública, las reglas de SemVer, cómo funcionan las deprecaciones, las etiquetas de npm, los navegadores, lo que no se promete y cómo se comprueba todo.">
+<Base lang="es" title="Estabilidad, SemVer y navegadores" description="Qué promete @intervolutions/ivolt desde 1.0: superficie pública, reglas de SemVer, deprecaciones, etiquetas de npm, navegadores y cómo se comprueba todo.">
   <article class="docs-prose">
     <h1>Estabilidad y versiones</h1>
-    <p>Esta página dice qué promete el paquete a partir de <code>1.0.0</code> y cómo cambia esa promesa. Hasta que la candidata la congele es un borrador que todavía puede moverse; y donde se mueva, el registro de cambios lo dirá.</p>
+    <p>Esta página dice qué promete el paquete a partir de <code>1.0.0</code> y cómo puede cambiar esa promesa. Si algún día se mueve, el registro de cambios dirá dónde.</p>
     <p class="docs-meta"><strong>Esquema:</strong> SemVer desde la <code>1.0.0</code>. <strong>Público:</strong> clases, tokens, opciones, eventos y exports del paquete. <strong>Privado:</strong> las rutas profundas dentro de <code>dist/</code>.</p>
     <p>En corto: lo que está documentado es público, lo demás es detalle de implementación; un nombre solo se retira en una versión mayor; y detrás de cada publicación hay una pasada completa de la puerta de calidad.</p>
 
@@ -54,7 +54,7 @@ import Code from "../../../components/Code.astro";
           </tbody>
         </table>
       </div>
-      <p>Una salvedad mientras el paquete es anterior a 1.0: npm no admite un paquete sin <code>latest</code>, así que <code>latest</code> apunta hoy a la última beta publicada. Fija una versión exacta si eso te importa.</p>
+      <p><code>npm install @intervolutions/ivolt</code> te da la versión estable vigente. Fija una versión exacta en producción.</p>
     </Section>
 
     <Section title="Navegadores" num={3} lead={`El mínimo es Chromium 113, Firefox 113 y Safari 16.4, con sus versiones móviles, y cada publicación se prueba en Chromium, Firefox y WebKit. Subir ese mínimo es un cambio mayor.`}>

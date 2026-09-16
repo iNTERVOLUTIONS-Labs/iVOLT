@@ -19,7 +19,7 @@ const zipOf = (slug) => manifest.zips.find((z) => z.name === `ivolt-recipe-${slu
 const kib = (b) => (b ? `${(b / 1024).toFixed(0)} KiB` : null);
 const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "index.html"));
 ---
-<Base title="Examples" description="Four complete pages built only with iVOLT: a creative studio, a product console, an editorial journal and a store. Open them, download them as a zip, or copy the folder.">
+<Base title="Examples: four pages built with iVOLT" description="Four complete pages built only with iVOLT: a creative studio, a product console, an editorial journal and a store. Open them, download them, copy the folder.">
   <article class="docs-prose">
         <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
       <div class="iv-hero__media"><img src="/photos/p1059.jpg" width="1280" height="800" alt="" fetchpriority="high" decoding="async"></div>
@@ -27,16 +27,16 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
       <div class="iv-hero__content">
         <p class="iv-hero__kicker">Four pages · one package · no build step</p>
         <h1 class="iv-hero__title" id="examples-title">Four pages, one package</h1>
-        <p class="iv-hero__lead">Four complete pages that share the framework and nothing else: a different composition, a different density and a different default theme each. Every one is a standalone HTML file linking the prebuilt assets from a sibling <code>ivolt/</code> folder — no build step, no network, no dependency.</p>
+        <p class="iv-hero__lead">Four finished pages that share the framework and nothing else: a different composition, a different density and a different default theme in each. Every one is a single HTML file linking the prebuilt assets from a sibling <code>ivolt/</code> folder. Open one, then take the folder.</p>
         <div class="iv-hero__actions">
-          <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/studio/index.html">Open the Studio recipe</a>
+          <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/studio/index.html">Open the Studio page</a>
           <a class="iv-button iv-button--secondary" href="#downloads">Downloads</a>
         </div>
       </div>
     </section>
-    <p class="docs-photo-credit">Photograph by Clark Street Mercantile on Unsplash. Data and forms in the recipes are demonstrations: nothing is sent anywhere and nothing is bought.</p>
+    <p class="docs-photo-credit">Photograph by Clark Street Mercantile on Unsplash.</p>
 
-    <p class="docs-meta"><strong>Built from:</strong> <code>examples/recipes/&lt;name&gt;/index.html</code>. <strong>Assets:</strong> <code>examples/recipes/ivolt/</code>, written by <code>node scripts/sync-examples.mjs</code>. The screenshots below are taken from the real pages during the site build.</p>
+    <p class="docs-meta"><strong>Built from:</strong> <code>examples/recipes/&lt;name&gt;/index.html</code>. <strong>Assets:</strong> <code>examples/recipes/ivolt/</code>. <strong>Demo content:</strong> the brands, data and forms are invented and submit to nothing.</p>
 
     <Section title="The recipes" id="recipes" num={1}>
 
@@ -64,7 +64,7 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
     </Section>
 <Section title="Downloads" id="downloads" num={2}>
 
-    <p>Every archive is generated during the site build from the same sources as the pages above, so it always matches this version. Each recipe zip carries its own copy of the <code>ivolt/</code> assets: unzip it and open <code>index.html</code>.</p>
+    <p>Every archive comes from the same sources as the pages above, so it always matches this version. Each recipe zip carries its own copy of the <code>ivolt/</code> assets: unzip it and open <code>index.html</code>.</p>
     <div class="docs-downloads">
       <div class="docs-download">
         <a class="iv-button iv-button--secondary iv-button--sm" href="/downloads/ivolt-starter-plain-html.zip" download>Plain HTML starter</a>
@@ -80,10 +80,6 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
 <Section title="Copy a recipe into your project" id="copy-a-recipe" num={3}>
 
     <p>Each recipe lives in <code>examples/recipes/&lt;name&gt;/index.html</code> in the repository. Copy that folder together with <code>examples/recipes/ivolt/</code> and open the page. The plain starter in <code>examples/plain-html</code> is the smallest possible version of the same setup.</p>
-    <div class="docs-note">
-      <span class="docs-note__title">Honest demo</span>
-      <p class="iv-u-m-0">The recipes carry fictional brands and fictional data. Forms validate and show their own feedback, but they submit to nothing; nothing is bought, and no request leaves the page.</p>
-    </div>
     </Section>
 
   </article>

@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Data table" description="iVOLT data table: client-side sorting and filtering added to a plain, accessible HTML table, with aria-sort headers, a live row count, cancelable events and an exact restore on destroy.">
+<Base title="Data table: sort and filter in the page" description="iVOLT data table: client-side sorting and filtering on a plain, accessible HTML table, with aria-sort headers, a live row count and cancelable events.">
   <article class="docs-prose">
     <h1>Data table (sort and filter)</h1>
     <p>Sorting and filtering for a table that already exists in the HTML. The server sends a normal <code>&lt;table class="iv-table"&gt;</code>; on <code>init</code> the sortable headers become buttons with <code>aria-sort</code>, the filter field appears and a live status announces how many rows are visible. Nothing is paginated or virtualised: the rows you serve are the rows that get sorted, so keep the table at a size a page can hold.</p>

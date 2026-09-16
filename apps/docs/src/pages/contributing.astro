@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
 import Code from "../components/Code.astro";
 ---
-<Base title="Contributing" description="How to build, test and extend iVOLT: the commands, the repository layout, the rules a change has to follow, the contract tests that enforce them, and the licence.">
+<Base title="Contributing to iVOLT" description="How to build, test and extend iVOLT: the commands, the repository layout, the rules a change has to follow, the tests that enforce them, and the licence.">
   <article class="docs-prose">
     <h1>Contributing</h1>
     <p>iVOLT is a small codebase with strict rules. Most of the rules exist because a design system breaks slowly: one unprefixed class, one <code>!important</code>, one component documented with markup that no test ever renders. The contract tests below encode those rules so a pull request fails fast instead of drifting.</p>
@@ -122,7 +122,7 @@ npm run dev:docs   # builds the package first when dist/ is missing       # Astr
         <li>Run <code>npm run verify</code> before opening one, and say in the description which checks you ran and which you could not.</li>
         <li>Keep the change focused on one family or one concern; mixed refactors are hard to review against a contract.</li>
         <li>Report accessibility bugs and browser bugs with the fixture name, the engine and the steps — the fixture makes it reproducible in one command.</li>
-        <li>The project is alpha. A change that is right but breaking is acceptable with an ADR; a change that is convenient but unrecorded is not.</li>
+        <li>From 1.0 the public surface follows SemVer. A change that is right but breaking waits for a major and is recorded first; a change that is convenient but unrecorded never lands.</li>
       </ul>
     </Section>
 

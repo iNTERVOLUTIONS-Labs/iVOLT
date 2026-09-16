@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Picker" description="iVOLT picker: a native select promoted to a rich, searchable selector with chips for multiple values, option groups, full keyboard support and exact synchronisation with the form.">
+<Base title="Picker: a searchable select" description="iVOLT picker: a native select promoted to a rich, searchable selector with chips for multiple values, option groups and full keyboard support.">
   <article class="docs-prose">
     <h1>Picker (enhanced select)</h1>
     <p>A rich selector on top of a plain <code>&lt;select&gt;</code>. The server sends the native control, which works everywhere and submits with the form. On <code>init</code> it is kept as the source of truth and hidden from view; the reader sees a control that opens a searchable list, shows selected values as chips when the select is <code>multiple</code>, respects groups and disabled options, and syncs both ways with the native element. <code>destroy</code> puts the select back exactly as served.</p>

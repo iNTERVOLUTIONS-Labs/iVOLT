@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Gallery and lightbox" description="iVOLT lightbox: a gallery of links that opens a full-screen viewer built on the dialog, with captions, a counter, zoom, keyboard and swipe, and every image still reachable without JavaScript.">
+<Base title="Gallery and lightbox viewer" description="iVOLT lightbox: a gallery of links that opens a full-screen viewer with captions, counter, zoom, keyboard and swipe. Every image works without JavaScript.">
   <article class="docs-prose">
     <h1>Gallery and lightbox</h1>
     <p>A gallery is a list of links to images. That is the whole markup, and that is what the server sends: click a tile without JavaScript and the browser shows the full photograph, because the tile is an <code>&lt;a href&gt;</code> pointing at it. On <code>init</code> the component builds one viewer per gallery, hands it to <a href="/components/dialog">Dialog</a> for the top layer, the focus trap, Escape and the return of focus, and from then on a click opens the image in place with its caption, a counter, arrows, zoom and a swipe.</p>

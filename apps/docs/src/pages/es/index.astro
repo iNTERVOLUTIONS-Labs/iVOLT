@@ -16,20 +16,19 @@ let dir = process.cwd();
 while (!existsSync(resolve(dir, "packages/ivolt/dist")) && dirname(dir) !== dir) dir = dirname(dir);
 const dist = resolve(dir, "packages/ivolt/dist");
 const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.json"), "utf8")).version;
-const stage = /-rc/.test(version) ? "candidata" : /beta/.test(version) ? "beta" : /alpha/.test(version) ? "alpha" : "";
 const esNum = (n) => String(n).replace(".", ",");
 const kib = (rel) => existsSync(resolve(dist, rel)) ? (gzipSync(readFileSync(resolve(dist, rel)), { level: 9 }).length / 1024).toFixed(1) : null;
 const facts = [
   { value: "0", label: "dependencias de ejecución" },
   { value: kib("css/ivolt.min.css") ? `${esNum(kib("css/ivolt.min.css"))} KiB` : "—", label: "CSS, min + gzip" },
   { value: kib("js/ivolt.iife.min.js") ? `${esNum(kib("js/ivolt.iife.min.js"))} KiB` : "—", label: "JS (IIFE), min + gzip" },
-  { value: "3", label: "motores en la suite de pruebas" },
+  { value: "3", label: "motores de navegador probados" },
 ];
 const points = [
-  { title: "Primero el HTML", text: "Los enlaces navegan, los botones actúan y los controles nativos se usan donde encajan. Los componentes de contenido no necesitan script; los interactivos mejoran marcado real y lo restauran en destroy." },
-  { title: "Los tokens son la API", text: "Sobrescribe --iv-color-primary o --iv-radius-md en cualquier ámbito y el sistema entero te sigue. Temas claro, oscuro y del sistema sin JavaScript." },
-  { title: "JavaScript opcional y honesto", text: "init idempotente, destroy limpio, eventos cancelables, patrones de teclado de la APG, sin observadores globales, sin eval e importaciones seguras en SSR." },
-  { title: "Se entrega como archivos", text: "CSS en capas y plano, CSS por componente, módulos ES con exports reales, un IIFE con un solo global, tipos y los tokens en JSON. Medido, no prometido." },
+  { title: "Funciona antes que el JavaScript", text: "Los enlaces navegan, los botones actúan y los controles nativos hacen su trabajo. Los componentes de contenido no necesitan ni un script; los interactivos mejoran marcado que ya funciona y lo devuelven tal cual en destroy." },
+  { title: "Un token repinta el sistema", text: "Pon --iv-color-primary o --iv-radius-md en cualquier ámbito y todos los componentes te siguen. Los temas claro, oscuro y del sistema vienen de serie y no necesitan JavaScript." },
+  { title: "JavaScript solo donde se gana el sitio", text: "init idempotente, destroy limpio, eventos cancelables, patrones de teclado de la APG, sin observadores globales, sin eval e importaciones seguras al renderizar en el servidor." },
+  { title: "Archivos, no una cadena de build", text: "CSS en capas y plano, una hoja por componente, módulos ES con exports reales, un IIFE con un solo global, tipos de TypeScript y los tokens en JSON." },
 ];
 const panels = [
   { fixture: "carousel/photos", name: "Carrusel", slug: "carousel", kind: "js" },
@@ -44,12 +43,40 @@ const panels = [
   { fixture: "combobox/basic", name: "Combobox", slug: "combobox", kind: "js" },
 ];
 const reel = [
-  { fixture: "button/variants", name: "Button", slug: "button" },
-  { fixture: "form/float", name: "Form", slug: "form" },
-  { fixture: "tabs/basic", name: "Tabs", slug: "tabs" },
-  { fixture: "dialog/basic", name: "Dialog", slug: "dialog" },
+  { fixture: "button/variants", name: "Botón", slug: "button" },
+  { fixture: "form/float", name: "Formulario", slug: "form" },
+  { fixture: "tabs/basic", name: "Pestañas", slug: "tabs" },
+  { fixture: "dialog/basic", name: "Diálogo", slug: "dialog" },
   { fixture: "combobox/basic", name: "Combobox", slug: "combobox" },
-  { fixture: "carousel/photos", name: "Carousel", slug: "carousel" },
+  { fixture: "carousel/photos", name: "Carrusel", slug: "carousel" },
+];
+const site = Astro.site ? Astro.site.href.replace(/\/$/, "") : null;
+// Structured data for the two things this page really is: the project's site and its source code.
+// Only facts that can be checked in the repository — name, licence, repository, languages, version.
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "iVOLT",
+    ...(site ? { url: `${site}/es` } : {}),
+    inLanguage: "es",
+    description: "Framework CSS y sistema de diseño ligero con componentes de interfaz accesibles, tokens de diseño, modo oscuro y sin dependencias de ejecución.",
+    publisher: { "@type": "Organization", name: "iNTERVOLUTIONS" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name: "iVOLT",
+    alternateName: "@intervolutions/ivolt",
+    description: "Framework frontend de CSS, HTML y JavaScript opcional: 33 componentes de interfaz accesibles, un conjunto finito de utilidades, tokens de diseño, temas claro y oscuro y cero dependencias de ejecución.",
+    codeRepository: "https://github.com/iNTERVOLUTIONS-Labs/iVOLT",
+    programmingLanguage: ["CSS", "HTML", "JavaScript"],
+    runtimePlatform: "Web browser",
+    license: "https://opensource.org/licenses/MIT",
+    version,
+    ...(site ? { url: `${site}/es` } : {}),
+    author: { "@type": "Organization", name: "iNTERVOLUTIONS" },
+  },
 ];
 const components = Object.entries(families);
 const recipes = [
@@ -59,20 +86,20 @@ const recipes = [
   { slug: "store", title: "Store", text: "Un catálogo y una compra que no compra nada: filtros ricos, carrusel de producto, stepper de compra, cajón de carrito y diálogo de confirmación." },
 ];
 ---
-<Base lang="es" title="La interfaz empieza aquí" description="iVOLT es un framework frontend híbrido de CSS, HTML y JS: componentes semánticos, un conjunto finito de utilidades, tokens de diseño y JavaScript opcional. Sin dependencias de ejecución. Candidata a 1.0." sidebar={false} bleed={true}>
+<Base lang="es" title="Framework CSS ligero y sistema de diseño" description="Framework CSS y sistema de diseño ligero: 33 componentes accesibles, tokens de diseño, modo oscuro, JavaScript opcional y cero dependencias de ejecución." sidebar={false} bleed={true}>
   <section class="docs-hero" aria-labelledby="hero-title">
     <div class="docs-orbs" aria-hidden="true"><span class="docs-orb docs-orb--a"></span><span class="docs-orb docs-orb--b"></span></div>
     <Arcs />
     <div class="docs-hero__inner">
-      <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} {stage} · MIT<span class="docs-hero__kicker-tail"> · <b>cero dependencias de ejecución</b></span></p>
+      <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} · MIT<span class="docs-hero__kicker-tail"> · <b>cero dependencias de ejecución</b></span></p>
       <h1 class="docs-hero__title" id="hero-title">
-        <span class="docs-mask" style="--i:0"><span>La interfaz</span></span>
-        <span class="docs-mask" style="--i:1"><span>empieza <em>aquí</em><span class="docs-dot">.</span></span></span>
+        <span class="docs-mask" style="--i:0"><span>El framework CSS</span></span>
+        <span class="docs-mask" style="--i:1"><span>sin <em>paso de build</em><span class="docs-dot">.</span></span></span>
       </h1>
-      <p class="docs-hero__lead">Componentes semánticos como camino rápido, un conjunto finito de utilidades para componer, tokens como contrato visual y JavaScript opcional para el comportamiento. Desde un <code>&lt;link&gt;</code> a secas hasta WordPress, Astro o cualquier empaquetador.</p>
+      <p class="docs-hero__lead">Treinta y tres componentes accesibles, un conjunto finito de utilidades y tokens de diseño como contrato visual. Enlaza una hoja de estilo y ya estás construyendo: HTML plano, WordPress, Astro o cualquier empaquetador.</p>
       <div class="docs-hero__actions">
         <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/es/getting-started">Primeros pasos</a>
-        <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/es/components/button">Explorar los componentes</a>
+        <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/es/components/button">Ver los componentes</a>
       </div>
       <ul class="docs-facts">
         {facts.map((f) => <li class="docs-fact"><strong class="iv-count" data-iv-component="countup">{f.value}</strong><span>{f.label}</span></li>)}
@@ -85,8 +112,8 @@ const recipes = [
       <div class="docs-why__head">
         <span class="docs-num">01 — Por qué</span>
         <span class="docs-why__figure" aria-hidden="true">01</span>
-        <h2 class="docs-why__title" id="why-title">Una sola gramática para contenido, maquetación y comportamiento.</h2>
-        <p class="docs-why__lead">Cada clase, token, atributo y evento sigue el mismo contrato con prefijo, así que lo que aprendes en la primera página te sirve en la última.</p>
+        <h2 class="docs-why__title" id="why-title">Aprende la gramática una vez y úsala en todo.</h2>
+        <p class="docs-why__lead">Cada clase, token, atributo y evento sigue el mismo contrato con prefijo, así que lo que aprendes en la primera página te sigue sirviendo en la última.</p>
       </div>
       <div class="docs-why__list">
         {points.map((p, i) => (
@@ -102,7 +129,7 @@ const recipes = [
   <section class="docs-cabinet" aria-labelledby="components-title">
     <div class="docs-cabinet__head docs-wrap">
       <span class="docs-num">02 — Componentes</span>
-      <h2 class="docs-why__title" id="components-title">Catorce familias de contenido,<br>diecinueve interactivas.</h2>
+      <h2 class="docs-why__title" id="components-title">Treinta y tres componentes,<br>vivos en esta página.</h2>
     </div>
     <div class="docs-wrap docs-showreel" data-showreel>
       <div class="docs-showreel__tabs" role="tablist" aria-label="Componentes en escena">
@@ -127,8 +154,8 @@ const recipes = [
     <div class="docs-cutsec">
       <div class="docs-cutsec__head docs-reveal">
         <span class="docs-num">03 — Temas</span>
-        <h2 class="docs-why__title" id="themes-title">Ámbitos, no interruptores.</h2>
-        <p>Pon <code>data-iv-theme</code> en cualquier elemento. Las elecciones explícitas ganan a la preferencia del sistema, los ámbitos se anidan y nada necesita almacenamiento ni script.</p>
+        <h2 class="docs-why__title" id="themes-title">El modo oscuro es un ámbito, no un interruptor.</h2>
+        <p>Pon <code>data-iv-theme</code> en cualquier elemento y esa rama de la página cambia de tema. Las elecciones explícitas ganan a la preferencia del sistema, los ámbitos se anidan y nada necesita almacenamiento ni script.</p>
         <pre class="docs-code" tabindex="0"><code>&lt;html data-iv-theme="system"&gt;
   &lt;section data-iv-theme="dark"&gt;
     &lt;aside data-iv-theme="light"&gt;…&lt;/aside&gt;
@@ -168,20 +195,21 @@ const recipes = [
     <div class="docs-wrap docs-invert__grid">
       <div class="docs-invert__head">
       <span class="docs-num">05 — Empezar</span>
-      <h2 id="start-title">Dos archivos. Sin paso de build.</h2>
-      <p>Instálalo desde npm, o compila el paquete una vez y copia <code>dist/</code> junto a tu página. Después enlaza una hoja de estilo y un módulo. La plantilla inicial y las cuatro recetas son exactamente esto, nada más.</p>
+      <h2 id="start-title">Dos archivos y ya está funcionando.</h2>
+      <p>Instálalo desde npm, o copia <code>dist/</code> junto a tu página y enlaza una hoja de estilo y un módulo. Sin archivo de configuración, sin plugin y sin compilador. La plantilla inicial y las cuatro recetas son exactamente esto y nada más.</p>
       </div>
       <div class="docs-invert__side">
-      <pre class="docs-code" tabindex="0"><code>npm install @intervolutions/ivolt@next</code></pre>
+      <pre class="docs-code" tabindex="0"><code>npm install @intervolutions/ivolt</code></pre>
       <pre class="docs-code" tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
   &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
   &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
       <div class="iv-cluster">
-        <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/es/getting-started">Leer los primeros pasos</a>
+        <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/es/getting-started">Instalarlo ahora</a>
         <a class="iv-button iv-button--secondary iv-button--lg" href="/es/examples">Descargar la plantilla inicial</a>
       </div>
       </div>
-      <p class="docs-invert__foot">Candidata {version}: el contrato de 1.0 está congelado y antes de 1.0.0 solo entran correcciones; qué es público y cómo puede cambiar está escrito en <a href="/es/foundations/stability">estabilidad</a>. Los tamaños de arriba se miden en tiempo de build a partir de los archivos que se distribuyen. Sin comparativas de rendimiento con otros frameworks.</p>
+      <p class="docs-invert__foot">v{version} con licencia MIT. Qué es público, y cómo puede cambiar, está escrito en <a href="/es/foundations/stability">estabilidad</a>. Los tamaños de arriba se miden sobre los archivos que se distribuyen, en tiempo de build.</p>
     </div>
   </section>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)}></script>
 </Base>

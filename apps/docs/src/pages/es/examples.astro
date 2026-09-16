@@ -19,7 +19,7 @@ const zipOf = (slug) => manifest.zips.find((z) => z.name === `ivolt-recipe-${slu
 const kib = (b) => (b ? `${(b / 1024).toFixed(0)} KiB` : null);
 const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "index.html"));
 ---
-<Base lang="es" title="Ejemplos" description="Cuatro páginas completas hechas solo con iVOLT: un estudio creativo, un panel de producto, una revista editorial y una tienda. Ábrelas, descárgalas en zip o copia la carpeta.">
+<Base lang="es" title="Ejemplos: cuatro páginas hechas con iVOLT" description="Cuatro páginas completas hechas solo con iVOLT: un estudio creativo, un panel de producto, una revista y una tienda. Ábrelas, descárgalas o copia la carpeta.">
   <article class="docs-prose">
         <section class="iv-hero iv-hero--compact docs-pagehero" aria-labelledby="examples-title">
       <div class="iv-hero__media"><img src="/photos/p1059.jpg" width="1280" height="800" alt="" fetchpriority="high" decoding="async"></div>
@@ -27,16 +27,16 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
       <div class="iv-hero__content">
         <p class="iv-hero__kicker">Cuatro páginas · un paquete · sin compilación</p>
         <h1 class="iv-hero__title" id="examples-title">Cuatro páginas, un paquete</h1>
-        <p class="iv-hero__lead">Cuatro páginas completas que comparten el framework y nada más: composición, densidad y tema por defecto distintos en cada una. Cada una es un HTML independiente que enlaza los archivos compilados de una carpeta hermana <code>ivolt/</code>: sin paso de compilación, sin red y sin dependencias.</p>
+        <p class="iv-hero__lead">Cuatro páginas acabadas que comparten el framework y nada más: composición, densidad y tema por defecto distintos en cada una. Cada una es un único HTML que enlaza los archivos compilados de una carpeta hermana <code>ivolt/</code>. Abre una y llévate la carpeta.</p>
         <div class="iv-hero__actions">
-          <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/studio/index.html">Abrir la receta Studio</a>
+          <a class="iv-button iv-button--primary iv-edge-glint" href="/examples/studio/index.html">Abrir la página Studio</a>
           <a class="iv-button iv-button--secondary" href="#downloads">Descargas</a>
         </div>
       </div>
     </section>
-    <p class="docs-photo-credit">Fotografía de Clark Street Mercantile en Unsplash. Los datos y los formularios de las recetas son demostraciones: no se envía nada y no se compra nada.</p>
+    <p class="docs-photo-credit">Fotografía de Clark Street Mercantile en Unsplash.</p>
 
-    <p class="docs-meta"><strong>Hecho desde:</strong> <code>examples/recipes/&lt;name&gt;/index.html</code>. <strong>Archivos:</strong> <code>examples/recipes/ivolt/</code>, que escribe <code>node scripts/sync-examples.mjs</code>. Las capturas de abajo se toman de las páginas reales durante la compilación del sitio.</p>
+    <p class="docs-meta"><strong>Hecho desde:</strong> <code>examples/recipes/&lt;name&gt;/index.html</code>. <strong>Archivos:</strong> <code>examples/recipes/ivolt/</code>. <strong>Contenido de demostración:</strong> marcas, datos y formularios son inventados y no envían nada.</p>
 
     <Section title="Las recetas" id="recipes" num={1}>
 
@@ -64,7 +64,7 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
     </Section>
 <Section title="Descargas" id="downloads" num={2}>
 
-    <p>Cada archivo se genera durante la compilación del sitio desde las mismas fuentes que las páginas de arriba, así que siempre corresponde a esta versión. Cada zip de receta lleva su propia copia de <code>ivolt/</code>: descomprime y abre <code>index.html</code>.</p>
+    <p>Cada archivo sale de las mismas fuentes que las páginas de arriba, así que siempre corresponde a esta versión. Cada zip de receta lleva su propia copia de <code>ivolt/</code>: descomprime y abre <code>index.html</code>.</p>
     <div class="docs-downloads">
       <div class="docs-download">
         <a class="iv-button iv-button--secondary iv-button--sm" href="/downloads/ivolt-starter-plain-html.zip" download>Plantilla HTML mínima</a>
@@ -80,10 +80,6 @@ const built = (slug) => existsSync(resolve(root, "examples/recipes", slug, "inde
 <Section title="Copiar una receta a tu proyecto" id="copy-a-recipe" num={3}>
 
     <p>Cada receta vive en <code>examples/recipes/&lt;nombre&gt;/index.html</code> dentro del repositorio. Copia esa carpeta junto con <code>examples/recipes/ivolt/</code> y abre la página. La plantilla de <code>examples/plain-html</code> es la versión más pequeña posible del mismo montaje.</p>
-    <div class="docs-note">
-      <span class="docs-note__title">Demostración honesta</span>
-      <p class="iv-u-m-0">Las recetas llevan marcas y datos ficticios. Los formularios validan y muestran su propia respuesta, pero no envían nada a ningún sitio; no se compra nada y ninguna petición sale de la página.</p>
-    </div>
     </Section>
 
   </article>

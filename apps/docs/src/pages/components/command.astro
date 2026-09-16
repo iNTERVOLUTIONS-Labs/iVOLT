@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Command palette" description="iVOLT command palette: a modal search for actions opened with Ctrl+K, filtered as you type, driven by the keyboard, with groups, shortcuts, recent items and actions added from the API.">
+<Base title="Command palette: actions on Ctrl+K" description="iVOLT command palette: a modal search for actions opened with Ctrl+K, filtered as you type and driven by the keyboard, with groups, shortcuts and recents.">
   <article class="docs-prose">
     <h1>Command palette</h1>
     <p>A modal search for actions. Press <kbd>Ctrl</kbd>+<kbd>K</kbd> (or <kbd>⌘</kbd>+<kbd>K</kbd>, or <kbd>/</kbd> outside a text field) and type: the list filters by label and keywords, groups without matches disappear, arrows move the highlight and Enter follows the link or runs the action. Items are served as plain links and buttons inside a dialog, so everything the palette can do also exists elsewhere on the page. The component composes the dialog, adds the listbox semantics, the shortcuts, the filtering, an optional list of recent actions and an API to add actions at runtime.</p>

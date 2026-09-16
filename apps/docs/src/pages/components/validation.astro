@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Form validation and counter" description="iVOLT form validation: inline error messages from the browser's constraint validation, custom messages per error type, an error summary, focus management and a character or word counter for text fields.">
+<Base title="Form validation and character counter" description="iVOLT form validation: inline errors from the browser's constraint validation, custom messages per error type, an error summary and focus management.">
   <article class="docs-prose">
     <h1>Form validation and counter</h1>
     <p>Two small components that work on top of the attributes you already write. The <code>form</code> component turns the browser's constraint validation into inline messages, a summary and sensible focus, with messages you control per error type. The <code>counter</code> shows characters or words next to a text field and can mark the field invalid when a soft limit is exceeded. Without JavaScript the browser validates and <code>maxlength</code> limits the text as usual.</p>

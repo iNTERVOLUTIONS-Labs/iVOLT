@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Code from "../../components/Code.astro";
 ---
-<Base title="Localisation" description="Every string iVOLT writes on screen, where it comes from — Intl, a data-iv-* option or the served HTML — and how to translate it, with a Spanish example per component.">
+<Base title="Localisation and RTL support" description="Every string iVOLT writes on screen, where it comes from — Intl, a data-iv-* option or the served HTML — and how to translate it, with a Spanish example.">
   <article class="docs-prose">
     <h1>Localisation</h1>
     <p>iVOLT ships no translation layer, no locale files and no runtime dictionary. It writes very little text of its own, and almost all of it is an option you set in the HTML you already serve. Numbers, dates and sorting come from <code>Intl</code>, which reads the language of the document. This page lists the whole surface so a translator can see it at once.</p>

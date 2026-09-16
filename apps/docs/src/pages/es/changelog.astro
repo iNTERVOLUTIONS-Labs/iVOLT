@@ -7,17 +7,11 @@ import Section from "../../components/Section.astro";
 import { readChangelog } from "../../lib/changelog.js";
 const { intro, releases } = readChangelog();
 ---
-<Base lang="es" title="Cambios" description="Todos los ciclos de iVOLT, desde la primera alfa hasta la candidata 1.0, generados en el build desde el changelog que viaja dentro del paquete, con las fechas de lo publicado y ninguna inventada para lo que no lo está.">
+<Base lang="es" title="Cambios: todas las versiones de iVOLT" description="Todas las versiones de iVOLT, una a una, tomadas del changelog que viaja dentro del paquete, con la fecha de cada versión publicada.">
   <article class="docs-prose">
     <h1>Cambios</h1>
-    <p>Esta página se genera en el build desde el <code>CHANGELOG.md</code> del paquete, así que lo que lees aquí es exactamente lo que viaja en el tarball. Solo hay fecha en las versiones publicadas; el resto dice <em>unreleased</em> y no se inventa ninguna.</p>
-    <p class="docs-note"><span class="docs-note__title">Idioma</span>El registro se conserva en inglés; resumen de la candidata:</p>
-    <ul class="docs-changelog-es">
-      <li><strong>1.0.0-rc.1</strong> — Megamenú reconstruido desde cero (contrato §8.9 v2, ADR-048): cabecera con título, cuenta y cierre, directorio, pestañas de descubrimiento con arte, nube, caja destacada, filtro dentro del panel, pie con miga y línea de estado, y cursor bajo el disparador. Migración: <code>__inner</code> → <code>__body</code>, <code>__group</code> → <code>__directory</code>, <code>__links</code> → <code>__dirlist</code>, <code>__bottom</code> → <code>__foot</code>.</li>
-      <li><strong>1.0.0-rc.0</strong> — El contrato de 1.0 queda congelado y la página de estabilidad dice qué es público y cómo puede cambiar. Antes de 1.0.0 solo entran correcciones.</li>
-      <li><strong>0.9.0-beta.0</strong> — Relevo tarjeta a tarjeta en la pila, etiqueta hermana en el picker, la hoja plana igual a la de capas, todas las cadenas como opción y la referencia generada.</li>
-    </ul>
-    <p>El registro completo, versión por versión, está abajo en inglés: es el texto que viaja dentro del paquete y no se traduce para que no se desincronice en silencio.</p>
+    <p>Lo que lees aquí es el <code>CHANGELOG.md</code> que viaja dentro del paquete, así que la página y el tarball no pueden separarse. Las versiones publicadas llevan su fecha; lo que sigue abierto dice <em>unreleased</em>.</p>
+    <p class="docs-note"><span class="docs-note__title">Idioma</span>El registro completo, versión por versión, está abajo en inglés: es el texto que viaja dentro del paquete y no se traduce para que no se desincronice en silencio.</p>
     {/* El cuerpo es inglés: fuera del índice de búsqueda español, que si no devuelve el changelog
         para cualquier término técnico y ensucia la paleta de /es. */}
     <div data-pagefind-ignore>

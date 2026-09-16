@@ -15,19 +15,18 @@ let dir = process.cwd();
 while (!existsSync(resolve(dir, "packages/ivolt/dist")) && dirname(dir) !== dir) dir = dirname(dir);
 const dist = resolve(dir, "packages/ivolt/dist");
 const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.json"), "utf8")).version;
-const stage = /-rc/.test(version) ? "release candidate" : /beta/.test(version) ? "beta" : /alpha/.test(version) ? "alpha" : "";
 const kib = (rel) => existsSync(resolve(dist, rel)) ? (gzipSync(readFileSync(resolve(dist, rel)), { level: 9 }).length / 1024).toFixed(1) : null;
 const facts = [
   { value: "0", label: "runtime dependencies" },
   { value: kib("css/ivolt.min.css") ? `${kib("css/ivolt.min.css")} KiB` : "—", label: "CSS, min + gzip" },
   { value: kib("js/ivolt.iife.min.js") ? `${kib("js/ivolt.iife.min.js")} KiB` : "—", label: "JS (IIFE), min + gzip" },
-  { value: "3", label: "engines in the test suite" },
+  { value: "3", label: "browser engines tested" },
 ];
 const points = [
-  { title: "HTML first", text: "Links navigate, buttons act, native controls where they fit. Content components need no script; interactive ones enhance real markup and restore it on destroy." },
-  { title: "Tokens as the API", text: "Override --iv-color-primary or --iv-radius-md on any scope and the whole system follows. Light, dark and system themes without JavaScript." },
-  { title: "Optional, honest JS", text: "Idempotent init, clean destroy, cancelable events, keyboard patterns from the APG, no global observers, no eval, SSR-safe imports." },
-  { title: "Ships as files", text: "Layered and flat CSS, per-component CSS, ES modules with real exports, an IIFE with one global, types and token JSON. Measured, not promised." },
+  { title: "It works before JavaScript does", text: "Links navigate, buttons act, native controls do their job. Content components need no script at all; interactive ones enhance markup that already works and put it back on destroy." },
+  { title: "One token repaints the system", text: "Set --iv-color-primary or --iv-radius-md on any scope and every component follows. Light, dark and system themes ship built in, no JavaScript required." },
+  { title: "JavaScript only where it earns it", text: "Idempotent init, clean destroy, cancelable events, keyboard patterns from the APG, no global observers, no eval, imports that are safe to render on the server." },
+  { title: "Files, not a toolchain", text: "Layered and flat CSS, one sheet per component, ES modules with real exports, an IIFE with a single global, TypeScript types and the tokens as JSON." },
 ];
 const panels = [
   { fixture: "carousel/photos", name: "Carousel", slug: "carousel", kind: "js" },
@@ -49,6 +48,34 @@ const reel = [
   { fixture: "combobox/basic", name: "Combobox", slug: "combobox" },
   { fixture: "carousel/photos", name: "Carousel", slug: "carousel" },
 ];
+const site = Astro.site ? Astro.site.href.replace(/\/$/, "") : null;
+// Structured data for the two things this page really is: the project's site and its source code.
+// Only facts that can be checked in the repository — name, licence, repository, languages, version.
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "iVOLT",
+    ...(site ? { url: `${site}/` } : {}),
+    inLanguage: "en",
+    description: "Lightweight CSS framework and design system with accessible UI components, design tokens, dark mode and no runtime dependencies.",
+    publisher: { "@type": "Organization", name: "iNTERVOLUTIONS" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    name: "iVOLT",
+    alternateName: "@intervolutions/ivolt",
+    description: "A CSS, HTML and optional JavaScript frontend framework: 33 accessible UI components, a finite utility set, design tokens, light and dark themes and zero runtime dependencies.",
+    codeRepository: "https://github.com/iNTERVOLUTIONS-Labs/iVOLT",
+    programmingLanguage: ["CSS", "HTML", "JavaScript"],
+    runtimePlatform: "Web browser",
+    license: "https://opensource.org/licenses/MIT",
+    version,
+    ...(site ? { url: `${site}/` } : {}),
+    author: { "@type": "Organization", name: "iNTERVOLUTIONS" },
+  },
+];
 const components = Object.entries(families);
 const recipes = [
   { slug: "studio", title: "Studio", text: "A creative studio: cinematic cover with parallax, a marquee, stacked service cards, a gallery with the viewer and a contact stepper." },
@@ -57,20 +84,20 @@ const recipes = [
   { slug: "store", title: "Store", text: "A catalogue and a purchase that buys nothing: rich filters, a product carousel, a checkout stepper, a cart drawer and a confirmation dialog." },
 ];
 ---
-<Base title="The interface starts here" description="iVOLT is a hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript. No runtime dependencies. Release candidate for 1.0." sidebar={false} bleed={true}>
+<Base title="Lightweight CSS framework and design system" description="A lightweight CSS framework and design system: 33 accessible UI components, design tokens, dark mode, optional JavaScript and zero runtime dependencies." sidebar={false} bleed={true}>
   <section class="docs-hero" aria-labelledby="hero-title">
     <div class="docs-orbs" aria-hidden="true"><span class="docs-orb docs-orb--a"></span><span class="docs-orb docs-orb--b"></span></div>
     <Arcs />
     <div class="docs-hero__inner">
-      <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} {stage} · MIT<span class="docs-hero__kicker-tail"> · <b>zero runtime dependencies</b></span></p>
+      <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} · MIT<span class="docs-hero__kicker-tail"> · <b>zero runtime dependencies</b></span></p>
       <h1 class="docs-hero__title" id="hero-title">
-        <span class="docs-mask" style="--i:0"><span>The interface</span></span>
-        <span class="docs-mask" style="--i:1"><span>starts <em>here</em><span class="docs-dot">.</span></span></span>
+        <span class="docs-mask" style="--i:0"><span>The CSS framework</span></span>
+        <span class="docs-mask" style="--i:1"><span>with no <em>build step</em><span class="docs-dot">.</span></span></span>
       </h1>
-      <p class="docs-hero__lead">Semantic components as the fast path, a finite utility set for composition, tokens as the visual contract and optional JavaScript for behaviour. From a plain <code>&lt;link&gt;</code> to WordPress, Astro or any bundler.</p>
+      <p class="docs-hero__lead">Thirty-three accessible components, a finite set of utilities and design tokens as the visual contract. Link one stylesheet and you are building — plain HTML, WordPress, Astro or any bundler.</p>
       <div class="docs-hero__actions">
         <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/getting-started">Get started</a>
-        <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/components/button">Explore components</a>
+        <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/components/button">Browse the components</a>
       </div>
       <ul class="docs-facts">
         {facts.map((f) => <li class="docs-fact"><strong class="iv-count" data-iv-component="countup">{f.value}</strong><span>{f.label}</span></li>)}
@@ -83,8 +110,8 @@ const recipes = [
       <div class="docs-why__head">
         <span class="docs-num">01 — Why</span>
         <span class="docs-why__figure" aria-hidden="true">01</span>
-        <h2 class="docs-why__title" id="why-title">One grammar for content, layout and behaviour.</h2>
-        <p class="docs-why__lead">Every class, token, attribute and event follows the same prefixed contract, so what you learn on the first page works on the last.</p>
+        <h2 class="docs-why__title" id="why-title">Learn the grammar once, use it everywhere.</h2>
+        <p class="docs-why__lead">Every class, token, attribute and event follows the same prefixed contract, so what you learn on the first page still works on the last.</p>
       </div>
       <div class="docs-why__list">
         {points.map((p, i) => (
@@ -100,7 +127,7 @@ const recipes = [
   <section class="docs-cabinet" aria-labelledby="components-title">
     <div class="docs-cabinet__head docs-wrap">
       <span class="docs-num">02 — Components</span>
-      <h2 class="docs-why__title" id="components-title">Fourteen content families,<br>nineteen interactive ones.</h2>
+      <h2 class="docs-why__title" id="components-title">Thirty-three components,<br>live on this page.</h2>
     </div>
     <div class="docs-wrap docs-showreel" data-showreel>
       <div class="docs-showreel__tabs" role="tablist" aria-label="Components on stage">
@@ -125,8 +152,8 @@ const recipes = [
     <div class="docs-cutsec">
       <div class="docs-cutsec__head docs-reveal">
         <span class="docs-num">03 — Themes</span>
-        <h2 class="docs-why__title" id="themes-title">Scopes, not switches.</h2>
-        <p>Set <code>data-iv-theme</code> on any element. Explicit choices win over the system preference, scopes nest, and nothing needs storage or a script.</p>
+        <h2 class="docs-why__title" id="themes-title">Dark mode is a scope, not a switch.</h2>
+        <p>Set <code>data-iv-theme</code> on any element and that branch of the page changes theme. Explicit choices beat the system preference, scopes nest, and nothing needs storage or a script.</p>
         <pre class="docs-code" tabindex="0"><code>&lt;html data-iv-theme="system"&gt;
   &lt;section data-iv-theme="dark"&gt;
     &lt;aside data-iv-theme="light"&gt;…&lt;/aside&gt;
@@ -166,20 +193,21 @@ const recipes = [
     <div class="docs-wrap docs-invert__grid">
       <div class="docs-invert__head">
       <span class="docs-num">05 — Start</span>
-      <h2 id="start-title">Two files. No build step.</h2>
-      <p>Install it from npm, or build the package once and copy <code>dist/</code> next to your page. Then link a stylesheet and a module. The starter and the four recipes are exactly this, nothing more.</p>
+      <h2 id="start-title">Two files and you are running.</h2>
+      <p>Install it from npm, or copy <code>dist/</code> next to your page and link a stylesheet and a module. No configuration file, no plugin, no compiler. The starter and the four recipes are exactly this and nothing more.</p>
       </div>
       <div class="docs-invert__side">
-      <pre class="docs-code" tabindex="0"><code>npm install @intervolutions/ivolt@next</code></pre>
+      <pre class="docs-code" tabindex="0"><code>npm install @intervolutions/ivolt</code></pre>
       <pre class="docs-code" tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
   &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
   &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
       <div class="iv-cluster">
-        <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/getting-started">Read the getting started</a>
+        <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/getting-started">Install it now</a>
         <a class="iv-button iv-button--secondary iv-button--lg" href="/examples">Download the starter</a>
       </div>
       </div>
-      <p class="docs-invert__foot">Release candidate {version}: the contract is frozen for 1.0 and only fixes land before 1.0.0 — what is public and how it is allowed to change is written down in <a href="/foundations/stability">stability</a>. Sizes above are measured at build time from the shipped files. No benchmarks against other frameworks.</p>
+      <p class="docs-invert__foot">v{version} under MIT. What is public, and how it is allowed to change, is written down in <a href="/foundations/stability">stability</a>. The sizes above are measured from the files that ship, at build time.</p>
     </div>
   </section>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)}></script>
 </Base>

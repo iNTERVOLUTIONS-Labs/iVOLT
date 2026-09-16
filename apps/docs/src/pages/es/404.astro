@@ -3,18 +3,18 @@ import Base from "../../layouts/Base.astro";
 const links = [
   { href: "/es", label: "Inicio", meta: "empieza aquí" },
   { href: "/es/getting-started", label: "Primeros pasos", meta: "instalación" },
-  { href: "/es/components/button", label: "Componentes", meta: "33 familias" },
+  { href: "/es/components/button", label: "Componentes", meta: "33 en total" },
   { href: "/es/foundations/tokens-and-themes", label: "Tokens y temas", meta: "fundamentos" },
-  { href: "/es/examples", label: "Ejemplos", meta: "4 recetas" },
+  { href: "/es/examples", label: "Ejemplos", meta: "4 páginas completas" },
 ];
 ---
-<Base lang="es" title="Página no encontrada" description="La página no existe. Vuelve a la documentación de iVOLT." sidebar={false}>
+<Base lang="es" title="Página no encontrada" description="Esta página no existe. Vuelve a la documentación de iVOLT: instalación, componentes, tokens y temas o las páginas de ejemplo." sidebar={false}>
   <article class="docs-prose">
     <div class="docs-lost">
       <div>
         <p class="docs-lost__code" aria-hidden="true">404</p>
         <h1>Página no encontrada</h1>
-        <p>La dirección no corresponde a ninguna página de esta documentación. No se ha borrado nada; lo más probable es que el enlace nunca existiera. Elige por dónde volver, o pulsa <kbd class="docs-kbd-inline">/</kbd> para buscar.</p>
+        <p>Ninguna página responde a esta dirección. Elige por dónde volver, o pulsa <kbd class="docs-kbd-inline">/</kbd> para buscar en la documentación.</p>
       </div>
       <nav aria-label="Vías de vuelta">
         <ul class="docs-lost__links">

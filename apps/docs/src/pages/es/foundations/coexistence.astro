@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 import { themeSnippet } from "../../../theme-snippet.js";
 const cspHash = "sha256-" + createHash("sha256").update(themeSnippet).digest("base64");
 ---
-<Base lang="es" title="Convivencia" description="Añadir iVOLT a un sitio que ya tiene CSS: el ámbito .iv-root, los prefijos, las reglas exactas de las capas de cascada, la compilación plana, WordPress y PHP, Astro y Vite, y la Content-Security-Policy.">
+<Base lang="es" title="Añade iVOLT a un sitio con CSS" description="Mete iVOLT en un sitio que ya tiene CSS: el ámbito .iv-root, los prefijos, las reglas de capas, la compilación plana, WordPress, Astro, Vite y la CSP.">
   <article class="docs-prose">
     <h1>Convivencia con tu CSS</h1>
     <p>Casi ninguna página que adopta un framework está vacía. Hay un tema, una hoja heredada, un plugin que da estilo a <code>button</code> y una fecha de entrega. Esta página va de esa situación: qué hace iVOLT para no estorbar, qué no hace, y las reglas exactas que deciden quién gana cuando dos hojas de estilo discrepan.</p>

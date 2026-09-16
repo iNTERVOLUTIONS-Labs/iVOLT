@@ -3,7 +3,7 @@ import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
-<Base title="Datepicker" description="iVOLT datepicker: a native date input that gains an accessible calendar dialog with a keyboard grid, min and max, localised month and weekday names and a first day of the week that follows the locale.">
+<Base title="Datepicker: an accessible calendar" description="iVOLT datepicker: a native date input that gains an accessible calendar dialog with a keyboard grid, min and max, and localised month and weekday names.">
   <article class="docs-prose">
     <h1>Datepicker</h1>
     <p>A calendar on top of a native date input. The server sends <code>&lt;input type="date"&gt;</code>, which already has its own picker and submits an ISO value; on <code>init</code> a button opens a calendar dialog with a grid you can drive from the keyboard, month and year navigation, today and clear actions, and the limits from <code>min</code> and <code>max</code>. Month and weekday names come from the browser's locale data, so the same markup reads right in any language. On coarse pointers the native picker stays, because it is the better tool there.</p>

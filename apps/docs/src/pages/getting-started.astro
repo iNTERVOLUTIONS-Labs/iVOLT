@@ -9,19 +9,18 @@ import { resolve, dirname } from "node:path";
 let dir = process.cwd();
 while (!existsSync(resolve(dir, "packages/ivolt/package.json")) && dirname(dir) !== dir) dir = dirname(dir);
 const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.json"), "utf8")).version;
-const tag = /-rc/.test(version) ? "next" : /beta/.test(version) ? "beta" : "latest";
 ---
-<Base title="Getting started" description="Use iVOLT from local files without a build step, or as ES modules with real package exports. Browser support and coexistence with existing CSS.">
+<Base title="Install the CSS framework in minutes" description="Install iVOLT from npm, or drop two prebuilt files next to your page. No build step, no configuration file and no runtime dependencies. Start in minutes.">
   <article class="docs-prose">
     <h1>Getting started</h1>
-    <p>iVOLT ships as prebuilt CSS and JavaScript. Two files are enough: a stylesheet and a module. There is no build step, no configuration file and no runtime dependency.</p>
+    <p>iVOLT ships as prebuilt CSS and JavaScript. Two files are enough: a stylesheet and a module. No build step, no configuration file, no runtime dependency — and the same two files work in plain HTML, WordPress, Astro or any bundler.</p>
     <p class="docs-meta"><strong>Version:</strong> <code>{version}</code>. <strong>Licence:</strong> MIT. <strong>Engines tested:</strong> Chromium, Firefox, WebKit.</p>
 
     <Stage primary name="button/variants" title="The framework, running on its own page" />
 
-    <Section title="Install from npm" lead="The release candidate is published under the next tag; the contract is frozen for 1.0 and only fixes land before it.">
-      <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `npm install @intervolutions/ivolt@${tag}` }]} />
-      <p>Pin the exact version in production. What is public, and how it is allowed to change, is written down in <a href="/foundations/stability">stability</a>.</p>
+    <Section title="Install from npm" lead="One command, no peer dependencies to resolve.">
+      <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `npm install @intervolutions/ivolt` }]} />
+      <p>Pin the exact version in production. From 1.0 the package follows SemVer: what is public, and how it is allowed to change, is written down in <a href="/foundations/stability">stability</a>.</p>
     </Section>
 
     <Section title="Build the package" lead="From a checkout, the same files the registry serves.">

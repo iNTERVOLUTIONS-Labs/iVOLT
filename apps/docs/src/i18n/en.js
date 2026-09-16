@@ -24,7 +24,7 @@ export const t = {
   footerNav: "Site map",
   docsNav: "Documentation",
   footer: "iVOLT v{version} · MIT · by iNTERVOLUTIONS",
-  alpha: "Release candidate {version}: the contract is frozen for 1.0; only fixes land before 1.0.0.",
+  promise: "Stable since 1.0: every public class, token, attribute and event follows SemVer.",
   anchor: "Link to this section",
   copy: "Copy HTML",
   copyCode: "Copy",
@@ -42,7 +42,7 @@ export const t = {
   kindCss: "CSS only",
   kindJs: "With JavaScript",
   mmOverline: "Explore the framework",
-  mmTagline: "Fourteen content families, nineteen interactive ones, one grammar.",
+  mmTagline: "Thirty-three components: fourteen CSS-only, nineteen with optional JavaScript.",
   mmClose: "Close the components menu",
   mmStart: "Where to start",
   mmAll: "Getting started",
@@ -78,7 +78,7 @@ export const t = {
   stageTabJs: "JS options",
   tools: "Tools",
   stageRender: "Rendering",
-  stageHint: "Change the theme, the direction, the width or the motion of the example itself.",
+  stageHint: "Switch the theme, the direction, the width or the motion of the example itself.",
 };
 export const nav = [
   { group: "Start", items: [

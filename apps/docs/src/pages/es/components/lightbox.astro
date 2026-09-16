@@ -3,7 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Galería y visor" description="Lightbox de iVOLT: una galería de enlaces que abre un visor a pantalla completa construido sobre el diálogo, con pies, contador, zoom, teclado y gesto, y todas las imágenes accesibles sin JavaScript.">
+<Base lang="es" title="Galería y visor a pantalla completa" description="Lightbox de iVOLT: una galería de enlaces que abre un visor a pantalla completa con pies, contador, zoom, teclado y gesto. Funciona sin JavaScript.">
   <article class="docs-prose">
     <h1>Galería y visor</h1>
     <p>Una galería es una lista de enlaces a imágenes. Ese es todo el marcado y eso es lo que envía el servidor: pulsa una miniatura sin JavaScript y el navegador muestra la fotografía completa, porque la miniatura es un <code>&lt;a href&gt;</code> que apunta a ella. En <code>init</code> el componente construye un visor por galería, se lo entrega a <a href="/es/components/dialog">Dialog</a> para la capa superior, la trampa de foco, Escape y la devolución del foco, y a partir de ahí un clic abre la imagen en su sitio con su pie, un contador, flechas, zoom y gesto.</p>

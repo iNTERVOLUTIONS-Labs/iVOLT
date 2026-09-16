@@ -3,7 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Paleta de comandos" description="Paleta de comandos de iVOLT: una búsqueda modal de acciones que se abre con Ctrl+K, filtra al escribir, se maneja con el teclado y tiene grupos, atajos, elementos recientes y acciones añadidas desde la API.">
+<Base lang="es" title="Paleta de comandos con Ctrl+K" description="Paleta de comandos de iVOLT: búsqueda modal de acciones que se abre con Ctrl+K, filtra al escribir y se maneja con el teclado, con grupos y atajos.">
   <article class="docs-prose">
     <h1>Paleta de comandos (command)</h1>
     <p>Una búsqueda modal de acciones. Pulsa <kbd>Ctrl</kbd>+<kbd>K</kbd> (o <kbd>⌘</kbd>+<kbd>K</kbd>, o <kbd>/</kbd> fuera de un campo de texto) y escribe: la lista filtra por etiqueta y palabras clave, los grupos sin coincidencias desaparecen, las flechas mueven el resalte y Enter sigue el enlace o ejecuta la acción. Los elementos se sirven como enlaces y botones normales dentro de un diálogo, así que todo lo que hace la paleta existe también en otra parte de la página. El componente compone el diálogo y añade la semántica de listbox, los atajos, el filtrado, una lista opcional de acciones recientes y una API para añadir acciones en tiempo de ejecución.</p>

@@ -3,7 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Tabla de datos" description="Tabla de datos de iVOLT: ordenación y filtrado en el cliente sobre una tabla HTML normal y accesible, con cabeceras aria-sort, recuento de filas en vivo, eventos cancelables y restauración exacta en destroy.">
+<Base lang="es" title="Tabla de datos: ordenar y filtrar" description="Tabla de datos de iVOLT: ordenación y filtrado en el cliente sobre una tabla HTML accesible, con cabeceras aria-sort y recuento de filas en vivo.">
   <article class="docs-prose">
     <h1>Tabla de datos (data table)</h1>
     <p>Ordenación y filtrado para una tabla que ya existe en el HTML. El servidor envía una <code>&lt;table class="iv-table"&gt;</code> normal; en el <code>init</code>, las cabeceras ordenables se convierten en botones con <code>aria-sort</code>, aparece el campo de filtro y un estado en vivo anuncia cuántas filas se ven. No se pagina ni se virtualiza nada: las filas que sirvas son las que se ordenan, así que mantén la tabla en un tamaño que una página pueda sostener.</p>

@@ -3,7 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Pasos" description="Componente de pasos de iVOLT: índice numerado, un panel por paso, controles de avance y retroceso, validación antes de avanzar y todos los paneles visibles sin JavaScript.">
+<Base lang="es" title="Pasos: formularios por etapas" description="Componente de pasos de iVOLT: índice numerado, un panel por paso, controles de avance y retroceso, y validación antes de avanzar. Visible sin JavaScript.">
   <article class="docs-prose">
     <h1>Pasos (stepper)</h1>
     <p>Un formulario largo partido en pasos: un índice numerado con estado, un panel por paso y controles para moverse entre ellos. El servidor envía una lista ordenada de enlaces y los paneles uno bajo otro, así que todo se lee y se rellena sin script. En <code>init</code> solo queda visible el panel actual, el índice marca lo hecho, lo actual y lo que falta, y los botones <code>data-iv-step</code> se niegan a avanzar mientras los campos del panel no sean válidos.</p>

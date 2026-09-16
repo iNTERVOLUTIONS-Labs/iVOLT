@@ -3,7 +3,7 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Selector de fecha" description="Selector de fecha de iVOLT: un campo de fecha nativo que gana un diálogo de calendario accesible con rejilla por teclado, mínimo y máximo, nombres de mes y de día localizados y un primer día de la semana que sigue a la configuración regional.">
+<Base lang="es" title="Selector de fecha con calendario" description="Selector de fecha de iVOLT: un campo nativo que gana un diálogo de calendario accesible con rejilla por teclado, mínimo y máximo y nombres localizados.">
   <article class="docs-prose">
     <h1>Selector de fecha (datepicker)</h1>
     <p>Un calendario sobre un campo de fecha nativo. El servidor envía <code>&lt;input type="date"&gt;</code>, que ya tiene su propio selector y envía un valor ISO; en <code>init</code> un botón abre un diálogo de calendario con una rejilla manejable desde el teclado, navegación por mes y año, acciones de hoy y vaciar, y los límites de <code>min</code> y <code>max</code>. Los nombres de mes y de día salen de los datos de configuración regional del navegador, así que el mismo marcado se lee bien en cualquier idioma. En punteros gruesos se mantiene el selector nativo, porque ahí es la mejor herramienta.</p>
