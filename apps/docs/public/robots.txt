@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /stage/
+
+Sitemap: https://ivolt.intervolutions.com/sitemap-index.xml

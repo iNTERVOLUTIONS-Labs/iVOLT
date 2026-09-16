@@ -1,4 +1,4 @@
-// The shell: header, search, theme, copy, navigation, footer site map, CSP hash, no sitemap
+// The shell: header, search, theme, copy, navigation, footer site map, CSP hash, sitemap and canonical
 // without SITE_URL, and no sideways scroll at any width. Against the built site on 4321.
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
@@ -51,14 +51,22 @@ test.describe("Site shell", () => {
     expect(await overflow(page)).toBeLessThanOrEqual(1);
   });
 
-  test("headings carry anchors and the site map has no sitemap.xml without SITE_URL", async ({ page, request }) => {
+  test("headings carry anchors, the sitemap is published and the canonical is absolute", async ({ page, request }) => {
     await page.goto(DOCS + "/components/button");
     const anchors = page.locator(".docs-prose h2 .docs-anchor");
     expect(await anchors.count()).toBeGreaterThan(2);
     const href = await anchors.first().getAttribute("href");
     expect(href).toMatch(/^#[a-z0-9-]+$/);
     expect(await page.locator(href).count()).toBe(1);
-    expect((await request.get(DOCS + "/sitemap-index.xml")).status()).toBe(404);
+    // The site has a public base URL (astro.config): the sitemap index and the canonical link exist
+    // and are absolute against it, and robots.txt points crawlers at the index.
+    const index = await request.get(DOCS + "/sitemap-index.xml");
+    expect(index.status()).toBe(200);
+    expect(await index.text()).toContain("https://ivolt.intervolutions.com/sitemap-0.xml");
+    const robots = await request.get(DOCS + "/robots.txt");
+    expect(await robots.text()).toContain("Sitemap: https://ivolt.intervolutions.com/sitemap-index.xml");
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/ivolt\.intervolutions\.com\//);
+    await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute("href", /^https:\/\/ivolt\.intervolutions\.com\/es/);
     expect((await request.get(DOCS + "/og.png")).status()).toBe(200);
   });
 

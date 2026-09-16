@@ -27,6 +27,6 @@ npm run dev:docs         # documentation site (builds the package first when dis
 npm run verify           # everything above plus examples and the docs build
 ```
 
-Publishing steps live in `docs/RELEASE.md`; what is public and how it changes, in `docs/STABILITY.md`.
+Documentation: [ivolt.intervolutions.com](https://ivolt.intervolutions.com/). Publishing steps live in `docs/RELEASE.md`; what is public and how it changes, in `docs/STABILITY.md`; hosting requirements for the site, in `docs/DEPLOY.md`.
 
 MIT © 2026 iNTERVOLUTIONS

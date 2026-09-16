@@ -27,7 +27,7 @@ import { init, Dialog } from "@intervolutions/ivolt";
 init(document);
 ```
 
-**Documentation:** guides, every component with live examples, the token reference and four complete pages are at [github.com/iNTERVOLUTIONS-Labs/iVOLT](https://github.com/iNTERVOLUTIONS-Labs/iVOLT#readme); the site itself builds from `apps/docs` with `npm run dev:docs`.
+**Documentation:** guides, every component with live examples, the token reference and four complete pages are at [ivolt.intervolutions.com](https://ivolt.intervolutions.com/); the source is at [github.com/iNTERVOLUTIONS-Labs/iVOLT](https://github.com/iNTERVOLUTIONS-Labs/iVOLT).
 
 ## What you get
 

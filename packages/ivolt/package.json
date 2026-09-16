@@ -143,6 +143,7 @@
     "ios_saf >= 16.4",
     "samsung >= 22"
   ],
+  "homepage": "https://ivolt.intervolutions.com",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/iNTERVOLUTIONS-Labs/iVOLT.git"
