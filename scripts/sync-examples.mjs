@@ -16,6 +16,12 @@ function syncAssets(dest) {
 syncAssets(join(root, "examples/plain-html/ivolt"));
 syncAssets(join(root, "examples/recipes/ivolt"));
 
+// The recipes are set in Outfit like the docs site (ADR-049). The package ships no font files, so the
+// recipes carry their own copy next to the generated assets; the starter keeps the system stack.
+const fonts = join(root, "apps/docs/public/fonts");
+mkdirSync(join(root, "examples/recipes/ivolt/fonts"), { recursive: true });
+for (const f of ["Outfit-latin-variable.woff2", "Outfit-OFL.txt"]) cpSync(join(fonts, f), join(root, "examples/recipes/ivolt/fonts", f));
+
 const pub = join(root, "apps/docs/public/examples");
 rmSync(pub, { recursive: true, force: true });
 if (existsSync(join(root, "examples/recipes"))) cpSync(join(root, "examples/recipes"), pub, { recursive: true });

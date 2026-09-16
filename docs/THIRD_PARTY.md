@@ -15,7 +15,7 @@ Fecha: 2026-09-13. Estado al cierre de la fase 4.
 |---|---|---|
 | Pagefind 1.5.2 (`/pagefind/*.js`, `*.wasm`, índice) | MIT | búsqueda local; generado en build y servido desde el propio sitio |
 | Astro 7 (HTML/CSS/JS generados, incluido el router de transiciones de vista) | MIT | generador estático; su código de cliente solo aparece si una página lo necesita |
-| Space Grotesk (variable, subconjunto latino, `apps/docs/public/fonts/SpaceGrotesk-latin.woff2`, 22 KB) | SIL Open Font License 1.1 (`apps/docs/public/fonts/SpaceGrotesk-OFL.txt`) | tipografía de titulares, navegación y botones de la web de documentación; servida en local, sin peticiones a terceros; el paquete no la usa |
+| Outfit (variable 300–800, subconjunto latino, `apps/docs/public/fonts/Outfit-latin-variable.woff2`, 32 KB) | SIL Open Font License 1.1 (`apps/docs/public/fonts/Outfit-OFL.txt`) | tipografía de la web de documentación desde `1.0.0-rc.2` (ADR-049): titulares, navegación, botones y cuerpo; servida en local, sin peticiones a terceros. Procedencia: Google Fonts, archivo original `https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2`. Sustituye a Space Grotesk, retirada del repositorio en el mismo commit; el paquete sigue sin incluir archivos de fuente y `--iv-font-sans` cae a la pila del sistema donde Outfit no esté servida. Las cuatro recetas de `examples/recipes/` la sirven también desde `ivolt/fonts/` (copia generada por `scripts/sync-examples.mjs`, con la licencia al lado) |
 
 Los avisos de licencia de Pagefind y Astro se conservan en `node_modules` y no se eliminan de los artefactos que los incluyan. La interfaz de búsqueda es propia; no se usa la UI de Pagefind.
 

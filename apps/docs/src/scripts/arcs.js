@@ -45,8 +45,8 @@ export function mountArcs(host) {
     const cs = getComputedStyle(host);
     return {
       core: cs.getPropertyValue("--docs-arc-core").trim() || "#ffffff",
-      halo: cs.getPropertyValue("--docs-arc-halo").trim() || "#29f59a",
-      // additive light reads as light on carbon; on paper the same blend washes out, so ink is drawn normally
+      halo: cs.getPropertyValue("--docs-arc-halo").trim() || "#73dfff",
+      // additive light reads as light on navy; on paper the same blend washes out, so ink is drawn normally
       blend: cs.getPropertyValue("--docs-arc-blend").trim() === "ink" ? "source-over" : "lighter",
       gain: cs.getPropertyValue("--docs-arc-blend").trim() === "ink" ? 1.6 : 1,
     };

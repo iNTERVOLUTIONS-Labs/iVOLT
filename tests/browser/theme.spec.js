@@ -1,8 +1,11 @@
 import { test, expect } from "@playwright/test";
 
 const bg = (page, selector) => page.locator(selector).first().evaluate((el) => getComputedStyle(el).backgroundColor);
-const LIGHT = "rgb(255, 255, 255)"; // surface-raised light
-const DARK = "rgb(27, 44, 37)"; // surface-raised dark (#1B2C25)
+// Cobalt (ADR-049): the card is a translucent surface, so the computed value is the raised surface
+// at the card's own alpha — white in light, navy #0C1330 in dark. The assertion is still "which
+// scope painted this card", only the literals moved with the palette and with the glass treatment.
+const LIGHT = "color(srgb 1 1 1 / 0.86)"; // surface-raised light (#FFFFFF)
+const DARK = "color(srgb 0.0470588 0.0745098 0.188235 / 0.86)"; // surface-raised dark (#0C1330)
 
 test.describe("Theme scopes", () => {
   test("explicit scopes win; system follows the OS, even nested inside dark", async ({ page }) => {

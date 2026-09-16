@@ -9,9 +9,20 @@
   <!-- ADR-042: mark the root before the stylesheet paints, so the navbar panel starts folded
        on narrow screens instead of being folded after the first paint (a layout shift). -->
   <script>document.documentElement.setAttribute("data-iv-js", "");</script>
+  <link rel="preload" as="font" type="font/woff2" href="../ivolt/fonts/Outfit-latin-variable.woff2" crossorigin>
   <link rel="stylesheet" href="../ivolt/css/ivolt.min.css">
   <script type="module" src="../ivolt/js/auto.js"></script>
   <style>
+    /* Outfit (OFL), the face the docs site and intervolutions.com are set in; copied next to the
+       generated assets by scripts/sync-examples.mjs. The package itself ships no font files. */
+    @font-face {
+      font-family: "Outfit";
+      src: url("../ivolt/fonts/Outfit-latin-variable.woff2") format("woff2-variations");
+      font-weight: 300 800;
+      font-style: normal;
+      font-display: swap;
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
     /* Recipe-only layout. Components keep their package styles. */
 
     .cn-shell {
@@ -184,9 +195,9 @@
   <div class="iv-navbar__inner">
     <a class="iv-navbar__brand" href="#main" aria-label="Arclight Console, top of the page">
       <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
-        <defs><linearGradient id="cn-brand" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#29F59A"/><stop offset="1" stop-color="#0A6A43"/></linearGradient></defs>
+        <defs><linearGradient id="cn-brand" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8FE3FF"/><stop offset="1" stop-color="#6674FF"/></linearGradient></defs>
         <rect x="1" y="1" width="30" height="30" rx="9" fill="url(#cn-brand)"/>
-        <path d="M10 21.5 16 9l6 12.5" fill="none" stroke="#081310" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10 21.5 16 9l6 12.5" fill="none" stroke="#06122B" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <span>Arclight</span>
     </a>

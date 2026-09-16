@@ -14,7 +14,7 @@ import Stage from "../../../components/Stage.astro";
 
       <h3>Foco visible</h3>
       <p>El foco es un token, no una decisión de cada componente. <code>.iv-root :focus-visible</code> dibuja <code>var(--iv-focus-width)</code> (2px) de <code>solid var(--iv-color-focus)</code> con <code>var(--iv-focus-offset)</code> (2px) de separación, y los componentes que necesitan otra colocación vuelven a declarar los mismos tokens en vez de inventarse un anillo: el elemento del menú desplegable, por ejemplo, usa una separación negativa para que el contorno quede dentro del menú desplazable en lugar de recortarse.</p>
-      <p>El color de foco es <code>#0A6A43</code> en claro y <code>#29F59A</code> en oscuro, ambos en 3:1 o por encima sobre cualquiera de las dos superficies. Nada del paquete pone <code>outline: none</code> sin sustituirlo. Usar <code>:focus-visible</code> en vez de <code>:focus</code> significa que un clic de ratón sobre un botón no deja anillo, mientras que ese mismo botón enfocado con <kbd>Tab</kbd> sí lo deja.</p>
+      <p>El color de foco es <code>#1D4FC4</code> en claro y <code>#73DFFF</code> en oscuro, ambos en 3:1 o por encima sobre cualquiera de las dos superficies. Nada del paquete pone <code>outline: none</code> sin sustituirlo. Usar <code>:focus-visible</code> en vez de <code>:focus</code> significa que un clic de ratón sobre un botón no deja anillo, mientras que ese mismo botón enfocado con <kbd>Tab</kbd> sí lo deja.</p>
       <Stage primary name="button/states" title="Todos los estados de un botón" />
 
       <h3>Color y contraste</h3>
@@ -23,21 +23,22 @@ import Stage from "../../../components/Stage.astro";
         <table>
           <thead><tr><th>Token</th><th>Claro</th><th>Oscuro</th><th>Contraste (claro / oscuro)</th></tr></thead>
           <tbody>
-            <tr><td><code>text</code></td><td><code>#12201A</code></td><td><code>#F3FAF6</code></td><td>16.8 / 17.8</td></tr>
-            <tr><td><code>text-muted</code></td><td><code>#56695F</code></td><td><code>#90A49E</code></td><td>5.9 / 7.2 (≥ 5.5 sobre <code>surface</code>)</td></tr>
-            <tr><td><code>border-strong</code> (controles)</td><td><code>#6E837B</code></td><td><code>#6E837B</code></td><td>4.0 / 4.7 (≥ 3:1)</td></tr>
-            <tr><td><code>border</code> (decorativo)</td><td><code>#CBD8D1</code></td><td><code>#263129</code></td><td>no se exige</td></tr>
-            <tr><td><code>primary</code> / <code>on-primary</code></td><td><code>#0A6A43</code> / <code>#FFFFFF</code></td><td><code>#29F59A</code> / <code>#081310</code></td><td>6.7 / 13.2</td></tr>
-            <tr><td><code>success</code> / <code>on-success</code></td><td><code>#0A6A43</code> / <code>#FFFFFF</code></td><td><code>#29F59A</code> / <code>#081310</code></td><td>6.7 / 13.2</td></tr>
-            <tr><td><code>danger</code> / <code>on-danger</code></td><td><code>#B2262D</code> / <code>#FFFFFF</code></td><td><code>#FF7A80</code> / <code>#081310</code></td><td>6.6 / 7.5</td></tr>
-            <tr><td><code>warning</code> / <code>on-warning</code></td><td><code>#8A5200</code> / <code>#FFFFFF</code></td><td><code>#FFB84D</code> / <code>#081310</code></td><td>6.4 / 11.0</td></tr>
-            <tr><td><code>info</code> / <code>on-info</code></td><td><code>#1D5FB8</code> / <code>#FFFFFF</code></td><td><code>#6FB3FF</code> / <code>#081310</code></td><td>6.2 / 8.6</td></tr>
-            <tr><td><code>focus</code></td><td><code>#0A6A43</code></td><td><code>#29F59A</code></td><td>≥ 3:1 en ambas superficies</td></tr>
+            <tr><td><code>text</code></td><td><code>#0B1230</code></td><td><code>#EEF2FB</code></td><td>18.4 / 18.0</td></tr>
+            <tr><td><code>text-muted</code></td><td><code>#4F5B7A</code></td><td><code>#A8B3CC</code></td><td>6.8 / 9.6 (8.7 sobre <code>surface-raised</code>)</td></tr>
+            <tr><td><code>border-strong</code> (controls)</td><td><code>#6B7896</code></td><td><code>#6B7896</code></td><td>4.4 / 4.6 (≥ 3:1)</td></tr>
+            <tr><td><code>border</code> (decorative)</td><td><code>#D3DAEA</code></td><td><code>#1C2544</code></td><td>no se exige</td></tr>
+            <tr><td><code>primary</code> / <code>on-primary</code></td><td><code>#1D4FC4</code> / <code>#FFFFFF</code></td><td><code>#66B1FF</code> / <code>#06122B</code></td><td>7.1 / 8.9</td></tr>
+            <tr><td><code>accent</code> / <code>on-accent</code></td><td><code>#0B6B8A</code> / <code>#FFFFFF</code></td><td><code>#73DFFF</code> / <code>#06122B</code></td><td>5.5 / 13.2</td></tr>
+            <tr><td><code>success</code> / <code>on-success</code></td><td><code>#4F7A12</code> / <code>#FFFFFF</code></td><td><code>#8BBF3A</code> / <code>#06122B</code></td><td>5.1 / 9.2</td></tr>
+            <tr><td><code>danger</code> / <code>on-danger</code></td><td><code>#D63A31</code> / <code>#FFFFFF</code></td><td><code>#FF9AA4</code> / <code>#06122B</code></td><td>4.7 / 10.0</td></tr>
+            <tr><td><code>warning</code> / <code>on-warning</code></td><td><code>#8F5C00</code> / <code>#FFFFFF</code></td><td><code>#FBBF24</code> / <code>#06122B</code></td><td>5.0 / 12.1</td></tr>
+            <tr><td><code>info</code> / <code>on-info</code></td><td><code>#3D47C2</code> / <code>#FFFFFF</code></td><td><code>#8B95FF</code> / <code>#06122B</code></td><td>7.3 / 7.5</td></tr>
+            <tr><td><code>focus</code></td><td><code>#1D4FC4</code></td><td><code>#73DFFF</code></td><td>≥ 3:1 en ambas superficies</td></tr>
           </tbody>
         </table>
       </div>
-      <p>El peor caso real es <code>surface-raised</code>, donde <code>border-strong</code> baja a 3.6 en oscuro y a 3.8 sobre <code>surface</code> en claro; los dos se quedan en 3:1 o por encima. Cada fondo <code>*-subtle</code> va emparejado con su propio primer plano y se midió contra él, así que una alerta o una insignia nunca es una superficie de color con texto ilegible encima.</p>
-      <p>Hay una consecuencia que conviene conocer: <code>primary</code>, <code>success</code> y <code>focus</code> comparten el mismo verde, y en el tema oscuro coinciden además con <code>accent</code>. Es intencionado: el éxito y el foco se distinguen por la forma (una insignia o una alerta con fondo suave, un anillo de foco separado), no por el tono. Si tu interfaz necesita separarlos por color, redefine <code>--iv-color-success</code>. Y en general, no dejes nunca que el color sea lo único que transmite un significado: un estado de error necesita texto, un icono o ambos.</p>
+      <p>El peor caso real es <code>surface-raised</code>, donde <code>border-strong</code> mide 4,13 en oscuro y 4,12 sobre <code>surface</code> en claro; los dos quedan muy por encima de 3:1. Cada fondo <code>*-subtle</code> va emparejado con su propio primer plano y se midió contra él, así que una alerta o una insignia nunca es una superficie de color con texto ilegible encima.</p>
+      <p>Hay una consecuencia que conviene conocer: <code>primary</code> y <code>focus</code> comparten el mismo cobalto, y en el tema oscuro <code>focus</code> coincide con <code>accent</code>. Es intencionado: el foco y el primario se distinguen por la forma (una insignia o una alerta con fondo suave, un anillo de foco separado), no por el tono. Si tu interfaz necesita separarlos por color, redefine <code>--iv-color-success</code>. Y en general, no dejes nunca que el color sea lo único que transmite un significado: un estado de error necesita texto, un icono o ambos.</p>
       <p>Estas cifras describen los tokens. Si sobrescribes un token con el color de tu marca, dejan de valer: vuelve a medir.</p>
 
       <h3>Tamaño de las áreas interactivas</h3>

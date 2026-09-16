@@ -28,10 +28,9 @@ const group = nav.find((g) => g.items.some((i) => i.href === path))?.group;
 const slug = bare.startsWith("/components/") ? bare.split("/").pop() : null;
 const family = slug ? families[slug] : null;
 const items = nav.flatMap((g) => g.items);
-// The display face is preloaded only where it is painted in the first screen at every width.
-// Measured at 390 on an interior page: the first screen there is the header, the kicker and the
-// body text, and the browser warned about a preload it did not use for seconds.
-const preloadDisplay = path === "/" || path === "/es";
+// Outfit now sets body text as well as headlines (ADR-049), so it paints in the first screen of
+// every route at every width — the earlier conditional preload existed because the previous display
+// face only appeared in headings and the browser warned about an unused preload on interior pages.
 // "css" or "js" beside a component link: 33 entries are only scannable when the kind is visible.
 const kindOf = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return m ? families[m[1]] : null; };
 const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/foundations/stability", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
@@ -97,12 +96,11 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#081310">
+  <meta name="theme-color" content="#04070f">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  {/* The display face is only preloaded where it paints above the fold at every width: the home
-      and the section heroes. On an interior page at 390 the first screen is the title in the body
-      face, and the browser was warning about a preload it did not use for seconds. */}
-  {preloadDisplay && <link rel="preload" href="/fonts/SpaceGrotesk-latin.woff2" as="font" type="font/woff2" crossorigin>}
+  {/* One variable file, latin only (32 KB): it carries the headlines and the body copy, so it is
+      above the fold everywhere and the preload is always used. */}
+  <link rel="preload" href="/fonts/Outfit-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
   <script is:inline data-astro-rerun set:html={themeSnippet}></script>
   <ClientRouter />
 </head>

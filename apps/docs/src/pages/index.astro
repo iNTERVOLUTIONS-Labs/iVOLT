@@ -59,12 +59,13 @@ const recipes = [
 ---
 <Base title="The interface starts here" description="iVOLT is a hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript. No runtime dependencies. Release candidate for 1.0." sidebar={false} bleed={true}>
   <section class="docs-hero" aria-labelledby="hero-title">
+    <div class="docs-orbs" aria-hidden="true"><span class="docs-orb docs-orb--a"></span><span class="docs-orb docs-orb--b"></span></div>
     <Arcs />
     <div class="docs-hero__inner">
       <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} {stage} · MIT · <b>zero runtime dependencies</b></p>
       <h1 class="docs-hero__title" id="hero-title">
         <span class="docs-mask" style="--i:0"><span>The interface</span></span>
-        <span class="docs-mask" style="--i:1"><span>starts <em>here.</em></span></span>
+        <span class="docs-mask" style="--i:1"><span>starts <em>here</em><span class="docs-dot">.</span></span></span>
       </h1>
       <p class="docs-hero__lead">Semantic components as the fast path, a finite utility set for composition, tokens as the visual contract and optional JavaScript for behaviour. From a plain <code>&lt;link&gt;</code> to WordPress, Astro or any bundler.</p>
       <div class="docs-hero__actions">

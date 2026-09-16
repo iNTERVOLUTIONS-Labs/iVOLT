@@ -2,7 +2,9 @@
 
 Four complete pages built only with the iVOLT package: no other CSS framework, no
 external scripts, no fonts or images from the network. They are the reference for
-how the components are meant to be combined.
+how the components are meant to be combined. The type is Outfit (OFL), served from
+`ivolt/fonts/` next to the generated assets; the package itself ships no font files,
+so a plain install falls back to the system stack.
 
 | Recipe | What it shows |
 | --- | --- |

@@ -20,6 +20,15 @@ function readSvg(...names) {
   return null;
 }
 
+/** ADR-049 recolour. The artwork in assets/brand/ is still drawn in the electric green of the betas
+ *  and is never modified; every consumer maps its five literals onto the Cobalt palette instead.
+ *  ivory → #EEF2FB, green → cobalt #66B1FF, tag ink → #04070F, signature grey → navy grey #8F9BB8. */
+const cobalt = (svg) => svg
+  .replace(/#29F59A/gi, "#66B1FF")
+  .replace(/#F3FAF6/gi, "#EEF2FB")
+  .replace(/#071510/gi, "#04070F")
+  .replace(/#90A49E/gi, "#8F9BB8");
+
 /** Strip the file's own title/desc/aria (the link that wraps it provides the name) and comments. */
 const inlineable = (svg) => svg
   .replace(/<title[^>]*>[\s\S]*?<\/title>/g, "")
@@ -28,8 +37,8 @@ const inlineable = (svg) => svg
   .replace(/<svg[^>]*>/, (tag) => tag.replace(/\s(role|aria-labelledby|width|height)="[^"]*"/g, "").replace(/<svg/, '<svg aria-hidden="true" focusable="false"'));
 
 /** Header variant: theme-aware colours and no signature line (illegible below ~120px wide).
- *  Ivory → currentColor (text), electric green → --iv-color-primary (stays #29F59A in dark, #0A6A43 in light),
- *  tag glyphs → --iv-color-on-primary. */
+ *  Ivory → currentColor (text), the brand accent → --iv-color-primary (cobalt #66B1FF in dark, #1D4FC4 in
+ *  light, ADR-049), tag glyphs → --iv-color-on-primary. */
 const forHeader = (svg) => inlineable(svg)
   .replace(/<g fill="#90A49E">[\s\S]*?<\/g>/, "")
   .replace(/#F3FAF6/gi, "currentColor")
@@ -39,19 +48,19 @@ const forHeader = (svg) => inlineable(svg)
 
 const TEMP_WORDMARK = `<svg viewBox="0 0 340 96" aria-hidden="true" focusable="false">
   <g fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"><path d="M40 36 A28 28 0 0 1 96 36"/><path d="M96 60 A28 28 0 0 1 40 60"/></g>
-  <path d="M74 20 L52 52 L66 52 L60 78 L84 44 L70 44 Z" fill="var(--iv-color-accent, #29F59A)"/>
+  <path d="M74 20 L52 52 L66 52 L60 78 L84 44 L70 44 Z" fill="var(--iv-color-accent, #73DFFF)"/>
   <text x="118" y="60" font-family="system-ui, sans-serif" font-size="46" font-weight="700" letter-spacing="2" fill="currentColor">iVOLT</text>
-  <text x="262" y="60" font-family="system-ui, sans-serif" font-size="22" font-weight="500" letter-spacing="3" fill="var(--iv-color-accent, #29F59A)">CSS</text>
+  <text x="262" y="60" font-family="system-ui, sans-serif" font-size="22" font-weight="500" letter-spacing="3" fill="var(--iv-color-accent, #73DFFF)">CSS</text>
 </svg>`;
-const TEMP_MARK = `<svg viewBox="0 0 88 88" aria-hidden="true" focusable="false"><rect width="88" height="88" rx="16" fill="#081310"/><g fill="none" stroke="#F3FAF6" stroke-width="7" stroke-linecap="round"><path d="M18 34 A28 28 0 0 1 70 34"/><path d="M70 54 A28 28 0 0 1 18 54"/></g><path d="M50 16 L28 48 L42 48 L36 74 L60 40 L46 40 Z" fill="#29F59A"/></svg>`;
+const TEMP_MARK = `<svg viewBox="0 0 88 88" aria-hidden="true" focusable="false"><rect width="88" height="88" rx="16" fill="#04070F"/><g fill="none" stroke="#EEF2FB" stroke-width="7" stroke-linecap="round"><path d="M18 34 A28 28 0 0 1 70 34"/><path d="M70 54 A28 28 0 0 1 18 54"/></g><path d="M50 16 L28 48 L42 48 L36 74 L60 40 L46 40 Z" fill="#66B1FF"/></svg>`;
 
 const logo = readSvg("ivolt-logo-balanced.svg", "ivolt-logo.svg");
 const isotype = readSvg("ivolt-isotipo.svg", "ivolt-mark.svg");
 
 export const isOfficial = Boolean(logo);
 /** Full lockup as shipped (dark surfaces), for the OG image. */
-export const lockup = logo ? inlineable(logo) : TEMP_WORDMARK;
+export const lockup = logo ? cobalt(inlineable(logo)) : TEMP_WORDMARK;
 /** Header wordmark, theme-aware. */
 export const wordmark = logo ? forHeader(logo) : TEMP_WORDMARK;
 /** Isotype (split O + bolt) for favicon and compact uses. */
-export const mark = isotype ? inlineable(isotype) : TEMP_MARK;
+export const mark = isotype ? cobalt(inlineable(isotype)) : TEMP_MARK;
