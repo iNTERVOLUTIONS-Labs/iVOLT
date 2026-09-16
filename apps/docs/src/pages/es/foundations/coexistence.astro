@@ -102,7 +102,7 @@ if (typeof document !== "undefined") init(document);` }]} />
 
     <Section title="Content-Security-Policy" num={6} lead={`El paquete funciona bajo script-src 'self'. No contiene eval, ni new Function, ni innerHTML con datos externos, ni atributos on*, y no hace peticiones de red, no carga fuentes remotas y no envía telemetría.`}>
       <p>Hay una excepción que conviene prever. Si usas el script de lectura previa del tema — ese script en línea diminuto que lee la preferencia guardada antes del primer pintado, para que la página no parpadee con el tema equivocado —, es en línea por necesidad, y una política estricta necesita su hash o un nonce:</p>
-      <Code label="html" panels={[{ key: "src", label: "HTML", code: `<script>${themeSnippet}</script>` }]} />
+      <Code label="html" panels={[{ key: "src", label: "HTML", code: `<${"script"}>${themeSnippet}</${"script"}>` }]} />
       <Code label="http" panels={[{ key: "src", label: "HTTP HEADER", code: `Content-Security-Policy: default-src 'self'; script-src 'self' '${cspHash}'; style-src 'self'` }]} />
       <p>El hash de arriba se calcula al compilar a partir del fragmento exacto que inyecta este sitio (<code id="csp-hash">{cspHash}</code>), así que los dos no pueden divergir.</p>
       <p>Esta documentación publica el hash del fragmento que distribuye. Si modificas el fragmento aunque sea en un carácter, el hash cambia: vuelve a generarlo o sirve el script con un nonce. Saltarse el fragmento por completo también es una opción válida: el tema se aplica entonces después de que se hayan ejecutado la hoja de estilo y el script.</p>

@@ -101,7 +101,7 @@ if (typeof document !== "undefined") init(document);` }]} />
 
     <Section title="Content-Security-Policy" num={6} lead={`The package runs under script-src 'self'. It contains no eval, no new Function, no innerHTML with external data and no on* attributes, and it makes no network requests, loads no remote fonts and sends no telemetry.`}>
       <p>One exception is worth planning for. If you use the theme pre-read snippet — the tiny inline script that reads the stored preference before first paint, so the page does not flash the wrong theme — it is inline by necessity, and a strict policy needs its hash or a nonce:</p>
-      <Code label="html" panels={[{ key: "src", label: "HTML", code: `<script>${themeSnippet}</script>` }]} />
+      <Code label="html" panels={[{ key: "src", label: "HTML", code: `<${"script"}>${themeSnippet}</${"script"}>` }]} />
       <Code label="http" panels={[{ key: "src", label: "HTTP HEADER", code: `Content-Security-Policy: default-src 'self'; script-src 'self' '${cspHash}'; style-src 'self'` }]} />
       <p>The hash above is computed at build time from the exact snippet this site injects (<code id="csp-hash">{cspHash}</code>), so the two cannot drift apart.</p>
       <p>This documentation publishes the hash for the snippet it ships. If you modify the snippet by one character, the hash changes — regenerate it, or serve the script with a nonce instead. Skipping the snippet entirely is also a valid choice: the theme then applies after the stylesheet and the script have run.</p>
