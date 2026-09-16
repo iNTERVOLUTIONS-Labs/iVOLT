@@ -28,7 +28,7 @@
 | Megamenú v2 (otra sesión, ADR-048) integrado en cabecera, página y receta `console` | contratos 228/228; `megamenu.spec.js` 36/36 × 3 motores |
 | Incidencia de proceso: dos sesiones escribiendo a la vez sobre `apps/docs` tras un reinicio; resuelta cediendo la integración y con avisos previos a `dist` y al gate | `docs/WORKFLOW.md` regla de `--output` por agente; ADR-049 |
 
-Gate de cierre de la ronda: GATE_R3.
+Gate de cierre de la ronda (2026-09-16): build · 1037 unitarias · 1545 pruebas de navegador superadas y 147 omitidas en Chromium, Firefox y WebKit (con tres workers: la máquina compartida a carga 25 hacía fallar una prueba distinta por tiempos en cada pasada; cuatro carreras de prueba corregidas por el camino) · tamaños · pack-smoke (`intervolutions-ivolt-1.0.0-rc.1.tgz`, 134 archivos) · 201 páginas (108 de contenido en dos idiomas + 92 escenarios + 404) · 5 ejemplos. Publicación de `1.0.0-rc.1` bajo `next` a cargo de la otra sesión tras este gate.
 
 ## Entregas de v0.9
 
