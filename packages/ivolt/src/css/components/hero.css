@@ -9,9 +9,9 @@
  * cannot use `--iv-color-text` (dark in the light theme) over the scrim. The
  * locals `--iv-hero-ink`, `--iv-hero-muted` and `--iv-hero-accent` carry the
  * light-on-dark ramp; `--iv-hero--light` points them back at the theme
- * tokens. `--iv-hero-accent` defaults to `--iv-color-accent` instead of
- * `--iv-color-primary` because the light-theme primary is a deep cobalt and
- * fails AA over the scrim.
+ * tokens. `--iv-hero-accent` defaults to the light cyan primitive rather than
+ * a theme token: the light-theme primary and accent are deep cobalt and teal
+ * that pass AA on white but sink into the dark scrim (ADR-049).
  * Locals: --iv-hero-min --iv-hero-max-width --iv-hero-scrim --iv-hero-ink
  *         --iv-hero-muted --iv-hero-accent --iv-hero-gap
  * Declares no @layer and imports nothing: the entry point does that.
@@ -23,7 +23,7 @@
   --iv-hero-max-width: var(--iv-container-max);
   --iv-hero-ink: var(--iv-palette-neutral-0);
   --iv-hero-muted: color-mix(in srgb, var(--iv-palette-neutral-0) 82%, transparent);
-  --iv-hero-accent: var(--iv-color-accent);
+  --iv-hero-accent: var(--iv-palette-cyan-400);
   --iv-hero-gap: var(--iv-space-5);
   --iv-hero-scrim: linear-gradient(
     to top,

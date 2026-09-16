@@ -460,7 +460,7 @@ Familia CSS de composición de portadas, «súper espectaculares» sin JS obliga
 | `__media` | capa de fondo (`position: absolute; inset: 0; z-index: -2`) con `img`/`video` `object-fit: cover` o gradiente; `.iv-hero--kenburns` la escala 1 → 1.08 en 18 s (detenido con reduced motion) |
 | `__scrim` | capa `-1` con gradiente de abajo (`--iv-hero-scrim`, por defecto carbón 0→0.85) para AA del texto; `.iv-hero--light` invierte |
 | `__content` | columna con `max-inline-size: var(--iv-hero-max-width)`, `margin-inline: auto` |
-| `__kicker` | mono, uppercase, `letter-spacing: .2em`, `--iv-hero-accent` (= `--iv-color-accent`: el primary del tema claro no llega a AA sobre el scrim carbón; con `--light` vuelve a `--iv-color-primary`); `.iv-hero--terminal` le añade el prompt `::before` («$ ») y un cursor `::after` que parpadea |
+| `__kicker` | mono, uppercase, `letter-spacing: .2em`, `--iv-hero-accent` (= `--iv-palette-cyan-400` en ambos temas desde rc.2, ADR-049: el primary y el accent del tema claro son cobalto y cian oscuros que pasan AA sobre blanco pero se hunden en el scrim; con `--light` vuelve a `--iv-color-primary`); `.iv-hero--terminal` le añade el prompt `::before` («$ ») y un cursor `::after` que parpadea |
 | `__title` | `clamp(2.75rem, 8vw, 7.5rem)`, `line-height: 0.92`, `letter-spacing: -0.04em`, peso 600; `em` en `--iv-hero-accent`; `.iv-hero__title > span` con `.iv-rise` (clase pública de `effects.css`: entrada por líneas al cargar, escalonada por `--iv-i`) para entrada por líneas (CSS-only: `animation` al cargar, escalonada por `--iv-i`, anulada con reduced motion) |
 | `__lead` | `clamp(1.05rem, 1.2vw, 1.3rem)`, `max-inline-size: 48ch`, muted |
 | `__actions` | cluster de botones |
