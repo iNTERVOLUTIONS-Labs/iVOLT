@@ -13,7 +13,7 @@ Estado: encargo abierto 2026-09-15 (ADR-047). Petición del propietario: «revam
 
 **El framework se demuestra a sí mismo.** Toda la web está construida solo con el paquete tal como se publica (más una hoja propia de la web para arte y maqueta). Cada componente se muestra en un **escenario vivo**: una página independiente del propio componente, embebida, con controles reales sobre ella (tema claro/oscuro, LTR/RTL, ancho móvil/tableta/escritorio, movimiento reducido, hoja plana). El visitante manipula, no lee.
 
-Motivo visual: sigue siendo la electricidad (arco, filete conductor, verde eléctrico sobre carbono; en claro, verde profundo sobre papel). Se afina: menos efectos simultáneos, más escala tipográfica y más silencio; un solo momento espectacular por página (el escenario), no diez.
+Motivo visual: sigue siendo la electricidad (arco, filete conductor, cobalto y cian sobre azul marino; en claro, cobalto profundo sobre papel blanco azulado (ADR-049 sustituye al verde de esta ronda)). Se afina: menos efectos simultáneos, más escala tipográfica y más silencio; un solo momento espectacular por página (el escenario), no diez.
 
 ## 3. Arquitectura de la web
 
@@ -31,11 +31,11 @@ Escenario (`Stage`): un `<iframe>` a una página estática generada en el build 
 
 ## 4. Sistema visual de la web (hoja propia, sin tocar el paquete)
 
-- Tipografía: Space Grotesk (ya local) para titulares a `clamp(2.75rem, 7vw, 6.5rem)` en páginas y `clamp(3.25rem, 11vw, 10.5rem)` en la home; texto de lectura con la fuente del sistema del paquete a 1.0625 rem, medida 68–72ch; numerales de sección en mono con contorno.
+- Tipografía (ADR-049): Outfit (local, OFL) para todo, titulares en 700–800 con tracking −0,02 em; antes Space Grotesk a `clamp(2.75rem, 7vw, 6.5rem)` en páginas y `clamp(3.25rem, 11vw, 10.5rem)` en la home; texto de lectura con la fuente del sistema del paquete a 1.0625 rem, medida 68–72ch; numerales de sección en mono con contorno.
 - Retícula: columna de lectura de hasta 76rem con escenario que puede **sangrar** al ancho del contenedor (`--docs-bleed`); barra lateral 15rem; índice 12rem; a < lg todo en una columna con la barra en un cajón (ya existe el `Drawer`).
 - Superficies: nada de tarjetas con borde de 1px por defecto; el escenario tiene sombra de contacto y filete conductor; los bloques de código llevan borde superior luminoso.
 - Movimiento: entradas por línea con máscara al entrar en vista (`Reveal` del paquete + `iv-text-reveal` para titulares), filete conductor una vez, transición de página con línea de luz (se conserva), `iv-edge-near` en los marcos de ejemplos; todo estático bajo reduced motion. Nunca más de un efecto en bucle por pantalla (el canvas del hero es el único).
-- Tema claro diseñado (papel, verde profundo), no invertido.
+- Tema claro diseñado (papel blanco azulado, cobalto profundo), no invertido.
 - Iconografía: solo el isotipo y flechas/chevrones por máscara; sin biblioteca de iconos.
 
 ## 5. Ejemplos a medida (cuatro, sustituyen a landing, catalog y admin; showcase se retira a favor de estos)

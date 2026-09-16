@@ -5,9 +5,9 @@ Estado: contrato de fase 0. Los valores aquí definidos pasan a `tokens/tokens.j
 ## 1. Marca y arte
 
 - Logo oficial en `assets/brand/`: `ivolt-logo-balanced.svg` (isotipo «O» partida con el rayo, wordmark iVOLT en trazados, etiqueta CSS y firma BY iNTERVOLUTIONS; marfil sobre transparente, pensado para fondos oscuros) e `ivolt-isotipo.svg`. Uso: cabecera de docs con marfil → `currentColor`, verde eléctrico → `--iv-color-primary` (sigue `#29F59A` en oscuro y pasa a `#0A6A43` en claro) y glifos de la etiqueta → `--iv-color-on-primary`, sin firma (ilegible por debajo de ~120 px), favicon con el isotipo sobre placa `#081310`, imagen OG con el lockup íntegro. Ver `assets/brand/README.md`.
-- Carácter: potente, técnico, cuidado. Líneas finas, mucho aire, jerarquía fuerte, verde reservado para acción y acento. Nada de vídeo de fondo, partículas, WebGL, cursor propio ni ruido bajo texto.
+- Carácter: potente, técnico, cuidado. Líneas finas, mucho aire, jerarquía fuerte, cobalto reservado para acción y cian para acento (desde ADR-049; antes verde). Nada de vídeo de fondo, partículas, WebGL, cursor propio ni ruido bajo texto.
 - Mensaje: «The interface starts here.» seguido de un ejemplo real con su código, nunca de una lista de promesas.
-- El framework no obliga a ser oscuro ni verde: el tema light es el predeterminado del paquete; la web de marca usa el dark.
+- El framework no obliga a ser oscuro ni azul: el tema light es el predeterminado del paquete; la web de marca usa el dark, como intervolutions.com.
 
 ## 2. Paleta primitiva (`--iv-palette-*`) — «Cobalt», desde 1.0.0-rc.2 (ADR-049)
 
@@ -75,7 +75,7 @@ Cada componente define en su CSS: `default`, `hover` (solo `@media (hover: hover
 - Landing (rediseño 2026-09-14, ADR-027): la web arranca en tema oscuro; fondo con campo eléctrico (rejilla enmascarada y dos resplandores radiales prerrenderizados que derivan lentamente), cabecera translúcida con filete conductor, hero de dos columnas en ≥ lg con titular de gran formato en Space Grotesk (entrada palabra a palabra, acento con brillo), demo viva con inclinación 3D al puntero, resplandor y chips flotantes, cifras medidas en build; marquesina de tokens; secciones numeradas con revelado escalonado; tarjetas con foco de luz que sigue al puntero; recetas en marcos escalados; CTA con resplandor; pie con marca fantasma; transiciones de vista entre páginas. En ≤ 720 px de alto el hero se compacta para que las cifras queden sobre el pliegue a 1366×610. Todo el movimiento desaparece con `prefers-reduced-motion` dejando la misma composición.
 - Docs: rejilla `sidebar 16rem | lectura 68ch | índice 14rem` en ≥ xl; sin índice en lg; sidebar en drawer en < lg.
 - Detalle memorable («light pulse»): al pasar el foco o el puntero sobre el demo del hero, un segmento luminoso de ~120px recorre una vez el borde superior en 600ms usando un `conic-gradient` enmascarado; no se repite en bucle, no existe en otros paneles y se elimina con reduced-motion.
-- Tipografía docs: Space Grotesk (OFL, variable, subconjunto latino de 22 KB servido en local con `font-display: swap`) para titulares, navegación y botones de la web; cuerpo y todo el paquete en `system-ui`. Registrada en `SOURCES.md` y `THIRD_PARTY.md`.
+- Tipografía docs (desde ADR-049): Outfit (OFL, variable 300–800, subconjunto latino de 32 KB servido en local con `font-display: swap`) para todo, titulares en 700–800 con tracking negativo; antes Space Grotesk, navegación y botones de la web; cuerpo y todo el paquete en `system-ui`. Registrada en `SOURCES.md` y `THIRD_PARTY.md`.
 
 ## 7. Lámina de referencia
 
@@ -87,7 +87,7 @@ Objetivo declarado: la web debe poder competir por un reconocimiento en Awwwards
 
 | Criterio | Qué exigimos | Cómo se comprueba |
 |---|---|---|
-| Diseño | identidad propia (electricidad, voltaje, verde sobre carbón), tipografía de gran formato con una geométrica de marca (Space Grotesk, OFL, servida en local), composición asimétrica y capas de profundidad; nada que parezca plantilla | revisión visual con capturas a 1366×610, 1440 y 390 en claro y oscuro |
+| Diseño | identidad propia (electricidad, voltaje; cobalto y cian sobre azul marino desde ADR-049), tipografía de gran formato con Outfit (OFL, servida en local), composición asimétrica y capas de profundidad; nada que parezca plantilla | revisión visual con capturas a 1366×610, 1440 y 390 en claro y oscuro |
 | Creatividad | hero con campo eléctrico animado, bordes conductores que se iluminan al interactuar, foco de luz que sigue al puntero en tarjetas, marquesina de tokens, transiciones de página, revelados escalonados al hacer scroll, demo viva con inclinación 3D | cada efecto listado existe y responde; ninguno se repite en bucle sin interacción salvo el campo del hero |
 | Usabilidad | todo lo anterior sin bloquear la lectura: navegación por teclado, búsqueda, tema, copia, TOC; `prefers-reduced-motion` desactiva el movimiento y deja una experiencia completa y bella | pruebas de docs y axe; captura con reduced-motion |
 | Contenido | ejemplos reales del framework, datos medidos, sin promesas vacías | contratos de snippets y honestidad documentados |
