@@ -31,15 +31,15 @@ Los tonos `blue` y el `green` de once pasos de las betas desaparecen; `--iv-pale
 |---|---|---|---|
 | `bg` / `surface` / `surface-raised` | `#FFFFFF` / `#F5F7FC` / `#FFFFFF` | `#04070F` / `#070D1C` / `#0C1330` | — |
 | `text` / `text-muted` | `#0B1230` / `#4F5B7A` | `#EEF2FB` / `#A8B3CC` | 18,4 y 6,8 sobre blanco; 18,0 y 9,6 sobre `#04070F` (8,7 sobre la superficie elevada) |
-| `border` / `border-strong` | `#D3DAEA` / `#6B7896` | `#1C2544` / `#6B7896` | strong 4,4 (claro) y 4,6 (oscuro): ≥ 3 para controles |
+| `border` / `border-strong` | `#D3DAEA` / `#6B7896` | `#33406A` / `#6B7896` | strong 4,4 (claro) y 4,6 (oscuro): ≥ 3 para controles. El filete oscuro subió de `neutral.800` a `neutral.700` en rc.3: sobre `bg` medía 1,34:1 y tarjetas, paneles y pestañas no se separaban de la página (revisión adversaria) |
 | `primary` / `on-primary` | `#1D4FC4` / blanco | `#66B1FF` / `#06122B` | 7,1 (claro) y 8,9 (oscuro; 8,1 sobre elevada); texto sobre primario 7,1 y 8,2 |
 | `primary-hover` / `primary-active` / `primary-subtle` | `#1A3FA8` / `#172F7A` / `#EAF4FF` | `#8FC6FF` / `#3D94FF` / cobalto al 12 % | — |
 | `accent` / `on-accent` | `#0B6B8A` / blanco | `#73DFFF` / `#06122B` | 5,5 (claro), 13,2 (oscuro) |
 | `success` / `danger` / `warning` / `info` | `#4F7A12` / `#C22E26` / `#8F5C00` / `#3D47C2` | `#8BBF3A` / `#FF9AA4` / `#FBBF24` / `#8B95FF` | claro 5,1 / 5,7 (5,1 sobre su tinte) / 5,0 / 7,3; oscuro 9,2 / 10,0 / 12,1 / 7,5; `on-*` blanco en claro y `#06122B` en oscuro |
-| `focus` | `#1D4FC4` | `#73DFFF` | anillo de 2 px + halo `--iv-focus-halo` (cobalto 35 % / 45 %) |
-| `overlay` / `hover-surface` / `primary-border` | `rgb(11 18 48 / .55)` / `.04` / cobalto `.55` | `rgb(2 5 12 / .65)` / blanco azulado `.05` / cobalto `.5` | — |
+| `focus` | `#1D4FC4` | `#73DFFF` | anillo de 2 px + halo `--iv-focus-halo` (cobalto 35 % en claro; 32 % con 3 px de desenfoque en oscuro: el halo es refuerzo, el anillo es el que cumple) |
+| `overlay` / `hover-surface` / `primary-border` | `rgb(11 18 48 / .55)` / `.04` / cobalto `.55` | `rgb(2 5 12 / .78)` / blanco azulado `.05` / cobalto `.5` | velo oscuro a `.78` desde rc.3: a `.65` sobre una página ya negra no se distinguía la capa |
 | `glow-primary` / `glow-secondary` | cobalto `.35` / cian `.3` | cobalto `.45` / cian `.4` | halos de foco, botones y bordes luminosos |
-| `gradient-brand` / `gradient-primary` (nuevos) | `#0B6B8A → #2266D8` / `#0B6B8A → #1D4FC4 → #3D47C2` (todos ≥ 5,3 con texto blanco; en claro un degradado también pinta texto sobre blanco, así que ningún tope puede ser un cian claro) | `#73DFFF → #6674FF` / `#8FE3FF → #66B1FF → #8B95FF` | botón primario, texto degradado, filetes |
+| `gradient-brand` / `gradient-primary` (nuevos) | `#1D4FC4 → #3D47C2` / `#2266D8 → #1D4FC4 → #3D47C2` (todos ≥ 5,3 con texto blanco; en claro un degradado también pinta texto sobre blanco, así que ningún tope puede ser un cian claro; el arranque petróleo `#0B6B8A` de rc.2 leía sucio en un botón de 40 px y se retiró en rc.3: en claro la marca es cobalto → índigo, como en oscuro) | `#73DFFF → #6674FF` / `#8FE3FF → #66B1FF → #8B95FF` | botón primario, texto degradado, filetes |
 | `glass-*` | blanco `.55`/`.78`, borde `.65`, brillo `.9` | azul marino `.5`/`.78`, borde blanco `.1`, brillo `.18` | superficies de cristal |
 
 Las cifras salen de `scripts`-menos: se calcularon con la fórmula WCAG 2.x sobre los valores de la tabla al escribir esta sección (2026-09-16); axe las vuelve a comprobar en cada fixture del gate.

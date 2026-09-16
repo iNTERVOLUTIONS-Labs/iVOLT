@@ -1212,7 +1212,7 @@
     {
       "name": "--iv-color-border",
       "light": "#d3daea",
-      "dark": "#1c2544"
+      "dark": "#33406a"
     },
     {
       "name": "--iv-color-border-strong",
@@ -1282,7 +1282,7 @@
     {
       "name": "--iv-color-overlay",
       "light": "#0b12308c",
-      "dark": "#02050ca6"
+      "dark": "#02050cc7"
     },
     {
       "name": "--iv-color-primary",
@@ -1367,7 +1367,7 @@
     {
       "name": "--iv-focus-halo",
       "light": "0 0 2px 3px #1d4fc459",
-      "dark": "0 0 2px 3px #66b1ff73"
+      "dark": "0 0 3px 2px #66b1ff52"
     },
     {
       "name": "--iv-focus-offset",
@@ -1421,12 +1421,12 @@
     },
     {
       "name": "--iv-gradient-brand",
-      "light": "linear-gradient(120deg, #0b6b8a, #2266d8)",
+      "light": "linear-gradient(120deg, #1d4fc4, #3d47c2)",
       "dark": "linear-gradient(120deg, #73dfff, #6674ff)"
     },
     {
       "name": "--iv-gradient-primary",
-      "light": "linear-gradient(120deg, #0b6b8a, #1d4fc4 55%, #3d47c2)",
+      "light": "linear-gradient(120deg, #2266d8, #1d4fc4 50%, #3d47c2)",
       "dark": "linear-gradient(120deg, #8fe3ff, #66b1ff 55%, #8b95ff)"
     },
     {

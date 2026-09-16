@@ -156,8 +156,8 @@
   --iv-glass-highlight: rgb(255 255 255 / 0.9);
   --iv-glow-primary: rgb(29 79 196 / 0.35);
   --iv-glow-secondary: rgb(11 107 138 / 0.3);
-  --iv-gradient-brand: linear-gradient(120deg, #0B6B8A, #2266D8);
-  --iv-gradient-primary: linear-gradient(120deg, #0B6B8A, #1D4FC4 55%, #3D47C2);
+  --iv-gradient-brand: linear-gradient(120deg, #1D4FC4, #3D47C2);
+  --iv-gradient-primary: linear-gradient(120deg, #2266D8, #1D4FC4 50%, #3D47C2);
   --iv-texture-grain-opacity: 0.05;
   --iv-focus-halo: 0 0 2px 3px rgb(29 79 196 / 0.35);
 }
@@ -168,7 +168,7 @@
   --iv-color-surface-raised: #0C1330;
   --iv-color-text: #EEF2FB;
   --iv-color-text-muted: #A8B3CC;
-  --iv-color-border: #1C2544;
+  --iv-color-border: #33406A;
   --iv-color-border-strong: #6B7896;
   --iv-color-primary: #66B1FF;
   --iv-color-on-primary: #06122B;
@@ -190,7 +190,7 @@
   --iv-color-on-info: #06122B;
   --iv-color-info-subtle: rgb(139 149 255 / 0.12);
   --iv-color-focus: #73DFFF;
-  --iv-color-overlay: rgb(2 5 12 / 0.65);
+  --iv-color-overlay: rgb(2 5 12 / 0.78);
   --iv-color-hover-surface: rgb(230 240 255 / 0.05);
   --iv-color-primary-border: rgb(102 177 255 / 0.5);
   --iv-shadow-1: 0 0 1px 1px #1C2544;
@@ -206,7 +206,7 @@
   --iv-gradient-brand: linear-gradient(120deg, #73DFFF, #6674FF);
   --iv-gradient-primary: linear-gradient(120deg, #8FE3FF, #66B1FF 55%, #8B95FF);
   --iv-texture-grain-opacity: 0.09;
-  --iv-focus-halo: 0 0 2px 3px rgb(102 177 255 / 0.45);
+  --iv-focus-halo: 0 0 3px 2px rgb(102 177 255 / 0.32);
 }
 @media (prefers-color-scheme: dark) {
   [data-iv-theme="system"] {
@@ -216,7 +216,7 @@
     --iv-color-surface-raised: #0C1330;
     --iv-color-text: #EEF2FB;
     --iv-color-text-muted: #A8B3CC;
-    --iv-color-border: #1C2544;
+    --iv-color-border: #33406A;
     --iv-color-border-strong: #6B7896;
     --iv-color-primary: #66B1FF;
     --iv-color-on-primary: #06122B;
@@ -238,7 +238,7 @@
     --iv-color-on-info: #06122B;
     --iv-color-info-subtle: rgb(139 149 255 / 0.12);
     --iv-color-focus: #73DFFF;
-    --iv-color-overlay: rgb(2 5 12 / 0.65);
+    --iv-color-overlay: rgb(2 5 12 / 0.78);
     --iv-color-hover-surface: rgb(230 240 255 / 0.05);
     --iv-color-primary-border: rgb(102 177 255 / 0.5);
     --iv-shadow-1: 0 0 1px 1px #1C2544;
@@ -254,7 +254,7 @@
     --iv-gradient-brand: linear-gradient(120deg, #73DFFF, #6674FF);
     --iv-gradient-primary: linear-gradient(120deg, #8FE3FF, #66B1FF 55%, #8B95FF);
     --iv-texture-grain-opacity: 0.09;
-    --iv-focus-halo: 0 0 2px 3px rgb(102 177 255 / 0.45);
+    --iv-focus-halo: 0 0 3px 2px rgb(102 177 255 / 0.32);
   }
 }
 /* A theme scope re-applies text and background so nested scopes do not inherit the parent theme's computed colours. */
