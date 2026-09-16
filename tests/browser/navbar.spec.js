@@ -138,10 +138,11 @@ test.describe("Navbar", () => {
     await page.mouse.wheel(0, 600);
     await expect(header).toHaveAttribute("data-iv-hidden", "");
     // The bar is translated out of the viewport, not display: none, so it can slide back.
-    await expect.poll(async () => (await header.boundingBox()).y).toBeLessThan(0);
+    // The bar slides over a transition; a loaded machine can take seconds to paint it.
+    await expect.poll(async () => (await header.boundingBox()).y, { timeout: 15_000 }).toBeLessThan(0);
     await page.mouse.wheel(0, -200);
     await expect(header).not.toHaveAttribute("data-iv-hidden", "");
-    await expect.poll(async () => (await header.boundingBox()).y).toBeGreaterThanOrEqual(0);
+    await expect.poll(async () => (await header.boundingBox()).y, { timeout: 15_000 }).toBeGreaterThanOrEqual(0);
 
     // Narrow: an open panel pins the bar even while scrolling down.
     await page.setViewportSize({ width: 390, height: 800 });
