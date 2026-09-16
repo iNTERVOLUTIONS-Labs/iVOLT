@@ -2,6 +2,10 @@
 
 Estado: **nada publicado**; ninguna acción de §3 se ha ejecutado. Hitos: `ROADMAP.md` §5 (v0.2), §6 (v0.3), §7 (v0.4 y v0.5).
 
+## 0j. `1.0.0` (en preparación; publicación en esta sección)
+
+Primera estable. Desde rc.3: corrección del constructor de temas de la web (la vista previa no seguía el radio de tema), ronda de redacción con dos redactores Opus (web en dos idiomas, README del paquete y raíz, starter y recetas: voz comercial, aviso de honestidad una vez por página, SEO en títulos, descripciones, `alt`, `hreflang` y JSON-LD), metadatos del paquete, contrato y `STABILITY.md` en vigor.
+
 ## 0i. `1.0.0-rc.3` (publicada el 2026-09-16 con etiqueta `next`; ronda adversaria visual, ADR-050)
 
 Cuarto candidato: dos incidencias del propietario (esquinas rectas del pie de tarjeta bajo efectos de borde; anillos serrados en Chromium con GPU en Windows por sombras con extensión y desenfoque 0) y una ronda adversaria visual con dos revisores y dos implementadores Opus: 33 tareas sobre el paquete, la web y las recetas, con todos los colores nuevos medidos (`A11Y_REVIEW.md` §17). Tokens: borde oscuro `neutral.700`, velo oscuro `.78`, degradados claros cobalto → índigo, halo de foco suavizado; nombres sin cambio. Gate final en tres motores: 1039 unitarias · 1545 pruebas de navegador superadas y 147 omitidas · tamaños dentro de presupuesto (`ivolt.min.css` 32,1 KiB gzip, JS 45,2) · pack-smoke (`intervolutions-ivolt-1.0.0-rc.3.tgz`, 134 archivos) · 108 páginas · 5 ejemplos · Lighthouse `docs/LIGHTHOUSE.md` (rc.3). Publicación con el token del propietario en un `userconfig` temporal borrado tras el comando: `npm publish --access public --tag next -w @intervolutions/ivolt` (134 archivos, 709 kB empaquetados); `dist-tags`: `latest` y `beta` en `0.7.0-beta.0`, `next` en `1.0.0-rc.3`; etiqueta git `v1.0.0-rc.3`; instalación verificada desde el registro (`@next`: versión `1.0.0-rc.3`, filete oscuro `#33406A` en la hoja minificada).

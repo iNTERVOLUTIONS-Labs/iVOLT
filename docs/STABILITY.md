@@ -1,6 +1,6 @@
-# iVOLT — Estabilidad y versiones (borrador para 1.0, 2026-09-15)
+# iVOLT — Estabilidad y versiones (vigente desde `1.0.0`, 2026-09-16)
 
-Este documento fija qué promete el paquete `@intervolutions/ivolt` a partir de `1.0.0` y cómo cambia. Hasta `1.0.0-rc.0` es un borrador; el rc lo congela.
+Este documento fija qué promete el paquete `@intervolutions/ivolt` desde `1.0.0` y cómo cambia. Fue borrador hasta `1.0.0-rc.0`, que lo congeló; `1.0.0` lo pone en vigor.
 
 ## 1. Qué es público
 
@@ -23,7 +23,7 @@ SemVer estricto desde `1.0.0`:
 
 Deprecaciones: se anuncian en el changelog y en la web una versión menor antes de retirarse en la siguiente mayor; el código emite `console.warn` una vez por página con el prefijo `[iVOLT] deprecated:`. No hay deprecaciones pendientes al escribir esto.
 
-Etiquetas de npm: `latest` para estables, `next` para candidatos, `beta` para betas. Hasta `1.0.0` `latest` apunta a la última beta publicada porque npm no admite un paquete sin `latest` (ADR-043).
+Etiquetas de npm: `latest` para estables, `next` para candidatos, `beta` para betas. Desde `1.0.0`, `latest` apunta a la última estable; hasta entonces apuntó a la última beta porque npm no admite un paquete sin `latest` (ADR-043).
 
 ## 3. Navegadores
 
