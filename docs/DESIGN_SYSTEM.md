@@ -58,7 +58,7 @@ Las cifras salen de `scripts`-menos: se calcularon con la fórmula WCAG 2.x sobr
 | Sombra (`--iv-shadow-*`) | `1 2 3 ambient` (`ambient` desde v0.6: reposo de tarjetas y tablas, con anillo en oscuro) | light: `0 1px 2px rgb(8 19 16/.06)` … `0 12px 32px rgb(8 19 16/.14)`; dark: misma geometría con borde `surface-raised` y opacidad .4 |
 | Foco | `--iv-focus-width 2px`, `--iv-focus-offset 2px`, `--iv-color-focus` | `outline: var(--iv-focus-width) solid var(--iv-color-focus); outline-offset: var(--iv-focus-offset)` solo en `:focus-visible` |
 | Tracking (`--iv-tracking-*`, v0.6) | `tight caps` | `-0.011em` (títulos), `0.06em` (versalitas) |
-| Halo de foco (`--iv-focus-halo`, v0.6) | — | `0 0 0 4px` sobre `--iv-glow-primary`, siempre junto al anillo |
+| Halo de foco (`--iv-focus-halo`, v0.6) | — | `0 0 2px 3px` (extensión 3 px, desenfoque 2 px) en el color del foco, siempre junto al anillo; nunca `spread` con desenfoque 0: algunos controladores de GPU lo rasterizan sin antialias |
 | Z-index (`--iv-z-*`) | `dropdown drawer dialog toast` | `100 200 300 400` (dialog nativo usa top layer; el token ordena los fallbacks) |
 | Movimiento (`--iv-motion-*`) | `fast base slow` | `120ms 180ms 220ms`; `--iv-ease-out: cubic-bezier(.2,.7,.2,1)` |
 | Medidas | `--iv-measure 68ch`, `--iv-content-max 90rem` (1440px), `--iv-container-max 75rem` | — |

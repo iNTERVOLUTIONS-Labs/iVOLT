@@ -5,6 +5,7 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 ## 1.0.0-rc.3 (unreleased)
 
 ### Fixed
+- Serrated rings on GPU-rasterised Chromium (reported on Windows): hard spread shadows (`0 0 0 Npx`, blur 0) are drawn without anti-aliasing by some drivers. The avatar ring, the status dot gap and the group gap are real borders now; the dark `--iv-shadow-1`/`--iv-shadow-ambient` ring, `--iv-focus-halo`, the invalid-field halos, the megamenu art halo, the carousel glass inset and the timeline pulse carry a small blur instead.
 - `Card`: the media slot and the footer round their own corners (`--iv-card-inner-radius`), so a card wearing `iv-glow`, `iv-edge-glint` or `iv-edge-near`, which switch the card's clip off to show their ring, no longer shows square footer corners over the rounded frame.
 
 ## 1.0.0-rc.2 — 2026-09-16 (npm, tag `next`)

@@ -586,7 +586,7 @@
   color: var(--iv-color-on-accent);
   background-color: var(--iv-color-accent);
   border-radius: var(--iv-radius-full);
-  box-shadow: 0 0 0 6px var(--iv-glow-primary);
+  box-shadow: 0 0 6px 4px var(--iv-glow-primary);
   opacity: 0;
   translate: -0.35rem 0.35rem;
   transition:

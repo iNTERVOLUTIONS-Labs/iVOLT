@@ -86,7 +86,7 @@ textarea.iv-input {
 .iv-select[aria-invalid="true"],
 .iv-textarea[aria-invalid="true"] {
   border-color: var(--iv-color-danger);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--iv-color-danger) 18%, transparent);
+  box-shadow: 0 0 2px 2px color-mix(in oklab, var(--iv-color-danger) 18%, transparent);
 }
 
 .iv-input:disabled,
@@ -770,7 +770,7 @@ textarea.iv-input {
 .iv-field--invalid :where(.iv-textarea:focus-visible) {
   outline-color: var(--iv-color-danger);
   border-color: var(--iv-color-danger);
-  box-shadow: 0 0 0 4px var(--iv-color-danger-subtle);
+  box-shadow: 0 0 2px 3px var(--iv-color-danger-subtle);
 }
 
 .iv-field--invalid .iv-label {

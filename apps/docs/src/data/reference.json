@@ -1366,8 +1366,8 @@
     },
     {
       "name": "--iv-focus-halo",
-      "light": "0 0 0 4px #1d4fc459",
-      "dark": "0 0 0 4px #66b1ff73"
+      "light": "0 0 2px 3px #1d4fc459",
+      "dark": "0 0 2px 3px #66b1ff73"
     },
     {
       "name": "--iv-focus-offset",
@@ -1792,7 +1792,7 @@
     {
       "name": "--iv-shadow-1",
       "light": "0 1px 2px #0b12300f",
-      "dark": "0 0 0 1px #1c2544"
+      "dark": "0 0 1px 1px #1c2544"
     },
     {
       "name": "--iv-shadow-2",
@@ -1807,7 +1807,7 @@
     {
       "name": "--iv-shadow-ambient",
       "light": "0 2px 10px #0b12301a",
-      "dark": "0 0 0 1px #1c2544, 0 2px 10px #00000080"
+      "dark": "0 0 1px 1px #1c2544, 0 2px 10px #00000080"
     },
     {
       "name": "--iv-space-0",

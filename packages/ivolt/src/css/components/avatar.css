@@ -67,14 +67,21 @@
 
 /* Ring ------------------------------------------------------------------ */
 
-/* Two layers: a gap in the page colour and then the brand line, so the ring
-   reads on any surface. */
+/* A real border on a pseudo-element, not a spread shadow: hard (blur 0)
+   spread shadows are rasterised without anti-aliasing by some GPU drivers
+   and the circle came out serrated. A 2px gap shows the surface underneath,
+   then the brand line. */
 .iv-avatar--ring {
   --iv-avatar-ring: var(--iv-color-primary);
+}
 
-  box-shadow:
-    0 0 0 2px var(--iv-color-bg),
-    0 0 0 4px var(--iv-avatar-ring);
+.iv-avatar--ring::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 2px solid var(--iv-avatar-ring);
+  border-radius: calc(var(--iv-avatar-radius) + 4px);
+  pointer-events: none;
 }
 
 /* Status ---------------------------------------------------------------- */
@@ -89,7 +96,11 @@
   block-size: calc(var(--iv-avatar-size) * 0.28);
   border-radius: var(--iv-radius-full);
   background-color: var(--iv-avatar-status-color);
-  box-shadow: 0 0 0 2px var(--iv-color-bg);
+  /* The page-colour gap is a border, painted outside the dot (content-box),
+     so the dot keeps its size; a spread shadow would be drawn aliased. */
+  box-sizing: content-box;
+  border: 2px solid var(--iv-color-bg);
+  margin: -2px;
 }
 
 .iv-avatar__status[data-iv-tone="success"] {
@@ -130,7 +141,17 @@
    would resolve `--iv-avatar-size` against the group, which does not set it. */
 :where(.iv-avatar-group) .iv-avatar {
   margin-inline-start: var(--iv-avatar-overlap, calc(var(--iv-avatar-size) * -0.18));
-  box-shadow: 0 0 0 2px var(--iv-color-bg);
+}
+
+/* The page-colour gap between overlapping faces is a bordered pseudo-element
+   (see the ring above for why it is not a spread shadow). */
+:where(.iv-avatar-group) .iv-avatar::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border: 2px solid var(--iv-color-bg);
+  border-radius: calc(var(--iv-avatar-radius) + 2px);
+  pointer-events: none;
 }
 
 :where(.iv-avatar-group) .iv-avatar:first-child {

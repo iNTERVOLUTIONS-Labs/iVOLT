@@ -1,7 +1,7 @@
 /* iVOLT docs — device frames and the recipe gallery.
    Shared by the home and the examples index, so it travels with DeviceFrame.astro instead of
    riding in the shell sheet every page pays for. */
-.docs-device { position: relative; display: block; border-radius: var(--iv-radius-lg); overflow: hidden; background: var(--iv-color-surface); box-shadow: 0 1px 0 var(--docs-hair) inset, 0 40px 80px -50px rgb(0 0 0 / .85), 0 0 0 1px rgb(128 128 128 / .08); }
+.docs-device { position: relative; display: block; border-radius: var(--iv-radius-lg); overflow: hidden; background: var(--iv-color-surface); box-shadow: 0 1px 0 var(--docs-hair) inset, 0 40px 80px -50px rgb(0 0 0 / .85), 0 0 1px 1px rgb(128 128 128 / .08); }
 .docs-device__bar { display: block; block-size: 1.6rem; background: linear-gradient(180deg, var(--iv-color-surface-raised), var(--iv-color-surface)); position: relative; }
 .docs-device__bar::before { content: ""; position: absolute; inset-block-start: 50%; inset-inline-start: .8rem; translate: 0 -50%; inline-size: 2.4rem; block-size: .35rem; border-radius: 1rem; background: var(--iv-color-border-strong); opacity: .7; }
 .docs-device__shot { display: block; inline-size: 100%; block-size: auto; }

@@ -535,10 +535,10 @@ Motivo (ADR-040): el pulido visual repitió las mismas recetas `color-mix()` y s
 
 | Token | Light | Dark | Uso |
 |---|---|---|---|
-| `--iv-shadow-ambient` | `0 2px 10px rgb(8 19 16 / 0.10)` | `0 0 0 1px #1B2C25, 0 2px 10px rgb(0 0 0 / 0.45)` | reposo de tarjeta, tabla envuelta, alerta, acordeón, botón; sustituye a las recetas sobre `--iv-color-overlay` |
+| `--iv-shadow-ambient` | `0 2px 10px rgb(11 18 48 / 0.10)` | `0 0 1px 1px #1C2544, 0 2px 10px rgb(0 0 0 / 0.5)` (rc.3: el anillo lleva 1 px de desenfoque; con desenfoque 0 algunos controladores lo pintan sin antialias) | reposo de tarjeta, tabla envuelta, alerta, acordeón, botón; sustituye a las recetas sobre `--iv-color-overlay` |
 | `--iv-color-hover-surface` | `rgb(8 19 16 / 0.04)` | `rgb(224 255 240 / 0.05)` | pies de tarjeta, diálogo y drawer, pestañas al hover, campo del selector al hover. Las filas al hover (tabla, data table, menú) conservan el tinte de marca `primary-subtle` (decisión de integración, 2026-09-14: cambiarlo alteraría el aspecto, contra el preámbulo) |
 | `--iv-color-primary-border` | `rgb(10 106 67 / 0.55)` | `rgb(41 245 154 / 0.5)` | contorno de `iv-button--secondary`, hover de campos, paginación, contorno de marca en general |
-| `--iv-focus-halo` | `0 0 0 4px rgb(10 106 67 / 0.35)` | `0 0 0 4px rgb(41 245 154 / 0.45)` | halo de `:focus-visible` en campos, botones, paginación, migas, pasos del stepper, toggle del navbar; siempre junto al anillo `outline` (§4 de `DESIGN_SYSTEM.md`), nunca en su lugar |
+| `--iv-focus-halo` | `0 0 2px 3px rgb(29 79 196 / 0.35)` | `0 0 2px 3px rgb(102 177 255 / 0.45)` (rc.3: 3 px de extensión y 2 de desenfoque en lugar de 4 duros, mismo motivo) | halo de `:focus-visible` en campos, botones, paginación, migas, pasos del stepper, toggle del navbar; siempre junto al anillo `outline` (§4 de `DESIGN_SYSTEM.md`), nunca en su lugar |
 | `--iv-tracking-tight` | `-0.011em` | ídem | títulos de tarjeta, diálogo, drawer, stat |
 | `--iv-tracking-caps` | `0.06em` | ídem | versalitas: cabeceras de tabla, leyendas de fieldset, `__heading` de megamenú y paleta, etiqueta de stat |
 

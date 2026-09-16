@@ -137,7 +137,7 @@
 /* ---------- tables: full column, scrollable, readable ----------
    Scoped to .docs-scroller on purpose: a table inside a fixture preview belongs to the package
    and must keep the styling the package gives it. */
-.docs-scroller { overflow-x: auto; min-inline-size: 0; overscroll-behavior-x: contain; border-radius: var(--iv-radius-lg); box-shadow: 0 0 0 1px var(--iv-color-border); }
+.docs-scroller { overflow-x: auto; min-inline-size: 0; overscroll-behavior-x: contain; border-radius: var(--iv-radius-lg); box-shadow: 0 0 1px 1px var(--iv-color-border); }
 .docs-scroller > table {
   inline-size: 100%;
   min-inline-size: 32rem;
@@ -185,12 +185,12 @@
   overflow: visible;
   position: relative;
   background: var(--iv-color-surface-raised);
-  box-shadow: 0 1px 0 var(--docs-hair) inset, 0 30px 60px -40px rgb(0 0 0 / .75), 0 0 0 1px rgb(128 128 128 / .08);
+  box-shadow: 0 1px 0 var(--docs-hair) inset, 0 30px 60px -40px rgb(0 0 0 / .75), 0 0 1px 1px rgb(128 128 128 / .08);
   transition: box-shadow var(--iv-motion-base) var(--docs-ease);
 }
 .docs-fixture::before { content: ""; position: absolute; inset-inline: 0; inset-block-start: 0; block-size: 2px; background: linear-gradient(90deg, transparent, var(--iv-color-accent), transparent); opacity: .5; z-index: 1; }
 /* No transform on hover: a transformed ancestor becomes the containing block of position: fixed descendants (toast regions). */
-.docs-fixture:hover, .docs-fixture:focus-within { box-shadow: 0 1px 0 var(--docs-line) inset, 0 40px 70px -40px var(--docs-halo), 0 0 0 1px var(--docs-hair); }
+.docs-fixture:hover, .docs-fixture:focus-within { box-shadow: 0 1px 0 var(--docs-line) inset, 0 40px 70px -40px var(--docs-halo), 0 0 1px 1px var(--docs-hair); }
 .docs-fixture__caption {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -373,10 +373,10 @@
   font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .1em; text-transform: uppercase;
   color: var(--iv-color-text-muted); background: var(--iv-color-surface-raised);
   padding: .35rem .9rem; border-radius: var(--iv-radius-full);
-  box-shadow: 0 0 0 1px var(--iv-color-border) inset, 0 8px 20px -12px rgb(0 0 0 / .8);
+  box-shadow: 0 0 1px 1px var(--iv-color-border) inset, 0 8px 20px -12px rgb(0 0 0 / .8);
   transition: color var(--iv-motion-fast) var(--docs-ease), box-shadow var(--iv-motion-fast) var(--docs-ease);
 }
-.docs-code__expand:hover { color: var(--iv-color-text); box-shadow: 0 0 0 1px var(--iv-color-border-strong) inset, 0 8px 20px -12px rgb(0 0 0 / .8); }
+.docs-code__expand:hover { color: var(--iv-color-text); box-shadow: 0 0 1px 1px var(--iv-color-border-strong) inset, 0 8px 20px -12px rgb(0 0 0 / .8); }
 .docs-code__expand:focus-visible { outline: var(--iv-focus-width, 2px) solid var(--iv-color-focus, var(--iv-color-primary)); outline-offset: 2px; }
 
 /* ---------- interior rhythm (external review, verdict) ----------

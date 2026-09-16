@@ -266,7 +266,7 @@
 .docs-chips li { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); border: 1px solid var(--docs-card-stroke); background: var(--docs-card-bg); border-radius: var(--iv-radius-full); padding: .15rem .6rem; }
 
 .docs-downloads { display: grid; gap: var(--iv-space-3); }
-.docs-download { display: flex; flex-wrap: wrap; align-items: center; gap: var(--iv-space-3); padding: var(--iv-space-4); border-radius: var(--iv-radius-lg); background: var(--iv-color-surface); box-shadow: 0 0 0 1px var(--docs-card-stroke) inset, var(--docs-soft-halo); }
+.docs-download { display: flex; flex-wrap: wrap; align-items: center; gap: var(--iv-space-3); padding: var(--iv-space-4); border-radius: var(--iv-radius-lg); background: var(--iv-color-surface); box-shadow: 0 0 1px 1px var(--docs-card-stroke) inset, var(--docs-soft-halo); }
 .docs-download > span { font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); min-inline-size: 0; }
 @media (min-width: 48em) { .docs-downloads { grid-template-columns: 1fr 1fr; } }
 

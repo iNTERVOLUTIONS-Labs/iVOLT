@@ -159,7 +159,7 @@
   --iv-gradient-brand: linear-gradient(120deg, #0B6B8A, #2266D8);
   --iv-gradient-primary: linear-gradient(120deg, #0B6B8A, #1D4FC4 55%, #3D47C2);
   --iv-texture-grain-opacity: 0.05;
-  --iv-focus-halo: 0 0 0 4px rgb(29 79 196 / 0.35);
+  --iv-focus-halo: 0 0 2px 3px rgb(29 79 196 / 0.35);
 }
 [data-iv-theme="dark"] {
   color-scheme: dark;
@@ -193,10 +193,10 @@
   --iv-color-overlay: rgb(2 5 12 / 0.65);
   --iv-color-hover-surface: rgb(230 240 255 / 0.05);
   --iv-color-primary-border: rgb(102 177 255 / 0.5);
-  --iv-shadow-1: 0 0 0 1px #1C2544;
+  --iv-shadow-1: 0 0 1px 1px #1C2544;
   --iv-shadow-2: 0 4px 12px rgb(0 0 0 / 0.45);
   --iv-shadow-3: 0 12px 32px rgb(0 0 0 / 0.55);
-  --iv-shadow-ambient: 0 0 0 1px #1C2544, 0 2px 10px rgb(0 0 0 / 0.5);
+  --iv-shadow-ambient: 0 0 1px 1px #1C2544, 0 2px 10px rgb(0 0 0 / 0.5);
   --iv-glass-bg: rgb(12 19 48 / 0.5);
   --iv-glass-bg-strong: rgb(12 19 48 / 0.78);
   --iv-glass-border: rgb(255 255 255 / 0.1);
@@ -206,7 +206,7 @@
   --iv-gradient-brand: linear-gradient(120deg, #73DFFF, #6674FF);
   --iv-gradient-primary: linear-gradient(120deg, #8FE3FF, #66B1FF 55%, #8B95FF);
   --iv-texture-grain-opacity: 0.09;
-  --iv-focus-halo: 0 0 0 4px rgb(102 177 255 / 0.45);
+  --iv-focus-halo: 0 0 2px 3px rgb(102 177 255 / 0.45);
 }
 @media (prefers-color-scheme: dark) {
   [data-iv-theme="system"] {
@@ -241,10 +241,10 @@
     --iv-color-overlay: rgb(2 5 12 / 0.65);
     --iv-color-hover-surface: rgb(230 240 255 / 0.05);
     --iv-color-primary-border: rgb(102 177 255 / 0.5);
-    --iv-shadow-1: 0 0 0 1px #1C2544;
+    --iv-shadow-1: 0 0 1px 1px #1C2544;
     --iv-shadow-2: 0 4px 12px rgb(0 0 0 / 0.45);
     --iv-shadow-3: 0 12px 32px rgb(0 0 0 / 0.55);
-    --iv-shadow-ambient: 0 0 0 1px #1C2544, 0 2px 10px rgb(0 0 0 / 0.5);
+    --iv-shadow-ambient: 0 0 1px 1px #1C2544, 0 2px 10px rgb(0 0 0 / 0.5);
     --iv-glass-bg: rgb(12 19 48 / 0.5);
     --iv-glass-bg-strong: rgb(12 19 48 / 0.78);
     --iv-glass-border: rgb(255 255 255 / 0.1);
@@ -254,7 +254,7 @@
     --iv-gradient-brand: linear-gradient(120deg, #73DFFF, #6674FF);
     --iv-gradient-primary: linear-gradient(120deg, #8FE3FF, #66B1FF 55%, #8B95FF);
     --iv-texture-grain-opacity: 0.09;
-    --iv-focus-halo: 0 0 0 4px rgb(102 177 255 / 0.45);
+    --iv-focus-halo: 0 0 2px 3px rgb(102 177 255 / 0.45);
   }
 }
 /* A theme scope re-applies text and background so nested scopes do not inherit the parent theme's computed colours. */

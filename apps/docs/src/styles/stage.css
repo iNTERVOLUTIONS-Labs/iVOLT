@@ -9,7 +9,7 @@
   position: relative;
   border-radius: var(--iv-radius-xl, 1.25rem);
   background: var(--iv-color-surface-raised);
-  box-shadow: 0 1px 0 var(--docs-hair) inset, 0 40px 80px -52px rgb(0 0 0 / .8), 0 0 0 1px rgb(128 128 128 / .07);
+  box-shadow: 0 1px 0 var(--docs-hair) inset, 0 40px 80px -52px rgb(0 0 0 / .8), 0 0 1px 1px rgb(128 128 128 / .07);
   isolation: isolate;
 }
 .docs-stage::before {
@@ -23,7 +23,7 @@
   opacity: .55;
   z-index: 2;
 }
-.docs-stage--primary { box-shadow: 0 1px 0 var(--docs-line) inset, 0 60px 110px -60px var(--docs-halo), 0 0 0 1px var(--docs-hair); }
+.docs-stage--primary { box-shadow: 0 1px 0 var(--docs-line) inset, 0 60px 110px -60px var(--docs-halo), 0 0 1px 1px var(--docs-hair); }
 
 /* ---------- bar: what this is, where it lives, how to open it alone ---------- */
 .docs-stage__bar {
@@ -57,7 +57,7 @@
   padding: 0 var(--iv-space-4) var(--iv-space-3);
 }
 .docs-stage__controls[hidden] { display: none; }
-.docs-stage__seg { display: inline-flex; padding: 2px; gap: 2px; border-radius: var(--iv-radius-full); background: var(--iv-color-surface); box-shadow: 0 0 0 1px var(--iv-color-border) inset; }
+.docs-stage__seg { display: inline-flex; padding: 2px; gap: 2px; border-radius: var(--iv-radius-full); background: var(--iv-color-surface); box-shadow: 0 0 1px 1px var(--iv-color-border) inset; }
 .docs-stage__seg button {
   appearance: none; border: 0; background: none; cursor: pointer;
   font: inherit; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .08em;
@@ -75,12 +75,12 @@
   font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .1em; text-transform: uppercase;
   color: var(--iv-color-text-muted); background: var(--iv-color-surface);
   padding: .3rem .8rem; border-radius: var(--iv-radius-full);
-  box-shadow: 0 0 0 1px var(--iv-color-border) inset;
+  box-shadow: 0 0 1px 1px var(--iv-color-border) inset;
   transition: color var(--iv-motion-fast) var(--docs-ease), box-shadow var(--iv-motion-fast) var(--docs-ease);
 }
 .docs-stage__all[hidden] { display: none; }
-.docs-stage__all:hover { color: var(--iv-color-text); box-shadow: 0 0 0 1px var(--iv-color-border-strong) inset; }
-.docs-stage__all[aria-pressed="true"] { color: var(--iv-color-primary); box-shadow: 0 0 0 1px var(--iv-color-primary-border, var(--iv-color-primary)) inset; }
+.docs-stage__all:hover { color: var(--iv-color-text); box-shadow: 0 0 1px 1px var(--iv-color-border-strong) inset; }
+.docs-stage__all[aria-pressed="true"] { color: var(--iv-color-primary); box-shadow: 0 0 1px 1px var(--iv-color-primary-border, var(--iv-color-primary)) inset; }
 
 /* ---------- the screen ---------- */
 .docs-stage__port {
@@ -97,7 +97,7 @@
   border-radius: var(--iv-radius-lg);
   overflow: hidden;
   background: var(--iv-color-bg);
-  box-shadow: 0 0 0 1px rgb(128 128 128 / .10), 0 24px 48px -36px rgb(0 0 0 / .9);
+  box-shadow: 0 0 1px 1px rgb(128 128 128 / .10), 0 24px 48px -36px rgb(0 0 0 / .9);
   transition: inline-size 420ms var(--docs-ease-out);
 }
 /* The frame is exactly as tall as the page inside it (stage.js applies the reported height), and
@@ -106,7 +106,7 @@
 .docs-stage__frame { display: block; inline-size: 100%; border: 0; background: transparent; transition: block-size var(--iv-motion-slow) var(--docs-ease); }
 @media (prefers-reduced-motion: reduce) { .docs-stage__frame { transition: none; } }
 .docs-stage[data-stage-width="390"] .docs-stage__screen,
-.docs-stage[data-stage-width="768"] .docs-stage__screen { box-shadow: 0 0 0 1px var(--docs-hair), 0 34px 60px -40px rgb(0 0 0 / .9); }
+.docs-stage[data-stage-width="768"] .docs-stage__screen { box-shadow: 0 0 1px 1px var(--docs-hair), 0 34px 60px -40px rgb(0 0 0 / .9); }
 
 /* ---------- source, in tabs, from the same file ---------- */
 .docs-stage__code { position: relative; padding: 0 var(--iv-space-2) var(--iv-space-2); }

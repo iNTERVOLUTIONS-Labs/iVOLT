@@ -135,7 +135,7 @@
 .docs-cutsec__head h2 { font-family: var(--docs-display); font-weight: 800; font-size: clamp(2.25rem, 4.6vw, 4rem); line-height: .95; letter-spacing: -0.04em; margin: var(--iv-space-5) 0 0; }
 .docs-cutsec__head p { color: var(--iv-color-text-muted); max-inline-size: 44ch; }
 .docs-cutsec__head .docs-code { margin-block-start: var(--iv-space-6); }
-.docs-cut { position: relative; border-radius: var(--iv-radius-lg); overflow: hidden; box-shadow: 0 30px 70px -40px rgb(2 5 12 / .8), 0 0 0 1px var(--docs-card-stroke); min-width: 0; }
+.docs-cut { position: relative; border-radius: var(--iv-radius-lg); overflow: hidden; box-shadow: 0 30px 70px -40px rgb(2 5 12 / .8), 0 0 1px 1px var(--docs-card-stroke); min-width: 0; }
 .docs-cut__layer { padding: clamp(1rem, 2.5vw, 2rem); background: var(--iv-color-bg); }
 .docs-cut__layer--top { position: absolute; inset: 0; clip-path: inset(0 calc(100% - var(--docs-cut, 50%)) 0 0); }
 .docs-cut__edge { position: absolute; inset-block: 0; inset-inline-start: var(--docs-cut, 50%); inline-size: 2px; margin-inline-start: -1px; background: linear-gradient(180deg, transparent, var(--iv-color-accent) 15%, var(--iv-color-accent) 85%, transparent); box-shadow: 0 0 18px var(--docs-halo); pointer-events: none; }
@@ -152,12 +152,12 @@
   .docs-recipe { grid-template-columns: minmax(0, 6fr) minmax(0, 4fr); }
   .docs-recipe:nth-child(even) .docs-recipe__frame { order: 2; }
 }
-.docs-recipe__frame { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--iv-radius-lg); background: var(--iv-color-surface); box-shadow: 0 40px 80px -50px rgb(2 5 12 / .85), 0 0 0 1px var(--docs-card-stroke); transition: transform 520ms var(--docs-ease-out), box-shadow 520ms var(--docs-ease-out); min-width: 0; }
+.docs-recipe__frame { position: relative; aspect-ratio: 16 / 10; overflow: hidden; border-radius: var(--iv-radius-lg); background: var(--iv-color-surface); box-shadow: 0 40px 80px -50px rgb(2 5 12 / .85), 0 0 1px 1px var(--docs-card-stroke); transition: transform 520ms var(--docs-ease-out), box-shadow 520ms var(--docs-ease-out); min-width: 0; }
 .docs-recipe__frame::before { content: ""; position: absolute; inset-inline: 0; inset-block-start: 0; block-size: 2px; z-index: 2; background: linear-gradient(90deg, transparent, var(--iv-color-accent), transparent); opacity: .6; }
 /* The tilt is a hover-only 3D transform: at rest the frame stays in the page raster, not on a
    composited layer (a permanent perspective() kept it on one, where the rounded clip and the
    downscaled screenshot are resampled by the GPU and can look serrated on some drivers). */
-.docs-recipe:hover .docs-recipe__frame { transform: perspective(1200px) rotateY(-2.5deg) rotateX(1.5deg) translateY(-6px); box-shadow: 0 50px 90px -50px var(--docs-halo), 0 0 0 1px var(--docs-line); }
+.docs-recipe:hover .docs-recipe__frame { transform: perspective(1200px) rotateY(-2.5deg) rotateX(1.5deg) translateY(-6px); box-shadow: 0 50px 90px -50px var(--docs-halo), 0 0 1px 1px var(--docs-line); }
 .docs-recipe__body h3 { font-family: var(--docs-display); font-weight: 700; font-size: clamp(1.9rem, 3.4vw, 3rem); line-height: 1; letter-spacing: -0.03em; margin: 0 0 var(--iv-space-4); }
 .docs-recipe__body p { color: var(--iv-color-text-muted); margin: 0 0 var(--iv-space-5); max-inline-size: 46ch; }
 .docs-recipe__go { display: inline-flex; align-items: center; gap: .5rem; font-family: var(--docs-display); color: var(--iv-color-primary); }
@@ -173,7 +173,7 @@
 .docs-invert h2 { font-family: var(--docs-display); font-weight: 800; font-size: clamp(3rem, 9vw, 8rem); line-height: .9; letter-spacing: -0.05em; margin: var(--iv-space-6) 0 0; max-inline-size: 14ch; }
 .docs-invert p { color: rgb(255 255 255 / .84); max-inline-size: 52ch; }
 .docs-invert h2 + p { margin-block-start: var(--iv-space-6); }
-.docs-invert .docs-code { background: rgb(4 7 15 / .55); color: #eaf4ff; box-shadow: 0 0 0 1px rgb(255 255 255 / .16) inset; margin-block: var(--iv-space-8); max-inline-size: 44rem; }
+.docs-invert .docs-code { background: rgb(4 7 15 / .55); color: #eaf4ff; box-shadow: 0 0 1px 1px rgb(255 255 255 / .16) inset; margin-block: var(--iv-space-8); max-inline-size: 44rem; }
 .docs-invert .docs-code::before { background: linear-gradient(90deg, #8fe3ff, transparent 55%); }
 .docs-invert .iv-button--primary { box-shadow: 0 6px 24px rgb(4 7 15 / .45); }
 .docs-invert .iv-button--secondary { --iv-button-fg: #ffffff; --iv-button-border: rgb(255 255 255 / .55); }
@@ -210,7 +210,7 @@
 
 .docs-showreel { margin-block-start: clamp(2rem, 5vw, 3.5rem); }
 .docs-showreel__tabs { display: flex; flex-wrap: wrap; gap: var(--iv-space-2); margin-block-end: var(--iv-space-4); }
-.docs-showreel__tab { appearance: none; border: 0; cursor: pointer; font: inherit; font-family: var(--docs-display); font-weight: var(--iv-weight-medium); font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); background: var(--docs-card-bg); padding: .45rem 1.1rem; border-radius: var(--iv-radius-full); box-shadow: 0 0 0 1px var(--docs-card-stroke) inset; transition: color var(--iv-motion-fast) var(--docs-ease), background-color var(--iv-motion-fast) var(--docs-ease); }
+.docs-showreel__tab { appearance: none; border: 0; cursor: pointer; font: inherit; font-family: var(--docs-display); font-weight: var(--iv-weight-medium); font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); background: var(--docs-card-bg); padding: .45rem 1.1rem; border-radius: var(--iv-radius-full); box-shadow: 0 0 1px 1px var(--docs-card-stroke) inset; transition: color var(--iv-motion-fast) var(--docs-ease), background-color var(--iv-motion-fast) var(--docs-ease); }
 .docs-showreel__tab:hover { color: var(--iv-color-text); }
 .docs-showreel__tab[aria-selected="true"] { background: var(--iv-gradient-primary); color: #06122b; box-shadow: var(--docs-soft-halo); }
 .docs-showreel__panel[hidden] { display: none; }
