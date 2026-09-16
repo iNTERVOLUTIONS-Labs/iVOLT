@@ -20,7 +20,7 @@ El verde de las betas se retira. El propietario pidió que el paquete arranque c
 | `cyan` | `50…950` = `#E6FBFF #CDF6FF #A6EFFF #8FE3FF #73DFFF #3FCDF5 #17AAD6 #0E8AB0 #0B6B8A #094D63 #052F3D` | acento (`400` en oscuro, `800` en claro), foco en oscuro, brillos |
 | `indigo` | `50…950` = `#EEF0FF #DFE2FF #C2C8FF #A4ADFF #8B95FF #6674FF #4F5BE6 #3D47C2 #313996 #262C6E #171A45` | info, segundo tono de los degradados, halos |
 | `green` | `50 300 400 700 800` = `#F1F8E4 #C6E28A #8BBF3A #4F7A12 #3F6110` | solo `success` |
-| `red` | `50 300 500 600 700` = `#FFF1F0 #FF9AA4 #FF665C #D63A31 #B52D26` | `danger`; `500` es el coral de la marca (decorativo) |
+| `red` | `50 300 500 600 700` = `#FFF1F0 #FF9AA4 #FF665C #C22E26 #B52D26` | `danger`; `500` es el coral de la marca (decorativo) |
 | `amber` | `50 300 400 700` = `#FFF8E6 #FFE9A8 #FBBF24 #8F5C00` | `warning` |
 
 Los tonos `blue` y el `green` de once pasos de las betas desaparecen; `--iv-palette-green-*` conserva solo los cinco pasos de éxito.
@@ -35,11 +35,11 @@ Los tonos `blue` y el `green` de once pasos de las betas desaparecen; `--iv-pale
 | `primary` / `on-primary` | `#1D4FC4` / blanco | `#66B1FF` / `#06122B` | 7,1 (claro) y 8,9 (oscuro; 8,1 sobre elevada); texto sobre primario 7,1 y 8,2 |
 | `primary-hover` / `primary-active` / `primary-subtle` | `#1A3FA8` / `#172F7A` / `#EAF4FF` | `#8FC6FF` / `#3D94FF` / cobalto al 12 % | — |
 | `accent` / `on-accent` | `#0B6B8A` / blanco | `#73DFFF` / `#06122B` | 5,5 (claro), 13,2 (oscuro) |
-| `success` / `danger` / `warning` / `info` | `#4F7A12` / `#D63A31` / `#8F5C00` / `#3D47C2` | `#8BBF3A` / `#FF9AA4` / `#FBBF24` / `#8B95FF` | claro 5,1 / 4,7 / 5,0 / 7,3; oscuro 9,2 / 10,0 / 12,1 / 7,5; `on-*` blanco en claro y `#06122B` en oscuro |
+| `success` / `danger` / `warning` / `info` | `#4F7A12` / `#C22E26` / `#8F5C00` / `#3D47C2` | `#8BBF3A` / `#FF9AA4` / `#FBBF24` / `#8B95FF` | claro 5,1 / 5,7 (5,1 sobre su tinte) / 5,0 / 7,3; oscuro 9,2 / 10,0 / 12,1 / 7,5; `on-*` blanco en claro y `#06122B` en oscuro |
 | `focus` | `#1D4FC4` | `#73DFFF` | anillo de 2 px + halo `--iv-focus-halo` (cobalto 35 % / 45 %) |
 | `overlay` / `hover-surface` / `primary-border` | `rgb(11 18 48 / .55)` / `.04` / cobalto `.55` | `rgb(2 5 12 / .65)` / blanco azulado `.05` / cobalto `.5` | — |
 | `glow-primary` / `glow-secondary` | cobalto `.35` / cian `.3` | cobalto `.45` / cian `.4` | halos de foco, botones y bordes luminosos |
-| `gradient-brand` / `gradient-primary` (nuevos) | cian oscuro → cobalto / cian → cobalto → índigo | `#73DFFF → #6674FF` / `#8FE3FF → #66B1FF → #8B95FF` | botón primario, texto degradado, filetes |
+| `gradient-brand` / `gradient-primary` (nuevos) | `#0B6B8A → #2266D8` / `#0B6B8A → #1D4FC4 → #3D47C2` (todos ≥ 5,3 con texto blanco; en claro un degradado también pinta texto sobre blanco, así que ningún tope puede ser un cian claro) | `#73DFFF → #6674FF` / `#8FE3FF → #66B1FF → #8B95FF` | botón primario, texto degradado, filetes |
 | `glass-*` | blanco `.55`/`.78`, borde `.65`, brillo `.9` | azul marino `.5`/`.78`, borde blanco `.1`, brillo `.18` | superficies de cristal |
 
 Las cifras salen de `scripts`-menos: se calcularon con la fórmula WCAG 2.x sobre los valores de la tabla al escribir esta sección (2026-09-16); axe las vuelve a comprobar en cada fixture del gate.

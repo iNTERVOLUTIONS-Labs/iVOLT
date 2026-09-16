@@ -407,7 +407,7 @@
     background-image: linear-gradient(
       170deg,
       var(--iv-palette-neutral-0) 30%,
-      var(--iv-palette-green-400)
+      var(--iv-palette-cyan-400)
     );
     background-clip: text;
     color: transparent;

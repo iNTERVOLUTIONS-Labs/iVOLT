@@ -534,7 +534,10 @@
   inset-block-end: 0;
   inset-inline: 0;
   block-size: 55%;
-  background-image: linear-gradient(transparent, rgb(3 8 6 / 0.72));
+  background-image: linear-gradient(
+    transparent,
+    color-mix(in srgb, var(--iv-palette-neutral-1000) 72%, transparent)
+  );
   pointer-events: none;
 }
 
@@ -565,9 +568,9 @@
   font-family: var(--iv-font-mono);
   font-size: var(--iv-text-xs);
   font-variant-numeric: tabular-nums;
-  color: #f3faf6;
-  background-color: rgb(3 8 6 / 0.72);
-  border: var(--iv-border-width) solid rgb(243 250 246 / 0.28);
+  color: var(--iv-palette-neutral-50);
+  background-color: color-mix(in srgb, var(--iv-palette-neutral-1000) 72%, transparent);
+  border: var(--iv-border-width) solid color-mix(in srgb, var(--iv-palette-neutral-50) 28%, transparent);
   border-radius: var(--iv-radius-sm);
 }
 

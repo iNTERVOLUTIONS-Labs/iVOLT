@@ -159,13 +159,10 @@
 
 /* Gradient text -------------------------------------------------------- */
 
+/* The shared brand ramp, so a gradient headline in the package, on the web and
+   in a consumer's product is the same object (ADR-049). */
 .iv-gradient-text {
-  background-image: linear-gradient(
-    100deg,
-    var(--iv-color-primary),
-    var(--iv-color-info) 48%,
-    color-mix(in oklab, var(--iv-color-accent) 42%, var(--iv-color-primary))
-  );
+  background-image: var(--iv-gradient-primary);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

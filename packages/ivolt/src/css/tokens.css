@@ -54,7 +54,7 @@
   --iv-palette-red-50: #FFF1F0;
   --iv-palette-red-300: #FF9AA4;
   --iv-palette-red-500: #FF665C;
-  --iv-palette-red-600: #D63A31;
+  --iv-palette-red-600: #C22E26;
   --iv-palette-red-700: #B52D26;
   --iv-palette-amber-50: #FFF8E6;
   --iv-palette-amber-300: #FFE9A8;
@@ -133,7 +133,7 @@
   --iv-color-success: #4F7A12;
   --iv-color-on-success: #FFFFFF;
   --iv-color-success-subtle: #F1F8E4;
-  --iv-color-danger: #D63A31;
+  --iv-color-danger: #C22E26;
   --iv-color-on-danger: #FFFFFF;
   --iv-color-danger-subtle: #FFF1F0;
   --iv-color-warning: #8F5C00;
@@ -156,8 +156,8 @@
   --iv-glass-highlight: rgb(255 255 255 / 0.9);
   --iv-glow-primary: rgb(29 79 196 / 0.35);
   --iv-glow-secondary: rgb(11 107 138 / 0.3);
-  --iv-gradient-brand: linear-gradient(120deg, #0B6B8A, #1D4FC4);
-  --iv-gradient-primary: linear-gradient(120deg, #17AAD6, #1D4FC4 55%, #3D47C2);
+  --iv-gradient-brand: linear-gradient(120deg, #0B6B8A, #2266D8);
+  --iv-gradient-primary: linear-gradient(120deg, #0B6B8A, #1D4FC4 55%, #3D47C2);
   --iv-texture-grain-opacity: 0.05;
   --iv-focus-halo: 0 0 0 4px rgb(29 79 196 / 0.35);
 }

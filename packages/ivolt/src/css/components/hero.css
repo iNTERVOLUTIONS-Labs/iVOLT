@@ -10,7 +10,7 @@
  * locals `--iv-hero-ink`, `--iv-hero-muted` and `--iv-hero-accent` carry the
  * light-on-dark ramp; `--iv-hero--light` points them back at the theme
  * tokens. `--iv-hero-accent` defaults to `--iv-color-accent` instead of
- * `--iv-color-primary` because the light-theme primary is a dark green and
+ * `--iv-color-primary` because the light-theme primary is a deep cobalt and
  * fails AA over the scrim.
  * Locals: --iv-hero-min --iv-hero-max-width --iv-hero-scrim --iv-hero-ink
  *         --iv-hero-muted --iv-hero-accent --iv-hero-gap

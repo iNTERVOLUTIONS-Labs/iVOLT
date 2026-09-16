@@ -120,7 +120,7 @@
 .iv-text-shimmer {
   --iv-text-shimmer-color: currentColor;
   /* The primary, not the accent: the band replaces the colour of the glyph
-   * while it passes, and the accent of the light theme is a bright green that
+   * while it passes, and the accent of the light theme is a deep cyan that
    * would drop a display line below its contrast for the length of a pass. */
   --iv-text-shimmer-highlight: var(--iv-color-primary);
   --iv-text-shimmer-duration: 2.8s;

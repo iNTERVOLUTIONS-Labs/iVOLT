@@ -153,6 +153,8 @@ Escritura de derecha a izquierda (v0.8, ADR-045): todas las hojas usan propiedad
 
 Hoja plana (v0.9, ADR-046): en `ivolt.flat.css` no hay capas, así que toda regla de componente que deba vencer a un selector de elemento de `base.css` (`.iv-root h2`, `.iv-root a`) se escribe a (0,2,0) en su módulo; `tests/browser/qa-flat.spec.js` compara estilos calculados entre las dos hojas. Cadenas visibles o anunciadas que los componentes escriben son siempre opciones `data-iv-*` con default en inglés (§5.2b); la página de localización de la web las lista todas.
 
+Cobalt (v1.0.0-rc.2, ADR-049): los valores de los tokens cambian a la paleta de intervolutions.com y los tratamientos por defecto adoptan su lengua; enmiendas de valor que el consumidor debe conocer: el radio por defecto de `.iv-button` y `.iv-button-group` pasa de `md` a `full` (píldora; `--iv-button-radius` lo devuelve); locales públicos nuevos `--iv-button-bg-image` (degradado del primario; `none` lo apaga) y `--iv-card-sheen` (filete de luz superior de la tarjeta); `kbd`, `hr`, campos y tarjetas cambian de aspecto sin cambiar de clase.
+
 ### 5.3 Eventos
 
 Todos los eventos son `CustomEvent`, `bubbles: true`, `composed: false`, despachados en `instance.element`, con `detail.instance` y campos específicos.

@@ -8,7 +8,7 @@
  * reassign the block's local variables; no variant rule sets box
  * properties.
  *
- * Locals: --iv-button-bg --iv-button-fg --iv-button-border
+ * Locals: --iv-button-bg --iv-button-bg-image --iv-button-fg --iv-button-border
  *         --iv-button-bg-hover --iv-button-border-hover --iv-button-bg-active
  *         --iv-button-radius --iv-button-px --iv-button-py
  *         --iv-button-shadow --iv-button-shadow-hover --iv-button-lift
@@ -25,7 +25,9 @@
   --iv-button-bg-hover: var(--iv-color-surface);
   --iv-button-border-hover: var(--iv-color-border-strong);
   --iv-button-bg-active: var(--iv-color-surface);
-  --iv-button-radius: var(--iv-radius-md);
+  --iv-button-bg-image: none;
+  /* Pill, the resting shape of every action in the brand (ADR-049). */
+  --iv-button-radius: var(--iv-radius-full);
   --iv-button-px: var(--iv-space-4);
   --iv-button-py: var(--iv-space-2);
   /* Depth comes from the shared ambient shadow (API_CONTRACT §8.15), which
@@ -53,6 +55,7 @@
   overflow-wrap: anywhere;
   color: var(--iv-button-fg);
   background-color: var(--iv-button-bg);
+  background-image: var(--iv-button-bg-image);
   border: var(--iv-border-width) solid var(--iv-button-border);
   border-radius: var(--iv-button-radius);
   box-shadow: var(--iv-button-sheen, none), var(--iv-button-shadow);
@@ -76,31 +79,56 @@
   --iv-button-bg-hover: var(--iv-color-primary-hover);
   --iv-button-border-hover: var(--iv-color-primary-hover);
   --iv-button-bg-active: var(--iv-color-primary-active);
+  /* The brand gradient is the resting fill; `--iv-button-bg` stays underneath
+     as the flat fallback wherever a background image is dropped (forced
+     colours, print) so the label never loses its contrast. */
+  --iv-button-bg-image: var(--iv-gradient-brand);
   /* A one-pixel light line along the top edge: the filled button reads as a
      solid object catching the light instead of a flat rectangle. */
   --iv-button-sheen: inset 0 1px 0 color-mix(in oklab, var(--iv-color-on-primary) 26%, transparent);
+  /* The halo is what makes the primary read as the one lit object on the
+     page; it grows and the button lifts a pixel under the pointer. */
+  --iv-button-shadow: 0 6px 24px var(--iv-glow-primary);
+  --iv-button-shadow-hover: 0 10px 34px var(--iv-glow-primary);
+}
+
+/* The two stops are re-mixed towards the hover tone so the lit face brightens
+   without a second gradient token. */
+@media (hover: hover) {
+  .iv-button--primary:hover {
+    --iv-button-bg-image: linear-gradient(
+      120deg,
+      color-mix(in oklab, var(--iv-color-primary-hover) 45%, var(--iv-color-accent)),
+      var(--iv-color-primary-hover)
+    );
+  }
 }
 
 .iv-button--secondary {
-  --iv-button-bg: transparent;
+  /* A cobalt wash at rest, not a bare outline: the secondary belongs to the
+     same lit family as the primary and stays visible over glass and art. */
+  --iv-button-bg: var(--iv-color-primary-subtle);
   --iv-button-fg: var(--iv-color-primary);
   /* The outline carries the brand, not a neutral grey: it belongs to the same
      family as the label it surrounds (shared token, API_CONTRACT §8.15). */
   --iv-button-border: var(--iv-color-primary-border);
-  --iv-button-bg-hover: var(--iv-color-primary-subtle);
+  --iv-button-bg-hover: color-mix(in oklab, var(--iv-color-primary) 16%, var(--iv-color-primary-subtle));
   --iv-button-border-hover: var(--iv-color-primary);
   --iv-button-bg-active: var(--iv-color-primary-subtle);
   --iv-button-shadow: none;
-  --iv-button-shadow-hover: var(--iv-shadow-2);
+  --iv-button-shadow-hover: 0 6px 20px var(--iv-glow-secondary);
 }
 
 .iv-button--ghost {
   --iv-button-bg: transparent;
   --iv-button-fg: var(--iv-color-text);
   --iv-button-border: transparent;
-  --iv-button-bg-hover: var(--iv-color-surface);
-  --iv-button-border-hover: transparent;
-  --iv-button-bg-active: var(--iv-color-surface);
+  /* Nothing at rest, a cobalt tint and the brand hairline under the pointer:
+     the ghost keeps the neutral foreground because it also serves as the icon
+     button over artwork, where a tinted label would lose contrast. */
+  --iv-button-bg-hover: var(--iv-color-primary-subtle);
+  --iv-button-border-hover: var(--iv-color-primary-border);
+  --iv-button-bg-active: var(--iv-color-primary-subtle);
   --iv-button-shadow: none;
   --iv-button-shadow-hover: none;
   --iv-button-lift: 0px;
@@ -236,7 +264,7 @@
 
   display: inline-flex;
   flex-wrap: wrap;
-  border-radius: var(--iv-radius-md);
+  border-radius: var(--iv-radius-full);
   box-shadow: var(--iv-shadow-ambient);
 }
 
@@ -248,13 +276,13 @@
 
 .iv-button-group > :first-child {
   margin-inline-start: 0;
-  border-start-start-radius: var(--iv-radius-md);
-  border-end-start-radius: var(--iv-radius-md);
+  border-start-start-radius: var(--iv-radius-full);
+  border-end-start-radius: var(--iv-radius-full);
 }
 
 .iv-button-group > :last-child {
-  border-start-end-radius: var(--iv-radius-md);
-  border-end-end-radius: var(--iv-radius-md);
+  border-start-end-radius: var(--iv-radius-full);
+  border-end-end-radius: var(--iv-radius-full);
 }
 
 /* The focused or pressed button is brought forward so its border and its
@@ -262,6 +290,26 @@
 .iv-button-group > :focus-visible,
 .iv-button-group > :active {
   z-index: 1;
+}
+
+/* A forced palette drops background images, so the gradient is withdrawn and
+   the flat `--iv-button-bg` under it is what paints. Print does the same: the
+   halo and the gradient are ink that carries no information. */
+@media (forced-colors: active) {
+  .iv-button {
+    --iv-button-bg-image: none;
+    --iv-button-shadow: none;
+    --iv-button-shadow-hover: none;
+    --iv-button-sheen: none;
+  }
+}
+
+@media print {
+  .iv-button {
+    --iv-button-bg-image: none;
+    --iv-button-shadow: none;
+    --iv-button-shadow-hover: none;
+  }
 }
 
 /* `display` above would beat the base `[hidden]` rule across layers: a hidden button stays hidden. */

@@ -32,7 +32,10 @@
 .iv-textarea {
   font: inherit;
   color: var(--iv-color-text);
-  background-color: var(--iv-color-bg);
+  /* Translucent, so a field dropped on a card, on glass or over the hero mesh
+     reads as a well cut into that surface rather than a white patch on top of
+     it. `border-strong` is the visible hairline the brand draws around it. */
+  background-color: color-mix(in srgb, var(--iv-color-bg) 72%, transparent);
   border: var(--iv-border-width) solid var(--iv-color-border-strong);
   border-radius: var(--iv-radius-md);
   min-block-size: 2.5rem;
@@ -73,6 +76,7 @@ textarea.iv-input {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: 1px;
   border-color: var(--iv-color-focus);
+  background-color: var(--iv-color-bg);
   /* The ring keeps the focus visible on its own; the halo is what gives it
      presence. Both are painted, never one instead of the other. */
   box-shadow: var(--iv-focus-halo);
@@ -97,7 +101,7 @@ textarea.iv-input {
    background. A data URI cannot read `currentColor`, so the stroke uses the
    `neutral-500` hex, the same value as `border-strong` in light and dark. */
 .iv-select {
-  --iv-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%236E837B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  --iv-select-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%236B7896' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
 
   appearance: none;
   -webkit-appearance: none;
@@ -204,7 +208,8 @@ textarea.iv-input {
 /* Icons -------------------------------------------------------------- */
 
 /* Inline SVG, never a remote request. A data URI cannot read `currentColor`,
-   so the two-colour status icons use a mid red and a mid green that clear 3:1
+   so the two-colour status icons use the coral and the lime of the palette,
+   which clear 3:1
    against both themes; the single-colour glyphs are masks over `currentColor`
    and therefore always the exact colour of the text they sit next to. */
 .iv-field__error,
@@ -213,8 +218,8 @@ textarea.iv-input {
 }
 
 .iv-field {
-  --iv-icon-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23DC3A42'/%3E%3Cpath d='M8 3.6v5' stroke='%23fff' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='11.8' r='1.15' fill='%23fff'/%3E%3C/svg%3E");
-  --iv-icon-valid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%2310A868'/%3E%3Cpath d='m4.6 8.3 2.4 2.4 4.4-5' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --iv-icon-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23D63A31'/%3E%3Cpath d='M8 3.6v5' stroke='%23fff' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='11.8' r='1.15' fill='%23fff'/%3E%3C/svg%3E");
+  --iv-icon-valid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%234F7A12'/%3E%3Cpath d='m4.6 8.3 2.4 2.4 4.4-5' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
 }
 
 /* Sizes -------------------------------------------------------------- */

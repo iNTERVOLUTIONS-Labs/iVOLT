@@ -186,7 +186,7 @@
    `::backdrop` does not inherit custom properties everywhere, hence the
    literal fallbacks. */
 .iv-lightbox::backdrop {
-  background-color: color-mix(in srgb, var(--iv-palette-neutral-1000, #030806) 92%, transparent);
+  background-color: color-mix(in srgb, var(--iv-palette-neutral-1000, #04070F) 92%, transparent);
   -webkit-backdrop-filter: blur(var(--iv-blur-md, 16px));
   backdrop-filter: blur(var(--iv-blur-md, 16px));
 }

@@ -33,6 +33,12 @@
 .iv-badge--danger,
 .iv-badge--info {
   --iv-badge-border: color-mix(in oklab, var(--iv-badge-tone) 28%, transparent);
+  /* The semantic tones are measured against the page surface, and a badge
+     paints them on their own tint, which lifts the background a step. At
+     12px that step costs the coral its 4.5:1, so the label is pulled one
+     notch towards the text colour: darker in the light theme, lighter in the
+     dark one, and still unmistakably the tone. */
+  --iv-badge-fg: color-mix(in oklab, var(--iv-badge-tone) 84%, var(--iv-color-text));
 }
 
 /* Tones --------------------------------------------------------------- */

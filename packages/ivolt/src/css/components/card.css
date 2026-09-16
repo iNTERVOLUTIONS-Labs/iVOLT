@@ -3,6 +3,7 @@
  * `__footer` for actions. Composes with `iv-grid` / `iv-stack`.
  * Public locals: --iv-card-bg --iv-card-radius --iv-card-padding
  *   --iv-card-shadow (resting elevation, default --iv-shadow-ambient)
+ *   --iv-card-sheen (the hairline of light along the top edge)
  *   --iv-card-shadow-hover (pointer elevation, default --iv-shadow-2)
  * Declares no @layer and imports nothing: the entry point does that.
  * Highest specificity used: (0,2,0).
@@ -11,12 +12,18 @@
 .iv-card {
   display: flex;
   flex-direction: column;
-  background-color: var(--iv-card-bg, var(--iv-color-surface-raised));
+  /* Translucent, not opaque: the card sits *on* the canvas and lets the mesh,
+     the glow or the artwork behind it show through the way the brand does
+     (ADR-049). The tint is high enough that the text over it keeps AA. */
+  background-color: var(--iv-card-bg, color-mix(in srgb, var(--iv-color-surface-raised) 86%, transparent));
   border: var(--iv-border-width) solid var(--iv-color-border);
   border-radius: var(--iv-card-radius, var(--iv-radius-lg));
   /* One shared elevation: the ambient token already carries the edge ring a
-     dark theme needs and the soft drop a light one does. */
-  box-shadow: var(--iv-card-shadow, var(--iv-shadow-ambient));
+     dark theme needs and the soft drop a light one does. The hairline of
+     light along the top edge is what makes the trim read as thin. */
+  box-shadow:
+    var(--iv-card-sheen, inset 0 1px 0 var(--iv-glass-highlight)),
+    var(--iv-card-shadow, var(--iv-shadow-ambient));
   transition: box-shadow var(--iv-motion-base) var(--iv-ease-out);
   overflow: hidden;
 }
@@ -25,7 +32,9 @@
    lift with the two public locals. */
 @media (hover: hover) {
   .iv-card:hover {
-    box-shadow: var(--iv-card-shadow-hover, var(--iv-shadow-2));
+    box-shadow:
+      var(--iv-card-sheen, inset 0 1px 0 var(--iv-glass-highlight)),
+      var(--iv-card-shadow-hover, var(--iv-shadow-2));
   }
 }
 
@@ -94,6 +103,16 @@
 /* Print: the lift is ink that carries no information. */
 @media print {
   .iv-card {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+/* A forced palette drops translucency and shadows anyway; the opaque Canvas
+   keeps the card a box instead of a floating border. */
+@media (forced-colors: active) {
+  .iv-card {
+    background-color: Canvas;
     box-shadow: none;
   }
 }

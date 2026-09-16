@@ -128,8 +128,12 @@
   padding-inline: 0.3em;
 }
 
+/* A key cap is tinted with the accent, not the neutral surface: it reads as a
+   thing you press instead of a run of inline code (ADR-049). */
 .iv-root kbd {
-  border: var(--iv-border-width) solid var(--iv-color-border);
+  color: var(--iv-color-accent);
+  background-color: color-mix(in srgb, var(--iv-color-accent) 10%, transparent);
+  border: var(--iv-border-width) solid color-mix(in srgb, var(--iv-color-accent) 24%, transparent);
   font-size: var(--iv-text-sm);
 }
 
@@ -152,10 +156,24 @@
 
 /* Rules and quotes --------------------------------------------------- */
 
+/* The rule fades in and out instead of hitting the edges of the column: a
+   hairline that starts and ends in nothing, as the brand draws it. */
 .iv-root hr {
   border: 0;
-  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+  block-size: var(--iv-border-width);
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    var(--iv-color-border),
+    transparent
+  );
   margin-block: var(--iv-space-8);
+}
+
+@media (forced-colors: active) {
+  .iv-root hr {
+    border-block-start: var(--iv-border-width) solid CanvasText;
+  }
 }
 
 .iv-root blockquote {
