@@ -200,3 +200,13 @@ Petición del propietario: «sigue hasta 1.0 release candidate». Un candidato a
 | 3 | Gate completo, Lighthouse, publicación `1.0.0-rc.2` bajo `next` | ver `docs/RELEASE.md` §0h |
 | 4 | Pendiente para 1.0.0: aceptación visual del propietario sobre Cobalt; decidir si el arte oficial de `assets/brand/` se reemite en cobalto (hoy lo remapean `brand.js` y `build-og.mjs`); tokens candidatos `--iv-surface-stroke` y `--iv-shadow-halo` y una clase `iv-eyebrow` (hoy tres clases de la web) | abierto |
 
+### Aplazado a 1.1 por la ronda adversaria visual (ADR-050)
+
+| Elemento | Motivo |
+|---|---|
+| `datatable`: la leyenda vive dentro del contenedor con scroll y a 390 px se corta | cambio estructural del marcado del componente |
+| Aviso de desarrollo para atributos `data-iv-*` desconocidos (una vez por elemento) | afecta al núcleo de opciones de los 24 componentes |
+| `stat` y cifras de marca en `--iv-font-mono` | decisión de marca del propietario |
+| Token `--iv-color-hairline` para separar superficies de la página frente a divisores internos | el contrato está congelado; en rc.3 se ajusta el valor de `border` |
+| El botón primario pinta `--iv-gradient-brand`, así que redefinir solo `--iv-color-primary` no lo cambia | contrato de theming: documentar que los dos degradados se redefinen junto al primario (ADR pendiente) |
+
