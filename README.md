@@ -1,6 +1,8 @@
 # iVOLT
 
-A hybrid frontend framework by iNTERVOLUTIONS: semantic components as the fast path, a finite utility set for composition, design tokens as the visual contract and optional JavaScript for behaviour. No runtime dependencies. **Beta (0.2.0-beta.0), not yet published.**
+**A CSS framework and design system by iNTERVOLUTIONS.** Semantic components as the fast path, a finite utility set for composition, design tokens as the visual contract and optional JavaScript for behaviour. No runtime dependencies, no build step, light and dark themes, accessible components tested in three engines. This repository holds the package, its documentation site, the examples and the tests.
+
+Install it with `npm install @intervolutions/ivolt`, or copy `packages/ivolt/dist` next to your page. Package documentation: [`packages/ivolt/README.md`](packages/ivolt/README.md).
 
 ## Repository
 
@@ -8,7 +10,7 @@ A hybrid frontend framework by iNTERVOLUTIONS: semantic components as the fast p
 |---|---|
 | `packages/ivolt` | the package: tokens, CSS modules, ES modules, fixtures |
 | `apps/docs` | documentation site (Astro), consumes the package through its `exports` |
-| `examples/` | plain HTML starter and three complete recipes |
+| `examples/` | plain HTML starter and four complete recipes |
 | `tests/` | unit, CSS contract and browser tests (Playwright, axe) |
 | `docs/` | product bible, architecture, contracts, design system, quality, decisions |
 
@@ -25,8 +27,6 @@ npm run dev:docs         # documentation site (builds the package first when dis
 npm run verify           # everything above plus examples and the docs build
 ```
 
-## Use it today
-
-`npm install @intervolutions/ivolt@next` (release candidate `1.0.0-rc.0`, published 2026-09-15; `@beta` still resolves to `0.7.0-beta.0`), or build the package and copy `packages/ivolt/dist` next to your page. See `apps/docs` (getting started) for the details. Publishing steps live in `docs/RELEASE.md`.
+Publishing steps live in `docs/RELEASE.md`; what is public and how it changes, in `docs/STABILITY.md`.
 
 MIT © 2026 iNTERVOLUTIONS

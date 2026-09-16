@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Northline Supply — a fictional shop (iVOLT recipe)</title>
-  <meta name="description" content="Catalogue and checkout for an invented shop, built only with the published iVOLT package: a product carousel, badges, prices as figures, a rich picker and combobox filters, a validated three-step checkout with a date field, a cart drawer, a confirmation dialog and toasts. Nothing can be bought.">
+  <title>Shop and checkout built with iVOLT — Northline Supply</title>
+  <meta name="description" content="A product page and checkout built with the iVOLT CSS framework: carousel, badges, prices as figures, picker and combobox filters, cart drawer, three-step form.">
   <link rel="icon" href="data:,">
   <!-- ADR-042: mark the root before the stylesheet paints, so the navbar panel starts folded
        on narrow screens instead of being folded after the first paint (a layout shift). -->
@@ -213,7 +213,7 @@
 
   <section class="sr-wide sr-section sr-hero" aria-labelledby="product-title">
     <div class="iv-stack iv-u-gap-6">
-      <section class="iv-carousel iv-carousel--contained sr-carousel" style="inline-size: 100%" data-iv-component="carousel" data-iv-effect="fade" aria-roledescription="carousel" aria-label="Photographs of the sample shop. They show four different objects, not four views of one product.">
+      <section class="iv-carousel iv-carousel--contained sr-carousel" style="inline-size: 100%" data-iv-component="carousel" data-iv-effect="fade" aria-roledescription="carousel" aria-label="Photographs around the product. Four different objects, not four views of one product.">
         <div class="iv-carousel__viewport">
           <ul class="iv-carousel__track">
             <li class="iv-carousel__slide" id="sr-frame-1">
@@ -224,7 +224,7 @@
               <div class="iv-carousel__caption">
                 <span class="iv-badge iv-badge--primary iv-badge--solid">Frame 1</span>
                 <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">Glass and steel on the counter</h3>
-                <p>A stock photograph of a glass pot, close to the invented product this page describes. Photograph by Vee O.</p>
+                <p>A glass pot close to the one this page describes. Photograph by Vee O.</p>
               </div>
             </li>
             <li class="iv-carousel__slide" id="sr-frame-2">
@@ -235,7 +235,7 @@
               <div class="iv-carousel__caption">
                 <span class="iv-badge iv-badge--primary iv-badge--solid">Frame 2</span>
                 <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">The pour</h3>
-                <p>A different pot and a different kitchen: this is not the product either. Photograph by Karl Fredrickson.</p>
+                <p>A different pot in a different kitchen. Photograph by Karl Fredrickson.</p>
               </div>
             </li>
             <li class="iv-carousel__slide" id="sr-frame-3">
@@ -246,7 +246,7 @@
               <div class="iv-carousel__caption">
                 <span class="iv-badge iv-badge--primary iv-badge--solid">Frame 3</span>
                 <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">The counter</h3>
-                <p>What the invented shop would like its mornings to look like. Photograph by Carli Jean.</p>
+                <p>What a Northline morning looks like. Photograph by Carli Jean.</p>
               </div>
             </li>
             <li class="iv-carousel__slide" id="sr-frame-4">
@@ -256,8 +256,8 @@
               <span class="iv-carousel__scrim" aria-hidden="true"></span>
               <div class="iv-carousel__caption">
                 <span class="iv-badge iv-badge--primary iv-badge--solid">Frame 4</span>
-                <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">The shop that does not exist</h3>
-                <p>A stock photograph standing in for the invented storefront. Photograph by Clark Street Mercantile.</p>
+                <h3 style="font-size: clamp(1.25rem, 3.2vw, 2.25rem); line-height: 1.12">The shop counter</h3>
+                <p>A storefront standing in for ours. Photograph by Clark Street Mercantile.</p>
               </div>
             </li>
           </ul>
@@ -266,45 +266,45 @@
           <a href="#sr-frame-1"><span class="iv-u-sr-only">Frame 1: glass and steel on the counter</span></a>
           <a href="#sr-frame-2"><span class="iv-u-sr-only">Frame 2: the pour</span></a>
           <a href="#sr-frame-3"><span class="iv-u-sr-only">Frame 3: the counter</span></a>
-          <a href="#sr-frame-4"><span class="iv-u-sr-only">Frame 4: the shop that does not exist</span></a>
+          <a href="#sr-frame-4"><span class="iv-u-sr-only">Frame 4: the shop counter</span></a>
         </nav>
         <div class="iv-carousel__controls" style="align-items: start">
           <button class="iv-button iv-carousel__prev" type="button" aria-label="Previous frame" hidden>&#8592;</button>
           <button class="iv-button iv-carousel__next" type="button" aria-label="Next frame" hidden>&#8594;</button>
         </div>
       </section>
-      <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0"><strong>About these photographs.</strong> The Halden brewer does not exist, so no photograph of it can exist either. The four frames above are stock photographs of similar objects and of a shop, credited in each caption and in the README. They are not four views of one product and they are not the product.</p>
+      <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0"><strong>About these photographs.</strong> The Halden brewer is invented, so the four frames above are stock photographs of similar objects and of a shop, credited in each caption and in the README. They are not four views of one product.</p>
     </div>
 
     <div class="sr-buy">
       <div class="sr-buy-card iv-stack iv-u-gap-5">
         <div>
-          <p class="sr-eyebrow">Brewing · invented product</p>
+          <p class="sr-eyebrow">Brewing · glass and steel</p>
           <h1 class="sr-title" id="product-title" style="font-size: clamp(1.75rem, 4vw, 2.75rem)">The Halden 0.8&nbsp;L glass brewer</h1>
         </div>
         <div class="iv-cluster iv-u-gap-2">
-          <span class="iv-badge iv-badge--success">In stock (invented)</span>
+          <span class="iv-badge iv-badge--success">In stock</span>
           <span class="iv-badge">Borosilicate</span>
           <span class="iv-badge iv-badge--info">Dishwasher safe</span>
         </div>
         <div class="iv-stat-group" style="--iv-stat-group-min: 9rem">
           <div class="iv-stat">
-            <span class="iv-stat__label">Example price</span>
+            <span class="iv-stat__label">Price</span>
             <strong class="iv-stat__value">€&nbsp;48.00</strong>
-            <span class="iv-stat__hint">Invented; nothing is charged</span>
+            <span class="iv-stat__hint">Delivery included</span>
           </div>
           <div class="iv-stat">
             <span class="iv-stat__label">Capacity</span>
             <strong class="iv-stat__value">0.8<span class="iv-u-text-sm"> L</span></strong>
-            <span class="iv-stat__hint">Four cups, made-up spec</span>
+            <span class="iv-stat__hint">Four cups</span>
           </div>
         </div>
-        <p class="sr-lede iv-u-m-0">A pot invented for this example: a straight-sided borosilicate body, a steel collar and a lid that does not drip. Every specification on this page was written to fill the layout.</p>
+        <p class="sr-lede iv-u-m-0">A straight-sided borosilicate body, a steel collar and a lid that does not drip. Brewed at the bench, poured without a paper filter.</p>
         <div class="iv-cluster iv-u-gap-3">
-          <button class="iv-button iv-button--primary iv-button--lg sr-js-only" type="button" data-iv-toast="sr-toasts" data-iv-message="Added to the sample basket. Nothing was reserved and nothing will be charged." data-iv-title="Demo" data-iv-variant="success" data-iv-timeout="4500">Add to the sample basket</button>
-          <a class="iv-button iv-button--lg" href="#checkout">Go to the demo checkout</a>
+          <button class="iv-button iv-button--primary iv-button--lg sr-js-only" type="button" data-iv-toast="sr-toasts" data-iv-message="Added to the basket. Nothing is reserved and nothing is charged." data-iv-title="Basket" data-iv-variant="success" data-iv-timeout="4500">Add to the basket</button>
+          <a class="iv-button iv-button--lg" href="#checkout">Go to the checkout</a>
         </div>
-        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Nothing can be bought here. There is no shop, no stock, no payment and no order.</p>
+        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Example shop: nothing can be bought, and no payment or order is possible.</p>
       </div>
     </div>
   </section>
@@ -313,7 +313,7 @@
     <section class="sr-wide sr-section" id="catalogue" aria-labelledby="catalogue-title">
       <div class="iv-stack iv-u-gap-8">
         <div>
-          <h2 class="sr-h2" id="catalogue-title">The rest of the invented catalogue</h2>
+          <h2 class="sr-h2" id="catalogue-title">The rest of the catalogue</h2>
           <p class="sr-lede iv-u-mt-4 iv-u-text-muted">Six made-up products with made-up prices. The two filters below are complete form controls before any script runs: a native <code>&lt;select&gt;</code> that becomes a searchable listbox, and an input with a <code>&lt;datalist&gt;</code> that becomes a filtered combobox. Neither of them filters the cards: this page has no catalogue behind it to filter.</p>
         </div>
 
@@ -327,7 +327,7 @@
                 <option value="serve">Serving</option>
                 <option value="prep">Preparation</option>
                 <option value="cloth">Cloth</option>
-                <option value="care" disabled>Care (nothing in stock)</option>
+                <option value="care" disabled>Care (out of stock)</option>
               </select>
             </div>
           </div>
@@ -353,7 +353,7 @@
               <option value="high">Price, high to low</option>
             </select>
           </div>
-          <p class="iv-field__help iv-u-m-0" id="sr-filter-note" style="align-self: end">Demonstration controls: they keep their value and change nothing on the page.</p>
+          <p class="iv-field__help iv-u-m-0" id="sr-filter-note" style="align-self: end">The filters keep their value and change nothing: there is no catalogue behind them.</p>
         </form>
 
         <div class="iv-grid iv-grid--auto iv-u-gap-6" style="--iv-grid-min: 17rem">
@@ -362,7 +362,7 @@
             <div class="iv-card__body iv-stack iv-u-gap-2">
               <h3 class="iv-card__title iv-u-m-0">Halden 0.8 L brewer</h3>
               <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Borosilicate and steel</p>
-              <p class="sr-price iv-u-m-0">€ 48.00 <span class="iv-u-text-sm iv-u-text-muted">example price</span></p>
+              <p class="sr-price iv-u-m-0">€ 48.00</p>
             </div>
             <div class="iv-card__footer">
               <a class="iv-button iv-button--ghost iv-button--sm" href="#main">See the frames</a>
@@ -373,10 +373,10 @@
             <div class="iv-card__body iv-stack iv-u-gap-2">
               <h3 class="iv-card__title iv-u-m-0">Stray kettle, 1 L</h3>
               <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Stainless steel, narrow spout</p>
-              <p class="sr-price iv-u-m-0">€ 62.00 <span class="iv-u-text-sm iv-u-text-muted">example price</span></p>
+              <p class="sr-price iv-u-m-0">€ 62.00</p>
             </div>
             <div class="iv-card__footer">
-              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Demo checkout</a>
+              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Checkout</a>
             </div>
           </article>
           <article class="iv-card iv-elevate">
@@ -384,10 +384,10 @@
             <div class="iv-card__body iv-stack iv-u-gap-2">
               <h3 class="iv-card__title iv-u-m-0">Fell cup and saucer</h3>
               <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Stoneware, 180 ml</p>
-              <p class="sr-price iv-u-m-0">€ 24.00 <span class="iv-u-text-sm iv-u-text-muted">example price</span></p>
+              <p class="sr-price iv-u-m-0">€ 24.00</p>
             </div>
             <div class="iv-card__footer">
-              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Demo checkout</a>
+              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Checkout</a>
             </div>
           </article>
           <article class="iv-card iv-elevate">
@@ -395,10 +395,10 @@
             <div class="iv-card__body iv-stack iv-u-gap-2">
               <h3 class="iv-card__title iv-u-m-0">Beech board, large</h3>
               <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Beech, oiled, 45 × 30 cm</p>
-              <p class="sr-price iv-u-m-0">€ 39.00 <span class="iv-u-text-sm iv-u-text-muted">example price</span></p>
+              <p class="sr-price iv-u-m-0">€ 39.00</p>
             </div>
             <div class="iv-card__footer">
-              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Demo checkout</a>
+              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Checkout</a>
             </div>
           </article>
           <article class="iv-card iv-elevate">
@@ -406,10 +406,10 @@
             <div class="iv-card__body iv-stack iv-u-gap-2">
               <h3 class="iv-card__title iv-u-m-0">Saltings bowl</h3>
               <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Stoneware, 14 cm</p>
-              <p class="sr-price iv-u-m-0">€ 18.00 <span class="iv-u-text-sm iv-u-text-muted">example price</span></p>
+              <p class="sr-price iv-u-m-0">€ 18.00</p>
             </div>
             <div class="iv-card__footer">
-              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Demo checkout</a>
+              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Checkout</a>
             </div>
           </article>
           <article class="iv-card iv-elevate">
@@ -417,10 +417,10 @@
             <div class="iv-card__body iv-stack iv-u-gap-2">
               <h3 class="iv-card__title iv-u-m-0">Counter apron</h3>
               <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Cotton canvas, four colours</p>
-              <p class="sr-price iv-u-m-0">€ 54.00 <span class="iv-u-text-sm iv-u-text-muted">example price</span></p>
+              <p class="sr-price iv-u-m-0">€ 54.00</p>
             </div>
             <div class="iv-card__footer">
-              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Demo checkout</a>
+              <a class="iv-button iv-button--ghost iv-button--sm" href="#checkout">Checkout</a>
             </div>
           </article>
         </div>
@@ -435,17 +435,17 @@
             <li><a class="iv-pagination__link" href="#catalogue" aria-label="Next page">Next</a></li>
           </ul>
         </nav>
-        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">The page links return to the top of this section instead of pretending to load more products.</p>
+        <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">The page links return to the top of this section.</p>
       </div>
     </section>
   </div>
 
   <section class="sr-wide sr-section" id="checkout" aria-labelledby="checkout-title">
-    <h2 class="sr-h2" id="checkout-title">A checkout that buys nothing</h2>
+    <h2 class="sr-h2" id="checkout-title">Checkout</h2>
     <form class="iv-form iv-u-mt-6" data-iv-component="form" novalidate aria-describedby="sr-checkout-note" id="sr-checkout">
-      <p class="sr-lede iv-u-m-0" id="sr-checkout-note"><strong>Demonstration only.</strong> No card number is asked for, because there is nothing to charge. Nothing is submitted, no order is placed and nothing you type leaves this browser tab. The fields validate in the browser so the steps can refuse to advance.</p>
+      <p class="sr-lede iv-u-m-0" id="sr-checkout-note">Three steps, validated in the browser. No card number is asked for: nothing is submitted, no order is placed and nothing you type leaves the tab.</p>
       <div class="iv-stepper" data-iv-component="stepper">
-        <ol class="iv-stepper__list" aria-label="Demo checkout">
+        <ol class="iv-stepper__list" aria-label="Checkout">
           <li class="iv-stepper__step" data-iv-state="current">
             <a class="iv-stepper__trigger" href="#sr-step-where" aria-current="step">
               <span class="iv-stepper__marker" aria-hidden="true">1</span>
@@ -464,7 +464,7 @@
             <a class="iv-stepper__trigger" href="#sr-step-end">
               <span class="iv-stepper__marker" aria-hidden="true">3</span>
               <span class="iv-stepper__label">Review</span>
-              <span class="iv-stepper__hint">End of the demo</span>
+              <span class="iv-stepper__hint">Summary</span>
             </a>
           </li>
         </ol>
@@ -476,7 +476,7 @@
               <div class="iv-field">
                 <label class="iv-label" for="sr-city">City <span class="iv-label__required" aria-hidden="true">*</span></label>
                 <div class="iv-picker" data-iv-component="picker">
-                  <select class="iv-select" id="sr-city" name="city" required data-iv-error-value-missing="Choose one of the sample cities.">
+                  <select class="iv-select" id="sr-city" name="city" required data-iv-error-value-missing="Choose a city.">
                     <option value="">Select a city</option>
                     <option value="bcn">Barcelona</option>
                     <option value="bio">Bilbao</option>
@@ -486,16 +486,16 @@
                     <option value="agp">Málaga</option>
                     <option value="svq">Seville</option>
                     <option value="vlc">Valencia</option>
-                    <option value="zaz" disabled>Zaragoza (no sample service)</option>
+                    <option value="zaz" disabled>Zaragoza (no service yet)</option>
                   </select>
                 </div>
               </div>
               <div class="iv-field iv-datepicker" data-iv-component="datepicker" data-iv-native="off">
                 <label class="iv-label" for="sr-day">Delivery day <span class="iv-label__required" aria-hidden="true">*</span></label>
                 <input class="iv-input" id="sr-day" name="day" type="date" min="2026-09-18" max="2026-12-31" required aria-describedby="sr-day-help"
-                  data-iv-error-value-missing="Pick a day for the demo."
+                  data-iv-error-value-missing="Pick a delivery day."
                   data-iv-error-range-underflow="Pick a day from 18 September 2026 onwards.">
-                <p class="iv-field__help iv-u-m-0" id="sr-day-help">No parcel exists, so no day is booked.</p>
+                <p class="iv-field__help iv-u-m-0" id="sr-day-help">Deliveries leave the warehouse on weekdays.</p>
               </div>
             </div>
             <div class="iv-stepper__controls" hidden>
@@ -509,19 +509,19 @@
               <div class="iv-field">
                 <label class="iv-label" for="sr-name">Name <span class="iv-label__required" aria-hidden="true">*</span></label>
                 <input class="iv-input" id="sr-name" name="name" type="text" required minlength="2" autocomplete="name"
-                  data-iv-error-value-missing="A name for the sample record."
+                  data-iv-error-value-missing="Tell us who receives it."
                   data-iv-error-too-short="Two characters or more, please.">
               </div>
               <div class="iv-field">
                 <label class="iv-label" for="sr-email">Email <span class="iv-label__required" aria-hidden="true">*</span></label>
                 <input class="iv-input" id="sr-email" name="email" type="email" required autocomplete="email" aria-describedby="sr-email-help"
-                  data-iv-error-value-missing="An address, so the demo can pretend to confirm."
+                  data-iv-error-value-missing="An address for the delivery."
                   data-iv-error-type-mismatch="Write the whole address, like name@example.com.">
                 <p class="iv-field__help iv-u-m-0" id="sr-email-help">It stays in this browser tab.</p>
               </div>
             </div>
             <div class="iv-field">
-              <label class="iv-check"><input id="sr-terms" name="terms" type="checkbox" required data-iv-error-value-missing="Tick the box to finish the demo."> I understand this checkout buys nothing <span class="iv-label__required" aria-hidden="true">*</span></label>
+              <label class="iv-check"><input id="sr-terms" name="terms" type="checkbox" required data-iv-error-value-missing="Tick the box to continue."> I understand this checkout buys nothing <span class="iv-label__required" aria-hidden="true">*</span></label>
             </div>
             <div class="iv-stepper__controls" hidden>
               <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev">Back</button>
@@ -533,7 +533,7 @@
             <p class="sr-lede iv-u-m-0">A real shop would show the basket, the total and a payment step here. This one shows none of them, because there is no basket, no total and no payment. Closing the tab discards everything you typed.</p>
             <div class="iv-stepper__controls" hidden>
               <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev">Back</button>
-              <button class="iv-button iv-button--primary" type="button" disabled>Nothing to order (demo)</button>
+              <button class="iv-button iv-button--primary" type="button" disabled>Nothing to order</button>
             </div>
           </section>
         </div>
@@ -542,37 +542,37 @@
   </section>
 </main>
 
-<dialog class="iv-drawer iv-drawer--end" id="sr-cart" data-iv-component="drawer" data-iv-placement="end" data-iv-static-from="none" aria-label="Sample basket">
+<dialog class="iv-drawer iv-drawer--end" id="sr-cart" data-iv-component="drawer" data-iv-placement="end" data-iv-static-from="none" aria-label="Basket">
   <div class="iv-drawer__panel">
     <header class="iv-drawer__header">
-      <h2 class="iv-drawer__title">Sample basket</h2>
+      <h2 class="iv-drawer__title">Basket</h2>
       <button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label="Close">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </header>
     <div class="iv-drawer__body iv-stack iv-u-gap-5">
-      <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Two invented lines, written into the page. Nothing was added by you and nothing will be charged.</p>
+      <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0">Two lines, written into the page.</p>
       <ul class="iv-stack iv-u-gap-4" style="list-style: none; margin: 0; padding: 0">
         <li class="iv-cluster iv-u-gap-4 iv-u-items-center">
           <img src="photos/p225-800.jpg" width="80" height="50" alt="" style="border-radius: var(--iv-radius-md)">
-          <span><strong>Halden 0.8 L brewer</strong><br><span class="iv-u-text-sm iv-u-text-muted">1 × € 48.00 (example price)</span></span>
+          <span><strong>Halden 0.8 L brewer</strong><br><span class="iv-u-text-sm iv-u-text-muted">1 × € 48.00</span></span>
         </li>
         <li class="iv-cluster iv-u-gap-4 iv-u-items-center">
           <img src="photos/p431-800.jpg" width="80" height="50" alt="" style="border-radius: var(--iv-radius-md)">
-          <span><strong>Fell cup and saucer</strong><br><span class="iv-u-text-sm iv-u-text-muted">1 × € 24.00 (example price)</span></span>
+          <span><strong>Fell cup and saucer</strong><br><span class="iv-u-text-sm iv-u-text-muted">1 × € 24.00</span></span>
         </li>
       </ul>
-      <p class="sr-price iv-u-m-0">Example total: € 72.00</p>
+      <p class="sr-price iv-u-m-0">Total: € 72.00</p>
       <div class="iv-alert iv-alert--info" role="status">
         <p class="iv-alert__title">Nothing here can be bought</p>
         <div class="iv-alert__body">
-          <p class="iv-u-m-0">Northline Supply does not exist. There is no stock, no payment provider and no order.</p>
+          <p class="iv-u-m-0">Northline Supply is an example shop: no stock, no payment provider, no order.</p>
         </div>
       </div>
     </div>
     <footer class="iv-drawer__footer">
       <button class="iv-button iv-button--ghost" type="button" data-iv-close>Keep looking</button>
-      <button class="iv-button iv-button--primary sr-js-only" type="button" data-iv-open="sr-confirm">Check out (demo)</button>
+      <button class="iv-button iv-button--primary sr-js-only" type="button" data-iv-open="sr-confirm">Check out</button>
     </footer>
   </div>
 </dialog>
@@ -586,18 +586,18 @@
       </button>
     </header>
     <div class="iv-dialog__body iv-stack">
-      <p class="iv-u-m-0">On a real shop this button would take a payment. <strong>Here it takes nothing</strong>: there is no card form, no provider and no order. Confirming only shows a notification and closes this dialog.</p>
+      <p class="iv-u-m-0">On a live shop this button would take a payment. Here there is no card form, no provider and no order: confirming only shows a notification and closes this dialog.</p>
     </div>
     <footer class="iv-dialog__footer">
       <button class="iv-button iv-button--ghost" type="button" data-iv-close>Cancel</button>
-      <button class="iv-button iv-button--primary" value="confirm" id="sr-confirm-go" data-iv-toast="sr-toasts" data-iv-message="Nothing was ordered and nothing was charged: this checkout has no shop behind it." data-iv-title="Demo" data-iv-timeout="6000">Confirm (demo)</button>
+      <button class="iv-button iv-button--primary" value="confirm" id="sr-confirm-go" data-iv-toast="sr-toasts" data-iv-message="Nothing was ordered and nothing was charged." data-iv-title="Checkout" data-iv-timeout="6000">Confirm</button>
     </footer>
   </form>
 </dialog>
 
 <footer class="sr-band">
   <div class="sr-wide sr-footer iv-stack iv-u-gap-5">
-    <p class="iv-u-m-0" style="max-inline-size: 62ch"><strong>Northline Supply is a fictional shop.</strong> Every product, specification, price, stock level and delivery promise on this page is invented for this example. Nothing can be bought, no payment is possible, no order is created and no form sends anything anywhere.</p>
+    <p class="iv-u-m-0" style="max-inline-size: 62ch"><strong>Northline Supply is a fictional shop.</strong> Every product, specification, price and delivery promise on this page is invented; nothing can be bought and no order is ever created.</p>
     <div class="iv-cluster iv-u-gap-6 iv-u-items-center">
       <div class="sr-theme iv-button-group" role="group" aria-label="Colour theme">
         <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="system" aria-pressed="true">System</button>

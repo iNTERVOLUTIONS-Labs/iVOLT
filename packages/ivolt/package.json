@@ -1,7 +1,7 @@
 {
   "name": "@intervolutions/ivolt",
   "version": "1.0.0",
-  "description": "A hybrid CSS/HTML/JS frontend framework: semantic components, a finite utility set, design tokens and optional JavaScript.",
+  "description": "Accessible CSS framework and design system: semantic components, design tokens, light and dark themes and optional JavaScript. No runtime dependencies, no build step.",
   "license": "MIT",
   "type": "module",
   "files": [
@@ -149,10 +149,21 @@
   },
   "keywords": [
     "css",
+    "css-framework",
     "framework",
-    "components",
+    "design-system",
     "design-tokens",
-    "accessibility"
+    "components",
+    "ui-components",
+    "accessibility",
+    "a11y",
+    "dark-mode",
+    "html",
+    "no-build",
+    "zero-dependencies",
+    "astro",
+    "wordpress",
+    "rtl"
   ],
   "engines": {
     "node": ">=22.0.0"

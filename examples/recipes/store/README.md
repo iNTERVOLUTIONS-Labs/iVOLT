@@ -17,14 +17,13 @@ stylesheet for the layout of this page.
 
 ## What is fictional
 
-Northline Supply is not a shop. Every product name, specification, price, stock level
-and delivery promise is invented and marked as an example price on the page itself.
-Nothing can be bought: there is no card form, no payment provider, no stock and no
-order. The basket is two lines written into the HTML, the confirmation dialog states
-that it takes nothing, the filters keep their value and change nothing (there is no
-catalogue behind them to filter), the pagination links return to the top of the
-section, and the three-step checkout validates in the browser and ends with a disabled
-button that says there is nothing to order.
+Northline Supply is a fictional shop: every product name, specification, price, stock
+level and delivery promise is invented, and the price is labelled as an example on the
+page. Nothing can be bought — there is no card form, no payment provider, no stock and
+no order. The basket is two lines written into the HTML and says so when it opens, the
+filters keep their value and change nothing, the pagination links return to the top of
+the section, and the three-step checkout validates in the browser and ends with a
+disabled button. The page states the whole of this once, in the footer.
 
 **About the product photographs.** The Halden brewer does not exist, so no photograph
 of it can exist either. The four frames in the carousel are stock photographs of

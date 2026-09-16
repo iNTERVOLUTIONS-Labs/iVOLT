@@ -19,16 +19,15 @@ plus one local stylesheet for the layout of this page.
 
 ## What is fictional
 
-Arclight is not a company and this console is not connected to anything. Every feeder,
-district, load, frequency, temperature, crew name, timestamp and alert was written by
-hand for this example. There is no account, no telemetry and no network request of any
-kind, and no data about any real person or utility appears anywhere on the page.
+Arclight is a fictional grid operator: every feeder, district, load, frequency,
+temperature, crew name, timestamp and alert was written by hand for this example, and
+the page is connected to nothing — no account, no telemetry, no network request. The
+page says so once, in the footer.
 
 The destructive-looking controls destroy nothing: **Trip feeder F-12** opens a dialog
-that says so and shows a notification, **Acknowledge** shows a notification, and the
-maintenance-window form validates in the browser and then states that nothing was
-requested. The command palette only moves within this page and runs the same two local
-actions.
+that says what would happen and then shows a notification, **Acknowledge** shows a
+notification, and the maintenance-window form validates in the browser and reports that
+nothing was requested. The command palette only moves within this page.
 
 ## Photographs
 

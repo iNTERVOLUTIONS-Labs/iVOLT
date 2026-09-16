@@ -18,11 +18,11 @@ one local stylesheet for the layout, the drop cap and the print sheet.
 
 ## What is fictional
 
-The Quiet Column is not a journal. The issue number, the six articles, the byline, the
-reading times and the quotation in the pull quote are invented, and the quotation is
-attributed to nobody on purpose. Every index entry and every pagination link returns to
-a section of this page: there is no archive and there are no other pages. Nothing is
-sold and there is no subscription.
+The Quiet Column is a fictional journal: the issue number, the six articles, the byline,
+the reading times and the pull quote are invented, and the quotation is attributed to
+nobody on purpose. Index and pagination links return to a section of this page; there is
+no archive, nothing is sold and there is no subscription. The page says so once, in the
+footer.
 
 ## Photographs
 

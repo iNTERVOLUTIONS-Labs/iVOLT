@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Quiet Column — a fictional journal (iVOLT recipe)</title>
-  <meta name="description" content="Editorial issue for an invented journal, built only with the published iVOLT package: a typographic cover, a reading progress bar, a long read with notes in popovers, a masonry gallery with the viewer, pagination and a print stylesheet. Every article, author and date is made up.">
+  <title>Editorial long read built with iVOLT — The Quiet Column</title>
+  <meta name="description" content="An editorial issue built with the iVOLT CSS framework: typographic cover, reading progress bar, long read with popover notes, masonry gallery, print sheet.">
   <link rel="icon" href="data:,">
   <!-- ADR-042: mark the root before the stylesheet paints, so the navbar panel starts folded
        on narrow screens instead of being folded after the first paint (a layout shift). -->
@@ -337,26 +337,26 @@
     <section class="jr-wide" id="cover" aria-labelledby="cover-title">
       <p class="jr-masthead">
         <span>Issue 14 — Autumn 2026</span>
-        <span>A fictional journal</span>
-        <span>A demonstration page — nothing here is for sale</span>
+        <span>The Quiet Column</span>
+        <span>An iVOLT recipe · fictional journal</span>
       </p>
       <h1 class="jr-cover-title" id="cover-title">Reading at the<br><span class="iv-gradient-text">edge</span> of the page</h1>
       <div class="jr-cover-grid">
         <div class="iv-stack iv-u-gap-6">
-          <p class="jr-standfirst" style="max-inline-size: 42ch">Margins, measure, and the things that survive being read on a phone at three in the morning — an invented issue in six pieces.</p>
+          <p class="jr-standfirst" style="max-inline-size: 42ch">Margins, measure, and the things that survive being read on a phone at three in the morning — an issue in six pieces.</p>
           <ol class="iv-timeline" style="max-inline-size: 30rem">
             <li class="iv-timeline__item" data-iv-state="current">
               <time class="iv-timeline__time" datetime="2026-09">Out now</time>
               <div class="iv-timeline__body">
                 <h2 class="iv-timeline__title" style="font-size: var(--iv-text-lg)">Issue 14 — the measure</h2>
-                <p class="iv-u-m-0 iv-u-text-sm">One feature, five plates and a back page, all invented.</p>
+                <p class="iv-u-m-0 iv-u-text-sm">One feature, five plates and a back page.</p>
               </div>
             </li>
             <li class="iv-timeline__item" data-iv-state="upcoming">
               <time class="iv-timeline__time" datetime="2026-12">December</time>
               <div class="iv-timeline__body">
                 <h2 class="iv-timeline__title" style="font-size: var(--iv-text-lg)">Issue 15 — the gutter</h2>
-                <p class="iv-u-m-0 iv-u-text-sm">Nothing is commissioned: there is no journal behind this page.</p>
+                <p class="iv-u-m-0 iv-u-text-sm">What happens in the space between two columns.</p>
               </div>
             </li>
           </ol>
@@ -392,19 +392,19 @@
       <div class="jr-read">
         <p class="iv-u-text-sm iv-u-text-muted iv-u-m-0" style="font-family: var(--iv-font-mono); letter-spacing: 0.18em; text-transform: uppercase">Feature — 12 minutes</p>
         <h2 class="iv-u-mt-4" id="read-title" style="font-size: clamp(2rem, 6vw, 4.25rem); line-height: 1.02; letter-spacing: -0.03em; margin-block-end: var(--iv-space-6)">The measure is the argument</h2>
-        <p class="iv-u-text-sm iv-u-text-muted">By <strong>Bruno Oteiza</strong> — an invented byline. Illustrated with photographs credited at the end.</p>
+        <p class="iv-u-text-sm iv-u-text-muted">By <strong>Bruno Oteiza</strong> · Illustrated with photographs credited at the end.</p>
       </div>
 
       <div class="jr-read jr-article" data-iv-component="tooltip">
         <p>Every decision a page makes about reading is made twice: once for the eye that scans it and once for the eye that gets tired. A column of sixty-six characters is not a rule handed down from a print shop; it is the width at which a reader can find the beginning of the next line without thinking about it. Miss it by twenty characters in either direction and the reader starts doing work the designer should have done.</p>
 
-        <p>This article is invented, and so is the journal that publishes it. What is real is the page you are reading it on: one stylesheet, one optional script, no fonts fetched from anywhere, no analytics, no requests at all. The bar at the top of the window is the reading position. The pale underline under the words below opens a note.</p>
+        <p>What is certain is the page you are reading it on: one stylesheet, one optional script, no fonts fetched from anywhere, no analytics, no requests at all. The bar at the top of the window is the reading position. The pale underline under the words below opens a note.</p>
 
         <p>The argument for a narrow measure <button class="jr-note-button" type="button" popovertarget="jr-note-1">has a long history</button>, and most of it is recycled from typesetters who never had to think about a phone held at arm's length in a bus. The useful part survives anyway: shorter lines, more leading, and a body size that does not shrink on the device where most of the reading happens.</p>
 
         <blockquote class="jr-quote">
           <p>“A page is not a container for text. It is an instrument for a particular kind of attention, and attention is the thing in short supply.”</p>
-          <footer>— an invented quotation, attributed to nobody</footer>
+          <footer>— invented for this issue</footer>
         </blockquote>
 
         <h2>What a margin is for</h2>
@@ -417,18 +417,18 @@
 
         <p>The two underlined phrases above open small panels anchored to the word that raised them. They are native popovers, so they open without any JavaScript at all; with the script they position themselves next to their button and the keyboard can reach and dismiss them. Nothing is fetched to fill them: the text was served with the page.</p>
 
-        <p>The gallery below is the plate section of this invented issue. Each plate is a link to its own file, so it works before any script runs; with the script a click opens the viewer, the arrow keys walk the set and <kbd>Esc</kbd> returns focus to the plate you came from.</p>
+        <p>The gallery below is the plate section of this issue. Each plate is a link to its own file, so it works before any script runs; with the script a click opens the viewer, the arrow keys walk the set and <kbd>Esc</kbd> returns focus to the plate you came from.</p>
       </div>
     </article>
 
     <div class="iv-popover iv-popover--arrow" id="jr-note-1" popover data-iv-component="popover">
       <h3 class="iv-popover__title">Note</h3>
-      <p class="iv-u-text-sm iv-u-m-0">Invented note, for this example. The figures usually quoted for an ideal measure come from studies of printed text and disagree with each other by about twenty characters, which is roughly the size of the effect they are arguing about.</p>
+      <p class="iv-u-text-sm iv-u-m-0">The figures usually quoted for an ideal measure come from studies of printed text and disagree with each other by about twenty characters, which is roughly the size of the effect they are arguing about.</p>
     </div>
 
     <div class="iv-popover iv-popover--arrow" id="jr-note-2" popover data-iv-component="popover" data-iv-align="end">
       <h3 class="iv-popover__title">Note</h3>
-      <p class="iv-u-text-sm iv-u-m-0">Invented note, for this example. On this page the extra width goes to the plates and to the index, both of which are looked at rather than read line by line.</p>
+      <p class="iv-u-text-sm iv-u-m-0">On this page the extra width goes to the plates and to the index, both of which are looked at rather than read line by line.</p>
     </div>
 
     <section class="jr-wide jr-section" id="plates" aria-labelledby="plates-title">
@@ -456,7 +456,7 @@
 
     <section class="jr-wide jr-section" id="index" aria-labelledby="index-title">
       <h2 class="iv-u-m-0" id="index-title" style="font-size: clamp(1.75rem, 5vw, 3.5rem); line-height: 1.04; letter-spacing: -0.028em">In this issue</h2>
-      <p class="iv-u-mt-5 iv-u-mb-8 iv-u-text-muted" style="max-inline-size: 52ch">Six invented pieces. Every link stays on this page: there are no other pages behind this example.</p>
+      <p class="iv-u-mt-5 iv-u-mb-8 iv-u-text-muted" style="max-inline-size: 52ch">Six pieces. Every link stays on this page: there is nothing else behind it.</p>
       <ul class="jr-index">
         <li>
           <a href="#read">
@@ -513,12 +513,12 @@
           <li><a class="iv-pagination__link" href="#cover" aria-label="Newer issues">Newer</a></li>
         </ul>
       </nav>
-      <p class="jr-caption">Every issue link returns to the cover of this one: there is no archive behind this example.</p>
+      <p class="jr-caption">Issue links return to the cover of this one.</p>
     </section>
   </main>
 
   <footer class="jr-wide jr-footer iv-stack iv-u-gap-5">
-    <p class="iv-u-m-0" style="max-inline-size: 60ch"><strong>The Quiet Column is a fictional journal.</strong> The issue number, the articles, the bylines, the reading times and the quotation are all invented for this example. Nothing is sold, no subscription exists and no form on this page sends anything anywhere.</p>
+    <p class="iv-u-m-0" style="max-inline-size: 60ch"><strong>The Quiet Column is a fictional journal.</strong> The issue, the articles, the bylines and the quotation are invented, nothing is sold and no subscription exists.</p>
     <div class="iv-cluster iv-u-gap-6 iv-u-items-center">
       <div class="jr-theme iv-button-group" role="group" aria-label="Colour theme">
         <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="light" aria-pressed="true">Light</button>

@@ -1,6 +1,8 @@
 # iVOLT plain HTML starter
 
-One page, no Node, no build step. It links the prebuilt files from `./ivolt/`.
+One page, no Node, no build step: a header, a hero, a card grid, a form and a dialog,
+styled and behaved by the prebuilt files in `./ivolt/`. Copy the folder and start
+editing the text.
 
 The `ivolt/` folder is not committed. From the repository root run:
 

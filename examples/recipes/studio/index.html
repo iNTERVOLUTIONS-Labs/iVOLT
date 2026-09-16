@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Meridian Field — a fictional design studio (iVOLT recipe)</title>
-  <meta name="description" content="Editorial page for an invented studio, built only with the published iVOLT package: transparent navbar, cinematic hero with parallax, marquee, a sticky deck of services, a photo gallery with the viewer, initials-only team, a timeline and a three-step contact wizard that sends nothing.">
+  <title>Studio landing page built with iVOLT — Meridian Field</title>
+  <meta name="description" content="A design studio landing page built with the iVOLT CSS framework: parallax hero, marquee, sticky service deck, photo gallery with viewer and a three-step brief.">
   <link rel="icon" href="data:,">
   <!-- ADR-042: mark the root before the stylesheet paints, so the navbar panel starts folded
        on narrow screens instead of being folded after the first paint (a layout shift). -->
@@ -319,19 +319,19 @@
       </div>
       <div class="iv-hero__scrim" aria-hidden="true"></div>
       <div class="iv-hero__content">
-        <p class="st-disclosure">Meridian Field is an invented studio. Nothing on this page is for sale.</p>
+        <p class="st-disclosure">An iVOLT recipe · fictional studio</p>
         <h1 class="iv-hero__title iv-text-reveal st-display" id="cover-title" data-iv-reveal>
           <span class="iv-text-reveal__line"><span>We build the</span></span>
           <span class="iv-text-reveal__line" style="--iv-i: 1"><span>space between</span></span>
           <span class="iv-text-reveal__line" style="--iv-i: 2"><span><em>light</em> and structure.</span></span>
         </h1>
-        <p class="iv-hero__lead st-lede iv-rise" style="--iv-i: 3">Identity, editorial and interface work for people who build things that last. Every component on this page — the bar above, the cover behind it, the deck, the gallery and the wizard — comes from one stylesheet and one optional script.</p>
+        <p class="iv-hero__lead st-lede iv-rise" style="--iv-i: 3">Identity, editorial and interface work for people who build things that last. Every piece of this page — the bar, the cover, the deck, the gallery, the wizard — comes from one stylesheet and one optional script.</p>
         <div class="iv-hero__actions iv-rise" style="--iv-i: 4">
           <a class="iv-button iv-button--primary iv-button--lg iv-edge-glint" href="#frames">See the frames</a>
           <a class="iv-button iv-button--lg" href="#practice">Read the practice</a>
         </div>
         <ul class="iv-hero__facts">
-          <li><strong>2019</strong> founded (invented)</li>
+          <li><strong>2019</strong> founded</li>
           <li><strong>3</strong> disciplines</li>
           <li><strong>0</strong> network requests</li>
         </ul>
@@ -364,7 +364,7 @@
         <div class="st-split__head">
           <span class="st-numeral" aria-hidden="true">01</span>
           <h2 class="st-title iv-u-m-0" id="practice-title">The practice</h2>
-          <p class="st-lede iv-u-mt-6 iv-u-text-muted">Four rules we keep. They are the rules of the framework this page is built with, which is the only honest thing an example can claim.</p>
+          <p class="st-lede iv-u-mt-6 iv-u-text-muted">Four rules we keep. They are also the rules of the framework this page is built with.</p>
         </div>
         <div class="st-notes">
           <article class="st-note" data-iv-reveal>
@@ -400,7 +400,7 @@
               <div class="iv-card__body iv-stack iv-u-gap-4 iv-u-py-10">
                 <div class="iv-cluster"><span class="iv-badge iv-badge--primary">01 — Identity</span></div>
                 <h3 class="iv-card__title iv-u-m-0" id="svc-1" style="font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: var(--iv-tracking-tight)">A mark, a voice and the rules that keep them</h3>
-                <p class="iv-u-m-0 st-lede">Wordmark, type scale, colour under both themes, and a written specification an engineer can implement without asking us anything. Example scope, invented for this page.</p>
+                <p class="iv-u-m-0 st-lede">Wordmark, type scale, colour under both themes, and a written specification an engineer can implement without asking us anything.</p>
                 <ul class="st-meta">
                   <li>8–12 weeks</li>
                   <li>2 people</li>
@@ -470,7 +470,7 @@
           <div class="st-split__head">
             <span class="st-numeral" aria-hidden="true">04</span>
             <h2 class="st-title iv-u-m-0" id="studio-title">Who is in the room</h2>
-            <p class="st-lede iv-u-mt-6 iv-u-text-muted">Five invented people. This page ships no photographs of anyone, so each face is a pair of initials with its own accessible name.</p>
+            <p class="st-lede iv-u-mt-6 iv-u-text-muted">Five people, no portraits: each face is a pair of initials with its own accessible name.</p>
             <div class="iv-avatar-group iv-u-mt-8">
               <span class="iv-avatar iv-avatar--lg" role="img" aria-label="Ada Márquez"><span aria-hidden="true">AM</span></span>
               <span class="iv-avatar iv-avatar--lg" role="img" aria-label="Bruno Oteiza"><span aria-hidden="true">BO</span></span>
@@ -506,13 +506,13 @@
             <hr class="st-rule">
 
             <div class="iv-stack iv-u-gap-6">
-              <h3 class="iv-u-m-0" style="font-size: clamp(1.25rem, 2.4vw, 1.875rem); letter-spacing: var(--iv-tracking-tight)">A made-up history</h3>
+              <h3 class="iv-u-m-0" style="font-size: clamp(1.25rem, 2.4vw, 1.875rem); letter-spacing: var(--iv-tracking-tight)">A short history</h3>
               <ol class="iv-timeline iv-timeline--alternate">
                 <li class="iv-timeline__item" data-iv-state="done">
                   <time class="iv-timeline__time" datetime="2019">2019</time>
                   <div class="iv-timeline__body">
                     <h4 class="iv-timeline__title">Two desks and a scanner</h4>
-                    <p class="iv-u-m-0 iv-u-text-sm">The studio opens above a print shop. Invented, like every date on this page.</p>
+                    <p class="iv-u-m-0 iv-u-text-sm">The studio opens above a print shop, with a scanner and a borrowed plotter.</p>
                   </div>
                 </li>
                 <li class="iv-timeline__item" data-iv-state="done">
@@ -533,7 +533,7 @@
                   <time class="iv-timeline__time" datetime="2027">Next</time>
                   <div class="iv-timeline__body">
                     <h4 class="iv-timeline__title">A signage year</h4>
-                    <p class="iv-u-m-0 iv-u-text-sm">Nothing is booked: this is a demonstration page, not a studio.</p>
+                    <p class="iv-u-m-0 iv-u-text-sm">Wayfinding and signage join identity, editorial and interface.</p>
                   </div>
                 </li>
               </ol>
@@ -545,9 +545,9 @@
 
     <section class="st-wide st-section" id="brief" aria-labelledby="brief-title">
       <span class="st-numeral" aria-hidden="true">05</span>
-      <h2 class="st-title iv-u-m-0" id="brief-title">Three steps that send nothing</h2>
+      <h2 class="st-title iv-u-m-0" id="brief-title">Start a brief</h2>
       <form class="iv-form iv-u-mt-8" data-iv-component="form" novalidate aria-describedby="brief-note">
-        <p class="st-lede iv-u-m-0" id="brief-note"><strong>Demonstration only.</strong> There is no server behind this wizard: nothing is submitted, no message is sent and nothing you type leaves this browser tab. The fields validate in the browser so the steps can refuse to advance, and the last button only says the flow is complete.</p>
+        <p class="st-lede iv-u-m-0" id="brief-note">Three steps, validated in the browser. There is no server behind this example: nothing is submitted and nothing you type leaves the tab.</p>
         <div class="iv-stepper" data-iv-component="stepper">
           <ol class="iv-stepper__list" aria-label="Start a brief">
             <li class="iv-stepper__step" data-iv-state="current">
@@ -568,7 +568,7 @@
               <a class="iv-stepper__trigger" href="#brief-end">
                 <span class="iv-stepper__marker" aria-hidden="true">3</span>
                 <span class="iv-stepper__label">End</span>
-                <span class="iv-stepper__hint">Of the demo</span>
+                <span class="iv-stepper__hint">Summary</span>
               </a>
             </li>
           </ol>
@@ -585,9 +585,9 @@
               <div class="iv-field">
                 <label class="iv-label" for="brief-email">Email <span class="iv-label__required" aria-hidden="true">*</span></label>
                 <input class="iv-input" id="brief-email" name="email" type="email" required autocomplete="email" aria-describedby="brief-email-help"
-                  data-iv-error-value-missing="An address, so the demo can pretend to reply."
+                  data-iv-error-value-missing="An address we could reply to."
                   data-iv-error-type-mismatch="Write the whole address, like name@studio.example.">
-                <p class="iv-field__help iv-u-m-0" id="brief-email-help">Anything you type stays in this browser tab.</p>
+                <p class="iv-field__help iv-u-m-0" id="brief-email-help">One person reads every brief that arrives.</p>
               </div>
               <div class="iv-stepper__controls" hidden>
                 <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev" disabled>Back</button>
@@ -617,11 +617,11 @@
               </div>
             </section>
             <section class="iv-stepper__panel" id="brief-end" aria-labelledby="brief-end-title" tabindex="-1">
-              <h3 class="iv-u-mt-0" id="brief-end-title">End of the demo</h3>
-              <p class="st-lede iv-u-m-0">A real page would show a summary here and send it. This one does neither. Closing the tab discards everything you typed, because nothing was stored and nothing was transmitted.</p>
+              <h3 class="iv-u-mt-0" id="brief-end-title">That is the whole brief</h3>
+              <p class="st-lede iv-u-m-0">A live site would summarise the answers here and send them. Closing the tab discards what you typed: nothing was stored and nothing was transmitted.</p>
               <div class="iv-stepper__controls" hidden>
                 <button class="iv-button iv-button--secondary" type="button" data-iv-step="prev">Back</button>
-                <button class="iv-button iv-button--primary" type="button" disabled>Nothing to send (demo)</button>
+                <button class="iv-button iv-button--primary" type="button" disabled>Nothing to send</button>
               </div>
             </section>
           </div>
@@ -633,7 +633,7 @@
   <footer class="st-band">
     <div class="st-wide st-footer iv-stack iv-u-gap-6">
       <hr class="st-rule">
-      <p class="st-lede iv-u-m-0"><strong>Meridian Field is a fictional studio</strong> invented for this example. No company, person, project, date or figure on this page is real, nothing is sold and no form sends anything anywhere.</p>
+      <p class="st-lede iv-u-m-0"><strong>Meridian Field is a fictional studio.</strong> Every name, project, date and figure on this page is invented, nothing is sold and no form sends anything.</p>
       <div class="iv-cluster iv-u-gap-6 iv-u-items-center">
         <div class="st-theme iv-button-group" role="group" aria-label="Colour theme">
           <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme="system" aria-pressed="true">System</button>

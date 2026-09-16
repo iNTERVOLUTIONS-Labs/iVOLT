@@ -18,10 +18,10 @@ stylesheet for the layout and the art of this page.
 
 ## What is fictional
 
-Meridian Field is not a studio. The name, the five people, the founding year, the
-project scopes, the durations and every date in the timeline were written for this
-example. Nothing is sold and the three-step brief has no server behind it: it validates
-in the browser, and the last button is disabled and says so.
+Meridian Field is a fictional studio: the name, the people, the dates and the project
+scopes were written for this example. Nothing is sold, and the three-step brief
+validates in the browser with no server behind it. The page says so once, in the
+footer.
 
 ## Photographs
 
