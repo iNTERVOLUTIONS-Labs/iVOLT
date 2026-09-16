@@ -67,7 +67,9 @@
     // this, a frame that finished loading before the host script ran would keep its own defaults.
     post({ type: "stage-ready" });
     report(true);
-    if (window.ResizeObserver) new ResizeObserver(function () { report(false); }).observe(document.body);
+    // Firefox can run this before <body> exists; the root element resizes with it either way.
+    var watched = document.body || document.documentElement;
+    if (window.ResizeObserver && watched) new ResizeObserver(function () { report(false); }).observe(watched);
     addEventListener("load", function () { report(true); });
     // Components settle after init (a carousel measures, a navbar folds): report once more.
     setTimeout(function () { report(true); }, 120);

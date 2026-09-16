@@ -233,7 +233,9 @@ test.describe("Stacked cards", () => {
     expect(parked[1].top).toBeGreaterThan(parked[0].top);
 
     // Half way through the second card's ride the first one is on its way down, not there yet.
-    const mid = await at((stick[0] + stick[1]) / 2);
+    // A loaded engine can settle two equal reads before the scroll timeline has advanced: wait for it.
+    let mid = await at((stick[0] + stick[1]) / 2);
+    for (let i = 0; i < 20 && mid[0].scale === 1; i += 1) { await page.waitForTimeout(150); mid = await read(); }
     expect(mid[0].scale).toBeLessThan(1);
     expect(mid[0].scale).toBeGreaterThan(0.94);
     expect(mid[1].top).toBeGreaterThan(mid[0].top);
