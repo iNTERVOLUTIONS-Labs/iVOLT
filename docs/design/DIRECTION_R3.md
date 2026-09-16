@@ -19,7 +19,7 @@ Motivo visual: sigue siendo la electricidad (arco, filete conductor, cobalto y c
 
 | Ruta | Qué es | Momento espectacular |
 |---|---|---|
-| `/` | Portada | Hero «Power on» (se conserva el canvas de arcos) + **escenario vivo** de 6 componentes que rotan en un mismo marco (pestañas de galería), tema y ancho cambiables; numerales con `Countup`; galería de ejemplos en marcos de dispositivo; bloque invertido «Start» |
+| `/` | Portada | Hero «Power on» (rayo estático; el lienzo de arcos se retiró en ADR-052) + **escenario vivo** de 6 componentes que rotan en un mismo marco (pestañas de galería), tema y ancho cambiables; numerales con `Countup`; galería de ejemplos en marcos de dispositivo; bloque invertido «Start» |
 | `/components/<x>` | Página de componente | Escenario a todo el ancho de la columna: fixture principal en iframe con barra de controles; código en pestañas (HTML servido / CSS locales / opciones JS) con copia; anatomía (lista de partes con líneas al escenario si cabe, si no, tabla); resto de fixtures como escenarios menores; tablas en `docs-scroller` |
 | `/foundations/<x>` | Fundamentos | Tokens con muestras vivas (color, radio, sombra, tipo) que reaccionan al tema; escenarios donde aplique (superficies, efectos, movimiento, texto) |
 | `/examples` | Galería de ejemplos | Cuatro piezas a tamaño grande en marcos de dispositivo (escritorio y móvil) con captura estática generada en el build y enlace a la página real; descarga del zip |

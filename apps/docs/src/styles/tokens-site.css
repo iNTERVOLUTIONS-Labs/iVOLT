@@ -32,12 +32,8 @@
   --docs-invert-fg: #ffffff;
   --docs-invert-ink: #0b1230;
   --docs-arc-core: #ffffff;
-  --docs-arc-halo: #73dfff;
-  --docs-arc-blend: add;
   /* How hard the arc field is drawn. On navy the strokes are additive light and need no help;
      on paper they are ink and were barely there, so the light theme raises both. */
-  --docs-arc-gain: 1;
-  --docs-arc-weight: 1;
   /* The light theme's own light, over the right third of the hero where the arcs are. `none` in
      the dark theme, which already has two orbs there. One placed radial, nothing repeats. */
   --docs-hero-halo: none;
@@ -83,10 +79,6 @@
   --docs-paper: #f7f9ff;
   --docs-zebra: rgb(29 79 196 / 0.035);
   --docs-arc-core: #1d4fc4;
-  --docs-arc-halo: #3d94ff;
-  --docs-arc-blend: ink;
-  --docs-arc-gain: 2.1;
-  --docs-arc-weight: 1.6;
   --docs-hero-halo: radial-gradient(60rem 40rem at 78% 30%, rgb(115 223 255 / .22), transparent 70%);
   --docs-invert-bg: linear-gradient(118deg, #1d4fc4 0%, #2a48c6 48%, #3d47c2 100%);
   --docs-invert-fg: #ffffff;
@@ -106,10 +98,6 @@
     --docs-paper: var(--iv-color-bg);
     --docs-zebra: rgb(255 255 255 / 0.028);
     --docs-arc-core: #ffffff;
-    --docs-arc-halo: #73dfff;
-    --docs-arc-blend: add;
-    --docs-arc-gain: 1;
-    --docs-arc-weight: 1;
     --docs-hero-halo: none;
     --docs-orb-a: rgb(102 177 255 / 0.30);
     --docs-orb-b: rgb(102 116 255 / 0.26);

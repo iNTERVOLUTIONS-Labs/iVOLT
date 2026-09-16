@@ -323,12 +323,6 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
         import("../scripts/stage.js").then((m) => { if (epoch === mine) teardown.push(m.mountStage(document)); }).catch(() => {});
       }
 
-      // The arc field: one canvas, home only, fine pointers only, never under reduced motion.
-      const arcs = document.querySelector("[data-docs-arcs]");
-      if (arcs && finePointer() && !reduced()) {
-        import("../scripts/arcs.js").then((m) => { if (epoch === mine && document.contains(arcs)) teardown.push(m.mountArcs(arcs)); }).catch(() => {});
-      }
-
       // Theme switch (persisted opt-in), both header and nav dialog groups.
       const buttons = document.querySelectorAll("[data-set-theme]");
       const paint = () => buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setTheme === getTheme())));

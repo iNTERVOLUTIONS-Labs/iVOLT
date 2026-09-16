@@ -79,19 +79,17 @@
 .docs-orb { position: absolute; border-radius: 50%; filter: blur(90px); }
 .docs-orb--a { inline-size: min(48rem, 78vw); aspect-ratio: 1; inset-block-start: -18%; inset-inline-start: -12%; background: var(--docs-orb-a); }
 .docs-orb--b { inline-size: min(40rem, 66vw); aspect-ratio: 1; inset-block-end: -22%; inset-inline-end: -8%; background: var(--docs-orb-b); }
-/* A cold field over the right third, where the arcs are: on paper the hero was the dark
+/* A cold field over the right third, where the bolt is: on paper the hero was the dark
    composition with the lights turned down, and this is the light theme's own light. One placed
    radial, nothing repeats (ADR-028). The token is `none` in the dark theme, which has the orbs. */
 .docs-orbs::after { content: ""; position: absolute; inset: 0; background-image: var(--docs-hero-halo, none); pointer-events: none; }
 @media (max-width: 47.99em) { .docs-orb { filter: blur(64px); } }
 
-/* the arc field: canvas on fine pointers, a static bolt everywhere else */
+/* the hero bolt: one static SVG, every device and theme (ADR-052) */
 .docs-arcs { position: absolute; inset-block: 0 20%; inset-inline-end: 0; inline-size: min(72%, 60rem); z-index: 0; pointer-events: none; }
 @media (max-width: 47.99em) { .docs-arcs { inset-block: 0 38%; inline-size: 100%; opacity: .85; } }
-.docs-arcs canvas { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
 .docs-arcs__still { position: absolute; inset: 0; display: grid; place-items: center end; padding-inline-end: clamp(1rem, 5vw, 6rem); }
 .docs-arcs__still svg { inline-size: min(70%, 26rem); height: auto; filter: drop-shadow(0 0 28px var(--docs-halo)); }
-.docs-arcs.is-live .docs-arcs__still { display: none; }
 
 /* ---------- 2. why ---------- */
 .docs-why { display: grid; gap: clamp(2.5rem, 6vw, 5rem); }

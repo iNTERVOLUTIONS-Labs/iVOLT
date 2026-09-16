@@ -1,9 +1,8 @@
 ---
-// Hero arc field. The canvas is decorative and is only mounted for fine pointers without
-// prefers-reduced-motion; the static bolt below is what everyone else sees.
+// Hero bolt: the static mark the owner chose over the animated arc field (ADR-052). Pure SVG,
+// no script, identical under reduced motion and without JavaScript.
 ---
-<div class="docs-arcs" aria-hidden="true" data-docs-arcs>
-  <canvas aria-hidden="true"></canvas>
+<div class="docs-arcs" aria-hidden="true">
   <div class="docs-arcs__still">
     <svg viewBox="0 0 520 520" fill="none" aria-hidden="true" focusable="false">
       <g stroke="var(--iv-color-accent)" stroke-linecap="round" stroke-linejoin="round">
