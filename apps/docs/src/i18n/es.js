@@ -54,7 +54,7 @@ export const t = {
   mmFoundations: "Fundamentos",
   mmReference: "Referencia",
   mmHint: "Esc para cerrar",
-  mmPicks: { card: "Superficies, medios y acciones", hero: "Portadas de borde a borde", timeline: "Sucesos en orden sobre un raíl", carousel: "Efectos cinema, autoplay, miniaturas", datatable: "Ordenar, filtrar, seleccionar, paginar", megamenu: "Este mismo menú" },
+  mmPicks: { card: "Superficies, medios y acciones", hero: "Portadas de borde a borde", timeline: "Sucesos en orden sobre un raíl", carousel: "Efectos cinema, autoplay, miniaturas", datatable: "Ordena y filtra filas, con recuento en vivo", megamenu: "Este mismo menú" },
   fixtureHtml: (title) => `HTML de ${title}`,
   fixturePort: (title) => `Vista previa de ${title}, desplazable`,
   copied: "Copiado",
@@ -140,6 +140,7 @@ export const nav = [
     { href: "/es/getting-started", label: "Primeros pasos" },
     { href: "/es/playground", label: "Playground" },
     { href: "/es/examples", label: "Ejemplos" },
+    { href: "/es/foundations/frameworks", label: "React, Vue y Astro" },
   ] },
   { group: "Fundamentos", items: [
     { href: "/es/foundations/tokens-and-themes", label: "Tokens y temas" },
@@ -168,5 +169,6 @@ export const nav = [
     { href: "/es/changelog", label: "Cambios" },
     { href: "/es/roadmap", label: "Hoja de ruta" },
     { href: "/es/contributing", label: "Contribuir" },
+    { href: "/es/maintenance", label: "Soporte y mantenimiento" },
   ] },
 ];

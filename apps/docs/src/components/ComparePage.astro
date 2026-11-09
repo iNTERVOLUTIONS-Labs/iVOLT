@@ -51,6 +51,7 @@ const schema = [{
           <ul>{t.us.map((x) => <li>{x}</li>)}</ul>
         </div>
       </div>
+      <p class="docs-compare__trust">{es ? <>Quién mantiene iVOLT, cuánto dura el soporte de cada versión y cómo informar de una vulnerabilidad: <a href="/es/maintenance">soporte y mantenimiento</a>.</> : <>Who maintains iVOLT, how long each version gets fixes and how to report a vulnerability: <a href="/maintenance">support and maintenance</a>.</>}</p>
       {t.note6 && <aside class="docs-note"><strong class="docs-note__title">{L.note}</strong><p>{t.note6} <a href={t.note6Source} rel="noopener">{es ? "Anuncio de Bootstrap 6" : "Bootstrap 6 announcement"}</a>.</p></aside>}
     </Section>
 

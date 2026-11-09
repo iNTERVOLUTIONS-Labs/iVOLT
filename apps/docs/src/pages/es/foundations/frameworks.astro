@@ -1,0 +1,80 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Code from "../../../components/Code.astro";
+---
+<Base lang="es" title="iVOLT con React, Vue y Astro" description="iVOLT dentro de un framework de componentes: carga el CSS una vez, arranca el JavaScript sobre el elemento que pintas con init(ref) y límpialo con destroy(ref). Renderizado en servidor, CDN o npm.">
+  <article class="docs-prose">
+    <h1>iVOLT con React, Vue y Astro</h1>
+    <p>iVOLT es ante todo HTML y CSS, así que un framework lo pinta como cualquier otro marcado: escribe las clases y los atributos <code>data-iv-*</code> en tus plantillas. Lo único que hay que conectar es el JavaScript opcional, porque un framework añade y quita elementos cuando la página ya ha cargado, y <code>auto.min.js</code> solo arranca lo que hay en el momento de la carga.</p>
+    <p class="docs-meta"><strong>Exports:</strong> <code>init(root)</code> y <code>destroy(root)</code> de <code>@intervolutions/ivolt</code>. <strong>Envoltorios:</strong> ninguno; con estos patrones basta.</p>
+
+    <Section title="El patrón" num={1} lead="Arranca lo que has pintado y páralo antes de que se vaya.">
+      <p><code>init(root)</code> arranca todos los componentes que hay dentro de <code>root</code> y es idempotente: si lo llamas dos veces sobre el mismo elemento, la segunda no hace nada. <code>destroy(root)</code> quita los escuchadores y el marcado que <code>init</code> añadió dentro. Llama al primero cuando tu componente ya está en el DOM y al segundo cuando está a punto de salir.</p>
+      <p>Carga la hoja de estilo una sola vez para toda la aplicación (en el fichero de entrada o en el layout): <code>import "@intervolutions/ivolt/css/ivolt.css";</code>.</p>
+    </Section>
+
+    <Section title="React" num={2}>
+      <Code label="React" panels={[{ key: "src", label: "JSX", code: `import { useEffect, useRef } from "react";
+import { init, destroy } from "@intervolutions/ivolt";
+
+export function DialogoAlta() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const root = ref.current;
+    init(root);
+    return () => destroy(root);
+  }, []);
+  return (
+    <div ref={ref}>
+      <button className="iv-button iv-button--primary" type="button" data-iv-open="alta">Crear cuenta</button>
+      <dialog className="iv-dialog" id="alta" data-iv-component="dialog" aria-labelledby="alta-titulo">
+        <div className="iv-dialog__panel">…</div>
+      </dialog>
+    </div>
+  );
+}` }]} />
+      <p>Deja que iVOLT gobierne lo que gestiona. Si es el estado de React el que decide si un diálogo está abierto, llama a la API del componente (<code>Dialog.getOrCreate(el).open()</code>) desde un efecto en lugar de poner tú el atributo <code>open</code>, y escucha <code>iv:closed</code> para que tu estado vuelva a cuadrar.</p>
+    </Section>
+
+    <Section title="Vue" num={3}>
+      <Code label="Vue" panels={[{ key: "src", label: "VUE", code: `<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { init, destroy } from "@intervolutions/ivolt";
+
+const root = ref(null);
+onMounted(() => init(root.value));
+onBeforeUnmount(() => destroy(root.value));
+</script>
+
+<template>
+  <div ref="root">
+    <details class="iv-disclosure" data-iv-component="disclosure">
+      <summary class="iv-disclosure__summary">Envío</summary>
+      <div class="iv-disclosure__content">De dos a cuatro días laborables.</div>
+    </details>
+  </div>
+</template>` }]} />
+    </Section>
+
+    <Section title="Astro" num={4}>
+      <p>Una página de Astro es HTML cuando llega al navegador, así que la instalación normal sirve tal cual. Importa el CSS en el layout y arranca el JavaScript en un script de cliente:</p>
+      <Code label="Astro" panels={[{ key: "src", label: "ASTRO", code: `---
+import "@intervolutions/ivolt/css/ivolt.css";
+---
+<slot />
+<script>
+  import "@intervolutions/ivolt/auto";
+</script>` }]} />
+      <p>Con transiciones de vista (<code>&lt;ClientRouter /&gt;</code>) la página se cambia sin recargar: arranca la nueva en <code>astro:page-load</code> con <code>init(document)</code> y limpia en <code>astro:before-swap</code> con <code>destroy(document)</code>. Es lo que hace esta misma web.</p>
+    </Section>
+
+    <Section title="Renderizado en servidor" num={5}>
+      <p>Los módulos nunca tocan <code>document</code> ni <code>window</code> al importarse, así que puedes importarlos en código que también corre en el servidor. Solo <code>init</code> y los métodos de los componentes necesitan un navegador: déjalos en <code>useEffect</code>, <code>onMounted</code> o un script de cliente, que nunca se ejecutan en el servidor. El marcado se pinta en el servidor tal cual, y cada componente funciona como HTML plano antes de que llegue el script: el enlace de un diálogo salta a su sección, las pestañas son enlaces a sus paneles y un campo de fecha es el del propio navegador.</p>
+    </Section>
+
+    <Section title="CDN o npm" num={6}>
+      <p>En una aplicación con empaquetador, instala desde npm (<code>npm install @intervolutions/ivolt</code>) e importa los módulos como arriba: la versión queda fijada en tu lockfile, y una página que necesita un solo componente puede importar solo ese (<code>@intervolutions/ivolt/dialog</code>) y arrancarlo con <code>Dialog.initAll(root)</code>. Las líneas de CDN de <a href="/es/getting-started">primeros pasos</a> son para páginas sin paso de build; en una aplicación con framework cargarían iVOLT por segunda vez, fuera de tu bundle.</p>
+    </Section>
+  </article>
+</Base>

@@ -1,0 +1,80 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Code from "../../components/Code.astro";
+---
+<Base title="Using iVOLT with React, Vue and Astro" description="iVOLT inside a component framework: load the CSS once, start the JavaScript on the element you render with init(ref), clean up with destroy(ref). Server rendering, CDN or npm.">
+  <article class="docs-prose">
+    <h1>Using iVOLT with React, Vue and Astro</h1>
+    <p>iVOLT is HTML and CSS first, so a framework renders it like any other markup: write the classes and the <code>data-iv-*</code> attributes in your templates. The only thing to wire is the optional JavaScript, because a framework adds and removes elements after the page has loaded and <code>auto.min.js</code> only starts what is there when the page loads.</p>
+    <p class="docs-meta"><strong>Exports:</strong> <code>init(root)</code> and <code>destroy(root)</code> from <code>@intervolutions/ivolt</code>. <strong>Wrappers:</strong> none; these patterns are all you need.</p>
+
+    <Section title="The pattern" num={1} lead="Start what you rendered, stop it before it goes.">
+      <p><code>init(root)</code> starts every component inside <code>root</code> and is idempotent: calling it twice on the same element does nothing the second time. <code>destroy(root)</code> removes the listeners and the markup that <code>init</code> added inside it. Call the first when your component is in the DOM, the second when it is about to leave.</p>
+      <p>Load the stylesheet once for the whole app (in your entry file or layout): <code>import "@intervolutions/ivolt/css/ivolt.css";</code>.</p>
+    </Section>
+
+    <Section title="React" num={2}>
+      <Code label="React" panels={[{ key: "src", label: "JSX", code: `import { useEffect, useRef } from "react";
+import { init, destroy } from "@intervolutions/ivolt";
+
+export function SignupDialog() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const root = ref.current;
+    init(root);
+    return () => destroy(root);
+  }, []);
+  return (
+    <div ref={ref}>
+      <button className="iv-button iv-button--primary" type="button" data-iv-open="signup">Create account</button>
+      <dialog className="iv-dialog" id="signup" data-iv-component="dialog" aria-labelledby="signup-title">
+        <div className="iv-dialog__panel">…</div>
+      </dialog>
+    </div>
+  );
+}` }]} />
+      <p>Let iVOLT own what it manages. If React state decides whether a dialog is open, call the component's API (<code>Dialog.getOrCreate(el).open()</code>) from an effect instead of setting <code>open</code> yourself, and listen to <code>iv:closed</code> to bring your state back in line.</p>
+    </Section>
+
+    <Section title="Vue" num={3}>
+      <Code label="Vue" panels={[{ key: "src", label: "VUE", code: `<script setup>
+import { ref, onMounted, onBeforeUnmount } from "vue";
+import { init, destroy } from "@intervolutions/ivolt";
+
+const root = ref(null);
+onMounted(() => init(root.value));
+onBeforeUnmount(() => destroy(root.value));
+</script>
+
+<template>
+  <div ref="root">
+    <details class="iv-disclosure" data-iv-component="disclosure">
+      <summary class="iv-disclosure__summary">Shipping</summary>
+      <div class="iv-disclosure__content">Two to four working days.</div>
+    </details>
+  </div>
+</template>` }]} />
+    </Section>
+
+    <Section title="Astro" num={4}>
+      <p>An Astro page is HTML once it reaches the browser, so the plain setup works as it is. Import the CSS in the layout and start the JavaScript in a client script:</p>
+      <Code label="Astro" panels={[{ key: "src", label: "ASTRO", code: `---
+import "@intervolutions/ivolt/css/ivolt.css";
+---
+<slot />
+<script>
+  import "@intervolutions/ivolt/auto";
+</script>` }]} />
+      <p>With view transitions (<code>&lt;ClientRouter /&gt;</code>) the page is swapped without a reload: start the new page on <code>astro:page-load</code> with <code>init(document)</code> and clean up on <code>astro:before-swap</code> with <code>destroy(document)</code>. This site does exactly that.</p>
+    </Section>
+
+    <Section title="Server rendering" num={5}>
+      <p>The modules never touch <code>document</code> or <code>window</code> when they are imported, so importing them in code that also runs on the server is safe. Only <code>init</code> and the component methods need a browser: keep them in <code>useEffect</code>, <code>onMounted</code> or a client script, which never run on the server. The markup itself renders on the server as it is, and every component works as plain HTML before the script arrives: a dialog link jumps to its section, tabs are links to their panels, a date field is the browser's own.</p>
+    </Section>
+
+    <Section title="CDN or npm" num={6}>
+      <p>In an app with a bundler, install from npm (<code>npm install @intervolutions/ivolt</code>) and import the modules as above: the version is pinned in your lockfile, and a page that needs one component can import that one alone (<code>@intervolutions/ivolt/dialog</code>) and start it with <code>Dialog.initAll(root)</code>. The CDN lines on the <a href="/getting-started">getting started</a> page suit pages without a build step; in a framework app they would load iVOLT a second time, outside your bundle.</p>
+    </Section>
+  </article>
+</Base>

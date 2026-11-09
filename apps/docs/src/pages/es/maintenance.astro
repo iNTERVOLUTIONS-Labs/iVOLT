@@ -1,0 +1,48 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import { version } from "../../lib/version.js";
+const REPO = "https://github.com/iNTERVOLUTIONS-Labs/iVOLT";
+---
+<Base lang="es" title="Soporte y mantenimiento" description="Quién mantiene iVOLT, durante cuánto tiempo recibe arreglos cada versión mayor, cómo informar de un fallo o de una vulnerabilidad y cómo se publican y comprueban las versiones.">
+  <article class="docs-prose">
+    <h1>Soporte y mantenimiento</h1>
+    <p>Antes de construir sobre un framework quieres saber quién hay detrás y durante cuánto tiempo. Esta página lo dice sin rodeos.</p>
+    <p class="docs-meta"><strong>Mantiene:</strong> iNTERVOLUTIONS. <strong>Versión actual:</strong> <code>{version}</code>. <strong>Licencia:</strong> MIT.</p>
+
+    <Section title="Quién lo mantiene" num={1}>
+      <p>iVOLT lo hace y lo mantiene <a href="https://intervolutions.com" rel="noopener">iNTERVOLUTIONS</a>, que lo usa en sus propios proyectos para clientes. El código, las incidencias y cada versión son públicos en <a href={REPO} rel="noopener">GitHub</a>.</p>
+    </Section>
+
+    <Section title="Cuánto dura el soporte de una versión" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th scope="col">Línea</th><th scope="col">Estado</th><th scope="col">Recibe</th></tr></thead>
+          <tbody>
+            <tr><td><code>1.x</code></td><td>Actual</td><td>Novedades en versiones menores, arreglos en parches y arreglos de seguridad</td></tr>
+            <tr><td><code>1.x</code> cuando salga la 2.0</td><td>Mantenida</td><td>Arreglos de fallos y de seguridad durante al menos 12 meses desde la publicación de la 2.0</td></tr>
+            <tr><td>Betas <code>0.x</code></td><td>Sin soporte</td><td>Nada: actualiza a 1.x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Todavía no hay una 2.0 prevista. Cuando la haya, su fecha y el final de los arreglos para 1.x se escribirán aquí y en el <a href="/es/changelog">registro de cambios</a>. Qué puede cambiar una versión mayor, y qué no, está en <a href="/es/foundations/stability">estabilidad</a>.</p>
+    </Section>
+
+    <Section title="Informar de un fallo" num={3}>
+      <p>Abre una incidencia en <a href={`${REPO}/issues`} rel="noopener">GitHub</a> con la versión, el navegador y el HTML más pequeño que muestre el problema (un CodePen desde cualquier escenario de esta web es un buen punto de partida: todos tienen un botón que lo abre). Las preguntas también son bienvenidas allí.</p>
+    </Section>
+
+    <Section title="Informar de una vulnerabilidad" num={4}>
+      <p>No abras una incidencia pública. Comunícala en privado mediante el <a href={`${REPO}/security/advisories/new`} rel="noopener">aviso privado de vulnerabilidades de GitHub</a>: solo la ven los mantenedores. Recibirás respuesta, el arreglo sale en un parche para cada línea con soporte y el aviso se publica junto con la versión. El fichero <code>SECURITY.md</code> del repositorio tiene los detalles.</p>
+    </Section>
+
+    <Section title="Versiones" num={5}>
+      <ul>
+        <li>Los <strong>parches</strong> salen cuando un arreglo está listo; no hay calendario fijo.</li>
+        <li>Las versiones <strong>menores</strong> agrupan componentes, tokens y opciones nuevos cuando están terminados y probados.</li>
+        <li>Cada versión aparece en el <a href="/es/changelog">registro de cambios</a> y se publica en npm como <code>@intervolutions/ivolt</code>.</li>
+        <li>Antes de publicar, una sola orden compila el paquete, pasa las pruebas unitarias y la batería de navegador en Chromium, Firefox y WebKit, comprueba los presupuestos de tamaño e instala el paquete empaquetado en un proyecto limpio. La <a href={`${REPO}/actions`} rel="noopener">integración continua</a> corre en GitHub.</li>
+      </ul>
+    </Section>
+  </article>
+</Base>

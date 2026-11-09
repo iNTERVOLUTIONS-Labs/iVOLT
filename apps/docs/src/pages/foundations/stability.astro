@@ -57,7 +57,7 @@ import Code from "../../components/Code.astro";
       <p><code>npm install @intervolutions/ivolt</code> gives you the current stable release. Pin an exact version in production.</p>
     </Section>
 
-    <Section title="Browsers" num={3} lead={`The floor is Chromium 113, Firefox 113 and Safari 16.4, with their mobile counterparts, and every release is tested in Chromium, Firefox and WebKit. Raising that floor is a major change.`}>
+    <Section title="Browsers" num={3} lead={`The floor is Chrome and Edge 111, Firefox 113 and Safari 16.4 (Samsung Internet 22), with their mobile counterparts, and every release is tested in Chromium, Firefox and WebKit. Raising that floor is a major change.`}>
       <p>Several features are progressive enhancement and are declared as such: the <code>popover</code> attribute, <code>text-wrap: balance</code>, <code>animation-timeline</code> (Firefox gets the same motion through the scroll-motion fallback), <code>position-anchor</code>, <code>backdrop-filter</code> and <code>field-sizing</code>. No public feature depends on any of them; an older engine gets a plainer result, not a broken one.</p>
     </Section>
 
@@ -74,6 +74,7 @@ import Code from "../../components/Code.astro";
       <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `npm run verify` }]} />
       <p>It builds the package, runs the unit and contract tests, drives the browser suite in the three engines, measures the bundles against their budgets, packs the tarball and installs it into a throwaway consumer, then builds this site and the examples. On top of that, a contract test regenerates the reference and fails if a public class, option, event or token is not documented anywhere — which is why the <a href="/reference">reference</a> and the pages cannot drift apart.</p>
       <p>What a run could not verify is written down rather than glossed over: that list lives with the project state, next to the results.</p>
+      <p>Who maintains iVOLT, how long 1.x gets fixes once 2.0 is out, and how to report a vulnerability privately: <a href="/maintenance">support and maintenance</a>.</p>
     </Section>
   </article>
 </Base>

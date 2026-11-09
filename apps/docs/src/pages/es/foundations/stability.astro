@@ -57,7 +57,7 @@ import Code from "../../../components/Code.astro";
       <p><code>npm install @intervolutions/ivolt</code> te da la versión estable vigente. Fija una versión exacta en producción.</p>
     </Section>
 
-    <Section title="Navegadores" num={3} lead={`El mínimo es Chromium 113, Firefox 113 y Safari 16.4, con sus versiones móviles, y cada publicación se prueba en Chromium, Firefox y WebKit. Subir ese mínimo es un cambio mayor.`}>
+    <Section title="Navegadores" num={3} lead={`El mínimo es Chrome y Edge 111, Firefox 113 y Safari 16.4 (Samsung Internet 22), con sus versiones móviles, y cada publicación se prueba en Chromium, Firefox y WebKit. Subir ese mínimo es un cambio mayor.`}>
       <p>Varias funciones son mejora progresiva y así están declaradas: el atributo <code>popover</code>, <code>text-wrap: balance</code>, <code>animation-timeline</code> (en Firefox el mismo movimiento llega por la reserva de movimiento por scroll), <code>position-anchor</code>, <code>backdrop-filter</code> y <code>field-sizing</code>. Ninguna función pública depende de ellas; un motor antiguo obtiene un resultado más sobrio, no uno roto.</p>
     </Section>
 
@@ -74,6 +74,7 @@ import Code from "../../../components/Code.astro";
       <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `npm run verify` }]} />
       <p>Construye el paquete, corre las unitarias y las de contrato, lanza la suite de navegador en los tres motores, mide los paquetes contra su presupuesto, empaqueta el tarball y lo instala en un consumidor desechable, y después construye esta web y los ejemplos. Encima de eso, una prueba de contrato regenera la referencia y falla si una clase, opción, evento o token público no está documentado en ningún sitio: por eso la <a href="/es/reference">referencia</a> y las páginas no pueden separarse.</p>
       <p>Lo que una pasada no pudo verificar se escribe en vez de taparse: esa lista vive junto al estado del proyecto, al lado de los resultados.</p>
+      <p>Quién mantiene iVOLT, cuánto tiempo recibe arreglos la 1.x cuando salga la 2.0 y cómo informar de una vulnerabilidad en privado: <a href="/es/maintenance">soporte y mantenimiento</a>.</p>
     </Section>
   </article>
 </Base>
