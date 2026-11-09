@@ -74,7 +74,8 @@ test.describe("Site shell", () => {
     await page.setViewportSize({ width: 1440, height: 900 });
     for (const [route, start] of [["/components/button", "Getting started"], ["/es/components/button", "Primeros pasos"]]) {
       await page.goto(DOCS + route);
-      expect(await page.locator(".docs-sitemap__col").count(), route).toBe(4);
+      // Five groups since 1.1: Start, Foundations, Components, Explore (themes, blocks, compare…), Project.
+      expect(await page.locator(".docs-sitemap__col").count(), route).toBe(5);
       await expect(page.locator(`.docs-sitemap a:text-is("${start}")`)).toHaveCount(1);
     }
   });

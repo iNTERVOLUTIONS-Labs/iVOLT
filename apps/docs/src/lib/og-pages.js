@@ -42,6 +42,12 @@ export function ogPages() {
       }
     }
   }
+  // Pages that live under a navigation entry rather than in it.
+  const vs = { bootstrap: "Bootstrap", tailwind: "Tailwind CSS", pico: "Pico CSS", bulma: "Bulma" };
+  for (const [slug, name] of Object.entries(vs)) {
+    out.push({ path: `/compare/${slug}`, lang: "en", eyebrow: "Compare", title: `iVOLT vs ${name}`, tagline: "Measured sizes, honest trade-offs and a class map to move over." });
+    out.push({ path: `/es/compare/${slug}`, lang: "es", eyebrow: "Comparar", title: `iVOLT o ${name}`, tagline: "Tamaños medidos, ventajas e inconvenientes y un mapa de clases para migrar." });
+  }
   return out;
 }
 

@@ -4,7 +4,7 @@ import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Pestañas ARIA desde HTML normal" description="Pestañas de iVOLT: enlaces de ancla y secciones servidos como HTML normal, promovidos al patrón ARIA de pestañas, con activación automática o manual.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Pestañas (tabs)</h1>
     <p>El servidor envía enlaces de ancla y secciones con sus títulos, que funcionan como navegación dentro de la página sin JavaScript. En el <code>init</code>, el componente los promociona al patrón ARIA de pestañas y oculta los paneles inactivos; <code>destroy</code> restaura el HTML servido.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/tabs.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/tabs</code> o <code>auto.js</code>.</p>
@@ -29,6 +29,17 @@ import Stage from "../../../components/Stage.astro";
 
     <Section title="Errores frecuentes" num={5}>
       <ul><li>Poner <code>role="tab"</code> en el HTML servido: sin el script, anuncia un widget que no funciona.</li><li>Pestañas para pasos secuenciales; usa un flujo de formulario.</li></ul>
+    </Section>
+    <Section title="Personalizar" num={6}>
+      <p>Locales: <code>--iv-tabs-indicator</code> (el color de la línea bajo la pestaña activa) y <code>--iv-tabs-gap</code>. La disposición vertical es un modificador, <code>iv-tabs--vertical</code>, que se combina con <code>data-iv-orientation="vertical"</code> para que las flechas sigan a la disposición.</p><pre tabindex="0"><code>.settings .iv-tabs &#123; --iv-tabs-indicator: var(--iv-color-accent); &#125;</code></pre>
+    </Section>
+
+    <Section title="Enlazar a una pestaña" num={7}>
+      <p>Cada panel conserva el id con el que se sirvió y cada pestaña es un enlace a él, así que una URL como <code>/pricing#p-yearly</code> sigue siendo una dirección con sentido: sin el script lleva a esa sección, y los títulos de los paneles (<code>iv-tabs__heading</code>) dan nombre a cada sección en los dos casos.</p>
+    </Section>
+
+    <Section title="¿Pestañas u otra cosa?" num={8}>
+      <p>Las pestañas sirven para unas pocas vistas paralelas de lo mismo —planes, grupos de ajustes, código en varios lenguajes— cuando se lee una cada vez. Con más de cinco o seis pestañas, o etiquetas que no caben en una línea en el móvil, usa una lista de secciones o un grupo de <a href="/es/components/disclosure">disclosures</a>. Para pasos que van en orden, usa el <a href="/es/components/stepper">stepper</a>.</p>
     </Section>
   </article>
 </Base>

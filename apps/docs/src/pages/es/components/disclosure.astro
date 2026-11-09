@@ -4,7 +4,7 @@ import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Desplegable y acordeón" description="Desplegable y acordeón de iVOLT: details/summary nativos con JavaScript opcional para eventos cancelables y acordeones exclusivos.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Desplegable (disclosure) y acordeón</h1>
     <p>Construido sobre <code>&lt;details&gt;</code>, así que funciona sin JavaScript. El componente opcional añade eventos cancelables y el comportamiento de acordeón <code>exclusive</code>.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/disclosure.css</code>. <strong>JS (opcional):</strong> <code>@intervolutions/ivolt/disclosure</code> o <code>auto.js</code>.</p>
@@ -28,6 +28,26 @@ import Stage from "../../../components/Stage.astro";
 
     <Section title="Errores frecuentes" num={4}>
       <ul><li>Esconder contenido esencial en un desplegable cerrado sin otra forma de llegar a él, por ejemplo precios o textos legales.</li><li>Anidar controles interactivos dentro de <code>&lt;summary&gt;</code>.</li></ul>
+    </Section>
+    <Section title="Grupos exclusivos nativos" num={5}>
+      <p>Los navegadores ya admiten grupos exclusivos de forma nativa: da a varios <code>&lt;details&gt;</code> el mismo atributo <code>name</code> y al abrir uno se cierran los demás, sin script. Las preguntas frecuentes de la portada de esta web están hechas así. <code>data-iv-exclusive</code> da el mismo comportamiento donde <code>name</code> no está soportado y añade los eventos cancelables.</p><pre tabindex="0"><code>&lt;div class="iv-accordion"&gt;
+  &lt;details class="iv-disclosure" name="faq" open&gt;
+    &lt;summary class="iv-disclosure__summary"&gt;¿Es gratis?&lt;/summary&gt;
+    &lt;div class="iv-disclosure__content"&gt;&lt;p&gt;Sí, MIT.&lt;/p&gt;&lt;/div&gt;
+  &lt;/details&gt;
+  &lt;details class="iv-disclosure" name="faq"&gt;
+    &lt;summary class="iv-disclosure__summary"&gt;¿Necesita paso de build?&lt;/summary&gt;
+    &lt;div class="iv-disclosure__content"&gt;&lt;p&gt;No.&lt;/p&gt;&lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
+    </Section>
+
+    <Section title="Personalizar" num={6}>
+      <p>Locales: <code>--iv-disclosure-bg</code>, <code>--iv-disclosure-radius</code>, <code>--iv-disclosure-px</code> y <code>--iv-disclosure-py</code> (el relleno). El marcador gira con el estado abierto y se queda quieto con <code>prefers-reduced-motion</code>.</p>
+    </Section>
+
+    <Section title="Buscar en la página" num={7}>
+      <p>El texto de un <code>&lt;details&gt;</code> cerrado lo encuentra la búsqueda del navegador en los navegadores actuales basados en Chromium, que abren el panel por ti. El contenido oculto con CSS o generado al pulsar, no. Otro motivo para conservar el elemento nativo en vez de reconstruirlo.</p>
     </Section>
   </article>
 </Base>

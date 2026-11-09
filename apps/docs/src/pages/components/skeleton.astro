@@ -4,15 +4,29 @@ import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
 <Base title="Skeleton: placeholders while loading" description="iVOLT skeleton: placeholder blocks shown while content loads, with shimmer animation and reduced-motion fallback. CSS only.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Skeleton</h1>
     <p>Placeholder shapes while content loads. Skeletons are decorative: hide them from assistive technology with <code>aria-hidden="true"</code> and mark the waiting container with <code>aria-busy="true"</code>. Replace them with real content; do not leave them in the DOM.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/skeleton.css</code> (in <code>ivolt.css</code>).</p>
     <Stage primary name="skeleton/card" title="A card while it loads" />
     <Section title="Modifiers" num={1} lead={`--text, --title, --circle, --rect. The shimmer uses @keyframes iv-shimmer and is static under prefers-reduced-motion.`}>
     </Section>
+    <Section title="The loading pattern" num={2}>
+      <p>A skeleton is only half of the pattern. The container that is waiting says so with <code>aria-busy="true"</code>, the shapes are hidden from assistive technology, and when the data arrives you replace the shapes and remove the attribute. Screen readers hear the state, not a list of empty boxes.</p><pre tabindex="0"><code>&lt;article class="iv-card" aria-busy="true"&gt;
+  &lt;div class="iv-card__body iv-stack"&gt;
+    &lt;span class="iv-skeleton iv-skeleton--title" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="iv-skeleton iv-skeleton--text" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="iv-skeleton iv-skeleton--text" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre><p>Match the shapes to the real content (a circle where the avatar will be, two lines where the text will be) so nothing jumps when it arrives. If loading is quick, do not show a skeleton at all: a flash of grey is worse than a short wait.</p>
+    </Section>
 
-    <Section title="Class index" num={2}>
+    <Section title="Customising" num={3}>
+      <p>Locals: <code>--iv-skeleton-bg</code>, <code>--iv-skeleton-highlight</code> (the sweep, mixed halfway towards the strong border so it shows in both themes) and <code>--iv-skeleton-radius</code>. Under <code>prefers-reduced-motion: reduce</code> the sweep stops and the shapes stay as flat blocks.</p>
+    </Section>
+
+
+    <Section title="Class index" num={4}>
       <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>

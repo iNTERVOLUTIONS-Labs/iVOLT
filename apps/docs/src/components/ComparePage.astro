@@ -1,0 +1,97 @@
+---
+// One comparison page (iVOLT next to one framework), in either language. Content and the class
+// map live in src/data/compare.js; the sizes in competitor-sizes.json, measured by a committed
+// script and never typed by hand.
+import Base from "../layouts/Base.astro";
+import Section from "./Section.astro";
+import Code from "./Code.astro";
+import SizeTable from "./SizeTable.astro";
+import { competitors, file, slugs } from "../data/compare.js";
+import "../styles/compare.css";
+
+const { id, lang = "en" } = Astro.props;
+const c = competitors[id];
+const t = c[lang];
+const es = lang === "es";
+const base = es ? "/es" : "";
+const rows = [file("ivolt", "css"), file("ivolt", "js"), ...c.files(), ...(c.extra ? c.extra() : [])].filter(Boolean);
+const L = es
+  ? { measured: "Lo que se descarga", measuredLead: "Ficheros publicados en jsDelivr en versiones fijas; la medida es reproducible.", them: `Qué es ${c.name}`, us: "Qué es iVOLT", same: "Lo mismo, de las dos formas", map: "De una clase a otra", mapThem: c.name, mapUs: "iVOLT", whenThem: `Cuándo conviene ${c.name}`, whenUs: "Cuándo conviene iVOLT", start: "Pruébalo en cinco minutos", startLead: "Enlaza una hoja y un script, o instálalo desde npm. Puedes tenerlo junto a tu CSS actual mientras migras: todo lleva prefijo y está acotado a .iv-root.", go: "Primeros pasos", browse: "Ver los componentes", others: "Otras comparaciones", source: `Documentación de ${c.name}`, hub: "Todas las comparaciones", note: "Nota" }
+  : { measured: "What you download", measuredLead: "Files published on jsDelivr at pinned versions; the measurement is reproducible.", them: `What ${c.name} is`, us: "What iVOLT is", same: "The same thing, both ways", map: "From one class to the other", mapThem: c.name, mapUs: "iVOLT", whenThem: `When ${c.name} is the better choice`, whenUs: "When iVOLT is the better choice", start: "Try it in five minutes", startLead: "Link one stylesheet and one script, or install it from npm. It can sit beside your current CSS while you migrate: everything is prefixed and scoped to .iv-root.", go: "Get started", browse: "Browse the components", others: "Other comparisons", source: `${c.name} documentation`, hub: "All comparisons", note: "Note" };
+const hubTitle = es ? "Comparar" : "Compare";
+const schema = [{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: t.h1,
+  itemListElement: [
+    { "@type": "ListItem", position: 1, item: { "@type": "SoftwareApplication", name: "iVOLT", applicationCategory: "DeveloperApplication", operatingSystem: "Any", softwareVersion: rows[0]?.version, license: "https://opensource.org/licenses/MIT", offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" } } },
+    { "@type": "ListItem", position: 2, item: { "@type": "SoftwareApplication", name: c.name, applicationCategory: "DeveloperApplication", operatingSystem: "Any", softwareVersion: c.version, url: c.source } },
+  ],
+}];
+---
+<Base title={t.title} description={t.description} lang={lang} schema={schema}>
+  <article class="docs-prose docs-compare">
+    <p class="docs-compare__crumbs"><a href={`${base}/compare`}>{hubTitle}</a> <span aria-hidden="true">/</span> {c.name}</p>
+    <h1>{t.h1}</h1>
+    <p>{t.lead}</p>
+    <p class="docs-meta"><strong>{es ? "Versiones" : "Versions"}:</strong> iVOLT {rows[0]?.version} · {c.name} {c.version}. <strong>{es ? "Fuente" : "Source"}:</strong> <a href={c.source} rel="noopener">{L.source}</a>.</p>
+
+    <Section title={L.measured} num={1} lead={L.measuredLead}>
+      <SizeTable rows={rows} lang={lang} />
+    </Section>
+
+    <Section title={es ? "Las dos, en una línea cada una" : "Each one, in a few lines"} num={2}>
+      <div class="docs-compare__pair">
+        <div class="docs-compare__col">
+          <h3>{L.them}</h3>
+          <ul>{t.them.map((x) => <li>{x}</li>)}</ul>
+        </div>
+        <div class="docs-compare__col docs-compare__col--us">
+          <h3>{L.us}</h3>
+          <ul>{t.us.map((x) => <li>{x}</li>)}</ul>
+        </div>
+      </div>
+      {t.note6 && <aside class="docs-note"><strong class="docs-note__title">{L.note}</strong><p>{t.note6} <a href={t.note6Source} rel="noopener">{es ? "Anuncio de Bootstrap 6" : "Bootstrap 6 announcement"}</a>.</p></aside>}
+    </Section>
+
+    <Section title={L.same} num={3}>
+      <div class="docs-compare__code">
+        <Code panels={[{ key: "them", label: c.name, code: c.snippet.them }]} label={c.name} id={`cmp-${id}-them`} />
+        <Code panels={[{ key: "us", label: "iVOLT", code: c.snippet.us }]} label="iVOLT" id={`cmp-${id}-us`} />
+      </div>
+    </Section>
+
+    <Section title={L.map} num={4}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th scope="col">{L.mapThem}</th><th scope="col">{L.mapUs}</th></tr></thead>
+          <tbody>{c.map.map(([a, b]) => <tr><td><code>{a}</code></td><td><code>{b}</code></td></tr>)}</tbody>
+        </table>
+      </div>
+      <p>{es ? "La lista completa de clases, tokens y atributos está en la " : "Every class, token and attribute is listed in the "}<a href={`${base}/reference`}>{es ? "referencia" : "reference"}</a>.</p>
+    </Section>
+
+    <Section title={es ? "Cuál elegir" : "Which one to pick"} num={5}>
+      <div class="docs-compare__pair">
+        <div class="docs-compare__col">
+          <h3>{L.whenThem}</h3>
+          <ul>{t.betterThem.map((x) => <li>{x}</li>)}</ul>
+        </div>
+        <div class="docs-compare__col docs-compare__col--us">
+          <h3>{L.whenUs}</h3>
+          <ul>{t.betterUs.map((x) => <li>{x}</li>)}</ul>
+        </div>
+      </div>
+    </Section>
+
+    <section class="docs-compare__cta" aria-labelledby={`cmp-${id}-start`}>
+      <h2 id={`cmp-${id}-start`}>{L.start}</h2>
+      <p>{L.startLead}</p>
+      <div class="iv-cluster">
+        <a class="iv-button iv-button--primary iv-button--lg" href={`${base}/getting-started`}>{L.go}</a>
+        <a class="iv-button iv-button--secondary iv-button--lg" href={`${base}/components/button`}>{L.browse}</a>
+      </div>
+      <p class="docs-compare__others">{L.others}: {slugs.filter((s) => s !== id).map((s, i) => <Fragment>{i > 0 && " · "}<a href={`${base}/compare/${s}`}>{competitors[s].name}</a></Fragment>)} · <a href={`${base}/compare`}>{L.hub}</a></p>
+    </section>
+  </article>
+</Base>

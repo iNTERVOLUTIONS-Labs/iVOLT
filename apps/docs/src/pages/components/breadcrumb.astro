@@ -4,7 +4,7 @@ import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
 <Base title="Breadcrumb: an accessible trail" description="iVOLT breadcrumb: an ordered list of links inside a labelled nav, with a CSS separator and aria-current on the last item. CSS only.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Breadcrumb</h1>
     <p>Shows where the current page sits in the site hierarchy. The separator is drawn with CSS so screen readers only read the links.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/breadcrumb.css</code> (in <code>ivolt.css</code>).</p>
@@ -16,6 +16,23 @@ import Stage from "../../components/Stage.astro";
 
     <Section title="Common mistakes" num={2}>
       <ul><li>Separator characters typed into the HTML (they get read aloud).</li><li>Linking the current page to itself.</li></ul>
+    </Section>
+    <Section title="Full example" num={3}>
+      <p>The trail is an ordered list, because the order is the meaning. The <code>nav</code> gets its own name so it can be told apart from the main navigation in the landmarks list of a screen reader.</p><pre tabindex="0"><code>&lt;nav class="iv-breadcrumb" aria-label="Breadcrumb"&gt;
+  &lt;ol class="iv-breadcrumb__list"&gt;
+    &lt;li class="iv-breadcrumb__item"&gt;&lt;a href="/"&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="iv-breadcrumb__item"&gt;&lt;a href="/docs"&gt;Docs&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="iv-breadcrumb__item" aria-current="page"&gt;Breadcrumb&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+    </Section>
+
+    <Section title="How the separator works" num={4}>
+      <p>The separator is a masked inline SVG on <code>::before</code>, never a character in the HTML, so it is not announced and it takes the text colour of the theme through <code>currentColor</code>. It is drawn only between items (adjacent-sibling selector). The list wraps onto several lines on a narrow screen instead of scrolling sideways.</p><p>Locals: <code>--iv-breadcrumb-gap</code> (space around the separator) and <code>--iv-breadcrumb-separator-size</code>.</p>
+    </Section>
+
+    <Section title="Search engines" num={5}>
+      <p>The visible trail does not tell a search engine about your hierarchy on its own. If you want breadcrumbs in search results, add a <code>BreadcrumbList</code> in JSON-LD with the same items; this site does exactly that on every documentation page.</p>
     </Section>
   </article>
 </Base>

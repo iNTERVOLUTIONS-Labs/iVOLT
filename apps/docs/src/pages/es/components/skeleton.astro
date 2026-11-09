@@ -4,15 +4,29 @@ import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Esqueleto: marcadores de carga" description="Esqueleto de iVOLT: bloques de marcador de posición mientras carga el contenido, con animación de brillo y alternativa con reducción de movimiento. Solo CSS.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Esqueleto (skeleton)</h1>
     <p>Formas de marcador de posición mientras carga el contenido. Los esqueletos son decorativos: ocúltalos a la tecnología asistiva con <code>aria-hidden="true"</code> y marca el contenedor que espera con <code>aria-busy="true"</code>. Sustitúyelos por el contenido real; no los dejes en el DOM.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/skeleton.css</code> (dentro de <code>ivolt.css</code>).</p>
     <Stage primary name="skeleton/card" title="Una tarjeta mientras carga" />
     <Section title="Modificadores" num={1} lead={`--text, --title, --circle, --rect. El brillo usa @keyframes iv-shimmer y queda estático bajo prefers-reduced-motion.`}>
     </Section>
+    <Section title="El patrón de carga" num={2}>
+      <p>Un skeleton es solo la mitad del patrón. El contenedor que espera lo dice con <code>aria-busy="true"</code>, las formas se ocultan a las tecnologías de apoyo y, cuando llegan los datos, sustituyes las formas y quitas el atributo. Los lectores de pantalla oyen el estado, no una lista de cajas vacías.</p><pre tabindex="0"><code>&lt;article class="iv-card" aria-busy="true"&gt;
+  &lt;div class="iv-card__body iv-stack"&gt;
+    &lt;span class="iv-skeleton iv-skeleton--title" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="iv-skeleton iv-skeleton--text" aria-hidden="true"&gt;&lt;/span&gt;
+    &lt;span class="iv-skeleton iv-skeleton--text" aria-hidden="true"&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre><p>Haz que las formas coincidan con el contenido real (un círculo donde irá el avatar, dos líneas donde irá el texto) para que nada salte al llegar. Si la carga es rápida, no muestres skeleton: un destello gris es peor que una espera corta.</p>
+    </Section>
 
-    <Section title="Índice de clases" num={2}>
+    <Section title="Personalizar" num={3}>
+      <p>Locales: <code>--iv-skeleton-bg</code>, <code>--iv-skeleton-highlight</code> (el barrido, mezclado a medio camino hacia el borde fuerte para que se vea en los dos temas) y <code>--iv-skeleton-radius</code>. Con <code>prefers-reduced-motion: reduce</code> el barrido se detiene y las formas quedan como bloques planos.</p>
+    </Section>
+
+
+    <Section title="Índice de clases" num={4}>
       <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>

@@ -4,7 +4,7 @@ import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
 <Base title="Badge: status labels in pure CSS" description="iVOLT badge: small status labels in subtle and solid colour variants, sized and coloured from the design tokens. CSS only, no JavaScript involved.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Badge</h1>
     <p>A compact label for status or counts. Badges are not interactive; if the label matters to assistive technology, keep it as real text, not colour alone.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/badge.css</code> (in <code>ivolt.css</code>).</p>
@@ -17,8 +17,20 @@ import Stage from "../../components/Stage.astro";
     <Section title="Common mistakes" num={2}>
       <ul><li>Using a badge as a button; use <code>iv-button--sm</code> instead.</li><li>Conveying state by colour only: include a word such as “Paid”.</li></ul>
     </Section>
+    <Section title="When to use a badge" num={3}>
+      <p>A badge labels something that is already on the screen: the status of an invoice, the plan of an account, the number of unread items next to a link. It is read as part of the sentence or the row it sits in, so keep the word short and specific — “Paid”, “Beta”, “3 new” — and put the full explanation in the surrounding text.</p><p>If the label has to be clicked, it is a button (<code>iv-button iv-button--sm</code>); if it summarises a number that needs context, a <a href="/components/stat">stat</a> says more; if it announces something that just happened, use an <a href="/components/alert">alert</a> or a <a href="/components/toast">toast</a>.</p>
+    </Section>
 
-    <Section title="Class index" num={3}>
+    <Section title="Customising" num={4}>
+      <p>A variant only reassigns the tone locals, and <code>--solid</code> only swaps background and foreground, so any tone combines with <code>--solid</code> without a third class. To make a brand-new tone, set the locals on a class of your own:</p><pre tabindex="0"><code>.badge-teal &#123;
+  --iv-badge-tone: #0f766e;
+  --iv-badge-tone-subtle: #ccfbf1;
+  --iv-badge-on-tone: #ffffff;
+&#125;</code></pre><p>Locals: <code>--iv-badge-tone</code>, <code>--iv-badge-tone-subtle</code>, <code>--iv-badge-on-tone</code>, <code>--iv-badge-bg</code>, <code>--iv-badge-fg</code>, <code>--iv-badge-border</code>, <code>--iv-badge-radius</code>. Check the contrast of a custom tone yourself; the shipped tones are tested in both themes.</p>
+    </Section>
+
+
+    <Section title="Class index" num={5}>
       <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>
