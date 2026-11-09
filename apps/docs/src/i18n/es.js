@@ -66,6 +66,7 @@ export const t = {
   // El escenario vivo (ronda 3): una fixture corriendo en su propia página con controles reales.
   tableScroll: "Tabla, desplazable",
   stageOpen: "Abrir sola",
+  stageFail: "No se ha podido cargar la demo.",
   stageDirection: "Dirección del texto",
   stageWidth: "Ancho del escenario",
   stageWidthPhone: "Móvil, 390 píxeles",

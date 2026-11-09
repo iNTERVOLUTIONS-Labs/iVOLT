@@ -66,6 +66,7 @@ export const t = {
   // The live stage (round 3): a fixture running in its own page with real controls over it.
   tableScroll: "Table, scrollable",
   stageOpen: "Open alone",
+  stageFail: "Couldn't load the demo.",
   stageDirection: "Text direction",
   stageWidth: "Stage width",
   stageWidthPhone: "Phone, 390 pixels",

@@ -5,7 +5,7 @@ import { resolve, dirname } from "node:path";
 import { t as en } from "../i18n/en.js";
 import { t as es } from "../i18n/es.js";
 const { name, title = name, minHeight, viewport } = Astro.props;
-const t = Astro.url.pathname === "/es" || Astro.url.pathname.startsWith("/es/") ? es : en;
+const t = /^\/es(\.html|\/|$)/.test(Astro.url.pathname) ? es : en;
 // Locate the repository root from the working directory (Astro's prerender chunks move import.meta.url).
 let dir = process.cwd();
 while (!existsSync(resolve(dir, "packages/ivolt/fixtures")) && dirname(dir) !== dir) dir = dirname(dir);
