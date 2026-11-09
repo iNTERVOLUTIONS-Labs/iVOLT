@@ -5,6 +5,7 @@
 // own documentation makes, with the link beside it; and every page says when the other framework
 // is the better choice. A comparison that only flatters iVOLT is an advert, and readers can tell.
 import sizes from "./competitor-sizes.json";
+import { componentCount as N, cssCount as C, jsCount as J, words, Words } from "../lib/count.js";
 
 export const measured = sizes.measured;
 export const method = sizes.method;
@@ -44,7 +45,7 @@ export const competitors = {
       us: [
         "Plain CSS in cascade layers, prefixed iv-, scoped to .iv-root so it can live beside existing CSS; a flat build without layers too.",
         "light, dark and system themes on any element with data-iv-theme; every colour, radius and font is a --iv- token.",
-        "Thirty-three components: fourteen are CSS only; nineteen gain optional JavaScript, including a combobox, a datepicker, a data table, a command palette, a lightbox and a megamenu.",
+        `${Words(N)} components: ${words(C)} are CSS only; ${words(J)} gain optional JavaScript, including a combobox, a datepicker, a data table, a command palette, a lightbox and a megamenu.`,
         "Right-to-left from the same stylesheet, with logical properties throughout.",
         "A fixed utility matrix: no generator, no arbitrary values, the same classes everywhere.",
       ],
@@ -76,7 +77,7 @@ export const competitors = {
       us: [
         "CSS plano en capas de cascada, con prefijo iv- y acotado a .iv-root para convivir con el CSS que ya tengas; también hay un build plano sin capas.",
         "Temas claro, oscuro y de sistema en cualquier elemento con data-iv-theme; cada color, radio y fuente es un token --iv-.",
-        "Treinta y tres componentes: catorce son solo CSS y diecinueve ganan JavaScript opcional, entre ellos un combobox, un selector de fechas, una tabla de datos, una paleta de comandos, un visor y un megamenú.",
+        `${Words(N, "es")} componentes: ${words(C, "es")} son solo CSS y ${words(J, "es")} ganan JavaScript opcional, entre ellos un combobox, un selector de fechas, una tabla de datos, una paleta de comandos, un visor y un megamenú.`,
         "Derecha a izquierda con la misma hoja, con propiedades lógicas en todo el código.",
         "Una matriz fija de utilidades: sin generador, sin valores arbitrarios, las mismas clases en todas partes.",
       ],
@@ -146,7 +147,7 @@ export const competitors = {
       ],
       us: [
         "Prebuilt: link ivolt.min.css from a CDN or your own server and every class already exists. Nothing reads your markup.",
-        "Thirty-three components with their states, focus handling and keyboard support; nineteen gain optional JavaScript.",
+        `${Words(N)} components with their states, focus handling and keyboard support; ${words(J)} gain optional JavaScript.`,
         "Themes through --iv- tokens and data-iv-theme on any element; no variant prefixes in the markup.",
         "A finite utility matrix (layout, spacing, display, text) with no arbitrary values, so markup stays readable and an assistant cannot invent a class that does not exist.",
         "Everything prefixed iv- and scoped to .iv-root, so the two can share a page while you migrate.",
@@ -177,7 +178,7 @@ export const competitors = {
       ],
       us: [
         "Precompilado: enlazas ivolt.min.css desde un CDN o tu servidor y todas las clases ya existen. Nada lee tu marcado.",
-        "Treinta y tres componentes con sus estados, gestión del foco y teclado; diecinueve ganan JavaScript opcional.",
+        `${Words(N, "es")} componentes con sus estados, gestión del foco y teclado; ${words(J, "es")} ganan JavaScript opcional.`,
         "Temas con tokens --iv- y data-iv-theme en cualquier elemento; sin prefijos de variante en el marcado.",
         "Una matriz finita de utilidades (maquetación, espaciado, display, texto) sin valores arbitrarios: el marcado se lee bien y un asistente no puede inventarse una clase que no existe.",
         "Todo lleva prefijo iv- y está acotado a .iv-root, así que los dos pueden compartir página mientras migras.",
@@ -234,7 +235,7 @@ export const competitors = {
       ],
       us: [
         "core.min.css styles text, headings, lists, tables, code, quotes and media by element under .iv-root; forms and buttons take a class (iv-input, iv-button), so they never fight another stylesheet.",
-        "The full ivolt.min.css adds thirty-three components, with optional JavaScript for the interactive ones.",
+        `The full ivolt.min.css adds ${words(N)} components, with optional JavaScript for the interactive ones.`,
         "data-iv-theme=\"light|dark|system\" on any element, nested if you like.",
         "Maintained, versioned with SemVer, tested in Chromium, Firefox and WebKit, with axe in the test suite.",
       ],
@@ -261,7 +262,7 @@ export const competitors = {
       ],
       us: [
         "core.min.css estila por elemento el texto, los títulos, las listas, las tablas, el código, las citas y los medios bajo .iv-root; formularios y botones llevan una clase (iv-input, iv-button), así nunca chocan con otra hoja.",
-        "El ivolt.min.css completo suma treinta y tres componentes, con JavaScript opcional para los interactivos.",
+        `El ivolt.min.css completo suma ${words(N, "es")} componentes, con JavaScript opcional para los interactivos.`,
         "data-iv-theme=\"light|dark|system\" en cualquier elemento, anidado si quieres.",
         "Mantenido, versionado con SemVer, probado en Chromium, Firefox y WebKit, con axe en las pruebas.",
       ],

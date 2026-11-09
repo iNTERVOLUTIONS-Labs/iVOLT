@@ -1,0 +1,78 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Bloque de código: fragmento con botón de copiar" description="Bloque de código de iVOLT: barra con archivo, lenguaje y botón de copiar accesible sobre un pre con scroll, con líneas marcadas y variante clara.">
+  <article class="docs-prose" data-enriched>
+    <h1>Bloque de código</h1>
+    <p>Un marco para un fragmento: una barra con el nombre del archivo, el lenguaje y un botón de copiar, sobre un <code>&lt;pre&gt;</code> con scroll. El panel es el azul marino profundo de la marca en los dos temas, como el terminal del hero, así que un fragmento se ve igual en una página clara y en una oscura; <code>iv-code--light</code> sigue al tema. El botón de copiar viene de <code>Copy</code>, un módulo aparte de 1.1, y permanece oculto hasta que ese módulo está en marcha: la página nunca enseña un botón que no hace nada.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/code.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/copy</code> o <code>auto.min.js</code>, solo para el botón de copiar. Nuevo en 1.1.</p>
+    <Stage primary name="code/basic" title="Marcos oscuro y claro con copiar" minHeight="18rem" />
+
+    <Section title="Cuándo usarlo" num={1}>
+      <p>Úsalo para cualquier código que el lector vaya a copiar: una orden de instalación, un archivo de configuración, un fragmento de HTML en un tutorial. El código dentro de una frase sigue siendo un <code>&lt;code&gt;</code> normal. El resaltado de sintaxis no forma parte del paquete —los colores del ejemplo son cuatro clases escritas a mano (<code>iv-code__k</code>, <code>__s</code>, <code>__a</code>, <code>__c</code> para palabras clave, cadenas, atributos y comentarios)— y las clases de cualquier resaltador que ya uses funcionan dentro de <code>code</code>.</p>
+    </Section>
+
+    <Section title="Anatomía" num={2}>
+      <pre tabindex="0"><code>&lt;div data-iv-component="copy"&gt;
+  &lt;figure class="iv-code"&gt;
+    &lt;figcaption class="iv-code__bar"&gt;
+      &lt;span class="iv-code__title"&gt;index.html&lt;/span&gt;
+      &lt;span class="iv-code__lang"&gt;HTML&lt;/span&gt;
+      &lt;button class="iv-code__copy" type="button" data-iv-copy&gt;
+        &lt;span class="iv-code__copy-label"&gt;Copiar&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/figcaption&gt;
+    &lt;pre class="iv-code__pre" tabindex="0"&gt;&lt;code&gt;…&lt;/code&gt;&lt;/pre&gt;
+  &lt;/figure&gt;
+&lt;/div&gt;</code></pre>
+      <p>Envuelve una línea en <code>&lt;mark class="iv-code__mark"&gt;</code> para resaltarla con una barra de la marca al principio. El <code>&lt;pre&gt;</code> tiene scroll en las dos direcciones, deja de crecer en <code>--iv-code-max</code> (32rem) y lleva <code>tabindex="0"</code> para que el teclado pueda desplazarlo.</p>
+    </Section>
+
+    <Section title="El botón de copiar" num={3}>
+      <pre tabindex="0"><code>import &#123; Copy &#125; from "@intervolutions/ivolt/copy";
+Copy.initAll(document);
+
+// o, desde una CDN, un único archivo que arranca todo más Copy:
+// &lt;script type="module" src="…/dist/js/auto.min.js"&gt;&lt;/script&gt;</code></pre>
+      <p>Un clic en <code>[data-iv-copy]</code> copia el texto del elemento que nombra su valor (<code>data-iv-copy="#code-install"</code>) o, si está vacío, el código del <code>.iv-code</code> más cercano. Mientras tanto el botón lleva <code>data-iv-state="copied"</code> o <code>"failed"</code> durante <code>timeout</code> milisegundos y su etiqueta cambia; si el portapapeles se niega, el texto queda seleccionado para que el lector pulse <kbd class="iv-kbd iv-kbd--sm">Ctrl</kbd>+<kbd class="iv-kbd iv-kbd--sm">C</kbd>. Opciones (<code>defaults &lt; data-iv-* &lt; JS</code>): <code>copiedText</code> («Copied»), <code>failedText</code> («Press Ctrl+C to copy») y <code>timeout</code> (2000); tradúcelas con <code>data-iv-copied-text</code> y <code>data-iv-failed-text</code>. Eventos: <code>iv:copy</code>, cancelable, antes de copiar, e <code>iv:copied</code> con <code>ok</code> después. <code>Copy</code> no está en <code>index.js</code> ni en la IIFE, así que el paquete por defecto no ha crecido por él.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={4}>
+      <ul>
+        <li>El <code>&lt;figcaption&gt;</code> da nombre a la figura, así que el nombre del archivo se lee con el código.</li>
+        <li>El resultado de copiar se anuncia en una región educada <code>role="status"</code> que crea <code>Copy</code>, no solo con el cambio de etiqueta.</li>
+        <li>El <code>&lt;pre&gt;</code> con scroll recibe el foco (WCAG 2.1.1) y el anillo de foco se dibuja dentro del marco.</li>
+        <li>El botón de copiar y el bloque con scroll dibujan un anillo de foco cian que se ve sobre el panel marino; en colores forzados el marco y la línea marcada conservan sus bordes.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={5}>
+      <pre tabindex="0"><code>.tutorial .iv-code &#123;
+  --iv-code-bg: #0b1020;
+  --iv-code-max: 24rem;
+&#125;</code></pre>
+      <p>Locales: <code>--iv-code-bg</code>, <code>--iv-code-fg</code>, <code>--iv-code-muted</code> (la barra y los comentarios) y <code>--iv-code-max</code>. La variante clara pone los tres primeros en la superficie, el texto y el texto secundario del tema.</p>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-code</code></td><td>El marco, sobre un <code>&lt;figure&gt;</code>.</td></tr>
+            <tr><td><code>iv-code__bar</code></td><td>Barra de título, sobre el <code>&lt;figcaption&gt;</code>.</td></tr>
+            <tr><td><code>iv-code__title</code> · <code>iv-code__lang</code></td><td>Nombre del archivo y lenguaje.</td></tr>
+            <tr><td><code>iv-code__copy</code> · <code>iv-code__copy-label</code></td><td>Botón de copiar y su texto; ocultos hasta que <code>Copy</code> arranca.</td></tr>
+            <tr><td><code>iv-code__pre</code></td><td>El bloque con scroll.</td></tr>
+            <tr><td><code>iv-code__mark</code></td><td>Una línea resaltada.</td></tr>
+            <tr><td><code>iv-code__k</code> · <code>__s</code> · <code>__a</code> · <code>__c</code></td><td>Colores de token escritos a mano.</td></tr>
+            <tr><td><code>iv-code--light</code></td><td>Marco en la superficie del tema en lugar del azul marino.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

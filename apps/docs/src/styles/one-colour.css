@@ -1,0 +1,112 @@
+/* One-colour theming, the 1.1 headline section on the tokens and themes page.
+   The panel is the framework itself: every colour inside .docs-oc__stage comes from the package's
+   derived tokens, re-mixed on that [data-iv-palette] scope from the one primary the picker sets.
+   No pattern or grid behind it (ADR-028): the depth is a single soft glow of the chosen colour. */
+
+.docs-oc {
+  position: relative;
+  margin-block: var(--docs-sub, 3rem);
+  padding: clamp(1.25rem, 3.5vw, 2.75rem);
+  border: 1px solid var(--docs-card-stroke, var(--iv-color-border));
+  border-radius: calc(var(--iv-radius-lg) + 0.25rem);
+  background: var(--docs-card-bg, var(--iv-color-surface));
+  isolation: isolate;
+  overflow: clip;
+  container-type: inline-size;
+}
+
+.docs-oc__head { max-inline-size: 52rem; }
+.docs-oc__kicker {
+  display: inline-flex; align-items: center; gap: .75rem; margin: 0 0 var(--iv-space-4);
+  font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); font-weight: var(--iv-weight-semibold);
+  letter-spacing: .18em; text-transform: uppercase; color: var(--iv-color-primary);
+}
+.docs-oc__kicker::before { content: ""; inline-size: 2rem; block-size: 2px; border-radius: 2px; background: var(--iv-gradient-brand); }
+.docs-oc .docs-oc__title {
+  margin: 0; font-family: var(--docs-display, var(--iv-font-sans)); font-weight: 800;
+  font-size: clamp(2rem, 4.4vw, 3.5rem); line-height: 1; letter-spacing: -0.04em; text-wrap: balance;
+}
+.docs-oc__lead { margin: var(--iv-space-4) 0 0; color: var(--iv-color-text-muted); font-size: var(--iv-text-lg); max-inline-size: 60ch; }
+
+.docs-oc__body {
+  display: grid; gap: clamp(1.25rem, 3vw, 2.5rem); margin-block-start: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+/* Side by side only when the section itself is wide: inside the reading column of a docs page
+   the two halves were too narrow for the snippet and the token names. */
+@container (min-width: 60rem) {
+  .docs-oc__body { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); align-items: start; }
+}
+
+/* The picker: the 1.1 segmented control, wrapped so six colours fit a phone. */
+.docs-oc .docs-oc__pick { display: flex; flex-wrap: wrap; inline-size: 100%; border-radius: var(--iv-radius-lg); }
+.docs-oc .docs-oc__pick .iv-segmented__item { flex: 1 1 7rem; }
+.docs-oc .docs-oc__pick .iv-segmented__item > span { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; inline-size: 100%; }
+.docs-oc__dot { inline-size: .75rem; block-size: .75rem; border-radius: 50%; flex: none; background: var(--l); box-shadow: 0 0 0 1px rgb(255 255 255 / .25) inset; }
+:root[data-iv-theme="dark"] .docs-oc__dot { background: var(--d); }
+@media (prefers-color-scheme: dark) { :root[data-iv-theme="system"] .docs-oc__dot { background: var(--d); } }
+
+.docs-oc__measured { margin: var(--iv-space-4) 0 0; font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); }
+.docs-oc__measured b { color: var(--iv-color-text); font-variant-numeric: tabular-nums; }
+.docs-oc__ratio { display: none; }
+.docs-oc__ratio[data-for="rose"] { display: inline; }
+.docs-oc:has(input[name="docs-oc"]:checked) .docs-oc__ratio { display: none; }
+.docs-oc:has(input[value="cobalt"]:checked) .docs-oc__ratio[data-for="cobalt"],
+.docs-oc:has(input[value="rose"]:checked) .docs-oc__ratio[data-for="rose"],
+.docs-oc:has(input[value="violet"]:checked) .docs-oc__ratio[data-for="violet"],
+.docs-oc:has(input[value="emerald"]:checked) .docs-oc__ratio[data-for="emerald"],
+.docs-oc:has(input[value="amber"]:checked) .docs-oc__ratio[data-for="amber"],
+.docs-oc:has(input[value="graphite"]:checked) .docs-oc__ratio[data-for="graphite"] { display: inline; }
+.docs-oc__ratio::before { content: " "; }
+
+.docs-oc__snippet { margin: var(--iv-space-5) 0 0; }
+.docs-oc__snippet figcaption { margin-block-end: var(--iv-space-2); font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .12em; text-transform: uppercase; color: var(--iv-color-text-muted); }
+.docs-oc .docs-oc__snippet pre { margin: 0; white-space: pre; overflow-x: auto; }
+.docs-oc__snippet b { color: var(--iv-color-accent); font-weight: var(--iv-weight-semibold); }
+
+/* The live panel. Its glow is the chosen primary, so the panel itself proves the point. */
+.docs-oc__stage {
+  position: relative; display: grid; gap: var(--iv-space-5);
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid var(--iv-color-primary-border);
+  border-radius: var(--iv-radius-lg);
+  background: var(--iv-color-surface-raised);
+  box-shadow: 0 24px 80px -32px var(--iv-glow-primary), var(--iv-shadow-ambient, none);
+  transition: box-shadow var(--iv-motion-slow) var(--iv-ease-out), border-color var(--iv-motion-slow) var(--iv-ease-out);
+}
+.docs-oc__ui { display: grid; gap: var(--iv-space-4); }
+.docs-oc .docs-oc__grad { margin: 0; font-family: var(--docs-display, var(--iv-font-sans)); font-weight: 800; font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.05; letter-spacing: -0.035em; }
+.docs-oc__ring {
+  justify-self: start; padding: .5rem 1rem; border-radius: var(--iv-radius-full);
+  font-size: var(--iv-text-sm); border: 1px solid var(--iv-color-border);
+  outline: var(--iv-focus-width) solid var(--iv-color-focus); outline-offset: var(--iv-focus-offset);
+  box-shadow: var(--iv-focus-halo);
+}
+
+.docs-oc__chain-title { margin: 0; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .12em; text-transform: uppercase; color: var(--iv-color-text-muted); }
+.docs-oc .docs-oc__chain { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem var(--iv-space-6); grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); }
+.docs-oc .docs-oc__chain li { display: flex; align-items: center; gap: .625rem; min-inline-size: 0; margin: 0; padding: 0; }
+.docs-oc .docs-oc__chain li::before { content: none; }
+.docs-oc .docs-oc__chain code { font-size: .75rem; white-space: nowrap; background: none; border: 0; padding: 0; color: var(--iv-color-text); }
+.docs-oc__chain small { margin-inline-start: auto; color: var(--iv-color-text-muted); font-size: var(--iv-text-xs); white-space: nowrap; }
+.docs-oc__swatch { flex: none; inline-size: 1.5rem; block-size: 1.5rem; border-radius: var(--iv-radius-sm); border: 1px solid var(--iv-color-border); transition: background var(--iv-motion-slow) var(--iv-ease-out); }
+.docs-oc__swatch--color-primary { background: var(--iv-color-primary); }
+.docs-oc__swatch--color-primary-hover { background: var(--iv-color-primary-hover); }
+.docs-oc__swatch--color-primary-active { background: var(--iv-color-primary-active); }
+.docs-oc__swatch--color-primary-subtle { background: var(--iv-color-primary-subtle); }
+.docs-oc__swatch--color-primary-border { background: var(--iv-color-surface-raised); border: 3px solid var(--iv-color-primary-border); }
+.docs-oc__swatch--color-focus { background: var(--iv-color-surface-raised); outline: 2px solid var(--iv-color-focus); outline-offset: 1px; }
+.docs-oc__swatch--glow-primary { background: var(--iv-glow-primary); }
+.docs-oc__swatch--focus-halo { background: var(--iv-color-surface-raised); box-shadow: var(--iv-focus-halo); }
+.docs-oc__swatch--gradient-brand { background: var(--iv-gradient-brand); }
+.docs-oc__swatch--gradient-primary { background: var(--iv-gradient-primary); }
+.docs-oc__note { margin: 0; font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); }
+
+/* A phone has no room for the plain-language label beside every token name. */
+@container (max-width: 30rem) {
+  .docs-oc .docs-oc__chain small { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-oc__stage, .docs-oc__swatch { transition: none; }
+}

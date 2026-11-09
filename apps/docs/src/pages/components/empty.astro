@@ -1,0 +1,74 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Empty state: zero-data screens that guide" description="iVOLT empty state: what a list, a table or a search shows when there is nothing yet — an icon with a brand halo, a title, a sentence and the next action.">
+  <article class="docs-prose" data-enriched>
+    <h1>Empty state</h1>
+    <p>What a list, a table or a search shows when there is nothing to show yet, and what to do about it. A centred block with an icon on a soft brand halo, a title, one sentence and the next action, so the moment reads as designed rather than broken. It is CSS on ordinary markup: the heading is a real heading and the actions are real buttons and links.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/empty.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="empty/basic" title="First use and no results" minHeight="20rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>There are three kinds of empty, and each deserves different words:</p>
+      <ul>
+        <li><strong>First use</strong> — nothing has been created yet. Explain what will appear here and offer the action that creates the first item (“Create an invoice”).</li>
+        <li><strong>No results</strong> — a search or a filter matched nothing. Repeat what was searched, suggest how to widen it, and offer to clear the filters. The compact, bordered variant fits inside a results panel.</li>
+        <li><strong>Cleared</strong> — the reader finished everything (an empty inbox). A short, positive line is enough; an action is optional.</li>
+      </ul>
+      <p>An empty state is not an error. When loading failed, say so with an <a href="/components/alert">alert</a> and a way to retry; when it is still loading, show a <a href="/components/skeleton">skeleton</a> or a <a href="/components/spinner">spinner</a>.</p>
+    </Section>
+
+    <Section title="Anatomy and variants" num={2}>
+      <pre tabindex="0"><code>&lt;div class="iv-empty"&gt;
+  &lt;div class="iv-empty__icon" aria-hidden="true"&gt;&lt;svg …&gt;&lt;/svg&gt;&lt;/div&gt;
+  &lt;h3 class="iv-empty__title"&gt;No invoices yet&lt;/h3&gt;
+  &lt;p class="iv-empty__text"&gt;Invoices appear here once the first billing period closes.&lt;/p&gt;
+  &lt;div class="iv-empty__actions"&gt;…&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <p><code>iv-empty--bordered</code> draws a dashed frame, for an empty slot inside a page (a drop zone, a column with no cards). <code>iv-empty--compact</code> reduces the padding and the icon for panels and sidebars. Both combine. Inside an <code>iv-card</code> the plain variant needs no frame of its own.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <ul>
+        <li>Use the heading level that fits the page outline — <code>h2</code> in a main column, <code>h3</code> inside a card. The class styles any level.</li>
+        <li>The icon is decoration: <code>aria-hidden="true"</code>. The title must make sense without it.</li>
+        <li>When the empty state replaces results after a search, announce the change: put the result count (“0 results for ‘quarterly’”) in a <code>role="status"</code> element near the search field.</li>
+        <li>Primary action first in the source order, so the keyboard reaches it first.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.trash .iv-empty &#123; --iv-empty-tone: var(--iv-color-danger); &#125;</code></pre>
+      <p>Local: <code>--iv-empty-tone</code>, the colour of the icon and its halo (the primary by default, so it follows a one-colour theme). The title uses the display tracking of the system and the text is the muted colour at the reading measure.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>“No data” and nothing else. Say what is missing and what to do.</li>
+        <li>An illustration so large that the action falls below the fold on a phone.</li>
+        <li>Using an empty state while the data is still loading: the reader thinks there is nothing and leaves.</li>
+        <li>A button that creates nothing. The fixture above says so in its note; your product's buttons should work.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-empty</code></td><td>The centred block.</td></tr>
+            <tr><td><code>iv-empty__icon</code></td><td>Icon on a brand halo (decorative).</td></tr>
+            <tr><td><code>iv-empty__title</code></td><td>The heading, at any level.</td></tr>
+            <tr><td><code>iv-empty__text</code></td><td>One sentence of explanation.</td></tr>
+            <tr><td><code>iv-empty__actions</code></td><td>Row of actions.</td></tr>
+            <tr><td><code>iv-empty--bordered</code></td><td>Dashed frame for an empty slot.</td></tr>
+            <tr><td><code>iv-empty--compact</code></td><td>Less padding, smaller icon.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

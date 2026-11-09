@@ -42,7 +42,9 @@ export const t = {
   kindCss: "CSS only",
   kindJs: "With JavaScript",
   mmOverline: "Explore the framework",
-  mmTagline: "Thirty-three components: fourteen CSS-only, nineteen with optional JavaScript.",
+  mmTagline: (all, css, js) => `${all} components: ${css} CSS-only, ${js} with optional JavaScript.`,
+  fresh: "New in 1.1",
+  freshShort: "New",
   mmClose: "Close the components menu",
   mmStart: "Where to start",
   mmAll: "Getting started",
@@ -82,6 +84,11 @@ export const t = {
   stageRender: "Rendering",
   stageHint: "Switch the theme, the direction, the width or the motion of the example itself.",
 };
+// The component families that 1.1 "Spark" added: the sidebar, the megamenu and the page eyebrow
+// mark them "New in 1.1". One list, so the badge cannot drift from the navigation.
+export const fresh = ["kbd", "divider", "spinner", "segmented", "chip", "banner", "empty", "list", "meter", "rating", "code", "mockup", "shell"];
+// Display names where the slug alone would read badly in a menu.
+export const componentNames = { kbd: "Kbd", code: "Code block", shell: "Shell & sidebar", empty: "Empty state" };
 export const nav = [
   { group: "Start", items: [
     { href: "/getting-started", label: "Getting started" },
@@ -103,7 +110,7 @@ export const nav = [
     { href: "/foundations/stability", label: "Stability" },
     { href: "/foundations/theme-builder", label: "Theme builder" },
   ] },
-  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "lightbox", "navbar", "megamenu", "hero", "stepper", "popover", "command", "dialog", "badge", "alert", "table", "timeline", "stat", "avatar", "breadcrumb", "pagination", "progress", "skeleton", "countup", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
+  { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "lightbox", "navbar", "megamenu", "hero", "stepper", "popover", "command", "dialog", "badge", "alert", "table", "timeline", "stat", "avatar", "breadcrumb", "pagination", "progress", "skeleton", "countup", "disclosure", "tabs", "dropdown", "drawer", "toast", ...fresh].map((c) => ({ href: `/components/${c}`, label: componentNames[c] || c[0].toUpperCase() + c.slice(1) })) },
   { group: "Explore", items: [
     { href: "/blocks", label: "Blocks" },
     { href: "/themes", label: "Theme gallery" },
@@ -119,4 +126,4 @@ export const nav = [
 ];
 
 // Family of each component page (css-only or progressively enhanced with JS). Single source for the eyebrow and the home.
-export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datepicker: "js", datatable: "js", picker: "js", carousel: "js", lightbox: "js", navbar: "js", megamenu: "js", hero: "css", stepper: "js", popover: "js", command: "js", dialog: "js", badge: "css", alert: "css", table: "css", timeline: "css", stat: "css", avatar: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", countup: "js", disclosure: "js", tabs: "js", dropdown: "js", drawer: "js", toast: "js" };
+export const families = { button: "css", card: "css", form: "css", validation: "js", combobox: "js", datepicker: "js", datatable: "js", picker: "js", carousel: "js", lightbox: "js", navbar: "js", megamenu: "js", hero: "css", stepper: "js", popover: "js", command: "js", dialog: "js", badge: "css", alert: "css", table: "css", timeline: "css", stat: "css", avatar: "css", breadcrumb: "css", pagination: "css", progress: "css", skeleton: "css", countup: "js", disclosure: "js", tabs: "js", dropdown: "js", drawer: "js", toast: "js", kbd: "css", divider: "css", spinner: "css", segmented: "css", chip: "css", banner: "css", empty: "css", list: "css", meter: "css", rating: "css", code: "js", mockup: "css", shell: "js" };

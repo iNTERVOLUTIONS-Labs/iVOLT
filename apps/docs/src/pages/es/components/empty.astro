@@ -1,0 +1,74 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Estado vacío: pantallas sin datos que orientan" description="Estado vacío de iVOLT: lo que enseña una lista, una tabla o una búsqueda sin datos: un icono con halo de marca, un título, una frase y el siguiente paso.">
+  <article class="docs-prose" data-enriched>
+    <h1>Estado vacío</h1>
+    <p>Lo que enseña una lista, una tabla o una búsqueda cuando todavía no hay nada que enseñar, y qué hacer al respecto. Un bloque centrado con un icono sobre un halo suave de la marca, un título, una frase y la siguiente acción, para que el momento parezca diseñado y no roto. Es CSS sobre marcado corriente: el encabezado es un encabezado de verdad y las acciones son botones y enlaces de verdad.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/empty.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="empty/basic" title="Primer uso y sin resultados" minHeight="20rem" />
+
+    <Section title="Cuándo usarlo" num={1}>
+      <p>Hay tres clases de vacío, y cada una merece palabras distintas:</p>
+      <ul>
+        <li><strong>Primer uso</strong>: todavía no se ha creado nada. Explica qué aparecerá aquí y ofrece la acción que crea el primer elemento («Crear una factura»).</li>
+        <li><strong>Sin resultados</strong>: una búsqueda o un filtro no han encontrado nada. Repite lo que se buscó, sugiere cómo ampliarlo y ofrece quitar los filtros. La variante compacta y con borde cabe dentro de un panel de resultados.</li>
+        <li><strong>Terminado</strong>: el lector lo ha hecho todo (una bandeja de entrada vacía). Basta una línea corta y positiva; la acción es opcional.</li>
+      </ul>
+      <p>Un estado vacío no es un error. Si la carga ha fallado, dilo con una <a href="/es/components/alert">alerta</a> y una forma de reintentar; si todavía está cargando, enseña un <a href="/es/components/skeleton">esqueleto</a> o un <a href="/es/components/spinner">spinner</a>.</p>
+    </Section>
+
+    <Section title="Anatomía y variantes" num={2}>
+      <pre tabindex="0"><code>&lt;div class="iv-empty"&gt;
+  &lt;div class="iv-empty__icon" aria-hidden="true"&gt;&lt;svg …&gt;&lt;/svg&gt;&lt;/div&gt;
+  &lt;h3 class="iv-empty__title"&gt;Aún no hay facturas&lt;/h3&gt;
+  &lt;p class="iv-empty__text"&gt;Las facturas aparecen aquí cuando se cierra el primer periodo.&lt;/p&gt;
+  &lt;div class="iv-empty__actions"&gt;…&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      <p><code>iv-empty--bordered</code> dibuja un marco discontinuo, para un hueco vacío dentro de una página (una zona donde soltar, una columna sin tarjetas). <code>iv-empty--compact</code> reduce el relleno y el icono para paneles y laterales. Las dos se combinan. Dentro de un <code>iv-card</code> la variante sencilla no necesita marco propio.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <ul>
+        <li>Usa el nivel de encabezado que toque en el esquema de la página: <code>h2</code> en la columna principal, <code>h3</code> dentro de una tarjeta. La clase da estilo a cualquier nivel.</li>
+        <li>El icono es decoración: <code>aria-hidden="true"</code>. El título tiene que entenderse sin él.</li>
+        <li>Cuando el estado vacío sustituye a los resultados de una búsqueda, anuncia el cambio: pon el recuento («0 resultados para “trimestral”») en un elemento <code>role="status"</code> junto al buscador.</li>
+        <li>La acción principal, la primera en el orden del código, para que el teclado llegue antes a ella.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.trash .iv-empty &#123; --iv-empty-tone: var(--iv-color-danger); &#125;</code></pre>
+      <p>Local: <code>--iv-empty-tone</code>, el color del icono y de su halo (el primario por defecto, así que sigue a un tema de un color). El título usa el espaciado de titulares del sistema y el texto va en el color secundario, a la medida de lectura.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>«Sin datos» y nada más. Di qué falta y qué hacer.</li>
+        <li>Una ilustración tan grande que la acción queda por debajo del pliegue en un móvil.</li>
+        <li>Mostrar un estado vacío mientras los datos aún cargan: el lector cree que no hay nada y se va.</li>
+        <li>Un botón que no crea nada. El ejemplo de arriba lo avisa en su nota; los botones de tu producto deberían funcionar.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-empty</code></td><td>El bloque centrado.</td></tr>
+            <tr><td><code>iv-empty__icon</code></td><td>Icono sobre un halo de la marca (decorativo).</td></tr>
+            <tr><td><code>iv-empty__title</code></td><td>El encabezado, de cualquier nivel.</td></tr>
+            <tr><td><code>iv-empty__text</code></td><td>Una frase de explicación.</td></tr>
+            <tr><td><code>iv-empty__actions</code></td><td>Fila de acciones.</td></tr>
+            <tr><td><code>iv-empty--bordered</code></td><td>Marco discontinuo para un hueco vacío.</td></tr>
+            <tr><td><code>iv-empty--compact</code></td><td>Menos relleno, icono más pequeño.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

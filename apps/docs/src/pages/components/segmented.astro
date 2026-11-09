@@ -1,0 +1,74 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Segmented control: radio pills with no JavaScript" description="iVOLT segmented control: a native radio group drawn as pills for views, periods and billing toggles. Arrow keys, one tab stop and form value from the browser.">
+  <article class="docs-prose" data-enriched>
+    <h1>Segmented control</h1>
+    <p>A row of pills where exactly one is chosen: day, week, month; monthly or yearly billing; list or board. Under the pills is a plain radio group, so the browser provides everything a segmented control has to do — one tab stop for the group, arrow keys to move the choice, a value that a form sends, and a name for every option — and the stylesheet only draws it.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/segmented.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="segmented/basic" title="Period, billing and view" minHeight="16rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>Use a segmented control for two to five short, mutually exclusive options that change what the reader is looking at, and that are worth showing all at once. More options, or long labels, belong in a <a href="/components/form">select</a> or a plain radio list. If each option shows a different panel of content, the pattern is <a href="/components/tabs">tabs</a>, which manage the panels for you; a segmented control only holds a value, and what changes on the page is yours to wire up.</p>
+    </Section>
+
+    <Section title="Anatomy" num={2}>
+      <pre tabindex="0"><code>&lt;fieldset class="iv-segmented"&gt;
+  &lt;legend class="iv-u-sr-only"&gt;Period&lt;/legend&gt;
+  &lt;label class="iv-segmented__item"&gt;
+    &lt;input type="radio" name="period" value="week" checked&gt;&lt;span&gt;Week&lt;/span&gt;
+  &lt;/label&gt;
+  …
+&lt;/fieldset&gt;</code></pre>
+      <p>The <code>&lt;fieldset&gt;</code> groups the radios and its <code>&lt;legend&gt;</code> names the group (visually hidden here, because the context usually makes it obvious). Each option is a <code>&lt;label class="iv-segmented__item"&gt;</code> holding the input and, right after it, the visible face — a <code>&lt;span&gt;</code> that can carry a badge, as the “−20&nbsp;%” on the yearly option shows.</p>
+    </Section>
+
+    <Section title="Variants" num={3}>
+      <ul>
+        <li><code>iv-segmented--brand</code> fills the chosen segment with the primary and its ink, which suits a pricing toggle. A badge inside the filled segment takes the segment's text colour.</li>
+        <li><code>iv-segmented--block</code> stretches the control to the width of its container and shares the room equally.</li>
+        <li><code>iv-segmented--sm</code> is the compact size for toolbars and card headers.</li>
+        <li>A <code>disabled</code> radio dims its option and takes it out of the arrow-key cycle, which the browser handles.</li>
+      </ul>
+    </Section>
+
+    <Section title="Accessibility" num={4}>
+      <p>The radios stay in the accessibility tree and the tab order; they are made transparent and laid over their face, not hidden with <code>display: none</code>. A screen reader announces “Period, grouping; Week, radio button, checked, 2 of 4”. The focus ring is drawn on the face when the input has <code>:focus-visible</code>. Changing the choice with the arrow keys selects it immediately — that is how native radio groups work — so the page must not do anything expensive or irreversible on <code>change</code>. In forced colours the chosen segment uses the system highlight.</p>
+    </Section>
+
+    <Section title="Customising" num={5}>
+      <pre tabindex="0"><code>.toolbar .iv-segmented &#123;
+  --iv-segmented-radius: var(--iv-radius-md);
+  --iv-segmented-pad: 0.125rem;
+&#125;</code></pre>
+      <p>Locals: <code>--iv-segmented-radius</code> (full pill by default) and <code>--iv-segmented-pad</code> (the gap between the track and the segments). Colours come from the theme: the track is the surface, the chosen segment the raised surface with a soft shadow, or the primary with <code>--brand</code>.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={6}>
+      <ul>
+        <li>Building it from buttons with <code>aria-pressed</code>: you then owe the arrow keys, the single tab stop and the form value by hand.</li>
+        <li>Forgetting the <code>name</code> attribute: without it the radios are not one group and several can be checked.</li>
+        <li>Labels that wrap onto two lines. Shorten them or use a select.</li>
+        <li>Expecting it to switch panels by itself. Use tabs for that.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={7}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-segmented</code></td><td>The track, on a <code>&lt;fieldset&gt;</code>.</td></tr>
+            <tr><td><code>iv-segmented__item</code></td><td>One option: a label holding the radio and its face.</td></tr>
+            <tr><td><code>iv-segmented--brand</code></td><td>The chosen segment is filled with the primary.</td></tr>
+            <tr><td><code>iv-segmented--block</code></td><td>Full width, options share the room.</td></tr>
+            <tr><td><code>iv-segmented--sm</code></td><td>Compact size.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

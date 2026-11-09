@@ -1,0 +1,61 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Kbd: keyboard keys and shortcuts in CSS" description="iVOLT kbd: key caps for shortcuts in docs, menus and command hints, lit like a real key, in three sizes and both themes. Native kbd element, no JavaScript.">
+  <article class="docs-prose" data-enriched>
+    <h1>Kbd</h1>
+    <p>A key cap for the keys a reader has to press: <kbd class="iv-kbd">Ctrl</kbd>, <kbd class="iv-kbd">K</kbd>, <kbd class="iv-kbd">Esc</kbd>. It styles the native <code>&lt;kbd&gt;</code> element, so the meaning — “keyboard input” — is already in the markup, and the look is a small raised cap lit from above, tinted with the brand in both themes.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/kbd.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="kbd/basic" title="Keys, shortcuts and sizes" minHeight="14rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>Use <code>iv-kbd</code> wherever a sentence names a key: a shortcut in a menu item, a hint under a search field (“press <kbd class="iv-kbd iv-kbd--sm">/</kbd> to search”), the keyboard table of a component page, the footer of a command palette. It is text, not a control: nothing happens when it is clicked, and it should never be the only way to learn that a shortcut exists.</p>
+      <p>A shortcut made of several keys goes in <code>iv-kbd-group</code>, which spaces the caps and keeps them on one line. The <code>+</code> between them is written by you, as plain text, so it is read aloud and copied with the rest of the sentence. For a sequence (press <kbd class="iv-kbd iv-kbd--sm">G</kbd> then <kbd class="iv-kbd iv-kbd--sm">H</kbd>) write “then” instead of a plus sign.</p>
+    </Section>
+
+    <Section title="Sizes" num={2}>
+      <p>The default cap is <code>1.625rem</code> tall and fits body text. <code>iv-kbd--sm</code> sits inside small print and table cells; <code>iv-kbd--lg</code> is for a hero or an onboarding step where the key is the point of the sentence. All three scale with <code>--iv-kbd-size</code>, so a size of your own is one local, not a new class.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <ul>
+        <li>Write the key the way it is labelled on the keyboard: <code>Ctrl</code>, <code>Shift</code>, <code>Enter</code>. Symbols such as <code>⌘</code> or <code>↑</code> are read inconsistently by screen readers; next to an unusual symbol, add the name in visually hidden text (<code>&lt;span class="iv-u-sr-only"&gt;Command&lt;/span&gt;</code>).</li>
+        <li>Say which platform a shortcut belongs to when it differs (“<kbd class="iv-kbd iv-kbd--sm">⌘</kbd>+<kbd class="iv-kbd iv-kbd--sm">K</kbd> on macOS, <kbd class="iv-kbd iv-kbd--sm">Ctrl</kbd>+<kbd class="iv-kbd iv-kbd--sm">K</kbd> elsewhere”).</li>
+        <li>If an element really has a shortcut, declare it on the element with <code>aria-keyshortcuts</code>; the cap only shows it.</li>
+        <li>The cap keeps a border in forced colours, so it still reads as a key in Windows high-contrast mode.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <p>The cap reads the theme: the face is the raised surface, the skirt a step darker, the letters the text colour, and the brand tint comes from <code>--iv-color-primary</code>, so a one-colour theme recolours it too. The only local is the size:</p>
+      <pre tabindex="0"><code>.palette-footer &#123; --iv-kbd-size: 1.375rem; &#125;</code></pre>
+      <p>In the layer-free sheet (<code>ivolt.flat.css</code>) the base rule for <code>kbd</code> weighs (0,1,0) since 1.1, so the component wins by order there too.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>Wrapping a whole sentence in <code>&lt;kbd&gt;</code>: only the keys are keyboard input.</li>
+        <li>Drawing the <code>+</code> with CSS: it disappears from copy-paste and from speech.</li>
+        <li>Using a cap as a button. If clicking it should do something, it is an <a href="/components/button"><code>iv-button</code></a>.</li>
+        <li>Listing a shortcut the page does not bind. The fixture above says so in plain words; your pages should not promise keys that do nothing.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-kbd</code></td><td>A key cap on a <code>&lt;kbd&gt;</code> element.</td></tr>
+            <tr><td><code>iv-kbd--sm</code></td><td>Small cap for small print and table cells.</td></tr>
+            <tr><td><code>iv-kbd--lg</code></td><td>Large cap for a hero or an onboarding step.</td></tr>
+            <tr><td><code>iv-kbd-group</code></td><td>Keeps the keys of one shortcut together, with the author's <code>+</code> between them.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

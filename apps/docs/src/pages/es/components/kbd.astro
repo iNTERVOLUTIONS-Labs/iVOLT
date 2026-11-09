@@ -1,0 +1,61 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Kbd: teclas y atajos de teclado en CSS" description="Kbd de iVOLT: teclas para atajos en documentación, menús y paletas de comandos, iluminadas como una tecla real, en tres tamaños y los dos temas. Sin JavaScript.">
+  <article class="docs-prose" data-enriched>
+    <h1>Tecla (kbd)</h1>
+    <p>Una tecla para lo que el lector tiene que pulsar: <kbd class="iv-kbd">Ctrl</kbd>, <kbd class="iv-kbd">K</kbd>, <kbd class="iv-kbd">Esc</kbd>. Da estilo al elemento nativo <code>&lt;kbd&gt;</code>, así que el significado —«entrada de teclado»— ya está en el marcado; lo que añade es el aspecto de una tecla pequeña en relieve, iluminada desde arriba y teñida con la marca en los dos temas.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/kbd.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="kbd/basic" title="Teclas, atajos y tamaños" minHeight="14rem" />
+
+    <Section title="Cuándo usarla" num={1}>
+      <p>Usa <code>iv-kbd</code> siempre que una frase nombre una tecla: un atajo en un elemento de menú, una pista bajo un buscador («pulsa <kbd class="iv-kbd iv-kbd--sm">/</kbd> para buscar»), la tabla de teclado de un componente o el pie de una paleta de comandos. Es texto, no un control: pulsarla no hace nada, y nunca debería ser la única forma de enterarse de que existe un atajo.</p>
+      <p>Un atajo de varias teclas va dentro de <code>iv-kbd-group</code>, que separa las teclas y las mantiene en una línea. El <code>+</code> entre ellas lo escribes tú, como texto normal, para que se lea en voz alta y se copie con el resto de la frase. Para una secuencia (pulsa <kbd class="iv-kbd iv-kbd--sm">G</kbd> y luego <kbd class="iv-kbd iv-kbd--sm">H</kbd>) escribe «y luego» en lugar del signo más.</p>
+    </Section>
+
+    <Section title="Tamaños" num={2}>
+      <p>La tecla por defecto mide <code>1.625rem</code> de alto y encaja en el texto normal. <code>iv-kbd--sm</code> va en letra pequeña y en celdas de tabla; <code>iv-kbd--lg</code>, en un hero o en un paso de bienvenida donde la tecla es lo importante de la frase. Los tres tamaños salen de <code>--iv-kbd-size</code>, así que un tamaño propio es un local, no una clase nueva.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <ul>
+        <li>Escribe la tecla como está rotulada en el teclado: <code>Ctrl</code>, <code>Mayús</code>, <code>Intro</code>. Los lectores de pantalla leen de forma irregular símbolos como <code>⌘</code> o <code>↑</code>; junto a un símbolo poco común, añade el nombre en texto oculto (<code>&lt;span class="iv-u-sr-only"&gt;Comando&lt;/span&gt;</code>).</li>
+        <li>Di a qué sistema pertenece el atajo cuando cambia («<kbd class="iv-kbd iv-kbd--sm">⌘</kbd>+<kbd class="iv-kbd iv-kbd--sm">K</kbd> en macOS, <kbd class="iv-kbd iv-kbd--sm">Ctrl</kbd>+<kbd class="iv-kbd iv-kbd--sm">K</kbd> en el resto»).</li>
+        <li>Si un elemento tiene de verdad un atajo, decláralo en el propio elemento con <code>aria-keyshortcuts</code>; la tecla solo lo enseña.</li>
+        <li>En colores forzados la tecla conserva su borde, así que sigue pareciendo una tecla en el modo de alto contraste de Windows.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <p>La tecla lee el tema: la cara es la superficie elevada, el faldón un tono más oscuro, las letras el color del texto, y el tinte de marca sale de <code>--iv-color-primary</code>, así que un tema de un color también la repinta. El único local es el tamaño:</p>
+      <pre tabindex="0"><code>.palette-footer &#123; --iv-kbd-size: 1.375rem; &#125;</code></pre>
+      <p>En la hoja sin capas (<code>ivolt.flat.css</code>) la regla base de <code>kbd</code> pesa (0,1,0) desde 1.1, así que el componente también gana ahí por orden.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Envolver una frase entera en <code>&lt;kbd&gt;</code>: solo las teclas son entrada de teclado.</li>
+        <li>Dibujar el <code>+</code> con CSS: desaparece al copiar y pegar y al leerlo en voz alta.</li>
+        <li>Usar la tecla como botón. Si al pulsarla tiene que pasar algo, es un <a href="/es/components/button"><code>iv-button</code></a>.</li>
+        <li>Anunciar un atajo que la página no tiene. El ejemplo de arriba lo dice con todas las letras; tus páginas no deberían prometer teclas que no hacen nada.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-kbd</code></td><td>Una tecla sobre un elemento <code>&lt;kbd&gt;</code>.</td></tr>
+            <tr><td><code>iv-kbd--sm</code></td><td>Tecla pequeña para letra pequeña y celdas de tabla.</td></tr>
+            <tr><td><code>iv-kbd--lg</code></td><td>Tecla grande para un hero o un paso de bienvenida.</td></tr>
+            <tr><td><code>iv-kbd-group</code></td><td>Mantiene juntas las teclas de un atajo, con el <code>+</code> que escribe el autor entre ellas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

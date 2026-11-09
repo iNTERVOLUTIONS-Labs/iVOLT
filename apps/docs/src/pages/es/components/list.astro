@@ -1,0 +1,83 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Lista agrupada y lista de descripción en CSS" description="Lista de iVOLT: grupos con marco y huecos para icono, detalle y final, listas de navegación con aria-current y una lista de descripción adaptable.">
+  <article class="docs-prose" data-enriched>
+    <h1>Lista y lista de descripción</h1>
+    <p>Dos listas de contenido que acaba necesitando cualquier pantalla de producto. <code>iv-list</code> es un grupo de filas: todas en una misma superficie con marco, separadas por líneas finas, cada una con sitio para un icono, un título, una línea de detalle y algo al final. <code>iv-dl</code> es una lista de descripción de pares término y valor que se apila en contenedores estrechos y se pone lado a lado cuando su contenedor mide 32rem.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/list.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="list/basic" title="Lista de navegación, de datos y de descripción" minHeight="22rem" />
+
+    <Section title="Cuál usar" num={1}>
+      <ul>
+        <li><strong>Un grupo de filas</strong> para una colección corta que el lector recorre con la vista: secciones de ajustes, despliegues recientes, miembros de un equipo, notificaciones. Si las filas tienen más de tres o cuatro columnas de datos que haya que ordenar, eso es una <a href="/es/components/table">tabla</a> o una <a href="/es/components/datatable">tabla de datos</a>.</li>
+        <li><strong>Una lista de navegación</strong> (<code>iv-list--nav</code>) para un conjunto de enlaces en el que uno es la página actual: el menú lateral de una zona de ajustes. Marca la fila actual con <code>aria-current="page"</code> y el estilo la sigue.</li>
+        <li><strong>Una lista de descripción</strong> para datos sobre una sola cosa: el plan, la región, el dominio y la fecha de creación de un proyecto. Sustituye a la tabla de dos columnas que tantas veces se usa mal para esto.</li>
+      </ul>
+    </Section>
+
+    <Section title="Anatomía de una fila" num={2}>
+      <pre tabindex="0"><code>&lt;ul class="iv-list"&gt;
+  &lt;li class="iv-list__item"&gt;
+    &lt;a class="iv-list__action" href="/ajustes/seguridad"&gt;
+      &lt;span class="iv-list__media" aria-hidden="true"&gt;…&lt;/span&gt;
+      &lt;span class="iv-list__body"&gt;
+        &lt;span class="iv-list__title"&gt;Seguridad&lt;/span&gt;
+        &lt;span class="iv-list__meta"&gt;Llaves de acceso y sesiones&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="iv-list__end"&gt;&lt;span class="iv-badge iv-badge--warning"&gt;1 por revisar&lt;/span&gt;&lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <p>Una fila estática pone los huecos directamente en <code>__item</code>. Una fila que actúa los pone dentro de un <code>&lt;a&gt;</code> o un <code>&lt;button class="iv-list__action"&gt;</code> que la llena, así que toda la fila es el objetivo y el tinte al pasar el puntero la cubre entera. <code>iv-list--flush</code> quita el marco y el relleno exterior, para una lista dentro de una tarjeta, un panel lateral o una maqueta de móvil.</p>
+      <p>La lista de descripción envuelve cada par en <code>&lt;div class="iv-dl__row"&gt;</code>, algo que HTML permite dentro de <code>&lt;dl&gt;</code> y que mantiene cada término junto a su valor cuando cambia la disposición. <code>iv-dl--compact</code> aprieta las filas.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <ul>
+        <li>Pon nombre a la lista cuando la página tiene más de una: <code>aria-label="Despliegues recientes"</code>. Se anuncia como «lista, 3 elementos».</li>
+        <li>Un elemento interactivo por fila. Un enlace que llena la fila no puede contener además un botón; si una fila necesita dos acciones, hazla estática y pon las acciones en <code>__end</code>.</li>
+        <li><code>aria-current</code> es el único estado que necesita la fila actual; los lectores de pantalla dicen «página actual». En colores forzados recibe un contorno de resaltado.</li>
+        <li>Las insignias de <code>__end</code> se leen como parte del nombre de la fila, así que sus palabras deben ser cortas y con sentido.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.inbox .iv-list &#123; --iv-list-padding: var(--iv-space-3); &#125;
+.facts.iv-dl &#123; --iv-dl-term: minmax(6rem, 14rem); &#125;</code></pre>
+      <p>Locales: <code>--iv-list-padding</code> (el relleno interior de cada fila) y <code>--iv-dl-term</code> (la pista de la columna de términos cuando la lista de descripción va lado a lado; <code>minmax(8rem, 1fr)</code> por defecto). El cambio a dos columnas es una consulta de contenedor, no una media query, así que la misma lista se apila en un lateral estrecho y se extiende en un panel ancho dentro de la misma página.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Meter un <code>&lt;button&gt;</code> dentro de un <code>&lt;a&gt;</code> que llena la fila: HTML no válido y dos objetivos en uno.</li>
+        <li>Usar un grupo de filas para datos tabulares que necesitan columnas y orden.</li>
+        <li>Construir la lista de descripción como una tabla de dos columnas sin encabezados.</li>
+        <li>Marcar la página actual con una clase en lugar de <code>aria-current</code>, con lo que el estado nunca se anuncia.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de las dos familias. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-list</code></td><td>Un grupo de filas con marco.</td></tr>
+            <tr><td><code>iv-list__item</code></td><td>Una fila.</td></tr>
+            <tr><td><code>iv-list__action</code></td><td>Un enlace o botón que llena la fila.</td></tr>
+            <tr><td><code>iv-list__media</code></td><td>Icono o avatar al principio.</td></tr>
+            <tr><td><code>iv-list__body</code> · <code>__title</code> · <code>__meta</code></td><td>El texto: un título y una línea de detalle.</td></tr>
+            <tr><td><code>iv-list__end</code></td><td>Insignia, valor o flecha al final.</td></tr>
+            <tr><td><code>iv-list--flush</code></td><td>Sin marco, para listas dentro de otras superficies.</td></tr>
+            <tr><td><code>iv-list--nav</code></td><td>Lista de navegación; <code>aria-current</code> marca la fila actual.</td></tr>
+            <tr><td><code>iv-dl</code> · <code>iv-dl__row</code></td><td>Lista de descripción y un par término–valor.</td></tr>
+            <tr><td><code>iv-dl--compact</code></td><td>Filas más apretadas.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

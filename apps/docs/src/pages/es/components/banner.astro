@@ -1,0 +1,74 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Banner: avisos para todo el sitio en CSS" description="Banner de iVOLT: una franja a todo lo ancho para lanzamientos, mantenimientos y pruebas, con acción, botón de cerrar, cinco tonos y variante fija.">
+  <article class="docs-prose" data-enriched>
+    <h1>Banner</h1>
+    <p>Una franja a todo lo ancho en lo alto de una página o de una sección: una línea con la noticia, una acción opcional y un botón de cerrar opcional. Una <a href="/es/components/alert">alerta</a> habla del contenido que tiene al lado («este formulario tiene dos errores»); un banner habla de todo el sitio («mantenimiento el domingo», «ya está aquí la versión 1.1»).</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/banner.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="banner/basic" title="Marca, neutro, aviso y éxito" minHeight="20rem" />
+
+    <Section title="Cuándo usarlo" num={1}>
+      <p>Usa un banner para un único mensaje que importa a todo el que está en la página, durante un tiempo limitado: un lanzamiento, una parada programada, el final de una prueba, el aviso de que ha cambiado tu analítica. Que sea una frase y, como mucho, una acción; si necesita un párrafo, enlaza a la página que lo tiene. Muestra un solo banner cada vez: dos franjas apiladas parecen un estado de error.</p>
+      <p>Un banner no es un <a href="/es/components/toast">aviso emergente (toast)</a>: no aparece solo después de una acción ni desaparece con el tiempo. Forma parte de la página desde el primer pintado, lo que también significa que no debería empujar el contenido hacia abajo cuando la página ya ha cargado.</p>
+    </Section>
+
+    <Section title="Tonos y variantes" num={2}>
+      <ul>
+        <li>Sin tono: una superficie elevada y tranquila con un filo de la marca, para avisos neutros.</li>
+        <li><code>iv-banner--info</code>, <code>--success</code>, <code>--warning</code>, <code>--danger</code>: un tinte del 9&nbsp;% del tono sobre la superficie elevada, con el color de texto del tema (así el contraste es el del texto, no el del tono).</li>
+        <li><code>iv-banner--brand</code>: la franja rellena con el primario y su tinta, el banner de lanzamiento. Sigue a un tema de un color.</li>
+        <li><code>iv-banner--sticky</code>: se queda en lo alto de su contenedor de scroll mientras la página se mueve.</li>
+      </ul>
+      <p>Partes: <code>__icon</code> al principio, <code>__text</code> para la frase, <code>__action</code> para un enlace que se lee como enlace, con una flecha que avanza bajo el puntero, y <code>__close</code> al final. Un botón de cerrar vacío dibuja su propia cruz.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <ul>
+        <li>El banner es un punto de referencia: <code>role="region"</code> con un <code>aria-label</code> como «Anuncio», para poder encontrarlo y saltarlo. No lo conviertas en región viva: estaba ahí cuando cargó la página y no debe interrumpir.</li>
+        <li>El botón de cerrar necesita un nombre (<code>aria-label="Cerrar"</code>). Cerrar es cosa de la página: un manejador de clic que pone <code>hidden</code> en el banner, algo que la hoja respeta. Si la decisión debe recordarse, guárdala tú; el framework no guarda estado.</li>
+        <li>Al cerrarlo, lleva el foco al principio del contenido principal, no al principio del documento.</li>
+        <li>El tono nunca es el mensaje: empieza la frase por la palabra que importa («Mantenimiento programado…»).</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.promo &#123;
+  --iv-banner-tone: #7c3aed;
+  --iv-banner-bg: color-mix(in oklab, var(--iv-banner-tone) 12%, var(--iv-color-surface-raised));
+  --iv-banner-fg: var(--iv-color-text);
+&#125;</code></pre>
+      <p>Locales: <code>--iv-banner-tone</code> (el filo, el icono y la acción), <code>--iv-banner-bg</code> y <code>--iv-banner-fg</code>. Comprueba el contraste de tu pareja; los tonos de serie están medidos en los dos temas.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Usar un banner para el error de un campo. Eso es una alerta o un mensaje junto al campo.</li>
+        <li>Insertarlo después de cargar, lo que mueve todo lo que el lector iba a pulsar.</li>
+        <li>Un botón de cerrar que esconde el banner y deja el foco sobre un elemento que ya no está.</li>
+        <li>Dos o tres banners a la vez, todos rellenos con la marca.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-banner</code></td><td>La franja, una región con nombre.</td></tr>
+            <tr><td><code>iv-banner__icon</code></td><td>Icono decorativo al principio.</td></tr>
+            <tr><td><code>iv-banner__text</code></td><td>La frase.</td></tr>
+            <tr><td><code>iv-banner__action</code></td><td>Un enlace con flecha.</td></tr>
+            <tr><td><code>iv-banner__close</code></td><td>Botón de cerrar; vacío, dibuja una cruz.</td></tr>
+            <tr><td><code>iv-banner--info</code> · <code>--success</code> · <code>--warning</code> · <code>--danger</code></td><td>Tonos teñidos.</td></tr>
+            <tr><td><code>iv-banner--brand</code></td><td>Relleno con el primario.</td></tr>
+            <tr><td><code>iv-banner--sticky</code></td><td>Se fija en lo alto de su contenedor de scroll.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

@@ -1,0 +1,71 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Chip: filtros y etiquetas que se quitan, en CSS" description="Chip de iVOLT: filtros sobre casillas nativas, valores que se quitan con un objetivo de 24 px y etiquetas con avatar o icono. Accesible y sin JavaScript.">
+  <article class="docs-prose" data-enriched>
+    <h1>Chip</h1>
+    <p>Una ficha compacta sobre la que se puede actuar. Tiene tres formas: un <strong>filtro</strong> que se activa y se desactiva, un <strong>valor</strong> que se puede quitar y una <strong>etiqueta</strong> con una imagen al principio. A diferencia de una <a href="/es/components/badge">insignia</a>, que solo etiqueta algo, un chip es interactivo o contiene una parte interactiva.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/chip.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="chip/basic" title="Filtros, valores que se quitan y medios" minHeight="16rem" />
+
+    <Section title="Cuándo usarlo" num={1}>
+      <ul>
+        <li><strong>Los chips de filtro</strong> acotan una lista o una búsqueda: tecnologías, rangos de precio, etiquetas. Pueden estar varios activos a la vez, por eso son casillas. Para una sola elección usa un <a href="/es/components/segmented">control segmentado</a>.</li>
+        <li><strong>Los chips que se quitan</strong> enseñan valores que alguien ha elegido —destinatarios, ciudades, etiquetas—, cada uno con un botón que lo retira. Retirarlo es cosa de tu código: escucha el clic, quita el elemento y lleva el foco a un vecino razonable.</li>
+        <li><strong>Las etiquetas</strong> con <code>iv-chip__media</code> unen una palabra con un avatar o un icono: una persona, un proyecto, un espacio de trabajo.</li>
+      </ul>
+    </Section>
+
+    <Section title="Anatomía" num={2}>
+      <pre tabindex="0"><code>&lt;!-- filtro: una casilla dentro de la etiqueta --&gt;
+&lt;label class="iv-chip"&gt;&lt;input type="checkbox" name="stack" value="css"&gt;&lt;span&gt;CSS&lt;/span&gt;&lt;/label&gt;
+
+&lt;!-- valor que se quita: un botón vacío dibuja su propia cruz --&gt;
+&lt;span class="iv-chip"&gt;Madrid &lt;button class="iv-chip__remove" type="button" aria-label="Quitar Madrid"&gt;&lt;/button&gt;&lt;/span&gt;</code></pre>
+      <p>La casilla sigue en el árbol y cubre el chip, así que toda la píldora es el objetivo del clic y el teclado y el formulario nativos siguen intactos. Un filtro marcado se tiñe con su tono y dibuja una marca de verificación antes del texto. Uno desactivado se atenúa y el teclado lo salta.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <ul>
+        <li>Agrupa los chips de filtro en un <code>&lt;fieldset&gt;</code> con su <code>&lt;legend&gt;</code> («Filtrar por tecnología»), para que cada casilla se anuncie con su grupo.</li>
+        <li>Cada botón de quitar necesita un nombre que diga qué quita —<code>aria-label="Quitar Madrid"</code>, no «Quitar» ni «×»—. La cruz la dibuja el CSS y nunca se lee.</li>
+        <li>El objetivo de quitar es un círculo de 24&nbsp;px, el mínimo de WCAG 2.5.8, también en el chip pequeño.</li>
+        <li>El estado elegido nunca es solo color: la marca aparece con el tinte, y en colores forzados se dibuja con el resaltado del sistema.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.tags &#123;
+  --iv-chip-tone: var(--iv-color-accent);
+  --iv-chip-height: 2.25rem;
+&#125;</code></pre>
+      <p>Locales: <code>--iv-chip-tone</code> (el color del tinte elegido y de la marca; el primario por defecto) y <code>--iv-chip-height</code> (2rem; <code>iv-chip--sm</code> pone 1,5rem). El relleno, el tamaño del medio y el botón de quitar se escalan desde la altura.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Usar chips para navegar. Los enlaces que llevan a otro sitio son enlaces; dales ese estilo o usa una <a href="/es/components/list">lista</a>.</li>
+        <li>Un botón de quitar sin un nombre concreto.</li>
+        <li>Quitar un chip sin mover el foco: quien usa el teclado se queda sobre la nada.</li>
+        <li>Mezclar chips de filtro y chips que se quitan en la misma fila: el lector no sabe cuáles se activan.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-chip</code></td><td>La píldora: una etiqueta con una casilla, o un span con un valor.</td></tr>
+            <tr><td><code>iv-chip--sm</code></td><td>Chip pequeño, de 1,5rem de alto.</td></tr>
+            <tr><td><code>iv-chip__media</code></td><td>Avatar o icono al principio, a la medida del chip.</td></tr>
+            <tr><td><code>iv-chip__remove</code></td><td>Botón redondo de quitar al final; vacío, dibuja una cruz.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

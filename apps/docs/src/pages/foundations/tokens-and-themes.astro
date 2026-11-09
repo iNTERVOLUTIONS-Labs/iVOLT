@@ -1,6 +1,7 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Stage from "../../components/Stage.astro";
+import OneColour from "../../components/OneColour.astro";
 import tokens from "@intervolutions/ivolt/tokens.json";
 const val = (k, mode) => { const v = tokens[k].value; return typeof v === "string" ? v : v[mode]; };
 const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color-") && !k.startsWith("--iv-palette"));
@@ -16,10 +17,44 @@ const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color
 &#125;
 .checkout &#123; --iv-button-radius: var(--iv-radius-full); &#125;  /* component-local */</code></pre>
 
+    <OneColour lang="en" />
+
+    <h2 id="palettes">Where the mixing happens, and palettes</h2>
+    <p><span class="docs-new">New in 1.1</span> The ten derived tokens are declared once, as <code>color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-&lt;name&gt;))</code>, on <code>:root</code>, on every <code>[data-iv-theme]</code> scope and on every <code>[data-iv-palette]</code> scope. That is where you set the primary: on <code>:root</code> for the whole site, or on one of those scopes for a part of it. On any other element the derived tokens are already computed by the time they are inherited, so changing the primary on a plain <code>&lt;div&gt;</code> recolours the primary itself but not its hover or its gradient — add <code>data-iv-palette</code> (with no value) to that element and it re-mixes them. The defaults resolve to the 1.0 values within ΔE2000 &lt; 1, checked in a browser on every build, so a site that never touches the primary sees no change.</p>
+    <p><code>data-iv-palette</code> with a value points the primary of a subtree at another role of the theme: <code>accent</code>, <code>success</code>, <code>warning</code>, <code>danger</code>, <code>info</code> or <code>neutral</code> (the text colour on the page colour). The primary and the ink drawn on it change together, and every derived token follows — a danger zone in a settings page, a success panel, a monochrome footer, with one attribute and no new classes.</p>
+    <Stage name="theme/one-colour" title="Default cobalt, one variable, and data-iv-palette=&quot;success&quot;" />
+    <p><code>--iv-color-on-primary</code>, the colour of text drawn on the primary, is not derived: CSS in the browsers iVOLT supports cannot pick a contrasting colour. Set it with the primary and check the pair; the measured figures above show how much room each sample colour leaves. The recipes themselves are public tokens, one per derived value and per theme, in the form <code>&lt;colour&gt; &lt;percentage&gt;</code>; they can be tuned, and their values may be refined in a minor release:</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Recipe</th><th>Light</th><th>Dark</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-mix-primary-hover</code></td><td><code>{val("--iv-mix-primary-hover", "light")}</code></td><td><code>{val("--iv-mix-primary-hover", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-primary-active</code></td><td><code>{val("--iv-mix-primary-active", "light")}</code></td><td><code>{val("--iv-mix-primary-active", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-primary-subtle</code></td><td><code>{val("--iv-mix-primary-subtle", "light")}</code></td><td><code>{val("--iv-mix-primary-subtle", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-primary-border</code></td><td><code>{val("--iv-mix-primary-border", "light")}</code></td><td><code>{val("--iv-mix-primary-border", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-focus</code></td><td><code>{val("--iv-mix-focus", "light")}</code></td><td><code>{val("--iv-mix-focus", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-focus-halo</code></td><td><code>{val("--iv-mix-focus-halo", "light")}</code></td><td><code>{val("--iv-mix-focus-halo", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-glow-primary</code></td><td><code>{val("--iv-mix-glow-primary", "light")}</code></td><td><code>{val("--iv-mix-glow-primary", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-glow-secondary</code></td><td><code>{val("--iv-mix-glow-secondary", "light")}</code></td><td><code>{val("--iv-mix-glow-secondary", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-brand-start</code></td><td><code>{val("--iv-mix-brand-start", "light")}</code></td><td><code>{val("--iv-mix-brand-start", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-brand-end</code></td><td><code>{val("--iv-mix-brand-end", "light")}</code></td><td><code>{val("--iv-mix-brand-end", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-gradient-start</code></td><td><code>{val("--iv-mix-gradient-start", "light")}</code></td><td><code>{val("--iv-mix-gradient-start", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-gradient-end</code></td><td><code>{val("--iv-mix-gradient-end", "light")}</code></td><td><code>{val("--iv-mix-gradient-end", "dark")}</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A theme of your own can also change a recipe: <code>--iv-mix-brand-end: var(--iv-color-accent) 35%</code> ends both gradients a third of the way to your accent, which is what the presets of the <a href="/themes">theme gallery</a> do.</p>
+
     <h2>Themes</h2>
     <p><code>data-iv-theme</code> accepts <code>light</code> (default when absent), <code>dark</code> and <code>system</code>. Scopes nest and the nearest explicit value wins; <code>system</code> follows <code>prefers-color-scheme</code> without JavaScript or storage.</p>
     <Stage primary name="theme/nested" title="Nested scopes" />
     <p>The optional <code>theme</code> module adds <code>getTheme()</code>, <code>setTheme(theme, &#123; persist &#125;)</code>, <code>resolveTheme()</code> and <code>restoreTheme()</code>, and dispatches <code>iv:themechange</code> on <code>document</code>. Persistence is opt-in. To avoid a flash before the stored theme applies, add a tiny inline script in <code>&lt;head&gt;</code>; with a strict CSP allow it by hash or nonce.</p>
+
+    <h3>Switching with a view transition</h3>
+    <p><span class="docs-new">New in 1.1</span> <code>@intervolutions/ivolt/theme-transition</code> exports <code>setThemeWithTransition(theme, options)</code>: the same call as <code>setTheme</code>, wrapped in <code>document.startViewTransition</code> where the browser has it and the reader has not asked for less motion, so the page cross-fades between themes instead of flipping. Elsewhere it is <code>setTheme</code> as it was. It returns a promise of the resolved theme, fires <code>iv:themechange</code> once the browser has taken its snapshot, and throws an <code>IvError</code> synchronously for an invalid theme. It is a subpath of its own, so <code>theme.js</code> and the default bundle did not grow.</p>
+<pre><code>import &#123; setThemeWithTransition &#125; from "@intervolutions/ivolt/theme-transition";
+button.addEventListener("click", () =&gt; setThemeWithTransition("dark", &#123; persist: true &#125;));</code></pre>
+    <p><button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme-transition hidden>Try it: switch this page's theme</button></p>
 
     <h2>Semantic colours</h2>
     <div class="docs-scroller">

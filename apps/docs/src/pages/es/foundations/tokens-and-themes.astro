@@ -1,6 +1,7 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import Stage from "../../../components/Stage.astro";
+import OneColour from "../../../components/OneColour.astro";
 import tokens from "@intervolutions/ivolt/tokens.json";
 const val = (k, mode) => { const v = tokens[k].value; return typeof v === "string" ? v : v[mode]; };
 const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color-") && !k.startsWith("--iv-palette"));
@@ -16,10 +17,44 @@ const semantic = Object.entries(tokens).filter(([k]) => k.startsWith("--iv-color
 &#125;
 .checkout &#123; --iv-button-radius: var(--iv-radius-full); &#125;  /* local al componente */</code></pre>
 
+    <OneColour lang="es" />
+
+    <h2 id="palettes">Dónde se hace la mezcla, y paletas</h2>
+    <p><span class="docs-new">Nuevo en 1.1</span> Los diez tokens derivados se declaran una sola vez, como <code>color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-&lt;nombre&gt;))</code>, en <code>:root</code>, en cada ámbito <code>[data-iv-theme]</code> y en cada ámbito <code>[data-iv-palette]</code>. Ahí es donde se fija el primario: en <code>:root</code> para todo el sitio, o en uno de esos ámbitos para una parte. En cualquier otro elemento los derivados ya llegan calculados cuando se heredan, así que cambiar el primario en un <code>&lt;div&gt;</code> corriente repinta el propio primario pero no su hover ni su degradado; añade <code>data-iv-palette</code> (sin valor) a ese elemento y los vuelve a mezclar. Los valores por defecto resuelven a los de 1.0 con ΔE2000 &lt; 1, comprobado en un navegador en cada build, así que un sitio que nunca toca el primario no nota nada.</p>
+    <p><code>data-iv-palette</code> con valor apunta el primario de un subárbol a otro papel del tema: <code>accent</code>, <code>success</code>, <code>warning</code>, <code>danger</code>, <code>info</code> o <code>neutral</code> (el color del texto sobre el de la página). El primario y la tinta que va encima cambian juntos, y todos los derivados los siguen: una zona de peligro en unos ajustes, un panel de éxito, un pie monocromo, con un atributo y ninguna clase nueva.</p>
+    <Stage name="theme/one-colour" title="Cobalto por defecto, una variable y data-iv-palette=&quot;success&quot;" />
+    <p><code>--iv-color-on-primary</code>, el color del texto que va sobre el primario, no se deriva: el CSS de los navegadores que soporta iVOLT no sabe elegir un color con contraste. Fíjalo junto con el primario y comprueba la pareja; las cifras medidas de arriba enseñan el margen que deja cada color de muestra. Las recetas son tokens públicos, uno por valor derivado y por tema, con la forma <code>&lt;color&gt; &lt;porcentaje&gt;</code>; se pueden ajustar, y su valor puede afinarse en una versión menor:</p>
+    <div class="docs-scroller">
+      <table>
+        <thead><tr><th>Receta</th><th>Claro</th><th>Oscuro</th></tr></thead>
+        <tbody>
+          <tr><td><code>--iv-mix-primary-hover</code></td><td><code>{val("--iv-mix-primary-hover", "light")}</code></td><td><code>{val("--iv-mix-primary-hover", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-primary-active</code></td><td><code>{val("--iv-mix-primary-active", "light")}</code></td><td><code>{val("--iv-mix-primary-active", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-primary-subtle</code></td><td><code>{val("--iv-mix-primary-subtle", "light")}</code></td><td><code>{val("--iv-mix-primary-subtle", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-primary-border</code></td><td><code>{val("--iv-mix-primary-border", "light")}</code></td><td><code>{val("--iv-mix-primary-border", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-focus</code></td><td><code>{val("--iv-mix-focus", "light")}</code></td><td><code>{val("--iv-mix-focus", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-focus-halo</code></td><td><code>{val("--iv-mix-focus-halo", "light")}</code></td><td><code>{val("--iv-mix-focus-halo", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-glow-primary</code></td><td><code>{val("--iv-mix-glow-primary", "light")}</code></td><td><code>{val("--iv-mix-glow-primary", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-glow-secondary</code></td><td><code>{val("--iv-mix-glow-secondary", "light")}</code></td><td><code>{val("--iv-mix-glow-secondary", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-brand-start</code></td><td><code>{val("--iv-mix-brand-start", "light")}</code></td><td><code>{val("--iv-mix-brand-start", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-brand-end</code></td><td><code>{val("--iv-mix-brand-end", "light")}</code></td><td><code>{val("--iv-mix-brand-end", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-gradient-start</code></td><td><code>{val("--iv-mix-gradient-start", "light")}</code></td><td><code>{val("--iv-mix-gradient-start", "dark")}</code></td></tr>
+          <tr><td><code>--iv-mix-gradient-end</code></td><td><code>{val("--iv-mix-gradient-end", "light")}</code></td><td><code>{val("--iv-mix-gradient-end", "dark")}</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Un tema propio también puede cambiar una receta: <code>--iv-mix-brand-end: var(--iv-color-accent) 35%</code> termina los dos degradados a un tercio de tu acento, que es lo que hacen los temas de la <a href="/es/themes">galería</a>.</p>
+
     <h2>Temas</h2>
     <p><code>data-iv-theme</code> acepta <code>light</code> (el valor por defecto cuando falta), <code>dark</code> y <code>system</code>. Los ámbitos se anidan y gana el valor explícito más cercano; <code>system</code> sigue a <code>prefers-color-scheme</code> sin JavaScript ni almacenamiento.</p>
     <Stage primary name="theme/nested" title="Ámbitos anidados" />
     <p>El módulo opcional <code>theme</code> añade <code>getTheme()</code>, <code>setTheme(theme, &#123; persist &#125;)</code>, <code>resolveTheme()</code> y <code>restoreTheme()</code>, y emite <code>iv:themechange</code> sobre <code>document</code>. La persistencia hay que pedirla expresamente. Para evitar un parpadeo antes de que se aplique el tema guardado, añade un pequeño script en línea dentro de <code>&lt;head&gt;</code>; con una CSP estricta, permítelo por hash o por nonce.</p>
+
+    <h3>Cambiar con una transición de vista</h3>
+    <p><span class="docs-new">Nuevo en 1.1</span> <code>@intervolutions/ivolt/theme-transition</code> exporta <code>setThemeWithTransition(theme, options)</code>: la misma llamada que <code>setTheme</code>, envuelta en <code>document.startViewTransition</code> donde el navegador la tiene y el lector no ha pedido menos movimiento, así que la página funde un tema con otro en lugar de saltar. En el resto es <code>setTheme</code> tal cual. Devuelve una promesa con el tema resuelto, emite <code>iv:themechange</code> cuando el navegador ya ha tomado su captura y lanza un <code>IvError</code> de forma síncrona si el tema no es válido. Es una subruta propia, así que ni <code>theme.js</code> ni el paquete por defecto han crecido.</p>
+<pre><code>import &#123; setThemeWithTransition &#125; from "@intervolutions/ivolt/theme-transition";
+button.addEventListener("click", () =&gt; setThemeWithTransition("dark", &#123; persist: true &#125;));</code></pre>
+    <p><button class="iv-button iv-button--secondary iv-button--sm" type="button" data-theme-transition hidden>Pruébalo: cambia el tema de esta página</button></p>
 
     <h2>Colores semánticos</h2>
     <div class="docs-scroller">

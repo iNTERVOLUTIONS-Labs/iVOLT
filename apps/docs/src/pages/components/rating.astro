@@ -1,0 +1,77 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Rating: accessible star input and display" description="iVOLT rating: a star input on native radios with arrow keys and a form value, and a read-only display that shows fractional scores like 4.6 of 5.">
+  <article class="docs-prose" data-enriched>
+    <h1>Rating</h1>
+    <p>Stars in two forms, both without JavaScript. The <strong>input</strong> is a native radio group — one tab stop, arrow keys to change the score, a value that a form sends, and a spoken name for every star. The <strong>display</strong> is a read-only score drawn by a star mask over a fill, so fractions such as 4.6 out of 5 show exactly, and the whole thing is one element with one accessible name.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/rating.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="rating/basic" title="Star input and score display" minHeight="14rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>Use the input when you ask for a judgement on a short, familiar scale: “How useful was this page?”, a product review, a support survey. For anything that needs labels on each step (“strongly disagree … strongly agree”), use a radio list or a <a href="/components/segmented">segmented control</a> with words instead. Use the display wherever a score is shown next to its count: a product card, a review summary, a plugin listing.</p>
+    </Section>
+
+    <Section title="The input" num={2}>
+      <pre tabindex="0"><code>&lt;fieldset class="iv-rating"&gt;
+  &lt;legend class="iv-rating__legend"&gt;How useful was this page?&lt;/legend&gt;
+  &lt;input class="iv-rating__input" type="radio" id="r1" name="r" value="1"&gt;
+  &lt;label class="iv-rating__star" for="r1"&gt;&lt;span class="iv-u-sr-only"&gt;1 star&lt;/span&gt;&lt;/label&gt;
+  …
+&lt;/fieldset&gt;</code></pre>
+      <p>Every input is followed by its label, whose text is visually hidden. A star lights when its own input or a later one is checked, which the stylesheet works out with <code>:has()</code>; on an engine without it only the chosen star lights, which is still unambiguous. Under a pointer the hovered star and those before it preview the score. The focus ring goes round the whole group, as for any radio group, and the focused star steps forward. <code>iv-rating--sm</code> and <code>iv-rating--lg</code> change the size.</p>
+    </Section>
+
+    <Section title="The display" num={3}>
+      <pre tabindex="0"><code>&lt;span class="iv-rating-display" role="img" aria-label="4.6 out of 5"
+      style="--iv-rating-value: 4.6"&gt;&lt;/span&gt;</code></pre>
+      <p>The score is a custom property, <code>--iv-rating-value</code>, and the number of stars is <code>--iv-rating-max</code> (5 by default). The fill runs from the inline start, so in a right-to-left page it grows from the right. The display is an image: it needs <code>role="img"</code> and an <code>aria-label</code> that says the score in words. Write the number and the count next to it as visible text too.</p>
+    </Section>
+
+    <Section title="Accessibility" num={4}>
+      <ul>
+        <li>The <code>&lt;legend&gt;</code> is the question; each hidden label is the answer (“4 stars”). A screen reader announces “How useful was this page?, 4 stars, radio button, checked, 4 of 5”.</li>
+        <li>Arrow keys change the selection immediately, as in any radio group, so do not submit on <code>change</code>.</li>
+        <li>Stars are drawn with a mask, and in forced colours they switch to the system highlight and grey text colours, keeping lit and unlit stars apart.</li>
+        <li>A disabled input dims its star and the arrow keys skip it.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={5}>
+      <pre tabindex="0"><code>.reviews &#123;
+  --iv-rating-size: 1.25rem;
+  --iv-rating-color: var(--iv-color-primary);
+  --iv-rating-off: var(--iv-color-border);
+&#125;</code></pre>
+      <p>Locals: <code>--iv-rating-size</code>, <code>--iv-rating-color</code> (the warning colour of the theme by default), <code>--iv-rating-off</code>, <code>--iv-rating-value</code> and <code>--iv-rating-max</code>. <code>--iv-rating-fill</code> is the state each star resolves to; read it, do not set it.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={6}>
+      <ul>
+        <li>A display without <code>aria-label</code>: an empty span is announced as nothing at all.</li>
+        <li>Visible star labels and a hidden legend — the wrong way round.</li>
+        <li>Giving the radios different <code>name</code> values, which breaks the group.</li>
+        <li>Rounding a 4.6 average to five lit stars: the display shows fractions, let it.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={7}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-rating</code></td><td>The input group, on a <code>&lt;fieldset&gt;</code>.</td></tr>
+            <tr><td><code>iv-rating__legend</code></td><td>The question.</td></tr>
+            <tr><td><code>iv-rating__input</code></td><td>One radio.</td></tr>
+            <tr><td><code>iv-rating__star</code></td><td>The star drawn for the radio before it.</td></tr>
+            <tr><td><code>iv-rating--sm</code> · <code>iv-rating--lg</code></td><td>Sizes (the small one also applies to the display).</td></tr>
+            <tr><td><code>iv-rating-display</code></td><td>Read-only score with fractions.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

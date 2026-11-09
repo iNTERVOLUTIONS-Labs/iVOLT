@@ -1,0 +1,77 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Estructura de app y lateral sin breakpoints" description="Estructura y lateral de iVOLT: marco de aplicación con barra de cristal, columna lateral que bajo lg es un panel y un lateral que se apila según su espacio.">
+  <article class="docs-prose" data-enriched>
+    <h1>Estructura de app y lateral</h1>
+    <p>Dos disposiciones para pantallas de aplicación. <code>iv-sidebar</code> pone una columna lateral junto al contenido y apila las dos cuando el contenido se quedaría demasiado estrecho; lo decide el espacio que tiene el bloque, no el ancho de la ventana, así que el mismo marcado funciona en una página, una tarjeta o un diálogo. <code>iv-shell</code> es todo un marco de aplicación: una barra de cristal fija arriba, una columna lateral que se queda fija desde el punto de corte <code>lg</code> y la zona principal; por debajo de <code>lg</code> la columna se recoge y un <a href="/es/components/drawer">panel lateral (drawer)</a> dentro de ella pasa a ser el menú.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/shell.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> solo el <code>Drawer</code> de la columna lateral (<code>@intervolutions/ivolt/drawer</code> o <code>auto.js</code>). Nuevo en 1.1.</p>
+    <Stage primary name="shell/basic" title="Estructura de app con un lateral dentro de la zona principal" minHeight="32rem" />
+
+    <Section title="El lateral (sidebar)" num={1}>
+      <pre tabindex="0"><code>&lt;div class="iv-sidebar"&gt;
+  &lt;aside&gt;…&lt;/aside&gt;        &lt;!-- conserva --iv-sidebar-width --&gt;
+  &lt;div&gt;…&lt;/div&gt;            &lt;!-- ocupa el resto --&gt;
+&lt;/div&gt;</code></pre>
+      <p>Dos hijos. El lateral conserva <code>--iv-sidebar-width</code> (16rem) y el contenido ocupa lo que queda; cuando el contenido bajaría de <code>--iv-sidebar-min</code> del contenedor, los dos pasan a la línea siguiente y se apilan, con el lateral arriba. <code>iv-sidebar--end</code> pone la columna lateral después del contenido, como la tarjeta de estado del ejemplo. La técnica es un flex que se envuelve con un factor de crecimiento enorme en el contenido —sin media query ni consulta de contenedor—, y por eso se puede anidar en cualquier sitio. Úsalo para una columna de filtros junto a unos resultados, un aparte junto a un artículo o el menú de ajustes junto a su formulario.</p>
+    </Section>
+
+    <Section title="La estructura de aplicación (shell)" num={2}>
+      <pre tabindex="0"><code>&lt;div class="iv-shell"&gt;
+  &lt;header class="iv-shell__top"&gt;…botón de menú, nombre del producto…&lt;/header&gt;
+  &lt;aside class="iv-shell__side" aria-label="Navegación de la consola"&gt;
+    &lt;dialog class="iv-drawer" id="nav" data-iv-component="drawer"
+            data-iv-static-from="lg" aria-label="Navegación de la consola"&gt;…&lt;/dialog&gt;
+  &lt;/aside&gt;
+  &lt;main class="iv-shell__main"&gt;…&lt;/main&gt;
+&lt;/div&gt;</code></pre>
+      <p>Desde <code>lg</code> el panel es estático: se dibuja en su sitio como columna lateral, fijo bajo la barra y tan alto como la ventana. Por debajo de <code>lg</code> la columna no ocupa espacio, el botón de menú de la barra (<code>data-iv-open="nav"</code>, oculto desde <code>lg</code> con <code>iv-u-lg-hidden</code>) abre ese mismo panel como modal, y el foco, la tecla Escape y el fondo funcionan como en cualquier drawer. Una sola navegación en el código, dos presentaciones y ningún marcado duplicado.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <ul>
+        <li>Pon nombre a los puntos de referencia: la columna lateral es un <code>&lt;aside&gt;</code> con <code>aria-label</code> y el contenido es el único <code>&lt;main&gt;</code> de la página. Dentro de una página que ya tiene <code>&lt;main&gt;</code>, usa un <code>&lt;div class="iv-shell__main"&gt;</code>.</li>
+        <li>Marca la sección actual con <code>aria-current="page"</code>; la <a href="/es/components/list">lista de navegación</a> le da estilo.</li>
+        <li>Sin JavaScript el botón de menú sigue siendo un enlace al id del panel: al seguirlo, <code>:target</code> enseña el panel como un bloque estático, así que la navegación sigue al alcance (mira el <a href="/es/components/drawer">drawer</a>).</li>
+        <li>En colores forzados la barra superior conserva un borde sólido, porque el desenfoque del cristal desaparece.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.console &#123;
+  --iv-shell-side: 18rem;
+  --iv-shell-top: 4rem;
+&#125;
+.filters &#123; --iv-sidebar-width: 14rem; --iv-sidebar-min: 55%; --iv-sidebar-gap: var(--iv-space-8); &#125;</code></pre>
+      <p>Locales de la estructura: <code>--iv-shell-side</code> (16rem, el ancho de la columna desde <code>lg</code>) y <code>--iv-shell-top</code> (3,75rem, la altura de la barra bajo la que se fija la columna). Locales del lateral: <code>--iv-sidebar-width</code>, <code>--iv-sidebar-min</code> y <code>--iv-sidebar-gap</code>; pon el ancho en el propio hijo lateral cuando un lateral necesite otra columna, como hace el ejemplo.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Dos navegaciones en el código, una para escritorio y otra para móvil: los lectores de pantalla encuentran las dos.</li>
+        <li>Un drawer estático fuera de un <code>aside</code> o un <code>nav</code>: el propio drawer avisa en desarrollo.</li>
+        <li>Anidar un <code>iv-shell</code> dentro de otro, o un <code>&lt;main&gt;</code> dentro de otro <code>&lt;main&gt;</code>.</li>
+        <li>Dar al hijo lateral un ancho fijo con una utilidad en lugar del local, con lo que deja de apilarse.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de las dos familias. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-sidebar</code></td><td>Columna lateral y contenido que se apilan según el espacio.</td></tr>
+            <tr><td><code>iv-sidebar--end</code></td><td>Columna lateral después del contenido.</td></tr>
+            <tr><td><code>iv-shell</code></td><td>Marco de aplicación.</td></tr>
+            <tr><td><code>iv-shell__top</code></td><td>Barra superior de cristal, fija.</td></tr>
+            <tr><td><code>iv-shell__side</code></td><td>Columna lateral desde <code>lg</code>; contiene un drawer estático.</td></tr>
+            <tr><td><code>iv-shell__main</code></td><td>La zona principal.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

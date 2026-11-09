@@ -39,7 +39,20 @@ import Stage from "../../components/Stage.astro";
       <p>Utilities are emitted with a doubled selector (specificity 0,2,0) and loaded last, so they win over component modifiers in both the layered and the flat stylesheet.</p>
     </Section>
 
-    <Section title="Class index" num={5}>
+    <Section title="Subgrid and deferred rendering" num={5}>
+      <p><span class="docs-new">New in 1.1</span> Two layout helpers that lean on modern CSS and degrade to what 1.0 did.</p>
+      <p><strong><code>iv-grid--subgrid</code></strong>, together with <code>iv-grid</code>: each child spans <code>--iv-subgrid-rows</code> rows (3 by default) of the parent grid with <code>grid-template-rows: subgrid</code>, so the title, the text and the footer of every card share the same row lines and stay aligned across the row however long each one is. The gap between those rows is <code>--iv-subgrid-gap</code>. An engine without subgrid keeps a plain grid inside each child, which is the 1.0 look. It lives in the components layer because it reorders components.</p>
+      <pre tabindex="0"><code>&lt;div class="iv-grid iv-grid--subgrid iv-u-gap-4 iv-u-md-grid-cols-3"&gt;
+  &lt;article class="iv-card iv-card--link iv-u-p-5"&gt;
+    &lt;h3 class="iv-card__title"&gt;…&lt;/h3&gt; &lt;p&gt;…&lt;/p&gt; &lt;span class="iv-card__raise"&gt;…&lt;/span&gt;
+  &lt;/article&gt;
+  …
+&lt;/div&gt;</code></pre>
+      <p>See it running on the <a href="/components/card">card</a> page.</p>
+      <p><strong><code>iv-defer</code></strong> sets <code>content-visibility: auto</code> with <code>contain-intrinsic-size: auto var(--iv-defer-size, 40rem)</code>: the browser skips the layout and paint of a block until it comes near the viewport, reserving 40rem (or your value) meanwhile so the scrollbar does not jump. Find in page, anchors and assistive technology still reach the text. Use it on long pages with heavy sections below the fold — a footer full of links, a long changelog, a gallery — and not on the first screen, where it saves nothing. The <a href="/foundations/motion">motion</a> page runs it inside a stage.</p>
+    </Section>
+
+    <Section title="Class index" num={6}>
       <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>

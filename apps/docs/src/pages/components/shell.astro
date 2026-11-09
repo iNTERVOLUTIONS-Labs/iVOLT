@@ -1,0 +1,77 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="App shell and sidebar layouts without breakpoints" description="iVOLT shell and sidebar: an app frame with a glass top bar, a side column that becomes a drawer below lg, and a sidebar that stacks by available width.">
+  <article class="docs-prose" data-enriched>
+    <h1>Shell and sidebar</h1>
+    <p>Two layouts for application screens. <code>iv-sidebar</code> puts a side column next to the content and stacks the two when the content would get too narrow — decided by the room the block has, not by the width of the window, so the same markup works in a page, a card or a dialog. <code>iv-shell</code> is a whole application frame: a sticky glass bar across the top, a side column that is sticky from the <code>lg</code> breakpoint, and the main area; below <code>lg</code> the column folds away and a <a href="/components/drawer">drawer</a> inside it becomes the menu.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/shell.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> only the <code>Drawer</code> of the side column (<code>@intervolutions/ivolt/drawer</code> or <code>auto.js</code>). New in 1.1.</p>
+    <Stage primary name="shell/basic" title="App shell with a sidebar inside the main area" minHeight="32rem" />
+
+    <Section title="The sidebar layout" num={1}>
+      <pre tabindex="0"><code>&lt;div class="iv-sidebar"&gt;
+  &lt;aside&gt;…&lt;/aside&gt;        &lt;!-- keeps --iv-sidebar-width --&gt;
+  &lt;div&gt;…&lt;/div&gt;            &lt;!-- takes the rest --&gt;
+&lt;/div&gt;</code></pre>
+      <p>Two children. The side keeps <code>--iv-sidebar-width</code> (16rem) and the content takes what is left; when the content would fall under <code>--iv-sidebar-min</code> of the container, both wrap and stack, with the side on top. <code>iv-sidebar--end</code> puts the side column after the content, as the status card in the example. The technique is flex wrapping with a huge grow factor on the content — no media query and no container query, which is why it nests anywhere. Use it for a filter column beside results, an aside beside an article, or a settings menu beside its form.</p>
+    </Section>
+
+    <Section title="The application shell" num={2}>
+      <pre tabindex="0"><code>&lt;div class="iv-shell"&gt;
+  &lt;header class="iv-shell__top"&gt;…menu button, product name…&lt;/header&gt;
+  &lt;aside class="iv-shell__side" aria-label="Console navigation"&gt;
+    &lt;dialog class="iv-drawer" id="nav" data-iv-component="drawer"
+            data-iv-static-from="lg" aria-label="Console navigation"&gt;…&lt;/dialog&gt;
+  &lt;/aside&gt;
+  &lt;main class="iv-shell__main"&gt;…&lt;/main&gt;
+&lt;/div&gt;</code></pre>
+      <p>From <code>lg</code> the drawer is static: it renders in place as the side column, sticky under the bar and as tall as the viewport. Below <code>lg</code> the column takes no room, the menu button in the bar (<code>data-iv-open="nav"</code>, hidden from <code>lg</code> with <code>iv-u-lg-hidden</code>) opens the same drawer as a modal, and focus, Escape and the backdrop work as on any drawer. One navigation in the source, two presentations, no duplicated markup.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <ul>
+        <li>Name the landmarks: the side column is an <code>&lt;aside&gt;</code> with an <code>aria-label</code>, the content is the page's single <code>&lt;main&gt;</code>. Inside a page that already has a <code>&lt;main&gt;</code>, use a <code>&lt;div class="iv-shell__main"&gt;</code> instead.</li>
+        <li>Mark the current section with <code>aria-current="page"</code>; the <a href="/components/list">navigation list</a> styles it.</li>
+        <li>Without JavaScript the menu button is still a link to the drawer's id: following it shows the drawer through <code>:target</code> as a static block, so the navigation stays reachable (see <a href="/components/drawer">drawer</a>).</li>
+        <li>The top bar keeps a solid edge in forced colours, where its glass blur is dropped.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.console &#123;
+  --iv-shell-side: 18rem;
+  --iv-shell-top: 4rem;
+&#125;
+.filters &#123; --iv-sidebar-width: 14rem; --iv-sidebar-min: 55%; --iv-sidebar-gap: var(--iv-space-8); &#125;</code></pre>
+      <p>Shell locals: <code>--iv-shell-side</code> (16rem, the column width from <code>lg</code>) and <code>--iv-shell-top</code> (3.75rem, the bar height the column sticks under). Sidebar locals: <code>--iv-sidebar-width</code>, <code>--iv-sidebar-min</code> and <code>--iv-sidebar-gap</code>; set the width on the side child itself when one sidebar needs a different column, as the example does.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>Two navigations in the source, one for desktop and one for mobile: screen readers find both.</li>
+        <li>A static drawer outside <code>aside</code> or <code>nav</code>: the drawer warns about it in development.</li>
+        <li>Nesting an <code>iv-shell</code> inside another, or a <code>&lt;main&gt;</code> inside a <code>&lt;main&gt;</code>.</li>
+        <li>Giving the sidebar child a fixed width with a utility instead of the local, which stops it from wrapping.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the two families. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-sidebar</code></td><td>Side column and content that stack by available width.</td></tr>
+            <tr><td><code>iv-sidebar--end</code></td><td>Side column after the content.</td></tr>
+            <tr><td><code>iv-shell</code></td><td>Application frame.</td></tr>
+            <tr><td><code>iv-shell__top</code></td><td>Sticky glass top bar.</td></tr>
+            <tr><td><code>iv-shell__side</code></td><td>Side column from <code>lg</code>; holds a static drawer.</td></tr>
+            <tr><td><code>iv-shell__main</code></td><td>The main area.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

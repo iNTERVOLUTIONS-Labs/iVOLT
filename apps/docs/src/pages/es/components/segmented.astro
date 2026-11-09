@@ -1,0 +1,74 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Control segmentado: radios en píldora sin JS" description="Control segmentado de iVOLT: radios nativos con forma de píldoras para vistas, periodos y facturación. Flechas, un solo tabulador y valor de formulario.">
+  <article class="docs-prose" data-enriched>
+    <h1>Control segmentado</h1>
+    <p>Una fila de píldoras de la que se elige exactamente una: día, semana, mes; facturación mensual o anual; lista o tablero. Debajo de las píldoras hay un grupo de radios corriente, así que el navegador pone todo lo que un control segmentado tiene que hacer —una sola parada de tabulación para el grupo, las flechas para mover la elección, un valor que el formulario envía y un nombre para cada opción— y la hoja de estilos solo lo dibuja.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/segmented.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="segmented/basic" title="Periodo, facturación y vista" minHeight="16rem" />
+
+    <Section title="Cuándo usarlo" num={1}>
+      <p>Usa un control segmentado para entre dos y cinco opciones cortas y excluyentes que cambian lo que el lector está mirando y que merece la pena enseñar a la vez. Con más opciones, o con etiquetas largas, va mejor un <a href="/es/components/form">select</a> o una lista de radios normal. Si cada opción muestra un panel de contenido distinto, el patrón son las <a href="/es/components/tabs">pestañas</a>, que gestionan los paneles por ti; un control segmentado solo guarda un valor, y lo que cambia en la página lo conectas tú.</p>
+    </Section>
+
+    <Section title="Anatomía" num={2}>
+      <pre tabindex="0"><code>&lt;fieldset class="iv-segmented"&gt;
+  &lt;legend class="iv-u-sr-only"&gt;Periodo&lt;/legend&gt;
+  &lt;label class="iv-segmented__item"&gt;
+    &lt;input type="radio" name="periodo" value="semana" checked&gt;&lt;span&gt;Semana&lt;/span&gt;
+  &lt;/label&gt;
+  …
+&lt;/fieldset&gt;</code></pre>
+      <p>El <code>&lt;fieldset&gt;</code> agrupa los radios y su <code>&lt;legend&gt;</code> da nombre al grupo (aquí oculta, porque el contexto suele bastar). Cada opción es un <code>&lt;label class="iv-segmented__item"&gt;</code> con el input y, justo detrás, la cara visible: un <code>&lt;span&gt;</code> que puede llevar una insignia, como el «−20&nbsp;%» de la opción anual.</p>
+    </Section>
+
+    <Section title="Variantes" num={3}>
+      <ul>
+        <li><code>iv-segmented--brand</code> rellena el segmento elegido con el primario y su tinta, lo que encaja en un selector de precios. Una insignia dentro del segmento relleno toma el color de texto del segmento.</li>
+        <li><code>iv-segmented--block</code> estira el control al ancho de su contenedor y reparte el espacio a partes iguales.</li>
+        <li><code>iv-segmented--sm</code> es el tamaño compacto para barras de herramientas y cabeceras de tarjeta.</li>
+        <li>Un radio <code>disabled</code> atenúa su opción y la saca del ciclo de las flechas, de lo que se encarga el navegador.</li>
+      </ul>
+    </Section>
+
+    <Section title="Accesibilidad" num={4}>
+      <p>Los radios siguen en el árbol de accesibilidad y en el orden de tabulación: se hacen transparentes y se colocan sobre su cara, no se esconden con <code>display: none</code>. Un lector de pantalla anuncia «Periodo, grupo; Semana, botón de opción, marcado, 2 de 4». El anillo de foco se dibuja sobre la cara cuando el input tiene <code>:focus-visible</code>. Cambiar la elección con las flechas la selecciona en el acto —así funcionan los grupos de radios nativos—, así que la página no debe hacer nada caro ni irreversible en el evento <code>change</code>. En colores forzados el segmento elegido usa el resaltado del sistema.</p>
+    </Section>
+
+    <Section title="Personalizar" num={5}>
+      <pre tabindex="0"><code>.toolbar .iv-segmented &#123;
+  --iv-segmented-radius: var(--iv-radius-md);
+  --iv-segmented-pad: 0.125rem;
+&#125;</code></pre>
+      <p>Locales: <code>--iv-segmented-radius</code> (píldora completa por defecto) y <code>--iv-segmented-pad</code> (el hueco entre la pista y los segmentos). Los colores salen del tema: la pista es la superficie y el segmento elegido la superficie elevada con una sombra suave, o el primario con <code>--brand</code>.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={6}>
+      <ul>
+        <li>Construirlo con botones y <code>aria-pressed</code>: entonces te toca escribir a mano las flechas, la parada de tabulación única y el valor del formulario.</li>
+        <li>Olvidar el atributo <code>name</code>: sin él los radios no forman un grupo y se pueden marcar varios.</li>
+        <li>Etiquetas que ocupan dos líneas. Acórtalas o usa un select.</li>
+        <li>Esperar que cambie paneles por sí solo. Para eso están las pestañas.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={7}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-segmented</code></td><td>La pista, sobre un <code>&lt;fieldset&gt;</code>.</td></tr>
+            <tr><td><code>iv-segmented__item</code></td><td>Una opción: una etiqueta con el radio y su cara.</td></tr>
+            <tr><td><code>iv-segmented--brand</code></td><td>El segmento elegido se rellena con el primario.</td></tr>
+            <tr><td><code>iv-segmented--block</code></td><td>Ancho completo; las opciones se reparten el espacio.</td></tr>
+            <tr><td><code>iv-segmented--sm</code></td><td>Tamaño compacto.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>
