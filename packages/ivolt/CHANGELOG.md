@@ -2,7 +2,7 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
-## 1.1.0 — unreleased
+## 1.1.0 — 2026-11-09 (npm, tag `latest`)
 
 ### Added
 - **One-colour theming**: hover, active, subtle, border, focus, focus halo, glows and both brand gradients are mixed in CSS from `--iv-color-primary` (glow-secondary from `--iv-color-accent`) with per-theme recipes, the new `--iv-mix-*` tokens. The defaults resolve to the 1.0 values (ΔE2000 < 1, checked in a browser). Setting `--iv-color-primary` on `:root`, a `[data-iv-theme]` or a `[data-iv-palette]` scope repaints buttons, focus rings, links, badges, progress, switches and gradient text. `tokens.json` keeps the literal values and adds the formula as `css`.
