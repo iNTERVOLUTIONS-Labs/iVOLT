@@ -1,0 +1,72 @@
+---
+// "New in 1.1" on the home, right under the hero (ADR-052: the hero and its bolt stay as they are;
+// this is an addition). One band: the release number set large in outline, a line about what it
+// is, and five doors — one-colour theming, the new components, the theme gallery, the blocks and
+// the comparisons. Every number is computed: the version from the package, the count of new
+// families from the same list that marks them in the sidebar.
+import { version } from "../lib/version.js";
+import { fresh } from "../i18n/en.js";
+import { words } from "../lib/count.js";
+import { swatches } from "../data/themes.js";
+import "../styles/spark.css";
+const { lang = "en" } = Astro.props;
+const es = lang === "es";
+const base = es ? "/es" : "";
+const minor = version.split(".").slice(0, 2).join(".");
+const n = fresh.length;
+const L = es
+  ? {
+      kicker: `Nuevo en ${minor} · «Spark»`,
+      title: `Un color, ${words(n, "es")} familias nuevas y todo para compartir.`,
+      lead: "Lo que trae esta versión, sin cambiar nada de lo que ya funcionaba: todo es aditivo y sigue SemVer.",
+      doors: [
+        { href: `${base}/foundations/tokens-and-themes#oc-title`, title: "Tema de un color", text: "Una variable repinta botones, foco, brillos y degradados. Mezclado en CSS.", art: "dots" },
+        { href: `${base}/components/segmented`, title: `${words(n, "es")[0].toUpperCase() + words(n, "es").slice(1)} componentes nuevos`, text: "Control segmentado, chip, banner, estado vacío, valoración, bloque de código, maquetas y más.", art: "seg" },
+        { href: `${base}/themes`, title: "Galería de temas", text: "Doce temas con contraste medido; descarga theme.css o compártelos por URL.", art: "swatch" },
+        { href: `${base}/blocks`, title: "Bloques", text: "Secciones listas para copiar: heros, precios, FAQ, pies, acceso.", art: "blocks" },
+        { href: `${base}/compare`, title: "Comparar", text: "iVOLT frente a Bootstrap, Tailwind, Pico y Bulma, con tamaños medidos.", art: "bars" },
+      ],
+    }
+  : {
+      kicker: `New in ${minor} · “Spark”`,
+      title: `One colour, ${words(n)} new families, and everything made to share.`,
+      lead: "What this release brings, without changing anything that already worked: every addition is additive and follows SemVer.",
+      doors: [
+        { href: `${base}/foundations/tokens-and-themes#oc-title`, title: "One-colour theming", text: "One variable repaints buttons, focus, glows and gradients. Mixed in CSS.", art: "dots" },
+        { href: `${base}/components/segmented`, title: `${words(n)[0].toUpperCase() + words(n).slice(1)} new components`, text: "Segmented control, chip, banner, empty state, rating, code block, mockups and more.", art: "seg" },
+        { href: `${base}/themes`, title: "Theme gallery", text: "Twelve themes with measured contrast; download theme.css or share them by URL.", art: "swatch" },
+        { href: `${base}/blocks`, title: "Blocks", text: "Copy-paste sections: heroes, pricing, FAQ, footers, sign-in.", art: "blocks" },
+        { href: `${base}/compare`, title: "Compare", text: "iVOLT next to Bootstrap, Tailwind, Pico and Bulma, with measured sizes.", art: "bars" },
+      ],
+    };
+const dots = swatches.map((s) => s.light);
+---
+<section class="docs-spark docs-wrap" aria-labelledby="spark-title">
+  <div class="docs-spark__inner">
+    <div class="docs-spark__head">
+      <span class="docs-spark__num" aria-hidden="true">{minor}</span>
+      <div>
+        <p class="docs-spark__kicker">{L.kicker}</p>
+        <h2 class="docs-spark__title" id="spark-title">{L.title}</h2>
+        <p class="docs-spark__lead">{L.lead}</p>
+      </div>
+    </div>
+    <ul class="docs-spark__doors">
+      {L.doors.map((d, i) => (
+        <li>
+          <a class="docs-spark__door" href={d.href} style={`--i:${i}`}>
+            <span class="docs-spark__art" aria-hidden="true">
+              {d.art === "dots" && <span class="docs-spark__dots">{dots.map((c) => <i style={`--c:${c}`}></i>)}</span>}
+              {d.art === "seg" && <span class="docs-spark__seg"><i></i><i class="is-on"></i><i></i></span>}
+              {d.art === "swatch" && <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="22" rx="4"/><rect x="15" y="3" width="18" height="22" rx="4" fill="var(--iv-color-surface-raised)"/><rect x="27" y="7" width="18" height="22" rx="4" fill="var(--iv-color-primary-subtle)"/></svg>}
+              {d.art === "blocks" && <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="42" height="9" rx="3"/><rect x="3" y="16" width="19" height="13" rx="3"/><path d="M28 18h17M28 23h12M28 28h15"/></svg>}
+              {d.art === "bars" && <svg viewBox="0 0 48 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 8h12"/><path d="M4 16h30"/><path d="M4 24h40"/></svg>}
+            </span>
+            <span class="docs-spark__name">{d.title}<svg class="docs-spark__go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span>
+            <span class="docs-spark__text">{d.text}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
