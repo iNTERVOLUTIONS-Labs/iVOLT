@@ -1,0 +1,64 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Spinner: an accessible loading indicator in CSS" description="iVOLT spinner: a compositor-only loading arc in the brand gradient, in three sizes, inside buttons and busy regions, with a calm reduced-motion fallback.">
+  <article class="docs-prose" data-enriched>
+    <h1>Spinner</h1>
+    <p>An indeterminate busy indicator: something is happening and nobody knows for how long. The arc is a conic gradient in the brand colours, cut into a ring by a mask and turned with <code>rotate</code>, so the animation runs on the compositor and costs no layout or paint while it spins. Under reduced motion it stops turning and breathes instead.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/spinner.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="spinner/basic" title="Sizes, in a button and in a busy card" minHeight="18rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>Use a spinner for short, unmeasured waits: a button that is saving, a panel that is fetching, a preview that is building. When you can say how far along a task is, use a <a href="/components/progress">progress bar</a> instead — a number is always better than a turning shape. When the wait replaces content whose layout you know, a <a href="/components/skeleton">skeleton</a> keeps the page from jumping when the content lands.</p>
+      <p>Show it only after a short delay (a few hundred milliseconds) for operations that are usually instant, so fast responses do not flash an indicator for one frame.</p>
+    </Section>
+
+    <Section title="Sizes and colour" num={2}>
+      <p><code>iv-spinner--sm</code> (0.875rem) fits inside a button or a table cell, the default (1.25rem) sits beside a line of text, and <code>iv-spinner--lg</code> (2.5rem) centres in an empty panel. <code>iv-spinner--current</code> drops the gradient and draws the arc in <code>currentColor</code>, which is what a spinner inside a filled primary button needs to stay visible.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <p>The ring itself says nothing. The words do, in one of two ways:</p>
+      <ul>
+        <li><strong>Alone</strong> — give it <code>role="status"</code> and a visually hidden label: <code>&lt;span class="iv-spinner" role="status"&gt;&lt;span class="iv-u-sr-only"&gt;Loading&lt;/span&gt;&lt;/span&gt;</code>. The status role is a polite live region, so the label is announced once.</li>
+        <li><strong>In a region</strong> — mark the region that is waiting with <code>aria-busy="true"</code>, make the spinner <code>aria-hidden="true"</code>, and put the visible explanation in a <code>role="status"</code> paragraph (“Step 2 of 3: bundling the stylesheet”). Remove <code>aria-busy</code> when the content is ready.</li>
+      </ul>
+      <p>In a button, disable the button while it works and change its text (“Publishing…”): the label carries the state, the arc only decorates it. In forced colours the ring becomes a plain circle in the text colour with a gap, so it still reads as a spinner.</p>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.upload &#123;
+  --iv-spinner-size: 1.75rem;
+  --iv-spinner-width: 3px;
+  --iv-spinner-color: var(--iv-color-success);
+&#125;</code></pre>
+      <p>Locals: <code>--iv-spinner-size</code>, <code>--iv-spinner-width</code> (the thickness of the ring) and <code>--iv-spinner-color</code> (the head of the arc; the primary by default, so a one-colour theme recolours it).</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>A spinner with no text anywhere: a screen reader user hears nothing at all.</li>
+        <li>A spinner for a task with a known size, such as an upload with a byte count.</li>
+        <li>Several spinners on one screen for one operation. Show one, where the result will appear.</li>
+        <li>Leaving a submit button enabled while it spins, which invites a second submission.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-spinner</code></td><td>A turning arc in the brand gradient.</td></tr>
+            <tr><td><code>iv-spinner--sm</code></td><td>Small, for buttons and cells.</td></tr>
+            <tr><td><code>iv-spinner--lg</code></td><td>Large, for empty panels.</td></tr>
+            <tr><td><code>iv-spinner--current</code></td><td>Arc in <code>currentColor</code>, for filled buttons.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

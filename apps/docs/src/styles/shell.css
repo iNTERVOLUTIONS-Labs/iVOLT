@@ -297,3 +297,12 @@
 .docs-lost p { color: var(--iv-color-text-muted); max-inline-size: 48ch; margin-block-start: var(--iv-space-4); }
 .docs-kbd-inline { font-family: var(--iv-font-mono); font-size: .85em; border: 1px solid var(--iv-color-border-strong); border-radius: var(--iv-radius-sm); padding: 0 .4em; }
 .docs-lost__links small { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); }
+
+/* "New in 1.1": the families 1.1 added carry a small tag in the sidebar, a dot in the megamenu
+   cloud and a chip in the page eyebrow. The tag is primary ink on a hairline, not a filled pill:
+   thirteen filled pills down the rail would shout louder than the current page. */
+.docs-sidebar__new { flex: none; margin-inline-start: auto; padding: 0 .375rem; border: 1px solid var(--iv-color-primary-border); border-radius: var(--iv-radius-full); font-family: var(--iv-font-mono); font-size: .5625rem; line-height: 1.6; letter-spacing: .08em; text-transform: uppercase; color: var(--iv-color-primary); }
+.docs-sidebar__new + .docs-sidebar__kind { margin-inline-start: .25rem; }
+.docs-eyebrow__new { padding: .125rem .5rem; border-radius: var(--iv-radius-full); background: var(--iv-color-primary-subtle); border: 1px solid var(--iv-color-primary-border); color: var(--iv-color-text); letter-spacing: .08em; }
+.docs-new { display: inline-block; margin-inline-end: .5rem; padding: .0625rem .5rem; border: 1px solid var(--iv-color-primary-border); border-radius: var(--iv-radius-full); background: var(--iv-color-primary-subtle); font-family: var(--iv-font-mono); font-size: .6875rem; font-weight: var(--iv-weight-semibold); letter-spacing: .08em; text-transform: uppercase; vertical-align: .1em; color: var(--iv-color-text); white-space: nowrap; }
+.docs-mm__fresh::after { content: ""; display: inline-block; inline-size: .375rem; block-size: .375rem; margin-inline-start: .375rem; vertical-align: .15em; border-radius: 50%; background: var(--iv-color-accent); }

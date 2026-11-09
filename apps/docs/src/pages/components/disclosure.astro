@@ -49,5 +49,9 @@ import Stage from "../../components/Stage.astro";
     <Section title="Find in page" num={7}>
       <p>Text inside a closed <code>&lt;details&gt;</code> is still found by the browser's find-in-page in current Chromium-based browsers, which open the panel for you. Content that is hidden with CSS or rendered on click is not. That is one more reason to keep the native element instead of rebuilding it.</p>
     </Section>
+    <Section title="Animated opening" num={8}>
+      <p><span class="docs-new">New in 1.1</span> Where the engine exposes the content of <code>&lt;details&gt;</code> as <code>::details-content</code> and can interpolate to <code>auto</code> (<code>interpolate-size: allow-keywords</code>), an <code>iv-disclosure</code> grows to its height when it opens and folds back when it closes, over <code>--iv-motion-slow</code>. <code>content-visibility</code> is a discrete property, so the transition uses <code>allow-discrete</code> to keep the content painted until the fold has finished. Elsewhere the panel opens at once, exactly as in 1.0, and under reduced motion there is no transition at all.</p>
+      <p>It is CSS only: the same animation runs with or without the <code>Disclosure</code> component, and it combines with the native exclusive groups above — a <code>&lt;details name&gt;</code> accordion that glides, with no JavaScript on the page.</p>
+    </Section>
   </article>
 </Base>

@@ -1,0 +1,66 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Separador: líneas con texto, de marca y verticales" description="Separador de iVOLT: una línea que se desvanece entre bloques, un «o» con etiqueta, una línea de marca y una vertical para barras de herramientas. Solo CSS.">
+  <article class="docs-prose" data-enriched>
+    <h1>Separador (divider)</h1>
+    <p>Una línea entre dos bloques de contenido. La forma sencilla es un <code>&lt;hr&gt;</code> nativo cuya línea se desvanece en los dos extremos; la forma con etiqueta pone una palabra en medio: el «o» entre dos botones de acceso, el nombre del siguiente grupo en un formulario largo. Completan la familia una variante de marca y una línea vertical para barras de herramientas.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/divider.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="divider/basic" title="Sencillo, con etiqueta, de marca y vertical" minHeight="22rem" />
+
+    <Section title="Cuándo usarlo" num={1}>
+      <p>Usa un separador cuando dos vecinos necesitan una pausa visible pero no una sección nueva: dos maneras de hacer lo mismo, un grupo de ajustes que cambia de tema, una barra de herramientas cuyos botones se agrupan por familias. Si lo que viene después merece un encabezado, ponle un encabezado: un encabezado se puede navegar, una línea no.</p>
+      <p>El espacio forma parte del componente: <code>--iv-divider-space</code> (el sexto paso de la escala de espacio por defecto) queda por encima y por debajo de la línea, así que no hacen falta utilidades de margen alrededor. Dentro de un <code>iv-stack</code> con su propio hueco, pon el local a <code>0</code> y deja que el stack lo separe.</p>
+    </Section>
+
+    <Section title="Variantes" num={2}>
+      <ul>
+        <li><strong>Sencillo</strong>: <code>&lt;hr class="iv-divider"&gt;</code>. Una línea continua que se desvanece en los extremos.</li>
+        <li><strong>Con etiqueta</strong>: <code>&lt;div class="iv-divider" role="separator" aria-label="o"&gt;</code> con <code>iv-divider__label</code> dentro. Las dos mitades de la línea se detienen antes de la etiqueta.</li>
+        <li><strong>Al principio y al final</strong>: <code>iv-divider--start</code> e <code>iv-divider--end</code> llevan la etiqueta a un lado y la línea sigue desde ella, como un marcador de sección en un registro de cambios.</li>
+        <li><strong>De marca</strong>: <code>iv-divider--brand</code> dibuja la línea con el primario al 60&nbsp;%, que sigue a un tema de un color.</li>
+        <li><strong>Vertical</strong>: <code>&lt;hr class="iv-divider iv-divider--vertical" aria-orientation="vertical"&gt;</code> se coloca entre elementos en línea de un cluster o una barra de herramientas y se estira hasta su altura.</li>
+      </ul>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <p>Un <code>&lt;hr&gt;</code> nativo ya tiene el rol <code>separator</code>. Un separador con etiqueta es un <code>&lt;div&gt;</code>, así que declara <code>role="separator"</code> y lleva su nombre en <code>aria-label</code>; la etiqueta visible lleva <code>aria-hidden="true"</code> para que el lector de pantalla no diga «o» dos veces. Las líneas puramente decorativas dentro de una tarjeta que ya tiene encabezados también pueden ser <code>aria-hidden</code>. En colores forzados, donde se pierden los degradados, la línea mantiene un color sólido.</p>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.checkout &#123;
+  --iv-divider-color: var(--iv-color-border-strong);
+  --iv-divider-space: var(--iv-space-4);
+&#125;</code></pre>
+      <p>Locales: <code>--iv-divider-color</code> (la línea; <code>--iv-color-border</code> por defecto) y <code>--iv-divider-space</code> (el aire alrededor). La etiqueta usa el color de texto secundario y el paso pequeño de la escala tipográfica, así que nunca compite con el contenido de los lados.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Usar un separador en lugar de un encabezado para empezar un tema nuevo.</li>
+        <li>Dejar expuesta la etiqueta visible además del <code>aria-label</code>: la palabra se anuncia dos veces.</li>
+        <li>Una línea vertical en un bloque sin altura: se estira hasta el hermano más alto, así que necesita una fila flexible como <code>iv-cluster</code>.</li>
+        <li>Sumar utilidades de margen a <code>--iv-divider-space</code>, con lo que el hueco se duplica.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-divider</code></td><td>Una línea horizontal con aire por encima y por debajo.</td></tr>
+            <tr><td><code>iv-divider__label</code></td><td>La palabra en medio de un separador con etiqueta (<code>aria-hidden</code>).</td></tr>
+            <tr><td><code>iv-divider--start</code></td><td>Etiqueta al principio de la línea, que sigue después.</td></tr>
+            <tr><td><code>iv-divider--end</code></td><td>Etiqueta al final de la línea.</td></tr>
+            <tr><td><code>iv-divider--brand</code></td><td>Línea dibujada con el color primario.</td></tr>
+            <tr><td><code>iv-divider--vertical</code></td><td>Línea vertical entre elementos en línea.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

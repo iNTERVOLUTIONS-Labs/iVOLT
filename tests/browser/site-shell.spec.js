@@ -99,7 +99,9 @@ test.describe("Site shell", () => {
     for (const route of ["/components/button", "/es/components/button"]) {
       await page.goto(DOCS + route);
       const kinds = await page.evaluate(() => [...document.querySelectorAll(".docs-sidebar a[href*='/components/'] .docs-sidebar__kind")].map((k) => k.textContent));
-      expect(kinds.length, route).toBe(33);
+      // One per component page: the families map is the single source (33 in 1.0, 46 since 1.1).
+      const { families } = await import("../../apps/docs/src/i18n/en.js");
+      expect(kinds.length, route).toBe(Object.keys(families).length);
       expect(new Set(kinds)).toEqual(new Set(["css", "js"]));
     }
   });

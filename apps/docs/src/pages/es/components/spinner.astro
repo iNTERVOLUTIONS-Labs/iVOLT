@@ -1,0 +1,64 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Spinner: un indicador de carga accesible en CSS" description="Spinner de iVOLT: un arco de carga en el degradado de la marca, en tres tamaños, para botones y regiones ocupadas, con alternativa para movimiento reducido.">
+  <article class="docs-prose" data-enriched>
+    <h1>Spinner</h1>
+    <p>Un indicador de espera indeterminada: algo está pasando y nadie sabe cuánto va a tardar. El arco es un degradado cónico con los colores de la marca, recortado en forma de anillo con una máscara y girado con <code>rotate</code>, así que la animación corre en el compositor y no cuesta ni maquetación ni pintado mientras gira. Con movimiento reducido deja de girar y respira.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/spinner.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="spinner/basic" title="Tamaños, en un botón y en una tarjeta ocupada" minHeight="18rem" />
+
+    <Section title="Cuándo usarlo" num={1}>
+      <p>Usa un spinner para esperas cortas y sin medida: un botón que guarda, un panel que pide datos, una vista previa que se está generando. Cuando puedes decir cuánto falta, usa una <a href="/es/components/progress">barra de progreso</a>: una cifra siempre es mejor que una forma que gira. Cuando la espera sustituye a un contenido cuya maquetación conoces, un <a href="/es/components/skeleton">esqueleto</a> evita que la página salte cuando llega el contenido.</p>
+      <p>En operaciones que suelen ser instantáneas, muéstralo solo tras un pequeño retraso (unos cientos de milisegundos), para que una respuesta rápida no haga parpadear un indicador durante un fotograma.</p>
+    </Section>
+
+    <Section title="Tamaños y color" num={2}>
+      <p><code>iv-spinner--sm</code> (0,875rem) cabe dentro de un botón o una celda, el tamaño por defecto (1,25rem) va junto a una línea de texto e <code>iv-spinner--lg</code> (2,5rem) se centra en un panel vacío. <code>iv-spinner--current</code> quita el degradado y dibuja el arco en <code>currentColor</code>, que es lo que necesita un spinner dentro de un botón primario relleno para seguir viéndose.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <p>El anillo no dice nada por sí mismo. Lo dicen las palabras, de una de estas dos maneras:</p>
+      <ul>
+        <li><strong>Solo</strong>: dale <code>role="status"</code> y una etiqueta oculta: <code>&lt;span class="iv-spinner" role="status"&gt;&lt;span class="iv-u-sr-only"&gt;Cargando&lt;/span&gt;&lt;/span&gt;</code>. El rol status es una región viva educada, así que la etiqueta se anuncia una vez.</li>
+        <li><strong>En una región</strong>: marca la región que espera con <code>aria-busy="true"</code>, pon el spinner en <code>aria-hidden="true"</code> y escribe la explicación visible en un párrafo <code>role="status"</code> («Paso 2 de 3: empaquetando la hoja de estilos»). Quita <code>aria-busy</code> cuando el contenido esté listo.</li>
+      </ul>
+      <p>En un botón, desactívalo mientras trabaja y cambia su texto («Publicando…»): el estado lo lleva la etiqueta; el arco solo lo adorna. En colores forzados el anillo pasa a ser un círculo liso en el color del texto con un hueco, así que se sigue leyendo como un spinner.</p>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.upload &#123;
+  --iv-spinner-size: 1.75rem;
+  --iv-spinner-width: 3px;
+  --iv-spinner-color: var(--iv-color-success);
+&#125;</code></pre>
+      <p>Locales: <code>--iv-spinner-size</code>, <code>--iv-spinner-width</code> (el grosor del anillo) y <code>--iv-spinner-color</code> (la cabeza del arco; el primario por defecto, así que un tema de un color lo repinta).</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Un spinner sin texto en ningún sitio: quien usa un lector de pantalla no oye nada.</li>
+        <li>Un spinner para una tarea de tamaño conocido, como una subida con su número de bytes.</li>
+        <li>Varios spinners en la misma pantalla para una sola operación. Muestra uno, donde va a aparecer el resultado.</li>
+        <li>Dejar activo un botón de envío mientras gira, lo que invita a enviar dos veces.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-spinner</code></td><td>Un arco que gira en el degradado de la marca.</td></tr>
+            <tr><td><code>iv-spinner--sm</code></td><td>Pequeño, para botones y celdas.</td></tr>
+            <tr><td><code>iv-spinner--lg</code></td><td>Grande, para paneles vacíos.</td></tr>
+            <tr><td><code>iv-spinner--current</code></td><td>Arco en <code>currentColor</code>, para botones rellenos.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

@@ -1,0 +1,77 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Valoración: estrellas accesibles para votar y ver" description="Valoración de iVOLT: estrellas para votar sobre radios nativos, con flechas y valor de formulario, y una vista de solo lectura con decimales (4,6 de 5).">
+  <article class="docs-prose" data-enriched>
+    <h1>Valoración (rating)</h1>
+    <p>Estrellas de dos formas, las dos sin JavaScript. La <strong>entrada</strong> es un grupo de radios nativo: una parada de tabulación, las flechas para cambiar la nota, un valor que el formulario envía y un nombre hablado para cada estrella. La <strong>vista</strong> es una nota de solo lectura dibujada con una máscara de estrellas sobre un relleno, así que los decimales como 4,6 de 5 se ven exactos, y todo es un único elemento con un único nombre accesible.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/rating.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="rating/basic" title="Estrellas para votar y nota" minHeight="14rem" />
+
+    <Section title="Cuándo usarla" num={1}>
+      <p>Usa la entrada cuando pides una opinión en una escala corta y conocida: «¿Te ha sido útil esta página?», la reseña de un producto, una encuesta de soporte. Para todo lo que necesite palabras en cada paso («muy en desacuerdo … muy de acuerdo») usa una lista de radios o un <a href="/es/components/segmented">control segmentado</a> con palabras. Usa la vista allí donde una nota aparece junto a su número de opiniones: una tarjeta de producto, un resumen de reseñas, el listado de un plugin.</p>
+    </Section>
+
+    <Section title="La entrada" num={2}>
+      <pre tabindex="0"><code>&lt;fieldset class="iv-rating"&gt;
+  &lt;legend class="iv-rating__legend"&gt;¿Te ha sido útil esta página?&lt;/legend&gt;
+  &lt;input class="iv-rating__input" type="radio" id="r1" name="r" value="1"&gt;
+  &lt;label class="iv-rating__star" for="r1"&gt;&lt;span class="iv-u-sr-only"&gt;1 estrella&lt;/span&gt;&lt;/label&gt;
+  …
+&lt;/fieldset&gt;</code></pre>
+      <p>Cada input va seguido de su etiqueta, con el texto oculto a la vista. Una estrella se ilumina cuando está marcado su propio input o uno posterior, algo que la hoja calcula con <code>:has()</code>; en un motor sin <code>:has()</code> solo se ilumina la estrella elegida, que sigue sin dejar lugar a dudas. Bajo el puntero, la estrella señalada y las anteriores adelantan la nota. El anillo de foco rodea todo el grupo, como en cualquier grupo de radios, y la estrella con el foco da un paso al frente. <code>iv-rating--sm</code> e <code>iv-rating--lg</code> cambian el tamaño.</p>
+    </Section>
+
+    <Section title="La vista" num={3}>
+      <pre tabindex="0"><code>&lt;span class="iv-rating-display" role="img" aria-label="4,6 de 5"
+      style="--iv-rating-value: 4.6"&gt;&lt;/span&gt;</code></pre>
+      <p>La nota es una propiedad personalizada, <code>--iv-rating-value</code>, y el número de estrellas es <code>--iv-rating-max</code> (5 por defecto). El relleno avanza desde el inicio de la línea, así que en una página de derecha a izquierda crece desde la derecha. La vista es una imagen: necesita <code>role="img"</code> y un <code>aria-label</code> que diga la nota con palabras. Escribe también la cifra y el número de opiniones al lado, como texto visible.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={4}>
+      <ul>
+        <li>La <code>&lt;legend&gt;</code> es la pregunta; cada etiqueta oculta es una respuesta («4 estrellas»). Un lector de pantalla anuncia «¿Te ha sido útil esta página?, 4 estrellas, botón de opción, marcado, 4 de 5».</li>
+        <li>Las flechas cambian la selección en el acto, como en cualquier grupo de radios, así que no envíes en el evento <code>change</code>.</li>
+        <li>Las estrellas se dibujan con una máscara; en colores forzados pasan a los colores de resaltado y de texto gris del sistema, de modo que las encendidas y las apagadas siguen distinguiéndose.</li>
+        <li>Un input desactivado atenúa su estrella y las flechas lo saltan.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={5}>
+      <pre tabindex="0"><code>.reviews &#123;
+  --iv-rating-size: 1.25rem;
+  --iv-rating-color: var(--iv-color-primary);
+  --iv-rating-off: var(--iv-color-border);
+&#125;</code></pre>
+      <p>Locales: <code>--iv-rating-size</code>, <code>--iv-rating-color</code> (el color de aviso del tema por defecto), <code>--iv-rating-off</code>, <code>--iv-rating-value</code> y <code>--iv-rating-max</code>. <code>--iv-rating-fill</code> es el estado que resuelve cada estrella: léelo, no lo fijes.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={6}>
+      <ul>
+        <li>Una vista sin <code>aria-label</code>: un span vacío no se anuncia de ninguna manera.</li>
+        <li>Etiquetas de estrella visibles y la leyenda oculta: justo al revés.</li>
+        <li>Dar a los radios valores de <code>name</code> distintos, lo que rompe el grupo.</li>
+        <li>Redondear una media de 4,6 a cinco estrellas encendidas: la vista enseña decimales; aprovéchalo.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={7}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-rating</code></td><td>El grupo de entrada, sobre un <code>&lt;fieldset&gt;</code>.</td></tr>
+            <tr><td><code>iv-rating__legend</code></td><td>La pregunta.</td></tr>
+            <tr><td><code>iv-rating__input</code></td><td>Un radio.</td></tr>
+            <tr><td><code>iv-rating__star</code></td><td>La estrella que se dibuja para el radio anterior.</td></tr>
+            <tr><td><code>iv-rating--sm</code> · <code>iv-rating--lg</code></td><td>Tamaños (el pequeño vale también para la vista).</td></tr>
+            <tr><td><code>iv-rating-display</code></td><td>Nota de solo lectura con decimales.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

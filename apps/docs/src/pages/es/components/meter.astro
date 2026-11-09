@@ -1,0 +1,69 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Medidor: indicadores nativos para cuotas y notas" description="Medidor de iVOLT: el elemento meter nativo con estilo para disco, cuotas y puntuaciones, en bueno, regular o malo según low, high y optimum. Sin JavaScript.">
+  <article class="docs-prose" data-enriched>
+    <h1>Medidor (meter)</h1>
+    <p>Un indicador para una medida dentro de un rango conocido: el disco usado, los minutos de build que quedan, la fuerza de una contraseña, una nota sobre cien. Da estilo al elemento nativo <code>&lt;meter&gt;</code>, y el navegador decide a partir de <code>low</code>, <code>high</code> y <code>optimum</code> si el valor es bueno, regular o malo; la barra toma el color de éxito, aviso o peligro según ese juicio, sin script y sin clases que cambiar.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/meter.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="meter/basic" title="Lecturas buenas, regulares y malas" minHeight="16rem" />
+
+    <Section title="¿Medidor o progreso?" num={1}>
+      <p>Se parecen y significan cosas distintas. Una <a href="/es/components/progress">barra de progreso</a> mide cuánto de una <em>tarea</em> está hecho y avanza hacia el final; un medidor mide una <em>cantidad</em> que puede subir o bajar y que tiene un extremo bueno y otro malo. Subir un archivo es progreso; el disco que ese archivo ocupa es un medidor. Los lectores de pantalla los anuncian de forma distinta, así que la elección no es solo visual.</p>
+    </Section>
+
+    <Section title="Cómo se elige el color" num={2}>
+      <pre tabindex="0"><code>&lt;div class="iv-meter-field"&gt;
+  &lt;label for="disco"&gt;Disco usado&lt;/label&gt;
+  &lt;span class="iv-meter-field__value"&gt;42 de 100 GB&lt;/span&gt;
+  &lt;meter class="iv-meter" id="disco" min="0" max="100"
+         low="70" high="90" optimum="20" value="42"&gt;42 GB&lt;/meter&gt;
+&lt;/div&gt;</code></pre>
+      <p><code>low</code> y <code>high</code> cortan el rango en tres bandas; <code>optimum</code> dice cuál es la buena. Con <code>optimum="20"</code> los valores bajos son buenos, así que 42 sale verde, 780 de 1.000 minutos sale ámbar y un 95&nbsp;% de memoria sale rojo. Lleva el óptimo al extremo alto del rango para una puntuación en la que más es mejor. Cada motor expone sus propios pseudoelementos para la barra; la hoja escribe una regla por motor, porque un pseudoelemento desconocido invalidaría toda una lista de selectores.</p>
+      <p><code>iv-meter-field</code> coloca la etiqueta y el valor escrito en una línea encima de la barra. <code>iv-meter--lg</code> es una barra más gruesa para una tarjeta de panel.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <ul>
+        <li>Pon nombre a cada medidor: un <code>&lt;label for&gt;</code> visible, como en el campo, o <code>aria-label</code>.</li>
+        <li>Escribe el valor como texto junto a la barra. El color nunca es la lectura, y el texto de dentro de <code>&lt;meter&gt;</code> solo es una alternativa para motores muy antiguos.</li>
+        <li>El navegador expone el valor, el mínimo y el máximo a la tecnología asistiva; no hacen falta atributos ARIA de valor.</li>
+        <li>En colores forzados la barra pasa a ser un relleno de resaltado sobre una pista enmarcada.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.quota .iv-meter &#123;
+  --iv-meter-size: 0.75rem;
+  --iv-meter-track: var(--iv-color-surface-raised);
+&#125;</code></pre>
+      <p>Locales públicos: <code>--iv-meter-size</code> (el grosor; 0,625rem por defecto) y <code>--iv-meter-track</code> (la parte vacía). Los tres colores de relleno son los de éxito, aviso y peligro del tema, así que un tema que los cambia cambia también el medidor.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>Usar un medidor para una subida o un formulario de varios pasos: eso es progreso.</li>
+        <li>Omitir <code>optimum</code>, con lo que el navegador adivina qué extremo es el bueno.</li>
+        <li>Una barra sin una cifra al lado.</li>
+        <li>Poner el color con una clase. El navegador ya sabe en qué banda está el valor.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-meter</code></td><td>El <code>&lt;meter&gt;</code> nativo con estilo.</td></tr>
+            <tr><td><code>iv-meter--lg</code></td><td>Barra más gruesa.</td></tr>
+            <tr><td><code>iv-meter-field</code></td><td>Etiqueta, valor escrito y barra juntos.</td></tr>
+            <tr><td><code>iv-meter-field__value</code></td><td>El valor como texto, alineado al final.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

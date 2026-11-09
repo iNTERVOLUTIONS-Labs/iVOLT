@@ -32,6 +32,10 @@ const flat = "/examples/ivolt/css/ivolt.flat.min.css";
 // uses a class whose CSS waits for data-iv-js (the boot script sets that marker either way, so a
 // frame without the script would hold those elements in their pre-script state for ever).
 const needsJs = /data-iv-component=|data-iv-(open|toggle|close)\b|iv-(carousel|datatable|megamenu|navbar|reveal|stepper|text-reveal)\b/.test(html);
+// Copy (1.1) is a subpath of its own and is not in the IIFE (ADR-053): a fixture that uses it
+// takes auto.min.js instead, the published single file that starts every component plus Copy.
+// Without it the copy buttons of iv-code stay hidden, which is the right fallback but the wrong demo.
+const needsCopy = /data-iv-component="copy"/.test(html);
 ---
 <!DOCTYPE html>
 <html lang="en" dir="ltr" class="iv-root" data-iv-theme="dark" data-base-lang="en">
@@ -45,7 +49,7 @@ const needsJs = /data-iv-component=|data-iv-(open|toggle|close)\b|iv-(carousel|d
   {/* After the links on purpose: the boot script swaps the sheet for the flat one before
       the first paint, so the element it reaches for has to be parsed already. */}
   <script is:inline src="/stage/boot.js"></script>
-  {needsJs && <script is:inline src="/examples/ivolt/js/ivolt.iife.min.js"></script>}
+  {needsCopy ? <script is:inline type="module" src="/examples/ivolt/js/auto.min.js"></script> : needsJs && <script is:inline src="/examples/ivolt/js/ivolt.iife.min.js"></script>}
 </head>
 <body class="stage-body">
   <main class="stage-main" id="stage" set:html={html}></main>

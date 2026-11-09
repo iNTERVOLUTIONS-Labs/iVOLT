@@ -1,0 +1,66 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Divider: rules with labels, brand and vertical" description="iVOLT divider: a fading rule between blocks, a labelled “or” separator, a brand line and a vertical rule for toolbars. Native hr or role=separator, pure CSS.">
+  <article class="docs-prose" data-enriched>
+    <h1>Divider</h1>
+    <p>A rule between two blocks of content. The plain form is a native <code>&lt;hr&gt;</code> whose line fades out at both ends; the labelled form puts a word in the middle — the “or” between two sign-in buttons, the name of the next group in a long form. A brand variant and a vertical rule for toolbars complete the family.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/divider.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="divider/basic" title="Plain, labelled, brand and vertical" minHeight="22rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>Reach for a divider when two neighbours need a visible pause but not a new section: two ways of doing the same thing, a group of settings that changes topic, a toolbar whose buttons fall into families. If the content after the rule deserves a heading, give it a heading instead; a heading is navigable, a rule is not.</p>
+      <p>Spacing is part of the component: <code>--iv-divider-space</code> (the sixth step of the space scale by default) sits above and below the line, so you do not need margin utilities around it. Inside an <code>iv-stack</code> with its own gap, set the local to <code>0</code> and let the stack space it.</p>
+    </Section>
+
+    <Section title="Variants" num={2}>
+      <ul>
+        <li><strong>Plain</strong> — <code>&lt;hr class="iv-divider"&gt;</code>. One continuous line that fades at the ends.</li>
+        <li><strong>Labelled</strong> — <code>&lt;div class="iv-divider" role="separator" aria-label="or"&gt;</code> with <code>iv-divider__label</code> inside. The two halves of the line stop short of the label.</li>
+        <li><strong>Start and end</strong> — <code>iv-divider--start</code> and <code>iv-divider--end</code> move the label to one side; the line runs on from it, like a section marker in a changelog.</li>
+        <li><strong>Brand</strong> — <code>iv-divider--brand</code> draws the line in the primary at 60&nbsp;%, which follows a one-colour theme.</li>
+        <li><strong>Vertical</strong> — <code>&lt;hr class="iv-divider iv-divider--vertical" aria-orientation="vertical"&gt;</code> stands between inline items of a cluster or a toolbar and stretches to their height.</li>
+      </ul>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <p>A native <code>&lt;hr&gt;</code> already has the <code>separator</code> role. A labelled divider is a <code>&lt;div&gt;</code>, so it declares <code>role="separator"</code> and carries its name in <code>aria-label</code>; the visible label is marked <code>aria-hidden="true"</code>, which keeps screen readers from reading “or” twice. Purely decorative rules inside a card that already has headings can be <code>aria-hidden</code> too. The line keeps a solid colour in forced-colours mode, where gradients are dropped.</p>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.checkout &#123;
+  --iv-divider-color: var(--iv-color-border-strong);
+  --iv-divider-space: var(--iv-space-4);
+&#125;</code></pre>
+      <p>Locals: <code>--iv-divider-color</code> (the line, <code>--iv-color-border</code> by default) and <code>--iv-divider-space</code> (the room around it). The label uses the muted text colour and the small type step, so it never competes with the content on either side.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>Using a divider instead of a heading to start a new topic.</li>
+        <li>Leaving the visible label exposed as well as the <code>aria-label</code>: the word is announced twice.</li>
+        <li>A vertical rule in a block that has no height: it stretches to the tallest sibling, so it needs a flex row such as <code>iv-cluster</code>.</li>
+        <li>Stacking margin utilities on top of <code>--iv-divider-space</code>, which doubles the gap.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-divider</code></td><td>A horizontal rule with room above and below.</td></tr>
+            <tr><td><code>iv-divider__label</code></td><td>The word in the middle of a labelled divider (<code>aria-hidden</code>).</td></tr>
+            <tr><td><code>iv-divider--start</code></td><td>Label at the inline start, line running on after it.</td></tr>
+            <tr><td><code>iv-divider--end</code></td><td>Label at the inline end.</td></tr>
+            <tr><td><code>iv-divider--brand</code></td><td>Line drawn with the primary colour.</td></tr>
+            <tr><td><code>iv-divider--vertical</code></td><td>Vertical rule between inline items.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

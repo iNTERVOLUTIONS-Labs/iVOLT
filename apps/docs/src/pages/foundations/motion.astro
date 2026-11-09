@@ -78,7 +78,13 @@ import Stage from "../../components/Stage.astro";
       <p>Two properties are written from JavaScript on the fallback path and are readable from CSS: <code>--iv-view</code> (0 as an element enters from below, 1 as it leaves at the top) on each parallax layer, and <code>--iv-scroll</code> (0 to 1) on the root of the component.</p>
     </Section>
 
-    <Section title="Common mistakes" num={9}>
+    <Section title="Scroll reveal without JavaScript" num={9}>
+      <p><span class="docs-new">New in 1.1</span> <code>iv-scroll-reveal</code> rises into place as it enters the viewport, driven by the element's own view timeline (<code>animation-timeline: view()</code>, range <code>entry 0%</code> to <code>entry 70%</code>). There is no script, no observer and nothing to initialise. Where the engine has no <code>animation-timeline</code>, or the reader asks for less motion, the element is simply there — which is why it is safe on content that matters.</p>
+      <Stage name="motion/scroll-reveal" title="Cards revealed by their view timeline, and a deferred block" maxHeight=480 />
+      <p>The distance is <code>--iv-reveal-distance</code> (1.5rem), shared with <code>iv-reveal</code>. Choose <code>iv-reveal</code> with the <code>Reveal</code> component when the entrance must run on every engine or fire only once; choose <code>iv-scroll-reveal</code> when a CSS-only entrance on the engines that support it is enough. The last block of the example also carries <code>iv-defer</code> (see <a href="/foundations/layout">layout</a>), which skips its rendering until it comes near.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={10}>
       <ul>
         <li>A parallax layer with no <code>--iv-parallax--media</code> height: the travel uncovers the edge of the frame.</li>
         <li>Giving the frame <code>overflow: hidden</code> by hand and wondering why nothing moves in Chromium.</li>
@@ -89,13 +95,15 @@ import Stage from "../../components/Stage.astro";
       </ul>
     </Section>
 
-    <Section title="Class index" num={10}>
+    <Section title="Class index" num={11}>
       <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>
           <thead><tr><th>Class</th><th>What it does</th></tr></thead>
           <tbody>
-            <tr><td><code>iv-parallax__layer</code></td><td>Layer inside a parallax frame: it is the element that moves, while the frame clips it.</td></tr>
+            <tr><td><code>iv-parallax</code></td><td>The layer inside a parallax frame: it is the element that moves, while the frame clips it.</td></tr>
+            <tr><td><code>iv-parallax__layer</code></td><td>Old name of the layer, kept as an alias: in 1.0 it was the only selector of the print rule and matched no layer the module styles. Since 1.1 the print rule names <code>iv-parallax</code> too, and keeps this name so a page that copied it still prints flat. Write <code>iv-parallax</code>.</td></tr>
+            <tr><td><code>iv-scroll-reveal</code></td><td>Entrance driven by the element's view timeline, no JavaScript (1.1).</td></tr>
           </tbody>
         </table>
       </div>

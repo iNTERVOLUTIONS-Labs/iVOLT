@@ -25,7 +25,11 @@ import Stage from "../../../components/Stage.astro";
       <p>A partir del punto de ruptura estático, el panel simplemente se ve. En pantallas pequeñas, el enlace disparador apunta al <code>id</code> del panel y <code>:target</code> lo muestra como un bloque estático.</p>
     </Section>
 
-    <Section title="Índice de clases" num={3}>
+    <Section title="Transición al cerrar" num={3}>
+      <p><span class="docs-new">Nuevo en 1.1</span> Un drawer modal sale deslizándose por donde entró al cerrarse donde se puede hacer transición de <code>display</code> y <code>overlay</code> (<code>allow-discrete</code>), y su fondo se desvanece; la entrada conserva sus keyframes. Un drawer estático —la columna lateral desde <code>staticFrom</code>— nunca hace transición, porque no se abre ni se cierra. Sin soporte, o con movimiento reducido, se cierra de golpe como en 1.0. Mientras un drawer es modal la raíz deja de desplazarse y <code>.iv-drawer__body</code> contiene su sobredesplazamiento, en CSS.</p>
+    </Section>
+
+    <Section title="Índice de clases" num={4}>
       <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>

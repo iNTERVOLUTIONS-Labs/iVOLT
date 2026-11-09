@@ -25,7 +25,11 @@ import Stage from "../../components/Stage.astro";
       <p>From the static breakpoint the panel is simply visible. On small screens the trigger link targets the drawer <code>id</code> and <code>:target</code> shows it as a static block.</p>
     </Section>
 
-    <Section title="Class index" num={3}>
+    <Section title="Closing transition" num={3}>
+      <p><span class="docs-new">New in 1.1</span> A modal drawer slides back out the way it came on close where <code>display</code> and <code>overlay</code> can be transitioned (<code>allow-discrete</code>), and its backdrop fades; the entrance keeps its keyframes. A static drawer — the side column from <code>staticFrom</code> up — never transitions, because it does not open or close. Without support, or under reduced motion, the drawer closes at once as in 1.0. While a drawer is modal the root stops scrolling and <code>.iv-drawer__body</code> contains its overscroll, in CSS.</p>
+    </Section>
+
+    <Section title="Class index" num={4}>
       <p>Parts and modifiers of this family that the examples above do not show. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>

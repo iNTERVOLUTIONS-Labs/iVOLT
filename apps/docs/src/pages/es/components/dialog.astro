@@ -33,6 +33,8 @@ dialog.element.addEventListener("iv:close", (e) => &#123; if (e.detail.reason ==
     <p>Tab y Mayús+Tab se quedan dentro del modal (comportamiento del navegador con <code>showModal</code>); Escape cierra; Enter en el formulario envía y cierra. El foco vuelve al disparador.</p>
     <h2>Sin JavaScript</h2>
     <p>El disparador es un enlace al <code>id</code> del diálogo. Con JavaScript el enlace se intercepta y la URL no cambia. Sin él, <code>.iv-dialog:target</code> muestra el diálogo como un bloque estático con su enlace de cierre. Mantén el contenido esencial accesible también desde otro sitio; un diálogo no es una página.</p>
+    <h2>Transición al cerrar</h2>
+    <p><span class="docs-new">Nuevo en 1.1</span> Donde se puede hacer transición de <code>display</code> y <code>overlay</code> (<code>transition-behavior: allow-discrete</code>), un diálogo modal y su fondo se desvanecen al cerrarse mientras el elemento sigue en la capa superior hasta que termina el fundido; la entrada conserva sus keyframes. Los motores sin esa capacidad lo cierran de golpe, como en 1.0, y lo mismo hacen todos con movimiento reducido. El estado cerrado se selecciona con especificidad cero, así que nunca tapa la alternativa sin JavaScript de <code>:target</code>. Desde 1.1 la raíz deja además de desplazarse mientras hay un diálogo modal (<code>:root:has(.iv-dialog:modal)</code>), y el panel contiene su propio sobredesplazamiento, sin script.</p>
     <h2>Errores frecuentes</h2>
     <ul>
       <li>Llamar a <code>dialog.close()</code> directamente sobre el elemento: funciona, pero <code>iv:close</code> no puede cancelarlo y el motivo pasa a ser <code>external</code>.</li>

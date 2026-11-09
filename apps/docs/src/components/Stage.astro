@@ -36,7 +36,10 @@ const src = `/stage/${name}.html?id=${id}${initialTheme ? `&theme=${initialTheme
 // from the HTML panel when the form is sent (stage.js), so the page does not carry it twice.
 const cdn = `https://cdn.jsdelivr.net/npm/@intervolutions/ivolt@${version}/dist`;
 const needsJs = /data-iv-component=|data-iv-(open|toggle|close)\b|iv-(carousel|datatable|megamenu|navbar|reveal|stepper|text-reveal)\b/.test(html);
-const pen = JSON.stringify({ title: `iVOLT · ${title}`, description: `${title}, from ${Astro.site ? Astro.site.href : "https://ivolt.intervolutions.com/"} (fixtures/${name}.html)`, html_classes: "iv-root", css_external: `${cdn}/css/ivolt.min.css`, js_external: needsJs ? `${cdn}/js/ivolt.iife.min.js` : "", js: needsJs ? "IVOLT.init(document);" : "", editors: needsJs ? "101" : "100" });
+// Copy is not in the IIFE (ADR-053): a pen that needs it imports auto.min.js, which starts
+// everything plus Copy.
+const needsCopy = /data-iv-component="copy"/.test(html);
+const pen = JSON.stringify({ title: `iVOLT · ${title}`, description: `${title}, from ${Astro.site ? Astro.site.href : "https://ivolt.intervolutions.com/"} (fixtures/${name}.html)`, html_classes: "iv-root", css_external: `${cdn}/css/ivolt.min.css`, js_external: needsJs && !needsCopy ? `${cdn}/js/ivolt.iife.min.js` : "", js: needsCopy ? `import "${cdn}/js/auto.min.js";` : needsJs ? "IVOLT.init(document);" : "", editors: needsJs ? "101" : "100" });
 const panels = [
   { key: "html", label: t.stageTabHtml, code: html },
   css && { key: "css", label: t.stageTabCss, code: css },

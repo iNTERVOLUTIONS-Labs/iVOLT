@@ -78,7 +78,13 @@ import Stage from "../../../components/Stage.astro";
       <p>Dos propiedades las escribe JavaScript en el camino de reserva y se pueden leer desde CSS: <code>--iv-view</code> (0 cuando un elemento entra por abajo, 1 cuando sale por arriba) en cada capa de parallax, y <code>--iv-scroll</code> (de 0 a 1) en la raíz del componente.</p>
     </Section>
 
-    <Section title="Errores habituales" num={9}>
+    <Section title="Aparición al hacer scroll sin JavaScript" num={9}>
+      <p><span class="docs-new">Nuevo en 1.1</span> <code>iv-scroll-reveal</code> sube hasta su sitio cuando entra en la ventana, movido por la línea de tiempo de vista del propio elemento (<code>animation-timeline: view()</code>, de <code>entry 0%</code> a <code>entry 70%</code>). No hay script, ni observador, ni nada que iniciar. Donde el motor no tiene <code>animation-timeline</code>, o el lector pide menos movimiento, el elemento simplemente está, y por eso es seguro sobre contenido que importa.</p>
+      <Stage name="motion/scroll-reveal" title="Tarjetas que aparecen con su línea de tiempo y un bloque diferido" maxHeight=480 />
+      <p>La distancia es <code>--iv-reveal-distance</code> (1,5rem), compartida con <code>iv-reveal</code>. Elige <code>iv-reveal</code> con el componente <code>Reveal</code> cuando la entrada tenga que funcionar en todos los motores o dispararse una sola vez; elige <code>iv-scroll-reveal</code> cuando basta con una entrada solo CSS en los motores que la soportan. El último bloque del ejemplo lleva además <code>iv-defer</code> (mira <a href="/es/foundations/layout">maquetación</a>), que se salta su pintado hasta que se acerca.</p>
+    </Section>
+
+    <Section title="Errores habituales" num={10}>
       <ul>
         <li>Una capa de parallax sin la altura de <code>--iv-parallax--media</code>: el recorrido descubre el borde del marco.</li>
         <li>Poner <code>overflow: hidden</code> al marco a mano y preguntarse por qué no se mueve nada en Chromium.</li>
@@ -89,13 +95,15 @@ import Stage from "../../../components/Stage.astro";
       </ul>
     </Section>
 
-    <Section title="Índice de clases" num={10}>
+    <Section title="Índice de clases" num={11}>
       <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>
           <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
           <tbody>
-            <tr><td><code>iv-parallax__layer</code></td><td>Capa dentro de un marco de parallax: es lo que se mueve; el marco la recorta.</td></tr>
+            <tr><td><code>iv-parallax</code></td><td>La capa dentro de un marco de parallax: es lo que se mueve; el marco la recorta.</td></tr>
+            <tr><td><code>iv-parallax__layer</code></td><td>Nombre antiguo de la capa, que se conserva como alias: en 1.0 era el único selector de la regla de impresión y no coincidía con ninguna capa del módulo. Desde 1.1 la regla de impresión nombra también <code>iv-parallax</code> y mantiene este nombre para que una página que lo copió siga imprimiéndose plana. Escribe <code>iv-parallax</code>.</td></tr>
+            <tr><td><code>iv-scroll-reveal</code></td><td>Entrada movida por la línea de tiempo de vista del elemento, sin JavaScript (1.1).</td></tr>
           </tbody>
         </table>
       </div>

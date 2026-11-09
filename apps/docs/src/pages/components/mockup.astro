@@ -1,0 +1,81 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Mockup: browser and phone frames in pure CSS" description="iVOLT mockup: browser windows and phone frames drawn in CSS for landing pages and docs, holding screenshots or live markup, with an optional tilt.">
+  <article class="docs-prose" data-enriched>
+    <h1>Mockup</h1>
+    <p>Device frames for marketing pages and documentation: a browser window with its three controls and an address bar, and a phone with rounded glass and a camera island. The frame is drawn entirely by the stylesheet — no frame images to download, scale or recolour — and what goes on the screen is yours: a screenshot, a video, or live markup built with iVOLT, as in the example below.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/mockup.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="mockup/basic" title="Browser window and phone, with live content" minHeight="24rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>Use a mockup when the reader needs to recognise “this is the product”: a hero that shows the dashboard, a feature section that shows the mobile app, a changelog entry that shows the new screen. Inside documentation, a browser frame around a screenshot tells the reader the picture is a page and not a diagram. Do not frame everything; a page with six mockups reads like a slide deck.</p>
+    </Section>
+
+    <Section title="Anatomy and variants" num={2}>
+      <pre tabindex="0"><code>&lt;figure class="iv-mockup iv-mockup--browser"&gt;
+  &lt;div class="iv-mockup__bar" aria-hidden="true"&gt;
+    &lt;span class="iv-mockup__url"&gt;app.example.com&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="iv-mockup__screen"&gt;&lt;img src="dashboard.avif" alt="…"&gt;&lt;/div&gt;
+&lt;/figure&gt;
+
+&lt;figure class="iv-mockup iv-mockup--phone"&gt;
+  &lt;div class="iv-mockup__screen"&gt;…&lt;/div&gt;
+&lt;/figure&gt;</code></pre>
+      <ul>
+        <li><code>iv-mockup--browser</code>: a window at 16:10 by default. The address in <code>__url</code> is decoration, so write a believable but fictional host.</li>
+        <li><code>iv-mockup--phone</code>: a handset at 9:19.5, 18rem wide. Leave some room at the top of the screen for the island (the example pads its content by 3.25rem).</li>
+        <li><code>iv-mockup--tilt</code>: a slight perspective for a hero, which flattens a little under the pointer and is removed entirely under reduced motion.</li>
+      </ul>
+      <p>The window controls and the island are pseudo-elements, never announced. In a right-to-left page they mirror.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <ul>
+        <li>The figure is the content, the frame is not. Give the image on the screen a real <code>alt</code>, or, for live markup, make sure it makes sense when read — the example uses sample figures and says so.</li>
+        <li>Mark the bar <code>aria-hidden="true"</code>; a screen reader has no use for a fake address.</li>
+        <li>Live markup inside a mockup is still live: links and buttons there are focusable. If the content is only a picture of an interface, make it an image or set <code>inert</code> on the screen.</li>
+        <li>Add a <code>&lt;figcaption&gt;</code> when the screen needs explaining.</li>
+        <li>In forced colours the frame becomes a plain outline and the decorative controls are hidden.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.hero .iv-mockup &#123;
+  --iv-mockup-ratio: 2 / 1;
+  --iv-mockup-frame: var(--iv-color-surface);
+&#125;
+.hero .iv-mockup--phone &#123; --iv-mockup-width: 16rem; &#125;</code></pre>
+      <p>Locals: <code>--iv-mockup-frame</code> (the colour of the frame, mixed from the raised surface and the text so it separates from both themes), <code>--iv-mockup-ratio</code> (the aspect ratio of the screen) and <code>--iv-mockup-width</code> (the width of the phone).</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>A real customer's domain in the address bar.</li>
+        <li>A screenshot without <code>alt</code> because “it is only a mockup”.</li>
+        <li>Interactive demo content inside a tilted frame, where hit-testing follows the perspective and feels off.</li>
+        <li>Squeezing a desktop screenshot into the phone frame.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-mockup</code></td><td>The frame, on a <code>&lt;figure&gt;</code>.</td></tr>
+            <tr><td><code>iv-mockup--browser</code></td><td>Browser window.</td></tr>
+            <tr><td><code>iv-mockup--phone</code></td><td>Phone.</td></tr>
+            <tr><td><code>iv-mockup--tilt</code></td><td>Perspective tilt for a hero.</td></tr>
+            <tr><td><code>iv-mockup__bar</code> · <code>iv-mockup__url</code></td><td>Window bar and address (decorative).</td></tr>
+            <tr><td><code>iv-mockup__screen</code></td><td>Where the content goes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

@@ -1,0 +1,78 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Code block: a framed snippet with a copy button" description="iVOLT code block: a title bar with file name, language and an accessible copy button over a scrolling pre, with marked lines and a light variant.">
+  <article class="docs-prose" data-enriched>
+    <h1>Code block</h1>
+    <p>A frame for a snippet: a title bar with the file name, the language and a copy button, over a scrolling <code>&lt;pre&gt;</code>. The panel is the deep navy of the brand in both themes, like the terminal of the hero, so a snippet looks the same on a light page and a dark one; <code>iv-code--light</code> follows the theme instead. The copy button comes from <code>Copy</code>, a separate 1.1 module, and stays hidden until that module is running — the page never shows a button that does nothing.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/code.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> <code>@intervolutions/ivolt/copy</code> or <code>auto.min.js</code>, only for the copy button. New in 1.1.</p>
+    <Stage primary name="code/basic" title="Dark and light frames with copy" minHeight="18rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>Use it for any code a reader is expected to copy: an install command, a configuration file, an HTML snippet in a tutorial. Inline code in a sentence stays a plain <code>&lt;code&gt;</code>. Syntax highlighting is not part of the package — the colours in the example are four hand-written classes (<code>iv-code__k</code>, <code>__s</code>, <code>__a</code>, <code>__c</code> for keywords, strings, attributes and comments) — and the classes of any highlighter you already use work inside <code>code</code>.</p>
+    </Section>
+
+    <Section title="Anatomy" num={2}>
+      <pre tabindex="0"><code>&lt;div data-iv-component="copy"&gt;
+  &lt;figure class="iv-code"&gt;
+    &lt;figcaption class="iv-code__bar"&gt;
+      &lt;span class="iv-code__title"&gt;index.html&lt;/span&gt;
+      &lt;span class="iv-code__lang"&gt;HTML&lt;/span&gt;
+      &lt;button class="iv-code__copy" type="button" data-iv-copy&gt;
+        &lt;span class="iv-code__copy-label"&gt;Copy&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/figcaption&gt;
+    &lt;pre class="iv-code__pre" tabindex="0"&gt;&lt;code&gt;…&lt;/code&gt;&lt;/pre&gt;
+  &lt;/figure&gt;
+&lt;/div&gt;</code></pre>
+      <p>Wrap a line in <code>&lt;mark class="iv-code__mark"&gt;</code> to highlight it with a brand bar at the start. The <code>&lt;pre&gt;</code> scrolls in both directions and stops growing at <code>--iv-code-max</code> (32rem), and it carries <code>tabindex="0"</code> so a keyboard can scroll it.</p>
+    </Section>
+
+    <Section title="The copy button" num={3}>
+      <pre tabindex="0"><code>import &#123; Copy &#125; from "@intervolutions/ivolt/copy";
+Copy.initAll(document);
+
+// or, from a CDN, one file that starts everything plus Copy:
+// &lt;script type="module" src="…/dist/js/auto.min.js"&gt;&lt;/script&gt;</code></pre>
+      <p>A click on <code>[data-iv-copy]</code> copies the text of the element its value names (<code>data-iv-copy="#code-install"</code>) or, when empty, the code of the nearest <code>.iv-code</code>. While it works, the button carries <code>data-iv-state="copied"</code> or <code>"failed"</code> for <code>timeout</code> milliseconds and its label changes; if the clipboard refuses, the text is selected so the reader can press <kbd class="iv-kbd iv-kbd--sm">Ctrl</kbd>+<kbd class="iv-kbd iv-kbd--sm">C</kbd>. Options (<code>defaults &lt; data-iv-* &lt; JS</code>): <code>copiedText</code> (“Copied”), <code>failedText</code> (“Press Ctrl+C to copy”) and <code>timeout</code> (2000). Events: <code>iv:copy</code>, cancelable, before copying, and <code>iv:copied</code> with <code>ok</code> after. <code>Copy</code> is not in <code>index.js</code> or the IIFE, so the default bundle did not grow for it.</p>
+    </Section>
+
+    <Section title="Accessibility" num={4}>
+      <ul>
+        <li>The <code>&lt;figcaption&gt;</code> names the figure, so the file name is read with the code.</li>
+        <li>The result of a copy is announced in a polite <code>role="status"</code> region that <code>Copy</code> creates, not only by the changed label.</li>
+        <li>The scrolling <code>&lt;pre&gt;</code> takes focus (WCAG 2.1.1), and its focus ring is drawn just inside the frame so the rounded corners do not clip it.</li>
+        <li>The copy button and the scrolling block draw a cyan focus ring that reads on the navy panel; in forced colours the frame and the marked line keep their edges.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={5}>
+      <pre tabindex="0"><code>.tutorial .iv-code &#123;
+  --iv-code-bg: #0b1020;
+  --iv-code-max: 24rem;
+&#125;</code></pre>
+      <p>Locals: <code>--iv-code-bg</code>, <code>--iv-code-fg</code>, <code>--iv-code-muted</code> (the bar and the comments) and <code>--iv-code-max</code>. The light variant sets the first three to the theme's surface, text and muted text.</p>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-code</code></td><td>The frame, on a <code>&lt;figure&gt;</code>.</td></tr>
+            <tr><td><code>iv-code__bar</code></td><td>Title bar, on the <code>&lt;figcaption&gt;</code>.</td></tr>
+            <tr><td><code>iv-code__title</code> · <code>iv-code__lang</code></td><td>File name and language.</td></tr>
+            <tr><td><code>iv-code__copy</code> · <code>iv-code__copy-label</code></td><td>Copy button and its text; hidden until <code>Copy</code> runs.</td></tr>
+            <tr><td><code>iv-code__pre</code></td><td>The scrolling block.</td></tr>
+            <tr><td><code>iv-code__mark</code></td><td>A highlighted line.</td></tr>
+            <tr><td><code>iv-code__k</code> · <code>__s</code> · <code>__a</code> · <code>__c</code></td><td>Hand-written token colours.</td></tr>
+            <tr><td><code>iv-code--light</code></td><td>Frame in the theme's surface instead of navy.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

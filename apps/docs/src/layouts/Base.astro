@@ -9,6 +9,7 @@ import { wordmark as brandSvg } from "../brand.js";
 import reference from "../data/reference.json";
 import { version } from "../lib/version.js";
 import { ogFile } from "../lib/og-pages.js";
+import { words, Words } from "../lib/count.js";
 import { existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 let repo = process.cwd();
@@ -21,7 +22,8 @@ const path = Astro.url.pathname.replace(/\.html$/, "").replace(/\/index$/, "") |
 // hreflang alternates must be absolute, so they are emitted only when SITE_URL sets Astro.site (like canonical).
 const lang = langProp || (path === "/es" || path.startsWith("/es/") ? "es" : "en");
 const { t, nav } = lang === "es" ? es : en;
-const { families } = en;
+const { families, fresh, componentNames } = en;
+const freshSet = new Set(fresh);
 // Only the strings the client scripts use, in this page's language (read by scripts/strings.js).
 const clientStrings = {
   ...Object.fromEntries(["copy", "copyCode", "copied", "copiedStatus", "selected", "selectedStatus", "tableScroll", "anchor", "searchUnavailable", "searchHint", "searchNone", "copyLink", "linkCopied"].map((k) => [k, t[k] ?? en.t[k] ?? ""])),
@@ -84,6 +86,7 @@ const items = nav.flatMap((g) => g.items);
 // every route at every width — the earlier conditional preload existed because the previous display
 // face only appeared in headings and the browser warned about an unused preload on interior pages.
 // "css" or "js" beside a component link: 33 entries are only scannable when the kind is visible.
+const isFresh = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return Boolean(m && freshSet.has(m[1])); };
 const kindOf = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return m ? families[m[1]] : null; };
 const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/foundations/stability", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
 // The footer carries the real sitemap: four columns taken from the same navigation as the
@@ -110,7 +113,7 @@ const navSections = nav.map((g) => {
   };
 });
 // Component list for the header megamenu (labels per language, kind from the shared families map).
-const labelOf = (slug) => (lang === "es" && es.componentLabels && es.componentLabels[slug]) || slug[0].toUpperCase() + slug.slice(1);
+const labelOf = (slug) => (lang === "es" && es.componentLabels && es.componentLabels[slug]) || componentNames[slug] || slug[0].toUpperCase() + slug.slice(1);
 const componentList = Object.entries(families).map(([slug, kind]) => ({ slug, kind, label: labelOf(slug), href: `${base}/components/${slug}` }));
 // Header megamenu v2: the panel is a directory (families and sections, with counts), two
 // selections of picked components as numbered cards, and the full index of each family as a
@@ -214,7 +217,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
                   <header class="iv-megamenu__head">
                     <p class="iv-megamenu__overline">{t.mmOverline}</p>
                     <p class="iv-megamenu__title" id="docs-mm-title">{t.components} <span class="iv-megamenu__count">{componentList.length}</span></p>
-                    <p class="iv-megamenu__tagline">{t.mmTagline}</p>
+                    <p class="iv-megamenu__tagline">{t.mmTagline(Words(componentList.length, lang), words(cssCount, lang), words(jsCount, lang))}</p>
                     <button class="iv-megamenu__close" type="button" aria-label={t.mmClose} hidden></button>
                   </header>
                   <div class="iv-megamenu__body">
@@ -244,7 +247,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
                           </ul>
                           <section class="iv-megamenu__cloud">
                             <p class="iv-megamenu__heading">{tab.cloud}</p>
-                            {componentList.filter((c) => c.kind === tab.kind).map((c) => <a href={c.href}>{c.label}</a>)}
+                            {componentList.filter((c) => c.kind === tab.kind).map((c) => <a href={c.href} class:list={[freshSet.has(c.slug) && "docs-mm__fresh"]}>{c.label}{freshSet.has(c.slug) && <span class="iv-u-sr-only"> ({t.fresh})</span>}</a>)}
                           </section>
                         </div>
                       ))}
@@ -285,7 +288,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
         <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>
       </div>
       <nav aria-label={t.docsNav}>
-        {navSections.map((g) => <section class="docs-sidebar__group"><p class="docs-sidebar__heading">{g.group}</p>{g.blocks.map((b) => <Fragment>{b.sub && <p class="docs-sidebar__sub">{b.sub}</p>}<ul class="docs-sidebar__list">{b.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></Fragment>)}</section>)}
+        {navSections.map((g) => <section class="docs-sidebar__group"><p class="docs-sidebar__heading">{g.group}</p>{g.blocks.map((b) => <Fragment>{b.sub && <p class="docs-sidebar__sub">{b.sub}</p>}<ul class="docs-sidebar__list">{b.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{isFresh(n.href) && <span class="docs-sidebar__new">{t.freshShort}<span class="iv-u-sr-only"> {t.fresh.replace(t.freshShort, "").trim()}</span></span>}{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></Fragment>)}</section>)}
       </nav>
       </div>
     </div>
@@ -309,12 +312,12 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     {sidebar && (
       <aside class="docs-sidebar" data-pagefind-ignore>
         <nav aria-label={t.docsNav}>
-          {navSections.map((g) => <section class="docs-sidebar__group"><p class="docs-sidebar__heading">{g.group}</p>{g.blocks.map((b) => <Fragment>{b.sub && <p class="docs-sidebar__sub">{b.sub}</p>}<ul class="docs-sidebar__list">{b.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></Fragment>)}</section>)}
+          {navSections.map((g) => <section class="docs-sidebar__group"><p class="docs-sidebar__heading">{g.group}</p>{g.blocks.map((b) => <Fragment>{b.sub && <p class="docs-sidebar__sub">{b.sub}</p>}<ul class="docs-sidebar__list">{b.items.map((n) => <li><a href={n.href} aria-current={path === n.href ? "page" : undefined}><span class="docs-sidebar__label">{n.label}</span>{isFresh(n.href) && <span class="docs-sidebar__new">{t.freshShort}<span class="iv-u-sr-only"> {t.fresh.replace(t.freshShort, "").trim()}</span></span>}{kindOf(n.href) && <span class="docs-sidebar__kind" aria-hidden="true">{kindOf(n.href)}</span>}</a></li>)}</ul></Fragment>)}</section>)}
         </nav>
       </aside>
     )}
     <main id="main" class:list={["docs-main", bleed && "docs-main--bleed"]} tabindex="-1" data-pagefind-body>
-      {group && <p class="docs-eyebrow" data-pagefind-ignore>{group}{family && <> · <b>{family}</b></>}</p>}
+      {group && <p class="docs-eyebrow" data-pagefind-ignore>{group}{family && <> · <b>{family}</b></>}{slug && freshSet.has(slug) && <> <span class="docs-eyebrow__new">{t.fresh}</span></>}</p>}
       <slot />
     </main>
     {sidebar && toc && (

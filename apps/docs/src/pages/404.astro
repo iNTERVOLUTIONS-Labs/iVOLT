@@ -1,9 +1,10 @@
 ---
+import { componentCount } from "../lib/count.js";
 import Base from "../layouts/Base.astro";
 const links = [
   { href: "/", label: "Home", meta: "start here" },
   { href: "/getting-started", label: "Getting started", meta: "install" },
-  { href: "/components/button", label: "Components", meta: "33 of them" },
+  { href: "/components/button", label: "Components", meta: `${componentCount} of them` },
   { href: "/foundations/tokens-and-themes", label: "Tokens & themes", meta: "foundations" },
   { href: "/examples", label: "Examples", meta: "4 full pages" },
 ];

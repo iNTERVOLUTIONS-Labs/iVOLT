@@ -39,7 +39,20 @@ import Stage from "../../../components/Stage.astro";
       <p>Las utilidades se emiten con el selector duplicado (especificidad 0,2,0) y se cargan las últimas, así que ganan a los modificadores de componente tanto en la hoja en capas como en la plana.</p>
     </Section>
 
-    <Section title="Índice de clases" num={5}>
+    <Section title="Subgrid y pintado diferido" num={5}>
+      <p><span class="docs-new">Nuevo en 1.1</span> Dos ayudas de maquetación que se apoyan en CSS moderno y, donde no lo hay, se quedan en lo que hacía 1.0.</p>
+      <p><strong><code>iv-grid--subgrid</code></strong>, junto con <code>iv-grid</code>: cada hijo ocupa <code>--iv-subgrid-rows</code> filas (3 por defecto) de la rejilla padre con <code>grid-template-rows: subgrid</code>, así que el título, el texto y el pie de cada tarjeta comparten las mismas líneas y quedan alineados en toda la fila, sea cual sea su largo. El hueco entre esas filas es <code>--iv-subgrid-gap</code>. Un motor sin subgrid mantiene una rejilla normal dentro de cada hijo, que es el aspecto de 1.0. Vive en la capa de componentes porque reordena componentes.</p>
+      <pre tabindex="0"><code>&lt;div class="iv-grid iv-grid--subgrid iv-u-gap-4 iv-u-md-grid-cols-3"&gt;
+  &lt;article class="iv-card iv-card--link iv-u-p-5"&gt;
+    &lt;h3 class="iv-card__title"&gt;…&lt;/h3&gt; &lt;p&gt;…&lt;/p&gt; &lt;span class="iv-card__raise"&gt;…&lt;/span&gt;
+  &lt;/article&gt;
+  …
+&lt;/div&gt;</code></pre>
+      <p>Lo tienes funcionando en la página de la <a href="/es/components/card">tarjeta</a>.</p>
+      <p><strong><code>iv-defer</code></strong> pone <code>content-visibility: auto</code> con <code>contain-intrinsic-size: auto var(--iv-defer-size, 40rem)</code>: el navegador se salta la maquetación y el pintado de un bloque hasta que se acerca a la ventana, y mientras tanto le reserva 40rem (o tu valor) para que la barra de scroll no salte. Buscar en la página, los anclajes y la tecnología asistiva siguen llegando al texto. Úsalo en páginas largas con secciones pesadas por debajo del pliegue —un pie lleno de enlaces, un registro de cambios largo, una galería— y no en la primera pantalla, donde no ahorra nada. La página de <a href="/es/foundations/motion">movimiento</a> lo enseña dentro de un ejemplo.</p>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
       <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>

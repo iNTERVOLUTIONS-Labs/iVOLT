@@ -1,0 +1,136 @@
+---
+// One-colour theming (1.1), the headline of the release, shown on the tokens and themes page.
+// The picker is the 1.1 segmented control (native radios); the swap is pure CSS (:has() on the
+// checked radio sets --iv-color-primary on a [data-iv-palette] scope, so the package re-mixes
+// every derived token there). Without :has() the panel simply stays cobalt. The only script
+// rewrites the one-line snippet to the chosen value; without it the snippet shows a sample.
+import { swatches, swatchRatio, PAGE } from "../data/themes.js";
+import "../styles/one-colour.css";
+const { lang = "en" } = Astro.props;
+const es = lang === "es";
+const fmt = (n) => (Math.floor(n * 10) / 10).toFixed(1).replace(".", es ? "," : ".");
+// The swap, one rule per swatch and theme. Dark applies on an explicit dark page and on a
+// system page whose reader prefers dark; cobalt is the package's own value and writes nothing.
+const rule = (s, mode) => `.docs-oc:has(input[value="${s.slug}"]:checked) .docs-oc__stage{--iv-color-primary:${s[mode]};--iv-color-on-primary:${PAGE[mode].on}}`;
+const custom = swatches.filter((s) => s.slug !== "cobalt");
+const css = [
+  ...custom.map((s) => rule(s, "light")),
+  ...custom.map((s) => `:root[data-iv-theme="dark"] ${rule(s, "dark")}`),
+  `@media (prefers-color-scheme: dark){${custom.map((s) => `:root[data-iv-theme="system"] ${rule(s, "dark")}`).join("")}}`,
+].join("\n");
+const chain = [
+  ["--iv-color-primary", es ? "la semilla" : "the seed"],
+  ["--iv-color-primary-hover", es ? "puntero" : "hover"],
+  ["--iv-color-primary-active", es ? "pulsado" : "pressed"],
+  ["--iv-color-primary-subtle", es ? "tinte" : "tint"],
+  ["--iv-color-primary-border", es ? "filo" : "edge"],
+  ["--iv-color-focus", es ? "anillo de foco" : "focus ring"],
+  ["--iv-glow-primary", es ? "brillo" : "glow"],
+  ["--iv-focus-halo", es ? "halo" : "halo"],
+  ["--iv-gradient-brand", es ? "degradado de marca" : "brand gradient"],
+  ["--iv-gradient-primary", es ? "degradado del botón" : "button gradient"],
+];
+const L = es
+  ? { kicker: "Nuevo en 1.1 · lo más destacado", title: "Un color repinta todo el sistema.", lead: "Elige un primario. Botones con su degradado, anillos de foco, enlaces, insignias, progreso, interruptores, chips y texto degradado lo siguen, porque iVOLT 1.1 mezcla en CSS, con color-mix(), cada token que depende de él. Sin build, sin JavaScript, sin quince variables a mano.", legend: "Elige un color primario", chain: "Diez tokens, una sola semilla", measured: "Contraste medido (WCAG 2), el peor caso entre el texto sobre el botón (en reposo y bajo el puntero) y el color como enlace", light: "claro", dark: "oscuro", deploy: "Desplegar", preview: "Vista previa", beta: "Beta", nueva: "Nuevo", link: "Un enlace de texto", auto: "Despliegue automático", sample: "Controles de muestra: aquí no hacen nada.", grad: "Texto degradado", filter: "Filtro", progress: "Progreso de muestra, 64 por ciento", snippet: "Todo lo que hace falta" }
+  : { kicker: "New in 1.1 · the headline", title: "One colour repaints the whole system.", lead: "Pick a primary. Buttons and their gradient, focus rings, links, badges, progress, switches, chips and gradient text follow it, because iVOLT 1.1 mixes every token that depends on it in CSS, with color-mix(). No build, no JavaScript, no fifteen variables by hand.", legend: "Pick a primary colour", chain: "Ten tokens, one seed", measured: "Measured contrast (WCAG 2), worst case of the text on the button (at rest and on hover) and the colour as a link", light: "light", dark: "dark", deploy: "Deploy", preview: "Preview", beta: "Beta", nueva: "New", link: "A text link", auto: "Auto deploy", sample: "Sample controls: they do nothing here.", grad: "Gradient text", filter: "Filter", progress: "Sample progress, 64 percent", snippet: "All it takes" };
+---
+<section class="docs-oc" aria-labelledby="oc-title" data-one-colour>
+  <style is:inline set:html={css}></style>
+  <header class="docs-oc__head">
+    <p class="docs-oc__kicker">{L.kicker}</p>
+    <h2 class="docs-oc__title" id="oc-title">{L.title}</h2>
+    <p class="docs-oc__lead">{L.lead}</p>
+  </header>
+
+  <div class="docs-oc__body">
+    <div class="docs-oc__side">
+      <fieldset class="iv-segmented docs-oc__pick">
+        <legend class="iv-u-sr-only">{L.legend}</legend>
+        {swatches.map((s, i) => (
+          <label class="iv-segmented__item">
+            <input type="radio" name="docs-oc" value={s.slug} checked={i === 1} data-light={s.light} data-dark={s.dark}>
+            <span><i class="docs-oc__dot" style={`--l:${s.light};--d:${s.dark}`} aria-hidden="true"></i>{es ? s.es : s.en}</span>
+          </label>
+        ))}
+      </fieldset>
+      <p class="docs-oc__measured">
+        <span>{L.measured}:</span>
+        {swatches.map((s) => <span class="docs-oc__ratio" data-for={s.slug}>{L.light} <b>{fmt(swatchRatio(s, "light"))}:1</b> · {L.dark} <b>{fmt(swatchRatio(s, "dark"))}:1</b></span>)}
+      </p>
+      <figure class="docs-oc__snippet">
+        <figcaption>{L.snippet}</figcaption>
+        <pre tabindex="0"><code>:root &#123;
+  --iv-color-primary: <b data-oc-value>#BE123C</b>;
+  --iv-color-on-primary: <b data-oc-on>#FFFFFF</b>;
+&#125;</code></pre>
+      </figure>
+    </div>
+
+    <div class="docs-oc__stage" data-iv-palette>
+      <div class="docs-oc__ui" inert>
+        <p class="docs-oc__grad iv-gradient-text">{L.grad}</p>
+        <div class="iv-cluster">
+          <span class="iv-button iv-button--primary">{L.deploy}</span>
+          <span class="iv-button iv-button--secondary">{L.preview}</span>
+          <span class="iv-spinner" aria-hidden="true"></span>
+        </div>
+        <div class="iv-cluster">
+          <span class="iv-badge iv-badge--primary">{L.beta}</span>
+          <span class="iv-badge iv-badge--solid iv-badge--primary">{L.nueva}</span>
+          <label class="iv-chip"><input type="checkbox" checked tabindex="-1"><span>{L.filter}</span></label>
+          <a href="#oc-title" tabindex="-1">{L.link}</a>
+        </div>
+        <progress class="iv-progress" value="64" max="100" aria-label={L.progress}></progress>
+        <label class="iv-switch"><input type="checkbox" checked tabindex="-1"><span class="iv-switch__track" aria-hidden="true"><span class="iv-switch__thumb"></span></span>{L.auto}</label>
+        <span class="docs-oc__ring">{es ? "Anillo de foco" : "Focus ring"}</span>
+      </div>
+      <p class="docs-oc__chain-title">{L.chain}</p>
+      <ul class="docs-oc__chain">
+        {chain.map(([k, label]) => <li><span class={`docs-oc__swatch docs-oc__swatch--${k.slice(5)}`} aria-hidden="true"></span><code>{k}</code><small>{label}</small></li>)}
+      </ul>
+      <p class="docs-oc__note">{L.sample}</p>
+    </div>
+  </div>
+</section>
+<script>
+  // Progressive: rewrite the snippet to the swatch that is chosen, in the theme being shown.
+  function mount() {
+    const root = document.querySelector("[data-one-colour]");
+    if (!root || root.dataset.mounted) return;
+    root.dataset.mounted = "1";
+    const value = root.querySelector("[data-oc-value]");
+    const on = root.querySelector("[data-oc-on]");
+    const dark = () => getComputedStyle(document.documentElement).colorScheme.includes("dark");
+    const paint = () => {
+      const input = root.querySelector('input[name="docs-oc"]:checked');
+      if (!input || !value || !on) return;
+      const d = dark();
+      value.textContent = (d ? input.dataset.dark : input.dataset.light).toUpperCase();
+      on.textContent = d ? "#06122B" : "#FFFFFF";
+    };
+    root.addEventListener("change", paint);
+    document.addEventListener("iv:themechange", paint);
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    new MutationObserver(paint).observe(document.documentElement, { attributes: true, attributeFilter: ["data-iv-theme"] });
+    paint();
+  }
+  // The "try it" button under the theme-transition section: the 1.1 subpath, live on this page.
+  // It stays hidden without script, since it could do nothing.
+  function mountTransition() {
+    const btn = document.querySelector("[data-theme-transition]");
+    if (!btn || btn.dataset.mounted) return;
+    btn.dataset.mounted = "1";
+    btn.hidden = false;
+    btn.addEventListener("click", async () => {
+      const { setThemeWithTransition } = await import("@intervolutions/ivolt/theme-transition");
+      const dark = getComputedStyle(document.documentElement).colorScheme.includes("dark");
+      await setThemeWithTransition(dark ? "light" : "dark", { persist: true });
+      // The header's theme buttons show the stored choice; keep them in step.
+      const now = document.documentElement.getAttribute("data-iv-theme");
+      document.querySelectorAll("[data-set-theme]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setTheme === now)));
+    });
+  }
+  mount();
+  mountTransition();
+  document.addEventListener("astro:page-load", () => { mount(); mountTransition(); });
+</script>

@@ -39,7 +39,15 @@ import Stage from "../../components/Stage.astro";
       <p>Two public locals retune it in one line: <code>--iv-card-shadow</code> for the resting elevation and <code>--iv-card-shadow-hover</code> for the one under the pointer. Set either to <code>none</code> to cancel it — that is exactly what <code>iv-card--flat</code> does. Together with <code>--iv-card-bg</code>, <code>--iv-card-radius</code> and <code>--iv-card-padding</code>, that is the whole surface of the component.</p>
     </Section>
 
-    <Section title="Common mistakes" num={5}>
+    <Section title="Responsive and link cards" num={5}>
+      <p><span class="docs-new">New in 1.1</span> Two progressive modifiers built on modern CSS, with no media query and no script.</p>
+      <Stage name="card/modern" title="Responsive card and a subgrid row of link cards" />
+      <p><code>iv-card--responsive</code> puts the media beside the body while the card has room and moves it above the body when it does not. The decision follows the card's own width — the media keeps <code>--iv-card-media-width</code> (16rem) and the body wraps under it once it would fall below 55&nbsp;% of the card — so the same card is horizontal in a wide column and vertical in a sidebar on the same page.</p>
+      <p><code>iv-card--link</code> makes the whole card one target. The link stays in the title (<code>iv-card__link</code>) and stretches over the card with a pseudo-element, so its accessible name is the title and not the whole card read aloud. The focus ring goes round the card when the link has focus, and anything that must stay clickable on its own — a badge that is a link, a menu button — goes in <code>iv-card__raise</code>, which sits above the stretched link. On a pointer the card lifts by two pixels and its border takes the brand edge; under reduced motion it does not move.</p>
+      <p>The row above also uses <code>iv-grid--subgrid</code>, documented on <a href="/foundations/layout">layout</a>: titles, texts and badges line up across the three cards whatever the length of each title.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={6}>
       <ul><li>Making the whole card a link with nested interactive controls. Link the title instead.</li><li>Skipping heading levels inside cards.</li></ul>
     </Section>
   </article>

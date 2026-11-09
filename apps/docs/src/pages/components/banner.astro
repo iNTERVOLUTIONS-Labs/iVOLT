@@ -1,0 +1,74 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Banner: site-wide announcements in pure CSS" description="iVOLT banner: a full-width announcement strip for launches, maintenance and trials, with an action, a dismiss button, five tones and a sticky variant. CSS only.">
+  <article class="docs-prose" data-enriched>
+    <h1>Banner</h1>
+    <p>A full-width strip across the top of a page or a section: one line of news, an optional action and an optional dismiss button. Where an <a href="/components/alert">alert</a> talks about the content next to it (“this form has two errors”), a banner talks about the whole site (“maintenance on Sunday”, “version 1.1 is out”).</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/banner.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="banner/basic" title="Brand, neutral, warning and success" minHeight="20rem" />
+
+    <Section title="When to use it" num={1}>
+      <p>Use a banner for one message that matters to everyone on the page, for a limited time: a launch, a planned outage, the end of a trial, a cookie-free notice that your analytics changed. Keep it to one sentence and at most one action; if it needs a paragraph, link to the page that has it. Show at most one banner at a time — two stacked strips read as an error state.</p>
+      <p>A banner is not a <a href="/components/toast">toast</a>: it does not appear by itself after an action and it does not time out. It is part of the page from the first paint, which also means it should not push the content down after the page has loaded.</p>
+    </Section>
+
+    <Section title="Tones and variants" num={2}>
+      <ul>
+        <li>No tone: a quiet raised surface with a brand hairline, for neutral notices.</li>
+        <li><code>iv-banner--info</code>, <code>--success</code>, <code>--warning</code>, <code>--danger</code>: a 9&nbsp;% tint of the tone over the raised surface, with the text colour of the theme (so the contrast is the text contrast, not the tone's).</li>
+        <li><code>iv-banner--brand</code>: the strip filled with the primary and its ink — the launch banner. It follows a one-colour theme.</li>
+        <li><code>iv-banner--sticky</code>: stays at the top of its scroll container while the page moves.</li>
+      </ul>
+      <p>Parts: <code>__icon</code> at the start, <code>__text</code> for the sentence, <code>__action</code> for a link that reads as a link with an arrow stepping forward under the pointer, and <code>__close</code> at the end. An empty close button draws its own cross.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <ul>
+        <li>The banner is a landmark: <code>role="region"</code> with an <code>aria-label</code> such as “Announcement”, so it can be found and skipped. Do not make it a live region; it was there when the page loaded and should not interrupt.</li>
+        <li>The close button needs a name (<code>aria-label="Dismiss"</code>). Dismissing is the page's job: a click handler that sets <code>hidden</code> on the banner, which the stylesheet honours. If the choice should persist, store it yourself; the framework keeps no state.</li>
+        <li>After dismissing, move focus to the start of the main content, not to the top of the document.</li>
+        <li>The tone is never the message: start the sentence with the word that matters (“Scheduled maintenance…”).</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.promo &#123;
+  --iv-banner-tone: #7c3aed;
+  --iv-banner-bg: color-mix(in oklab, var(--iv-banner-tone) 12%, var(--iv-color-surface-raised));
+  --iv-banner-fg: var(--iv-color-text);
+&#125;</code></pre>
+      <p>Locals: <code>--iv-banner-tone</code> (the hairline, the icon and the action), <code>--iv-banner-bg</code> and <code>--iv-banner-fg</code>. Check the contrast of your own pair; the shipped tones are measured in both themes.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>Using a banner for an error in one form field. That is an alert or an inline message.</li>
+        <li>Injecting it after load, which moves everything the reader was about to click.</li>
+        <li>A dismiss button that hides the banner but leaves focus on a removed element.</li>
+        <li>Two or three banners at once, all brand-filled.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-banner</code></td><td>The strip, a labelled region.</td></tr>
+            <tr><td><code>iv-banner__icon</code></td><td>Decorative icon at the start.</td></tr>
+            <tr><td><code>iv-banner__text</code></td><td>The sentence.</td></tr>
+            <tr><td><code>iv-banner__action</code></td><td>A link with an arrow.</td></tr>
+            <tr><td><code>iv-banner__close</code></td><td>Dismiss button; empty, it draws a cross.</td></tr>
+            <tr><td><code>iv-banner--info</code> · <code>--success</code> · <code>--warning</code> · <code>--danger</code></td><td>Tinted tones.</td></tr>
+            <tr><td><code>iv-banner--brand</code></td><td>Filled with the primary.</td></tr>
+            <tr><td><code>iv-banner--sticky</code></td><td>Sticks to the top of its scroll container.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

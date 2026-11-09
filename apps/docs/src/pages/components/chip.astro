@@ -1,0 +1,71 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Chip: filter chips and removable tags in CSS" description="iVOLT chip: filter chips built on native checkboxes, removable tokens with a 24 px close target, and tags with an avatar or icon. Accessible, no JavaScript.">
+  <article class="docs-prose" data-enriched>
+    <h1>Chip</h1>
+    <p>A compact token that you can act on. It comes in three shapes: a <strong>filter</strong> that toggles on and off, a <strong>value</strong> that can be removed, and a <strong>tag</strong> with a picture at its start. Unlike a <a href="/components/badge">badge</a>, which only labels something, a chip is interactive or holds an interactive part.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/chip.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="chip/basic" title="Filters, removable values and media" minHeight="16rem" />
+
+    <Section title="When to use it" num={1}>
+      <ul>
+        <li><strong>Filter chips</strong> narrow a list or a search: stacks, price ranges, tags. Several can be on at once, which is why they are checkboxes. For a single choice use a <a href="/components/segmented">segmented control</a>.</li>
+        <li><strong>Removable chips</strong> show values someone has picked — recipients, cities, labels — each with a button that takes it away. Removing it is your code: listen for the click, remove the element and move focus to a sensible neighbour.</li>
+        <li><strong>Tags</strong> with <code>iv-chip__media</code> pair a word with an avatar or an icon: a person, a project, a workspace.</li>
+      </ul>
+    </Section>
+
+    <Section title="Anatomy" num={2}>
+      <pre tabindex="0"><code>&lt;!-- filter: a checkbox inside the label --&gt;
+&lt;label class="iv-chip"&gt;&lt;input type="checkbox" name="stack" value="css"&gt;&lt;span&gt;CSS&lt;/span&gt;&lt;/label&gt;
+
+&lt;!-- removable value: an empty button draws its own cross --&gt;
+&lt;span class="iv-chip"&gt;Madrid &lt;button class="iv-chip__remove" type="button" aria-label="Remove Madrid"&gt;&lt;/button&gt;&lt;/span&gt;</code></pre>
+      <p>The checkbox stays in the tree and covers the chip, so the whole pill is the click target and the native keyboard and form behaviour stay intact. A checked filter is tinted with its tone and draws a check before the text. A disabled one is dimmed and skipped by the keyboard.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <ul>
+        <li>Group filter chips in a <code>&lt;fieldset&gt;</code> with a <code>&lt;legend&gt;</code> (“Filter by stack”), so each checkbox is announced with its group.</li>
+        <li>Every remove button needs a name that says what it removes — <code>aria-label="Remove Madrid"</code>, not “Remove” or “×”. The cross is drawn by CSS and never read.</li>
+        <li>The remove target is a 24&nbsp;px circle, the minimum of WCAG 2.5.8, even on the small chip.</li>
+        <li>Selected state is never colour alone: the check mark appears with the tint, and forced colours draw it in the system highlight.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.tags &#123;
+  --iv-chip-tone: var(--iv-color-accent);
+  --iv-chip-height: 2.25rem;
+&#125;</code></pre>
+      <p>Locals: <code>--iv-chip-tone</code> (the colour of the selected tint and the check, the primary by default) and <code>--iv-chip-height</code> (2rem; <code>iv-chip--sm</code> sets 1.5rem). Padding, the media size and the remove button scale from the height.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>Using chips for navigation. Links that go somewhere are links; style them as such or use a <a href="/components/list">list</a>.</li>
+        <li>A remove button without a specific name.</li>
+        <li>Removing a chip without moving focus: keyboard users are left on nothing.</li>
+        <li>Mixing filter chips and removable chips in one row: the reader cannot tell which ones toggle.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-chip</code></td><td>The pill: a label with a checkbox, or a span holding a value.</td></tr>
+            <tr><td><code>iv-chip--sm</code></td><td>Small chip, 1.5rem tall.</td></tr>
+            <tr><td><code>iv-chip__media</code></td><td>Avatar or icon at the start, sized to the chip.</td></tr>
+            <tr><td><code>iv-chip__remove</code></td><td>Round remove button at the end; empty, it draws a cross.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

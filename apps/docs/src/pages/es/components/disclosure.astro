@@ -49,5 +49,9 @@ import Stage from "../../../components/Stage.astro";
     <Section title="Buscar en la página" num={7}>
       <p>El texto de un <code>&lt;details&gt;</code> cerrado lo encuentra la búsqueda del navegador en los navegadores actuales basados en Chromium, que abren el panel por ti. El contenido oculto con CSS o generado al pulsar, no. Otro motivo para conservar el elemento nativo en vez de reconstruirlo.</p>
     </Section>
+    <Section title="Apertura animada" num={8}>
+      <p><span class="docs-new">Nuevo en 1.1</span> Donde el motor expone el contenido de <code>&lt;details&gt;</code> como <code>::details-content</code> y sabe interpolar hasta <code>auto</code> (<code>interpolate-size: allow-keywords</code>), un <code>iv-disclosure</code> crece hasta su altura al abrirse y se pliega al cerrarse, durante <code>--iv-motion-slow</code>. <code>content-visibility</code> es una propiedad discreta, así que la transición usa <code>allow-discrete</code> para mantener pintado el contenido hasta que termina de plegarse. En el resto de motores el panel se abre de golpe, igual que en 1.0, y con movimiento reducido no hay transición.</p>
+      <p>Es solo CSS: la misma animación funciona con o sin el componente <code>Disclosure</code>, y se combina con los grupos exclusivos nativos de arriba: un acordeón con <code>&lt;details name&gt;</code> que se desliza sin una línea de JavaScript en la página.</p>
+    </Section>
   </article>
 </Base>

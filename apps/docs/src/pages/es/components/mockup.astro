@@ -1,0 +1,81 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Section from "../../../components/Section.astro";
+import Stage from "../../../components/Stage.astro";
+---
+<Base lang="es" title="Maqueta: marcos de navegador y móvil en CSS" description="Maqueta de iVOLT: ventanas de navegador y móviles dibujados en CSS para landings y documentación, con capturas o marcado vivo e inclinación opcional.">
+  <article class="docs-prose" data-enriched>
+    <h1>Maqueta (mockup)</h1>
+    <p>Marcos de dispositivo para páginas de marketing y documentación: una ventana de navegador con sus tres controles y una barra de dirección, y un móvil con el cristal redondeado y la isla de la cámara. El marco lo dibuja por completo la hoja de estilos —no hay imágenes de marco que descargar, escalar ni repintar— y lo que va en la pantalla es tuyo: una captura, un vídeo o marcado vivo hecho con iVOLT, como en el ejemplo.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/mockup.css</code> (dentro de <code>ivolt.css</code>). <strong>JS:</strong> ninguno. Nuevo en 1.1.</p>
+    <Stage primary name="mockup/basic" title="Ventana de navegador y móvil con contenido vivo" minHeight="24rem" />
+
+    <Section title="Cuándo usarla" num={1}>
+      <p>Usa una maqueta cuando el lector tiene que reconocer «esto es el producto»: un hero que enseña el panel de control, una sección que enseña la app móvil, una entrada del registro de cambios que enseña la pantalla nueva. En documentación, un marco de navegador alrededor de una captura le dice al lector que la imagen es una página y no un diagrama. No lo enmarques todo: una página con seis maquetas parece una presentación.</p>
+    </Section>
+
+    <Section title="Anatomía y variantes" num={2}>
+      <pre tabindex="0"><code>&lt;figure class="iv-mockup iv-mockup--browser"&gt;
+  &lt;div class="iv-mockup__bar" aria-hidden="true"&gt;
+    &lt;span class="iv-mockup__url"&gt;app.example.com&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class="iv-mockup__screen"&gt;&lt;img src="panel.avif" alt="…"&gt;&lt;/div&gt;
+&lt;/figure&gt;
+
+&lt;figure class="iv-mockup iv-mockup--phone"&gt;
+  &lt;div class="iv-mockup__screen"&gt;…&lt;/div&gt;
+&lt;/figure&gt;</code></pre>
+      <ul>
+        <li><code>iv-mockup--browser</code>: una ventana a 16:10 por defecto. La dirección de <code>__url</code> es decoración, así que escribe un dominio creíble pero ficticio.</li>
+        <li><code>iv-mockup--phone</code>: un móvil a 9:19,5 y 18rem de ancho. Deja algo de aire arriba en la pantalla para la isla (el ejemplo separa su contenido 3,25rem).</li>
+        <li><code>iv-mockup--tilt</code>: una ligera perspectiva para un hero, que se endereza un poco bajo el puntero y desaparece por completo con movimiento reducido.</li>
+      </ul>
+      <p>Los controles de la ventana y la isla son pseudoelementos y nunca se anuncian. En una página de derecha a izquierda se reflejan.</p>
+    </Section>
+
+    <Section title="Accesibilidad" num={3}>
+      <ul>
+        <li>El contenido es la figura, no el marco. Dale a la imagen de la pantalla un <code>alt</code> de verdad o, si es marcado vivo, asegúrate de que tiene sentido al leerlo; el ejemplo usa cifras inventadas y lo dice.</li>
+        <li>Marca la barra con <code>aria-hidden="true"</code>: a un lector de pantalla no le sirve una dirección falsa.</li>
+        <li>El marcado vivo dentro de una maqueta sigue vivo: sus enlaces y botones reciben el foco. Si el contenido es solo el dibujo de una interfaz, conviértelo en imagen o pon <code>inert</code> en la pantalla.</li>
+        <li>Añade un <code>&lt;figcaption&gt;</code> cuando la pantalla necesite explicación.</li>
+        <li>En colores forzados el marco pasa a ser un contorno sencillo y los controles decorativos se ocultan.</li>
+      </ul>
+    </Section>
+
+    <Section title="Personalizar" num={4}>
+      <pre tabindex="0"><code>.hero .iv-mockup &#123;
+  --iv-mockup-ratio: 2 / 1;
+  --iv-mockup-frame: var(--iv-color-surface);
+&#125;
+.hero .iv-mockup--phone &#123; --iv-mockup-width: 16rem; &#125;</code></pre>
+      <p>Locales: <code>--iv-mockup-frame</code> (el color del marco, mezclado de la superficie elevada y el texto para que se separe en los dos temas), <code>--iv-mockup-ratio</code> (la proporción de la pantalla) y <code>--iv-mockup-width</code> (el ancho del móvil).</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={5}>
+      <ul>
+        <li>El dominio real de un cliente en la barra de dirección.</li>
+        <li>Una captura sin <code>alt</code> porque «solo es una maqueta».</li>
+        <li>Contenido interactivo de demostración dentro de un marco inclinado, donde los clics siguen la perspectiva y se notan raros.</li>
+        <li>Meter una captura de escritorio dentro del marco de móvil.</li>
+      </ul>
+    </Section>
+
+    <Section title="Índice de clases" num={6}>
+      <p>Todas las clases de la familia. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Clase</th><th>Qué hace</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-mockup</code></td><td>El marco, sobre un <code>&lt;figure&gt;</code>.</td></tr>
+            <tr><td><code>iv-mockup--browser</code></td><td>Ventana de navegador.</td></tr>
+            <tr><td><code>iv-mockup--phone</code></td><td>Móvil.</td></tr>
+            <tr><td><code>iv-mockup--tilt</code></td><td>Inclinación con perspectiva para un hero.</td></tr>
+            <tr><td><code>iv-mockup__bar</code> · <code>iv-mockup__url</code></td><td>Barra de la ventana y dirección (decorativas).</td></tr>
+            <tr><td><code>iv-mockup__screen</code></td><td>Donde va el contenido.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

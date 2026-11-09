@@ -39,7 +39,15 @@ import Stage from "../../../components/Stage.astro";
       <p>Dos locales públicos lo ajustan en una línea: <code>--iv-card-shadow</code> para la elevación en reposo y <code>--iv-card-shadow-hover</code> para la del puntero. Pon cualquiera de los dos a <code>none</code> para anularla: es justo lo que hace <code>iv-card--flat</code>. Junto a <code>--iv-card-bg</code>, <code>--iv-card-radius</code> y <code>--iv-card-padding</code>, eso es toda la superficie del componente.</p>
     </Section>
 
-    <Section title="Errores frecuentes" num={5}>
+    <Section title="Tarjetas adaptables y tarjetas enlace" num={5}>
+      <p><span class="docs-new">Nuevo en 1.1</span> Dos modificadores progresivos hechos con CSS moderno, sin media queries y sin script.</p>
+      <Stage name="card/modern" title="Tarjeta adaptable y una fila de tarjetas enlace con subgrid" />
+      <p><code>iv-card--responsive</code> pone el medio al lado del cuerpo mientras la tarjeta tiene sitio y lo sube encima cuando no lo tiene. Lo decide el ancho de la propia tarjeta —el medio conserva <code>--iv-card-media-width</code> (16rem) y el cuerpo pasa debajo cuando se quedaría por debajo del 55&nbsp;% de la tarjeta—, así que la misma tarjeta es horizontal en una columna ancha y vertical en un lateral de la misma página.</p>
+      <p><code>iv-card--link</code> convierte toda la tarjeta en un único objetivo. El enlace sigue en el título (<code>iv-card__link</code>) y se estira sobre la tarjeta con un pseudoelemento, de modo que su nombre accesible es el título y no la tarjeta entera leída en voz alta. El anillo de foco rodea la tarjeta cuando el enlace tiene el foco, y lo que tenga que seguir pulsándose por separado —una insignia que es un enlace, un botón de menú— va en <code>iv-card__raise</code>, que queda por encima del enlace estirado. Bajo el puntero la tarjeta sube dos píxeles y su borde toma el filo de la marca; con movimiento reducido no se mueve.</p>
+      <p>La fila de arriba usa además <code>iv-grid--subgrid</code>, documentado en <a href="/es/foundations/layout">maquetación</a>: títulos, textos e insignias se alinean entre las tres tarjetas sea cual sea el largo de cada título.</p>
+    </Section>
+
+    <Section title="Errores frecuentes" num={6}>
       <ul><li>Convertir toda la tarjeta en un enlace con controles interactivos dentro. Enlaza el título.</li><li>Saltarse niveles de título dentro de las tarjetas.</li></ul>
     </Section>
   </article>

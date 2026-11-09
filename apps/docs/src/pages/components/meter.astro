@@ -1,0 +1,69 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="Meter: native gauges for quotas and scores" description="iVOLT meter: the native meter element styled for disk use, quotas and scores, coloured good, fair or poor by the browser from low, high and optimum.">
+  <article class="docs-prose" data-enriched>
+    <h1>Meter</h1>
+    <p>A gauge for a measurement inside a known range: disk used, build minutes left, a password's strength, a score out of a hundred. It styles the native <code>&lt;meter&gt;</code> element, and the browser decides from <code>low</code>, <code>high</code> and <code>optimum</code> whether the value is good, fair or poor — the bar takes the success, warning or danger colour from that judgement, with no script and no class to switch.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/meter.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="meter/basic" title="Good, fair and poor readings" minHeight="16rem" />
+
+    <Section title="Meter or progress?" num={1}>
+      <p>They look alike and mean different things. A <a href="/components/progress">progress bar</a> measures how much of a <em>task</em> is done and moves towards the end; a meter measures a <em>quantity</em> that can go up or down and has a good and a bad end. Uploading a file is progress; the disk the file fills is a meter. Screen readers announce them differently, so the choice is not only visual.</p>
+    </Section>
+
+    <Section title="How the colour is chosen" num={2}>
+      <pre tabindex="0"><code>&lt;div class="iv-meter-field"&gt;
+  &lt;label for="disk"&gt;Disk used&lt;/label&gt;
+  &lt;span class="iv-meter-field__value"&gt;42 of 100 GB&lt;/span&gt;
+  &lt;meter class="iv-meter" id="disk" min="0" max="100"
+         low="70" high="90" optimum="20" value="42"&gt;42 GB&lt;/meter&gt;
+&lt;/div&gt;</code></pre>
+      <p><code>low</code> and <code>high</code> cut the range into three bands; <code>optimum</code> says which band is the good one. With <code>optimum="20"</code> low values are good, so 42 is green, 780 of 1,000 build minutes is amber and 95&nbsp;% memory is red. Flip the optimum to the top of the range for a score where high is good. Each engine exposes its own pseudo-elements for the bar; the stylesheet writes one rule per engine, because an unknown pseudo-element would invalidate a whole selector list.</p>
+      <p><code>iv-meter-field</code> lays out the label and the written value on one line above the bar. <code>iv-meter--lg</code> is a thicker bar for a dashboard tile.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <ul>
+        <li>Name every meter: a visible <code>&lt;label for&gt;</code>, as in the field, or <code>aria-label</code>.</li>
+        <li>Write the value as text next to the bar. Colour is never the reading, and the text content inside <code>&lt;meter&gt;</code> is only a fallback for very old engines.</li>
+        <li>The browser exposes the value, the minimum and the maximum to assistive technology; you do not need ARIA value attributes.</li>
+        <li>In forced colours the bar becomes a highlight fill on a framed canvas track.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.quota .iv-meter &#123;
+  --iv-meter-size: 0.75rem;
+  --iv-meter-track: var(--iv-color-surface-raised);
+&#125;</code></pre>
+      <p>Public locals: <code>--iv-meter-size</code> (the thickness, 0.625rem by default) and <code>--iv-meter-track</code> (the empty part). The three fill colours are the theme's success, warning and danger, so a theme that changes those changes the meter.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>Using a meter for an upload or a multi-step form: that is progress.</li>
+        <li>Omitting <code>optimum</code>, so the browser guesses which end is good.</li>
+        <li>A bar with no number beside it.</li>
+        <li>Setting the colour with a class. The browser already knows which band the value is in.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the family. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-meter</code></td><td>The styled native <code>&lt;meter&gt;</code>.</td></tr>
+            <tr><td><code>iv-meter--lg</code></td><td>Thicker bar.</td></tr>
+            <tr><td><code>iv-meter-field</code></td><td>Label, written value and bar laid out together.</td></tr>
+            <tr><td><code>iv-meter-field__value</code></td><td>The value as text, aligned to the end.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>

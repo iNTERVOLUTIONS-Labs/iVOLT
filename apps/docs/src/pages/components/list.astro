@@ -1,0 +1,83 @@
+---
+import Base from "../../layouts/Base.astro";
+import Section from "../../components/Section.astro";
+import Stage from "../../components/Stage.astro";
+---
+<Base title="List group and description list in CSS" description="iVOLT list: framed list groups with media, meta and end slots, navigation lists with aria-current, and a description list that adapts to its container.">
+  <article class="docs-prose" data-enriched>
+    <h1>List and description list</h1>
+    <p>Two content lists that every product screen ends up needing. <code>iv-list</code> is a list group: rows in one framed surface, separated by hairlines, each with room for an icon, a title, a line of detail and something at the end. <code>iv-dl</code> is a description list of term and value pairs that stacks on narrow containers and sits side by side once its container is 32rem wide.</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>css/components/list.css</code> (in <code>ivolt.css</code>). <strong>JS:</strong> none. New in 1.1.</p>
+    <Stage primary name="list/basic" title="Navigation list, data list and description list" minHeight="22rem" />
+
+    <Section title="When to use which" num={1}>
+      <ul>
+        <li><strong>A list group</strong> for a short collection the reader scans: settings sections, recent deploys, team members, notifications. If the rows have more than three or four columns of data that need sorting, that is a <a href="/components/table">table</a> or a <a href="/components/datatable">data table</a>.</li>
+        <li><strong>A navigation list</strong> (<code>iv-list--nav</code>) for a set of links where one is the current page — the side menu of a settings area. Mark the current row with <code>aria-current="page"</code>; the style follows it.</li>
+        <li><strong>A description list</strong> for facts about one thing: the plan, the region, the domain and the creation date of a project. It replaces the two-column table that is often misused for this.</li>
+      </ul>
+    </Section>
+
+    <Section title="Anatomy of a row" num={2}>
+      <pre tabindex="0"><code>&lt;ul class="iv-list"&gt;
+  &lt;li class="iv-list__item"&gt;
+    &lt;a class="iv-list__action" href="/settings/security"&gt;
+      &lt;span class="iv-list__media" aria-hidden="true"&gt;…&lt;/span&gt;
+      &lt;span class="iv-list__body"&gt;
+        &lt;span class="iv-list__title"&gt;Security&lt;/span&gt;
+        &lt;span class="iv-list__meta"&gt;Passkeys and sessions&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class="iv-list__end"&gt;&lt;span class="iv-badge iv-badge--warning"&gt;1 to review&lt;/span&gt;&lt;/span&gt;
+    &lt;/a&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      <p>A static row puts the slots straight into <code>__item</code>. A row that acts puts them into an <code>&lt;a&gt;</code> or <code>&lt;button class="iv-list__action"&gt;</code> that fills the row, so the whole row is the target and the hover tint covers it. <code>iv-list--flush</code> drops the frame and the outer padding, for a list inside a card, a drawer or a phone mockup.</p>
+      <p>The description list wraps each pair in <code>&lt;div class="iv-dl__row"&gt;</code>, which HTML allows inside <code>&lt;dl&gt;</code> and which keeps a term with its value when the layout changes. <code>iv-dl--compact</code> tightens the rows.</p>
+    </Section>
+
+    <Section title="Accessibility" num={3}>
+      <ul>
+        <li>Give a list a name when the page has more than one: <code>aria-label="Recent deploys"</code>. It is announced as “list, 3 items”.</li>
+        <li>One interactive element per row. A link that fills the row cannot also hold a button; if a row needs two actions, make the row static and put the actions in <code>__end</code>.</li>
+        <li><code>aria-current</code> is the only state the current row needs; screen readers announce “current page”. In forced colours it gets a highlight outline.</li>
+        <li>Badges in <code>__end</code> are read as part of the row's name, so keep their words short and meaningful.</li>
+      </ul>
+    </Section>
+
+    <Section title="Customising" num={4}>
+      <pre tabindex="0"><code>.inbox .iv-list &#123; --iv-list-padding: var(--iv-space-3); &#125;
+.facts.iv-dl &#123; --iv-dl-term: minmax(6rem, 14rem); &#125;</code></pre>
+      <p>Locals: <code>--iv-list-padding</code> (the inner padding of each row) and <code>--iv-dl-term</code> (the track of the term column when the description list sits side by side; <code>minmax(8rem, 1fr)</code> by default). The side-by-side switch is a container query, not a media query, so the same description list stacks in a narrow sidebar and spreads in a wide panel on the same page.</p>
+    </Section>
+
+    <Section title="Common mistakes" num={5}>
+      <ul>
+        <li>Nesting a <code>&lt;button&gt;</code> inside a row-filling <code>&lt;a&gt;</code>: invalid HTML and two targets in one.</li>
+        <li>Using a list group for tabular data that needs columns and sorting.</li>
+        <li>Building the description list as a two-column table with no headers.</li>
+        <li>Styling the current page with a class instead of <code>aria-current</code>, so the state is never announced.</li>
+      </ul>
+    </Section>
+
+    <Section title="Class index" num={6}>
+      <p>Every class of the two families. The full list per stylesheet lives in the <a href="/reference">reference</a>.</p>
+      <div class="docs-scroller docs-class-index">
+        <table>
+          <thead><tr><th>Class</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>iv-list</code></td><td>A framed list group.</td></tr>
+            <tr><td><code>iv-list__item</code></td><td>One row.</td></tr>
+            <tr><td><code>iv-list__action</code></td><td>A link or button that fills the row.</td></tr>
+            <tr><td><code>iv-list__media</code></td><td>Icon or avatar at the start.</td></tr>
+            <tr><td><code>iv-list__body</code> · <code>__title</code> · <code>__meta</code></td><td>The text: a title and a line of detail.</td></tr>
+            <tr><td><code>iv-list__end</code></td><td>Badge, value or chevron at the end.</td></tr>
+            <tr><td><code>iv-list--flush</code></td><td>No frame, for lists inside other surfaces.</td></tr>
+            <tr><td><code>iv-list--nav</code></td><td>Navigation list; <code>aria-current</code> marks the current row.</td></tr>
+            <tr><td><code>iv-dl</code> · <code>iv-dl__row</code></td><td>Description list and one term–value pair.</td></tr>
+            <tr><td><code>iv-dl--compact</code></td><td>Tighter rows.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </Section>
+  </article>
+</Base>
