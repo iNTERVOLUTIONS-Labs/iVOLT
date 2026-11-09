@@ -1,0 +1,48 @@
+---
+import Base from "../layouts/Base.astro";
+import Section from "./Section.astro";
+import SizeTable from "./SizeTable.astro";
+import { competitors, file, slugs, measured } from "../data/compare.js";
+import "../styles/compare.css";
+
+const { lang = "en" } = Astro.props;
+const es = lang === "es";
+const base = es ? "/es" : "";
+const css = [file("ivolt", "css"), file("bootstrap", "css"), file("bulma", "css"), file("bulma", "css-lite"), file("pico", "css"), file("tailwind", "reset")].filter(Boolean).sort((a, b) => a.gzip - b.gzip);
+const js = [file("ivolt", "js"), file("bootstrap", "js"), file("tailwind-browser", "js")].filter(Boolean).sort((a, b) => a.gzip - b.gzip);
+const blurb = es
+  ? { bootstrap: "El más usado. Qué cambia, qué pesa cada uno y cuándo quedarte con Bootstrap.", tailwind: "Componentes terminados frente a un motor de utilidades con paso de build.", pico: "Pico ya no se mantiene. HTML semántico con un framework vivo.", bulma: "Componentes CSS legibles; la diferencia es el JavaScript que te ahorras." }
+  : { bootstrap: "The most used one. What changes, what each weighs, and when to stay on Bootstrap.", tailwind: "Finished components against a utility engine with a build step.", pico: "Pico is no longer maintained. Semantic HTML with a framework that is.", bulma: "Readable CSS components; the difference is the JavaScript you no longer write." };
+---
+<Base lang={lang} title={es ? "Comparar iVOLT con otros frameworks CSS" : "Compare iVOLT with other CSS frameworks"} description={es ? "iVOLT frente a Bootstrap, Tailwind CSS, Pico CSS y Bulma: tamaños medidos con un script público, enfoques, temas y cuándo conviene cada uno." : "iVOLT next to Bootstrap, Tailwind CSS, Pico CSS and Bulma: sizes measured by a public script, approaches, theming, and when each one is the better choice."}>
+  <article class="docs-prose docs-compare">
+    <h1>{es ? "Comparar" : "Compare"}</h1>
+    <p>{es ? "Cuatro comparaciones honestas: qué es cada framework, cuánto pesa lo que descargas, cómo se traduce el marcado y en qué casos el otro es mejor elección. Los tamaños no son estimaciones: los mide un script que está en el repositorio y que puedes ejecutar." : "Four honest comparisons: what each framework is, what the files you download weigh, how the markup translates, and when the other one is the better choice. The sizes are not estimates: a script in the repository measures them, and you can run it."}</p>
+
+    <ul class="docs-vs">
+      {slugs.map((s) => <li><a href={`${base}/compare/${s}`}><strong>iVOLT <span>{es ? "o" : "vs"}</span> {competitors[s].name}</strong><p>{blurb[s]}</p></a></li>)}
+    </ul>
+
+    <Section title={es ? "Hojas de estilo" : "Stylesheets"} num={1} lead={es ? `Lo que enlaza una página para tener el framework completo, medido el ${measured}.` : `What a page links to get the whole framework, measured on ${measured}.`}>
+      <SizeTable rows={css} lang={lang} />
+    </Section>
+
+    <Section title="JavaScript" num={2} lead={es ? "Bulma y Pico no publican JavaScript. El de iVOLT es opcional: los componentes de contenido no lo necesitan." : "Bulma and Pico ship no JavaScript. iVOLT's is optional: the content components do not need it."}>
+      <SizeTable rows={js} lang={lang} />
+    </Section>
+
+    <Section title={es ? "Lo que estas cifras no dicen" : "What these numbers do not say"} num={3}>
+      <ul>
+        {es ? <>
+          <li>Tailwind no tiene una hoja fija: un build genera solo las clases que usas, y su tamaño depende de tu marcado. Por eso medimos su reset y su build para el navegador, no un sitio concreto.</li>
+          <li>Más bytes pueden ser más trabajo resuelto. El JavaScript de iVOLT incluye un combobox, un selector de fechas, una tabla de datos, una paleta de comandos y un visor que en otros frameworks son librerías aparte.</li>
+          <li>Los tamaños de una versión alfa (Bootstrap 6) cambiarán antes de la estable.</li>
+        </> : <>
+          <li>Tailwind has no fixed stylesheet: a build writes only the classes you use, and its size depends on your markup. That is why its reset and its browser build are measured, not a particular site.</li>
+          <li>More bytes can mean more work done for you. iVOLT's JavaScript includes a combobox, a datepicker, a data table, a command palette and a lightbox that are separate libraries elsewhere.</li>
+          <li>The sizes of an alpha release (Bootstrap 6) will change before it is stable.</li>
+        </>}
+      </ul>
+    </Section>
+  </article>
+</Base>

@@ -197,6 +197,8 @@
 /* the sitemap: four short columns, never a wall of links */
 .docs-sitemap { display: grid; gap: clamp(1.75rem, 4vw, 3rem); grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); margin-block-end: clamp(2.5rem, 5vw, 3.5rem); }
 .docs-sitemap__col { min-inline-size: 0; }
+/* Five groups since 1.1 (Explore): two of them wide, seven tracks in all, which fit on one row from 80em. */
+@media (min-width: 80em) { .docs-sitemap { grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); } }
 /* The components column carries every component: two tracks of the site map and two files of
    links, so the footer is a complete map instead of a sample of one. */
 @media (min-width: 48em) {

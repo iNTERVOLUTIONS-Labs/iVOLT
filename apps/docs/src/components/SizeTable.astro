@@ -1,0 +1,36 @@
+---
+// A table of measured files with a bar per row. The numbers are the content; the bar is a reading
+// aid scaled to the largest gzip size in the same table, hidden from assistive technology.
+import { measured, kb } from "../data/compare.js";
+const { rows = [], lang = "en", caption } = Astro.props;
+const es = lang === "es";
+const max = Math.max(...rows.map((r) => r.gzip));
+const role = (r) => ({ css: "CSS", js: "JS", classless: es ? "CSS sin clases" : "classless CSS", reset: "reset", "css-lite": es ? "CSS sin helpers" : "CSS, no helpers" })[r.role] || r.role;
+const repo = "https://github.com/iNTERVOLUTIONS-Labs/iVOLT/blob/main/scripts/measure-competitors.mjs";
+---
+<div class="docs-scroller docs-sizes">
+  <table>
+    <caption>{caption || (es ? "Tamaño de cada fichero: sin comprimir, con gzip -9 y con Brotli 11." : "Size of each file: raw, gzip -9 and Brotli 11.")}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{es ? "Framework" : "Framework"}</th>
+        <th scope="col">{es ? "Fichero" : "File"}</th>
+        <th scope="col" class="docs-sizes__num">{es ? "Sin comprimir" : "Raw"}</th>
+        <th scope="col" class="docs-sizes__num">gzip</th>
+        <th scope="col" class="docs-sizes__num">Brotli</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr class:list={[r.id === "ivolt" && "docs-sizes__ours"]}>
+          <th scope="row"><span class="docs-sizes__name">{r.name}</span> <span class="docs-sizes__ver">{r.version}</span></th>
+          <td><span class="docs-sizes__role">{role(r)}</span> <code>{r.file.split("/").pop()}</code>{r.note && !es && <small class="docs-sizes__note">{r.note}</small>}</td>
+          <td class="docs-sizes__num">{kb(r.bytes)} KiB</td>
+          <td class="docs-sizes__num docs-sizes__gz"><span class="docs-sizes__bar" style={`--w:${((r.gzip / max) * 100).toFixed(1)}%`} aria-hidden="true"></span><strong>{kb(r.gzip)} KiB</strong></td>
+          <td class="docs-sizes__num">{kb(r.brotli)} KiB</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+<p class="docs-sizes__method">{es ? <>Medido el {measured} con <a href={repo} rel="noopener"><code>scripts/measure-competitors.mjs</code></a>: descarga cada fichero de jsDelivr en la versión indicada y lo comprime con zlib de Node. Ejecútalo y obtendrás las mismas cifras; los hashes SHA-256 están en <code>apps/docs/src/data/competitor-sizes.json</code>.</> : <>Measured on {measured} with <a href={repo} rel="noopener"><code>scripts/measure-competitors.mjs</code></a>: it downloads each file from jsDelivr at the version shown and compresses it with Node's zlib. Run it and you get the same numbers; the SHA-256 of every file is in <code>apps/docs/src/data/competitor-sizes.json</code>.</>}</p>

@@ -4,7 +4,7 @@ import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Menú de acciones accesible" description="Menú desplegable de iVOLT: un menú de acciones sobre details/summary, promovido al patrón ARIA de botón de menú con navegación por flechas.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Menú de acciones (dropdown)</h1>
     <p>Un menú pequeño de acciones asociado a un botón. Sin JavaScript, el <code>&lt;details&gt;</code> nativo se abre y se cierra y los elementos son botones y enlaces corrientes. Con él, el menú sigue el patrón ARIA de botón de menú. Esto no es un menú de navegación: para eso usa enlaces, un desplegable o el panel lateral.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/dropdown.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/dropdown</code> o <code>auto.js</code>.</p>
@@ -30,8 +30,20 @@ import Stage from "../../../components/Stage.astro";
     <Section title="Errores frecuentes" num={4}>
       <ul><li>Usar <code>role="menu"</code> para una lista de enlaces de navegación.</li><li>Menús con más de unos siete elementos; mejor una página.</li></ul>
     </Section>
+    <Section title="Sin JavaScript" num={5}>
+      <p>El marcado servido es un <code>&lt;details&gt;</code> cuyo <code>&lt;summary&gt;</code> es el disparador: el menú se abre y se cierra de forma nativa y cada elemento es un botón o un enlace que funciona. El script añade los roles de botón de menú, las flechas, la vuelta del foco y el cierre al pulsar fuera; <code>destroy()</code> devuelve el HTML servido.</p>
+    </Section>
 
-    <Section title="Índice de clases" num={5}>
+    <Section title="Personalizar" num={6}>
+      <p>Locales: <code>--iv-dropdown-min-width</code> y <code>--iv-dropdown-offset</code> (la separación entre disparador y menú). Usa <code>iv-dropdown--end</code> o <code>data-iv-placement="bottom-end"</code> cuando el disparador está al final de una fila, para que el menú se abra hacia dentro.</p><pre tabindex="0"><code>.toolbar .iv-dropdown &#123; --iv-dropdown-min-width: 14rem; &#125;</code></pre>
+    </Section>
+
+    <Section title="¿Desplegable, select o navegación?" num={7}>
+      <p>Un desplegable ejecuta acciones: renombrar, duplicar, borrar. Para elegir un valor usa un <a href="/es/components/form">select</a> nativo, o el <a href="/es/components/picker">picker</a> si hay muchas opciones; para listar páginas usa enlaces, un <a href="/es/components/disclosure">disclosure</a> o el <a href="/es/components/drawer">drawer</a>. Un lector de pantalla anuncia un menú como un widget de aplicación, y eso confunde en una lista de enlaces.</p>
+    </Section>
+
+
+    <Section title="Índice de clases" num={8}>
       <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>

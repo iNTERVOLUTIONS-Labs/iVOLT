@@ -81,6 +81,44 @@ test.describe("SEO and sharing", () => {
     await expect(page.locator("#docs-nav")).not.toHaveAttribute("open", "");
   });
 
+  test("language models get llms.txt, llms-full.txt and a Markdown twin per page", async ({ request }) => {
+    const llms = await (await request.get(DOCS + "/llms.txt")).text();
+    expect(llms).toMatch(/^# iVOLT\n\n> /);
+    expect(llms).toContain(`${SITE}/components/button.md`);
+    const md = await (await request.get(DOCS + "/components/button.md")).text();
+    expect(md).toMatch(/^# Button/);
+    expect(md).toContain('class="iv-button iv-button--primary"');
+    expect(md).not.toContain("<nav");
+    const full = await (await request.get(DOCS + "/llms-full.txt")).text();
+    expect(full.length).toBeGreaterThan(200_000);
+    const html = await (await request.get(DOCS + "/es/components/tabs")).text();
+    expect(html).toContain(`href="${SITE}/es/components/tabs.md"`);
+  });
+
+  test("the homes define iVOLT and answer the FAQ in structured data", async ({ request }) => {
+    for (const [path, word] of [["/", "iVOLT is an open-source CSS framework"], ["/es", "iVOLT es un framework CSS"]]) {
+      const html = await (await request.get(DOCS + path)).text();
+      expect(html, path).toContain(word);
+      const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].flatMap((m) => [JSON.parse(m[1])].flat());
+      const types = blocks.map((b) => b["@type"]);
+      for (const t of ["FAQPage", "SoftwareApplication", "Organization"]) expect(types, path).toContain(t);
+      const faq = blocks.find((b) => b["@type"] === "FAQPage");
+      expect(faq.mainEntity.length).toBeGreaterThanOrEqual(8);
+    }
+  });
+
+  test("comparison sizes come from the measured JSON", async ({ request }) => {
+    const { readFileSync } = await import("node:fs");
+    const data = JSON.parse(readFileSync(new URL("../../apps/docs/src/data/competitor-sizes.json", import.meta.url), "utf8"));
+    const bs = data.files.find((f) => f.id === "bootstrap" && f.role === "css");
+    const html = await (await request.get(DOCS + "/compare/bootstrap")).text();
+    expect(html).toContain(`${(bs.gzip / 1024).toFixed(1)} KiB`);
+    expect(html).toContain(data.measured);
+    for (const p of ["/compare", "/compare/tailwind", "/compare/pico", "/compare/bulma", "/es/compare", "/es/compare/bootstrap"]) {
+      expect((await request.get(DOCS + p)).status(), p).toBe(200);
+    }
+  });
+
   test("UI strings follow the page language", async ({ page }) => {
     await page.goto(DOCS + "/es/getting-started");
     const strings = await page.evaluate(() => JSON.parse(document.getElementById("docs-strings").textContent));
