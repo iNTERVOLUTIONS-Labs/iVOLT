@@ -1,0 +1,34 @@
+<section class="iv-container iv-stack iv-u-gap-8 iv-u-py-10" aria-labelledby="toggle-title">
+  <div class="iv-stack iv-u-gap-4 iv-u-text-center iv-u-items-center">
+    <span class="iv-badge">Sample prices, not a real offer</span>
+    <h2 class="iv-u-m-0" id="toggle-title">Pay monthly, or save with a year</h2>
+    <fieldset class="iv-segmented iv-segmented--brand">
+      <legend class="iv-u-sr-only">Billing period</legend>
+      <label class="iv-segmented__item"><input type="radio" name="toggle-billing" value="monthly"><span>Monthly</span></label>
+      <label class="iv-segmented__item"><input type="radio" name="toggle-billing" value="yearly" checked><span>Yearly <span class="iv-badge iv-badge--success">−20 %</span></span></label>
+    </fieldset>
+    <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted iv-u-max-w-measure">The toggle is a native radio group in a form your page sends; swapping the figures is your page's job, so both periods are written on each card.</p>
+  </div>
+  <div class="iv-grid iv-u-grid-cols-1 iv-u-md-grid-cols-2 iv-u-gap-4 iv-u-items-stretch" style="max-inline-size: 48rem; margin-inline: auto; inline-size: 100%">
+    <article class="iv-card" aria-labelledby="toggle-solo"><div class="iv-card__body iv-stack iv-u-gap-4">
+      <h3 class="iv-card__title" id="toggle-solo">Solo</h3>
+      <p class="iv-u-m-0"><strong class="iv-u-text-2xl">96 €</strong> <span class="iv-u-text-muted">/ year</span><br><span class="iv-u-text-sm iv-u-text-muted">or 10 € / month</span></p>
+      <div class="iv-meter-field">
+        <label for="toggle-solo-quota">Build minutes included</label>
+        <span class="iv-meter-field__value">300 / month</span>
+        <meter class="iv-meter" id="toggle-solo-quota" min="0" max="1000" value="300">300 minutes</meter>
+      </div>
+      <a class="iv-button iv-button--secondary iv-u-mt-auto" href="#toggle-title">Choose Solo</a>
+    </div></article>
+    <article class="iv-card iv-glow" aria-labelledby="toggle-studio"><div class="iv-card__body iv-stack iv-u-gap-4">
+      <div class="iv-cluster iv-u-justify-between iv-u-items-center"><h3 class="iv-card__title" id="toggle-studio">Studio</h3><span class="iv-badge iv-badge--primary iv-badge--solid">Popular</span></div>
+      <p class="iv-u-m-0"><strong class="iv-u-text-2xl">288 €</strong> <span class="iv-u-text-muted">/ year</span><br><span class="iv-u-text-sm iv-u-text-muted">or 30 € / month</span></p>
+      <div class="iv-meter-field">
+        <label for="toggle-studio-quota">Build minutes included</label>
+        <span class="iv-meter-field__value">1,000 / month</span>
+        <meter class="iv-meter" id="toggle-studio-quota" min="0" max="1000" value="1000">1,000 minutes</meter>
+      </div>
+      <a class="iv-button iv-button--primary iv-u-mt-auto" href="#toggle-title">Choose Studio</a>
+    </div></article>
+  </div>
+</section>

@@ -1,8 +1,9 @@
 ---
-// /blocks: page sections built only with iVOLT 1.0 classes, each one a fixture file running on
+// /blocks: page sections built only with iVOLT classes (the last four with the 1.1 families), each one a fixture file running on
 // its own stage page, with its markup, a copy button and "Open in CodePen".
 import Base from "../layouts/Base.astro";
 import Stage from "./Stage.astro";
+import { words, Words } from "../lib/count.js";
 const { lang = "en" } = Astro.props;
 const es = lang === "es";
 const base = es ? "/es" : "";
@@ -19,20 +20,25 @@ const blocks = [
   ["auth", "Sign in", "Inicio de sesión", "A narrow card with a labelled form that says it submits nothing.", "Una tarjeta estrecha con un formulario etiquetado que avisa de que no envía nada."],
   ["empty-404", "Not found", "Página no encontrada", "An outlined numeral, a sentence and two ways back.", "Un número en contorno, una frase y dos caminos de vuelta."],
   ["footer-columns", "Footer with columns", "Pie con columnas", "Brand, three labelled link groups and a legal line.", "Marca, tres grupos de enlaces con nombre y una línea legal."],
+  // 1.1: blocks that the new families make better. Marked "New in 1.1" on the page.
+  ["hero-mockup", "Hero with device frames", "Hero con marcos de dispositivo", "A launch banner, a promise with a shortcut hint, and the product in a tilted browser and a phone, drawn in CSS.", "Un banner de lanzamiento, una promesa con un atajo de teclado y el producto en un navegador inclinado y un móvil, dibujados en CSS.", true],
+  ["pricing-toggle", "Pricing with a billing toggle", "Precios con selector de periodo", "A segmented monthly or yearly switch on native radios, and meters for what each plan includes.", "Un selector mensual o anual sobre radios nativos, y medidores de lo que incluye cada plan.", true],
+  ["dashboard-empty", "Dashboard, first run", "Panel, primer uso", "A trial banner, filter chips, an empty state with its next step and a checklist beside it.", "Un banner de prueba, chips de filtro, un estado vacío con su siguiente paso y una lista al lado.", true],
+  ["docs-search", "Help centre search", "Buscador de ayuda", "A search field with its key, popular topics, a labelled divider and a code block whose copy button works.", "Un buscador con su tecla, temas populares, un separador con etiqueta y un bloque de código con botón de copiar que funciona.", true],
 ];
 ---
-<Base lang={lang} title={es ? "Bloques: secciones de página para copiar" : "Blocks: page sections to copy and paste"} description={es ? "Doce secciones de página hechas solo con clases de iVOLT: heros, precios, preguntas, testimonios, acceso, 404 y pies. Míralas en vivo, cópialas o ábrelas en CodePen." : "Twelve page sections built only with iVOLT classes: heroes, pricing, FAQ, testimonials, sign-in, 404 and footers. See them live, copy the HTML or open them in CodePen."}>
+<Base lang={lang} title={es ? "Bloques: secciones de página para copiar" : "Blocks: page sections to copy and paste"} description={es ? `${Words(blocks.length, "es")} secciones de página solo con clases de iVOLT: heros, precios, paneles, preguntas, acceso y pies. Míralas en vivo, cópialas o ábrelas en CodePen.` : `${Words(blocks.length)} page sections built only with iVOLT classes: heroes, pricing, dashboards, FAQ, sign-in and footers. See them live, copy the HTML or open in CodePen.`}>
   <article class="docs-prose">
     <h1>{es ? "Bloques" : "Blocks"}</h1>
-    <p>{es ? "Secciones completas para empezar una página: cada una es HTML con clases de iVOLT 1.0 y nada más, sin CSS propio. Las ves funcionando en su propia página, con los controles de tema, dirección y ancho; debajo está el marcado para copiar." : "Whole sections to start a page from: each one is HTML with iVOLT 1.0 classes and nothing else, no CSS of its own. You see it running on its own page, with the theme, direction and width controls; the markup to copy is underneath."}</p>
-    <p class="docs-meta"><strong>{es ? "Fuente" : "Source"}:</strong> <code>apps/docs/fixtures/blocks/</code>. <strong>{es ? "Contenido" : "Content"}:</strong> {es ? "inventado y señalado como tal; los formularios no envían nada" : "invented and labelled as such; forms submit nothing"}. <strong>JS:</strong> {es ? "solo en el bloque de pestañas" : "only in the tabs block"}.</p>
+    <p>{es ? "Secciones completas para empezar una página: cada una es HTML con clases de iVOLT y nada más, sin CSS propio; las cuatro últimas usan las familias nuevas de 1.1. Las ves funcionando en su propia página, con los controles de tema, dirección y ancho; debajo está el marcado para copiar." : "Whole sections to start a page from: each one is HTML with iVOLT classes and nothing else, no CSS of its own; the last four use the families new in 1.1. You see it running on its own page, with the theme, direction and width controls; the markup to copy is underneath."}</p>
+    <p class="docs-meta"><strong>{es ? "Fuente" : "Source"}:</strong> <code>apps/docs/fixtures/blocks/</code>. <strong>{es ? "Contenido" : "Content"}:</strong> {es ? "inventado y señalado como tal; los formularios no envían nada" : "invented and labelled as such; forms submit nothing"}. <strong>JS:</strong> {es ? "en el bloque de pestañas y en el botón de copiar del buscador" : "in the tabs block and for the copy button of the search block"}.</p>
     <nav class="docs-blocks__index" aria-label={es ? "Bloques" : "Blocks"}>
       <ul>{blocks.map(([slug, en, esT]) => <li><a href={`#block-${slug}`}>{es ? esT : en}</a></li>)}</ul>
     </nav>
-    {blocks.map(([slug, en, esT, dEn, dEs], i) => (
+    {blocks.map(([slug, en, esT, dEn, dEs, isNew], i) => (
       <section class="docs-sec docs-blocks__item" aria-labelledby={`block-${slug}`}>
         <div class="docs-sec__head"><span class="docs-sec__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span><h2 id={`block-${slug}`}>{es ? esT : en}</h2></div>
-        <p class="docs-sec__lead">{es ? dEs : dEn}</p>
+        <p class="docs-sec__lead">{isNew && <span class="docs-new">{es ? "Nuevo en 1.1" : "New in 1.1"}</span>}{es ? dEs : dEn}</p>
         <Stage name={`blocks/${slug}`} title={es ? esT : en} primary={i === 0} minHeight="22rem" maxHeight={1600} bleed />
       </section>
     ))}
