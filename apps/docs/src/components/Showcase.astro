@@ -1,0 +1,61 @@
+---
+// /showcase: sites made with iVOLT and the badge to say so. Only real entries: today they are the
+// project's own (this site and the four recipes). New entries arrive as pull requests.
+import Base from "../layouts/Base.astro";
+import Section from "./Section.astro";
+import Code from "./Code.astro";
+import DeviceFrame from "./DeviceFrame.astro";
+const { lang = "en" } = Astro.props;
+const es = lang === "es";
+const base = es ? "/es" : "";
+const site = Astro.site ? Astro.site.href.replace(/\/$/, "") : "https://ivolt.intervolutions.com";
+const entries = [
+  { slug: "studio", title: "Studio", href: "/examples/studio/index.html", en: "A creative studio: cinematic cover, marquee, stacked services, gallery.", es: "Un estudio creativo: portada de cine, marquesina, servicios apilados, galería." },
+  { slug: "console", title: "Console", href: "/examples/console/index.html", en: "A product console: megamenu, data table, command palette, datepicker.", es: "Una consola de producto: megamenú, tabla de datos, paleta de comandos, fechas." },
+  { slug: "journal", title: "Journal", href: "/examples/journal/index.html", en: "An editorial magazine where typography is the subject.", es: "Una revista editorial donde la tipografía es la protagonista." },
+  { slug: "store", title: "Store", href: "/examples/store/index.html", en: "A catalogue and a checkout that buys nothing.", es: "Un catálogo y una compra que no compra nada." },
+];
+const badge = (v) => `<a href="${site}"><img src="${site}/badge/made-with-ivolt-${v}.svg" width="168" height="36" alt="Made with iVOLT"></a>`;
+const md = `[![Made with iVOLT](${site}/badge/made-with-ivolt-dark.svg)](${site})`;
+---
+<Base lang={lang} title={es ? "Hecho con iVOLT: escaparate e insignia" : "Made with iVOLT: showcase and badge"} description={es ? "Páginas hechas con iVOLT y la insignia «Made with iVOLT» para la tuya, en claro y oscuro, como HTML o Markdown. Envía tu web con un pull request." : "Pages built with iVOLT and the “Made with iVOLT” badge for yours, in light and dark, as HTML or Markdown. Add your site with a pull request."}>
+  <article class="docs-prose">
+    <h1>{es ? "Hecho con iVOLT" : "Made with iVOLT"}</h1>
+    <p>{es ? "Lo que se ha construido con el framework. Hoy son las páginas del propio proyecto —esta web y las cuatro recetas—; la lista crece con lo que nos envíes." : "What has been built with the framework. Today these are the project's own pages — this site and the four recipes; the list grows with what you send."}</p>
+
+    <ul class="docs-showcase">
+      <li class="docs-showcase__item">
+        <div class="docs-showcase__self" aria-hidden="true"><span>ivolt.intervolutions.com</span></div>
+        <h2 class="docs-showcase__name"><a href={base || "/"}>{es ? "Esta web" : "This site"}</a></h2>
+        <p>{es ? "Astro estático con iVOLT de la primera a la última clase: cabecera, megamenú, buscador, escenarios y esta misma lista." : "Static Astro with iVOLT from the first class to the last: header, megamenu, search, stages and this very list."}</p>
+      </li>
+      {entries.map((e) => (
+        <li class="docs-showcase__item">
+          <DeviceFrame slug={e.slug} title={e.title} device="desktop" href={e.href} />
+          <h2 class="docs-showcase__name"><a href={e.href}>{e.title}</a></h2>
+          <p>{es ? e.es : e.en}</p>
+        </li>
+      ))}
+    </ul>
+
+    <Section title={es ? "La insignia" : "The badge"} num={1} lead={es ? "Si tu web usa iVOLT, dilo con la insignia. Es un SVG de 1 KB que no carga fuentes ni scripts." : "If your site uses iVOLT, say so with the badge. It is a 1 KB SVG that loads no fonts and no scripts."}>
+      <p class="docs-badges"><img src="/badge/made-with-ivolt-dark.svg" width="168" height="36" alt={es ? "Insignia Made with iVOLT, versión oscura" : "Made with iVOLT badge, dark version"}> <img src="/badge/made-with-ivolt-light.svg" width="168" height="36" alt={es ? "Insignia Made with iVOLT, versión clara" : "Made with iVOLT badge, light version"}></p>
+      <Code panels={[{ key: "dark", label: es ? "HTML, oscura" : "HTML, dark", code: badge("dark") }, { key: "light", label: es ? "HTML, clara" : "HTML, light", code: badge("light") }, { key: "md", label: "Markdown", code: md }]} label={es ? "Código de la insignia" : "Badge code"} id="badge-code" />
+      <p>{es ? "Puedes copiar el fichero a tu servidor en lugar de enlazarlo aquí: así tu página no hace ninguna petición a otro dominio." : "You can copy the file to your own server instead of linking it here: that way your page makes no request to another domain."}</p>
+    </Section>
+
+    <Section title={es ? "Añade tu web" : "Add your site"} num={2}>
+      <p>{es ? "Abre un pull request que añada tu web a esta página, o una incidencia con la URL y una línea sobre ella. Mientras la página use iVOLT y sea pública, entra. Sin patrocinios ni enlaces de pago." : "Open a pull request that adds your site to this page, or an issue with the URL and one line about it. If the page uses iVOLT and is public, it goes in. No sponsorships, no paid links."}</p>
+      <p><a class="iv-button iv-button--primary" href="https://github.com/iNTERVOLUTIONS-Labs/iVOLT/issues/new?title=Showcase%3A%20" rel="noopener">{es ? "Enviar mi web" : "Submit my site"}</a></p>
+    </Section>
+  </article>
+</Base>
+<style>
+  .docs-showcase { list-style: none; padding: 0; display: grid; gap: clamp(1rem, 2.5vw, 1.75rem); grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); margin-block-start: var(--iv-space-8, 2.5rem); }
+  .docs-showcase__item { margin: 0; display: grid; gap: var(--iv-space-2); align-content: start; }
+  .docs-showcase__item p { margin: 0; color: var(--iv-color-text-muted); font-size: var(--iv-text-sm); }
+  .docs-showcase__name { margin: var(--iv-space-2) 0 0; font-family: var(--docs-display); font-size: 1.2rem; }
+  .docs-showcase__name a { color: inherit; text-decoration: none; }
+  .docs-showcase__self { aspect-ratio: 16 / 10; display: grid; place-items: center; border-radius: var(--iv-radius-lg); border: 1px solid var(--iv-color-border); background: radial-gradient(80% 90% at 85% 10%, var(--iv-glow-primary), transparent 60%), radial-gradient(70% 80% at 0% 100%, var(--iv-glow-secondary), transparent 60%), var(--iv-color-surface); font-family: var(--iv-font-mono); font-size: var(--iv-text-sm); color: var(--iv-color-text); }
+  .docs-badges { display: flex; flex-wrap: wrap; gap: var(--iv-space-3); }
+</style>

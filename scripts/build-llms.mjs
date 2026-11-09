@@ -82,6 +82,7 @@ function block(node, depth = 0) {
       }
     } else if (tag === "blockquote") out.push(block(n, depth).split("\n").map((l) => `> ${l}`).join("\n"));
     else if (tag === "img") { const alt = n.getAttribute("alt"); if (alt) out.push(`![${alt}](${SITE}${n.getAttribute("src") || ""})`); }
+    else if (tag === "a" || tag === "code" || tag === "strong") { const t = inline({ childNodes: [n] }).trim(); if (t) out.push(t); }
     else if (tag === "details") out.push(block(n, depth));
     else if (tag === "summary") out.push(`**${inline(n).trim()}**`);
     else out.push(block(n, depth));

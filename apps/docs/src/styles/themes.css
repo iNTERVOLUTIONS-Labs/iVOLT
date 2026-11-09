@@ -1,0 +1,26 @@
+/* Theme gallery: a card per preset, the top half painted by the preset's own tokens. */
+.docs-themes__grid { list-style: none; padding: 0; display: grid; gap: clamp(1rem, 2.5vw, 1.75rem); grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); margin-block-start: var(--iv-space-8, 2.5rem); }
+.docs-tcard { margin: 0; display: grid; grid-template-rows: auto 1fr; border-radius: var(--iv-radius-lg); border: 1px solid var(--iv-color-border); background: var(--iv-color-surface); overflow: hidden; scroll-margin-block-start: 6rem; transition: border-color var(--iv-motion-fast) var(--docs-ease), box-shadow var(--iv-motion-base) var(--docs-ease); }
+.docs-tcard:hover, .docs-tcard:target { border-color: var(--iv-color-primary-border); box-shadow: 0 30px 60px -40px var(--iv-glow-primary); }
+.docs-tcard:target { outline: 2px solid var(--iv-color-focus); outline-offset: 3px; }
+.docs-tcard__stage { position: relative; padding: clamp(1rem, 3vw, 1.5rem); background: var(--iv-color-bg); color: var(--iv-color-text); font-family: var(--iv-font-sans); isolation: isolate; }
+/* A soft light of the preset's own primary in one corner: the theme announces itself before the reader looks at the controls. */
+.docs-tcard__stage::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(90% 80% at 100% 0%, var(--iv-glow-primary), transparent 60%); opacity: .55; }
+.docs-tcard__ui .iv-card { background: var(--iv-color-surface-raised); border-color: var(--iv-color-border); }
+.docs-tcard__ui p { margin: 0; }
+.docs-tcard__row { display: flex; align-items: center; justify-content: space-between; gap: var(--iv-space-2); font-size: 1.02rem; }
+.docs-tcard__ui p.docs-tcard__muted { color: var(--iv-color-text-muted); font-size: var(--iv-text-sm); margin-block: var(--iv-space-1) var(--iv-space-3); }
+.docs-tcard__input { display: block; color: var(--iv-color-text-muted); font-size: var(--iv-text-sm); line-height: 1.6; }
+.docs-tcard__actions { display: flex; gap: var(--iv-space-2); margin-block-start: var(--iv-space-3); flex-wrap: wrap; }
+.docs-tcard__ui .iv-button { font-family: var(--iv-font-sans); pointer-events: none; }
+.docs-tcard__meta { display: grid; align-content: start; gap: var(--iv-space-2); padding: var(--iv-space-4) var(--iv-space-5) var(--iv-space-5); }
+.docs-tcard__meta p { margin: 0; color: var(--iv-color-text-muted); font-size: var(--iv-text-sm); }
+.docs-tcard__name { margin: 0; font-family: var(--docs-display); font-size: 1.25rem; letter-spacing: -.01em; }
+.docs-tcard__name a { color: inherit; text-decoration: none; }
+.docs-tcard__name small { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); font-weight: 400; color: var(--iv-color-text-muted); text-transform: uppercase; letter-spacing: .08em; margin-inline-start: var(--iv-space-2); }
+.docs-tcard__checks { list-style: none; padding: 0; margin: var(--iv-space-1) 0 0; display: flex; flex-wrap: wrap; gap: var(--iv-space-1) var(--iv-space-2); font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); }
+.docs-tcard__checks li { margin: 0; padding: 2px 8px; border-radius: var(--iv-radius-full); border: 1px solid var(--iv-color-border); }
+.docs-tcard__checks b { color: var(--iv-color-text); font-variant-numeric: tabular-nums; font-weight: 600; }
+.docs-tcard__checks .is-low { border-color: var(--iv-color-warning); }
+.docs-tcard__btns { display: flex; flex-wrap: wrap; gap: var(--iv-space-2); margin-block-start: var(--iv-space-2); }
+@media (prefers-reduced-motion: reduce) { .docs-tcard { transition: none; } }

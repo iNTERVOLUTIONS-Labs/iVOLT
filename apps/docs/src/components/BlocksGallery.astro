@@ -1,0 +1,47 @@
+---
+// /blocks: page sections built only with iVOLT 1.0 classes, each one a fixture file running on
+// its own stage page, with its markup, a copy button and "Open in CodePen".
+import Base from "../layouts/Base.astro";
+import Stage from "./Stage.astro";
+const { lang = "en" } = Astro.props;
+const es = lang === "es";
+const base = es ? "/es" : "";
+const blocks = [
+  ["hero-centered", "Hero, centred", "Hero centrado", "A launch opening: kicker, promise, lead, two actions.", "Una apertura de lanzamiento: antetítulo, promesa, entradilla y dos acciones."],
+  ["hero-split", "Hero with proof", "Hero con datos", "Message on one side, stat cards on the other.", "El mensaje a un lado y tarjetas de cifras al otro."],
+  ["features-bento", "Features, bento grid", "Ventajas en mosaico", "Wide and narrow tiles whose spans change per breakpoint; the edges light up near the pointer.", "Mosaicos anchos y estrechos que cambian de ancho por punto de corte; los bordes se iluminan cerca del puntero."],
+  ["pricing-tiers", "Pricing, three tiers", "Precios en tres planes", "Equal-height cards, a highlighted plan, a list of what is included.", "Tarjetas de igual altura, un plan destacado y una lista de lo incluido."],
+  ["pricing-tabs", "Pricing, monthly or yearly", "Precios mensuales o anuales", "Real tabs with JavaScript, two readable sections without it.", "Pestañas de verdad con JavaScript y dos secciones legibles sin él."],
+  ["faq", "FAQ", "Preguntas frecuentes", "An exclusive accordion on native details name, no script.", "Un acordeón exclusivo sobre details name nativo, sin script."],
+  ["cta-band", "Call to action", "Llamada a la acción", "A glass band with a travelling glint on its border.", "Una banda de vidrio con un destello que recorre el borde."],
+  ["testimonials", "Testimonials", "Testimonios", "Three quote cards. Placeholders: use real quotes or remove it.", "Tres tarjetas de cita. Son marcadores: usa citas reales o quítalo."],
+  ["logos-marquee", "Logo marquee", "Carrusel de logotipos", "A pure-CSS marquee that pauses on hover and stops under reduced motion.", "Una marquesina en CSS puro que se detiene al pasar el puntero y con movimiento reducido."],
+  ["auth", "Sign in", "Inicio de sesión", "A narrow card with a labelled form that says it submits nothing.", "Una tarjeta estrecha con un formulario etiquetado que avisa de que no envía nada."],
+  ["empty-404", "Not found", "Página no encontrada", "An outlined numeral, a sentence and two ways back.", "Un número en contorno, una frase y dos caminos de vuelta."],
+  ["footer-columns", "Footer with columns", "Pie con columnas", "Brand, three labelled link groups and a legal line.", "Marca, tres grupos de enlaces con nombre y una línea legal."],
+];
+---
+<Base lang={lang} title={es ? "Bloques: secciones de página para copiar" : "Blocks: page sections to copy and paste"} description={es ? "Doce secciones de página hechas solo con clases de iVOLT: heros, precios, preguntas, testimonios, acceso, 404 y pies. Míralas en vivo, cópialas o ábrelas en CodePen." : "Twelve page sections built only with iVOLT classes: heroes, pricing, FAQ, testimonials, sign-in, 404 and footers. See them live, copy the HTML or open them in CodePen."}>
+  <article class="docs-prose">
+    <h1>{es ? "Bloques" : "Blocks"}</h1>
+    <p>{es ? "Secciones completas para empezar una página: cada una es HTML con clases de iVOLT 1.0 y nada más, sin CSS propio. Las ves funcionando en su propia página, con los controles de tema, dirección y ancho; debajo está el marcado para copiar." : "Whole sections to start a page from: each one is HTML with iVOLT 1.0 classes and nothing else, no CSS of its own. You see it running on its own page, with the theme, direction and width controls; the markup to copy is underneath."}</p>
+    <p class="docs-meta"><strong>{es ? "Fuente" : "Source"}:</strong> <code>apps/docs/fixtures/blocks/</code>. <strong>{es ? "Contenido" : "Content"}:</strong> {es ? "inventado y señalado como tal; los formularios no envían nada" : "invented and labelled as such; forms submit nothing"}. <strong>JS:</strong> {es ? "solo en el bloque de pestañas" : "only in the tabs block"}.</p>
+    <nav class="docs-blocks__index" aria-label={es ? "Bloques" : "Blocks"}>
+      <ul>{blocks.map(([slug, en, esT]) => <li><a href={`#block-${slug}`}>{es ? esT : en}</a></li>)}</ul>
+    </nav>
+    {blocks.map(([slug, en, esT, dEn, dEs], i) => (
+      <section class="docs-sec docs-blocks__item" aria-labelledby={`block-${slug}`}>
+        <div class="docs-sec__head"><span class="docs-sec__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span><h2 id={`block-${slug}`}>{es ? esT : en}</h2></div>
+        <p class="docs-sec__lead">{es ? dEs : dEn}</p>
+        <Stage name={`blocks/${slug}`} title={es ? esT : en} primary={i === 0} minHeight="22rem" maxHeight={1600} bleed />
+      </section>
+    ))}
+    <p>{es ? <>¿Necesitas una página entera? Los <a href={`${base}/examples`}>ejemplos</a> son cuatro páginas completas, y la <a href={`${base}/themes`}>galería de temas</a> les cambia el aspecto con un solo fichero.</> : <>Need a whole page? The <a href={`${base}/examples`}>examples</a> are four complete pages, and the <a href={`${base}/themes`}>theme gallery</a> changes their look with a single file.</>}</p>
+  </article>
+</Base>
+<style>
+  .docs-blocks__index ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--iv-space-2); }
+  .docs-blocks__index li { margin: 0; }
+  .docs-blocks__index a { display: inline-block; padding: .3rem .8rem; border-radius: var(--iv-radius-full); border: 1px solid var(--iv-color-border); color: var(--iv-color-text); text-decoration: none; font-size: var(--iv-text-sm); }
+  .docs-blocks__index a:hover { border-color: var(--iv-color-primary-border); color: var(--iv-color-primary); }
+</style>

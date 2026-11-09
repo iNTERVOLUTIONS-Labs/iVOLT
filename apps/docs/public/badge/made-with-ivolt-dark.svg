@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="168" height="36" viewBox="0 0 168 36" role="img" aria-label="Made with iVOLT">
+  <title>Made with iVOLT</title>
+  <rect x=".5" y=".5" width="167" height="35" rx="17.5" fill="#04070F" stroke="#33406A"/>
+  <path d="M22.5 7 14 20h6l-2 9 9-13h-6z" fill="#66B1FF"/>
+  <text x="34" y="22.6" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="12.5" fill="#A8B3CC">Made with</text>
+  <text x="96" y="22.8" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="13.5" font-weight="700" letter-spacing=".6" fill="#EEF2FB">iVOLT</text>
+</svg>

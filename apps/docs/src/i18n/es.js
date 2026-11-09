@@ -142,7 +142,10 @@ export const nav = [
   ] },
   { group: "Componentes", items: Object.entries(componentLabels).map(([c, label]) => ({ href: `/es/components/${c}`, label })) },
   { group: "Explorar", items: [
+    { href: "/es/blocks", label: "Bloques" },
     { href: "/es/themes", label: "Galería de temas" },
+    { href: "/es/effects", label: "Galería de efectos" },
+    { href: "/es/showcase", label: "Hecho con iVOLT" },
     { href: "/es/compare", label: "Comparar" },
   ] },
   { group: "Proyecto", items: [
