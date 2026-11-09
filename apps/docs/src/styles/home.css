@@ -278,3 +278,4 @@
 .docs-showreel__tab:hover { color: var(--iv-color-text); }
 .docs-showreel__tab[aria-selected="true"] { background: var(--iv-gradient-primary); color: #06122b; box-shadow: var(--docs-soft-halo); }
 .docs-showreel__panel[hidden] { display: none; }
+.docs-hero__def { color: var(--iv-color-text); font-weight: var(--iv-weight-semibold); }

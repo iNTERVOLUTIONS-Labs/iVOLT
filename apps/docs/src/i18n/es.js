@@ -56,6 +56,8 @@ export const t = {
   fixtureHtml: (title) => `HTML de ${title}`,
   fixturePort: (title) => `Vista previa de ${title}, desplazable`,
   copied: "Copiado",
+  copyLink: "Copiar enlace",
+  linkCopied: "Enlace copiado",
   copiedStatus: "HTML copiado al portapapeles",
   selected: "Seleccionado — pulsa Ctrl+C",
   selectedStatus: "Portapapeles no disponible; código seleccionado para copiarlo a mano",
@@ -139,6 +141,13 @@ export const nav = [
     { href: "/es/foundations/theme-builder", label: "Constructor de temas" },
   ] },
   { group: "Componentes", items: Object.entries(componentLabels).map(([c, label]) => ({ href: `/es/components/${c}`, label })) },
+  { group: "Explorar", items: [
+    { href: "/es/blocks", label: "Bloques" },
+    { href: "/es/themes", label: "Galería de temas" },
+    { href: "/es/effects", label: "Galería de efectos" },
+    { href: "/es/showcase", label: "Hecho con iVOLT" },
+    { href: "/es/compare", label: "Comparar" },
+  ] },
   { group: "Proyecto", items: [
     { href: "/es/changelog", label: "Cambios" },
     { href: "/es/roadmap", label: "Hoja de ruta" },

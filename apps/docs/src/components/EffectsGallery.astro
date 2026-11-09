@@ -1,0 +1,36 @@
+---
+// /effects: the framework's visual effects side by side, each running live on its own stage page
+// with its markup to copy. All of them are CSS (or CSS with a small optional module), and all of
+// them hold still under prefers-reduced-motion.
+import Base from "../layouts/Base.astro";
+import Stage from "./Stage.astro";
+const { lang = "en" } = Astro.props;
+const es = lang === "es";
+const base = es ? "/es" : "";
+const items = [
+  ["surfaces/glow", "Glowing borders and aurora", "Bordes luminosos y aurora", "Light that lives on the edge of a surface.", "Luz que vive en el borde de una superficie.", "/foundations/surfaces"],
+  ["effects/edges", "Edges that follow the pointer", "Bordes que siguen al puntero", "Move close to a card and its border lights up where you are; a glint travels along another.", "Acércate a una tarjeta y su borde se ilumina donde estás; en otra, un destello lo recorre.", "/foundations/effects"],
+  ["surfaces/glass", "Glass", "Vidrio", "Frosted panels with a solid fallback where backdrop-filter is missing.", "Paneles esmerilados con un fondo sólido donde no hay backdrop-filter.", "/foundations/surfaces"],
+  ["text/reveal", "Text that rises", "Texto que asciende", "Headline lines that rise one after another as they enter the view.", "Líneas de titular que suben una tras otra al entrar en pantalla.", "/foundations/text"],
+  ["text/shimmer", "A band of light", "Una banda de luz", "A highlight crosses a line of display type.", "Un brillo cruza una línea de texto grande.", "/foundations/text"],
+  ["text/glow", "Glowing type", "Texto luminoso", "Type that emits its own colour, steady or pulsing.", "Texto que emite su propio color, fijo o latiendo.", "/foundations/text"],
+  ["motion/marquee", "Marquee", "Marquesina", "An endless row that pauses under the pointer and becomes a scrollable row under reduced motion.", "Una fila sin fin que se para bajo el puntero y pasa a desplazable con movimiento reducido.", "/foundations/motion"],
+  ["motion/stack", "Stacked cards", "Cartas apiladas", "Cards that stack as you scroll, on CSS scroll-driven animations.", "Tarjetas que se apilan al hacer scroll, con animaciones guiadas por scroll en CSS.", "/foundations/motion"],
+  ["countup/basic", "Count-up figures", "Cifras que cuentan", "Numbers that count to their value once, when they appear; the served HTML already holds the final value.", "Números que cuentan hasta su valor una vez, al aparecer; el HTML servido ya trae el valor final.", "/components/countup"],
+  ["effects/scan", "Scan lines", "Líneas de barrido", "A beam that sweeps a surface, horizontally or vertically.", "Un haz que barre una superficie, en horizontal o en vertical.", "/foundations/effects"],
+];
+---
+<Base lang={lang} title={es ? "Galería de efectos: luz y movimiento en CSS" : "Effects gallery: light and motion in CSS"} description={es ? "Los efectos de iVOLT en vivo: bordes luminosos, vidrio, bordes que siguen al puntero, texto que asciende, marquesinas, cartas apiladas y cifras que cuentan. Copia el HTML." : "iVOLT's effects running live: glowing borders, glass, edges that follow the pointer, rising text, marquees, stacked cards and count-up figures. Copy the HTML."}>
+  <article class="docs-prose">
+    <h1>{es ? "Galería de efectos" : "Effects gallery"}</h1>
+    <p>{es ? "Diez efectos que vienen con iVOLT, cada uno funcionando en su propia página. Son clases de CSS, a veces con un módulo pequeño y opcional, y todos se quedan quietos cuando el sistema pide movimiento reducido: prueba el interruptor «Movimiento reducido» de cada escenario." : "Ten effects that ship with iVOLT, each one running on its own page. They are CSS classes, sometimes with a small optional module, and all of them hold still when the system asks for reduced motion: try the “Reduced motion” switch on each stage."}</p>
+    <p class="docs-meta"><strong>CSS:</strong> <code>effects.css</code>, <code>surfaces.css</code>, <code>text.css</code>, <code>motion.css</code> {es ? "(todas en" : "(all in"} <code>ivolt.css</code>). <strong>{es ? "Movimiento reducido" : "Reduced motion"}:</strong> {es ? "respetado en todos" : "respected by all of them"}.</p>
+    {items.map(([fx, en, esT, dEn, dEs, href], i) => (
+      <section class="docs-sec" aria-labelledby={`fx-${i}`}>
+        <div class="docs-sec__head"><span class="docs-sec__num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span><h2 id={`fx-${i}`}>{es ? esT : en}</h2></div>
+        <p class="docs-sec__lead">{es ? dEs : dEn} <a href={`${base}${href}`}>{es ? "Documentación" : "Documentation"}</a>.</p>
+        <Stage name={fx} title={es ? esT : en} primary={i === 0} />
+      </section>
+    ))}
+  </article>
+</Base>

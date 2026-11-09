@@ -3,8 +3,8 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Miga de pan accesible" description="Miga de pan de iVOLT: una lista ordenada de enlaces dentro de un nav etiquetado, con separador dibujado por CSS y aria-current en el último. Solo CSS.">
-  <article class="docs-prose">
+<Base lang="es" title="Miga de pan accesible y semántica" description="Miga de pan de iVOLT: una lista ordenada de enlaces dentro de un nav etiquetado, con separador dibujado por CSS y aria-current en el último. Solo CSS.">
+  <article class="docs-prose" data-enriched>
     <h1>Miga de pan (breadcrumb)</h1>
     <p>Indica dónde está la página actual dentro de la jerarquía del sitio. El separador se dibuja con CSS, así que el lector de pantalla solo lee los enlaces.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/breadcrumb.css</code> (dentro de <code>ivolt.css</code>).</p>
@@ -16,6 +16,23 @@ import Stage from "../../../components/Stage.astro";
 
     <Section title="Errores frecuentes" num={2}>
       <ul><li>Escribir los caracteres separadores en el HTML (se leen en voz alta).</li><li>Enlazar la página actual a sí misma.</li></ul>
+    </Section>
+    <Section title="Ejemplo completo" num={3}>
+      <p>La miga es una lista ordenada, porque el orden es el significado. El <code>nav</code> lleva nombre propio para distinguirlo de la navegación principal en la lista de regiones de un lector de pantalla.</p><pre tabindex="0"><code>&lt;nav class="iv-breadcrumb" aria-label="Miga de pan"&gt;
+  &lt;ol class="iv-breadcrumb__list"&gt;
+    &lt;li class="iv-breadcrumb__item"&gt;&lt;a href="/"&gt;Inicio&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="iv-breadcrumb__item"&gt;&lt;a href="/docs"&gt;Documentación&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="iv-breadcrumb__item" aria-current="page"&gt;Miga de pan&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/nav&gt;</code></pre>
+    </Section>
+
+    <Section title="Cómo funciona el separador" num={4}>
+      <p>El separador es un SVG enmascarado en <code>::before</code>, nunca un carácter en el HTML: no se lee en voz alta y toma el color del texto del tema mediante <code>currentColor</code>. Solo se dibuja entre elementos (selector de hermano adyacente). En pantallas estrechas la lista pasa a varias líneas en lugar de desplazarse en horizontal.</p><p>Locales: <code>--iv-breadcrumb-gap</code> (espacio alrededor del separador) y <code>--iv-breadcrumb-separator-size</code>.</p>
+    </Section>
+
+    <Section title="Buscadores" num={5}>
+      <p>La miga visible no le cuenta tu jerarquía a un buscador por sí sola. Si quieres migas en los resultados, añade un <code>BreadcrumbList</code> en JSON-LD con los mismos elementos; esta web lo hace en cada página de documentación.</p>
     </Section>
   </article>
 </Base>

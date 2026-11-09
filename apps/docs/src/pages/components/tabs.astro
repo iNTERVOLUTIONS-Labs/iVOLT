@@ -4,7 +4,7 @@ import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
 <Base title="Tabs: ARIA tabs from plain HTML" description="iVOLT tabs: anchor links and sections served as plain HTML, promoted to the ARIA tabs pattern by JavaScript with automatic or manual activation.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Tabs</h1>
     <p>The server sends anchor links and sections with headings, which work as in-page navigation without JavaScript. On <code>init</code> the component promotes them to the ARIA tabs pattern and hides inactive panels; <code>destroy</code> restores the served HTML.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/tabs.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/tabs</code> or <code>auto.js</code>.</p>
@@ -29,6 +29,17 @@ import Stage from "../../components/Stage.astro";
 
     <Section title="Common mistakes" num={5}>
       <ul><li>Putting <code>role="tab"</code> in the served HTML: without the script it announces a widget that does not work.</li><li>Tabs for sequential steps; use a form flow.</li></ul>
+    </Section>
+    <Section title="Customising" num={6}>
+      <p>Locals: <code>--iv-tabs-indicator</code> (the colour of the line under the active tab) and <code>--iv-tabs-gap</code>. The vertical layout is a modifier, <code>iv-tabs--vertical</code>, paired with <code>data-iv-orientation="vertical"</code> so the arrow keys follow the layout.</p><pre tabindex="0"><code>.settings .iv-tabs &#123; --iv-tabs-indicator: var(--iv-color-accent); &#125;</code></pre>
+    </Section>
+
+    <Section title="Linking to a tab" num={7}>
+      <p>Each panel keeps the id it was served with, and each tab is a link to it, so a URL such as <code>/pricing#p-yearly</code> is still a meaningful address: without the script it scrolls to that section, and the headings inside the panels (<code>iv-tabs__heading</code>) give every section a name either way.</p>
+    </Section>
+
+    <Section title="Tabs or something else?" num={8}>
+      <p>Tabs suit a few parallel views of the same thing — plans, settings groups, code in several languages — where the reader needs one at a time. With more than five or six tabs, or labels that do not fit on one line on a phone, use a list of sections or a <a href="/components/disclosure">disclosure</a> group instead. For steps that must be done in order, use the <a href="/components/stepper">stepper</a>.</p>
     </Section>
   </article>
 </Base>

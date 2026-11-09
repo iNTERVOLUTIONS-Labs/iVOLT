@@ -69,6 +69,24 @@ import Base from "../../layouts/Base.astro";
 
     <p class="iv-u-m-0"><a id="pg-doc-link" href="/es/components/button">Abrir la página del componente Botón</a></p>
     </Section>
+
+    <Section title="Del fragmento a la página" num={2}>
+      <p>El HTML copiado funciona en cualquier página que enlace la hoja de estilo y ponga <code>class="iv-root"</code> en el elemento <code>html</code>. Esa es toda la configuración:</p>
+      <pre tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
+  &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
+  &lt;!-- pega aquí el fragmento --&gt;
+  &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
+      <p>La línea del script solo hace falta para los componentes que cobran vida con JavaScript (el fragmento lleva un atributo <code>data-iv-component</code> cuando es así). Los componentes de contenido, como botones, insignias, alertas y tarjetas, son solo CSS. La opción de tema de arriba solo pone <code>data-iv-theme</code> en el panel de vista previa; pon el mismo atributo en cualquier elemento de tu página para cambiar el tema de esa parte.</p>
+    </Section>
+
+    <Section title="Para ir más lejos" num={3}>
+      <ul>
+        <li>Cada página de componente tiene un escenario en vivo con el fichero real funcionando, controles de tema, dirección, ancho y movimiento, y el marcado completo.</li>
+        <li>El <a href="/es/foundations/theme-builder">constructor de temas</a> cambia los colores de marca, el radio y la fuente, e imprime el CSS que pegar después de la hoja.</li>
+        <li>Los <a href="/es/examples">ejemplos</a> son cuatro páginas completas hechas solo con iVOLT, listas para descargar.</li>
+        <li>La <a href="/es/reference">referencia</a> lista cada clase, token, atributo y evento, generada a partir del código fuente.</li>
+      </ul>
+    </Section>
   </article>
 
   <script src="../../scripts/playground.js"></script>

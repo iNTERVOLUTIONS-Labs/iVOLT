@@ -4,7 +4,7 @@ import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
 <Base title="Disclosure and accordion" description="iVOLT disclosure and accordion: native details/summary with optional JavaScript for cancelable events and exclusive accordions.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Disclosure and accordion</h1>
     <p>Built on <code>&lt;details&gt;</code>, so it works without JavaScript. The optional component adds cancelable events and the <code>exclusive</code> accordion behaviour.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/disclosure.css</code>. <strong>JS (optional):</strong> <code>@intervolutions/ivolt/disclosure</code> or <code>auto.js</code>.</p>
@@ -28,6 +28,26 @@ import Stage from "../../components/Stage.astro";
 
     <Section title="Common mistakes" num={4}>
       <ul><li>Hiding essential content in a closed disclosure with no other way to reach it, such as prices or legal text.</li><li>Nesting interactive controls inside <code>&lt;summary&gt;</code>.</li></ul>
+    </Section>
+    <Section title="Native exclusive groups" num={5}>
+      <p>Browsers now support exclusive groups natively: give several <code>&lt;details&gt;</code> the same <code>name</code> attribute and opening one closes the others, without any script. The FAQ on the home page of this site is built exactly that way. <code>data-iv-exclusive</code> gives the same behaviour where <code>name</code> is not supported, and adds the cancelable events.</p><pre tabindex="0"><code>&lt;div class="iv-accordion"&gt;
+  &lt;details class="iv-disclosure" name="faq" open&gt;
+    &lt;summary class="iv-disclosure__summary"&gt;Is it free?&lt;/summary&gt;
+    &lt;div class="iv-disclosure__content"&gt;&lt;p&gt;Yes, MIT.&lt;/p&gt;&lt;/div&gt;
+  &lt;/details&gt;
+  &lt;details class="iv-disclosure" name="faq"&gt;
+    &lt;summary class="iv-disclosure__summary"&gt;Does it need a build step?&lt;/summary&gt;
+    &lt;div class="iv-disclosure__content"&gt;&lt;p&gt;No.&lt;/p&gt;&lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</code></pre>
+    </Section>
+
+    <Section title="Customising" num={6}>
+      <p>Locals: <code>--iv-disclosure-bg</code>, <code>--iv-disclosure-radius</code>, <code>--iv-disclosure-px</code> and <code>--iv-disclosure-py</code> (the padding). The marker turns with the open state and holds still under <code>prefers-reduced-motion</code>.</p>
+    </Section>
+
+    <Section title="Find in page" num={7}>
+      <p>Text inside a closed <code>&lt;details&gt;</code> is still found by the browser's find-in-page in current Chromium-based browsers, which open the panel for you. Content that is hidden with CSS or rendered on click is not. That is one more reason to keep the native element instead of rebuilding it.</p>
     </Section>
   </article>
 </Base>

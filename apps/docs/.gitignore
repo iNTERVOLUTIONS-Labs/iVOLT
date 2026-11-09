@@ -1,0 +1,12 @@
+# Drawn by scripts/build-og.mjs on every build (share cards, icons, manifest).
+public/og/
+public/favicon.ico
+public/apple-touch-icon.png
+public/icon-192.png
+public/icon-512.png
+public/icon-maskable-512.png
+public/manifest.webmanifest
+# Derived from the committed JPEG screenshots by scripts/build-images.mjs.
+public/shots/*.avif
+public/shots/*.webp
+# Written by scripts/build-llms.mjs after the Astro build.

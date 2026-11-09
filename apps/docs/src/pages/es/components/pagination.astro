@@ -3,8 +3,8 @@ import Base from "../../../layouts/Base.astro";
 import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
-<Base lang="es" title="Paginación accesible" description="Paginación de iVOLT: enlaces de página dentro de un nav etiquetado, con página actual, anterior y siguiente deshabilitados y puntos suspensivos. Solo CSS.">
-  <article class="docs-prose">
+<Base lang="es" title="Paginación: enlaces de página accesibles" description="Paginación de iVOLT: enlaces de página dentro de un nav etiquetado, con página actual, anterior y siguiente deshabilitados y puntos suspensivos. Solo CSS.">
+  <article class="docs-prose" data-enriched>
     <h1>Paginación (pagination)</h1>
     <p>Navegación entre páginas de resultados. Cada página es un enlace real; la actual lleva <code>aria-current="page"</code>. Los controles de anterior y siguiente que no están disponibles son texto plano con <code>aria-disabled="true"</code>, no enlaces.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/pagination.css</code> (dentro de <code>ivolt.css</code>).</p>
@@ -14,6 +14,26 @@ import Stage from "../../../components/Stage.astro";
 
     <Section title="Errores frecuentes" num={2}>
       <ul><li>Botones en vez de enlaces cuando cada página tiene su URL.</li><li>Anterior y siguiente de solo icono sin nombre accesible.</li></ul>
+    </Section>
+    <Section title="Ejemplo completo" num={3}>
+      <p>Cada número de página es un enlace con una URL real: la lista funciona sin JavaScript, se puede abrir en otra pestaña y los rastreadores la siguen. Anterior y siguiente dicen con palabras lo que hacen, aunque lleven una flecha al lado.</p><pre tabindex="0"><code>&lt;nav class="iv-pagination" aria-label="Páginas de resultados"&gt;
+  &lt;ul class="iv-pagination__list"&gt;
+    &lt;li&gt;&lt;span class="iv-pagination__link" aria-disabled="true"&gt;Anterior&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a class="iv-pagination__link" href="?page=1" aria-current="page"&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a class="iv-pagination__link" href="?page=2"&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span class="iv-pagination__ellipsis" aria-hidden="true"&gt;…&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a class="iv-pagination__link" href="?page=9"&gt;9&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a class="iv-pagination__link" href="?page=2"&gt;Siguiente&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+    </Section>
+
+    <Section title="Cuántos enlaces mostrar" num={4}>
+      <p>Muestra la primera y la última página, la actual y una vecina a cada lado, con puntos suspensivos en los huecos: quien lee siempre sabe dónde está y cuánto falta. En el móvil, quita antes las vecinas que anterior y siguiente. La lista pasa a otra línea en vez de desbordarse, y cada objetivo mantiene al menos 2,5rem en las dos direcciones.</p>
+    </Section>
+
+    <Section title="Personalizar" num={5}>
+      <p>Locales: <code>--iv-pagination-gap</code>, <code>--iv-pagination-size</code> (el objetivo, 2,5rem por defecto) y <code>--iv-pagination-radius</code> (una píldora, como todas las acciones de la marca).</p><pre tabindex="0"><code>.iv-pagination &#123; --iv-pagination-radius: var(--iv-radius-sm); &#125;</code></pre>
     </Section>
   </article>
 </Base>
