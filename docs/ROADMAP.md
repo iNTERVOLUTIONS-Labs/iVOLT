@@ -222,5 +222,4 @@ Hecho: ver `RELEASE.md` §0k y `packages/ivolt/CHANGELOG.md`. Aplazado a 1.2, po
 | Animaciones de pintura continua aún sin componer: `iv-aurora`, `iv-pulse-glow`, `iv-text-glow` | exigen seudoelementos que pueden chocar con el anfitrión; cambio visual |
 | `/blocks` en móvil 89–92: los escenarios se piden con 1200 px de margen para no dejar huecos al hacer scroll | decisión de experiencia frente a puntuación; pendiente del propietario |
 | Leyenda del `datatable` a 390 px, aviso de `data-iv-*` desconocidos, cifras de `stat` en mono, `--iv-color-hairline` | heredados de ADR-050 |
-| Pruebas en Firefox y WebKit en el servidor | faltan librerías del sistema (`playwright install-deps`); requiere autorización |
 
