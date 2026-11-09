@@ -270,9 +270,15 @@
   }
 
   .iv-shine::after,
-  .iv-texture-grain::after,
-  .iv-mesh::before {
+  .iv-texture-grain::after {
     display: none;
+  }
+
+  /* The engine already drops the gradients; the drift has nothing left to move. */
+  .iv-texture-mesh,
+  .iv-texture-aurora {
+    background-image: none;
+    animation: none;
   }
 }
 

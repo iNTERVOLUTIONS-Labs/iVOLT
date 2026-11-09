@@ -130,6 +130,7 @@ test.describe("Floating label over an enriched select", () => {
       const label = el.querySelector(".iv-label");
       return {
         size: getComputedStyle(label).fontSize,
+        height: label.getBoundingClientRect().height,
         top: Math.round(label.getBoundingClientRect().top - el.getBoundingClientRect().top),
         placeholder: getComputedStyle(el.querySelector(".iv-picker__placeholder")).color,
       };
@@ -143,9 +144,11 @@ test.describe("Floating label over an enriched select", () => {
     await page.locator(".iv-picker__option", { hasText: "Team" }).first().click();
     await expect(field.locator(".iv-picker__value")).toHaveText("Team");
     // The label travels with a transition: poll until it has settled at the small size.
+    // Since 1.1 the size is a `scale` of 0.75 on the body size (composited), so the
+    // rendered box is what shrinks, not the computed font size.
     await expect
-      .poll(() => field.evaluate((el) => getComputedStyle(el.querySelector(".iv-label")).fontSize))
-      .toBe("12px");
+      .poll(() => field.evaluate((el) => Math.round((el.querySelector(".iv-label").getBoundingClientRect().height / 16) * 100) / 100))
+      .toBe(Math.round((empty.height * 0.75 / 16) * 100) / 100);
     const chosen = await field.evaluate((el) => {
       const label = el.querySelector(".iv-label");
       return { top: Math.round(label.getBoundingClientRect().top - el.getBoundingClientRect().top) };

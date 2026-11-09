@@ -1,0 +1,168 @@
+/* iVOLT — components/chip
+ * A compact token: a filter that toggles (a checkbox in a label), a value
+ * that can be removed (a button inside), or a plain tag. Unlike a badge a
+ * chip is interactive or holds an interactive part.
+ *
+ *   <label class="iv-chip"><input type="checkbox" name="f" value="css"><span>CSS</span></label>
+ *   <span class="iv-chip">Madrid <button class="iv-chip__remove" type="button" aria-label="Remove Madrid">…</button></span>
+ *
+ * Locals: --iv-chip-tone --iv-chip-height
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-chip {
+  --iv-chip-tone: var(--iv-color-primary);
+  --iv-chip-height: 2rem;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-2);
+  min-block-size: var(--iv-chip-height);
+  padding-block: 0;
+  padding-inline: var(--iv-space-3);
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-medium);
+  line-height: 1.2;
+  color: var(--iv-color-text);
+  white-space: nowrap;
+  background-color: color-mix(in srgb, var(--iv-color-surface-raised) 80%, transparent);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-full);
+  transition:
+    color var(--iv-motion-fast) var(--iv-ease-out),
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    border-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-chip--sm {
+  --iv-chip-height: 1.5rem;
+
+  gap: var(--iv-space-1);
+  padding-inline: var(--iv-space-2);
+  font-size: var(--iv-text-xs);
+}
+
+/* Toggle chip: the checkbox stays in the tree and covers the chip. */
+label.iv-chip {
+  cursor: pointer;
+}
+
+.iv-chip input {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+@media (hover: hover) {
+  label.iv-chip:hover {
+    border-color: var(--iv-color-border-strong);
+  }
+}
+
+/* Selected: a tint of the tone with a check drawn before the text. */
+:where(.iv-chip):has(input:checked) {
+  color: color-mix(in oklab, var(--iv-chip-tone) 84%, var(--iv-color-text));
+  background-color: color-mix(in oklab, var(--iv-chip-tone) 12%, var(--iv-color-surface-raised));
+  border-color: color-mix(in oklab, var(--iv-chip-tone) 45%, transparent);
+}
+
+:where(.iv-chip):has(input:checked)::before {
+  content: "";
+  inline-size: 0.875em;
+  block-size: 0.875em;
+  margin-inline-start: -0.125rem;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+:where(.iv-chip):has(input:focus-visible) {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+:where(.iv-chip):has(input:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Media at the start: an avatar or an icon, sized to the chip. */
+.iv-chip__media {
+  display: inline-grid;
+  place-items: center;
+  inline-size: calc(var(--iv-chip-height) - 0.5rem);
+  block-size: calc(var(--iv-chip-height) - 0.5rem);
+  margin-inline-start: calc(var(--iv-space-1) - var(--iv-space-3) + 0.125rem);
+  overflow: hidden;
+  border-radius: var(--iv-radius-full);
+}
+
+.iv-chip__media img,
+.iv-chip__media svg {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* Remove button: a round target of 24 px (WCAG 2.5.8) at the inline end. */
+.iv-chip__remove {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  margin-inline: calc(var(--iv-space-1) * -1) calc(var(--iv-space-2) * -1 + 0.125rem);
+  padding: 0;
+  color: var(--iv-color-text-muted);
+  background: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-full);
+  cursor: pointer;
+  transition:
+    color var(--iv-motion-fast) var(--iv-ease-out),
+    background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+.iv-chip__remove:hover {
+  color: var(--iv-color-text);
+  background-color: var(--iv-color-hover-surface);
+}
+
+.iv-chip__remove:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 0;
+}
+
+/* Without an icon inside, the button draws its own cross. */
+.iv-chip__remove:empty::before {
+  content: "";
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+@media (forced-colors: active) {
+  .iv-chip {
+    border-color: CanvasText;
+  }
+
+  :where(.iv-chip):has(input:checked) {
+    color: HighlightText;
+    background-color: Highlight;
+    forced-color-adjust: none;
+  }
+
+  :where(.iv-chip):has(input:checked)::before,
+  .iv-chip__remove:empty::before {
+    background-color: currentColor;
+    forced-color-adjust: none;
+  }
+}

@@ -141,6 +141,10 @@ export class Popover extends IvComponent {
     this._tabindex = this._tabindex ?? false;
     /** @type {EventListener|null} Resize listener while the panel is open. */
     this._resize = this._resize ?? null;
+    /** @type {EventListener|null} Scroll listener of the measured branch. */
+    this._scroll = this._scroll ?? null;
+    /** @type {number} Pending animation frame of a scroll. */
+    this._scrollFrame = this._scrollFrame ?? 0;
     /** @type {string} Anchor name given to the invoker, empty when unused. */
     this._anchorName = this._anchorName ?? "";
   }
@@ -489,6 +493,9 @@ export class Popover extends IvComponent {
   /**
    * Follows the viewport while the panel is open: a resize changes the room on
    * each side, and a measured placement would otherwise fall off the screen.
+   * Without anchor positioning a scroll (of the page or of any container, so
+   * the listener captures) also moves the invoker away from the panel; it is
+   * followed once per animation frame, passively.
    *
    * @returns {void}
    */
@@ -499,10 +506,26 @@ export class Popover extends IvComponent {
     const handler = () => this._place();
     this._resize = handler;
     this._listen(view, "resize", handler);
+    const anchored = view.CSS && typeof view.CSS.supports === "function" && view.CSS.supports(ANCHOR_SUPPORT);
+    if (anchored) return;
+    /** @type {EventListener} */
+    const onScroll = () => {
+      if (this._scrollFrame) return;
+      if (typeof view.requestAnimationFrame !== "function") {
+        this._place();
+        return;
+      }
+      this._scrollFrame = view.requestAnimationFrame(() => {
+        this._scrollFrame = 0;
+        if (this._resize) this._place();
+      });
+    };
+    this._scroll = onScroll;
+    this._listen(this._element.ownerDocument, "scroll", onScroll, { capture: true, passive: true });
   }
 
   /**
-   * Drops the resize listener.
+   * Drops the resize and scroll listeners.
    *
    * @returns {void}
    */
@@ -511,11 +534,19 @@ export class Popover extends IvComponent {
     const handler = this._resize;
     if (!handler) return;
     this._resize = null;
-    if (!view) return;
-    view.removeEventListener("resize", handler);
+    const doc = this._element.ownerDocument;
+    const onScroll = this._scroll;
+    this._scroll = null;
+    if (this._scrollFrame && view && typeof view.cancelAnimationFrame === "function") {
+      view.cancelAnimationFrame(this._scrollFrame);
+    }
+    this._scrollFrame = 0;
+    if (onScroll) doc.removeEventListener("scroll", onScroll, { capture: true });
+    if (view) view.removeEventListener("resize", handler);
     this._listeners = this._listeners.filter(
       (entry) =>
-        entry.target !== view || entry.type !== "resize" || entry.handler !== handler
+        !(entry.target === view && entry.type === "resize" && entry.handler === handler) &&
+        !(entry.target === doc && entry.type === "scroll" && entry.handler === onScroll)
     );
   }
 }

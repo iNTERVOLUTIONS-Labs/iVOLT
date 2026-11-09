@@ -460,6 +460,11 @@
   --iv-carousel-sign: -1;
 }
 
+/* The autoplay bar grows from the inline start, the right edge here. */
+:where([dir="rtl"]) .iv-carousel__progress::after {
+  transform-origin: right center;
+}
+
 /* Enhanced: the track no longer scrolls, JavaScript owns the position ---- */
 
 /* With JavaScript the track is no longer a scroll container: `overflow:

@@ -1,0 +1,217 @@
+/* iVOLT — components/list
+ * Two content lists.
+ *
+ * `iv-list` — a list group: rows in one framed surface, separated by
+ * hairlines. A row is static text, or a link or button that fills it
+ * (`iv-list__action`). Slots: `__media` (icon, avatar), `__body` with
+ * `__title` and `__meta`, `__end` (badge, value, chevron).
+ *   <ul class="iv-list"><li class="iv-list__item">…</li></ul>
+ *
+ * `iv-dl` — a description list of term and value pairs, stacked on narrow
+ * containers and side by side from 32rem of container width.
+ *   <dl class="iv-dl"><div class="iv-dl__row"><dt>Plan</dt><dd>Team</dd></div></dl>
+ *
+ * Locals: --iv-list-padding --iv-dl-term
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-list {
+  --iv-list-padding: var(--iv-space-4);
+
+  display: flex;
+  flex-direction: column;
+  margin-block: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  background-color: color-mix(in srgb, var(--iv-color-surface-raised) 86%, transparent);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-lg);
+  box-shadow:
+    inset 0 1px 0 var(--iv-glass-highlight),
+    var(--iv-shadow-ambient);
+}
+
+.iv-list--flush {
+  background-color: transparent;
+  border-inline: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.iv-list .iv-list__item {
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-3);
+  min-block-size: 3rem;
+  margin: 0;
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-list-padding);
+}
+
+.iv-list__item + .iv-list__item {
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* A row that does something: the link or button fills the row, reaching
+   over the padding of the item so the whole row is the target. */
+.iv-list .iv-list__action {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--iv-space-3);
+  min-block-size: 3rem;
+  margin-block: calc(-1 * var(--iv-space-3));
+  margin-inline: calc(-1 * var(--iv-list-padding));
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-list-padding);
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* The anchor form, at (0,2,1): in the layer-free sheet `.iv-root a:hover`
+   would otherwise paint the row in the link colour (ADR-046). */
+a.iv-list__action,
+a.iv-list__action:hover {
+  color: inherit;
+}
+
+.iv-list__action:hover {
+  background-color: var(--iv-color-hover-surface);
+}
+
+.iv-list__action:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: calc(-1 * var(--iv-focus-width) - 1px);
+}
+
+.iv-list__action[aria-current] {
+  background-color: var(--iv-color-primary-subtle);
+  box-shadow: inset 3px 0 0 var(--iv-color-primary);
+}
+
+:where([dir="rtl"]) .iv-list__action[aria-current] {
+  box-shadow: inset -3px 0 0 var(--iv-color-primary);
+}
+
+.iv-list__media {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  color: var(--iv-color-primary);
+  background-color: var(--iv-color-primary-subtle);
+  border-radius: var(--iv-radius-md);
+}
+
+.iv-list__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-inline-size: 0;
+}
+
+.iv-list__title {
+  font-weight: var(--iv-weight-medium);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-list__meta {
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+  line-height: var(--iv-leading-snug);
+}
+
+.iv-list__end {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--iv-space-2);
+  margin-inline-start: auto;
+  color: var(--iv-color-text-muted);
+  font-size: var(--iv-text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+/* A chevron after an action row says it goes somewhere. */
+.iv-list--nav .iv-list__action::after {
+  content: "";
+  flex: none;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  margin-inline-start: auto;
+  border-block-start: 1.5px solid var(--iv-color-text-muted);
+  border-inline-end: 1.5px solid var(--iv-color-text-muted);
+  rotate: 45deg;
+}
+
+:where([dir="rtl"]) .iv-list--nav .iv-list__action::after {
+  rotate: -45deg;
+}
+
+/* Description list ------------------------------------------------------ */
+
+.iv-dl {
+  --iv-dl-term: minmax(8rem, 1fr);
+
+  display: grid;
+  margin: 0;
+  container-type: inline-size;
+}
+
+.iv-dl .iv-dl__row {
+  display: grid;
+  gap: var(--iv-space-1);
+  padding-block: var(--iv-space-3);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-dl__row:first-child {
+  border-block-start: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+.iv-dl dt {
+  margin: 0;
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-medium);
+  color: var(--iv-color-text-muted);
+}
+
+.iv-dl dd {
+  margin: 0;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+@container (min-width: 32rem) {
+  .iv-dl .iv-dl__row {
+    grid-template-columns: var(--iv-dl-term) 2fr;
+    gap: var(--iv-space-6);
+    align-items: baseline;
+  }
+}
+
+.iv-dl--compact .iv-dl__row {
+  padding-block: var(--iv-space-2);
+}
+
+@media (forced-colors: active) {
+  .iv-list {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+
+  .iv-list__action[aria-current] {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

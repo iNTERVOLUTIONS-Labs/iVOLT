@@ -29,7 +29,7 @@ export function flatten(tree) {
       const t = (val && val.$type) || type;
       if (typeof val === "string") out.push({ path: p, type: t, value: resolveAlias(val, tree) });
       else if (val && "$value" in val) out.push({ path: p, type: t, value: resolveAlias(val.$value, tree) });
-      else if (val && "light" in val && "dark" in val) out.push({ path: p, type: t, value: { light: resolveAlias(val.light, tree), dark: resolveAlias(val.dark, tree) } });
+      else if (val && "light" in val && "dark" in val) out.push({ path: p, type: t, value: { light: resolveAlias(val.light, tree), dark: resolveAlias(val.dark, tree) }, ...(val.$css ? { css: val.$css } : {}) });
       else if (val && typeof val === "object") walk(val, p, t);
     }
   };
@@ -39,10 +39,24 @@ export function flatten(tree) {
 
 const cssName = (t) => `--iv-${t.path.join("-")}`;
 
+/** `data-iv-palette` values: the role the primary takes and the colour drawn on it. */
+export const PALETTES = [
+  ["accent", "accent", "on-accent"],
+  ["success", "success", "on-success"],
+  ["warning", "warning", "on-warning"],
+  ["danger", "danger", "on-danger"],
+  ["info", "info", "on-info"],
+  ["neutral", "text", "bg"],
+];
+
 export function emitCss(tokens) {
   const isBp = (t) => t.path[0] === "breakpoint";
   const flat = tokens.filter((t) => !isBp(t) && typeof t.value === "string");
-  const themed = tokens.filter((t) => !isBp(t) && typeof t.value === "object");
+  // A themed token with `$css` is derived: its light and dark values stay in
+  // tokens.json (what the formula resolves to by default, for tools), and the
+  // sheet carries the formula once, on every scope that can change its inputs.
+  const themed = tokens.filter((t) => !isBp(t) && typeof t.value === "object" && !t.css);
+  const derived = tokens.filter((t) => !isBp(t) && t.css);
   const decl = (t, v) => `  ${cssName(t)}: ${v};`;
   const motion = tokens.filter((t) => t.path[0] === "motion");
   return [
@@ -64,6 +78,14 @@ export function emitCss(tokens) {
     ...themed.map((t) => "  " + decl(t, t.value.dark)),
     "  }",
     "}",
+    "/* One-colour theming (1.1): the states, tints, glows, focus and gradients of the primary are mixed from",
+    "   --iv-color-primary with the theme's --iv-mix-* recipes, on every scope that can change it. Setting the",
+    "   primary on :root (or on a theme scope) repaints all of them; the defaults resolve to the 1.0 values. */",
+    ':root, [data-iv-theme], [data-iv-palette] {',
+    ...derived.map((t) => decl(t, t.css)),
+    "}",
+    "/* A palette scope points the primary at another role of the theme; every derived token follows. */",
+    ...PALETTES.flatMap(([name, role, on]) => [`[data-iv-palette="${name}"] {`, `  --iv-color-primary: var(--iv-color-${role});`, `  --iv-color-on-primary: var(--iv-color-${on});`, "}"]),
     "/* A theme scope re-applies text and background so nested scopes do not inherit the parent theme's computed colours. */",
     "[data-iv-theme] {",
     "  color: var(--iv-color-text);",
@@ -107,7 +129,7 @@ export function emitBreakpointsJs(tokens) {
 
 export function emitJson(tokens) {
   const obj = {};
-  for (const t of tokens) obj[cssName(t)] = { type: t.type, value: t.value };
+  for (const t of tokens) obj[cssName(t)] = { type: t.type, value: t.value, ...(t.css ? { css: t.css } : {}) };
   return JSON.stringify(obj, null, 2) + "\n";
 }
 
