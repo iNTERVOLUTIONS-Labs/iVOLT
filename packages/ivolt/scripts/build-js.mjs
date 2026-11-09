@@ -23,12 +23,16 @@ await build({ entryPoints: [join(src, "iife.js")], outfile: join(out, "ivolt.iif
 // 3) auto.min.js (1.1): the auto-starting entry in one minified file, for a single
 // `<script type="module">` from a CDN; it also starts `Copy`, which the grouped
 // entry leaves out (ADR-053). Not counted in the default bundle budget.
+// The start is written here, not re-exported from auto.js: package.json declares src/ free of side
+// effects, so the bundler kept auto.js's exports and dropped its init(document). 1.1.0 shipped that
+// way — a CDN page where only Copy woke up (tests/browser/auto-min.spec.js).
 const autoEntry = [
-  'export * from "./auto.js";',
+  'export * from "./index.js";',
+  'import { init } from "./index.js";',
   'import { Copy } from "./components/copy.js";',
   "export { Copy };",
   'if (typeof document !== "undefined") {',
-  "  const go = () => Copy.initAll(document);",
+  "  const go = () => { init(document); Copy.initAll(document); };",
   '  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", go, { once: true });',
   "  else go();",
   "}",

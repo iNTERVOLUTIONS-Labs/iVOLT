@@ -2,6 +2,11 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 1.1.1 — 2026-11-09 (npm, tag `latest`)
+
+### Fixed
+- `dist/js/auto.min.js` starts every component again. 1.1.0 shipped a bundle that started only `Copy`: the entry re-exported `auto.js`, and since `src/` is declared free of side effects the bundler kept its exports and dropped its `init(document)`, so on a page with only the CDN snippet a dialog trigger fell back to its `:target` link. The entry now calls `init(document)` itself; `tests/browser/auto-min.spec.js` loads the built file alone and opens a modal dialog.
+
 ## 1.1.0 — 2026-11-09 (npm, tag `latest`)
 
 ### Added
