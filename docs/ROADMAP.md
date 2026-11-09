@@ -210,3 +210,17 @@ Petición del propietario: «sigue hasta 1.0 release candidate». Un candidato a
 | Token `--iv-color-hairline` para separar superficies de la página frente a divisores internos | el contrato está congelado; en rc.3 se ajusta el valor de `border` |
 | El botón primario pinta `--iv-gradient-brand`, así que redefinir solo `--iv-color-primary` no lo cambia | contrato de theming: documentar que los dos degradados se redefinen junto al primario (ADR pendiente) |
 
+## 12. Ciclo 1.1 «Spark» (abierto y cerrado 2026-11-09, ADR-053–056) → `1.1.0`
+
+Hecho: ver `RELEASE.md` §0k y `packages/ivolt/CHANGELOG.md`. Aplazado a 1.2, por orden de valor:
+
+| Elemento | Motivo |
+|---|---|
+| Servidor MCP de documentación y `skills/` para agentes, generados desde `ivolt.manifest.json` | paquete aparte; el manifiesto ya existe |
+| CLI opcional `npx @intervolutions/ivolt add <componente>` | nunca obligatoria; pide diseño propio |
+| Componentes con JS: entrada de etiquetas, árbol, OTP, menú contextual, barra de herramientas con `tabindex` itinerante | presupuesto JS (ADR-053): solo como subrutas |
+| Animaciones de pintura continua aún sin componer: `iv-aurora`, `iv-pulse-glow`, `iv-text-glow` | exigen seudoelementos que pueden chocar con el anfitrión; cambio visual |
+| `/blocks` en móvil 89–92: los escenarios se piden con 1200 px de margen para no dejar huecos al hacer scroll | decisión de experiencia frente a puntuación; pendiente del propietario |
+| Leyenda del `datatable` a 390 px, aviso de `data-iv-*` desconocidos, cifras de `stat` en mono, `--iv-color-hairline` | heredados de ADR-050 |
+| Pruebas en Firefox y WebKit en el servidor | faltan librerías del sistema (`playwright install-deps`); requiere autorización |
+
