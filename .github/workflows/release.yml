@@ -67,8 +67,15 @@ jobs:
       - name: Sizes against budgets
         run: npm run sizes
 
+      # pack-smoke drives the plain-HTML starter in Chromium, and the starter gets its copy of
+      # dist/ from sync-examples.
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
       - name: Pack and install in an external consumer
-        run: npm run pack-smoke
+        run: |
+          node scripts/sync-examples.mjs
+          npm run pack-smoke
 
       # A prerelease on GitHub goes to the `next` tag, a release to `latest`.
       - name: Publish

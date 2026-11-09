@@ -43,11 +43,9 @@ jobs:
       - name: Sizes against budgets
         run: npm run sizes
 
-      - name: Pack and install in an external consumer
-        run: npm run pack-smoke
-
       # Browsers are cached by Playwright version; the system libraries are installed every time
-      # because they live outside the cache.
+      # because they live outside the cache. pack-smoke already needs Chromium (it drives the
+      # plain-HTML starter), so this comes before it.
       - name: Playwright version
         id: pw
         run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
@@ -66,6 +64,13 @@ jobs:
       - name: Install Chromium system libraries
         if: steps.pw-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
+
+      # The starter that pack-smoke serves gets its copy of dist/ from this script.
+      - name: Copy the build into the examples
+        run: node scripts/sync-examples.mjs
+
+      - name: Pack and install in an external consumer
+        run: npm run pack-smoke
 
       # Fixture specs: every spec that does not talk to the docs site on port 4321. Screenshot
       # baselines are made on the release machine and its fonts; a hosted runner renders text a few
