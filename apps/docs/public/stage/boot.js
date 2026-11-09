@@ -72,7 +72,12 @@
       var inPage = cs.position === "absolute";
       // Its whole content counts, not the box it was capped to: the calendar caps itself to the
       // room it found when it opened, and asking for the capped height only ever confirmed it.
-      need = Math.max(need, squeezed && short > 1 ? vh + short + air : 0, r.bottom > vh + 1 ? r.bottom + scrollY + 16 : 0, inPage ? r.top + scrollY + Math.max(el.scrollHeight, r.height) + 16 : 0);
+      // An overlay in the top layer keeps the room it is shown in: without this the frame grew to
+      // fit a dialog, the dialog then fitted, the body alone was reported, the frame shrank, the
+      // dialog was squeezed again — a loop of two heights. Top plus bottom is the frame height
+      // for a centred box and for a full-height drawer, so it holds still.
+      var keep = inPage ? 0 : r.top + r.bottom;
+      need = Math.max(need, keep, squeezed && short > 1 ? vh + short + air : 0, r.bottom > vh + 1 ? r.bottom + scrollY + 16 : 0, inPage ? r.top + scrollY + Math.max(el.scrollHeight, r.height) + 16 : 0);
     }
     return Math.ceil(need);
   }

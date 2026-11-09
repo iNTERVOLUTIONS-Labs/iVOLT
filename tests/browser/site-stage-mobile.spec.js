@@ -50,6 +50,14 @@ for (const scale of ["100", "150"]) {
           const clipped = !own && [el, ...el.querySelectorAll("*")].some((n) => n.clientHeight > 2 && n.scrollHeight - n.clientHeight > 2 && getComputedStyle(n).overflowY !== "visible");
           return r.top >= -1 && r.bottom <= innerHeight + 1 && !clipped;
         }, Boolean(c.ownScroll)), { timeout: 20_000 }).toBe(true);
+        // And it holds still: a dialog that fitted once used to send the frame back to the
+        // trigger's height, squeezed again, and the frame breathed between the two.
+        // (A palette sized by the viewport may take a few steps to settle; then it stops.)
+        await expect.poll(async () => {
+          const samples = [];
+          for (let i = 0; i < 5; i++) { samples.push(await frame.evaluate((f) => Math.round(f.getBoundingClientRect().height))); await page.waitForTimeout(150); }
+          return Math.max(...samples) - Math.min(...samples);
+        }, { timeout: 15_000 }).toBeLessThanOrEqual(2);
         // It never shrinks while the overlay is open (it grows only when the overlay needs it).
         expect(await frame.evaluate((f) => f.getBoundingClientRect().height)).toBeGreaterThanOrEqual(closed - 2);
         await page.keyboard.press("Escape");
