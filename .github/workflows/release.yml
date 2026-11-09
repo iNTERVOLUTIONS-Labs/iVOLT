@@ -1,0 +1,78 @@
+# Publishes @intervolutions/ivolt to npm with a provenance statement when a GitHub release is
+# published. Needs the repository secret NPM_TOKEN (an npm automation or granular token with
+# publish rights on @intervolutions/ivolt); see docs/RELEASE.md §5. Without it the job stops at
+# the first step and says so.
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # npm provenance: the job proves which workflow and commit built the tarball
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Publish to npm with provenance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check the npm token
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "::error title=NPM_TOKEN missing::Add the repository secret NPM_TOKEN (Settings > Secrets and variables > Actions) with an npm token that can publish @intervolutions/ivolt, then re-run this job. Nothing was published."
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      # The tag of the release must be the version in the package (v1.1.2 ↔ 1.1.2), and the
+      # version must be the one the code reports, so a release can never publish other code.
+      - name: Check the version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          pkg="$(node -p "require('./packages/ivolt/package.json').version")"
+          if [ "$TAG" != "v$pkg" ]; then
+            echo "::error title=Version mismatch::Release tag $TAG does not match packages/ivolt/package.json version $pkg."
+            exit 1
+          fi
+          if ! grep -q "export const version = \"$pkg\";" packages/ivolt/src/js/index.js; then
+            echo "::error title=Version mismatch::src/js/index.js does not export version $pkg."
+            exit 1
+          fi
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit and contract tests
+        run: npm test
+
+      - name: Sizes against budgets
+        run: npm run sizes
+
+      - name: Pack and install in an external consumer
+        run: npm run pack-smoke
+
+      # A prerelease on GitHub goes to the `next` tag, a release to `latest`.
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DIST_TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
+        run: npm publish --provenance --access public --tag "$DIST_TAG" -w @intervolutions/ivolt

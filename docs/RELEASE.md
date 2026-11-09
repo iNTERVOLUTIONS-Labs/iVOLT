@@ -92,3 +92,17 @@ Antes de cualquier subida de versión: `apps/docs/package.json` fija la versión
 ## 4. Lo que una release candidate no implica
 
 No implica madurez de mantenimiento, ni compatibilidad con navegadores fuera de la matriz, ni conformidad WCAG del sitio consumidor. Es una alpha con contratos congelados, pruebas reproducibles y límites declarados.
+
+## 5. Publicación desde GitHub Actions con procedencia (desde 1.1.2; preparada, sin ejecutar)
+
+`.github/workflows/release.yml` publica el paquete con `npm publish --provenance --access public` cuando se **publica una release en GitHub**: una release normal va a `latest` y una marcada como *pre-release* a `next`. Antes de publicar comprueba que la etiqueta es `v` + la versión de `packages/ivolt/package.json` y que `src/js/index.js` exporta esa misma versión, y repite build, `npm test`, `sizes` y `pack-smoke`. El gate en tres motores de §2 sigue siendo manual y va antes de crear la release. La procedencia enlaza el tarball con el commit y el workflow que lo construyeron (`npm audit signatures` la verifica; npm la muestra en la ficha del paquete).
+
+Lo que tiene que hacer el propietario una vez:
+
+1. Crear en npmjs.com un token que pueda publicar `@intervolutions/ivolt`: *granular access token* con lectura y escritura sobre ese paquete (o la organización `intervolutions`), o un token *automation*. Un token que pide OTP no sirve en CI.
+2. En GitHub, *Settings → Secrets and variables → Actions → New repository secret*: nombre `NPM_TOKEN`, valor el token.
+3. Publicar como siempre: commit de versión fusionado en `main`, gate de §2 en verde y release `vX.Y.Z` creada en GitHub. El workflow hace el resto.
+
+Sin el secreto, el primer paso del job falla con «NPM_TOKEN missing» y no se publica nada. Si la etiqueta no coincide con la versión, falla con «Version mismatch». Mientras el secreto no exista se puede seguir publicando a mano como en §0k (token en un `userconfig` temporal), aunque esas versiones salen sin procedencia.
+
+`.github/workflows/ci.yml` corre en cada push y PR a `main`: `npm ci`, build, `npm test`, `sizes`, `pack-smoke`, las specs de fixtures en Chromium (`IVOLT_SKIP_DOCS_SERVER=1`), `build:docs` y las specs de la web en Chromium. Las capturas de `visual.spec.js` solo se comparan en la máquina de release (`--ignore-snapshots` en CI, porque las fuentes de un runner alojado cambian el texto en unos píxeles); las demás aserciones de esa spec sí corren.
