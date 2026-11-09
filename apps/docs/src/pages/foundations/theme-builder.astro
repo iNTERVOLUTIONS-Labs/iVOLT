@@ -13,7 +13,7 @@ import "../../styles/theme-builder.css";
     <div class="docs-tb" data-theme-builder>
       <form class="docs-tb__form docs-tb__controls iv-stack" data-tb-form>
         <fieldset class="iv-fieldset">
-          <legend class="iv-fieldset__legend">Preview theme</legend>
+          <legend class="iv-fieldset__legend">Mode you are editing</legend>
           <div class="iv-checks iv-checks--inline">
             <label class="iv-check"><input type="radio" name="theme" value="light"> Light</label>
             <label class="iv-check"><input type="radio" name="theme" value="dark" checked> Dark</label>
@@ -23,13 +23,15 @@ import "../../styles/theme-builder.css";
           <legend class="iv-fieldset__legend">Colours</legend>
           <div class="docs-tb__grid">
             <label class="docs-tb__color"><input type="color" name="primary"> Primary</label>
-            <label class="docs-tb__color"><input type="color" name="on-primary"> Text on primary</label>
+            <label class="docs-tb__color"><input type="color" name="on-primary" aria-describedby="tb-ratio"> Text on primary</label>
             <label class="docs-tb__color"><input type="color" name="accent"> Accent</label>
             <label class="docs-tb__color"><input type="color" name="bg"> Background</label>
             <label class="docs-tb__color"><input type="color" name="surface"> Surface</label>
             <label class="docs-tb__color"><input type="color" name="surface-raised"> Raised surface</label>
             <label class="docs-tb__color"><input type="color" name="text"> Text</label>
           </div>
+          <p class="docs-tb__ratio" id="tb-ratio" data-tb-ratio role="status" data-label-ok="Text on primary: {ratio}:1" data-label-low="Text on primary: {ratio}:1, under 4.5:1. Pick another ink or a deeper primary."></p>
+          <p class="iv-field__help iv-u-m-0">Light and dark are kept apart: set one, switch the mode above, set the other. A new primary brings the ink that reads better on it (white or deep navy) until you pick one yourself.</p>
         </fieldset>
         <div class="iv-field">
           <label class="iv-label" for="tb-radius">Corner radius (medium)</label>
@@ -48,6 +50,7 @@ import "../../styles/theme-builder.css";
         <div class="iv-cluster">
           <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-tb-reset>Reset</button>
           <button class="iv-button iv-button--primary iv-button--sm" type="button" data-tb-share data-label-done="Link copied" hidden>Copy share link</button>
+          <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-tb-download hidden>Download theme.css</button>
           <a class="iv-button iv-button--ghost iv-button--sm" href="/themes">Start from a preset</a>
         </div>
       </form>
@@ -58,7 +61,7 @@ import "../../styles/theme-builder.css";
         <Fixture name="button/variants" title="Preview: buttons" />
       </div>
     </div>
-    <Section title="Your overrides" num={1} lead={`Paste this after ivolt.css, or inside @layer iv.overrides when you use the layered stylesheet. Nested scopes keep working: put the block on any element instead of :root to theme only that part of the page.`}>
+    <Section title="Your overrides" num={1} lead={`Paste this after ivolt.css, or inside @layer iv.overrides when you use the layered stylesheet. One block per mode you changed, and the dark one again for data-iv-theme="system" when the system is dark, so a light/dark switch keeps working. Nested scopes work too: any element with data-iv-theme takes the block of its mode.`}>
       <div class="docs-code-block" data-code-block>
         <div class="docs-code__panel" data-code-panel="css">
           <pre tabindex="0" aria-label="Theme overrides CSS"><code id="tb-output" data-tb-output>/* tokens.overrides.css — change a control to see the overrides here. */</code></pre>
@@ -71,7 +74,7 @@ import "../../styles/theme-builder.css";
     <Section title="What this does not do" num={2}>
       <ul>
         <li>It edits a handful of tokens. The full set lives in <code>tokens.json</code> and <code>tokens.css</code>; anything can be overridden the same way.</li>
-        <li>It does not check contrast for you. Test the result with the accessibility tooling of your choice; the shipped themes are tested with axe.</li>
+        <li>It measures one pair for you, the text on the primary button, at rest and on hover. Everything else, test with the accessibility tooling of your choice; the shipped themes are tested with axe.</li>
         <li>It does not rebuild the package. Overrides are enough for most brands; a fork of <code>tokens.json</code> is the path for a full palette.</li>
       </ul>
     </Section>
