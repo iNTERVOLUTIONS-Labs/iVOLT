@@ -109,7 +109,7 @@ class Dialog {
 
 - `init` es idempotente: elementos ya instanciados se omiten; nunca se duplican listeners. Se comprueba con test de conteo de listeners y de eventos.
 - Registro: `WeakMap<Element, Map<name, instance>>`. Sin `MutationObserver` global; contenido dinámico se monta llamando `init(fragment)` o `new X(el)`.
-- Precedencia de opciones: `defaults < data-iv-* < options JS`. Coerción de atributos: `"true"/"false"` → boolean, numérico → number, resto string. Sin JSON ni expresiones.
+- Precedencia de opciones: `defaults < data-iv-* < options JS`. Coerción de atributos: `"true"/"false"` → boolean, numérico → number, resto string; una opción cuyo default es string o `null` recibe el atributo tal cual (1.1, §9.1). Sin JSON ni expresiones.
 - Errores: `IvError` con `code` (`instance-exists`, `missing-target`, `invalid-option`, `invalid-element`). Sin `console.*` en producción salvo `warn` una vez por opción inválida y `warn` cuando un disparador declarativo apunta a un destino inexistente (dentro de un handler no se lanza).
 - Dependencias entre componentes: `Drawer` y `Dropdown` reutilizan `core/focus.js`; ningún componente importa a otro.
 - `init` marca `document.documentElement` con `data-iv-js=""` la primera vez que se ejecuta (si existe `document`); los fallbacks CSS sin JS se acotan con `:root:not([data-iv-js])`. `destroy` no lo retira.
@@ -642,3 +642,28 @@ Efectos ligados al scroll con animaciones dirigidas por scroll de CSS (`animatio
 ## 8.23 Receta «showcase» (web, v0.7)
 
 Cuarta receta en `examples/recipes/showcase/`: una página de producto completa que compone navbar pegajoso y transparente sobre un hero cinematográfico con fotografía y `iv-parallax`, marquesina de tokens, cifras con `Countup`, galería con `Lightbox` (seis fotografías propias de la receta en `examples/recipes/showcase/photos/`, acreditadas en `examples/recipes/showcase/README.md` y en los pies), asistente por pasos que no envía nada y lo dice, línea de tiempo con el roadmap real del paquete, títulos con `iv-text-reveal` y pie. Sin datos inventados sin señalar. Entra en `build-downloads` y `check-examples` sin cambios (descubren las recetas por carpeta) y en la página de ejemplos de la web en los dos idiomas.
+
+## 9. Enmiendas 1.1 «Spark» (aditivas; SemVer menor)
+
+El contrato 1.0 no cambia de forma: esta sección solo añade. Las correcciones de §9.1 son de valor (parche) y cada una tiene prueba que fallaba en 1.0.0.
+
+### 9.1 Correcciones de valor
+
+- Hoja plana: `.iv-root :where(ul)`, `.iv-root :where(ol)`, `.iv-root :where(li)` y `.iv-root :where(figcaption)` pesan (0,1,0); el reset de lista de cada componente gana por orden. Con capas no cambia nada.
+- `Tooltip`: la burbuja entra en la capa superior como `popover="manual"` (atributo generado, no público) y vive dentro del `dialog[open]` que contiene al objetivo cuando no hay `popover`.
+- `--iv-progress-track-subtle` por defecto es `--iv-color-primary-subtle` (antes `success-subtle`).
+- Opciones con default string o `null`: el valor del atributo llega sin coerción.
+- `ScrollMotion` mide el `.iv-parallax-frame` que contiene a la capa (si lo hay); `Proximity` relee sus objetivos al entrar el puntero.
+- `Popover` sin anchor positioning sigue el scroll (captura, pasivo, un `requestAnimationFrame` por fotograma).
+- Bloqueo de scroll en CSS: `:where(:root:has(.iv-dialog:modal))` y `:where(:root:has(.iv-drawer:modal))` → `overflow: hidden`; `.iv-dialog` y `.iv-drawer__body` con `overscroll-behavior: contain`. Sin `scrollbar-gutter` (en una página sin scroll añadiría el desplazamiento que pretende evitar).
+- Movimiento compuesto: el barrido de `.iv-skeleton` es su `::after` trasladado (el anfitrión gana `position: relative` y `overflow: hidden`); el pulgar de `.iv-switch` usa `translate` (`--iv-switch-shift` conserva su significado); la etiqueta flotante usa `scale` 0.75 sobre `--iv-text-md` y `translate`.
+
+### 9.2 Tema de un color (`tokens.css`)
+
+Las derivadas de la primaria se calculan en CSS: `--iv-color-primary-hover`, `-active`, `-subtle`, `-border`, `--iv-color-focus`, `--iv-glow-primary`, `--iv-glow-secondary` (de `--iv-color-accent`), `--iv-gradient-brand`, `--iv-gradient-primary` y `--iv-focus-halo` se emiten una vez como `color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-<nombre>))` en `:root, [data-iv-theme], [data-iv-palette]`. Sus valores por defecto resuelven a los de 1.0 (ΔE2000 < 1, alfa ± 0,01; `tests/browser/theming.spec.js`), y `tokens.json` conserva esos valores literales más la fórmula en `$css`.
+
+Tokens nuevos (grupo `mix`, con valor en light y dark): `--iv-mix-primary-hover`, `--iv-mix-primary-active`, `--iv-mix-primary-subtle`, `--iv-mix-primary-border`, `--iv-mix-focus`, `--iv-mix-focus-halo`, `--iv-mix-focus-halo-shape`, `--iv-mix-glow-primary`, `--iv-mix-glow-secondary`, `--iv-mix-brand-start`, `--iv-mix-brand-end`, `--iv-mix-gradient-start`, `--iv-mix-gradient-mid`, `--iv-mix-gradient-end`. Cada uno es la receta `<color> <porcentaje>` de su derivada (o la forma de la sombra, o la posición de la parada central); son públicos y ajustables, pero su valor puede afinarse en una menor.
+
+Uso: `:root { --iv-color-primary: #E11D48; --iv-color-on-primary: #fff }` repinta botones (degradado incluido), anillos de foco, enlaces, insignias, progreso, interruptores y texto degradado. Se declara en `:root`, en un ámbito `[data-iv-theme]` o en un ámbito `[data-iv-palette]` (también sin valor): en un elemento cualquiera las derivadas heredadas no se recalculan. `--iv-color-on-primary` no se deriva (CSS no puede elegir contraste en los navegadores de la matriz).
+
+Atributo nuevo `data-iv-palette="accent|success|warning|danger|info|neutral"` en cualquier subárbol: apunta `--iv-color-primary` y `--iv-color-on-primary` al rol elegido (`neutral` = `text` sobre `bg`) y todas las derivadas lo siguen. Sin valor solo recalcula las derivadas (para una primaria propia en línea). Un valor desconocido equivale a sin valor.
