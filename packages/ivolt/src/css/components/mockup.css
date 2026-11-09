@@ -1,0 +1,179 @@
+/* iVOLT — components/mockup
+ * Device frames for screenshots and live content on marketing pages: a
+ * browser window and a phone. The frame is drawn in CSS; what goes in
+ * `__screen` (an image, a video, live markup) is the author's.
+ *
+ *   <figure class="iv-mockup iv-mockup--browser">
+ *     <div class="iv-mockup__bar"><span class="iv-mockup__url">app.example.com</span></div>
+ *     <div class="iv-mockup__screen"><img src="…" alt="…"></div>
+ *   </figure>
+ *   <figure class="iv-mockup iv-mockup--phone"><div class="iv-mockup__screen">…</div></figure>
+ *
+ * The window controls and the phone's island are decoration drawn by the
+ * stylesheet, never announced.
+ * Locals: --iv-mockup-frame --iv-mockup-ratio --iv-mockup-width
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-mockup {
+  --iv-mockup-frame: color-mix(in oklab, var(--iv-color-surface-raised) 92%, var(--iv-color-text));
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--iv-mockup-frame);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  box-shadow:
+    inset 0 1px 0 var(--iv-glass-highlight),
+    0 30px 60px -20px color-mix(in oklab, var(--iv-color-primary) 30%, rgb(0 0 0 / 0.35)),
+    var(--iv-shadow-2);
+}
+
+.iv-mockup__screen {
+  position: relative;
+  flex: 1;
+  min-block-size: 0;
+  overflow: hidden;
+  background-color: var(--iv-color-bg);
+}
+
+.iv-mockup__screen > img,
+.iv-mockup__screen > video,
+.iv-mockup__screen > picture > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* Browser ----------------------------------------------------------------- */
+
+.iv-mockup--browser {
+  border-radius: var(--iv-radius-md);
+}
+
+.iv-mockup--browser .iv-mockup__screen {
+  aspect-ratio: var(--iv-mockup-ratio, 16 / 10);
+}
+
+.iv-mockup__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-3);
+  min-block-size: 2.25rem;
+  padding-inline: var(--iv-space-4);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+/* Three window controls in muted tones of the palette, drawn in one box. */
+.iv-mockup__bar::before {
+  content: "";
+  flex: none;
+  inline-size: 2.75rem;
+  block-size: 0.625rem;
+  background-image:
+    radial-gradient(circle at 0.3125rem 50%, var(--iv-palette-red-500) 0.3125rem, transparent 0.34rem),
+    radial-gradient(circle at 1.375rem 50%, var(--iv-palette-amber-400) 0.3125rem, transparent 0.34rem),
+    radial-gradient(circle at 2.4375rem 50%, var(--iv-palette-green-400) 0.3125rem, transparent 0.34rem);
+  opacity: 0.85;
+}
+
+:where([dir="rtl"]) .iv-mockup__bar::before {
+  scale: -1 1;
+}
+
+.iv-mockup__url {
+  flex: 1;
+  max-inline-size: 28rem;
+  margin-inline: auto;
+  padding-block: 0.1875rem;
+  padding-inline: var(--iv-space-3);
+  overflow: hidden;
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--iv-color-text-muted);
+  background-color: var(--iv-color-bg);
+  border: var(--iv-border-width) solid var(--iv-color-border);
+  border-radius: var(--iv-radius-full);
+}
+
+/* Phone ------------------------------------------------------------------- */
+
+.iv-mockup--phone {
+  --iv-mockup-width: 18rem;
+
+  inline-size: min(100%, var(--iv-mockup-width));
+  margin-inline: auto;
+  padding: 0.625rem;
+  border-radius: 2.75rem;
+  background-color: color-mix(in oklab, var(--iv-palette-neutral-900) 92%, var(--iv-color-primary));
+  border-color: color-mix(in oklab, var(--iv-palette-neutral-700) 70%, var(--iv-color-primary));
+}
+
+.iv-mockup--phone .iv-mockup__screen {
+  aspect-ratio: var(--iv-mockup-ratio, 9 / 19.5);
+  border-radius: 2.25rem;
+}
+
+/* The island: a pill over the top of the screen. */
+.iv-mockup--phone::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 1.125rem;
+  inset-inline-start: 50%;
+  z-index: 1;
+  inline-size: 28%;
+  block-size: 1.375rem;
+  background-color: #000;
+  border-radius: var(--iv-radius-full);
+  translate: -50% 0;
+}
+
+:where([dir="rtl"]) .iv-mockup--phone::before {
+  translate: 50% 0;
+}
+
+/* Tilt: a slight perspective for a hero, flat again under reduced motion. */
+.iv-mockup--tilt {
+  transform: perspective(1600px) rotateX(6deg) rotateY(-10deg);
+  transform-origin: center;
+  transition: transform var(--iv-motion-slow) var(--iv-ease-out);
+}
+
+@media (hover: hover) {
+  .iv-mockup--tilt:hover {
+    transform: perspective(1600px) rotateX(2deg) rotateY(-4deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-mockup--tilt {
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .iv-mockup {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+
+  .iv-mockup__bar::before {
+    display: none;
+  }
+}
+
+@media print {
+  .iv-mockup {
+    box-shadow: none;
+  }
+}

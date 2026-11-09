@@ -1,0 +1,17 @@
+<div class="iv-stack iv-u-gap-8">
+  <p class="iv-u-m-0 iv-u-max-w-measure">Scroll down: each card rises into place as it enters the window, driven by its own view timeline in CSS. No script runs for it. Where the browser has no <code>animation-timeline</code>, or motion is reduced, the cards are simply there.</p>
+
+  <div class="iv-grid iv-u-gap-4 iv-u-grid-cols-1 iv-u-md-grid-cols-3">
+    <article class="iv-card iv-scroll-reveal"><div class="iv-card__body"><h3 class="iv-card__title">Tokens</h3><p class="iv-u-m-0 iv-u-text-muted">One file of design tokens drives both themes.</p></div></article>
+    <article class="iv-card iv-scroll-reveal"><div class="iv-card__body"><h3 class="iv-card__title">Components</h3><p class="iv-u-m-0 iv-u-text-muted">Semantic HTML first, JavaScript only where it earns its place.</p></div></article>
+    <article class="iv-card iv-scroll-reveal"><div class="iv-card__body"><h3 class="iv-card__title">Motion</h3><p class="iv-u-m-0 iv-u-text-muted">Every animation has a reduced-motion answer.</p></div></article>
+  </div>
+
+  <section class="iv-defer iv-card" style="--iv-defer-size: 18rem" aria-labelledby="defer-title">
+    <div class="iv-card__body iv-stack iv-u-gap-3">
+      <h3 class="iv-card__title" id="defer-title">Rendered when it comes near</h3>
+      <p class="iv-u-m-0 iv-u-text-muted"><code>iv-defer</code> asks the browser to skip the layout and paint of this block until it approaches the viewport; 18rem are reserved for it meanwhile. Find in page and anchors still reach the text.</p>
+      <div class="iv-scroll-reveal"><span class="iv-badge iv-badge--primary">Sample content</span></div>
+    </div>
+  </section>
+</div>

@@ -114,6 +114,89 @@
   border-end-end-radius: var(--iv-card-inner-radius);
 }
 
+/* Responsive (1.1): media beside the body when the card is wide enough,
+   above it when it is not. Decided by the room the card gets, not by the
+   viewport: the media keeps `--iv-card-media-width`, the body wraps under it
+   once it would fall below 55 % of the card. */
+.iv-card--responsive {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.iv-card--responsive > .iv-card__media {
+  flex: 1 1 var(--iv-card-media-width, 16rem);
+  aspect-ratio: auto;
+  min-block-size: 11rem;
+  border-radius: 0;
+}
+
+.iv-card--responsive > .iv-card__body {
+  flex: 999 1 0;
+  min-inline-size: 55%;
+}
+
+.iv-card--responsive > .iv-card__footer {
+  flex: 1 1 100%;
+}
+
+/* Link card (1.1): the whole card is one target. The link in the title
+   stretches over the card with a pseudo-element, so the accessible name stays
+   the title and other controls inside can sit above it (`iv-card__raise`). */
+.iv-card--link {
+  position: relative;
+}
+
+.iv-card .iv-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+a.iv-card__link:hover {
+  color: inherit;
+}
+
+.iv-card__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.iv-card__raise {
+  position: relative;
+  z-index: 2;
+}
+
+.iv-card__link:focus-visible {
+  outline: none;
+}
+
+:where(.iv-card--link:has(.iv-card__link:focus-visible)) {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+}
+
+@media (hover: hover) {
+  .iv-card--link:hover {
+    border-color: var(--iv-color-primary-border);
+    transform: translateY(-2px);
+  }
+
+  .iv-card--link {
+    transition:
+      box-shadow var(--iv-motion-base) var(--iv-ease-out),
+      border-color var(--iv-motion-base) var(--iv-ease-out),
+      transform var(--iv-motion-base) var(--iv-ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-card--link:hover {
+    transform: none;
+  }
+}
+
 /* Print: the lift is ink that carries no information. */
 @media print {
   .iv-card {

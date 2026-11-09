@@ -262,6 +262,31 @@ describe("Popover", () => {
     expect(popover.isOpen).toBe(true);
   });
 
+  // 1.1: the measured branch only followed `resize`; scrolling the page or a scroll
+  // container left the panel where the invoker used to be.
+  it("follows a scroll in the measured branch, once per frame, and stops when closed", () => {
+    /** @type {FrameRequestCallback[]} */
+    const frames = [];
+    vi.stubGlobal("requestAnimationFrame", (/** @type {FrameRequestCallback} */ cb) => frames.push(cb));
+    vi.stubGlobal("cancelAnimationFrame", () => {});
+    mount("share");
+    const panel = /** @type {HTMLElement} */ (document.getElementById("share"));
+    const button = /** @type {HTMLElement} */ (document.getElementById("share-btn"));
+    place(panel, { left: 0, top: 0, width: 300, height: 200 });
+    place(button, { left: 120, top: 100, width: 160, height: 40 });
+    run(panel, "open", button);
+    expect(panel.style.inset).toBe("148px auto auto 120px");
+    place(button, { left: 120, top: 60, width: 160, height: 40 });
+    document.dispatchEvent(new Event("scroll"));
+    document.dispatchEvent(new Event("scroll"));
+    expect(frames).toHaveLength(1);
+    frames.shift()?.(0);
+    expect(panel.style.inset).toBe("108px auto auto 120px");
+    run(panel, "closed");
+    document.dispatchEvent(new Event("scroll"));
+    expect(frames).toHaveLength(0);
+  });
+
   it("aligns to the end of the invoker when asked to", () => {
     mount("plain");
     const panel = /** @type {HTMLElement} */ (document.getElementById("plain"));

@@ -44,6 +44,10 @@ Los tonos `blue` y el `green` de once pasos de las betas desaparecen; `--iv-pale
 
 Las cifras salen de `scripts`-menos: se calcularon con la fórmula WCAG 2.x sobre los valores de la tabla al escribir esta sección (2026-09-16); axe las vuelve a comprobar en cada fixture del gate.
 
+### 3.1 Un color repinta el sistema (1.1)
+
+Desde 1.1 las derivadas de la primaria (hover, active, subtle, borde, foco, halo, brillos y los dos degradados) se mezclan en CSS a partir de `--iv-color-primary` con recetas `--iv-mix-*` por tema (API_CONTRACT §9.2). Las recetas de Cobalt están ajustadas para que los valores por defecto sean los de esta tabla (ΔE2000 < 1). Para hover/active/subtle la receta es un ancla casi neutra (oscurece o aclara sin cambiar el tono de una primaria nueva); para los degradados es un desplazamiento en OKLab (las paradas conservan su relación con la primaria: más clara y hacia el cian al inicio, hacia el índigo al final). `--iv-color-on-primary` no se deriva: quien cambie la primaria elige el texto que va encima y comprueba 4,5:1. `data-iv-palette` apunta la primaria de un subárbol a otro rol (`accent`, `success`, `warning`, `danger`, `info`, `neutral`).
+
 ## 4. Escalas
 
 | Familia | Tokens | Valores |
@@ -110,3 +114,8 @@ El framework debe impresionar por defecto, no solo funcionar. Principios de la c
 - **Composición generosa:** radios `lg` en superficies grandes, sombras 2–3 en flotantes, contrastes AA en todas las superficies translúcidas (comprobados con axe sobre cristal en claro y oscuro).
 
 Lo que no cambia: sin rejillas ni patrones de puntos (ADR-028), sin cursor propio, sin WebGL, sin recursos remotos, sin imágenes de mapa de bits en el paquete (texturas por gradiente o SVG en línea).
+
+## 10. Familias de 1.1 «Spark»
+
+Mismo lenguaje Cobalt: radios 6/14/22 (`sm/md/lg`) y píldora `full` para controles en línea (chip, segmented, botones de código), superficies de cristal con filete `--iv-color-border` y brillo superior `--iv-glass-highlight`, degradado `--iv-gradient-primary` solo para el estado elegido de marca (segmented `--brand`, banner `--brand`). El bloque de código y el teléfono del mockup son navy profundo (`neutral-950`) en los dos temas, como el terminal del héroe. Las estrellas de rating usan `--iv-color-warning` (oro oscuro en claro, ámbar en oscuro; ≥ 3:1 como objeto gráfico). El estado vacío lleva un halo radial de la marca detrás del icono, nunca puntos ni rejillas (ADR-028). Los tonos de meter son los del navegador (óptimo/regular/malo → success/warning/danger) y siempre van con el valor escrito.
+

@@ -103,3 +103,50 @@ for (const [fixture, selector, what] of links) {
     expect(flat).toEqual(layered);
   });
 }
+
+/**
+ * Component lists (1.1): `.iv-root ul, .iv-root ol` (0,1,1) sets a start padding and block
+ * margins for prose lists. Without layers it beat every list reset written as a single class,
+ * so breadcrumbs, pagination, the navbar, steppers, timelines, carousels, the megamenu, the
+ * command palette, the combobox, the picker and the hero facts all gained a 24 px indent in
+ * the flat sheet. The lightbox caption is a `<figcaption>` and lost its colour and margin to
+ * `.iv-root figcaption` the same way. Fixtures that render their lists from JavaScript run with it.
+ */
+const listFixtures = ["breadcrumb/basic", "pagination/basic", "navbar/basic", "stepper/basic", "timeline/alternate", "carousel/basic", "megamenu/basic", "megamenu/full", "command/basic", "combobox/basic", "picker/basic", "picker/multiple", "hero/basic"];
+
+const listBoxes = (page) =>
+  page.evaluate(() =>
+    [...document.querySelectorAll("#fixture ul, #fixture ol")].map((el) => {
+      const cs = getComputedStyle(el);
+      return `${el.className} ${cs.paddingInlineStart} ${cs.marginBlockStart} ${cs.marginBlockEnd}`;
+    }),
+  );
+
+for (const fixture of listFixtures) {
+  test(`the lists of ${fixture} keep their reset without layers`, async ({ page }) => {
+    await page.goto(`/fixture/${fixture}`);
+    await page.waitForLoadState("networkidle");
+    const layered = await listBoxes(page);
+    await page.goto(`/fixture/${fixture}?flat=1`);
+    await page.waitForLoadState("networkidle");
+    const flat = await listBoxes(page);
+    expect(layered.length).toBeGreaterThan(0);
+    expect(flat).toEqual(layered);
+  });
+}
+
+test("the lightbox caption keeps its colour and margin without layers", async ({ page }) => {
+  const caption = async (url) => {
+    await page.goto(url);
+    await page.locator(".iv-gallery__item").first().click();
+    const el = page.locator(".iv-lightbox__caption").first();
+    await expect(el).toBeVisible();
+    return el.evaluate((node) => {
+      const cs = getComputedStyle(node);
+      return { color: cs.color, margin: cs.marginBlockStart, size: cs.fontSize };
+    });
+  };
+  const layered = await caption("/fixture/lightbox/basic");
+  const flat = await caption("/fixture/lightbox/basic?flat=1");
+  expect(flat).toEqual(layered);
+});

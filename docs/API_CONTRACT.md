@@ -109,7 +109,7 @@ class Dialog {
 
 - `init` es idempotente: elementos ya instanciados se omiten; nunca se duplican listeners. Se comprueba con test de conteo de listeners y de eventos.
 - Registro: `WeakMap<Element, Map<name, instance>>`. Sin `MutationObserver` global; contenido dinámico se monta llamando `init(fragment)` o `new X(el)`.
-- Precedencia de opciones: `defaults < data-iv-* < options JS`. Coerción de atributos: `"true"/"false"` → boolean, numérico → number, resto string. Sin JSON ni expresiones.
+- Precedencia de opciones: `defaults < data-iv-* < options JS`. Coerción de atributos: `"true"/"false"` → boolean, numérico → number, resto string; una opción cuyo default es string o `null` recibe el atributo tal cual (1.1, §9.1). Sin JSON ni expresiones.
 - Errores: `IvError` con `code` (`instance-exists`, `missing-target`, `invalid-option`, `invalid-element`). Sin `console.*` en producción salvo `warn` una vez por opción inválida y `warn` cuando un disparador declarativo apunta a un destino inexistente (dentro de un handler no se lanza).
 - Dependencias entre componentes: `Drawer` y `Dropdown` reutilizan `core/focus.js`; ningún componente importa a otro.
 - `init` marca `document.documentElement` con `data-iv-js=""` la primera vez que se ejecuta (si existe `document`); los fallbacks CSS sin JS se acotan con `:root:not([data-iv-js])`. `destroy` no lo retira.
@@ -642,3 +642,77 @@ Efectos ligados al scroll con animaciones dirigidas por scroll de CSS (`animatio
 ## 8.23 Receta «showcase» (web, v0.7)
 
 Cuarta receta en `examples/recipes/showcase/`: una página de producto completa que compone navbar pegajoso y transparente sobre un hero cinematográfico con fotografía y `iv-parallax`, marquesina de tokens, cifras con `Countup`, galería con `Lightbox` (seis fotografías propias de la receta en `examples/recipes/showcase/photos/`, acreditadas en `examples/recipes/showcase/README.md` y en los pies), asistente por pasos que no envía nada y lo dice, línea de tiempo con el roadmap real del paquete, títulos con `iv-text-reveal` y pie. Sin datos inventados sin señalar. Entra en `build-downloads` y `check-examples` sin cambios (descubren las recetas por carpeta) y en la página de ejemplos de la web en los dos idiomas.
+
+## 9. Enmiendas 1.1 «Spark» (aditivas; SemVer menor)
+
+El contrato 1.0 no cambia de forma: esta sección solo añade. Las correcciones de §9.1 son de valor (parche) y cada una tiene prueba que fallaba en 1.0.0.
+
+### 9.1 Correcciones de valor
+
+- Hoja plana: `.iv-root :where(ul)`, `.iv-root :where(ol)`, `.iv-root :where(li)` y `.iv-root :where(figcaption)` pesan (0,1,0); el reset de lista de cada componente gana por orden. Con capas no cambia nada.
+- `Tooltip`: la burbuja entra en la capa superior como `popover="manual"` (atributo generado, no público) y vive dentro del `dialog[open]` que contiene al objetivo cuando no hay `popover`.
+- `--iv-progress-track-subtle` por defecto es `--iv-color-primary-subtle` (antes `success-subtle`).
+- Opciones con default string o `null`: el valor del atributo llega sin coerción.
+- `ScrollMotion` mide el `.iv-parallax-frame` que contiene a la capa (si lo hay); `Proximity` relee sus objetivos al entrar el puntero.
+- `Popover` sin anchor positioning sigue el scroll (captura, pasivo, un `requestAnimationFrame` por fotograma).
+- Bloqueo de scroll en CSS: `:where(:root:has(.iv-dialog:modal))` y `:where(:root:has(.iv-drawer:modal))` → `overflow: hidden`; `.iv-dialog` y `.iv-drawer__body` con `overscroll-behavior: contain`. Sin `scrollbar-gutter` (en una página sin scroll añadiría el desplazamiento que pretende evitar).
+- Movimiento compuesto: el barrido de `.iv-skeleton` es su `::after` trasladado (el anfitrión gana `position: relative` y `overflow: hidden`); el pulgar de `.iv-switch` usa `translate` (`--iv-switch-shift` conserva su significado); la etiqueta flotante usa `scale` 0.75 sobre `--iv-text-md` y `translate`.
+
+### 9.2 Tema de un color (`tokens.css`)
+
+Las derivadas de la primaria se calculan en CSS: `--iv-color-primary-hover`, `-active`, `-subtle`, `-border`, `--iv-color-focus`, `--iv-glow-primary`, `--iv-glow-secondary` (de `--iv-color-accent`), `--iv-gradient-brand`, `--iv-gradient-primary` y `--iv-focus-halo` se emiten una vez como `color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-<nombre>))` en `:root, [data-iv-theme], [data-iv-palette]`. Sus valores por defecto resuelven a los de 1.0 (ΔE2000 < 1, alfa ± 0,01; `tests/browser/theming.spec.js`), y `tokens.json` conserva esos valores literales más la fórmula en `$css`.
+
+Tokens nuevos (grupo `mix`, con valor en light y dark): `--iv-mix-primary-hover`, `--iv-mix-primary-active`, `--iv-mix-primary-subtle`, `--iv-mix-primary-border`, `--iv-mix-focus`, `--iv-mix-focus-halo`, `--iv-mix-focus-halo-shape`, `--iv-mix-glow-primary`, `--iv-mix-glow-secondary`, `--iv-mix-brand-start`, `--iv-mix-brand-end`, `--iv-mix-gradient-start`, `--iv-mix-gradient-mid`, `--iv-mix-gradient-end`. Cada uno es la receta `<color> <porcentaje>` de su derivada (o la forma de la sombra, o la posición de la parada central); son públicos y ajustables, pero su valor puede afinarse en una menor.
+
+Uso: `:root { --iv-color-primary: #E11D48; --iv-color-on-primary: #fff }` repinta botones (degradado incluido), anillos de foco, enlaces, insignias, progreso, interruptores y texto degradado. Se declara en `:root`, en un ámbito `[data-iv-theme]` o en un ámbito `[data-iv-palette]` (también sin valor): en un elemento cualquiera las derivadas heredadas no se recalculan. `--iv-color-on-primary` no se deriva (CSS no puede elegir contraste en los navegadores de la matriz).
+
+Atributo nuevo `data-iv-palette="accent|success|warning|danger|info|neutral"` en cualquier subárbol: apunta `--iv-color-primary` y `--iv-color-on-primary` al rol elegido (`neutral` = `text` sobre `bg`) y todas las derivadas lo siguen. Sin valor solo recalcula las derivadas (para una primaria propia en línea). Un valor desconocido equivale a sin valor.
+
+### 9.3 Componentes nuevos (CSS; un módulo por familia en `components/`)
+
+Cada fila: clases públicas, HTML servido y locales públicos. Todos llevan fixture (`packages/ivolt/fixtures/<familia>/basic.html`), auditoría axe en los dos temas, regla de `forced-colors`, revisión RTL (barrido de desbordamiento y de `[hidden]` en 320/390 px) y caso de hoja plana cuando un elemento base compite (`tests/browser/components-1-1.spec.js`).
+
+| Familia | Clases | HTML servido | Locales |
+|---|---|---|---|
+| Kbd | `iv-kbd`, `iv-kbd--sm`, `iv-kbd--lg`, `iv-kbd-group` | `<kbd class="iv-kbd">K</kbd>`; un atajo en `<span class="iv-kbd-group">` con el `+` escrito por el autor | `--iv-kbd-size` |
+| Divider | `iv-divider`, `iv-divider__label`, `iv-divider--start`, `iv-divider--end`, `iv-divider--brand`, `iv-divider--vertical` | `<hr class="iv-divider">`, o `<div class="iv-divider" role="separator" aria-label="…">` con `__label` (`aria-hidden`) | `--iv-divider-color`, `--iv-divider-space` |
+| Spinner | `iv-spinner`, `iv-spinner--sm`, `iv-spinner--lg`, `iv-spinner--current` | decorativo; el estado lo dice `role="status"` con texto o `aria-busy` en la región | `--iv-spinner-size`, `--iv-spinner-width`, `--iv-spinner-color` |
+| Segmented | `iv-segmented`, `iv-segmented__item`, `iv-segmented--brand`, `iv-segmented--block`, `iv-segmented--sm` | `<fieldset class="iv-segmented">` + `<legend>` + `<label class="iv-segmented__item"><input type="radio"><span>…</span></label>`; la cara es el hermano siguiente del `input` | `--iv-segmented-radius`, `--iv-segmented-pad` |
+| Chip | `iv-chip`, `iv-chip--sm`, `iv-chip__media`, `iv-chip__remove` | filtro: `<label class="iv-chip"><input type="checkbox"><span>…</span></label>`; retirable: `<span class="iv-chip">… <button class="iv-chip__remove" aria-label="Remove …"></button></span>` (vacío dibuja la cruz; objetivo 24 px) | `--iv-chip-tone`, `--iv-chip-height` |
+| Banner | `iv-banner`, `iv-banner__text`, `iv-banner__icon`, `iv-banner__action`, `iv-banner__close`, `iv-banner--info`, `iv-banner--success`, `iv-banner--warning`, `iv-banner--danger`, `iv-banner--brand`, `iv-banner--sticky` | `<div class="iv-banner" role="region" aria-label="…">`; cerrar es del autor (un botón que pone `hidden`) | `--iv-banner-tone`, `--iv-banner-bg`, `--iv-banner-fg` |
+| Empty | `iv-empty`, `iv-empty__icon`, `iv-empty__title`, `iv-empty__text`, `iv-empty__actions`, `iv-empty--bordered`, `iv-empty--compact` | bloque con icono `aria-hidden`, título con el nivel de encabezado que toque | `--iv-empty-tone` |
+| List | `iv-list`, `iv-list__item`, `iv-list__action`, `iv-list__media`, `iv-list__body`, `iv-list__title`, `iv-list__meta`, `iv-list__end`, `iv-list--flush`, `iv-list--nav` | `<ul class="iv-list"><li class="iv-list__item">`; una fila que actúa lleva un `<a>` o `<button class="iv-list__action">` que la llena; `aria-current` marca la actual | `--iv-list-padding` |
+| Description list | `iv-dl`, `iv-dl__row`, `iv-dl--compact` | `<dl class="iv-dl"><div class="iv-dl__row"><dt>…</dt><dd>…</dd></div></dl>`; lado a lado desde 32rem de contenedor (container query) | `--iv-dl-term` |
+| Meter | `iv-meter`, `iv-meter--lg`, `iv-meter-field`, `iv-meter-field__value` | `<meter class="iv-meter" min max low high optimum value>` con `<label for>`; el tono lo decide el navegador (óptimo/regular/malo → success/warning/danger) | `--iv-meter-size`, `--iv-meter-track` |
+| Rating | `iv-rating`, `iv-rating__legend`, `iv-rating__input`, `iv-rating__star`, `iv-rating--sm`, `iv-rating--lg`, `iv-rating-display` | entrada: `<fieldset class="iv-rating">` con pares `input.iv-rating__input` + `label.iv-rating__star` (texto oculto); pantalla: `<span class="iv-rating-display" role="img" aria-label="4.6 out of 5" style="--iv-rating-value: 4.6">` | `--iv-rating-size`, `--iv-rating-color`, `--iv-rating-off`, `--iv-rating-value`, `--iv-rating-max`, `--iv-rating-fill` (estado resuelto) |
+| Code | `iv-code`, `iv-code__bar`, `iv-code__title`, `iv-code__lang`, `iv-code__copy`, `iv-code__copy-label`, `iv-code__pre`, `iv-code__mark`, `iv-code--light`, tokens a mano `iv-code__k`, `iv-code__s`, `iv-code__a`, `iv-code__c` | `<figure class="iv-code"><figcaption class="iv-code__bar">…</figcaption><pre class="iv-code__pre" tabindex="0"><code>…</code></pre></figure>`; el botón (`data-iv-copy`) solo se ve dentro de una raíz con `data-iv-copy-ready` (§9.4) | `--iv-code-bg`, `--iv-code-fg`, `--iv-code-muted`, `--iv-code-max` |
+| Mockup | `iv-mockup`, `iv-mockup--browser`, `iv-mockup--phone`, `iv-mockup--tilt`, `iv-mockup__bar`, `iv-mockup__url`, `iv-mockup__screen` | `<figure class="iv-mockup iv-mockup--browser">` con `__bar` (`aria-hidden`) y `__screen`; el contenido de la pantalla es del autor | `--iv-mockup-frame`, `--iv-mockup-ratio`, `--iv-mockup-width` |
+| Sidebar | `iv-sidebar`, `iv-sidebar--end` | dos hijos; el lateral conserva `--iv-sidebar-width` y ambos se apilan cuando el contenido bajaría de `--iv-sidebar-min` del contenedor (sin breakpoint) | `--iv-sidebar-width`, `--iv-sidebar-min`, `--iv-sidebar-gap` |
+| Shell | `iv-shell`, `iv-shell__top`, `iv-shell__side`, `iv-shell__main` | `__top` pegajoso de cristal; desde `lg` `__side` es columna pegajosa; por debajo no ocupa sitio y un `Drawer` dentro (`staticFrom: "lg"`) es el menú modal | `--iv-shell-side`, `--iv-shell-top` |
+
+### 9.3b CSS moderno sobre familias existentes (progresivo)
+
+- `iv-card--responsive`: medio al lado del cuerpo mientras la tarjeta tiene sitio y encima cuando no (envoltura intrínseca, sin media query); local `--iv-card-media-width`.
+- `iv-card--link` + `iv-card__link` (enlace del título que se estira a toda la tarjeta; anillo de foco en la tarjeta) + `iv-card__raise` (controles por encima del enlace).
+- `iv-grid--subgrid` (con `iv-grid`): cada hijo ocupa `--iv-subgrid-rows` filas (3) en `subgrid`, así títulos, textos y pies se alinean entre tarjetas; `--iv-subgrid-gap`. Vive en la capa de componentes porque reordena componentes.
+- `iv-defer`: `content-visibility: auto` con `contain-intrinsic-size: auto var(--iv-defer-size, 40rem)`.
+- `iv-scroll-reveal`: entrada por `animation-timeline: view()` bajo `@supports` y `prefers-reduced-motion: no-preference`; sin soporte el elemento simplemente está. Sin JS. `iv-reveal` + `Reveal` sigue siendo la opción universal.
+- `.iv-disclosure`: apertura y cierre animados con `::details-content` + `interpolate-size` donde existen; `<details name>` hace exclusivo un grupo sin JS.
+- `.iv-dialog` y `.iv-drawer` modal: salida con `transition` de `display`/`overlay` (`allow-discrete`) bajo `@supports`; la entrada conserva sus keyframes; un drawer estático nunca transiciona. Sin movimiento reducido no hay salida animada.
+
+### 9.4 JavaScript nuevo (solo subrutas; ADR-053)
+
+| Export | Qué es |
+|---|---|
+| `@intervolutions/ivolt/copy` | `Copy` (`componentName` `copy`). Raíz `data-iv-component="copy"`; un clic en `[data-iv-copy]` copia el texto del elemento que nombra el selector o, vacío, el `code`/`pre` del `.iv-code` más cercano. Opciones (`defaults < data-iv-* < JS`): `copiedText` (`"Copied"`), `failedText` (`"Press Ctrl+C to copy"`), `timeout` (`2000`). Eventos: `iv:copy` (cancelable; `detail` `{ instance, trigger, text }`) e `iv:copied` (`{ instance, trigger, text, ok }`). Pone `data-iv-copy-ready` en la raíz y `data-iv-state="copied"\|"failed"` en el botón durante `timeout`; cambia el texto de `.iv-code__copy-label` (o del botón si solo tiene texto) y anuncia en una región `role="status"` propia. Si el portapapeles se niega, selecciona el texto. `copy(trigger)` → `Promise<boolean>`, `textOf(trigger)` → `string\|null`. `destroy` lo devuelve todo. |
+| `@intervolutions/ivolt/theme-transition` | `setThemeWithTransition(theme, options)` → `Promise<"light"\|"dark">`: `setTheme` dentro de `document.startViewTransition` cuando existe y no hay movimiento reducido; si no, `setTheme` tal cual. Un tema inválido lanza `IvError` de forma síncrona. |
+| `@intervolutions/ivolt/auto.min` (`dist/js/auto.min.js`) | `auto.js` agrupado y minificado en un archivo, más `Copy` iniciado al cargar. Para un `<script type="module">` desde una CDN. No cuenta en el presupuesto del agrupado por defecto. |
+
+`index.js`, `auto.js` y la IIFE no cambian de contenido: el agrupado por defecto solo crece por las correcciones de §9.1.
+
+### 9.5 Artefactos para herramientas
+
+- `dist/ivolt.manifest.json` (export `./manifest.json`): generado en build desde las hojas, `tokens.json` y los componentes JS; lista componentes CSS con sus clases y locales, componentes JS con opciones, eventos y subruta, atributos `data-iv-*`, eventos y tokens con su valor light/dark. Esquema `{ name, version, classes, components, attributes, events, tokens }`.
+- `dist/vscode.html-data.json` (export `./vscode.html-data.json`): `customData` de VS Code generado del manifiesto; autocompleta los atributos `data-iv-*` con sus valores conocidos.
+- `dist/types/events.d.ts`: mapa tipado de los eventos `iv:*` (`IvEventMap`) y aumentación de `HTMLElementEventMap`; `dist/types/global.d.ts` declara `window.IVOLT` para la IIFE.
+- `package.json`: `style` (`dist/css/ivolt.min.css`), `unpkg` y `jsdelivr` (`dist/js/ivolt.iife.min.js`).

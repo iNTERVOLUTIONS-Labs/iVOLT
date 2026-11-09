@@ -1,0 +1,174 @@
+/* iVOLT — components/rating
+ * Two forms, no JavaScript.
+ *
+ * Input — a native radio group: arrow keys, one tab stop, the form value
+ * and a name per option come from the browser. Every `<input>` is followed
+ * by its `<label class="iv-rating__star">` whose text is visually hidden.
+ *   <fieldset class="iv-rating">
+ *     <legend class="iv-rating__legend">Your rating</legend>
+ *     <input class="iv-rating__input" type="radio" id="r1" name="r" value="1">
+ *     <label class="iv-rating__star" for="r1"><span class="iv-u-sr-only">1 star</span></label>
+ *     …
+ *   </fieldset>
+ * A star is lit when its own input or a later one is checked (`:has()`; where
+ * it is missing only the chosen star lights). The pointer previews. Locals
+ * `--iv-rating-fill` is the state each star resolves to.
+ *
+ * Display — a read-only score drawn by a mask over a fill:
+ *   <span class="iv-rating-display" role="img" aria-label="4.5 out of 5" style="--iv-rating-value: 4.5"></span>
+ *
+ * Locals: --iv-rating-size --iv-rating-color --iv-rating-off --iv-rating-value --iv-rating-max
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-rating,
+.iv-rating-display {
+  --iv-rating-size: 1.5rem;
+  --iv-rating-color: var(--iv-color-warning);
+  --iv-rating-off: color-mix(in oklab, var(--iv-color-border-strong) 70%, transparent);
+  --iv-rating-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.6l2.9 6 6.5.8-4.8 4.5 1.2 6.5L12 17.2l-5.8 3.2 1.2-6.5-4.8-4.5 6.5-.8z' stroke='%23000' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.iv-rating {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.125rem;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.iv-rating__legend {
+  inline-size: 100%;
+  margin-block-end: var(--iv-space-2);
+  padding: 0;
+  font-size: var(--iv-text-sm);
+  font-weight: var(--iv-weight-medium);
+}
+
+/* The radios stay in the tree, the tab order and the form. */
+.iv-rating__input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.iv-rating__star {
+  display: inline-block;
+  inline-size: var(--iv-rating-size);
+  block-size: var(--iv-rating-size);
+  padding: 0;
+  background-color: var(--iv-rating-fill, var(--iv-rating-off));
+  -webkit-mask: var(--iv-rating-star) center / contain no-repeat;
+  mask: var(--iv-rating-star) center / contain no-repeat;
+  cursor: pointer;
+  transition:
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    scale var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* Lit: the chosen star and every star before it; the pointer previews up to
+   the hovered star. The four states only set `--iv-rating-fill`, at (0,0,0)
+   through `:where()`, so they rank by source order: chosen, then the preview
+   switching everything off, then the preview lighting up to the pointer. */
+:where(.iv-rating__input:checked + .iv-rating__star) {
+  --iv-rating-fill: var(--iv-rating-color);
+}
+
+:where(.iv-rating__star:has(~ .iv-rating__input:checked)) {
+  --iv-rating-fill: var(--iv-rating-color);
+}
+
+@media (hover: hover) {
+  :where(.iv-rating:hover .iv-rating__star) {
+    --iv-rating-fill: var(--iv-rating-off);
+  }
+
+  :where(.iv-rating__star:hover) {
+    --iv-rating-fill: var(--iv-rating-color);
+  }
+
+  :where(.iv-rating__star:has(~ .iv-rating__star:hover)) {
+    --iv-rating-fill: var(--iv-rating-color);
+  }
+
+  .iv-rating__star:hover {
+    scale: 1.12;
+  }
+}
+
+/* A mask would clip an outline around a star, so the focus ring goes round
+   the group (as for any radio group) and the focused star steps forward. */
+:where(.iv-rating):has(:focus-visible) {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: var(--iv-focus-offset);
+  border-radius: var(--iv-radius-sm);
+}
+
+.iv-rating__input:focus-visible + * {
+  scale: 1.18;
+}
+
+.iv-rating__input:disabled + * {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.iv-rating--sm,
+.iv-rating-display.iv-rating--sm {
+  --iv-rating-size: 1rem;
+}
+
+.iv-rating--lg {
+  --iv-rating-size: 2rem;
+}
+
+/* Display ------------------------------------------------------------------ */
+
+.iv-rating-display {
+  --iv-rating-value: 0;
+  --iv-rating-max: 5;
+
+  display: inline-block;
+  inline-size: calc(var(--iv-rating-size) * var(--iv-rating-max));
+  block-size: var(--iv-rating-size);
+  vertical-align: middle;
+  background-image: linear-gradient(
+    to right,
+    var(--iv-rating-color) calc(var(--iv-rating-value) / var(--iv-rating-max) * 100%),
+    var(--iv-rating-off) 0
+  );
+  -webkit-mask: var(--iv-rating-star) 0 0 / var(--iv-rating-size) var(--iv-rating-size) repeat-x;
+  mask: var(--iv-rating-star) 0 0 / var(--iv-rating-size) var(--iv-rating-size) repeat-x;
+}
+
+:where([dir="rtl"]) .iv-rating-display {
+  background-image: linear-gradient(
+    to left,
+    var(--iv-rating-color) calc(var(--iv-rating-value) / var(--iv-rating-max) * 100%),
+    var(--iv-rating-off) 0
+  );
+}
+
+/* Forced colours: masks keep working, the fill takes system colours. */
+@media (forced-colors: active) {
+  .iv-rating__star,
+  .iv-rating-display {
+    --iv-rating-off: GrayText;
+    --iv-rating-color: Highlight;
+
+    forced-color-adjust: none;
+  }
+
+  :where(.iv-rating):has(:focus-visible) {
+    outline-color: Highlight;
+  }
+}

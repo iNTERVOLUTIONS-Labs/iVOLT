@@ -16,7 +16,7 @@ try {
   const packOut = JSON.parse(run("npm", ["pack", "--json", "--pack-destination", tmp], pkgDir));
   const tarball = join(tmp, packOut[0].filename);
   const files = packOut[0].files.map((f) => f.path);
-  for (const must of ["dist/css/ivolt.css", "dist/css/ivolt.min.css", "dist/css/core.min.css", "dist/js/index.js", "dist/js/auto.js", "dist/js/ivolt.iife.min.js", "dist/types/index.d.ts", "dist/tokens/tokens.json", "LICENSE", "README.md"]) {
+  for (const must of ["dist/css/ivolt.css", "dist/css/ivolt.min.css", "dist/css/core.min.css", "dist/js/index.js", "dist/js/auto.js", "dist/js/ivolt.iife.min.js", "dist/types/index.d.ts", "dist/types/events.d.ts", "dist/js/auto.min.js", "dist/ivolt.manifest.json", "dist/vscode.html-data.json", "dist/tokens/tokens.json", "LICENSE", "README.md"]) {
     if (!files.includes(must)) throw new Error(`tarball missing ${must}`);
   }
   if (files.some((f) => f.startsWith("src/") || f.startsWith("fixtures/"))) throw new Error("tarball must not ship src/ or fixtures/");
@@ -34,6 +34,15 @@ try {
     const css = import.meta.resolve("@intervolutions/ivolt/css/ivolt.css");
     console.log(JSON.stringify({ ok: true, version: m.version, css }));
   `);
+  // 1b) 1.1 subpaths and generated artefacts resolve from the tarball.
+  writeFileSync(join(tmp, "subpaths.mjs"), `
+    const c = await import("@intervolutions/ivolt/copy");
+    const tt = await import("@intervolutions/ivolt/theme-transition");
+    if (typeof c.Copy !== "function" || typeof tt.setThemeWithTransition !== "function") throw new Error("1.1 subpaths missing");
+    for (const sub of ["@intervolutions/ivolt/auto.min", "@intervolutions/ivolt/manifest.json", "@intervolutions/ivolt/vscode.html-data.json"]) import.meta.resolve(sub);
+    console.log("ok");
+  `);
+  run(process.execPath, ["subpaths.mjs"], tmp);
   const ssr = JSON.parse(run(process.execPath, ["ssr.mjs"], tmp));
   if (!ssr.css.endsWith("/dist/css/ivolt.css")) throw new Error("css export did not resolve");
 

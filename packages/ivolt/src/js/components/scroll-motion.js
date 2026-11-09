@@ -34,6 +34,9 @@ import { rememberStyle, restoreStyles } from "../core/style.js";
  */
 
 const PARALLAX_SELECTOR = ".iv-parallax";
+
+/** The box a layer moves inside; measured instead of the moving layer. */
+const FRAME_SELECTOR = ".iv-parallax-frame";
 const VIEW_PROPERTY = "--iv-view";
 const SCROLL_PROPERTY = "--iv-scroll";
 const NATIVE_QUERY = "animation-timeline: view()";
@@ -233,24 +236,39 @@ export class ScrollMotion extends IvComponent {
     const doc = this._element.ownerDocument;
     const scroller = doc.scrollingElement || doc.documentElement;
     const height = view.innerHeight || (scroller ? scroller.clientHeight : 0);
+    // Every read happens before the first write: writing a property between
+    // two reads invalidates style and forces a layout per layer. A layer is
+    // measured by its frame, because its own box is the translated one and
+    // would feed the last frame's offset back into this one.
+    const targets = this._reduced ? [] : this._targets();
+    const boxes = targets.map((el) => (el.closest(FRAME_SELECTOR) || el).getBoundingClientRect());
     if (scroller) {
       const travel = scroller.scrollHeight - scroller.clientHeight;
       const progress = travel > 0 ? unit(scroller.scrollTop / travel) : 0;
-      rememberStyle(this._styles, this._element);
-      /** @type {HTMLElement} */ (this._element).style.setProperty(
-        SCROLL_PROPERTY,
-        round(progress)
-      );
+      this._write(/** @type {HTMLElement} */ (this._element), SCROLL_PROPERTY, round(progress));
     }
-    if (this._reduced) return;
-    for (const el of this._targets()) {
-      const rect = el.getBoundingClientRect();
+    targets.forEach((el, i) => {
+      const rect = boxes[i];
       const span = height + rect.height;
       const progress = span > 0 ? unit((height - rect.top) / span) : 0.5;
-      rememberStyle(this._styles, el);
-      el.style.setProperty(VIEW_PROPERTY, round(progress));
+      this._write(el, VIEW_PROPERTY, round(progress));
       this._touched.add(el);
-    }
+    });
+  }
+
+  /**
+   * Writes a property unless it already holds that value, so a scroll that
+   * moves nothing invalidates no style.
+   *
+   * @param {HTMLElement} el Element to write on.
+   * @param {string} name Custom property.
+   * @param {string} value New value.
+   * @returns {void}
+   */
+  _write(el, name, value) {
+    if (el.style.getPropertyValue(name) === value) return;
+    rememberStyle(this._styles, el);
+    el.style.setProperty(name, value);
   }
 
   /**

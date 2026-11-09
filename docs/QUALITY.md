@@ -28,6 +28,8 @@ Coste medido por módulo en v0.3 (2026-09-14, `esbuild --minify`, gzip 9, sin el
 
 Nota v0.2 (2026-09-14): con Combobox el JS agrupado pasa de 7,65 a 10,02 KiB gzip y la data table se añade en el mismo ciclo; los presupuestos no cambian (≤ 18 KiB JS, ≤ 30 KiB CSS) y `npm run sizes` sigue siendo la única fuente de cifras.
 
+Ciclo 1.1 «Spark» (2026-11-09, ADR-053/055): `ivolt.min.css` 32,1 → ≈ 38,6 KiB (trece familias CSS nuevas y el tema de un color), `core.min.css` 3,45 → 3,5, agrupado JS 45,2 → 45,6 KiB solo por correcciones; el JS nuevo (`copy` ≈ 1,5 KiB, `theme-transition`) es subruta y `dist/js/auto.min.js` (agrupado + `Copy`) queda fuera del presupuesto. Cifras exactas: `npm run sizes`.
+
 Reglas: se mide cada artefacto por separado; el tarball tiene otra cifra. No se cumple un presupuesto eliminando estados accesibles ni excluyendo archivos necesarios. Si un objetivo es inviable, el informe muestra el coste por módulo, propone decisión y se registra la desviación en `DECISIONS.md`; el umbral no cambia en silencio.
 
 Barrido de desbordamiento (revisión adversaria, 2026-09-14): 70 rutas × 6 anchos × 3 motores; 46 combinaciones con desbordamiento antes, 0 después (`tests/browser/qa-docs-shell.spec.js`, `qa-docs-css.spec.js`); fixtures de familias sin JS bajo axe, zoom 200 %, 320 px, RTL y colores forzados.

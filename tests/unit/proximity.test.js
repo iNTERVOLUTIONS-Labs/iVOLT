@@ -116,6 +116,33 @@ describe("Proximity", () => {
       px.destroy();
     });
 
+    // 1.1: every target was measured right after the previous one was written (a forced
+    // layout per card per frame), the subtree was queried on every frame, and a pointer
+    // that kept still inside a card rewrote the same three values each time.
+    it("reads every rectangle before the first write, and queries the targets once", () => {
+      const log = [];
+      for (const id of ["near-a", "near-b"]) {
+        const el = place(id, { left: id === "near-a" ? 100 : 320, top: 100, width: 200, height: 100 });
+        const rect = el.getBoundingClientRect();
+        Object.defineProperty(el, "getBoundingClientRect", { configurable: true, value: () => (log.push("read"), rect) });
+        const set = el.style.setProperty.bind(el.style);
+        el.style.setProperty = (name, value) => (log.push("write"), set(name, value));
+      }
+      const root = /** @type {HTMLElement} */ (document.getElementById("px"));
+      const px = new Proximity(root);
+      const query = vi.spyOn(root, "querySelectorAll");
+      move(root, 310, 150);
+      expect(log.indexOf("write")).toBeGreaterThan(log.lastIndexOf("read"));
+      move(root, 312, 150);
+      move(root, 314, 150);
+      expect(query.mock.calls.length).toBeLessThanOrEqual(1);
+      // Same position again: nothing changes, nothing is written.
+      const writes = log.filter((e) => e === "write").length;
+      move(root, 314, 150);
+      expect(log.filter((e) => e === "write").length).toBe(writes);
+      px.destroy();
+    });
+
     it("decays linearly with the distance to the rectangle", () => {
       place("near-a", { left: 100, top: 100, width: 200, height: 100 });
       place("near-b", { left: 600, top: 100, width: 200, height: 100 });

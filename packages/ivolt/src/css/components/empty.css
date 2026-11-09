@@ -1,0 +1,113 @@
+/* iVOLT — components/empty
+ * Empty state: what a list, a table or a search shows when there is nothing
+ * yet, and what to do about it. Centred, with a halo of the brand behind the
+ * icon so the moment reads as designed, not broken.
+ *
+ *   <div class="iv-empty">
+ *     <div class="iv-empty__icon" aria-hidden="true"><svg …/></div>
+ *     <h3 class="iv-empty__title">No invoices yet</h3>
+ *     <p class="iv-empty__text">…</p>
+ *     <div class="iv-empty__actions">…</div>
+ *   </div>
+ *
+ * Locals: --iv-empty-tone
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-empty {
+  --iv-empty-tone: var(--iv-color-primary);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--iv-space-3);
+  padding-block: var(--iv-space-12);
+  padding-inline: var(--iv-space-6);
+  text-align: center;
+}
+
+/* Bordered: the dashed frame of a drop zone or an unfilled slot. */
+.iv-empty--bordered {
+  border: var(--iv-border-width) dashed var(--iv-color-border-strong);
+  border-radius: var(--iv-radius-lg);
+  background-color: color-mix(in srgb, var(--iv-color-surface) 60%, transparent);
+}
+
+.iv-empty--compact {
+  gap: var(--iv-space-2);
+  padding-block: var(--iv-space-6);
+}
+
+.iv-empty__icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 4rem;
+  block-size: 4rem;
+  margin-block-end: var(--iv-space-2);
+  color: var(--iv-empty-tone);
+  background-color: color-mix(in oklab, var(--iv-empty-tone) 10%, var(--iv-color-surface-raised));
+  border: var(--iv-border-width) solid color-mix(in oklab, var(--iv-empty-tone) 24%, transparent);
+  border-radius: var(--iv-radius-lg);
+  box-shadow:
+    inset 0 1px 0 var(--iv-glass-highlight),
+    0 10px 30px -8px color-mix(in oklab, var(--iv-empty-tone) 45%, transparent);
+}
+
+/* Two soft rings behind the plate: depth without a pattern. */
+.iv-empty__icon::before {
+  content: "";
+  position: absolute;
+  inset: -0.875rem;
+  z-index: -1;
+  border-radius: calc(var(--iv-radius-lg) + 0.875rem);
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--iv-empty-tone) 16%, transparent), transparent);
+}
+
+.iv-empty__icon svg {
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+}
+
+.iv-empty--compact .iv-empty__icon {
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border-radius: var(--iv-radius-md);
+}
+
+.iv-empty .iv-empty__title {
+  margin: 0;
+  font-size: var(--iv-text-lg);
+  font-weight: var(--iv-weight-bold);
+  line-height: var(--iv-leading-snug);
+  letter-spacing: var(--iv-tracking-tight);
+  text-wrap: balance;
+}
+
+.iv-empty .iv-empty__text {
+  max-inline-size: 42ch;
+  margin: 0;
+  font-size: var(--iv-text-sm);
+  color: var(--iv-color-text-muted);
+  text-wrap: pretty;
+}
+
+.iv-empty__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--iv-space-3);
+  margin-block-start: var(--iv-space-3);
+}
+
+@media (forced-colors: active) {
+  .iv-empty__icon {
+    border-color: CanvasText;
+    box-shadow: none;
+  }
+
+  .iv-empty__icon::before {
+    display: none;
+  }
+}
