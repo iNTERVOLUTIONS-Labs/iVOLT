@@ -135,10 +135,10 @@ test.describe("Site shell", () => {
   test("the published CSP hash still matches the one inline script the site ships", async ({ page, request }) => {
     const { createHash } = await import("node:crypto");
     const home = await (await request.get(DOCS + "/")).text();
-    // A JSON-LD block is a data block, not a script block: it never executes and CSP does not
-    // hash it. Only executable inline scripts count against the published hash.
+    // A JSON-LD block (or the JSON block of UI strings, 1.1) is a data block, not a script block:
+    // it never executes and CSP does not hash it. Only executable inline scripts count.
     const inline = [...home.matchAll(/<script(?![^>]*\ssrc=)[^>]*>([\s\S]*?)<\/script>/g)]
-      .filter((m) => !/type=["']application\/ld\+json["']/.test(m[0]))
+      .filter((m) => !/type=["']application\/(ld\+)?json["']/.test(m[0]))
       .map((m) => m[1]).filter((s) => s.trim());
     expect(inline.length, "the site ships exactly one executable inline script").toBe(1);
     const hash = "sha256-" + createHash("sha256").update(inline[0]).digest("base64");

@@ -26,6 +26,12 @@ const html = readFixture(name);
 // getting started and the home snippet tell a consumer to link — and 50 KB less per frame.
 const layered = "/examples/ivolt/css/ivolt.min.css";
 const flat = "/examples/ivolt/css/ivolt.flat.min.css";
+// A fixture that is pure CSS does not need the script: 46 KB of IIFE per frame, four or five
+// frames on a component page, was most of the main-thread time of a mobile visit. The script
+// still goes in whenever the markup names a component or a declarative trigger, and whenever it
+// uses a class whose CSS waits for data-iv-js (the boot script sets that marker either way, so a
+// frame without the script would hold those elements in their pre-script state for ever).
+const needsJs = /data-iv-component=|data-iv-(open|toggle|close)\b|iv-(carousel|datatable|megamenu|navbar|reveal|stepper|text-reveal)\b/.test(html);
 ---
 <!DOCTYPE html>
 <html lang="en" dir="ltr" class="iv-root" data-iv-theme="dark" data-base-lang="en">
@@ -39,7 +45,7 @@ const flat = "/examples/ivolt/css/ivolt.flat.min.css";
   {/* After the links on purpose: the boot script swaps the sheet for the flat one before
       the first paint, so the element it reaches for has to be parsed already. */}
   <script is:inline src="/stage/boot.js"></script>
-  <script is:inline src="/examples/ivolt/js/ivolt.iife.min.js"></script>
+  {needsJs && <script is:inline src="/examples/ivolt/js/ivolt.iife.min.js"></script>}
 </head>
 <body class="stage-body">
   <main class="stage-main" id="stage" set:html={html}></main>

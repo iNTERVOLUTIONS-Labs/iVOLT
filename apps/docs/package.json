@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/prebuild.mjs && astro build && pagefind --site dist",
+    "build": "node scripts/prebuild.mjs && astro build && pagefind --site dist && node ../../scripts/build-llms.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@astrojs/sitemap": "^3.7.4",
+    "@resvg/resvg-js": "^2.6.2",
     "astro": "^7.3.2",
     "pagefind": "^1.5.2"
   }

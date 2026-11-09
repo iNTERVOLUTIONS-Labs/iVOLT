@@ -15,7 +15,11 @@ test.describe("Live stage", () => {
       expect(html, name).toContain("/examples/ivolt/css/ivolt.min.css"); // round 3: the stage links the minified sheet, like the snippet the site publishes
       // Round 3: the published script in its single-file form, one request instead of the 37 of
       // the unminified module graph; boot.js sets data-iv-js and calls IVOLT.init on DOMContentLoaded.
-      expect(html, name).toContain("/examples/ivolt/js/ivolt.iife.min.js");
+      // 1.1: only a fixture that has something to initialise loads it; a pure-CSS one (the button
+      // variants, the nested theme scopes) is the stylesheet alone, as a consumer would ship it.
+      const css = ["button/variants", "theme/nested"].includes(name);
+      if (css) expect(html, name).not.toContain("/examples/ivolt/js/ivolt.iife.min.js");
+      else expect(html, name).toContain("/examples/ivolt/js/ivolt.iife.min.js");
       expect(html, name).not.toContain("/examples/ivolt/js/auto.js");
       expect(html, name).toContain("/stage/boot.js");
     }
