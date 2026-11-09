@@ -6,7 +6,7 @@
  * @module core/lifecycle
  */
 
-import { IvComponent, isElement } from "./component.js";
+import { IvComponent, isElement, resolveRoot } from "./component.js";
 import { getInstances } from "./registry.js";
 
 /**
@@ -160,7 +160,8 @@ function createTriggerHandler() {
  * @param {Array<typeof IvComponent>} [components] Component classes to use.
  * @returns {IvComponent[]} Newly created instances.
  */
-export function initComponents(root = document, components = []) {
+export function initComponents(root, components = []) {
+  root = resolveRoot(root);
   /** @type {IvComponent[]} */
   const created = [];
   for (const Component of components) {
@@ -182,7 +183,8 @@ export function initComponents(root = document, components = []) {
  * @param {ParentNode} [root] Subtree to clean up. Defaults to `document`.
  * @returns {void}
  */
-export function destroyComponents(root = document) {
+export function destroyComponents(root) {
+  root = resolveRoot(root);
   const isDocument = typeof document !== "undefined" && root === document;
   /** @type {Element[]} */
   const targets = [];

@@ -103,7 +103,7 @@ export class Dropdown extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Dropdown[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Dropdown[]} */ (super.initAll(root));
   }
 

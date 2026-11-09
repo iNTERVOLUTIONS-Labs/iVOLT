@@ -716,3 +716,12 @@ Cada fila: clases públicas, HTML servido y locales públicos. Todos llevan fixt
 - `dist/vscode.html-data.json` (export `./vscode.html-data.json`): `customData` de VS Code generado del manifiesto; autocompleta los atributos `data-iv-*` con sus valores conocidos.
 - `dist/types/events.d.ts`: mapa tipado de los eventos `iv:*` (`IvEventMap`) y aumentación de `HTMLElementEventMap`; `dist/types/global.d.ts` declara `window.IVOLT` para la IIFE.
 - `package.json`: `style` (`dist/css/ivolt.min.css`), `unpkg` y `jsdelivr` (`dist/js/ivolt.iife.min.js`).
+
+### 9.6 Enmienda 1.1.2 (parche de accesibilidad; marcado generado)
+
+Ninguna opción, clase, token ni evento nuevo o retirado: solo cambia marcado que genera `init` (`STABILITY.md` §2: una corrección de accesibilidad puede cambiar marcado generado y sigue siendo parche). Prueba en tres motores: `tests/browser/a11y-1-1-2.spec.js`.
+
+- `Carousel` (§8.5, fila «Tras `init`»): además de `tabindex="0"`, el `__viewport` recibe `role="group"` y `aria-labelledby` hacia el `__dots` cuando lleva `aria-label`/`aria-labelledby` (en el HTML servido, «Slides»); si no, hacia la raíz del carrusel. Se genera un `id` si falta. Un `aria-label` o `aria-labelledby` del autor en el viewport se respeta. Sin `__viewport` (el carril hace de viewport) no se añade nada. `destroy` lo retira.
+- `Toast` (§6 y §8.2): la región es la única región viva (`aria-live="polite"`, que `init` ya añadía); los items `info`, `success` y `warning` ya no llevan `role="status"`. Los `danger` siguen con `role="alert"` y añaden `aria-live="assertive"` (raíz viva propia). La fila de §6 «región `role="status"` (info) o `role="alert"` (crítico)» se lee así.
+- `Datepicker` (§8.12, fila «Tras `init`» y fila CSS): el botón `__day` pasa a ser la celda (`role="gridcell"`, rol permitido en `<button>`) y lleva `aria-selected="true"` solo el día elegido (los demás sin el atributo); el `<td>` pasa a `role="presentation"` y deja de llevar `aria-selected`. El selector del estado elegido es `.iv-datepicker__day[aria-selected="true"]` (antes `[aria-selected="true"] > .iv-datepicker__day`), también en colores forzados.
+- `init(root?)`, `destroy(root?)` y `Component.initAll(root?)` (§5.2): sin `root` y sin `document` lanzan `IvError` `missing-target`; un `root` que no es un nodo consultable lanza `IvError` `invalid-element`. Antes, `ReferenceError` y `TypeError`.

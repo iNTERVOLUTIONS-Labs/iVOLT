@@ -151,7 +151,7 @@ export class Countup extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Countup[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Countup[]} */ (super.initAll(root));
   }
 

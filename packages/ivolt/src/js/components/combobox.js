@@ -219,7 +219,7 @@ export class Combobox extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Combobox[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Combobox[]} */ (super.initAll(root));
   }
 

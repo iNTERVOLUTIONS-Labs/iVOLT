@@ -148,7 +148,7 @@ export class Navbar extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Navbar[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Navbar[]} */ (super.initAll(root));
   }
 

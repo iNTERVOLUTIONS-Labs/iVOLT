@@ -305,7 +305,7 @@ describe("Datepicker: opening and focus", () => {
     dp.open();
     expect(document.activeElement).toBe(day(el, "2026-03-04"));
     expect(cursor(el)).toBe("2026-03-04");
-    expect(day(el, "2026-03-04").parentElement.getAttribute("aria-selected")).toBe("true");
+    expect(day(el, "2026-03-04").getAttribute("aria-selected")).toBe("true");
     dp.destroy();
 
     mount(EMPTY);
@@ -601,8 +601,8 @@ describe("Datepicker: selection", () => {
     expect(detail[0].date).toBeInstanceOf(Date);
     expect(dp.isOpen).toBe(false);
     dp.open();
-    expect(day(el, "2026-03-18").parentElement.getAttribute("aria-selected")).toBe("true");
-    expect(day(el, "2026-03-04").parentElement.getAttribute("aria-selected")).toBe("false");
+    expect(day(el, "2026-03-18").getAttribute("aria-selected")).toBe("true");
+    expect(day(el, "2026-03-04").hasAttribute("aria-selected")).toBe(false);
     dp.destroy();
   });
 
@@ -682,7 +682,7 @@ describe("Datepicker: selection", () => {
     );
     dp.open();
     expect(cursor(el)).toBe("2027-11-23");
-    expect(day(el, "2027-11-23").parentElement.getAttribute("aria-selected")).toBe("true");
+    expect(day(el, "2027-11-23").getAttribute("aria-selected")).toBe("true");
     dp.destroy();
   });
 
@@ -816,5 +816,25 @@ describe("Datepicker: focus after a keyboard selection", () => {
     expect(picker.isOpen).toBe(false);
     expect(document.activeElement).toBe(document.querySelector(".iv-datepicker__toggle"));
     picker.destroy();
+  });
+
+  it("puts the selected state on the focused day, which is the grid cell (1.1.2)", () => {
+    mount(BOUNDED);
+    const { dp, el } = setup({ locale: "en-US" });
+    dp.open();
+    const chosen = day(el, "2026-03-04");
+    expect(document.activeElement).toBe(chosen);
+    expect(chosen.getAttribute("role")).toBe("gridcell");
+    expect(chosen.getAttribute("aria-selected")).toBe("true");
+    expect(chosen.parentElement?.getAttribute("role")).toBe("presentation");
+    expect(chosen.parentElement?.hasAttribute("aria-selected")).toBe(false);
+    expect(day(el, "2026-03-05").getAttribute("role")).toBe("gridcell");
+    expect(day(el, "2026-03-05").hasAttribute("aria-selected")).toBe(false);
+    expect(el.querySelectorAll('[aria-selected="true"]').length).toBe(1);
+    day(el, "2026-03-18").click();
+    dp.open();
+    expect(day(el, "2026-03-18").getAttribute("aria-selected")).toBe("true");
+    expect(el.querySelectorAll('[aria-selected="true"]').length).toBe(1);
+    dp.destroy();
   });
 });

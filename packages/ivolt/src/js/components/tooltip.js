@@ -25,7 +25,7 @@
  * @module components/tooltip
  */
 
-import { IvComponent, isElement } from "../core/component.js";
+import { IvComponent, isElement, resolveRoot } from "../core/component.js";
 import { emit } from "../core/events.js";
 import { KEY_ESCAPE } from "../core/keys.js";
 
@@ -142,7 +142,8 @@ export class Tooltip extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Tooltip[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
+    root = resolveRoot(root);
     /** @type {Tooltip[]} */
     const generated = [];
     const declared =

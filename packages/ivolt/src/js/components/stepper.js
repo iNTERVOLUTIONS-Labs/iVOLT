@@ -127,7 +127,7 @@ export class Stepper extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Stepper[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Stepper[]} */ (super.initAll(root));
   }
 

@@ -225,7 +225,7 @@ export class DataTable extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {DataTable[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {DataTable[]} */ (super.initAll(root));
   }
 

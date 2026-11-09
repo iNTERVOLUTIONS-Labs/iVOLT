@@ -1,6 +1,6 @@
 {
   "name": "@intervolutions/ivolt",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Accessible CSS framework and design system: semantic components, design tokens, light and dark themes and optional JavaScript. No runtime dependencies, no build step.",
   "license": "MIT",
   "type": "module",

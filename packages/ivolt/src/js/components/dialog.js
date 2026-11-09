@@ -88,7 +88,7 @@ export class Dialog extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Dialog[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Dialog[]} */ (super.initAll(root));
   }
 
