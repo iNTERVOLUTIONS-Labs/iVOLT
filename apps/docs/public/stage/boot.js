@@ -70,7 +70,9 @@
       // leaves it out of the body's height, so the frame shrank back under it, the calendar was
       // capped again, asked again, and the frame breathed in and out for ever.
       var inPage = cs.position === "absolute";
-      need = Math.max(need, squeezed && short > 1 ? vh + short + air : 0, r.bottom > vh + 1 || inPage ? r.bottom + scrollY + 16 : 0);
+      // Its whole content counts, not the box it was capped to: the calendar caps itself to the
+      // room it found when it opened, and asking for the capped height only ever confirmed it.
+      need = Math.max(need, squeezed && short > 1 ? vh + short + air : 0, r.bottom > vh + 1 ? r.bottom + scrollY + 16 : 0, inPage ? r.top + scrollY + Math.max(el.scrollHeight, r.height) + 16 : 0);
     }
     return Math.ceil(need);
   }
@@ -131,7 +133,12 @@
       requestAnimationFrame(function () { report(true); });
       setTimeout(function () { report(true); }, 80);
       setTimeout(function () { report(true); }, 400);
+      setTimeout(function () { report(false); }, 1000);
     }
+    // When the frame grows, an overlay placed against its old bottom edge places itself again
+    // (the calendar lifts its height cap): measure once more after that, or the frame stops one
+    // step short of what the overlay now needs.
+    addEventListener("resize", function () { if (overlayHeight()) settle(); });
     ["iv:opened", "iv:closed", "iv:open", "iv:close", "toggle", "close"].forEach(function (type) {
       document.addEventListener(type, settle, true);
     });
