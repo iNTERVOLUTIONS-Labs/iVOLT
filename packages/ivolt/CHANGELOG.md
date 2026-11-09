@@ -23,7 +23,7 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 - Composited motion: the skeleton sweep is a translated layer instead of an animated background position; the switch thumb slides with `translate`; the floating label rises with `scale`/`translate` instead of animating `font-size` and `inset-block-start`.
 - `Popover` without anchor positioning follows a scroll of the page or of any container, once per frame.
 - Layer-free sheet, again: `code`, `kbd`, `samp`, `pre` and `hr` of the base weigh (0,1,0) too, so component rules on those elements win by order.
-- `Segmented`: a badge inside the filled brand segment takes the segment's ink; in dark it measured light green on light blue.
+- `Segmented`: the group keeps its own width inside `iv-stack` or a grid cell (it stretched to the full row); `--block` still fills it. A badge inside the filled brand segment takes the segment's ink; in dark it measured light green on light blue.
 - Modal scroll lock in CSS: while an `.iv-dialog` or `.iv-drawer` is modal the root stops scrolling; dialog panels and the drawer body contain overscroll.
 
 ## 1.0.0 — 2026-09-16 (npm, tag `latest`)

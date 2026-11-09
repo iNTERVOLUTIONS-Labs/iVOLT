@@ -23,6 +23,10 @@
   flex-wrap: wrap;
   gap: 0.125rem;
   min-inline-size: 0;
+  /* inline-flex alone does not stop a flex column (iv-stack) or a grid cell
+     from stretching the group to the full row. */
+  align-self: start;
+  justify-self: start;
   margin: 0;
   padding: var(--iv-segmented-pad);
   background-color: color-mix(in srgb, var(--iv-color-surface) 80%, transparent);
@@ -33,6 +37,8 @@
 
 .iv-segmented--block {
   display: flex;
+  align-self: stretch;
+  justify-self: stretch;
 }
 
 .iv-segmented--block .iv-segmented__item {
