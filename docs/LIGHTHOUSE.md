@@ -396,3 +396,13 @@ Lighthouse 13.4.1 (devDependency del repositorio), Chromium 1252 `--headless=new
 | `/blocks` | escritorio | — | 100 | 100 | 100 | 100 | 0,5 s | 0 ms | 0 |
 
 Qué movió la aguja: el script del layout pasó de 48 KB gzip a 11 KB (solo diálogo, megamenú y tema; el resto de componentes se carga por página), los escenarios de fixtures solo CSS ya no cargan el IIFE de 46 KB (46 de 93), y las capturas de las recetas salen en AVIF/WebP con `srcset`. Una pasada de `/es` en móvil dio accesibilidad 97 por dos elementos a mitad de su entrada (`docs-reveal`, opacidad en transición); la repetición dio 100. Pendiente: el CLS de `/components/button` (0,078) es el mismo de 1.0, el marco del primer escenario reserva 16 rem y encoge al recibir su altura; reservar la altura medida exigiría medirla en el build.
+
+## 1.1 «Spark» — pista W2: páginas de las familias nuevas (2026-11-09)
+
+Lighthouse 13.4.1, Chromium de Playwright `--headless=new --no-sandbox`, `astro preview` del build de la rama `feat/ivolt-1.1-w2`, preajuste móvil, una pasada por ruta. Carga media 7,6 → 5,6 en 6 núcleos durante la tanda (otros procesos en la máquina).
+
+| Ruta | Preajuste | Rendimiento | Accesibilidad | Buenas prácticas | SEO | LCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|---|
+| `/` (con la banda «Nuevo en 1.1») | móvil | 96 | 100 | 100 | 100 | 2,4 s | 60 ms | 0,006 |
+| `/components/segmented` | móvil | 99 | 100 | 100 | 100 | 1,8 s | 20 ms | 0,045 |
+| `/foundations/tokens-and-themes` (sección de un color) | móvil | 97 | 100 | 100 | 100 | 2,0 s | 130 ms | 0 |
