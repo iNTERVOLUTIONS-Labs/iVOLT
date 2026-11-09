@@ -4,6 +4,9 @@
   "description": "Accessible CSS framework and design system: semantic components, design tokens, light and dark themes and optional JavaScript. No runtime dependencies, no build step.",
   "license": "MIT",
   "type": "module",
+  "style": "./dist/css/ivolt.min.css",
+  "unpkg": "./dist/js/ivolt.iife.min.js",
+  "jsdelivr": "./dist/js/ivolt.iife.min.js",
   "files": [
     "dist",
     "LICENSE",
@@ -12,6 +15,7 @@
   "sideEffects": [
     "**/*.css",
     "./dist/js/auto.js",
+    "./dist/js/auto.min.js",
     "./dist/js/ivolt.iife.min.js"
   ],
   "exports": {
@@ -123,16 +127,30 @@
       "types": "./dist/types/components/countup.d.ts",
       "default": "./dist/js/components/countup.js"
     },
+    "./copy": {
+      "types": "./dist/types/components/copy.d.ts",
+      "default": "./dist/js/components/copy.js"
+    },
+    "./theme-transition": {
+      "types": "./dist/types/theme-transition.d.ts",
+      "default": "./dist/js/theme-transition.js"
+    },
+    "./auto.min": {
+      "types": "./dist/types/auto.d.ts",
+      "default": "./dist/js/auto.min.js"
+    },
     "./iife": "./dist/js/ivolt.iife.min.js",
     "./css/*": "./dist/css/*",
     "./tokens.json": "./dist/tokens/tokens.json",
+    "./manifest.json": "./dist/ivolt.manifest.json",
+    "./vscode.html-data.json": "./dist/vscode.html-data.json",
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "node scripts/build-tokens.mjs && node scripts/build-utilities.mjs && node scripts/build-css.mjs && node scripts/build-js.mjs && node scripts/build-types.mjs",
+    "build": "node scripts/build-tokens.mjs && node scripts/build-utilities.mjs && node scripts/build-css.mjs && node scripts/build-js.mjs && node scripts/build-types.mjs && node scripts/build-manifest.mjs",
     "build:tokens": "node scripts/build-tokens.mjs",
     "build:css": "node scripts/build-utilities.mjs && node scripts/build-css.mjs",
-    "build:js": "node scripts/build-js.mjs && node scripts/build-types.mjs",
+    "build:js": "node scripts/build-js.mjs && node scripts/build-types.mjs && node scripts/build-manifest.mjs",
     "sizes": "node scripts/sizes.mjs"
   },
   "browserslist": [
@@ -164,7 +182,21 @@
     "zero-dependencies",
     "astro",
     "wordpress",
-    "rtl"
+    "rtl",
+    "css-components",
+    "utility-css",
+    "design-system-css",
+    "one-color-theming",
+    "oklch",
+    "color-mix",
+    "container-queries",
+    "view-transitions",
+    "tailwind-alternative",
+    "bootstrap-alternative",
+    "pico-alternative",
+    "no-javascript",
+    "vanilla-js",
+    "cdn"
   ],
   "engines": {
     "node": ">=22.0.0"
