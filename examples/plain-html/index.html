@@ -7,7 +7,11 @@
   <meta name="description" content="A starter page built with the iVOLT CSS framework from local prebuilt files: components, tokens, light and dark themes, no Node and no build step.">
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="ivolt/css/ivolt.min.css">
-  <script type="module" src="ivolt/js/auto.js"></script>
+  <!-- A classic script, not a module: browsers refuse to run modules from a page opened with a
+       double click (file://), and this page has to work straight out of the zip. The single file
+       defines IVOLT and waits; the line after it starts every component once the page is parsed. -->
+  <script src="ivolt/js/ivolt.iife.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () { IVOLT.init(document); });</script>
 </head>
 <body>
   <header class="iv-container iv-container--wide iv-cluster iv-u-justify-between iv-u-py-4">

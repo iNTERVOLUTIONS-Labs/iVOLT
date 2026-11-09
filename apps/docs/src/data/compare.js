@@ -18,6 +18,14 @@ export const kb = (n) => (n / 1024).toFixed(1);
 
 export const slugs = ["bootstrap", "tailwind", "pico", "bulma"];
 
+// The iVOLT side of every snippet is meant to be pasted as it stands, so it carries the real
+// addresses (the major version pinned, like the hero) and the one script that starts everything:
+// in 1.1.1 the Bootstrap one loaded the IIFE, which waits for IVOLT.init(), and its dialog
+// never opened. tests/browser/site-snippets.spec.js runs each of them.
+const CDN = "https://cdn.jsdelivr.net/npm/@intervolutions/ivolt@1/dist";
+const CSS_LINK = `<link rel="stylesheet" href="${CDN}/css/ivolt.min.css">`;
+const JS_TAG = `<${"script"} type="module" src="${CDN}/js/auto.min.js"></${"script"}>`;
+
 const ivoltRows = (lang) => {
   const css = file("ivolt", "css"), js = file("ivolt", "js"), core = file("ivolt", "classless");
   return { css, js, core };
@@ -117,14 +125,14 @@ export const competitors = {
   </div></div>
 </div>
 <script src="…/bootstrap.bundle.min.js"></script>`,
-      us: `<link rel="stylesheet" href="…/ivolt.min.css">
-<button class="iv-button iv-button--primary" data-iv-open="hi">Open</button>
-<dialog class="iv-dialog" id="hi" data-iv-component="dialog">
+      us: `${CSS_LINK}
+<button class="iv-button iv-button--primary" type="button" data-iv-open="hi">Open</button>
+<dialog class="iv-dialog" id="hi" data-iv-component="dialog" aria-label="Hello">
   <div class="iv-dialog__panel">
     <div class="iv-dialog__body">Hello</div>
   </div>
 </dialog>
-<script src="…/ivolt.iife.min.js"></script>`,
+${JS_TAG}`,
     },
   },
 
@@ -213,6 +221,7 @@ export const competitors = {
   focus-visible:outline-offset-2 focus-visible:outline-blue-600
   disabled:opacity-50 dark:bg-blue-500">Save</button>`,
       us: `<!-- one prebuilt stylesheet, no build step -->
+${CSS_LINK}
 <button class="iv-button iv-button--primary">Save</button>`,
     },
   },
@@ -298,7 +307,7 @@ export const competitors = {
   </article>
 </main>`,
       us: `<html class="iv-root" data-iv-theme="dark">
-<link rel="stylesheet" href="…/ivolt.min.css">
+${CSS_LINK}
 <main class="iv-container">
   <article class="iv-card"><div class="iv-card__body iv-stack">
     <h2>Sign in</h2>
@@ -391,7 +400,8 @@ export const competitors = {
   <li><a>Billing</a></li>
 </ul></div>
 <!-- switching panels: your own script -->`,
-      us: `<div class="iv-tabs" data-iv-component="tabs">
+      us: `${CSS_LINK}
+<div class="iv-tabs" data-iv-component="tabs">
   <div class="iv-tabs__list" aria-label="Account">
     <a class="iv-tabs__tab" href="#overview">Overview</a>
     <a class="iv-tabs__tab" href="#billing">Billing</a>
@@ -399,7 +409,8 @@ export const competitors = {
   <section class="iv-tabs__panel" id="overview">…</section>
   <section class="iv-tabs__panel" id="billing">…</section>
 </div>
-<!-- without JS: links to sections; with ivolt.iife.min.js: real tabs -->`,
+<!-- without JS: links to sections; with auto.min.js: real tabs -->
+${JS_TAG}`,
     },
   },
 };
