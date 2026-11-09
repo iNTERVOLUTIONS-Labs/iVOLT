@@ -110,3 +110,13 @@
 @media (prefers-reduced-motion: reduce) {
   .docs-oc__stage, .docs-oc__swatch { transition: none; }
 }
+
+/* The reader's own colour: a native colour field under the six swatches. While it is in use the
+   swatch ratios step aside for its own, measured live. */
+.docs-oc__custom { display: inline-flex; align-items: center; gap: var(--iv-space-2); margin-block-start: var(--iv-space-3); font-size: var(--iv-text-sm); cursor: pointer; }
+.docs-oc__custom[hidden] { display: none; }
+.docs-oc__custom input { inline-size: 2.75rem; block-size: 2.75rem; padding: 0; border: 1px solid var(--iv-color-border-strong); border-radius: var(--iv-radius-md); background: none; cursor: pointer; }
+.docs-oc__ratio--custom { display: none; }
+/* Doubled class: the swatch rules above carry a :has() with a checked radio and outrank a plain one. */
+.docs-oc.docs-oc.docs-oc[data-oc-mine] .docs-oc__ratio[data-for] { display: none; }
+.docs-oc.docs-oc.docs-oc[data-oc-mine] .docs-oc__ratio.docs-oc__ratio--custom { display: inline; }

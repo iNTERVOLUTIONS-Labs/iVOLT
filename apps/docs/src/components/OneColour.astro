@@ -31,8 +31,8 @@ const chain = [
   ["--iv-gradient-primary", es ? "degradado del botón" : "button gradient"],
 ];
 const L = es
-  ? { kicker: "Nuevo en 1.1 · lo más destacado", title: "Un color repinta todo el sistema.", lead: "Elige un primario. Botones con su degradado, anillos de foco, enlaces, insignias, progreso, interruptores, chips y texto degradado lo siguen, porque iVOLT 1.1 mezcla en CSS, con color-mix(), cada token que depende de él. Sin build, sin JavaScript, sin quince variables a mano.", legend: "Elige un color primario", chain: "Diez tokens, una sola semilla", measured: "Contraste medido (WCAG 2), el peor caso entre el texto sobre el botón (en reposo y bajo el puntero) y el color como enlace", light: "claro", dark: "oscuro", deploy: "Desplegar", preview: "Vista previa", beta: "Beta", nueva: "Nuevo", link: "Un enlace de texto", auto: "Despliegue automático", sample: "Controles de muestra: aquí no hacen nada.", grad: "Texto degradado", filter: "Filtro", progress: "Progreso de muestra, 64 por ciento", snippet: "Todo lo que hace falta" }
-  : { kicker: "New in 1.1 · the headline", title: "One colour repaints the whole system.", lead: "Pick a primary. Buttons and their gradient, focus rings, links, badges, progress, switches, chips and gradient text follow it, because iVOLT 1.1 mixes every token that depends on it in CSS, with color-mix(). No build, no JavaScript, no fifteen variables by hand.", legend: "Pick a primary colour", chain: "Ten tokens, one seed", measured: "Measured contrast (WCAG 2), worst case of the text on the button (at rest and on hover) and the colour as a link", light: "light", dark: "dark", deploy: "Deploy", preview: "Preview", beta: "Beta", nueva: "New", link: "A text link", auto: "Auto deploy", sample: "Sample controls: they do nothing here.", grad: "Gradient text", filter: "Filter", progress: "Sample progress, 64 percent", snippet: "All it takes" };
+  ? { kicker: "Nuevo en 1.1 · lo más destacado", title: "Un color repinta todo el sistema.", lead: "Elige un primario. Botones con su degradado, anillos de foco, enlaces, insignias, progreso, interruptores, chips y texto degradado lo siguen, porque iVOLT 1.1 mezcla en CSS, con color-mix(), cada token que depende de él. Sin build, sin JavaScript, sin quince variables a mano.", legend: "Elige un color primario", custom: "O el tuyo", customRatio: "tu color", chain: "Diez tokens, una sola semilla", measured: "Contraste medido (WCAG 2), el peor caso entre el texto sobre el botón (en reposo y bajo el puntero) y el color como enlace", light: "claro", dark: "oscuro", deploy: "Desplegar", preview: "Vista previa", beta: "Beta", nueva: "Nuevo", link: "Un enlace de texto", auto: "Despliegue automático", sample: "Controles de muestra: aquí no hacen nada.", grad: "Texto degradado", filter: "Filtro", progress: "Progreso de muestra, 64 por ciento", snippet: "Todo lo que hace falta" }
+  : { kicker: "New in 1.1 · the headline", title: "One colour repaints the whole system.", lead: "Pick a primary. Buttons and their gradient, focus rings, links, badges, progress, switches, chips and gradient text follow it, because iVOLT 1.1 mixes every token that depends on it in CSS, with color-mix(). No build, no JavaScript, no fifteen variables by hand.", legend: "Pick a primary colour", custom: "Or your own", customRatio: "your colour", chain: "Ten tokens, one seed", measured: "Measured contrast (WCAG 2), worst case of the text on the button (at rest and on hover) and the colour as a link", light: "light", dark: "dark", deploy: "Deploy", preview: "Preview", beta: "Beta", nueva: "New", link: "A text link", auto: "Auto deploy", sample: "Sample controls: they do nothing here.", grad: "Gradient text", filter: "Filter", progress: "Sample progress, 64 percent", snippet: "All it takes" };
 ---
 <section class="docs-oc" aria-labelledby="oc-title" data-one-colour>
   <style is:inline set:html={css}></style>
@@ -53,9 +53,13 @@ const L = es
           </label>
         ))}
       </fieldset>
+      {/* Any colour, not only the six: a native colour field, shown only when the script that
+          applies it runs. The ink on it is picked by contrast and the ratio is measured live. */}
+      <label class="docs-oc__custom" data-oc-custom-field hidden><input type="color" value="#0f766e" data-oc-custom> {L.custom}</label>
       <p class="docs-oc__measured">
         <span>{L.measured}:</span>
         {swatches.map((s) => <span class="docs-oc__ratio" data-for={s.slug}>{L.light} <b>{fmt(swatchRatio(s, "light"))}:1</b> · {L.dark} <b>{fmt(swatchRatio(s, "dark"))}:1</b></span>)}
+        <span class="docs-oc__ratio docs-oc__ratio--custom" data-oc-custom-ratio data-label={L.customRatio} data-decimal={es ? "," : "."}></span>
       </p>
       <figure class="docs-oc__snippet">
         <figcaption>{L.snippet}</figcaption>
@@ -93,6 +97,7 @@ const L = es
   </div>
 </section>
 <script>
+  import { bestInk, contrast, derived, PAGE } from "../data/themes.js";
   // Progressive: rewrite the snippet to the swatch that is chosen, in the theme being shown.
   function mount() {
     const root = document.querySelector("[data-one-colour]");
@@ -101,14 +106,48 @@ const L = es
     const value = root.querySelector("[data-oc-value]");
     const on = root.querySelector("[data-oc-on]");
     const dark = () => getComputedStyle(document.documentElement).colorScheme.includes("dark");
+    const stage = root.querySelector(".docs-oc__stage");
+    const field = root.querySelector("[data-oc-custom-field]");
+    const custom = root.querySelector("[data-oc-custom]");
+    const ratio = root.querySelector("[data-oc-custom-ratio]");
+    let mine = null;
     const paint = () => {
+      const d = dark();
+      if (mine && stage) {
+        // The reader's own colour: the ink that reads better on it, and the same worst case the
+        // six swatches show (text on the button at rest and on hover, the colour as a link).
+        const mode = d ? "dark" : "light";
+        const ink = bestInk(mine);
+        stage.style.setProperty("--iv-color-primary", mine);
+        stage.style.setProperty("--iv-color-on-primary", ink);
+        if (value) value.textContent = mine.toUpperCase();
+        if (on) on.textContent = ink;
+        if (ratio) {
+          const r = Math.min(contrast(ink, mine), contrast(ink, derived(mine, mode, "primary-hover")), contrast(mine, PAGE[mode].bg));
+          const n = (Math.floor(r * 10) / 10).toFixed(1).replace(".", ratio.dataset.decimal || ".");
+          ratio.innerHTML = "";
+          ratio.append(`${ratio.dataset.label} `, Object.assign(document.createElement("b"), { textContent: `${n}:1` }));
+        }
+        return;
+      }
       const input = root.querySelector('input[name="docs-oc"]:checked');
       if (!input || !value || !on) return;
-      const d = dark();
       value.textContent = (d ? input.dataset.dark : input.dataset.light).toUpperCase();
       on.textContent = d ? "#06122B" : "#FFFFFF";
     };
-    root.addEventListener("change", paint);
+    if (field && custom) {
+      field.hidden = false;
+      custom.addEventListener("input", () => { mine = custom.value; root.toggleAttribute("data-oc-mine", true); paint(); });
+    }
+    root.addEventListener("change", (e) => {
+      if (e.target && e.target.name === "docs-oc") {
+        mine = null;
+        root.removeAttribute("data-oc-mine");
+        stage?.style.removeProperty("--iv-color-primary");
+        stage?.style.removeProperty("--iv-color-on-primary");
+      }
+      paint();
+    });
     document.addEventListener("iv:themechange", paint);
     matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
     new MutationObserver(paint).observe(document.documentElement, { attributes: true, attributeFilter: ["data-iv-theme"] });

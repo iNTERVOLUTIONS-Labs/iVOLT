@@ -20,8 +20,9 @@ const file = on(`${stem}.jpg`) ? `${stem}.jpg` : `${stem}.png`;
 const has = on(file);
 const size = device === "phone" ? { w: 390, h: 844 } : { w: 1440, h: 900 };
 // AVIF and WebP renditions from scripts/build-images.mjs, offered only when they exist on disk.
-const widths = device === "phone" ? [390] : [480, 800, 1440];
-const set = (ext) => widths.every((w) => on(`${stem}-${w}w.${ext}`)) ? widths.map((w) => `${stem}-${w}w.${ext} ${w}w`).join(", ") : null;
+// A phone shot captured at 2x also has a 780w rendition; one from before keeps only its 390w.
+const want = device === "phone" ? [390, 780] : [480, 800, 1440];
+const set = (ext) => { const ws = want.filter((w) => on(`${stem}-${w}w.${ext}`)); return ws.length ? ws.map((w) => `${stem}-${w}w.${ext} ${w}w`).join(", ") : null; };
 const avif = set("avif"), webp = set("webp");
 // A desktop frame is drawn at most ~45 % of a wide viewport and full width on a phone.
 const sizes = device === "phone" ? "(min-width: 64em) 16rem, 60vw" : "(min-width: 64em) 45vw, 92vw";
