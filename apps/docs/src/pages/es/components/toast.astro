@@ -8,7 +8,7 @@ import Fixture from "../../../components/Fixture.astro";
 <Base lang="es" title="Aviso: notificaciones en vivo" description="Aviso de iVOLT: notificaciones breves creadas por API dentro de una región en vivo, con cola, pausa al enfocar o pasar el ratón y descarte por teclado.">
   <article class="docs-prose">
     <h1>Aviso (toast)</h1>
-    <p>Notificaciones cortas creadas desde JavaScript dentro de una región que ya está en la página. Los mensajes se insertan como texto, nunca como HTML. Los avisos informativos se cierran solos; los de <code>danger</code> no lo hacen nunca y usan <code>role="alert"</code>. Cuando hay más de <code>max</code> visibles, los demás esperan en una cola en lugar de descartarse.</p>
+    <p>Notificaciones cortas creadas desde JavaScript dentro de una región que ya está en la página. Los mensajes se insertan como texto, nunca como HTML. Los avisos informativos se cierran solos; los de <code>danger</code> no lo hacen nunca y usan <code>role="alert"</code>. Desde 1.1.2 la región es la única región viva: un aviso normal entra en ella sin rol propio, así que se anuncia una vez y no dos; solo un aviso <code>danger</code> conserva <code>role="alert"</code> con <code>aria-live="assertive"</code>. Cuando hay más de <code>max</code> visibles, los demás esperan en una cola en lugar de descartarse.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/toast.css</code>. <strong>JS:</strong> <code>@intervolutions/ivolt/toast</code> o <code>auto.js</code>. Disparadores declarativos añadidos en la v0.6.</p>
     <Fixture name="toast/basic" title="La región de avisos" minHeight="6rem" />
     <div class="docs-note">

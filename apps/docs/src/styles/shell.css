@@ -179,7 +179,8 @@
 .docs-search__results > li { min-inline-size: 0; overflow-wrap: anywhere; }
 .docs-search__link { display: block; padding: var(--iv-space-2) var(--iv-space-3); border-radius: var(--iv-radius-md); text-decoration: none; color: var(--iv-color-text); }
 .docs-search__link:hover, .docs-search__link:focus-visible { background: var(--iv-color-surface); }
-.docs-search__excerpt { margin: 0; padding-inline: var(--iv-space-3); font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); }
+/* Three lines at most: at 150 % text an excerpt filled the dialog and pushed the next result out. */
+.docs-search__excerpt { margin: 0; padding-inline: var(--iv-space-3); font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
 .docs-search__excerpt mark { background: var(--iv-color-primary-subtle); color: var(--iv-color-primary); border-radius: 2px; }
 .docs-nav-dialog { --iv-dialog-width: 20rem; margin-inline-start: 0; block-size: 100dvh; max-block-size: 100dvh; border-radius: 0; }
 .docs-alpha { display: inline-block; background: var(--iv-color-primary-subtle); font-size: var(--iv-text-xs); font-weight: var(--iv-weight-semibold); letter-spacing: .08em; text-transform: uppercase; color: var(--iv-color-primary); border: 1px solid currentColor; border-radius: var(--iv-radius-full); padding: .15rem .6rem; margin-block-end: var(--iv-space-4); }
@@ -308,3 +309,34 @@
 .docs-eyebrow__new { padding: .125rem .5rem; border-radius: var(--iv-radius-full); background: var(--iv-color-primary-subtle); border: 1px solid var(--iv-color-primary-border); color: var(--iv-color-text); letter-spacing: .08em; }
 .docs-new { display: inline-block; margin-inline-end: .5rem; padding: .0625rem .5rem; border: 1px solid var(--iv-color-primary-border); border-radius: var(--iv-radius-full); background: var(--iv-color-primary-subtle); font-family: var(--iv-font-mono); font-size: .6875rem; font-weight: var(--iv-weight-semibold); letter-spacing: .08em; text-transform: uppercase; vertical-align: .1em; color: var(--iv-color-text); white-space: nowrap; }
 .docs-mm__fresh::after { content: ""; display: inline-block; inline-size: .375rem; block-size: .375rem; margin-inline-start: .375rem; vertical-align: .15em; border-radius: 50%; background: var(--iv-color-accent); }
+
+/* The site's own page box. The framework leaves <body> to the page (its base is scoped to
+   .iv-root), so the browser's 8 px margin drew a grey strip down both edges at 1440. */
+body.docs { margin: 0; }
+
+/* On a phone the footer no longer repeats the whole navigation: the same links are one tap away
+   in the menu, and here they were three screens of list under every page (owner, 2026-11-09). */
+@media (max-width: 47.99em) { .docs-sitemap { display: none; } }
+
+/* Forced colours (Windows high contrast): the system palette replaces every token, so a pressed
+   or selected control that was told apart by its fill alone looked like its neighbours. Each one
+   takes the system's own selection colours, and every segmented button an edge it can see. The
+   rolling header label is drawn twice for its hover; in forced colours both copies showed. */
+@media (forced-colors: active) {
+  .docs-roll__b { display: none; }
+  .docs-theme .iv-button,
+  .docs-stage__seg button,
+  .docs-stage__all,
+  .docs-code__tab,
+  .docs-showreel__tab { border: 1px solid ButtonText; }
+  .docs-theme [aria-pressed="true"],
+  .docs-stage__seg button[aria-pressed="true"],
+  .docs-stage__all[aria-pressed="true"],
+  .docs-code__tab[aria-selected="true"],
+  .docs-showreel__tab[aria-selected="true"] {
+    forced-color-adjust: none;
+    background: SelectedItem;
+    color: SelectedItemText;
+    border-color: SelectedItem;
+  }
+}

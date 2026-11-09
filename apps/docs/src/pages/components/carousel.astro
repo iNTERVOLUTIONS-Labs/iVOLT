@@ -46,7 +46,7 @@ import Stage from "../../components/Stage.astro";
     </Section>
 
     <Section title="Keyboard, gestures and assistive technology" num={6}>
-      <p>Left and Right move between slides from the tabs or from the viewport, Home and End jump, Enter and Space activate a tab. Dragging with a pointer changes the slide. The markup follows the tabbed carousel pattern: each slide is a panel labelled "n of N", non-visible slides are inert in the fade and cinema effects, and the viewport is a live region only while autoplay is paused, so the reader is not interrupted by every change.</p>
+      <p>Left and Right move between slides from the tabs or from the viewport, Home and End jump, Enter and Space activate a tab. Dragging with a pointer changes the slide. The markup follows the tabbed carousel pattern: each slide is a panel labelled "n of N", non-visible slides are inert in the fade and cinema effects, and the viewport is a live region only while autoplay is paused, so the reader is not interrupted by every change. Since 1.1.2 the viewport, which takes keyboard focus, is also a named group (<code>role="group"</code>, with the label of the dots), so focus lands on something a screen reader can name.</p>
     </Section>
 
     <Section title="Without JavaScript" num={7}>

@@ -35,7 +35,7 @@ export const t = {
   onThisPage: "On this page",
   langSwitch: "Español",
   brandHome: "iVOLT CSS, home",
-  openComponents: "Open the components menu",
+  openComponents: "Components menu",
   mmContent: "Content families",
   mmInteractive: "Interactive",
   mmBrowse: "Browse all components",

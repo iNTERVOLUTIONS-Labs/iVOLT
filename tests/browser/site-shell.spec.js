@@ -13,9 +13,14 @@ const overflow = (page) => page.evaluate(() => document.documentElement.scrollWi
 test.describe("Site shell", () => {
   test.setTimeout(180_000);
 
-  test("search opens with /, finds a page and walks with the arrows", async ({ page }) => {
+  test("search opens with Ctrl+K (never with a single key), finds a page and walks with the arrows", async ({ page }) => {
     await page.goto(DOCS + "/");
+    // WCAG 2.1.4: "/" alone no longer opens it (owner decision, 2026-11-09).
     await page.keyboard.press("/");
+    await expect(page.locator("#docs-search")).not.toHaveAttribute("open", "");
+    await expect(page.locator(".docs-search-open")).toHaveAttribute("aria-keyshortcuts", "Control+K Meta+K");
+    await expect(page.locator("[data-kbd-search]")).toHaveText(/^(Ctrl K|⌘K)$/);
+    await page.keyboard.press("Control+k");
     await expect(page.locator("#docs-search")).toHaveAttribute("open", "");
     await expect(page.locator("#docs-search-input")).toBeFocused();
     await page.locator("#docs-search-input").fill("dialog");
