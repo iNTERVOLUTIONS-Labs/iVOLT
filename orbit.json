@@ -3,6 +3,6 @@
   "build": "npm ci --include=dev && npm run build:docs",
   "outdir": "apps/docs/dist",
   "spa": false,
-  "csp": "default-src 'self'; script-src 'self' 'sha256-jUAUQ8+jWVPo7EbSE9FVWWmn/FVSalWrOarVKCFs7BU=' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://codepen.io; object-src 'none'",
-  "csp_report_only": true
+  "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' 'sha256-jUAUQ8+jWVPo7EbSE9FVWWmn/FVSalWrOarVKCFs7BU=' 'sha256-I5oNLN1U3z6PVuVABToNZw2C506rIW7whd2F60yu6G0=' 'sha256-VZBMppIk2+tXYEHcEGhLgQsVyj1y1bX+/9MsaErwvqU=' 'sha256-EoLKDSSzP2t6jbCQZwLDW/uZI1ARWCGEYGCUqERbawo=' 'sha256-+u06/qlvNV9Q+m9Qs/po0XZEUKQzOPc4zo65D9Lv1HU=' 'sha256-8+oDWa31wzB6EqGzsGLCfJv3ZFRgDbXl8nP5tqHDoow=' 'sha256-TESJwwCtS4H8JZDYK3inD9VXtBGd9R4I7G/rtqnuYGE=' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://codepen.io; object-src 'none'",
+  "csp_report_only": false
 }

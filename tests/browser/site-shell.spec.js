@@ -155,6 +155,31 @@ test.describe("Site shell", () => {
     expect(orbit.csp).toContain(`'${hash}'`);
   });
 
+  test("every executable inline script the site publishes has its hash in the orbit.json policy", async () => {
+    // The home check above covers one page; the reference filter and the recipes carry their own
+    // inline scripts, and an enforced policy would switch them off with nothing but a console line.
+    const { createHash } = await import("node:crypto");
+    const { readdirSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const dist = new URL("../../apps/docs/dist/", import.meta.url).pathname;
+    const policy = JSON.parse(readFileSync(new URL("../../orbit.json", import.meta.url), "utf8")).csp;
+    const missing = new Map();
+    const walk = (dir) => {
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        const file = join(dir, e.name);
+        if (e.isDirectory()) { walk(file); continue; }
+        if (!file.endsWith(".html")) continue;
+        for (const m of readFileSync(file, "utf8").matchAll(/<script(?![^>]*\ssrc=)([^>]*)>([\s\S]*?)<\/script>/g)) {
+          if (/type=["'](application\/(ld\+)?json|importmap|text\/template)["']/.test(m[1]) || !m[2].trim()) continue;
+          const hash = "sha256-" + createHash("sha256").update(m[2]).digest("base64");
+          if (!policy.includes(`'${hash}'`)) missing.set(hash, file.slice(dist.length));
+        }
+      }
+    };
+    walk(dist);
+    expect([...missing].map(([h, f]) => `${h} (${f})`)).toEqual([]);
+  });
+
   test("a migrated page is built from sections and code blocks that copy themselves", async ({ page, context, browserName }) => {
     if (browserName === "chromium") await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.setViewportSize({ width: 1440, height: 900 });
