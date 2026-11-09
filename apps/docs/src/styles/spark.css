@@ -1,0 +1,88 @@
+/* "New in 1.1" band on the home, between the hero and 01 — Why. Cobalt look: a glass panel with a
+   gradient hairline, the release number set large in outline, five doors. The only depth is one
+   soft glow at the panel's corner; no grid, dot or ruled pattern anywhere (ADR-028). Only
+   transform and opacity move, and nothing moves under reduced motion. */
+
+.docs-spark { position: relative; padding-block: clamp(1.5rem, 4vw, 3rem) 0; }
+.docs-spark__inner {
+  position: relative; isolation: isolate; overflow: clip;
+  padding: clamp(1.25rem, 3.2vw, 2.5rem);
+  border: 1px solid var(--docs-card-stroke, var(--iv-color-border));
+  border-radius: calc(var(--iv-radius-lg) + 0.25rem);
+  background: var(--docs-card-bg, var(--iv-color-surface));
+}
+.docs-spark__inner::before {
+  content: ""; position: absolute; inset-block-start: 0; inset-inline: 0; block-size: 1px;
+  background: linear-gradient(90deg, transparent, var(--iv-color-primary) 30%, var(--iv-color-accent) 70%, transparent);
+  opacity: .7;
+}
+.docs-spark__inner::after {
+  content: ""; position: absolute; z-index: -1; inset-block-start: -40%; inset-inline-end: -10%;
+  inline-size: 60%; aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(closest-side, var(--docs-halo), transparent);
+  pointer-events: none;
+}
+
+.docs-spark__head { display: grid; gap: var(--iv-space-4) clamp(1.5rem, 4vw, 3rem); align-items: center; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 48em) { .docs-spark__head { grid-template-columns: auto minmax(0, 1fr); } }
+.docs-spark__num {
+  font-family: var(--docs-display); font-weight: 800; line-height: .8; letter-spacing: -0.06em;
+  font-size: clamp(4.5rem, 11vw, 9rem); font-variant-numeric: tabular-nums;
+  /* A fill, not an outline: Outfit draws its glyphs from overlapping contours, and a stroke
+     showed the seams inside every "1". */
+  color: transparent;
+  background: var(--iv-gradient-brand); -webkit-background-clip: text; background-clip: text;
+  opacity: .9;
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) { .docs-spark__num { color: var(--iv-color-primary); } }
+.docs-spark__kicker { display: inline-flex; align-items: center; gap: .75rem; margin: 0 0 var(--iv-space-3); font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); font-weight: var(--iv-weight-semibold); letter-spacing: .18em; text-transform: uppercase; color: var(--iv-color-primary); }
+.docs-spark__kicker::before { content: ""; inline-size: 1.5rem; block-size: 2px; border-radius: 2px; background: var(--iv-gradient-brand); }
+.docs-spark .docs-spark__title { margin: 0; font-family: var(--docs-display); font-weight: 800; font-size: clamp(1.625rem, 3.2vw, 2.5rem); line-height: 1.05; letter-spacing: -0.035em; text-wrap: balance; max-inline-size: 30ch; }
+.docs-spark__lead { margin: var(--iv-space-3) 0 0; color: var(--iv-color-text-muted); max-inline-size: 62ch; }
+
+.docs-spark__doors { list-style: none; margin: clamp(1.25rem, 3vw, 2rem) 0 0; padding: 0; display: grid; gap: var(--iv-space-3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr)); }
+.docs-spark__doors li { margin: 0; display: flex; }
+.docs-spark__door {
+  position: relative; display: flex; flex-direction: column; gap: .5rem; inline-size: 100%;
+  padding: var(--iv-space-4) var(--iv-space-4) var(--iv-space-5);
+  border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-lg);
+  background: color-mix(in srgb, var(--iv-color-surface-raised) 70%, transparent);
+  color: var(--iv-color-text); text-decoration: none;
+  transition: transform var(--iv-motion-base) var(--docs-ease-out), border-color var(--iv-motion-base) var(--docs-ease-out), box-shadow var(--iv-motion-base) var(--docs-ease-out);
+}
+.docs-spark__door:hover { transform: translateY(-3px); border-color: var(--iv-color-primary-border); box-shadow: 0 18px 40px -24px var(--iv-glow-primary); }
+.docs-spark__door:focus-visible { outline: var(--iv-focus-width) solid var(--iv-color-focus); outline-offset: var(--iv-focus-offset); }
+.docs-spark__art { display: flex; align-items: center; block-size: 2rem; color: var(--iv-color-primary); margin-block-end: .25rem; }
+.docs-spark__art svg { inline-size: 3rem; block-size: 2rem; }
+.docs-spark__dots { display: flex; }
+.docs-spark__dots i { inline-size: 1.25rem; block-size: 1.25rem; border-radius: 50%; background: var(--c); border: 2px solid var(--iv-color-surface-raised); margin-inline-start: -.375rem; transition: transform var(--iv-motion-base) var(--docs-ease-out); }
+.docs-spark__dots i:first-child { margin-inline-start: 0; }
+.docs-spark__door:hover .docs-spark__dots i { transform: translateY(calc(-1px * var(--n, 2))); }
+.docs-spark__seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: var(--iv-radius-full); background: var(--iv-color-surface); border: 1px solid var(--iv-color-border); }
+.docs-spark__seg i { inline-size: 1rem; block-size: .875rem; border-radius: var(--iv-radius-full); }
+.docs-spark__seg i.is-on { background: var(--iv-gradient-brand); }
+.docs-spark__name { display: flex; align-items: center; gap: .5rem; font-weight: var(--iv-weight-semibold); font-size: var(--iv-text-md); letter-spacing: -0.01em; }
+.docs-spark__go { flex: none; margin-inline-start: auto; color: var(--iv-color-primary); transition: transform var(--iv-motion-base) var(--docs-ease-out); }
+.docs-spark__door:hover .docs-spark__go { transform: translateX(3px); }
+:where([dir="rtl"]) .docs-spark__go { scale: -1 1; }
+.docs-spark__text { font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); line-height: 1.5; }
+
+/* Phones: five full cards stacked were a screen and a half of doors. Each becomes one row, the
+   art beside the words. */
+@media (max-width: 47.99em) {
+  .docs-spark__doors { gap: var(--iv-space-2); }
+  .docs-spark__door { display: grid; grid-template-columns: 3.75rem minmax(0, 1fr); column-gap: var(--iv-space-3); row-gap: .125rem; padding: var(--iv-space-3) var(--iv-space-4); }
+  .docs-spark__art { grid-row: span 2; margin: 0; align-self: center; }
+  .docs-spark__art svg { inline-size: 2.5rem; }
+  .docs-spark__dots i { inline-size: 1rem; block-size: 1rem; margin-inline-start: -.4rem; }
+  .docs-spark__num { font-size: 3.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .docs-spark__door, .docs-spark__go, .docs-spark__dots i { transition: none; }
+  .docs-spark__door:hover, .docs-spark__door:hover .docs-spark__go, .docs-spark__door:hover .docs-spark__dots i { transform: none; }
+}
+@media (forced-colors: active) {
+  .docs-spark__num { color: CanvasText; -webkit-text-stroke: 0; background: none; }
+  .docs-spark__door { border-color: CanvasText; }
+}

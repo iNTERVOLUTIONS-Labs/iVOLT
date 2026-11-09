@@ -6,6 +6,8 @@ import DeviceFrame from "../components/DeviceFrame.astro";
 import Arcs from "../components/Arcs.astro";
 import ThemeCut from "../components/ThemeCut.astro";
 import HomeFaq from "../components/HomeFaq.astro";
+import { componentCount, words, Words } from "../lib/count.js";
+import HomeSpark from "../components/HomeSpark.astro";
 import HeroInstall from "../components/HeroInstall.astro";
 import { families } from "../i18n/en.js";
 import { readFileSync, existsSync } from "node:fs";
@@ -89,7 +91,7 @@ const jsonLd = [
     "@type": "SoftwareSourceCode",
     name: "iVOLT",
     alternateName: "@intervolutions/ivolt",
-    description: "A CSS, HTML and optional JavaScript frontend framework: 33 accessible UI components, a finite utility set, design tokens, light and dark themes and zero runtime dependencies.",
+    description: `A CSS, HTML and optional JavaScript frontend framework: ${componentCount} accessible UI components, a finite utility set, design tokens, light and dark themes and zero runtime dependencies.`,
     codeRepository: "https://github.com/iNTERVOLUTIONS-Labs/iVOLT",
     programmingLanguage: ["CSS", "HTML", "JavaScript"],
     runtimePlatform: "Web browser",
@@ -107,7 +109,7 @@ const recipes = [
   { slug: "store", title: "Store", text: "A catalogue and a purchase that buys nothing: rich filters, a product carousel, a checkout stepper, a cart drawer and a confirmation dialog." },
 ];
 ---
-<Base title="Lightweight CSS framework and design system" description="A lightweight CSS framework and design system: 33 accessible UI components, design tokens, dark mode, optional JavaScript and zero runtime dependencies." sidebar={false} bleed={true}>
+<Base title="Lightweight CSS framework and design system" description={`A lightweight CSS framework and design system: ${componentCount} accessible UI components, design tokens, dark mode, optional JavaScript and zero runtime dependencies.`} sidebar={false} bleed={true}>
   <section class="docs-hero" aria-labelledby="hero-title">
     <div class="docs-orbs" aria-hidden="true"><span class="docs-orb docs-orb--a"></span><span class="docs-orb docs-orb--b"></span></div>
     <Arcs />
@@ -117,7 +119,7 @@ const recipes = [
         <span class="docs-mask" style="--i:0"><span>The CSS framework</span></span>
         <span class="docs-mask" style="--i:1"><span>with no <em>build step</em><span class="docs-dot">.</span></span></span>
       </h1>
-      <p class="docs-hero__lead"><strong class="docs-hero__def">iVOLT is an open-source CSS framework and design system.</strong> Thirty-three accessible components, a finite set of utilities and design tokens as the visual contract. Link one stylesheet and you are building — plain HTML, WordPress, Astro or any bundler.</p>
+      <p class="docs-hero__lead"><strong class="docs-hero__def">iVOLT is an open-source CSS framework and design system.</strong> {Words(componentCount)} accessible components, a finite set of utilities and design tokens as the visual contract. Link one stylesheet and you are building — plain HTML, WordPress, Astro or any bundler.</p>
       <div class="docs-hero__actions">
         <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/getting-started">Get started</a>
         <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/components/button">Browse the components</a>
@@ -128,6 +130,8 @@ const recipes = [
       </ul>
     </div>
   </section>
+
+  <HomeSpark lang="en" />
 
   <section class="docs-section docs-wrap" aria-labelledby="why-title">
     <div class="docs-why">
@@ -151,7 +155,7 @@ const recipes = [
   <section class="docs-cabinet" aria-labelledby="components-title">
     <div class="docs-cabinet__head docs-wrap">
       <span class="docs-num">02 — Components</span>
-      <h2 class="docs-why__title" id="components-title">Thirty-three components,<br>live on this page.</h2>
+      <h2 class="docs-why__title" id="components-title">{Words(componentCount)} components,<br>live on this page.</h2>
     </div>
     <div class="docs-wrap docs-showreel" data-showreel>
       <div class="docs-showreel__tabs" role="tablist" aria-label="Components on stage">
