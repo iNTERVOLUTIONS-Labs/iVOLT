@@ -4,6 +4,10 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 
 ## 1.1.0 — unreleased
 
+### Added
+- **One-colour theming**: hover, active, subtle, border, focus, focus halo, glows and both brand gradients are mixed in CSS from `--iv-color-primary` (glow-secondary from `--iv-color-accent`) with per-theme recipes, the new `--iv-mix-*` tokens. The defaults resolve to the 1.0 values (ΔE2000 < 1, checked in a browser). Setting `--iv-color-primary` on `:root`, a `[data-iv-theme]` or a `[data-iv-palette]` scope repaints buttons, focus rings, links, badges, progress, switches and gradient text. `tokens.json` keeps the literal values and adds the formula as `css`.
+- `data-iv-palette="accent|success|warning|danger|info|neutral"` on any subtree points the primary (and the colour drawn on it) at another role; every derived token follows. Fixture `theme/one-colour`.
+
 ### Fixed
 - Layer-free sheet (`ivolt.flat.css`): `.iv-root ul/ol`, `.iv-root li` and `.iv-root figcaption` weigh (0,1,0) through `:where()`, so the list resets of breadcrumb, pagination, navbar, stepper, timeline, carousel, megamenu, command palette, combobox, picker and hero no longer gain a 24 px indent, and the lightbox caption keeps its colour and margin. The layered sheet renders exactly as before.
 - `Tooltip`: inside a modal dialog or drawer the label was behind the top layer; the bubble now enters the top layer as a manual popover (and lives in the open dialog where `popover` is missing).

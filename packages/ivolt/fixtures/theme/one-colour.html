@@ -1,0 +1,59 @@
+<div class="iv-stack iv-u-gap-6">
+  <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Sample controls: nothing here does anything. The three panels use the same markup. The first keeps the default cobalt; the second sets one variable, <code>--iv-color-primary</code> (and the text drawn on it), on a scope marked <code>data-iv-palette</code> — a rose mixed with the text colour of the theme, so it stays readable in light and dark; the third points the primary at the success role with <code>data-iv-palette="success"</code>. Hover states, tints, focus rings, glows and gradients are mixed from that one colour.</p>
+
+  <div class="iv-grid iv-u-gap-4 iv-u-grid-cols-1 iv-u-lg-grid-cols-3">
+    <section class="iv-card" aria-labelledby="oc-default">
+      <div class="iv-card__body iv-stack iv-u-gap-4">
+        <h3 class="iv-card__title" id="oc-default">Default cobalt</h3>
+        <div class="iv-cluster">
+          <button class="iv-button iv-button--primary" type="button">Deploy</button>
+          <button class="iv-button iv-button--secondary" type="button">Preview</button>
+        </div>
+        <div class="iv-cluster">
+          <span class="iv-badge iv-badge--primary">Beta</span>
+          <span class="iv-badge iv-badge--solid iv-badge--primary">New</span>
+          <a href="#oc-default">A text link</a>
+        </div>
+        <progress class="iv-progress" value="64" max="100" aria-label="Sample progress, 64 percent"></progress>
+        <label class="iv-switch"><input type="checkbox" checked><span class="iv-switch__track" aria-hidden="true"><span class="iv-switch__thumb"></span></span>Auto deploy</label>
+        <p class="iv-gradient-text iv-u-m-0 iv-u-text-xl iv-u-font-bold">Gradient text</p>
+      </div>
+    </section>
+
+    <section class="iv-card" aria-labelledby="oc-custom" data-iv-palette style="--iv-color-primary: color-mix(in oklab, #E91E63 72%, var(--iv-color-text)); --iv-color-on-primary: var(--iv-color-bg)">
+      <div class="iv-card__body iv-stack iv-u-gap-4">
+        <h3 class="iv-card__title" id="oc-custom">One variable: rose</h3>
+        <div class="iv-cluster">
+          <button class="iv-button iv-button--primary" type="button">Deploy</button>
+          <button class="iv-button iv-button--secondary" type="button">Preview</button>
+        </div>
+        <div class="iv-cluster">
+          <span class="iv-badge iv-badge--primary">Beta</span>
+          <span class="iv-badge iv-badge--solid iv-badge--primary">New</span>
+          <a href="#oc-custom">A text link</a>
+        </div>
+        <progress class="iv-progress" value="64" max="100" aria-label="Sample progress, 64 percent"></progress>
+        <label class="iv-switch"><input type="checkbox" checked><span class="iv-switch__track" aria-hidden="true"><span class="iv-switch__thumb"></span></span>Auto deploy</label>
+        <p class="iv-gradient-text iv-u-m-0 iv-u-text-xl iv-u-font-bold">Gradient text</p>
+      </div>
+    </section>
+
+    <section class="iv-card" aria-labelledby="oc-success" data-iv-palette="success">
+      <div class="iv-card__body iv-stack iv-u-gap-4">
+        <h3 class="iv-card__title" id="oc-success">Palette: success</h3>
+        <div class="iv-cluster">
+          <button class="iv-button iv-button--primary" type="button">Deploy</button>
+          <button class="iv-button iv-button--secondary" type="button">Preview</button>
+        </div>
+        <div class="iv-cluster">
+          <span class="iv-badge iv-badge--primary">Beta</span>
+          <span class="iv-badge iv-badge--solid iv-badge--primary">New</span>
+          <a href="#oc-success">A text link</a>
+        </div>
+        <progress class="iv-progress" value="64" max="100" aria-label="Sample progress, 64 percent"></progress>
+        <label class="iv-switch"><input type="checkbox" checked><span class="iv-switch__track" aria-hidden="true"><span class="iv-switch__thumb"></span></span>Auto deploy</label>
+        <p class="iv-gradient-text iv-u-m-0 iv-u-text-xl iv-u-font-bold">Gradient text</p>
+      </div>
+    </section>
+  </div>
+</div>

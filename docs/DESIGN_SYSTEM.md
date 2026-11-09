@@ -44,6 +44,10 @@ Los tonos `blue` y el `green` de once pasos de las betas desaparecen; `--iv-pale
 
 Las cifras salen de `scripts`-menos: se calcularon con la fórmula WCAG 2.x sobre los valores de la tabla al escribir esta sección (2026-09-16); axe las vuelve a comprobar en cada fixture del gate.
 
+### 3.1 Un color repinta el sistema (1.1)
+
+Desde 1.1 las derivadas de la primaria (hover, active, subtle, borde, foco, halo, brillos y los dos degradados) se mezclan en CSS a partir de `--iv-color-primary` con recetas `--iv-mix-*` por tema (API_CONTRACT §9.2). Las recetas de Cobalt están ajustadas para que los valores por defecto sean los de esta tabla (ΔE2000 < 1). Para hover/active/subtle la receta es un ancla casi neutra (oscurece o aclara sin cambiar el tono de una primaria nueva); para los degradados es un desplazamiento en OKLab (las paradas conservan su relación con la primaria: más clara y hacia el cian al inicio, hacia el índigo al final). `--iv-color-on-primary` no se deriva: quien cambie la primaria elige el texto que va encima y comprueba 4,5:1. `data-iv-palette` apunta la primaria de un subárbol a otro rol (`accent`, `success`, `warning`, `danger`, `info`, `neutral`).
+
 ## 4. Escalas
 
 | Familia | Tokens | Valores |
