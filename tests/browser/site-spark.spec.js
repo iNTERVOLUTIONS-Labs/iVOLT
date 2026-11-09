@@ -13,14 +13,18 @@ test.describe("Spark: share and copy", () => {
     }
   });
 
-  test("the theme gallery: twelve presets above AA, each one a stylesheet to download", async ({ page, request }) => {
-    const { presets, checks, tokens } = await import("../../apps/docs/src/data/themes.js");
+  test("the theme gallery: twelve presets above AA, each one a stylesheet of seeds to download", async ({ page, request }) => {
+    const { presets, checks } = await import("../../apps/docs/src/data/themes.js");
     expect(presets).toHaveLength(12);
     for (const p of presets) {
       for (const c of checks(p)) expect(c.ratio, `${p.slug} ${c.key}`).toBeGreaterThanOrEqual(4.5);
       const css = await (await request.get(`${DOCS}/themes/${p.slug}.css`)).text();
       expect(css, p.slug).toContain(`--iv-color-primary: ${p.primary};`);
-      expect(css, p.slug).toContain(`--iv-gradient-brand: ${tokens(p)["--iv-gradient-brand"]};`);
+      // 1.1 one-colour theming: the primary's family is mixed by the package, not written out.
+      expect(css, p.slug).toContain("--iv-mix-brand-end: var(--iv-color-accent) 35%;");
+      for (const derived of ["--iv-color-primary-hover", "--iv-color-primary-subtle", "--iv-color-focus", "--iv-gradient-brand", "--iv-gradient-primary", "--iv-glow-primary"]) {
+        expect(css, `${p.slug} leaves ${derived} to the package`).not.toContain(`${derived}:`);
+      }
     }
     await page.goto(DOCS + "/themes");
     await expect(page.locator(".docs-tcard")).toHaveCount(12);
@@ -34,7 +38,26 @@ test.describe("Spark: share and copy", () => {
     await page.goto(DOCS + "/foundations/theme-builder#theme=dark&primary=2dd4bf&radius=1.5&font=mono");
     const out = page.locator("[data-tb-output]");
     await expect(out).toContainText("--iv-color-primary: #2dd4bf");
-    await expect(out).toContainText("--iv-gradient-brand: linear-gradient(120deg, #2dd4bf");
+    // 1.1: seeds and recipes only; the preview mixes the hover itself from the one primary.
+    await expect(out).toContainText("--iv-mix-brand-end: var(--iv-color-accent) 35%");
+    await expect(out).not.toContainText("--iv-color-primary-hover");
+    const { derived } = await import("../../apps/docs/src/data/themes.js");
+    const hover = await page.locator("[data-tb-preview]").evaluate((el) => {
+      const probe = document.createElement("span");
+      probe.style.color = "var(--iv-color-primary-hover)";
+      el.append(probe);
+      const c = getComputedStyle(probe).color;
+      probe.remove();
+      // Chromium reports a mixed colour as oklab(); a canvas pixel turns it into sRGB bytes.
+      const ctx = document.createElement("canvas").getContext("2d");
+      ctx.fillStyle = c;
+      ctx.fillRect(0, 0, 1, 1);
+      return `rgb(${[...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3).join(", ")})`;
+    });
+    const want = derived("#2dd4bf", "dark", "primary-hover");
+    const rgb = [1, 3, 5].map((i) => parseInt(want.slice(i, i + 2), 16));
+    const got = hover.match(/[\d.]+/g).slice(0, 3).map(Number);
+    got.forEach((v, i) => expect(Math.abs(v - rgb[i]), `hover channel ${i}: ${hover} vs ${want}`).toBeLessThanOrEqual(2));
     await expect(out).toContainText("--iv-radius-md: 1.5rem");
     await page.locator('input[name="accent"]').evaluate((el) => { el.value = "#ff00aa"; el.dispatchEvent(new Event("input", { bubbles: true })); });
     await expect.poll(() => page.evaluate(() => location.hash)).toContain("accent=ff00aa");

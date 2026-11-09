@@ -1,12 +1,16 @@
 // Theme builder: edits a handful of tokens live on a preview scope and prints the CSS to copy.
-// Everything happens in the page; nothing is stored or sent anywhere. Since 1.1 the state also
-// lives in the URL hash (#theme=dark&primary=ff6600&…), so a theme is a link anyone can open, and
-// the colours touched are expanded into the full 1.0 token set (hover, subtle, border, focus,
-// glow, gradients) with the same derivation as the theme gallery: setting the primary alone left
-// the cobalt gradient on every primary button.
+// Everything happens in the page; nothing is stored or sent anywhere. The state also lives in the
+// URL hash (#theme=dark&primary=ff6600&…), so a theme is a link anyone can open; links made with
+// the 1.0 builder use the same keys and still load.
+//
+// Since 1.1 the package mixes the primary's family in CSS (one-colour theming, ADR-054): the
+// preview is a [data-iv-theme] scope, so setting --iv-color-primary on it repaints hover, focus,
+// glows and gradients by itself. The builder only writes seeds, plus what CSS cannot derive from
+// them (the text on the accent, muted text and borders from the surfaces) and the two gradient
+// recipes that carry the accent. The printed CSS shrank from fifteen derived tokens to those.
 import { tokens as deriveTokens, fontKeys } from "../data/themes.js";
 const FONT_OF = (v) => (/Outfit/.test(v) ? "outfit" : /Georgia|serif/.test(v) && !/sans-serif/.test(v) ? "serif" : /monospace/.test(v) ? "mono" : "system");
-const DERIVED = ["--iv-color-primary-hover", "--iv-color-primary-active", "--iv-color-primary-subtle", "--iv-color-primary-border", "--iv-color-on-accent", "--iv-color-text-muted", "--iv-color-border", "--iv-color-border-strong", "--iv-color-hover-surface", "--iv-color-focus", "--iv-focus-halo", "--iv-glow-primary", "--iv-glow-secondary", "--iv-gradient-brand", "--iv-gradient-primary"];
+const DERIVED = ["--iv-color-on-accent", "--iv-color-text-muted", "--iv-color-border", "--iv-color-border-strong", "--iv-color-hover-surface", "--iv-mix-brand-start", "--iv-mix-brand-end", "--iv-mix-gradient-end"];
 const FIELDS = [
   { key: "primary", token: "--iv-color-primary", label: "primary" },
   { key: "on-primary", token: "--iv-color-on-primary", label: "text on primary" },
@@ -67,7 +71,8 @@ export function mountThemeBuilder(root) {
         state[f.token] = input.value;
       }
     }
-    // A touched colour brings its dependants: the full token set derived from the current fields.
+    // A touched colour brings what CSS cannot mix by itself (muted text, borders, the ink on the
+    // accent) and the gradient recipes; the primary's own family is mixed by the package.
     if (FIELDS.some((f) => form.querySelector(`[name="${f.key}"]`)?.dataset.touched === "true")) {
       const v = (k) => form.querySelector(`[name="${k}"]`)?.value || "#000000";
       const derived = deriveTokens({ mode: themeValue(), primary: v("primary"), onPrimary: v("on-primary"), accent: v("accent"), bg: v("bg"), surface: v("surface"), raised: v("surface-raised"), text: v("text"), muted: mixHex(v("text"), v("bg"), 0.32), radius: 0.875, font: "outfit" });
