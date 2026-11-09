@@ -396,7 +396,6 @@
       "iv-glass--strong",
       "iv-glow",
       "iv-gradient-text",
-      "iv-mesh",
       "iv-shine",
       "iv-texture-aurora",
       "iv-texture-grain",
@@ -424,6 +423,7 @@
       "iv-parallax-frame",
       "iv-parallax__layer",
       "iv-scroll-progress",
+      "iv-scroll-reveal",
       "iv-stack-cards",
       "iv-stack-cards__card"
     ],
@@ -444,7 +444,8 @@
     "layout/container": [
       "iv-container",
       "iv-container--narrow",
-      "iv-container--wide"
+      "iv-container--wide",
+      "iv-defer"
     ],
     "layout/grid": [
       "iv-grid",
@@ -486,6 +487,19 @@
       "iv-badge--success",
       "iv-badge--warning"
     ],
+    "components/banner": [
+      "iv-banner",
+      "iv-banner--brand",
+      "iv-banner--danger",
+      "iv-banner--info",
+      "iv-banner--sticky",
+      "iv-banner--success",
+      "iv-banner--warning",
+      "iv-banner__action",
+      "iv-banner__close",
+      "iv-banner__icon",
+      "iv-banner__text"
+    ],
     "components/breadcrumb": [
       "iv-breadcrumb",
       "iv-breadcrumb__item",
@@ -505,9 +519,13 @@
     "components/card": [
       "iv-card",
       "iv-card--flat",
+      "iv-card--link",
+      "iv-card--responsive",
       "iv-card__body",
       "iv-card__footer",
+      "iv-card__link",
       "iv-card__media",
+      "iv-card__raise",
       "iv-card__title"
     ],
     "components/carousel": [
@@ -528,6 +546,27 @@
       "iv-carousel__toggle",
       "iv-carousel__track",
       "iv-carousel__viewport"
+    ],
+    "components/chip": [
+      "iv-chip",
+      "iv-chip--sm",
+      "iv-chip__media",
+      "iv-chip__remove"
+    ],
+    "components/code": [
+      "iv-code",
+      "iv-code--light",
+      "iv-code__a",
+      "iv-code__bar",
+      "iv-code__c",
+      "iv-code__copy",
+      "iv-code__copy-label",
+      "iv-code__k",
+      "iv-code__lang",
+      "iv-code__mark",
+      "iv-code__pre",
+      "iv-code__s",
+      "iv-code__title"
     ],
     "components/combobox": [
       "iv-combobox",
@@ -586,13 +625,22 @@
       "iv-dialog__footer",
       "iv-dialog__header",
       "iv-dialog__panel",
-      "iv-dialog__title"
+      "iv-dialog__title",
+      "iv-drawer"
     ],
     "components/disclosure": [
       "iv-accordion",
       "iv-disclosure",
       "iv-disclosure__content",
       "iv-disclosure__summary"
+    ],
+    "components/divider": [
+      "iv-divider",
+      "iv-divider--brand",
+      "iv-divider--end",
+      "iv-divider--start",
+      "iv-divider--vertical",
+      "iv-divider__label"
     ],
     "components/drawer": [
       "iv-drawer",
@@ -609,6 +657,15 @@
       "iv-dropdown__item",
       "iv-dropdown__menu",
       "iv-dropdown__separator"
+    ],
+    "components/empty": [
+      "iv-empty",
+      "iv-empty--bordered",
+      "iv-empty--compact",
+      "iv-empty__actions",
+      "iv-empty__icon",
+      "iv-empty__text",
+      "iv-empty__title"
     ],
     "components/form": [
       "iv-check",
@@ -670,6 +727,12 @@
       "iv-hero__scrim",
       "iv-hero__title"
     ],
+    "components/kbd": [
+      "iv-kbd",
+      "iv-kbd--lg",
+      "iv-kbd--sm",
+      "iv-kbd-group"
+    ],
     "components/lightbox": [
       "iv-gallery",
       "iv-gallery--masonry",
@@ -687,6 +750,21 @@
       "iv-lightbox__prev",
       "iv-lightbox__stage",
       "iv-lightbox__zoom"
+    ],
+    "components/list": [
+      "iv-dl",
+      "iv-dl--compact",
+      "iv-dl__row",
+      "iv-list",
+      "iv-list--flush",
+      "iv-list--nav",
+      "iv-list__action",
+      "iv-list__body",
+      "iv-list__end",
+      "iv-list__item",
+      "iv-list__media",
+      "iv-list__meta",
+      "iv-list__title"
     ],
     "components/megamenu": [
       "iv-megamenu",
@@ -745,6 +823,21 @@
       "iv-megamenu__ticker",
       "iv-megamenu__title",
       "iv-megamenu__toggle"
+    ],
+    "components/meter": [
+      "iv-meter",
+      "iv-meter--lg",
+      "iv-meter-field",
+      "iv-meter-field__value"
+    ],
+    "components/mockup": [
+      "iv-mockup",
+      "iv-mockup--browser",
+      "iv-mockup--phone",
+      "iv-mockup--tilt",
+      "iv-mockup__bar",
+      "iv-mockup__screen",
+      "iv-mockup__url"
     ],
     "components/navbar": [
       "iv-megamenu",
@@ -807,12 +900,45 @@
       "iv-progress--success",
       "iv-progress--warning"
     ],
+    "components/rating": [
+      "iv-rating",
+      "iv-rating--lg",
+      "iv-rating--sm",
+      "iv-rating-display",
+      "iv-rating__input",
+      "iv-rating__legend",
+      "iv-rating__star"
+    ],
+    "components/segmented": [
+      "iv-badge",
+      "iv-segmented",
+      "iv-segmented--block",
+      "iv-segmented--brand",
+      "iv-segmented--sm",
+      "iv-segmented__item"
+    ],
+    "components/shell": [
+      "iv-drawer",
+      "iv-grid--subgrid",
+      "iv-shell",
+      "iv-shell__main",
+      "iv-shell__side",
+      "iv-shell__top",
+      "iv-sidebar",
+      "iv-sidebar--end"
+    ],
     "components/skeleton": [
       "iv-skeleton",
       "iv-skeleton--circle",
       "iv-skeleton--rect",
       "iv-skeleton--text",
       "iv-skeleton--title"
+    ],
+    "components/spinner": [
+      "iv-spinner",
+      "iv-spinner--current",
+      "iv-spinner--lg",
+      "iv-spinner--sm"
     ],
     "components/stat": [
       "iv-stat",
@@ -966,6 +1092,11 @@
       "--iv-badge-tone",
       "--iv-badge-tone-subtle"
     ],
+    "components/banner": [
+      "--iv-banner-bg",
+      "--iv-banner-fg",
+      "--iv-banner-tone"
+    ],
     "components/breadcrumb": [
       "--iv-breadcrumb-gap",
       "--iv-breadcrumb-separator-size"
@@ -1002,6 +1133,16 @@
       "--iv-carousel-sign",
       "--iv-carousel-slide"
     ],
+    "components/chip": [
+      "--iv-chip-height",
+      "--iv-chip-tone"
+    ],
+    "components/code": [
+      "--iv-code-bg",
+      "--iv-code-fg",
+      "--iv-code-max",
+      "--iv-code-muted"
+    ],
     "components/combobox": [
       "--iv-combobox-max-height",
       "--iv-combobox-offset"
@@ -1031,12 +1172,19 @@
       "--iv-disclosure-py",
       "--iv-disclosure-radius"
     ],
+    "components/divider": [
+      "--iv-divider-color",
+      "--iv-divider-space"
+    ],
     "components/drawer": [
       "--iv-drawer-from"
     ],
     "components/dropdown": [
       "--iv-dropdown-min-width",
       "--iv-dropdown-offset"
+    ],
+    "components/empty": [
+      "--iv-empty-tone"
     ],
     "components/form": [
       "--iv-icon-alert",
@@ -1048,7 +1196,8 @@
       "--iv-range-value",
       "--iv-select-chevron",
       "--iv-switch-fc-thumb",
-      "--iv-switch-shift"
+      "--iv-switch-shift",
+      "--iv-switch-sign"
     ],
     "components/hero": [
       "--iv-hero-accent",
@@ -1061,6 +1210,9 @@
       "--iv-mesh-1",
       "--iv-mesh-2",
       "--iv-mesh-3"
+    ],
+    "components/kbd": [
+      "--iv-kbd-size"
     ],
     "components/lightbox": [
       "--iv-dialog-width",
@@ -1079,6 +1231,10 @@
       "--iv-lightbox-icon-prev",
       "--iv-lightbox-icon-zoom"
     ],
+    "components/list": [
+      "--iv-dl-term",
+      "--iv-list-padding"
+    ],
     "components/megamenu": [
       "--iv-i",
       "--iv-megamenu-accent",
@@ -1088,6 +1244,15 @@
       "--iv-megamenu-offset",
       "--iv-megamenu-overlay-bg",
       "--iv-megamenu-width"
+    ],
+    "components/meter": [
+      "--iv-meter-angle",
+      "--iv-meter-size",
+      "--iv-meter-track"
+    ],
+    "components/mockup": [
+      "--iv-mockup-frame",
+      "--iv-mockup-width"
     ],
     "components/navbar": [
       "--iv-navbar-bg",
@@ -1123,10 +1288,32 @@
       "--iv-progress-track",
       "--iv-progress-track-subtle"
     ],
+    "components/rating": [
+      "--iv-rating-color",
+      "--iv-rating-fill",
+      "--iv-rating-max",
+      "--iv-rating-off",
+      "--iv-rating-size",
+      "--iv-rating-star",
+      "--iv-rating-value"
+    ],
+    "components/segmented": [
+      "--iv-segmented-pad",
+      "--iv-segmented-radius"
+    ],
+    "components/shell": [
+      "--iv-shell-side",
+      "--iv-shell-top"
+    ],
     "components/skeleton": [
       "--iv-skeleton-bg",
       "--iv-skeleton-highlight",
       "--iv-skeleton-radius"
+    ],
+    "components/spinner": [
+      "--iv-spinner-color",
+      "--iv-spinner-size",
+      "--iv-spinner-width"
     ],
     "components/stat": [
       "--iv-stat-align",
@@ -1231,8 +1418,8 @@
     },
     {
       "name": "--iv-color-focus",
-      "light": "#1d4fc4",
-      "dark": "#73dfff"
+      "light": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-focus))",
+      "dark": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-focus))"
     },
     {
       "name": "--iv-color-hover-surface",
@@ -1291,23 +1478,23 @@
     },
     {
       "name": "--iv-color-primary-active",
-      "light": "#172f7a",
-      "dark": "#3d94ff"
+      "light": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-primary-active))",
+      "dark": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-primary-active))"
     },
     {
       "name": "--iv-color-primary-border",
-      "light": "#1d4fc48c",
-      "dark": "#66b1ff80"
+      "light": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-primary-border))",
+      "dark": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-primary-border))"
     },
     {
       "name": "--iv-color-primary-hover",
-      "light": "#1a3fa8",
-      "dark": "#8fc6ff"
+      "light": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-primary-hover))",
+      "dark": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-primary-hover))"
     },
     {
       "name": "--iv-color-primary-subtle",
-      "light": "#eaf4ff",
-      "dark": "#66b1ff1f"
+      "light": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-primary-subtle))",
+      "dark": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-primary-subtle))"
     },
     {
       "name": "--iv-color-success",
@@ -1366,8 +1553,8 @@
     },
     {
       "name": "--iv-focus-halo",
-      "light": "0 0 2px 3px #1d4fc459",
-      "dark": "0 0 3px 2px #66b1ff52"
+      "light": "var(--iv-mix-focus-halo-shape) color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-focus-halo))",
+      "dark": "var(--iv-mix-focus-halo-shape) color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-focus-halo))"
     },
     {
       "name": "--iv-focus-offset",
@@ -1411,23 +1598,23 @@
     },
     {
       "name": "--iv-glow-primary",
-      "light": "#1d4fc459",
-      "dark": "#66b1ff73"
+      "light": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-glow-primary))",
+      "dark": "color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-glow-primary))"
     },
     {
       "name": "--iv-glow-secondary",
-      "light": "#0b6b8a4d",
-      "dark": "#73dfff66"
+      "light": "color-mix(in oklab, var(--iv-color-accent), var(--iv-mix-glow-secondary))",
+      "dark": "color-mix(in oklab, var(--iv-color-accent), var(--iv-mix-glow-secondary))"
     },
     {
       "name": "--iv-gradient-brand",
-      "light": "linear-gradient(120deg, #1d4fc4, #3d47c2)",
-      "dark": "linear-gradient(120deg, #73dfff, #6674ff)"
+      "light": "linear-gradient(120deg, color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-brand-start)), color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-brand-end)))",
+      "dark": "linear-gradient(120deg, color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-brand-start)), color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-brand-end)))"
     },
     {
       "name": "--iv-gradient-primary",
-      "light": "linear-gradient(120deg, #2266d8, #1d4fc4 50%, #3d47c2)",
-      "dark": "linear-gradient(120deg, #8fe3ff, #66b1ff 55%, #8b95ff)"
+      "light": "linear-gradient(120deg, color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-gradient-start)), var(--iv-color-primary) var(--iv-mix-gradient-mid), color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-gradient-end)))",
+      "dark": "linear-gradient(120deg, color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-gradient-start)), var(--iv-color-primary) var(--iv-mix-gradient-mid), color-mix(in oklab, var(--iv-color-primary), var(--iv-mix-gradient-end)))"
     },
     {
       "name": "--iv-leading-normal",
@@ -1453,6 +1640,76 @@
       "name": "--iv-measure",
       "light": "68ch",
       "dark": "68ch"
+    },
+    {
+      "name": "--iv-mix-brand-end",
+      "light": "oklab(45.76% .1379 -.1885) 20%",
+      "dark": "oklab(13.29% .2574 -.5042) 20%"
+    },
+    {
+      "name": "--iv-mix-brand-start",
+      "light": "transparent 0%",
+      "dark": "oklab(99.83% -.1379 .0123) 42%"
+    },
+    {
+      "name": "--iv-mix-focus",
+      "light": "transparent 0%",
+      "dark": "var(--iv-color-accent) 100%"
+    },
+    {
+      "name": "--iv-mix-focus-halo",
+      "light": "transparent 65%",
+      "dark": "transparent 68%"
+    },
+    {
+      "name": "--iv-mix-focus-halo-shape",
+      "light": "0 0 2px 3px",
+      "dark": "0 0 3px 2px"
+    },
+    {
+      "name": "--iv-mix-glow-primary",
+      "light": "transparent 65%",
+      "dark": "transparent 55%"
+    },
+    {
+      "name": "--iv-mix-glow-secondary",
+      "light": "transparent 70%",
+      "dark": "transparent 60%"
+    },
+    {
+      "name": "--iv-mix-gradient-end",
+      "light": "oklab(45.76% .1379 -.1885) 20%",
+      "dark": "oklab(56.21% .2798 -.2486) 20%"
+    },
+    {
+      "name": "--iv-mix-gradient-mid",
+      "light": "50%",
+      "dark": "55%"
+    },
+    {
+      "name": "--iv-mix-gradient-start",
+      "light": "oklab(79.27% -.0692 -.1693) 20%",
+      "dark": "oklab(99.94% -.0912 .0098) 50%"
+    },
+    {
+      "name": "--iv-mix-primary-active",
+      "light": "oklab(5.45% .0176 -.0069) 32%",
+      "dark": "oklab(59.01% -.045 -.218) 50%"
+    },
+    {
+      "name": "--iv-mix-primary-border",
+      "light": "transparent 45%",
+      "dark": "transparent 50%"
+    },
+    {
+      "name": "--iv-mix-primary-hover",
+      "light": "oklab(3.08% .0244 -.0642) 13%",
+      "dark": "oklab(98.57% -.0058 .0019) 27%"
+    },
+    {
+      "name": "--iv-mix-primary-subtle",
+      "light": "oklab(99.98% -.0049 -.0042) 93%",
+      "dark": "transparent 88%"
     },
     {
       "name": "--iv-motion-base",
@@ -2087,6 +2344,29 @@
         "iv:command",
         "iv:commanded",
         "iv:filter"
+      ]
+    },
+    {
+      "name": "copy",
+      "class": "Copy",
+      "module": "@intervolutions/ivolt/copy",
+      "options": [
+        {
+          "key": "copiedText",
+          "default": "\"Copied\""
+        },
+        {
+          "key": "failedText",
+          "default": "\"Press Ctrl+C to copy\""
+        },
+        {
+          "key": "timeout",
+          "default": "2000"
+        }
+      ],
+      "events": [
+        "iv:copied",
+        "iv:copy"
       ]
     },
     {
@@ -2772,6 +3052,9 @@
     "data-iv-component",
     "data-iv-condense-at",
     "data-iv-condensed",
+    "data-iv-copied-text",
+    "data-iv-copy",
+    "data-iv-copy-ready",
     "data-iv-count-text",
     "data-iv-counter",
     "data-iv-counter-text",
@@ -2789,6 +3072,7 @@
     "data-iv-error",
     "data-iv-error-",
     "data-iv-exclusive",
+    "data-iv-failed-text",
     "data-iv-filter",
     "data-iv-filter-delay",
     "data-iv-filter-text",
