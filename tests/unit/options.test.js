@@ -98,6 +98,27 @@ describe("resolveOptions", () => {
     expect(resolveOptions(node, defaults).initialFocus).toBe("input");
   });
 
+  // 1.1: a string option whose value happens to look like a number or a boolean used to be
+  // coerced, fail the type check and silently fall back to the default with a warning.
+  it("keeps the raw string when the default is a string or null", () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const node = el('<div data-iv-placement="2024" data-iv-initial-focus="true"></div>');
+    const opts = resolveOptions(node, defaults);
+    expect(opts.placement).toBe("2024");
+    expect(opts.initialFocus).toBe("true");
+    const zero = resolveOptions(el('<div data-iv-placement="0"></div>'), defaults);
+    expect(zero.placement).toBe("0");
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("still coerces numbers and booleans for number and boolean defaults", () => {
+    const node = el('<div data-iv-max="12" data-iv-close-on-backdrop="false"></div>');
+    const opts = resolveOptions(node, defaults);
+    expect(opts.max).toBe(12);
+    expect(opts.closeOnBackdrop).toBe(false);
+  });
+
   afterEach(() => {
     resetWarnings();
   });

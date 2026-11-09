@@ -108,6 +108,7 @@
   padding-block: var(--iv-space-4);
   padding-inline: var(--iv-space-5);
   overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .iv-drawer__footer {

@@ -381,6 +381,9 @@
     display: none;
   }
 
+  /* `.iv-parallax__layer` was the only selector here in 1.0 and matches no layer
+     the module styles; it stays so a page that copied it keeps printing flat. */
+  .iv-parallax,
   .iv-parallax__layer,
   .iv-stack-cards > * {
     position: static;

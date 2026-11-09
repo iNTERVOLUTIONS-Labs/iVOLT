@@ -16,7 +16,7 @@
      an empty bar painted with `surface` alone was indistinguishable from the
      page it sat on. */
   --iv-progress-track: color-mix(in oklab, var(--iv-color-border) 55%, var(--iv-color-surface));
-  --iv-progress-track-subtle: var(--iv-color-success-subtle);
+  --iv-progress-track-subtle: var(--iv-color-primary-subtle);
   --iv-progress-groove: inset 0 1px 2px var(--iv-color-hover-surface);
 
   display: block;
@@ -70,6 +70,8 @@
 
 /* Tones ---------------------------------------------------------------- */
 
+/* `--success` used to be the default tint of the reduced-motion track; it is now the
+   primary tint, like the bar, and each tone brings its own. */
 .iv-progress--success {
   --iv-progress-color: var(--iv-color-success);
   --iv-progress-track-subtle: var(--iv-color-success-subtle);

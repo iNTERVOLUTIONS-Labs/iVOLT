@@ -24,6 +24,30 @@ test.describe("Tooltip", () => {
     await expect(tip).toBeHidden();
   });
 
+  // 1.1: the bubble used to live under the body, which a modal dialog makes inert and paints
+  // underneath the top layer, so a label inside a dialog was "visible" and never seen.
+  test("a label inside a modal dialog is painted above the dialog", async ({ page }) => {
+    await page.goto("/fixture/tooltip/dialog");
+    await page.locator('[data-iv-open="tooltip-dialog"]').click();
+    const target = page.locator("#tooltip-dialog [data-iv-tooltip]").nth(1);
+    await expect(page.locator("#tooltip-dialog")).toBeVisible();
+    await target.focus();
+    const tip = page.locator(".iv-tooltip");
+    await expect(tip).toBeVisible();
+    await expect(tip).toHaveText(await target.getAttribute("data-iv-tooltip"));
+    // The bubble ignores the pointer, so let it take hits for the probe only.
+    const onTop = await tip.evaluate((el) => {
+      el.style.pointerEvents = "auto";
+      const r = el.getBoundingClientRect();
+      const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      el.style.pointerEvents = "";
+      return el.contains(hit);
+    });
+    expect(onTop).toBe(true);
+    await page.keyboard.press("Escape");
+    await expect(tip).toBeHidden();
+  });
+
   test("without JS there is no tooltip element", async ({ page }) => {
     await page.goto("/fixture/tooltip/basic?nojs=1");
     await expect(page.locator(".iv-tooltip")).toHaveCount(0);

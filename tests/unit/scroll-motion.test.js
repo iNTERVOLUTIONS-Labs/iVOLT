@@ -185,4 +185,46 @@ describe("ScrollMotion", () => {
     first[0].destroy();
     expect(ScrollMotion.get(root())).toBe(undefined);
   });
+
+  // 1.1: each layer used to be measured right after the previous one was written, which forces
+  // a style and layout pass per layer, and the measured box was the translated layer itself.
+  it("reads every rectangle before it writes any property", () => {
+    supported = false;
+    const log = [];
+    const read = Element.prototype.getBoundingClientRect;
+    Element.prototype.getBoundingClientRect = function () {
+      log.push("read");
+      return read.call(this);
+    };
+    const write = CSSStyleDeclaration.prototype.setProperty;
+    vi.spyOn(CSSStyleDeclaration.prototype, "setProperty").mockImplementation(function (...args) {
+      if (args[0] === "--iv-view") log.push("write");
+      return write.apply(this, args);
+    });
+    const inst = new ScrollMotion(root());
+    expect(log.filter((e) => e === "read")).toHaveLength(2);
+    expect(log.indexOf("write")).toBeGreaterThan(log.lastIndexOf("read"));
+    inst.destroy();
+  });
+
+  it("measures the frame of a layer, not the layer it translates", () => {
+    supported = false;
+    document.body.innerHTML = `
+      <section id="sm" data-iv-component="scroll-motion">
+        <div id="f0" class="iv-parallax-frame"><img id="p0" class="iv-parallax" alt="Made-up layer"></div>
+      </section>`;
+    rects = { f0: { top: 400, height: 300 }, p0: { top: 250, height: 390 } };
+    const inst = new ScrollMotion(root());
+    expect(Number(layer("p0").style.getPropertyValue("--iv-view"))).toBeCloseTo(0.3636, 3);
+    inst.destroy();
+  });
+
+  it("does not rewrite a property whose value did not change", () => {
+    supported = false;
+    const inst = new ScrollMotion(root());
+    const spy = vi.spyOn(CSSStyleDeclaration.prototype, "setProperty");
+    window.dispatchEvent(new Event("scroll"));
+    expect(spy.mock.calls.filter((c) => c[0] === "--iv-view")).toHaveLength(0);
+    inst.destroy();
+  });
 });

@@ -3,7 +3,8 @@
  *
  * Attribute values are coerced with a tiny, explicit grammar: `"true"`/`"false"`
  * become booleans, a valueless attribute is `true` for a boolean option, plain
- * numbers become numbers, everything else stays a string.
+ * numbers become numbers, everything else stays a string. An option whose
+ * default is a string or `null` always receives the raw string.
  * No JSON, no expressions. A value whose coerced type does not match the type of
  * the default is ignored and warned about once per component and option.
  *
@@ -115,8 +116,15 @@ export function resolveOptions(el, defaults, jsOptions) {
       // like `disabled` or `hidden`; only a boolean option reads it that way, so
       // an empty string stays an empty string wherever one is meaningful
       // (`data-iv-placeholder=""` is "use the served placeholder").
-      const coerced =
-        raw === "" && typeof fallback === "boolean" ? true : coerce(raw);
+      // A string (or `null`) default takes the attribute verbatim: a label of
+      // "2024" or a selector of "true" is text, and coercing it first used to
+      // fail the type check and drop the value with a warning.
+      const textual = fallback === null || fallback === undefined || typeof fallback === "string";
+      const coerced = textual
+        ? raw
+        : raw === "" && typeof fallback === "boolean"
+          ? true
+          : coerce(raw);
       if (matchesType(coerced, fallback)) value = coerced;
       else warnOnce(component, key, raw);
     }

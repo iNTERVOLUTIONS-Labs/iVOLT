@@ -35,6 +35,19 @@ const COMPONENT_ATTRIBUTE = "data-iv-component";
 const VARIABLES = ["--iv-mx", "--iv-my", "--iv-near"];
 
 /**
+ * Sets a custom property unless it already holds that value: a pointer that
+ * keeps still invalidates no style.
+ *
+ * @param {HTMLElement} el Target.
+ * @param {string} name Property.
+ * @param {string} value Value.
+ * @returns {void}
+ */
+function write(el, name, value) {
+  if (el.style.getPropertyValue(name) !== value) el.style.setProperty(name, value);
+}
+
+/**
  * Nearness of a point to a rectangle: 1 inside, decaying linearly to 0 at
  * `radius` pixels from the closest edge.
  *
@@ -190,6 +203,8 @@ export class Proximity extends IvComponent {
   /** @returns {void} */
   _setup() {
     this._touched = new Set();
+    /** @type {HTMLElement[]|null} Targets found on the last entry. */
+    this._cache = null;
     this._frame = 0;
     this._pending = false;
     this._x = 0;
@@ -205,11 +220,16 @@ export class Proximity extends IvComponent {
       { passive: true }
     );
     this._listen(this._element, "pointerleave", () => this._onLeave());
+    // Content may have changed while the pointer was away: look again on entry.
+    this._listen(this._element, "pointerenter", () => {
+      this._cache = null;
+    });
   }
 
   /** @returns {void} */
   _teardown() {
     this._cancel();
+    this._cache = null;
     for (const el of this._touched) clearVariables(el);
     this._touched.clear();
     if (this._element.hasAttribute(AUTO_ATTRIBUTE)) {
@@ -282,18 +302,24 @@ export class Proximity extends IvComponent {
     const radius = this.options.radius;
     const x = this._x;
     const y = this._y;
-    for (const el of this._targets()) {
-      const rect = el.getBoundingClientRect();
+    // The targets are queried once and kept until the pointer enters again,
+    // and every rectangle is read before the first write: a write between two
+    // reads invalidates style and forced a layout per card per frame.
+    if (!this._cache) this._cache = this._targets();
+    const targets = this._cache;
+    const rects = targets.map((el) => el.getBoundingClientRect());
+    targets.forEach((el, i) => {
+      const rect = rects[i];
       const near = nearness(rect, x, y, radius);
       if (near > 0) {
-        el.style.setProperty("--iv-mx", `${round(x - rect.left)}px`);
-        el.style.setProperty("--iv-my", `${round(y - rect.top)}px`);
-        el.style.setProperty("--iv-near", round(near));
+        write(el, "--iv-mx", `${round(x - rect.left)}px`);
+        write(el, "--iv-my", `${round(y - rect.top)}px`);
+        write(el, "--iv-near", round(near));
         this._touched.add(el);
       } else if (this._touched.has(el)) {
-        el.style.setProperty("--iv-near", "0");
+        write(el, "--iv-near", "0");
       }
-    }
+    });
   }
 
   /**

@@ -2,6 +2,20 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 1.1.0 — unreleased
+
+### Fixed
+- Layer-free sheet (`ivolt.flat.css`): `.iv-root ul/ol`, `.iv-root li` and `.iv-root figcaption` weigh (0,1,0) through `:where()`, so the list resets of breadcrumb, pagination, navbar, stepper, timeline, carousel, megamenu, command palette, combobox, picker and hero no longer gain a 24 px indent, and the lightbox caption keeps its colour and margin. The layered sheet renders exactly as before.
+- `Tooltip`: inside a modal dialog or drawer the label was behind the top layer; the bubble now enters the top layer as a manual popover (and lives in the open dialog where `popover` is missing).
+- `Progress`: the default reduced-motion indeterminate track is the primary tint (`--iv-progress-track-subtle` was the success tint).
+- Options: an option whose default is a string or `null` receives the attribute verbatim; `data-iv-placement="2024"` or a selector of `"true"` used to be coerced, rejected and replaced by the default.
+- `ScrollMotion` reads every rectangle before writing, measures the `.iv-parallax-frame` instead of the translated layer and skips unchanged writes; `Proximity` caches its targets per pointer entry, batches reads before writes and skips unchanged writes.
+- Right to left: valid fields and both select states put their icons at the inline end; the carousel autoplay bar grows from the inline start.
+- Dead selectors: the print rule reaches `.iv-parallax` (it only named `.iv-parallax__layer`, which is kept); forced colours switch off `.iv-texture-mesh`/`.iv-texture-aurora` (the rule named a non-existent `.iv-mesh`).
+- Composited motion: the skeleton sweep is a translated layer instead of an animated background position; the switch thumb slides with `translate`; the floating label rises with `scale`/`translate` instead of animating `font-size` and `inset-block-start`.
+- `Popover` without anchor positioning follows a scroll of the page or of any container, once per frame.
+- Modal scroll lock in CSS: while an `.iv-dialog` or `.iv-drawer` is modal the root stops scrolling; dialog panels and the drawer body contain overscroll.
+
 ## 1.0.0 — 2026-09-16 (npm, tag `latest`)
 
 First stable release. The public surface is the one `docs/STABILITY.md` describes: classes, tokens, `data-iv-*` attributes, JavaScript exports and `iv:*` events documented in the contract follow semantic versioning from here. What 1.0 ships is the sum of the cycles listed under 1.0.0-rc.0, the Cobalt palette (rc.2), the megamenu v2 (rc.1) and the visual round (rc.3).

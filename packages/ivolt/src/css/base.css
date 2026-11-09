@@ -83,13 +83,16 @@
   text-wrap: pretty;
 }
 
-.iv-root ul,
-.iv-root ol {
+/* Lists, items and captions are matched through `:where()` so the rule weighs (0,1,0): in the
+   layer-free sheet a component's own single-class reset (`.iv-breadcrumb__list`, which comes
+   later) wins the tie by order. At (0,1,1) it used to indent every component list by 24 px. */
+.iv-root :where(ul),
+.iv-root :where(ol) {
   margin-block: 0;
   padding-inline-start: var(--iv-space-6);
 }
 
-.iv-root li {
+.iv-root :where(li) {
   margin-block-start: var(--iv-space-1);
 }
 
@@ -202,7 +205,7 @@
   margin-inline: 0;
 }
 
-.iv-root figcaption {
+.iv-root :where(figcaption) {
   font-size: var(--iv-text-sm);
   color: var(--iv-color-text-muted);
   margin-block-start: var(--iv-space-2);

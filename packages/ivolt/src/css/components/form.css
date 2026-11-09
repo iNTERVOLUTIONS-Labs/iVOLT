@@ -284,19 +284,29 @@ textarea.iv-input {
   inset-block-start: 0.45rem;
   inset-inline-start: calc(var(--iv-space-3) + var(--iv-border-width));
   inline-size: fit-content;
-  max-inline-size: calc(100% - var(--iv-space-8));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: var(--iv-text-xs);
+  /* Raised is the body size scaled to 0.75 (= --iv-text-xs); down is the body
+     size moved 0.6rem lower. Only `scale` and `translate` change, so the label
+     moves on the compositor (1.0 animated `font-size` and `inset-block-start`
+     and re-laid out the field every frame). The wider box compensates the
+     scale, so the raised label truncates where it did. */
+  max-inline-size: calc((100% - var(--iv-space-8)) / 0.75);
+  font-size: var(--iv-text-md);
   font-weight: var(--iv-weight-medium);
   color: var(--iv-color-text-muted);
   pointer-events: none;
-  transform-origin: 0 0;
+  scale: 0.75;
+  transform-origin: top left;
   transition:
-    inset-block-start var(--iv-motion-base) var(--iv-ease-out),
-    font-size var(--iv-motion-base) var(--iv-ease-out),
+    translate var(--iv-motion-base) var(--iv-ease-out),
+    scale var(--iv-motion-base) var(--iv-ease-out),
     color var(--iv-motion-base) var(--iv-ease-out);
+}
+
+:where([dir="rtl"]) .iv-field--float .iv-label {
+  transform-origin: top right;
 }
 
 /* A select always paints the text of the option it shows. While that option is
@@ -310,8 +320,9 @@ textarea.iv-input {
 .iv-field--float :where(.iv-input:placeholder-shown:not(:focus)) ~ .iv-label,
 .iv-field--float :where(.iv-textarea:placeholder-shown:not(:focus)) ~ .iv-label,
 .iv-field--float :where(.iv-select:not(:focus):has(option[value=""]:checked)) ~ .iv-label {
-  inset-block-start: 1.05rem;
-  font-size: var(--iv-text-md);
+  max-inline-size: calc(100% - var(--iv-space-8));
+  scale: 1;
+  translate: 0 0.6rem;
 }
 
 /* A picker holds the label of its select inside the wrapper (API_CONTRACT §8.6).
@@ -344,8 +355,9 @@ textarea.iv-input {
 /* Autofill fills the value without an `input` event; the label stays up. */
 .iv-field--float :where(.iv-input:autofill) ~ .iv-label,
 .iv-field--float :where(.iv-input:-webkit-autofill) ~ .iv-label {
-  inset-block-start: 0.45rem;
-  font-size: var(--iv-text-xs);
+  max-inline-size: calc((100% - var(--iv-space-8)) / 0.75);
+  scale: 0.75;
+  translate: none;
 }
 
 .iv-field--float:where(:focus-within) .iv-label {
@@ -487,9 +499,14 @@ textarea.iv-input {
   border-radius: var(--iv-radius-full);
   background-color: var(--iv-color-bg);
   box-shadow: var(--iv-shadow-1);
-  /* A margin, not a transform: it follows the writing direction on its own. */
-  margin-inline-start: var(--iv-switch-shift);
-  transition: margin-inline-start var(--iv-motion-base) var(--iv-ease-out);
+  /* A translate, so the slide runs on the compositor (1.0 moved a margin and
+     re-laid out the line every frame); the sign follows the writing direction. */
+  translate: calc(var(--iv-switch-shift) * var(--iv-switch-sign, 1)) 0;
+  transition: translate var(--iv-motion-base) var(--iv-ease-out);
+}
+
+:where([dir="rtl"]) .iv-switch__thumb {
+  --iv-switch-sign: -1;
 }
 
 .iv-switch input:where(:checked) + .iv-switch__track {
@@ -733,10 +750,6 @@ textarea.iv-input {
   padding-inline-end: 2.5rem;
 }
 
-:where([dir="rtl"]) .iv-field--invalid .iv-input,
-:where([dir="rtl"]) .iv-field--invalid .iv-textarea {
-  background-position: left var(--iv-space-3) top 0.7rem;
-}
 
 /* The select already paints a chevron: the status icon joins it, it never
    replaces it. */
@@ -766,6 +779,20 @@ textarea.iv-input {
   background-size: 1.125rem 1.125rem, 1rem 1rem;
   background-position: right 2.25rem center, right var(--iv-space-3) center;
   padding-inline-end: 3.75rem;
+}
+
+/* Right to left: the icons join the chevron at the inline end, which is the
+   physical left. Background positions have no logical keywords. */
+:where([dir="rtl"]) .iv-field--invalid .iv-input,
+:where([dir="rtl"]) .iv-field--invalid .iv-textarea,
+:where([dir="rtl"]) .iv-field--valid .iv-input,
+:where([dir="rtl"]) .iv-field--valid .iv-textarea {
+  background-position: left var(--iv-space-3) top 0.7rem;
+}
+
+:where([dir="rtl"]) .iv-field--invalid .iv-select,
+:where([dir="rtl"]) .iv-field--valid .iv-select {
+  background-position: left 2.25rem center, left var(--iv-space-3) center;
 }
 
 /* The focus halo takes the colour of the state, so the ring never contradicts
