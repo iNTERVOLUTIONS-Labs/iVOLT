@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-09-16 · **`1.0.0` publicada en npm bajo `latest`** (primera estable, ADR-051; `next` apunta a la misma versión; gate en tres motores exit 0; Lighthouse 97–100; `docs/RELEASE.md` §0j) · candidatas rc.0–rc.3 y `0.7.0-beta.0` (`beta`) publicadas antes · nada desplegado
+Última actualización: 2026-11-09 · **`1.1.0` «Spark» cerrada en la rama `feat/ivolt-1.1`, sin publicar ni desplegar** (ADR-053–056; gate en Chromium exit 0; `docs/RELEASE.md` §0k) · `1.0.0` en npm bajo `latest` · web en vivo con `1.0.0` (desplegada con Orbit el 2026-09-17)
 
 ## Estado por fase e hito
 
@@ -13,6 +13,22 @@
 | v0.8 «Hardening» (§11, ADR-044/045) | cerrado, sin publicar |
 | v0.9 «Complete» (§11, ADR-046) | cerrado, sin publicar |
 | **`1.0.0-rc.0`** (§11) | **publicada** (`npm install @intervolutions/ivolt@next`): gate exit 0 (1008 unitarias, 1580 navegador × 3 motores, pack-smoke 134 archivos, 108 páginas), Lighthouse 97/100 home y 98/100 receta, 30 capturas finales en tres anchos y dos temas | contrato congelado (`API_CONTRACT.md` cabecera), `STABILITY.md`, changelog consolidado 0.1 → 1.0, avisos «release candidate» en la web | `verify` exit 0 en la segunda pasada (la primera dejó una prueba de la marquesina en WebKit que apuntaba el puntero a la pista en movimiento; ahora apunta a la ventana): 1008 unitarias · 1580 pruebas de navegador y 139 omitidas en tres motores · pack-smoke (`0.9.0-beta.0.tgz`, 134 archivos) · 108 páginas · 5 ejemplos | lightbox, movimiento por scroll con reserva JS, efectos de texto, contador, receta «showcase»; 102 páginas en dos idiomas; gate completo en tres motores |
+
+## `1.1.0` «Spark» (2026-11-09, ADR-053–056)
+
+Petición del propietario: «quiero que trabajes en ivolt, tanto el framework css como la web que lo presenta. auditalos, mejoralos, hazlos mas espectaculares, mas eficientes, mas rapidos, mejora seo/geo, hazlo mas viral. luego deep research competitors (foundation, tailwind, bootstrap, bulma, materialize, chakra ui, material ui) y pilla todo lo bueno de cada uno para crear el framework definitivo».
+
+| Bloque | Verificación |
+|---|---|
+| Investigación de competidores (siete pedidos + Yeti, Pico, DaisyUI, shadcn, Base UI): cifras de GitHub y npm del 2026-11-09, 22 recomendaciones, matriz de huecos | informe en el directorio temporal del trabajo; las cifras ajenas que publica la web salen solo de `scripts/measure-competitors.mjs` (ADR-056) |
+| Auditoría del paquete: 10 hallazgos P0/P1 (listas en la hoja plana, tooltip bajo el diálogo modal, progreso lima, coerción de opciones, lecturas y escrituras alternas, iconos RTL, selectores muertos, animaciones de pintura, popover que no sigue el scroll) | cada corrección con una prueba que falla en `e69f905` |
+| Auditoría de la web en vivo: `og:image` 404 en 106 páginas, `/es/` 403 (plantilla de Orbit), sin `llms.txt`, móvil 83–90 en páginas de componentes, botón «Light» ilegible | Lighthouse, cabeceras y muestreo SEO del 2026-11-09 |
+| Implementador P (paquete): correcciones, tema de un color, `data-iv-palette`, trece familias, CSS moderno, subrutas, manifiesto, tipos | 1126 unitarias; `theming.spec.js` (tokens de 1.0 a ΔE < 0,03); 71 líneas base sin regenerar |
+| Implementador W (web): OG sin navegador, rendimiento, GEO/SEO, `/compare`, `/themes`, `/blocks`, `/effects`, `/showcase`, CodePen, enlace a sección | `site-seo.spec.js`, `site-spark.spec.js`; móvil 96–99 |
+| Implementador W2 (web): páginas de las trece familias en dos idiomas, sección de un color, galería y constructor como semillas, banda «Nuevo en 1.1», cuatro bloques | `site-components-1-1.spec.js`; 70 pruebas de la web |
+| Líder: integración, insignia del segmentado en oscuro, ancho del segmentado en `iv-stack`, dependencia de la web fijada a `1.0.0` exacta (habría instalado la copia del registro), versión exportada, ADR-056 | gate en Chromium exit 0 (1181 unitarias, 685 navegador, tamaños, pack-smoke, 156 páginas, 5 ejemplos); Lighthouse propio |
+
+Incidencia de proceso: el implementador W2 no pudo crear su propio worktree y trabajó en el del líder cambiando de rama; un commit del líder (`be66a31`) cayó en esa rama. Historia lineal, nada perdido, integración por avance rápido. Lección: el encargo debe crear el worktree con la herramienta del agente (`isolation`), no a mano.
 
 ## `1.0.0` (2026-09-16, ADR-051)
 
@@ -127,11 +143,11 @@ Presupuestos (`npm run sizes` @ f6d17ad): `core.min.css` 2,60 KiB (≤ 8), `ivol
 
 ## Fallos abiertos
 
-Ninguno conocido de severidad alta. Sin resolver desde v0.5: `.iv-dialog__title` pierde contra `.iv-root h2` en la hoja plana. Pendiente de decisión: cristal condensado del navbar (`--iv-blur-sm` vs `md` en oscuro).
+Ninguno conocido de severidad alta. Resuelto: `.iv-dialog__title` frente a `.iv-root h2` en la hoja plana (ADR-046; verificado de nuevo en 1.1). Fuera del repositorio: `/es/` da 403 y las URL con barra final 404 por la plantilla estática de Orbit. Pendiente de decisión: cristal condensado del navbar (`--iv-blur-sm` vs `md` en oscuro).
 
 ## Siguiente acción
 
-`1.0.0` está en `latest`. Pendientes del propietario: rotar el token de npm; decidir el despliegue de la web (requiere autorización explícita, §3 de `RELEASE.md`) y la URL pública (`SITE_URL` activa las `url` absolutas del JSON-LD y `hreflang`); revisar los aplazados a 1.1 (`ROADMAP.md`). Desde aquí, correcciones en `1.0.x` y funciones nuevas en `1.1` (`STABILITY.md`).
+`1.1.0` cerrada en `feat/ivolt-1.1` (PR en borrador). Requiere autorización del propietario, por este orden: fusionar y desplegar con Orbit; publicar `1.1.0` en npm (los enlaces de CodePen y de los temas apuntan a jsDelivr `@1.1.0`); purgar `/og.png` en Cloudflare; CSP con `form-action https://codepen.io` y `text/markdown` para `.md` (nginx/Orbit); arreglar la plantilla estática de Orbit (barra final); ficha del repositorio en GitHub (descripción, web, temas, imagen social, release); instalar las dependencias de Firefox y WebKit en el servidor para recuperar el gate en tres motores.
 
 ## Decisiones que no deben perderse
 
