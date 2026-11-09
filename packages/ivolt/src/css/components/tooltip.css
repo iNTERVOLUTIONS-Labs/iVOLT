@@ -20,6 +20,11 @@
   inset-block-start: 0;
   inset-inline-start: 0;
   z-index: var(--iv-z-toast);
+  /* The bubble enters the top layer as a manual popover (above a modal dialog):
+     undo the user-agent popover box so the arrow outside it is not clipped. */
+  margin: 0;
+  border: 0;
+  overflow: visible;
   max-inline-size: 18rem;
   padding-block: 0.4rem;
   padding-inline: 0.65rem;

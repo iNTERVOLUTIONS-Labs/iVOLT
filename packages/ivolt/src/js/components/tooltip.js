@@ -48,6 +48,20 @@ const OFFSET = 8;
 /** Smallest gap kept between the tooltip and the edges of the viewport. */
 const MARGIN = 8;
 
+/**
+ * Whether `el` is a popover in the top layer right now.
+ *
+ * @param {HTMLElement} el Element to test.
+ * @returns {boolean} `true` when it is an open popover.
+ */
+function isOpenPopover(el) {
+  try {
+    return el.hasAttribute("popover") && el.matches(":popover-open");
+  } catch {
+    return false;
+  }
+}
+
 /** Counter behind the id of every shared tooltip element. */
 let sequence = 0;
 
@@ -268,6 +282,7 @@ export class Tooltip extends IvComponent {
     tip.hidden = false;
     this._target = el;
     this._describe(el, tip.id);
+    this._lift(tip, el);
     this._place();
     emit(this._element, "shown", { instance: this, target: el });
   }
@@ -287,6 +302,7 @@ export class Tooltip extends IvComponent {
     this._target = null;
     const tip = this._tip;
     if (tip) {
+      if (isOpenPopover(tip)) tip.hidePopover();
       tip.hidden = true;
       tip.textContent = "";
       tip.removeAttribute(PLACEMENT_ATTRIBUTE);
@@ -312,6 +328,30 @@ export class Tooltip extends IvComponent {
     doc.body.append(tip);
     this._tip = tip;
     return tip;
+  }
+
+  /**
+   * Puts the bubble where it can be seen. A modal dialog makes the rest of the
+   * document inert and paints it under the top layer, so a bubble under the
+   * body was "shown" behind the dialog. The bubble moves into the open dialog
+   * that holds the target (or back to the body) and, where `popover` exists,
+   * enters the top layer itself as a manual popover, above the dialog.
+   *
+   * @param {HTMLElement} tip The bubble.
+   * @param {HTMLElement} target The element being described.
+   * @returns {void}
+   */
+  _lift(tip, target) {
+    const doc = this._element.ownerDocument;
+    const host = target.closest("dialog[open]") || doc.body;
+    if (host && tip.parentNode !== host) host.append(tip);
+    if (typeof tip.showPopover !== "function") return;
+    if (!tip.hasAttribute("popover")) tip.setAttribute("popover", "manual");
+    try {
+      if (!isOpenPopover(tip)) tip.showPopover();
+    } catch {
+      // A bubble that cannot enter the top layer is still placed, in its host.
+    }
   }
 
   /**

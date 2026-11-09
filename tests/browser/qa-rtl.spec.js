@@ -152,6 +152,47 @@ test.describe("mirrored in a right-to-left document", () => {
     expect(await page.evaluate(() => getComputedStyle(document.querySelector(".iv-range")).direction)).toBe("rtl");
   });
 
+  // 1.1: only the invalid text input was mirrored; the valid one and both select states kept
+  // their icons on the physical right, on top of the text of a right-to-left value.
+  test("the validation icons sit at the inline end of every control", async ({ page }) => {
+    for (const [dir, side] of [["ltr", "right"], ["rtl", "left"]]) {
+      await page.goto(`/fixture/form/basic?nojs&dir=${dir}`);
+      const positions = await page.evaluate(() => {
+        const host = document.getElementById("fixture");
+        const make = (state, tag) => {
+          const field = document.createElement("div");
+          field.className = `iv-field iv-field--${state}`;
+          const control = document.createElement(tag);
+          control.className = tag === "select" ? "iv-select" : "iv-input";
+          if (tag === "select") control.append(new Option("Sample"));
+          field.append(control);
+          host.append(field);
+          return getComputedStyle(control).backgroundPositionX;
+        };
+        return ["invalid", "valid"].flatMap((s) => [make(s, "input"), make(s, "select")]);
+      });
+      // Engines serialise `right 12px` as `calc(100% - 12px)`: every layer of every control is
+      // measured from the right edge in ltr and from the left edge in rtl.
+      const layers = positions.flatMap((p) => p.split(","));
+      const fromRight = layers.filter((p) => p.includes("100%"));
+      expect(fromRight.length, `${dir}: ${positions.join(" | ")}`).toBe(side === "right" ? layers.length : 0);
+    }
+  });
+
+  test("the autoplay bar of the carousel fills from the inline start", async ({ page }) => {
+    for (const [dir, atEnd] of [["ltr", false], ["rtl", true]]) {
+      await page.goto(`/fixture/carousel/basic?nojs&dir=${dir}`);
+      const { origin, width } = await page.evaluate(() => {
+        const bar = document.createElement("div");
+        bar.className = "iv-carousel__progress";
+        document.querySelector(".iv-carousel").append(bar);
+        return { origin: parseFloat(getComputedStyle(bar, "::after").transformOrigin), width: bar.getBoundingClientRect().width };
+      });
+      expect(width).toBeGreaterThan(0);
+      expect(origin, `${dir} origin`).toBeCloseTo(atEnd ? width : 0, 0);
+    }
+  });
+
   test("the sheen starts outside the inline start edge", async ({ page }) => {
     for (const [dir, sign] of [["ltr", -1], ["rtl", 1]]) {
       await page.goto(`/fixture/surfaces/glow?dir=${dir}`);

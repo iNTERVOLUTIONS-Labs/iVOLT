@@ -4,7 +4,7 @@
  * technology hears the state, not the boxes.
  * Locals: --iv-skeleton-bg --iv-skeleton-highlight --iv-skeleton-radius
  * Declares no @layer and imports nothing: the entry point does that.
- * Highest specificity used: (0,1,0).
+ * Highest specificity used: (0,1,1).
  */
 
 .iv-skeleton {
@@ -14,20 +14,33 @@
   --iv-skeleton-highlight: color-mix(in oklab, var(--iv-color-border-strong) 42%, var(--iv-color-surface));
   --iv-skeleton-radius: var(--iv-radius-sm);
 
+  position: relative;
   display: block;
   inline-size: 100%;
   block-size: 1em;
+  overflow: hidden;
   background-color: var(--iv-skeleton-bg);
+  border-radius: var(--iv-skeleton-radius);
+}
+
+/* The sweep is a layer of its own that only translates, so the engine moves
+   it on the compositor instead of repainting the placeholder every frame
+   (1.0 animated `background-position`). Same band, same path: 55 % wide,
+   from -50 % to 150 % of the free space. */
+.iv-skeleton::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 55%;
   background-image: linear-gradient(
     90deg,
     transparent 0%,
     var(--iv-skeleton-highlight) 50%,
     transparent 100%
   );
-  background-repeat: no-repeat;
-  background-size: 55% 100%;
-  border-radius: var(--iv-skeleton-radius);
   animation: iv-shimmer 1600ms var(--iv-ease-out) infinite;
+  pointer-events: none;
 }
 
 /* Shapes --------------------------------------------------------------- */
@@ -58,19 +71,31 @@
   border-radius: var(--iv-radius-full);
 }
 
+/* Physical on purpose, like the background position it replaces: the sweep
+   reads left to right in both directions. */
+:where([dir="rtl"]) .iv-skeleton::after {
+  inset-inline-start: auto;
+  left: 0;
+}
+
 @keyframes iv-shimmer {
   from {
-    background-position: -50% 0;
+    transform: translateX(-40.91%);
   }
 
   to {
-    background-position: 150% 0;
+    transform: translateX(122.73%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .iv-skeleton {
-    background-image: none;
-    animation: none;
+  .iv-skeleton::after {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .iv-skeleton::after {
+    display: none;
   }
 }

@@ -1,0 +1,21 @@
+<div data-iv-component="tooltip">
+  <a class="iv-button iv-button--primary" href="#tooltip-dialog" data-iv-open="tooltip-dialog">Open the settings</a>
+
+  <dialog class="iv-dialog" id="tooltip-dialog" data-iv-component="dialog" aria-labelledby="tooltip-dialog-title">
+    <div class="iv-dialog__panel">
+      <header class="iv-dialog__header">
+        <h2 class="iv-dialog__title" id="tooltip-dialog-title">Export settings</h2>
+        <button class="iv-button iv-button--ghost iv-button--icon" type="button" data-iv-close aria-label="Close" data-iv-tooltip="Close without saving">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </header>
+      <div class="iv-dialog__body iv-stack">
+        <p class="iv-u-m-0">Demo dialog: nothing is exported. A label inside a modal dialog is shown in the top layer, above the dialog, so it stays readable.</p>
+        <div class="iv-cluster">
+          <button class="iv-button" type="button" data-iv-tooltip="Comma-separated values, one row per line">CSV</button>
+          <button class="iv-button" type="button" data-iv-tooltip="One object per row, keys from the column titles">JSON</button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>

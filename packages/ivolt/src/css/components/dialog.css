@@ -15,6 +15,8 @@
   max-block-size: calc(100vh - 2rem);
   max-block-size: calc(100dvh - 2rem);
   overflow: auto;
+  /* A scroll that reaches the end of the panel stays in the panel. */
+  overscroll-behavior: contain;
   color: var(--iv-color-text);
   background-color: var(--iv-color-surface-raised);
   border-radius: var(--iv-radius-lg);
@@ -23,6 +25,16 @@
   outline: var(--iv-border-width) solid var(--iv-color-border);
   outline-offset: calc(-1 * var(--iv-border-width));
   box-shadow: var(--iv-shadow-3);
+}
+
+/* Scroll lock, in CSS so it holds with or without the script: while a modal
+   dialog or drawer is open the page underneath stops scrolling. No
+   `scrollbar-gutter: stable` here: on a page that does not scroll it would add
+   a gutter and move everything sideways, the shift it is meant to prevent.
+   `:where()` keeps it at (0,0,0): any author rule on the root wins. */
+:where(:root:has(.iv-dialog:modal)),
+:where(:root:has(.iv-drawer:modal)) {
+  overflow: hidden;
 }
 
 /* The page behind is dimmed and softly blurred, so the panel reads as the
