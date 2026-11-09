@@ -1,0 +1,41 @@
+/* Comparison pages: the measured table, the two-column pairs and the closing call to action. */
+.docs-compare__crumbs { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--iv-color-text-muted); }
+.docs-compare__crumbs a { color: var(--iv-color-primary); text-decoration: none; }
+.docs-compare__pair { display: grid; gap: var(--iv-space-4); margin-block-start: var(--iv-space-5); }
+@media (min-width: 52em) { .docs-compare__pair { grid-template-columns: 1fr 1fr; } }
+.docs-compare__col { padding: var(--iv-space-5); border-radius: var(--iv-radius-lg); background: var(--iv-color-surface); border: 1px solid var(--iv-color-border); }
+.docs-compare__col--us { border-color: var(--iv-color-primary-border); box-shadow: 0 0 0 1px var(--iv-color-primary-border) inset, 0 30px 60px -48px var(--iv-glow-primary); }
+.docs-compare__col h3 { margin: 0 0 var(--iv-space-3); font-family: var(--docs-display); }
+.docs-compare__col ul { margin: 0; }
+.docs-compare__code { display: grid; gap: var(--iv-space-4); margin-block-start: var(--iv-space-5); }
+@media (min-width: 64em) { .docs-compare__code { grid-template-columns: 1fr 1fr; align-items: start; } }
+.docs-compare__code > * { min-inline-size: 0; }
+.docs-compare__cta { margin-block-start: var(--docs-section); padding: clamp(1.5rem, 4vw, 3rem); border-radius: var(--iv-radius-xl, 1.25rem); background: radial-gradient(120% 140% at 100% 0%, var(--iv-color-primary-subtle), transparent 60%), var(--iv-color-surface); border: 1px solid var(--iv-color-border); }
+.docs-compare__cta h2 { margin: 0; font-family: var(--docs-display); font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -.02em; }
+.docs-compare__cta > p { max-inline-size: 60ch; color: var(--iv-color-text-muted); }
+.docs-compare__cta .iv-cluster { margin-block-start: var(--iv-space-5); }
+.docs-compare__others { margin-block-start: var(--iv-space-5); font-size: var(--iv-text-sm); }
+
+.docs-sizes caption { caption-side: bottom; text-align: start; padding: var(--iv-space-3) var(--iv-space-4); color: var(--iv-color-text-muted); font-size: var(--iv-text-sm); }
+.docs-sizes th[scope="row"] { font-weight: var(--iv-weight-medium); white-space: nowrap; }
+.docs-sizes__ver { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); color: var(--iv-color-text-muted); }
+.docs-sizes__role { display: inline-block; min-inline-size: 3.2em; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); text-transform: uppercase; letter-spacing: .06em; color: var(--iv-color-text-muted); }
+.docs-sizes__note { display: block; color: var(--iv-color-text-muted); font-size: var(--iv-text-xs); margin-block-start: 2px; }
+.docs-sizes__num { text-align: end; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.docs-sizes__gz { position: relative; min-inline-size: 9rem; }
+.docs-sizes__gz strong { position: relative; font-weight: var(--iv-weight-semibold); }
+.docs-sizes__bar { position: absolute; inset-block: 22% ; inset-inline-end: .5rem; inline-size: calc((100% - 1rem) * var(--w) / 100); border-radius: var(--iv-radius-sm); background: color-mix(in oklab, var(--iv-color-text-muted) 18%, transparent); }
+.docs-sizes__ours .docs-sizes__bar { background: color-mix(in oklab, var(--iv-color-primary) 26%, transparent); }
+.docs-sizes__ours th[scope="row"] .docs-sizes__name { color: var(--iv-color-primary); }
+.docs-sizes__method { font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); max-inline-size: 72ch; }
+
+/* Hub cards */
+.docs-vs { display: grid; gap: var(--iv-space-4); margin-block-start: var(--iv-space-6); list-style: none; padding: 0; }
+@media (min-width: 48em) { .docs-vs { grid-template-columns: repeat(2, 1fr); } }
+.docs-vs li { margin: 0; }
+.docs-vs a { display: grid; gap: var(--iv-space-2); block-size: 100%; padding: var(--iv-space-5); border-radius: var(--iv-radius-lg); border: 1px solid var(--iv-color-border); background: var(--iv-color-surface); color: var(--iv-color-text); text-decoration: none; transition: border-color var(--iv-motion-fast) var(--docs-ease), transform var(--iv-motion-fast) var(--docs-ease); }
+.docs-vs a:hover { border-color: var(--iv-color-primary-border); transform: translateY(-2px); }
+.docs-vs strong { font-family: var(--docs-display); font-size: 1.35rem; letter-spacing: -.01em; }
+.docs-vs strong span { color: var(--iv-color-text-muted); font-weight: 400; }
+.docs-vs p { margin: 0; color: var(--iv-color-text-muted); font-size: var(--iv-text-sm); }
+@media (prefers-reduced-motion: reduce) { .docs-vs a { transition: none; } .docs-vs a:hover { transform: none; } }

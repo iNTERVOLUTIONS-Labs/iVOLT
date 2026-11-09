@@ -68,6 +68,24 @@ import Base from "../layouts/Base.astro";
 
     <p class="iv-u-m-0"><a id="pg-doc-link" href="/components/button">Open the Button component page</a></p>
     </Section>
+
+    <Section title="From snippet to page" num={2}>
+      <p>The copied HTML works in any page that links the stylesheet and puts <code>class="iv-root"</code> on the <code>html</code> element. That is the whole setup:</p>
+      <pre tabindex="0"><code>&lt;html class="iv-root" data-iv-theme="system"&gt;
+  &lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
+  &lt;!-- paste the snippet here --&gt;
+  &lt;script type="module" src="ivolt/js/auto.js"&gt;&lt;/script&gt;</code></pre>
+      <p>The script line is only needed for components that come alive with JavaScript (the snippet carries a <code>data-iv-component</code> attribute when it does). Content components such as buttons, badges, alerts and cards are CSS only. The theme radio above only sets <code>data-iv-theme</code> on the preview panel; put the same attribute on any element of your page to theme that part of it.</p>
+    </Section>
+
+    <Section title="Going further" num={3}>
+      <ul>
+        <li>Every component page has a live stage with the real file running, controls for theme, direction, width and motion, and the full markup.</li>
+        <li>The <a href="/foundations/theme-builder">theme builder</a> changes the brand colours, radius and font and prints the CSS to paste after the stylesheet.</li>
+        <li>The <a href="/examples">examples</a> are four complete pages built only with iVOLT, ready to download.</li>
+        <li>The <a href="/reference">reference</a> lists every class, token, attribute and event, generated from the sources.</li>
+      </ul>
+    </Section>
   </article>
 
   <script src="../scripts/playground.js"></script>

@@ -119,6 +119,9 @@
 .docs-prose code:not(pre code) { background: var(--iv-color-surface); border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-sm); padding: 0 .3em; font-size: .9em; overflow-wrap: anywhere; }
 .docs-anchor { opacity: 0; text-decoration: none; color: var(--iv-color-primary); font-size: .7em; padding-inline: .25em; transition: opacity var(--iv-motion-fast) var(--docs-ease); }
 .docs-prose h2:hover .docs-anchor, .docs-prose h3:hover .docs-anchor, .docs-anchor:focus-visible { opacity: 1; }
+/* Clicking the # also copies the address of the section; a tick confirms it for a moment. */
+.docs-anchor[data-copied] { opacity: 1; }
+.docs-anchor[data-copied]::after { content: "\2713"; margin-inline-start: .2em; color: var(--iv-color-success); }
 
 /* ---------- a quiet callout for warnings and asides ---------- */
 .docs-note {
@@ -412,3 +415,9 @@
 .docs-changelog-es { margin-block: var(--iv-space-4) 0; padding-inline-start: 1.1rem; }
 .docs-changelog-es > li + li { margin-block-start: var(--iv-space-3); }
 .docs-changelog-es strong { font-family: var(--docs-display); color: var(--iv-color-text); }
+
+/* Card grids built from lists (theme gallery, comparisons, showcase): the prose list rhythm —
+   indent, li + li margin, markers — is for running text, not for a grid of cards. */
+.docs-prose :is(.docs-themes__grid, .docs-tcard__checks, .docs-vs, .docs-showcase, .docs-blocks__index ul) { padding-inline-start: 0; }
+.docs-prose :is(.docs-themes__grid, .docs-tcard__checks, .docs-vs, .docs-showcase, .docs-blocks__index ul) > li { margin-block-start: 0; }
+.docs-prose :is(.docs-tcard__checks, .docs-blocks__index ul) > li::marker { content: none; }

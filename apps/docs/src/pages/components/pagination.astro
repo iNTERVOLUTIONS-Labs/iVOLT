@@ -4,7 +4,7 @@ import Section from "../../components/Section.astro";
 import Stage from "../../components/Stage.astro";
 ---
 <Base title="Pagination: accessible page links" description="iVOLT pagination: page links in a labelled nav with current page, disabled previous/next and ellipsis. CSS only, navigation only.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Pagination</h1>
     <p>Navigation between pages of results. Every page is a real link; the current one carries <code>aria-current="page"</code>. Unavailable previous/next controls are plain text with <code>aria-disabled="true"</code>, not links.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/pagination.css</code> (in <code>ivolt.css</code>).</p>
@@ -14,6 +14,26 @@ import Stage from "../../components/Stage.astro";
 
     <Section title="Common mistakes" num={2}>
       <ul><li>Buttons instead of links when each page has a URL.</li><li>Icon-only previous/next without an accessible name.</li></ul>
+    </Section>
+    <Section title="Full example" num={3}>
+      <p>Every page number is a link with a real URL, so the list works without JavaScript, can be opened in a new tab and is followed by crawlers. Previous and next say what they do in words, even when an arrow is drawn beside them.</p><pre tabindex="0"><code>&lt;nav class="iv-pagination" aria-label="Results pages"&gt;
+  &lt;ul class="iv-pagination__list"&gt;
+    &lt;li&gt;&lt;span class="iv-pagination__link" aria-disabled="true"&gt;Previous&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a class="iv-pagination__link" href="?page=1" aria-current="page"&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a class="iv-pagination__link" href="?page=2"&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;span class="iv-pagination__ellipsis" aria-hidden="true"&gt;…&lt;/span&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a class="iv-pagination__link" href="?page=9"&gt;9&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a class="iv-pagination__link" href="?page=2"&gt;Next&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;</code></pre>
+    </Section>
+
+    <Section title="How many links to show" num={4}>
+      <p>Show the first and last pages, the current one and one neighbour on each side, with an ellipsis in the gaps: the reader always knows where they are and how far the end is. On a phone, cut the neighbours before you cut previous and next. The list wraps instead of overflowing, and every target keeps at least 2.5rem in both directions.</p>
+    </Section>
+
+    <Section title="Customising" num={5}>
+      <p>Locals: <code>--iv-pagination-gap</code>, <code>--iv-pagination-size</code> (the target, 2.5rem by default) and <code>--iv-pagination-radius</code> (a pill, like every action in the brand).</p><pre tabindex="0"><code>.iv-pagination &#123; --iv-pagination-radius: var(--iv-radius-sm); &#125;</code></pre>
     </Section>
   </article>
 </Base>

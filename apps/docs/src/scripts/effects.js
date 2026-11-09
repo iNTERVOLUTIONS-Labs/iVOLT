@@ -2,7 +2,7 @@
    facts, magnetic buttons, the theme cut and the sidebar indicator.
    Everything is opt-in per element, every listener is returned for teardown, and nothing here
    runs under prefers-reduced-motion except the parts that are plain state (the cut, the meter). */
-import { t } from "../i18n/en.js";
+import { tr } from "./strings.js";
 
 const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fine = () => matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -157,19 +157,19 @@ export function mountEffects(doc = document) {
     const btn = doc.createElement("button");
     btn.type = "button";
     btn.className = "iv-button iv-button--secondary iv-button--sm docs-copy-inline";
-    btn.textContent = t.copyCode;
+    btn.textContent = tr().copyCode;
     btn.setAttribute("aria-describedby", status.id);
     btn.addEventListener("click", async () => {
       try {
         if (!navigator.clipboard) throw new Error("no clipboard");
         await navigator.clipboard.writeText(code.textContent);
-        btn.textContent = t.copied; status.textContent = t.copiedStatus;
+        btn.textContent = tr().copied; status.textContent = tr().copiedStatus;
       } catch {
         const r = doc.createRange(); r.selectNodeContents(code);
         const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
-        btn.textContent = t.selected; status.textContent = t.selectedStatus;
+        btn.textContent = tr().selected; status.textContent = tr().selectedStatus;
       }
-      setTimeout(() => { btn.textContent = t.copyCode; status.textContent = ""; }, 2000);
+      setTimeout(() => { btn.textContent = tr().copyCode; status.textContent = ""; }, 2000);
     });
     wrap.append(btn, status);
   });

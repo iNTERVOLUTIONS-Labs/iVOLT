@@ -40,12 +40,31 @@ function mountShowreel(root) {
   return reel ? mountTabs(reel, root.getElementById ? root : document) : () => {};
 }
 
+// "Open in CodePen": fills the POST with the markup of the HTML panel at the moment it is sent.
+// Root-relative paths (the demo photographs) become absolute so they still load in the pen.
+function mountPens(root) {
+  const forms = [...root.querySelectorAll("form[data-stage-pen]")];
+  const offs = forms.map((form) => {
+    form.hidden = false;
+    const onSubmit = () => {
+      const code = document.getElementById(form.dataset.code);
+      const data = JSON.parse(form.dataset.stagePen);
+      data.html = (code ? code.textContent : "").replace(/(\s(?:src|href|srcset)=")\//g, `$1${location.origin}/`);
+      form.elements.data.value = JSON.stringify(data);
+    };
+    form.addEventListener("submit", onSubmit);
+    return () => form.removeEventListener("submit", onSubmit);
+  });
+  return () => offs.forEach((fn) => fn());
+}
+
 export function mountStage(root = document) {
+  const pens = mountPens(root);
   const reel = mountShowreel(root);
   const blocks = [...root.querySelectorAll("[data-code-tabs]")].map((t) => mountTabs(t, root.getElementById ? root : document));
   const stopBlocks = () => blocks.forEach((fn) => fn());
   const stages = [...root.querySelectorAll("[data-stage]")];
-  if (!stages.length) return () => { reel(); stopBlocks(); };
+  if (!stages.length) return () => { reel(); stopBlocks(); pens(); };
   const byId = new Map();
   const cleanup = [];
 
@@ -192,5 +211,6 @@ export function mountStage(root = document) {
   void getTheme;
 
   cleanup.push(reel, stopBlocks);
+  cleanup.push(pens);
   return () => cleanup.forEach((fn) => fn());
 }

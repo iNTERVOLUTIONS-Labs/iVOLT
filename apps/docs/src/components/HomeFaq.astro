@@ -1,0 +1,65 @@
+---
+// The questions people ask before trying a CSS framework, answered with what the repository can
+// prove: sizes measured at build time, counts from the same maps the site uses, links to the
+// pages that show the rest. Native <details name> make the list an exclusive accordion without
+// script. The same list feeds the FAQPage structured data, so the two can never disagree.
+import { kib } from "../lib/sizes.js";
+import { families } from "../i18n/en.js";
+const { lang = "en", num = "06" } = Astro.props;
+const es = lang === "es";
+const base = es ? "/es" : "";
+const css = kib("css/ivolt.min.css"), js = kib("js/ivolt.iife.min.js"), core = kib("css/core.min.css");
+const n = Object.keys(families).length, nCss = Object.values(families).filter((k) => k === "css").length;
+const num_ = (s) => (es && s ? s.replace(".", ",") : s);
+const faq = es ? [
+  { q: "¿Qué es iVOLT?", a: `iVOLT es un framework CSS y sistema de diseño de código abierto (MIT) de iNTERVOLUTIONS: ${n} componentes accesibles en CSS plano con JavaScript opcional, tokens de diseño, temas claro y oscuro, y ni paso de build ni dependencias de ejecución.`, link: [`${base}/getting-started`, "Primeros pasos"] },
+  { q: "¿Necesito un paso de build o Node?", a: "No. Enlaza ivolt.min.css desde un CDN o desde tu servidor y añade la clase iv-root al elemento html. npm es opcional, para quien ya use un empaquetador.", link: [`${base}/getting-started`, "Instalar"] },
+  { q: "¿Necesito JavaScript?", a: `No para el contenido: ${nCss} de los ${n} componentes son solo CSS. Los ${n - nCss} interactivos funcionan como HTML antes de que llegue el script y lo usan para mejorar: teclado, foco, estados.`, link: [`${base}/components/dialog`, "Ver un componente con JavaScript"] },
+  { q: "¿Cuánto pesa?", a: `${num_(css)} KiB de CSS y ${num_(js)} KiB de JavaScript (IIFE), minificados y con gzip, medidos sobre los ficheros que se publican al compilar esta web. Solo la base sin componentes, core.min.css, son ${num_(core)} KiB.`, link: [`${base}/compare`, "Compararlo con otros frameworks"] },
+  { q: "¿Es gratis?", a: "Sí. Licencia MIT: úsalo en proyectos personales y comerciales sin pagar ni pedir permiso.", link: ["https://github.com/iNTERVOLUTIONS-Labs/iVOLT", "Código en GitHub"] },
+  { q: "¿Tiene modo oscuro?", a: "Sí: claro, oscuro y el del sistema, con data-iv-theme en cualquier elemento. Los ámbitos se anidan, y no hace falta script ni almacenamiento.", link: [`${base}/foundations/tokens-and-themes`, "Tokens y temas"] },
+  { q: "¿Es accesible?", a: "Cada componente sigue los patrones de teclado de la APG de WAI-ARIA, gestiona el foco y cumple el contraste de los tokens; las pruebas pasan axe en Chromium, Firefox y WebKit. Lo que te toca a ti como autor también está escrito.", link: [`${base}/foundations/accessibility`, "Accesibilidad"] },
+  { q: "¿Puedo usarlo con WordPress, Astro o mi CSS actual?", a: "Sí. Todo lleva el prefijo iv- y los estilos base se limitan a .iv-root, así que convive con el CSS que ya tengas; también hay una hoja plana sin capas de cascada.", link: [`${base}/foundations/coexistence`, "Convivir con tu CSS"] },
+  { q: "¿Cambiará la API y me romperá la web?", a: "No dentro de 1.x. Desde la 1.0, toda clase, token, atributo y evento públicos siguen SemVer: las versiones menores solo añaden.", link: [`${base}/foundations/stability`, "Estabilidad"] },
+] : [
+  { q: "What is iVOLT?", a: `iVOLT is an open-source (MIT) CSS framework and design system by iNTERVOLUTIONS: ${n} accessible components in plain CSS with optional JavaScript, design tokens, light and dark themes, and no build step or runtime dependencies.`, link: [`/getting-started`, "Getting started"] },
+  { q: "Do I need a build step or Node?", a: "No. Link ivolt.min.css from a CDN or your own server and add the iv-root class to the html element. npm is optional, for projects that already use a bundler.", link: ["/getting-started", "Install it"] },
+  { q: "Do I need JavaScript?", a: `Not for content: ${nCss} of the ${n} components are CSS only. The ${n - nCss} interactive ones work as plain HTML before the script arrives and use it to enhance: keyboard, focus, state.`, link: ["/components/dialog", "See a component with JavaScript"] },
+  { q: "How big is it?", a: `${css} KiB of CSS and ${js} KiB of JavaScript (IIFE), minified and gzipped, measured on the files that ship when this site is built. The base alone, core.min.css, is ${core} KiB.`, link: ["/compare", "Compare it with other frameworks"] },
+  { q: "Is it free?", a: "Yes. MIT licence: use it in personal and commercial projects without paying or asking.", link: ["https://github.com/iNTERVOLUTIONS-Labs/iVOLT", "Source on GitHub"] },
+  { q: "Does it have dark mode?", a: "Yes: light, dark and the system's, with data-iv-theme on any element. Scopes nest, and nothing needs a script or storage.", link: ["/foundations/tokens-and-themes", "Tokens & themes"] },
+  { q: "Is it accessible?", a: "Every component follows the WAI-ARIA APG keyboard patterns, manages focus and meets the token contrast; the tests run axe in Chromium, Firefox and WebKit. What is still your job as the author is written down too.", link: ["/foundations/accessibility", "Accessibility"] },
+  { q: "Can I use it with WordPress, Astro or my existing CSS?", a: "Yes. Everything is prefixed iv- and the base styles are scoped to .iv-root, so it coexists with the CSS you already have; a flat build without cascade layers is included.", link: ["/foundations/coexistence", "Coexisting with CSS"] },
+  { q: "Will the API change and break my site?", a: "Not within 1.x. Since 1.0 every public class, token, attribute and event follows SemVer: minor releases only add.", link: ["/foundations/stability", "Stability"] },
+];
+const ld = { "@context": "https://schema.org", "@type": "FAQPage", inLanguage: lang, mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
+---
+<section class="docs-section docs-wrap docs-faq" aria-labelledby="faq-title">
+  <div class="docs-faq__grid">
+    <div class="docs-faq__head docs-reveal">
+      <span class="docs-num">{num} — {es ? "Preguntas" : "FAQ"}</span>
+      <h2 class="docs-why__title" id="faq-title">{es ? "Lo que se pregunta antes de probarlo." : "What people ask before trying it."}</h2>
+      <p>{es ? "¿Falta tu pregunta? Ábrela en " : "Missing your question? Open it on "}<a href="https://github.com/iNTERVOLUTIONS-Labs/iVOLT/issues" rel="noopener">GitHub</a>.</p>
+    </div>
+    <div class="iv-accordion docs-faq__list">
+      {faq.map((f, i) => (
+        <details class="iv-disclosure" name="docs-faq" open={i === 0}>
+          <summary class="iv-disclosure__summary">{f.q}</summary>
+          <div class="iv-disclosure__content">
+            <p>{f.a}</p>
+            <p><a href={f.link[0]} rel={f.link[0].startsWith("http") ? "noopener" : undefined}>{f.link[1]} <span aria-hidden="true">→</span></a></p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)}></script>
+</section>
+<style>
+  .docs-faq__grid { display: grid; gap: clamp(1.5rem, 4vw, 4rem); }
+  @media (min-width: 64em) { .docs-faq__grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; } .docs-faq__head { position: sticky; inset-block-start: 6rem; } }
+  .docs-faq__head p { color: var(--iv-color-text-muted); max-inline-size: 40ch; margin-block-start: var(--iv-space-5); }
+  .docs-faq__list p { margin: 0; }
+  .docs-faq__list p + p { margin-block-start: var(--iv-space-3); }
+  .docs-faq__list .iv-disclosure__summary { font-family: var(--docs-display); font-size: 1.08rem; }
+</style>

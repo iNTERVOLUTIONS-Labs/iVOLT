@@ -4,7 +4,7 @@ import Section from "../../../components/Section.astro";
 import Stage from "../../../components/Stage.astro";
 ---
 <Base lang="es" title="Insignia: etiquetas de estado en CSS" description="Insignia de iVOLT: etiquetas pequeñas de estado con variantes de color suaves y sólidas, medidas y coloreadas desde los tokens de diseño. Solo CSS.">
-  <article class="docs-prose">
+  <article class="docs-prose" data-enriched>
     <h1>Insignia (badge)</h1>
     <p>Una etiqueta compacta para un estado o un recuento. Las insignias no son interactivas; si la etiqueta importa para la tecnología asistiva, mantenla como texto real y no como color a secas.</p>
     <p class="docs-meta"><strong>CSS:</strong> <code>css/components/badge.css</code> (dentro de <code>ivolt.css</code>).</p>
@@ -17,8 +17,20 @@ import Stage from "../../../components/Stage.astro";
     <Section title="Errores frecuentes" num={2}>
       <ul><li>Usar una insignia como botón; usa <code>iv-button--sm</code> en su lugar.</li><li>Transmitir el estado solo con color: incluye una palabra, por ejemplo «Pagado».</li></ul>
     </Section>
+    <Section title="Cuándo usar una insignia" num={3}>
+      <p>Una insignia etiqueta algo que ya está en pantalla: el estado de una factura, el plan de una cuenta, el número de elementos sin leer junto a un enlace. Se lee como parte de la frase o de la fila donde está, así que la palabra debe ser corta y concreta —«Pagada», «Beta», «3 nuevos»— y la explicación completa, en el texto de alrededor.</p><p>Si la etiqueta se pulsa, es un botón (<code>iv-button iv-button--sm</code>); si resume una cifra que necesita contexto, un <a href="/es/components/stat">stat</a> dice más; si anuncia algo que acaba de pasar, usa una <a href="/es/components/alert">alerta</a> o un <a href="/es/components/toast">toast</a>.</p>
+    </Section>
 
-    <Section title="Índice de clases" num={3}>
+    <Section title="Personalizar" num={4}>
+      <p>Una variante solo reasigna los locales de tono, y <code>--solid</code> solo intercambia fondo y texto, así que cualquier tono se combina con <code>--solid</code> sin una tercera clase. Para un tono nuevo, define los locales en una clase tuya:</p><pre tabindex="0"><code>.badge-teal &#123;
+  --iv-badge-tone: #0f766e;
+  --iv-badge-tone-subtle: #ccfbf1;
+  --iv-badge-on-tone: #ffffff;
+&#125;</code></pre><p>Locales: <code>--iv-badge-tone</code>, <code>--iv-badge-tone-subtle</code>, <code>--iv-badge-on-tone</code>, <code>--iv-badge-bg</code>, <code>--iv-badge-fg</code>, <code>--iv-badge-border</code>, <code>--iv-badge-radius</code>. Comprueba tú el contraste de un tono propio; los de serie están probados en los dos temas.</p>
+    </Section>
+
+
+    <Section title="Índice de clases" num={5}>
       <p>Partes y modificadores de esta familia que los ejemplos de arriba no muestran. La lista completa por hoja está en la <a href="/es/reference">referencia</a>.</p>
       <div class="docs-scroller docs-class-index">
         <table>

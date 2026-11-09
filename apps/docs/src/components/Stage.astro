@@ -9,6 +9,7 @@ import Code from "./Code.astro";
 import "../styles/stage.css";
 import { t as en } from "../i18n/en.js";
 import { t as es } from "../i18n/es.js";
+import { version } from "../lib/version.js";
 
 const {
   name,
@@ -30,6 +31,12 @@ const css = localsSnippet(contract);
 const js = optionsSnippet(contract);
 const id = `fx-${name.replace(/\W+/g, "-")}`;
 const src = `/stage/${name}.html?id=${id}${initialTheme ? `&theme=${initialTheme}` : ""}${bleed ? "&bleed=1" : ""}`;
+// "Open in CodePen": a prefilled POST to codepen.io/pen/define. The pen links the published files
+// from jsDelivr at this exact version; this site loads nothing from there. The markup is read
+// from the HTML panel when the form is sent (stage.js), so the page does not carry it twice.
+const cdn = `https://cdn.jsdelivr.net/npm/@intervolutions/ivolt@${version}/dist`;
+const needsJs = /data-iv-component=|data-iv-(open|toggle|close)\b|iv-(carousel|datatable|megamenu|navbar|reveal|stepper|text-reveal)\b/.test(html);
+const pen = JSON.stringify({ title: `iVOLT · ${title}`, description: `${title}, from ${Astro.site ? Astro.site.href : "https://ivolt.intervolutions.com/"} (fixtures/${name}.html)`, html_classes: "iv-root", css_external: `${cdn}/css/ivolt.min.css`, js_external: needsJs ? `${cdn}/js/ivolt.iife.min.js` : "", js: needsJs ? "IVOLT.init(document);" : "", editors: needsJs ? "101" : "100" });
 const panels = [
   { key: "html", label: t.stageTabHtml, code: html },
   css && { key: "css", label: t.stageTabCss, code: css },
@@ -45,7 +52,13 @@ const widths = [
   <figcaption class="docs-stage__bar">
     <span class="docs-stage__title">{title}</span>
     <span class="docs-stage__path">fixtures/{name}.html</span>
-    <a class="docs-stage__open" href={src} target="_blank" rel="noopener">{t.stageOpen}<span class="iv-u-sr-only"> — {title}</span></a>
+    <span class="docs-stage__links">
+      <form class="docs-stage__pen" action="https://codepen.io/pen/define" method="POST" target="_blank" data-stage-pen={pen} data-code={`${id}-code-html`} hidden>
+        <input type="hidden" name="data" value="">
+        <button class="docs-stage__penbtn" type="submit">CodePen<span class="iv-u-sr-only"> — {lang === "es" ? "abrir" : "open"} {title} {lang === "es" ? "en CodePen (pestaña nueva)" : "in CodePen (new tab)"}</span></button>
+      </form>
+      <a class="docs-stage__open" href={src} target="_blank" rel="noopener">{t.stageOpen}<span class="iv-u-sr-only"> — {title}</span></a>
+    </span>
   </figcaption>
 
   <!-- The controls only appear once the script that drives them is running: a switch that does

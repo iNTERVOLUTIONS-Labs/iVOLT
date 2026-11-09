@@ -8,13 +8,17 @@ const links = [
   { href: "/examples", label: "Examples", meta: "4 full pages" },
 ];
 ---
-<Base title="Page not found" description="This page does not exist. Jump back to the iVOLT documentation: install, components, tokens and themes, or the example pages." sidebar={false}>
+{/* The server answers every missing address with this one file (error_page 404 /404.html), in
+    either language, so it carries a way back to the Spanish site too. /es/404 is the same page in
+    Spanish for hosts that serve a 404 per folder. */}
+<Base title="Page not found" description="This page does not exist. Jump back to the iVOLT documentation: install, components, tokens and themes, or the example pages." sidebar={false} noindex>
   <article class="docs-prose">
     <div class="docs-lost">
       <div>
         <p class="docs-lost__code" aria-hidden="true">404</p>
         <h1>Page not found</h1>
         <p>No page answers to this address. Pick a way back below, or press <kbd class="docs-kbd-inline">/</kbd> to search the documentation.</p>
+        <p lang="es">¿Buscabas la documentación en español? <a href="/es">Vuelve a la portada en español</a> o abre los <a href="/es/getting-started">primeros pasos</a>.</p>
       </div>
       <nav aria-label="Ways back">
         <ul class="docs-lost__links">

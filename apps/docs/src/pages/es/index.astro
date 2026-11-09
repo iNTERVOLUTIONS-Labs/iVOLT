@@ -5,6 +5,8 @@ import Stage from "../../components/Stage.astro";
 import DeviceFrame from "../../components/DeviceFrame.astro";
 import Arcs from "../../components/Arcs.astro";
 import ThemeCut from "../../components/ThemeCut.astro";
+import HomeFaq from "../../components/HomeFaq.astro";
+import HeroInstall from "../../components/HeroInstall.astro";
 import { families } from "../../i18n/en.js";
 import { componentLabels } from "../../i18n/es.js";
 import { readFileSync, existsSync } from "node:fs";
@@ -56,6 +58,27 @@ const site = Astro.site ? Astro.site.href.replace(/\/$/, "") : null;
 const jsonLd = [
   {
     "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "iVOLT",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Any",
+    softwareVersion: version,
+    license: "https://opensource.org/licenses/MIT",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+    ...(site ? { url: `${site}/es`, image: `${site}/og/es.png` } : {}),
+    downloadUrl: "https://www.npmjs.com/package/@intervolutions/ivolt",
+    author: { "@type": "Organization", name: "iNTERVOLUTIONS" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "iNTERVOLUTIONS",
+    url: "https://intervolutions.com",
+    ...(site ? { logo: `${site}/icon-512.png` } : {}),
+    sameAs: ["https://github.com/iNTERVOLUTIONS-Labs", "https://www.npmjs.com/package/@intervolutions/ivolt"],
+  },
+  {
+    "@context": "https://schema.org",
     "@type": "WebSite",
     name: "iVOLT",
     ...(site ? { url: `${site}/es` } : {}),
@@ -96,11 +119,12 @@ const recipes = [
         <span class="docs-mask" style="--i:0"><span>El framework CSS</span></span>
         <span class="docs-mask" style="--i:1"><span>sin <em>paso de build</em><span class="docs-dot">.</span></span></span>
       </h1>
-      <p class="docs-hero__lead">Treinta y tres componentes accesibles, un conjunto finito de utilidades y tokens de diseño como contrato visual. Enlaza una hoja de estilo y ya estás construyendo: HTML plano, WordPress, Astro o cualquier empaquetador.</p>
+      <p class="docs-hero__lead"><strong class="docs-hero__def">iVOLT es un framework CSS y sistema de diseño de código abierto.</strong> Treinta y tres componentes accesibles, un conjunto finito de utilidades y tokens de diseño como contrato visual. Enlaza una hoja de estilo y ya estás construyendo: HTML plano, WordPress, Astro o cualquier empaquetador.</p>
       <div class="docs-hero__actions">
         <a class="iv-button iv-button--primary iv-button--lg docs-magnetic" href="/es/getting-started">Primeros pasos</a>
         <a class="iv-button iv-button--secondary iv-button--lg docs-magnetic" href="/es/components/button">Ver los componentes</a>
       </div>
+      <HeroInstall lang="es" />
       <ul class="docs-facts">
         {facts.map((f) => <li class="docs-fact"><strong class="iv-count" data-iv-component="countup">{f.value}</strong><span>{f.label}</span></li>)}
       </ul>
@@ -211,5 +235,6 @@ const recipes = [
       <p class="docs-invert__foot">v{version} con licencia MIT. Qué es público, y cómo puede cambiar, está escrito en <a href="/es/foundations/stability">estabilidad</a>. Los tamaños de arriba se miden sobre los archivos que se distribuyen, en tiempo de build.</p>
     </div>
   </section>
+  <HomeFaq lang="es" />
   <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)}></script>
 </Base>
