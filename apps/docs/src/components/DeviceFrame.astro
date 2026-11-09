@@ -19,11 +19,17 @@ const on = (f) => existsSync(resolve(repoRoot(), "apps/docs/public", f.slice(1))
 const file = on(`${stem}.jpg`) ? `${stem}.jpg` : `${stem}.png`;
 const has = on(file);
 const size = device === "phone" ? { w: 390, h: 844 } : { w: 1440, h: 900 };
+// AVIF and WebP renditions from scripts/build-images.mjs, offered only when they exist on disk.
+const widths = device === "phone" ? [390] : [480, 800, 1440];
+const set = (ext) => widths.every((w) => on(`${stem}-${w}w.${ext}`)) ? widths.map((w) => `${stem}-${w}w.${ext} ${w}w`).join(", ") : null;
+const avif = set("avif"), webp = set("webp");
+// A desktop frame is drawn at most ~45 % of a wide viewport and full width on a phone.
+const sizes = device === "phone" ? "(min-width: 64em) 16rem, 60vw" : "(min-width: 64em) 45vw, 92vw";
 ---
 <div class:list={["docs-device", `docs-device--${device}`]}>
   <span class="docs-device__bar" aria-hidden="true"></span>
   {has
-    ? <img class="docs-device__shot" src={file} width={size.w} height={size.h} alt={alt || `${title}, ${device === "phone" ? "on a phone" : "on a desktop"}`} loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "low" : undefined} decoding="async">
+    ? <picture>{avif && <source type="image/avif" srcset={avif} sizes={sizes}>}{webp && <source type="image/webp" srcset={webp} sizes={sizes}>}<img class="docs-device__shot" src={file} width={size.w} height={size.h} alt={alt || `${title}, ${device === "phone" ? "on a phone" : "on a desktop"}`} loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "low" : undefined} decoding="async"></picture>
     : <span class="docs-device__empty">{missing}</span>}
   {href && <a class="docs-device__link" href={href}><span class="iv-u-sr-only">{title}</span></a>}
 </div>

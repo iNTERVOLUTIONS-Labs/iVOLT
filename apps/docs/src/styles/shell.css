@@ -62,7 +62,9 @@
 .docs-kbd { font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); border: 1px solid var(--iv-color-border-strong); border-radius: var(--iv-radius-sm); padding: 0 .35em; margin-inline-start: .35em; display: none; }
 .docs-theme { display: none; gap: 2px; border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-full); padding: 2px; }
 .docs-theme .iv-button { --iv-button-radius: var(--iv-radius-full); }
-.docs-theme [aria-pressed="true"] { --iv-button-bg: var(--iv-color-primary); --iv-button-fg: var(--iv-color-on-primary); }
+/* The pressed choice keeps its fill under the pointer: the ghost's hover fill is the pale primary
+   tint, and with the on-primary text left white the pressed "Light" read white on pale blue. */
+.docs-theme [aria-pressed="true"] { --iv-button-bg: var(--iv-color-primary); --iv-button-fg: var(--iv-color-on-primary); --iv-button-bg-hover: var(--iv-color-primary-hover); --iv-button-bg-active: var(--iv-color-primary-active); --iv-button-border-hover: var(--iv-color-primary-hover); }
 .docs-nav-dialog .docs-theme { display: inline-flex; }
 /* The switch is the first thing in the drawer, not the last: below it come fifty links, and a
    control reached by scrolling past all of them is a control nobody finds. */

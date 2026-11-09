@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
 import Code from "../components/Code.astro";
 ---
-<Base title="Contributing to iVOLT" description="How to build, test and extend iVOLT: the commands, the repository layout, the rules a change has to follow, the tests that enforce them, and the licence.">
+<Base title="Contributing: build, test and extend" description="How to build, test and extend iVOLT: the commands, the repository layout, the rules a change has to follow, the tests that enforce them, and the licence.">
   <article class="docs-prose">
     <h1>Contributing</h1>
     <p>iVOLT is a small codebase with strict rules. Most of the rules exist because a design system breaks slowly: one unprefixed class, one <code>!important</code>, one component documented with markup that no test ever renders. The contract tests below encode those rules so a pull request fails fast instead of drifting.</p>

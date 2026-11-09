@@ -8,13 +8,14 @@ const links = [
   { href: "/es/examples", label: "Ejemplos", meta: "4 páginas completas" },
 ];
 ---
-<Base lang="es" title="Página no encontrada" description="Esta página no existe. Vuelve a la documentación de iVOLT: instalación, componentes, tokens y temas o las páginas de ejemplo." sidebar={false}>
+<Base lang="es" title="Página no encontrada" description="Esta página no existe. Vuelve a la documentación de iVOLT: instalación, componentes, tokens y temas o las páginas de ejemplo." sidebar={false} noindex>
   <article class="docs-prose">
     <div class="docs-lost">
       <div>
         <p class="docs-lost__code" aria-hidden="true">404</p>
         <h1>Página no encontrada</h1>
         <p>Ninguna página responde a esta dirección. Elige por dónde volver, o pulsa <kbd class="docs-kbd-inline">/</kbd> para buscar en la documentación.</p>
+        <p lang="en">Looking for the English documentation? <a href="/">Go back to the English home</a>.</p>
       </div>
       <nav aria-label="Vías de vuelta">
         <ul class="docs-lost__links">
