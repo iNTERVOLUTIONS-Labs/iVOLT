@@ -1,0 +1,96 @@
+# Public CI: the package gate on every push and pull request to main.
+# The release gate (`npm run verify` with IVOLT_ALL_BROWSERS=1, three engines) still runs before each
+# publication, see docs/RELEASE.md; this workflow is the part that anybody can watch.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package:
+    name: Package, fixtures and site (Chromium)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      CI: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit and contract tests
+        run: npm test
+
+      - name: Sizes against budgets
+        run: npm run sizes
+
+      - name: Pack and install in an external consumer
+        run: npm run pack-smoke
+
+      # Browsers are cached by Playwright version; the system libraries are installed every time
+      # because they live outside the cache.
+      - name: Playwright version
+        id: pw
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.pw.outputs.version }}-chromium
+
+      - name: Install Chromium
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Chromium system libraries
+        if: steps.pw-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      # Fixture specs: every spec that does not talk to the docs site on port 4321. Screenshot
+      # baselines are made on the release machine and its fonts; a hosted runner renders text a few
+      # pixels differently, so pixel comparisons are skipped here and every other assertion of
+      # visual.spec.js still runs.
+      - name: Browser tests on the fixtures (Chromium)
+        env:
+          IVOLT_SKIP_DOCS_SERVER: "1"
+        run: npx playwright test --project=chromium --ignore-snapshots $(grep -L "4321" tests/browser/*.spec.js)
+
+      - name: Build the documentation site
+        run: npm run build:docs
+
+      # Site specs: the ones that open the docs site. The site was built in the previous step, so the
+      # docs server only serves it.
+      - name: Browser tests on the documentation site (Chromium)
+        env:
+          DOCS_SKIP_BUILD: "1"
+        run: npx playwright test --project=chromium --ignore-snapshots $(grep -l "4321" tests/browser/*.spec.js)
+
+      - name: Upload the Playwright traces of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
+          if-no-files-found: ignore
