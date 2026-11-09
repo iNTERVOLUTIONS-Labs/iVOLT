@@ -137,7 +137,8 @@ const L = es
     };
     if (field && custom) {
       field.hidden = false;
-      custom.addEventListener("input", () => { mine = custom.value; root.toggleAttribute("data-oc-mine", true); paint(); });
+      // The swatches let go of their choice while the reader's own colour is on.
+      custom.addEventListener("input", () => { mine = custom.value; root.toggleAttribute("data-oc-mine", true); root.querySelectorAll('input[name="docs-oc"]').forEach((r) => { r.checked = false; }); paint(); });
     }
     root.addEventListener("change", (e) => {
       if (e.target && e.target.name === "docs-oc") {

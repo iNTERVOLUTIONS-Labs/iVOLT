@@ -324,16 +324,17 @@ body.docs { margin: 0; }
    rolling header label is drawn twice for its hover; in forced colours both copies showed. */
 @media (forced-colors: active) {
   .docs-roll__b { display: none; }
-  .docs-theme .iv-button,
-  .docs-stage__seg button,
-  .docs-stage__all,
-  .docs-code__tab,
-  .docs-showreel__tab { border: 1px solid ButtonText; }
-  .docs-theme [aria-pressed="true"],
-  .docs-stage__seg button[aria-pressed="true"],
-  .docs-stage__all[aria-pressed="true"],
-  .docs-code__tab[aria-selected="true"],
-  .docs-showreel__tab[aria-selected="true"] {
+  /* :root raises them over the component sheets (stage.css loads later with equal weight). */
+  :root .docs-theme .iv-button,
+  :root .docs-stage__seg button,
+  :root .docs-stage__all,
+  :root .docs-code__tab,
+  :root .docs-showreel__tab { border: 1px solid ButtonText; }
+  :root .docs-theme [aria-pressed="true"],
+  :root .docs-stage__seg button[aria-pressed="true"],
+  :root .docs-stage__all[aria-pressed="true"],
+  :root .docs-code__tab[aria-selected="true"],
+  :root .docs-showreel__tab[aria-selected="true"] {
     forced-color-adjust: none;
     background: SelectedItem;
     color: SelectedItemText;
