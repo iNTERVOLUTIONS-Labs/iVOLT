@@ -101,6 +101,15 @@
   box-shadow: 0 2px 10px var(--iv-glow-primary);
 }
 
+/* A badge inside the filled segment takes the segment's ink: a translucent
+   success tint over the dark-theme primary measured green on light blue at
+   well under 3:1. */
+.iv-segmented--brand :where(.iv-segmented__item) input:checked + * :where(.iv-badge) {
+  color: inherit;
+  background-color: color-mix(in srgb, var(--iv-color-on-primary) 14%, transparent);
+  border-color: color-mix(in srgb, var(--iv-color-on-primary) 35%, transparent);
+}
+
 .iv-segmented__item input:focus-visible + * {
   outline: var(--iv-focus-width) solid var(--iv-color-focus);
   outline-offset: 1px;
