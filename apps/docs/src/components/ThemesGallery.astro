@@ -54,8 +54,9 @@ const L = es
     <Section title={L.how} num={1}>
       <p>{es ? "Enlaza el fichero después de la hoja de iVOLT. Fija el tema de toda la página; para limitarlo a una parte, cambia el selector por la clase o el id de ese elemento." : "Link the file after the iVOLT stylesheet. It sets the theme for the whole page; to limit it to one part, change the selector to that element's class or id."}</p>
       <pre tabindex="0"><code>&lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
-&lt;link rel="stylesheet" href="ivolt-theme-ocean.css"&gt;</code></pre>
-      <p>{L.contrast} {es ? "Un valor por debajo de 4,5:1 se marca; ninguno de estos doce lo está." : "A value under 4.5:1 is flagged; none of these twelve is."} {es ? "Para crear el tuyo, usa el " : "To make your own, use the "}<a href={`${base}/foundations/theme-builder`}>{L.builder}</a>.</p>
+&lt;link rel="stylesheet" href="ivolt-theme-ocean.css"&gt;
+&lt;html class="iv-root" data-iv-theme="dark"&gt;</code></pre>
+      <p>{L.contrast} {es ? "Un valor por debajo de 4,5:1 se marca; ninguno de estos doce lo está." : "A value under 4.5:1 is flagged; none of these twelve is."} {es ? "Desde 1.1 cada tema escribe solo sus semillas —primario, la tinta que va encima, acento, superficies y texto— y dos recetas de degradado; el hover, el foco, los brillos y los degradados los mezcla iVOLT (tema de un color), así que el fichero necesita iVOLT 1.1 y que la página lleve el data-iv-theme del tema. El hover medido es el que mezcla el paquete." : "Since 1.1 each theme writes only its seeds — primary, the ink on it, accent, surfaces and text — and two gradient recipes; hover, focus, glows and gradients are mixed by iVOLT (one-colour theming), so the file needs iVOLT 1.1 and the page to carry the theme’s data-iv-theme. The hover measured is the one the package mixes."} {es ? "Para crear el tuyo, usa el " : "To make your own, use the "}<a href={`${base}/foundations/theme-builder`}>{L.builder}</a>.</p>
     </Section>
   </article>
 </Base>
