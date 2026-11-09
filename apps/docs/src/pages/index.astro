@@ -3,7 +3,6 @@ import Base from "../layouts/Base.astro";
 import "../styles/home.css";
 import Stage from "../components/Stage.astro";
 import DeviceFrame from "../components/DeviceFrame.astro";
-import Arcs from "../components/Arcs.astro";
 import ThemeCut from "../components/ThemeCut.astro";
 import HomeFaq from "../components/HomeFaq.astro";
 import { componentCount, words, Words } from "../lib/count.js";
@@ -112,7 +111,6 @@ const recipes = [
 <Base title="Lightweight CSS framework and design system" description={`A lightweight CSS framework and design system: ${componentCount} accessible UI components, design tokens, dark mode, optional JavaScript and zero runtime dependencies.`} sidebar={false} bleed={true}>
   <section class="docs-hero" aria-labelledby="hero-title">
     <div class="docs-orbs" aria-hidden="true"><span class="docs-orb docs-orb--a"></span><span class="docs-orb docs-orb--b"></span></div>
-    <Arcs />
     <div class="docs-hero__inner">
       <p class="docs-hero__kicker">v{version.replace(/-.*$/, "")} · MIT<span class="docs-hero__kicker-tail"> · <b>zero runtime dependencies</b></span></p>
       <h1 class="docs-hero__title" id="hero-title">
