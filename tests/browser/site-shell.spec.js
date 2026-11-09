@@ -67,6 +67,7 @@ test.describe("Site shell", () => {
     expect(await robots.text()).toContain("Sitemap: https://ivolt.intervolutions.com/sitemap-index.xml");
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", /^https:\/\/ivolt\.intervolutions\.com\//);
     await expect(page.locator('link[rel="alternate"][hreflang="es"]')).toHaveAttribute("href", /^https:\/\/ivolt\.intervolutions\.com\/es/);
+    expect((await request.get(DOCS + "/og/index.png")).status()).toBe(200);
     expect((await request.get(DOCS + "/og.png")).status()).toBe(200);
   });
 
@@ -147,6 +148,11 @@ test.describe("Site shell", () => {
     const hash = "sha256-" + createHash("sha256").update(inline[0]).digest("base64");
     await page.goto(DOCS + "/foundations/coexistence");
     await expect(page.locator("#csp-hash")).toHaveText(hash);
+    // The policy the server sends lives in orbit.json: a new inline script without a new hash
+    // there would be blocked in production and nowhere else.
+    const { readFileSync } = await import("node:fs");
+    const orbit = JSON.parse(readFileSync(new URL("../../orbit.json", import.meta.url), "utf8"));
+    expect(orbit.csp).toContain(`'${hash}'`);
   });
 
   test("a migrated page is built from sections and code blocks that copy themselves", async ({ page, context, browserName }) => {

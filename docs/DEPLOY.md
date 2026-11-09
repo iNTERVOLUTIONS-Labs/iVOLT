@@ -43,7 +43,7 @@ Lo que Orbit ya hace por su cuenta con ese descriptor: build desde la raíz de l
 | `Cache-Control: public, max-age=31536000, immutable` para `/_astro/*`, `/fonts/*`, `/photos/*`, `/shots/*`, `/examples/ivolt/*`, `/badge/*` |  nombres con hash o activos que solo cambian con versión |
 | `Cache-Control: no-cache` (o `max-age=0, must-revalidate`) para `*.html`, `robots.txt`, `sitemap*.xml` | para que una publicación se vea al instante |
 | Tipos MIME correctos para `.woff2` (`font/woff2`), `.mjs`/`.js` (`text/javascript`), `.json`, `.md` y `llms*.txt` (`text/markdown; charset=utf-8` y `text/plain; charset=utf-8`), `.webmanifest` (`application/manifest+json`), `.avif` (`image/avif`) | Outfit, los módulos del paquete, los gemelos Markdown (nginx no trae `md` en `mime.types`: sin la línea `types { text/markdown md; }` los sirve como descarga) y el manifiesto |
-| `Cache-Control` corto (p. ej. `max-age=3600`) para `/og/*`, `/og.png`, `/themes/*.css` | sus nombres no cambian entre versiones; tras publicar conviene purgar `/og.png` en Cloudflare |
+| `Cache-Control` corto (p. ej. `max-age=3600`) para `/og/*`, `/themes/*.css` | sus nombres no cambian entre versiones; la portada usa `/og/index.png` desde 1.1 (`/og.png` se sigue generando para enlaces antiguos) |
 | HTTPS con redirección desde HTTP y desde `www.` si se usa | canónicas absolutas en `https://ivolt.intervolutions.com` |
 
 ## 3. Cabeceras recomendadas
@@ -58,10 +58,12 @@ Permissions-Policy: camera=(), microphone=(), geolocation=()
 `Content-Security-Policy`: la web lleva un único script en línea ejecutable (el que aplica el tema antes del primer pintado); su hash SHA-256 se muestra en `/foundations/coexistence` (`#csp-hash`) y `tests/browser/site-shell.spec.js` comprueba que sigue siendo el publicado. Los bloques JSON-LD son datos, no scripts, y no entran en la política. Política mínima que funciona con el build actual:
 
 ```
-Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-<hash de /foundations/coexistence>'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://codepen.io
+Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-<hash de /foundations/coexistence>' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://codepen.io; object-src 'none'
 ```
 
 (`form-action https://codepen.io` permite el botón «CodePen» de los escenarios, un formulario POST a `codepen.io/pen/define` que abre una pestaña nueva; la web no carga nada de CodePen. `style-src 'unsafe-inline'` cubre los `style=` de las fixtures y los escenarios; `frame-src 'self'` cubre los escenarios y las recetas embebidas). Verifica en el navegador tras desplegar: consola sin violaciones en `/`, `/components/button` y `/examples/studio/index.html`.
+
+La política vive en `orbit.json` (`"csp"`, Orbit ≥ 1.5.1), así que viaja con el repositorio y la aplica cada despliegue. `static.cloudflareinsights.com` y `cloudflareinsights.com` son la analítica que Cloudflare inyecta en el HTML cuando la pide un navegador: sin ellos la política la bloquearía en silencio. Mientras `"csp_report_only": true`, el servidor envía `Content-Security-Policy-Report-Only` y las violaciones solo aparecen en la consola; se pasa a `false` cuando un recorrido de la web publicada sale limpio. Si cambia el script en línea, `site-shell.spec.js` falla hasta que el hash nuevo esté en `orbit.json`.
 
 ## 4. Comprobación tras desplegar
 

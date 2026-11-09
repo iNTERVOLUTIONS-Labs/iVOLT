@@ -66,7 +66,7 @@ const kicker = `v${version.replace(/-.*$/, "")} · MIT`;
 
 // Home cards: the full lockup, the headline of the hero, the measured facts that never change.
 const home = {
-  en: { file: "og.png", line: "The CSS framework with no build step.", sub: "Accessible components · design tokens · dark mode · zero runtime dependencies" },
+  en: { file: "og/index.png", line: "The CSS framework with no build step.", sub: "Accessible components · design tokens · dark mode · zero runtime dependencies" },
   es: { file: "og/es.png", line: "El framework CSS sin paso de build.", sub: "Componentes accesibles · tokens de diseño · modo oscuro · cero dependencias" },
 };
 function homeCard({ line, sub }) {
@@ -143,6 +143,9 @@ try {
   writeFileSync(join(pub, "og.svg"), homeCard(home.en));
   writeFileSync(join(pub, "favicon.svg"), favicon);
   for (const h of Object.values(home)) { write(h.file, render(homeCard(h), 1200)); cards++; }
+  // og.png stays for links shared before 1.1, but nothing points at it any more: the CDN cached
+  // its old 404 for weeks, and a new URL is the only fix that needs no purge.
+  write("og.png", render(homeCard(home.en), 1200));
   for (const p of ogPages()) { write(ogFile(p.path), await jpeg(render(pageCard(p), 1200))); cards++; }
   write("favicon.ico", ico([16, 32, 48].map((size) => ({ size, png: render(favicon, size) }))));
   // Touch and install icons are full-bleed squares: the platform rounds the corners itself, and
