@@ -9,8 +9,8 @@ Lo que está en `docs/API_CONTRACT.md` y aparece en la web, y nada más:
 | Superficie | Público | No público |
 |---|---|---|
 | CSS | clases `iv-*` documentadas y sus modificadores; propiedades locales `--iv-<bloque>-*` listadas como «locales públicos»; atributos de estado `data-iv-*` documentados | orden interno de reglas, pseudoelementos, nombres de `@keyframes`, valores concretos de sombras y transiciones |
-| Tokens | todos los `--iv-*` emitidos por `tokens.css` (nombre y semántica; el valor puede afinarse en menor) | tokens que no aparecen en `tokens.json` |
-| JavaScript | `exports` del `package.json` (`.`, `./auto`, `./theme`, `./<componente>`, `./iife`, `./css/*`, `./tokens.json`); clases, métodos, getters, opciones y defaults de §5.2b; eventos `iv:*` y su `detail` de §5.3; precedencia `defaults < data-iv-* < opciones JS` | miembros con `_`, rutas profundas dentro de `dist/`, orden de los listeners, temporizaciones exactas |
+| Tokens | todos los `--iv-*` emitidos por `tokens.css` (nombre y semántica; el valor puede afinarse en menor). Desde 1.1 las derivadas de la primaria son fórmulas (`color-mix`) sobre `--iv-color-primary` y las recetas `--iv-mix-*`; su valor por defecto es el de 1.0 | tokens que no aparecen en `tokens.json` |
+| JavaScript | `exports` del `package.json` (`.`, `./auto`, `./theme`, `./<componente>`, `./iife`, `./css/*`, `./tokens.json`; desde 1.1 `./copy`, `./theme-transition`, `./auto.min`, `./manifest.json`, `./vscode.html-data.json`); clases, métodos, getters, opciones y defaults de §5.2b; eventos `iv:*` y su `detail` de §5.3; precedencia `defaults < data-iv-* < opciones JS` | miembros con `_`, rutas profundas dentro de `dist/`, orden de los listeners, temporizaciones exactas |
 | HTML servido | la estructura de cada componente en su fila «HTML servido» y el comportamiento sin JS | marcado que `init` genera (puede cambiar de forma mientras conserve la semántica documentada) |
 
 ## 2. Versionado
@@ -27,7 +27,7 @@ Etiquetas de npm: `latest` para estables, `next` para candidatos, `beta` para be
 
 ## 3. Navegadores
 
-Diseñado para la tabla de `docs/QUALITY.md` §2 (Chromium 113, Firefox 113, Safari 16.4 y sus móviles) y probado en cada cierre con Playwright en Chromium, Firefox y WebKit (tres motores, `IVOLT_ALL_BROWSERS=1`). Mejora progresiva declarada: `popover`, `text-wrap: balance`, `animation-timeline` (Firefox usa `ScrollMotion`), `position-anchor`, `backdrop-filter`, `field-sizing`. Ninguna función pública depende de ellas.
+Diseñado para la tabla de `docs/QUALITY.md` §2 (Chrome/Edge 111, Firefox 113, Safari 16.4 y sus móviles; los mismos que `browserslist` del paquete) y probado en cada cierre con Playwright en Chromium, Firefox y WebKit (tres motores, `IVOLT_ALL_BROWSERS=1`). Mejora progresiva declarada: `popover`, `text-wrap: balance`, `animation-timeline` (Firefox usa `ScrollMotion`), `position-anchor`, `backdrop-filter`, `field-sizing`; desde 1.1 también `::details-content` + `interpolate-size`, `transition-behavior: allow-discrete` (salidas de diálogo y drawer), `:has()` (chip seleccionado, estrellas anteriores de rating, foco de tarjeta enlace), `subgrid`, `content-visibility` y `document.startViewTransition`. Ninguna función pública depende de ellas.
 
 ## 4. Lo que no se promete
 

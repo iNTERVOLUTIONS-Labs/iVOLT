@@ -374,6 +374,32 @@
   }
 }
 
+/* Scroll reveal without JavaScript (1.1) --------------------------------- */
+
+/* `iv-scroll-reveal` rises into place as it enters the viewport, driven by
+   the element's own view timeline: no script, no observer, nothing to
+   initialise. Where the engine has no `animation-timeline` (Firefox and
+   Safari at the time of writing) or the reader asks for less motion, the
+   element is simply there. `iv-reveal` (with `Reveal`) stays the choice when
+   the entrance must run everywhere or fire once. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .iv-scroll-reveal {
+      animation: iv-scroll-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+}
+
+@keyframes iv-scroll-reveal {
+  from {
+    opacity: 0;
+    translate: 0 var(--iv-reveal-distance, 1.5rem);
+    scale: 0.97;
+  }
+}
+
 /* Print: the reading bar measures a viewport paper does not have, and the
    parallax frames print wherever the scroll left them. */
 @media print {
@@ -385,6 +411,7 @@
      the module styles; it stays so a page that copied it keeps printing flat. */
   .iv-parallax,
   .iv-parallax__layer,
+  .iv-scroll-reveal,
   .iv-stack-cards > * {
     position: static;
     transform: none;

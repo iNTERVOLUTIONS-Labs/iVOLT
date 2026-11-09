@@ -1,0 +1,100 @@
+/* iVOLT — components/divider
+ * A rule between blocks: `<hr class="iv-divider">`, or with a label in the
+ * middle `<div class="iv-divider" role="separator"><span class="iv-divider__label">or</span></div>`.
+ * The line fades out at both ends, like the base `hr`. `--vertical` stands
+ * between inline items of a cluster or a toolbar.
+ * Locals: --iv-divider-color --iv-divider-space
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,1,0).
+ */
+
+.iv-divider {
+  --iv-divider-color: var(--iv-color-border);
+  --iv-divider-space: var(--iv-space-6);
+
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-3);
+  block-size: auto;
+  margin-block: var(--iv-divider-space);
+  margin-inline: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: none;
+  color: var(--iv-color-text-muted);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+}
+
+/* Without a label the two halves meet: one continuous line. */
+.iv-divider:empty {
+  gap: 0;
+}
+
+.iv-divider::before,
+.iv-divider::after {
+  content: "";
+  flex: 1;
+  block-size: var(--iv-border-width);
+  background-image: linear-gradient(to right, transparent, var(--iv-divider-color));
+}
+
+.iv-divider::after {
+  background-image: linear-gradient(to left, transparent, var(--iv-divider-color));
+}
+
+/* A label moved to one side: the line runs on from it. */
+.iv-divider--start::before,
+.iv-divider--end::after {
+  flex: 0 0 var(--iv-space-4);
+}
+
+:where([dir="rtl"]) .iv-divider::before {
+  background-image: linear-gradient(to left, transparent, var(--iv-divider-color));
+}
+
+:where([dir="rtl"]) .iv-divider::after {
+  background-image: linear-gradient(to right, transparent, var(--iv-divider-color));
+}
+
+.iv-divider__label {
+  flex: none;
+  max-inline-size: 70%;
+  text-align: center;
+}
+
+/* The brand variant draws the line with the primary. */
+.iv-divider--brand {
+  --iv-divider-color: color-mix(in oklab, var(--iv-color-primary) 60%, transparent);
+}
+
+.iv-divider--vertical {
+  flex-direction: column;
+  align-self: stretch;
+  gap: var(--iv-space-2);
+  margin-block: 0;
+  margin-inline: var(--iv-space-2);
+}
+
+.iv-divider--vertical::before,
+.iv-divider--vertical::after {
+  inline-size: var(--iv-border-width);
+  block-size: auto;
+  min-block-size: 0.75rem;
+  background-image: linear-gradient(to bottom, transparent, var(--iv-divider-color));
+}
+
+.iv-divider--vertical::after {
+  background-image: linear-gradient(to top, transparent, var(--iv-divider-color));
+}
+
+@media (forced-colors: active) {
+  .iv-divider::before,
+  .iv-divider::after {
+    background-color: CanvasText;
+    background-image: none;
+  }
+}

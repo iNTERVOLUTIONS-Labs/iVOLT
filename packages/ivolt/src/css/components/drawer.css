@@ -68,9 +68,37 @@
   }
 }
 
+/* Exit (1.1, progressive): the modal panel slides back out the way it came
+   and the backdrop fades, instead of vanishing. A static drawer is open and
+   never transitions; closed is matched at (0,0,0) and never covers the no-JS
+   `:target` fallback. */
+@supports (transition-behavior: allow-discrete) {
+  .iv-drawer:not([data-iv-static]),
+  .iv-drawer::backdrop {
+    transition:
+      opacity var(--iv-motion-base) var(--iv-ease-out),
+      translate var(--iv-motion-base) var(--iv-ease-out),
+      display var(--iv-motion-base) allow-discrete,
+      overlay var(--iv-motion-base) allow-discrete;
+  }
+
+  :where(.iv-drawer:not([open]):not(:target):not([data-iv-static])) {
+    translate: var(--iv-drawer-from) 0;
+  }
+
+  :where(.iv-drawer:not([open]))::backdrop {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .iv-drawer[open] {
     animation: none;
+  }
+
+  .iv-drawer:not([data-iv-static]),
+  .iv-drawer::backdrop {
+    transition: none;
   }
 }
 

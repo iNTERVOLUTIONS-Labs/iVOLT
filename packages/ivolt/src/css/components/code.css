@@ -1,0 +1,252 @@
+/* iVOLT — components/code
+ * A code block frame: a title bar (file name, language, a copy button) over a
+ * scrolling `<pre>`. The panel is the deep navy of the brand in both themes,
+ * like the terminal of the hero, so a snippet reads the same on any page.
+ *
+ *   <figure class="iv-code">
+ *     <figcaption class="iv-code__bar">
+ *       <span class="iv-code__title">index.html</span>
+ *       <span class="iv-code__lang">HTML</span>
+ *       <button class="iv-code__copy" type="button" data-iv-copy><span class="iv-code__copy-label">Copy</span></button>
+ *     </figcaption>
+ *     <pre class="iv-code__pre"><code>…</code></pre>
+ *   </figure>
+ *
+ * The copy button needs `@intervolutions/ivolt/copy` (or `auto.min.js`) and a
+ * root with `data-iv-component="copy"`; until `Copy` has started on that root
+ * (`data-iv-copy-ready`) it is hidden, so the page never shows a button that
+ * does nothing.
+ * Highlighting is not part of the package: any highlighter's classes work
+ * inside `code`, and `__mark` highlights a line.
+ * Locals: --iv-code-bg --iv-code-fg --iv-code-muted --iv-code-max
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-code {
+  --iv-code-bg: var(--iv-palette-neutral-950);
+  --iv-code-fg: #E4EAF7;
+  --iv-code-muted: #93A0BD;
+  --iv-code-max: 32rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--iv-code-fg);
+  background-color: var(--iv-code-bg);
+  /* A whisper of the brand in the top corner: the panel is lit, not flat. */
+  background-image: radial-gradient(120% 80% at 100% 0%, color-mix(in oklab, var(--iv-palette-cobalt-500) 16%, transparent), transparent 60%);
+  border: var(--iv-border-width) solid color-mix(in oklab, var(--iv-palette-cobalt-400) 22%, var(--iv-palette-neutral-800));
+  border-radius: var(--iv-radius-md);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    var(--iv-shadow-2);
+  color-scheme: dark;
+}
+
+.iv-code .iv-code__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-3);
+  min-block-size: 2.5rem;
+  margin: 0;
+  padding-block: var(--iv-space-1);
+  padding-inline: var(--iv-space-4) var(--iv-space-2);
+  font-family: var(--iv-font-mono);
+  font-size: var(--iv-text-xs);
+  color: var(--iv-code-muted);
+  border-block-end: var(--iv-border-width) solid rgb(255 255 255 / 0.08);
+  background-color: rgb(255 255 255 / 0.025);
+}
+
+.iv-code__title {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--iv-code-fg);
+}
+
+.iv-code__lang {
+  padding-block: 0.0625rem;
+  padding-inline: var(--iv-space-2);
+  font-size: 0.6875rem;
+  font-weight: var(--iv-weight-semibold);
+  letter-spacing: var(--iv-tracking-caps);
+  text-transform: uppercase;
+  color: var(--iv-palette-cyan-300);
+  background-color: rgb(115 223 255 / 0.1);
+  border-radius: var(--iv-radius-full);
+}
+
+.iv-code__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-1);
+  min-block-size: 1.75rem;
+  margin-inline-start: auto;
+  padding-block: 0;
+  padding-inline: var(--iv-space-3);
+  font-family: var(--iv-font-sans);
+  font-size: var(--iv-text-xs);
+  font-weight: var(--iv-weight-medium);
+  color: var(--iv-code-fg);
+  background-color: rgb(255 255 255 / 0.06);
+  border: var(--iv-border-width) solid rgb(255 255 255 / 0.12);
+  border-radius: var(--iv-radius-full);
+  cursor: pointer;
+  transition:
+    background-color var(--iv-motion-fast) var(--iv-ease-out),
+    border-color var(--iv-motion-fast) var(--iv-ease-out);
+}
+
+/* The words `Copy` swaps for its feedback; they keep one line. */
+.iv-code__copy-label {
+  white-space: nowrap;
+}
+
+.iv-code__copy:hover {
+  background-color: rgb(255 255 255 / 0.12);
+}
+
+.iv-code__copy:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-palette-cyan-400);
+  outline-offset: var(--iv-focus-offset);
+}
+
+.iv-code__copy[data-iv-state="copied"] {
+  color: var(--iv-palette-green-300);
+  border-color: rgb(139 191 58 / 0.5);
+}
+
+/* No `Copy` running, no button: it would promise something it cannot do.
+   The component marks its root with `data-iv-copy-ready`. */
+.iv-code__copy:where(:not([data-iv-copy-ready] *)) {
+  display: none;
+}
+
+.iv-code .iv-code__pre {
+  flex: 1;
+  max-block-size: var(--iv-code-max);
+  margin: 0;
+  padding-block: var(--iv-space-4);
+  padding-inline: var(--iv-space-5);
+  overflow: auto;
+  font-size: var(--iv-text-sm);
+  line-height: 1.7;
+  color: inherit;
+  background: transparent;
+  border-radius: 0;
+  tab-size: 2;
+  scrollbar-color: rgb(255 255 255 / 0.2) transparent;
+}
+
+.iv-code__pre:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-palette-cyan-400);
+  outline-offset: calc(-1 * var(--iv-focus-width));
+}
+
+.iv-code__pre code {
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+}
+
+/* A highlighted line: wrap it in `<mark class="iv-code__mark">`. */
+.iv-code .iv-code__mark {
+  display: inline-block;
+  min-inline-size: calc(100% + 2 * var(--iv-space-5));
+  margin-inline: calc(-1 * var(--iv-space-5));
+  padding-inline: calc(var(--iv-space-5) - 3px) var(--iv-space-5);
+  color: inherit;
+  background-color: rgb(102 177 255 / 0.12);
+  border-inline-start: 3px solid var(--iv-palette-cobalt-400);
+}
+
+/* Inline token helpers for hand-written snippets (no highlighter needed). */
+.iv-code__k {
+  color: #A4ADFF;
+}
+
+.iv-code__s {
+  color: #8FE3FF;
+}
+
+.iv-code__c {
+  color: var(--iv-code-muted);
+  font-style: italic;
+}
+
+.iv-code__a {
+  color: #C6E28A;
+}
+
+/* The light variant keeps the frame but sits on the page surface. */
+.iv-code--light {
+  --iv-code-bg: var(--iv-color-surface);
+  --iv-code-fg: var(--iv-color-text);
+  --iv-code-muted: var(--iv-color-text-muted);
+
+  background-image: none;
+  border-color: var(--iv-color-border);
+  box-shadow: none;
+  color-scheme: inherit;
+}
+
+.iv-code--light .iv-code__bar {
+  border-block-end-color: var(--iv-color-border);
+}
+
+.iv-code--light .iv-code__lang {
+  color: var(--iv-color-accent);
+  background-color: color-mix(in srgb, var(--iv-color-accent) 10%, transparent);
+}
+
+.iv-code--light .iv-code__copy {
+  background-color: var(--iv-color-surface-raised);
+  border-color: var(--iv-color-border);
+}
+
+.iv-code--light .iv-code__k {
+  color: var(--iv-color-info);
+}
+
+.iv-code--light .iv-code__s {
+  color: var(--iv-color-accent);
+}
+
+.iv-code--light .iv-code__a {
+  color: var(--iv-color-success);
+}
+
+@media (forced-colors: active) {
+  .iv-code {
+    border-color: CanvasText;
+  }
+
+  .iv-code .iv-code__mark {
+    border-inline-start-color: Highlight;
+  }
+}
+
+@media print {
+  .iv-code {
+    color: #000;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .iv-code__copy {
+    display: none;
+  }
+
+  .iv-code .iv-code__pre {
+    max-block-size: none;
+    overflow: visible;
+    white-space: pre-wrap;
+  }
+}

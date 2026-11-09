@@ -114,3 +114,8 @@ El framework debe impresionar por defecto, no solo funcionar. Principios de la c
 - **Composición generosa:** radios `lg` en superficies grandes, sombras 2–3 en flotantes, contrastes AA en todas las superficies translúcidas (comprobados con axe sobre cristal en claro y oscuro).
 
 Lo que no cambia: sin rejillas ni patrones de puntos (ADR-028), sin cursor propio, sin WebGL, sin recursos remotos, sin imágenes de mapa de bits en el paquete (texturas por gradiente o SVG en línea).
+
+## 10. Familias de 1.1 «Spark»
+
+Mismo lenguaje Cobalt: radios 6/14/22 (`sm/md/lg`) y píldora `full` para controles en línea (chip, segmented, botones de código), superficies de cristal con filete `--iv-color-border` y brillo superior `--iv-glass-highlight`, degradado `--iv-gradient-primary` solo para el estado elegido de marca (segmented `--brand`, banner `--brand`). El bloque de código y el teléfono del mockup son navy profundo (`neutral-950`) en los dos temas, como el terminal del héroe. Las estrellas de rating usan `--iv-color-warning` (oro oscuro en claro, ámbar en oscuro; ≥ 3:1 como objeto gráfico). El estado vacío lleva un halo radial de la marca detrás del icono, nunca puntos ni rejillas (ADR-028). Los tonos de meter son los del navegador (óptimo/regular/malo → success/warning/danger) y siempre van con el valor escrito.
+

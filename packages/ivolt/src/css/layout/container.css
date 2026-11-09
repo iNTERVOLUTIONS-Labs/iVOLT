@@ -22,3 +22,12 @@
 .iv-container--wide {
   max-inline-size: var(--iv-content-max);
 }
+
+/* Deferred rendering (1.1): a long block far below the fold is laid out and
+   painted only when it comes near the viewport. `--iv-defer-size` is the
+   height reserved until then; the engine remembers the real one afterwards.
+   Find in page, anchors and assistive technology still reach the content. */
+.iv-defer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto var(--iv-defer-size, 40rem);
+}

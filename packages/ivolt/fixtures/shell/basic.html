@@ -1,0 +1,41 @@
+<div class="iv-stack iv-u-gap-6">
+  <div class="iv-shell" style="min-block-size: 30rem; border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-lg); overflow: clip">
+    <header class="iv-shell__top">
+      <a class="iv-button iv-button--ghost iv-button--icon iv-u-lg-hidden" href="#shell-nav" data-iv-open="shell-nav" aria-label="Open navigation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </a>
+      <strong>Console</strong>
+      <span class="iv-badge iv-badge--primary">Sample</span>
+    </header>
+    <aside class="iv-shell__side" aria-label="Console navigation">
+      <dialog class="iv-drawer" id="shell-nav" data-iv-component="drawer" data-iv-static-from="lg" aria-label="Console navigation">
+        <div class="iv-drawer__panel">
+          <div class="iv-drawer__body">
+            <ul class="iv-list iv-list--flush" aria-label="Sections">
+              <li class="iv-list__item"><a class="iv-list__action" href="#shell-note" aria-current="page">Overview</a></li>
+              <li class="iv-list__item"><a class="iv-list__action" href="#shell-note">Deploys</a></li>
+              <li class="iv-list__item"><a class="iv-list__action" href="#shell-note">Domains</a></li>
+              <li class="iv-list__item"><a class="iv-list__action" href="#shell-note">Settings</a></li>
+            </ul>
+          </div>
+        </div>
+      </dialog>
+    </aside>
+    <main class="iv-shell__main">
+      <div class="iv-sidebar iv-sidebar--end">
+        <div class="iv-stack iv-u-gap-3">
+          <h3 class="iv-u-m-0">Overview</h3>
+          <p class="iv-u-m-0 iv-u-text-muted">The main column takes the room; the panel beside it keeps 14rem and drops under the content when the column gets narrow, without a breakpoint.</p>
+        </div>
+        <aside class="iv-card" style="--iv-sidebar-width: 14rem" aria-label="Status">
+          <div class="iv-card__body iv-stack iv-u-gap-2">
+            <strong>Status</strong>
+            <span class="iv-badge iv-badge--success">All systems operational</span>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted" id="shell-note">Demo frame: the navigation leads back to this note. From the lg breakpoint the drawer is the side column; below it, the menu button opens it as a modal.</p>
+</div>
