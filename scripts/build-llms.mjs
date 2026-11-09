@@ -1,4 +1,4 @@
-// Writes the site for language models, after the Astro build:
+// Writes plain-text copies of the site after the Astro build:
 //   • a Markdown twin next to every page (/components/button → /components/button.md), the main
 //     content of the built HTML without the shell, so an assistant can read a page as text;
 //   • /llms.txt, the index the llmstxt.org proposal describes (title, summary, sections of links);

@@ -45,7 +45,7 @@ const ogType = ogRel.endsWith(".png") ? "image/png" : "image/jpeg";
 const fullTitle = `${title} · iVOLT`;
 const isHome = path === "/" || path === "/es";
 // Every page has a Markdown twin written after the build (scripts/build-llms.mjs): the same
-// content without the shell, for language models and readers that want text.
+// content without the shell, for readers and tools that want plain text.
 const mdTwin = md && Astro.site ? abs(isHome ? (lang === "es" ? "/es.md" : "/index.md") : `${path}.md`) : null;
 // Structured data: a documentation page is a TechArticle inside a breadcrumb (home › section ›
 // page); the homes declare their own graph. Only facts the page itself states.

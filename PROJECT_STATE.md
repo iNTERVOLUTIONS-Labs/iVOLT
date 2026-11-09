@@ -28,7 +28,7 @@ Petición del propietario: «quiero que trabajes en ivolt, tanto el framework cs
 | Implementador W2 (web): páginas de las trece familias en dos idiomas, sección de un color, galería y constructor como semillas, banda «Nuevo en 1.1», cuatro bloques | `site-components-1-1.spec.js`; 70 pruebas de la web |
 | Líder: integración, insignia del segmentado en oscuro, ancho del segmentado en `iv-stack`, dependencia de la web fijada a `1.0.0` exacta (habría instalado la copia del registro), versión exportada, ADR-056 | gate en Chromium exit 0 (1181 unitarias, 685 navegador, tamaños, pack-smoke, 156 páginas, 5 ejemplos); Lighthouse propio |
 
-Incidencia de proceso: el implementador W2 no pudo crear su propio worktree y trabajó en el del líder cambiando de rama; un commit del líder (`be66a31`) cayó en esa rama. Historia lineal, nada perdido, integración por avance rápido. Lección: el encargo debe crear el worktree con la herramienta del agente (`isolation`), no a mano.
+Incidencia de proceso: la segunda ronda de la web se ejecutó en el worktree del integrador, cambiando de rama; un commit del integrador (`be66a31`) cayó en esa rama. Historia lineal, nada perdido, integración por avance rápido. Lección: cada implementador trabaja en su propio worktree, creado antes de empezar.
 
 ## `1.0.0` (2026-09-16, ADR-051)
 
@@ -43,7 +43,7 @@ Petición del propietario: vista previa del constructor de temas en oscuro, dos 
 
 ## Ronda adversaria visual → `1.0.0-rc.3` (2026-09-16, ADR-050)
 
-Petición del propietario: «lanza agentes adversos para que te ayuden a mejorar el estilo visual del framework». Antes de la ronda, dos incidencias del propietario resueltas: esquinas rectas del pie de tarjeta bajo efectos de borde (radios propios del medio y del pie) y anillos serrados en Chromium con GPU en Windows (sombras con extensión y desenfoque 0 sustituidas por bordes reales o desenfoque mínimo).
+Petición del propietario: una revisión adversaria para mejorar el estilo visual del framework. Antes de la ronda, dos incidencias del propietario resueltas: esquinas rectas del pie de tarjeta bajo efectos de borde (radios propios del medio y del pie) y anillos serrados en Chromium con GPU en Windows (sombras con extensión y desenfoque 0 sustituidas por bordes reales o desenfoque mínimo).
 
 | Bloque | Verificación |
 |---|---|
@@ -70,7 +70,7 @@ Sin rejillas ni patrones de puntos (ADR-028) aunque la referencia los use. Pendi
 
 ## Petición del propietario que abrió estos ciclos (2026-09-14)
 
-«Sigue trabajando hasta 0.7.» Método en ambos ciclos: contratos escritos y congelados antes de implementar (§8.15–§8.23), dos implementadores Opus con archivos disjuntos y capturas propias, un tercero para la web, el líder integra, registra las enmiendas de implementación en el contrato y pasa el gate. Ninguna afirmación visual sin captura (ADR-039).
+«Sigue trabajando hasta 0.7.» Método en ambos ciclos: contratos escritos y congelados antes de implementar (§8.15–§8.23), dos implementadores con archivos disjuntos y capturas propias, un tercero para la web, el líder integra, registra las enmiendas de implementación en el contrato y pasa el gate. Ninguna afirmación visual sin captura (ADR-039).
 
 ## Ronda 3: web y ejemplos desde cero (2026-09-15, ADR-047/049)
 
@@ -80,7 +80,7 @@ Sin rejillas ni patrones de puntos (ADR-028) aunque la referencia los use. Pendi
 | Sistema nuevo de la web: 92 páginas de escenario (una por fixture) con controles reales (tema, dirección, ancho, movimiento reducido, hoja plana), `Section`, `Code` plegable, `DeviceFrame`, portada con showreel y marcos de dispositivo, referencia, localización, estabilidad, changelog generado | 108 páginas en dos idiomas migradas; `site-*.spec.js` 37/37 en Chromium; `reference.test.js` en verde |
 | Revisión adversaria visual + revisor externo de la web: escenarios que cargan antes de entrar en vista y encogen, «Ver todo», tema por apretón de manos, cabecera opaca, arte sin patrones, versión derivada del paquete en el build, escenarios con el IIFE (168 → 28 peticiones) | capturas en tres anchos, dos temas y dos idiomas; Lighthouse móvil `/` 100, `/components/button` 99 |
 | Megamenú v2 (otra sesión, ADR-048) integrado en cabecera, página y receta `console` | contratos 228/228; `megamenu.spec.js` 36/36 × 3 motores |
-| Incidencia de proceso: dos sesiones escribiendo a la vez sobre `apps/docs` tras un reinicio; resuelta cediendo la integración y con avisos previos a `dist` y al gate | `docs/WORKFLOW.md` regla de `--output` por agente; ADR-049 |
+| Incidencia de proceso: dos sesiones escribiendo a la vez sobre `apps/docs` tras un reinicio; resuelta cediendo la integración y con avisos previos a `dist` y al gate | `docs/WORKFLOW.md` regla de `--output` por ejecución; ADR-049 |
 
 Gate de cierre de la ronda (2026-09-16): build · 1037 unitarias · 1545 pruebas de navegador superadas y 147 omitidas en Chromium, Firefox y WebKit (con tres workers: la máquina compartida a carga 25 hacía fallar una prueba distinta por tiempos en cada pasada; cuatro carreras de prueba corregidas por el camino) · tamaños · pack-smoke (`intervolutions-ivolt-1.0.0-rc.1.tgz`, 134 archivos) · 201 páginas (108 de contenido en dos idiomas + 92 escenarios + 404) · 5 ejemplos. Publicación de `1.0.0-rc.1` bajo `next` a cargo de la otra sesión tras este gate.
 
@@ -98,7 +98,7 @@ Gate de cierre de la ronda (2026-09-16): build · 1037 unitarias · 1545 pruebas
 |---|---|
 | Revisión adversaria JS (revisor A): `core/style.js` repone el `style` servido; foco inicial correcto con campos ocultos y `fieldset[disabled]`; enfocables nuevos (`summary`, `iframe`, `contenteditable`, medios); enlaces con disparador vacío conservan la navegación; booleanos sin valor; `Drawer` y `Dialog` limpios; SSR de 32 módulos y de `dist` | `hardening.test.js` (261 casos sobre 87 fixtures), `hardening-runtime.test.js`, `ssr.test.js`; 982 unitarias; specs de diálogo/drawer/popover/paleta × 3 motores |
 | Revisión adversaria CSS (revisor B): RTL (carrusel, drawer, marquesina, megamenú, popover, `range`, brillo, exploración), colores forzados (progreso, combobox, paleta, cristal), impresión, 320 px; `?dir=rtl` en el servidor de fixtures | `qa-rtl.spec.js`, `qa-forced-colors.spec.js`, `qa-print.spec.js` × 3 motores; 67 líneas base sin cambio |
-| Integrador: módulos raíz emitidos sueltos, `npm run sizes` por módulo (ADR-044), portada de la receta en 800 px para móvil, `STABILITY.md` (borrador para 1.0), generador de la referencia (`scripts/build-reference.mjs`), convención `:where([dir="rtl"])`, regla de `--output` por agente | `verify`; Lighthouse |
+| Integrador: módulos raíz emitidos sueltos, `npm run sizes` por módulo (ADR-044), portada de la receta en 800 px para móvil, `STABILITY.md` (borrador para 1.0), generador de la referencia (`scripts/build-reference.mjs`), convención `:where([dir="rtl"])`, regla de `--output` por ejecución | `verify`; Lighthouse |
 
 Presupuestos (`npm run sizes`): `ivolt.min.css` 28,6 KiB (≤ 40), JS agrupado 43,0 KiB (≤ 48; techo confirmado en ADR-044).
 

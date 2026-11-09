@@ -21,11 +21,11 @@
 7. `apps/docs` mínimo: home con hero y demo viva, getting started, páginas de button/card/form/dialog desde fixtures.
 8. `examples/plain-html` funcionando con `dist/` copiado.
 
-Orden de agentes sugerido: A (CSS: pasos 3–4) y B (JS: paso 5) en paralelo tras el paso 2 del integrador; luego integrador en 6–8.
+Orden de trabajo sugerido: A (CSS: pasos 3–4) y B (JS: paso 5) en paralelo tras el paso 2 del integrador; luego integrador en 6–8.
 
 ## 2. Estimación de esfuerzo por fase
 
-Unidad: sesiones de agente (una sesión ≈ un encargo de ≤ 20 turnos). Sin conversión a dinero: el precio depende del proveedor, la modalidad de créditos y el número de intentos.
+Unidad: encargos delimitados, cada uno con sus archivos, pruebas y condición de parada.
 
 | Fase | Bajo | Medio | Alto | Variables principales de coste |
 |---|---|---|---|---|
@@ -34,7 +34,7 @@ Unidad: sesiones de agente (una sesión ≈ un encargo de ≤ 20 turnos). Sin co
 | 3 | 4 | 6 | 9 | playground, búsqueda, sustitución del prototipo, revisión de snippets |
 | 4 | 2 | 3 | 5 | hallazgos de axe/Lighthouse, regresiones visuales, licencias |
 
-Lo que más encarece: repetir comandos sin diagnóstico, enviar contexto entero a agentes, reescribir contratos ya congelados y ampliar alcance (variantes extra, componentes del backlog).
+Lo que más encarece: repetir comandos sin diagnóstico, reescribir contratos ya congelados y ampliar alcance (variantes extra, componentes del backlog).
 
 ## 3. Backlog posterior a v0.1 (prioridad)
 
@@ -58,10 +58,10 @@ Tras cerrar v0.1 (fases 0–4) y el rediseño de la web (ADR-027), el trabajo co
 
 | Orden | Elemento | Estado | Notas |
 |---|---|---|---|
-| 1 | Combobox/autocomplete accesible | hecho (2026-09-14) | contrato en `API_CONTRACT.md` §8.3; fallback nativo `<datalist>`; implementador Opus 5, docs y pruebas del integrador; 3 motores en verde |
-| 2 | Estructura i18n de docs y traducción al español | hecho (2026-09-14) | 31 páginas `/es/` por un implementador Opus 5; `Base.astro` con `lang`, `hreflang`, selector; Pagefind con dos índices |
+| 1 | Combobox/autocomplete accesible | hecho (2026-09-14) | contrato en `API_CONTRACT.md` §8.3; fallback nativo `<datalist>`; implementador, docs y pruebas del integrador; 3 motores en verde |
+| 2 | Estructura i18n de docs y traducción al español | hecho (2026-09-14) | 31 páginas `/es/` por un implementador; `Base.astro` con `lang`, `hreflang`, selector; Pagefind con dos índices |
 | 3 | Lector de pantalla (NVDA, VoiceOver) | bloqueado en este entorno | lista en `A11Y_REVIEW.md` §6, requiere una persona con AT |
-| 4 | Data table con ordenación y filtro | hecho (2026-09-14) | contrato §8.4; sin virtualización; implementador Opus 5; 3 motores en verde |
+| 4 | Data table con ordenación y filtro | hecho (2026-09-14) | contrato §8.4; sin virtualización; implementador; 3 motores en verde |
 
 ## 5. Hito beta: `0.2.0-beta.0` (definido y cerrado 2026-09-14; sin publicar)
 
@@ -101,7 +101,7 @@ Petición del propietario: aprender de brokenufo.com y clasicosbasicos.org (sus 
 
 | Orden | Elemento | Contrato | Estado |
 |---|---|---|---|
-| 0 | Revisión adversaria (dos revisores Opus: componentes JS; web y CSS sin JS) y corrección de lo encontrado | — | hecho (17 fallos corregidos, ADR-034/035) |
+| 0 | Revisión adversaria (dos revisores: componentes JS; web y CSS sin JS) y corrección de lo encontrado | — | hecho (17 fallos corregidos, ADR-034/035) |
 | 1 | Megamenu (`megamenu`): hover intencional, teclado, superposición, acordeón en móvil, tarjetas | §8.9 | hecho (2026-09-14) |
 | 2 | Efectos de borde y proximidad: `iv-edge-glint`, `iv-edge-near` + `Proximity`, `iv-scan`, `iv-spark`, `iv-pulse-glow`, `Reveal` | §8.10 | hecho (2026-09-14) |
 | 3 | Hero (`iv-hero` y modificadores `--center/--split/--cinematic/--terminal`) | §8.11 | hecho (2026-09-14) |
@@ -165,8 +165,8 @@ Petición del propietario: «sigue hasta 1.0 release candidate». Un candidato a
 
 | Orden | Elemento | Responsable | Estado |
 |---|---|---|---|
-| 1 | Revisión adversaria de los 24 componentes JS (teclado, foco, `destroy`, precedencia de opciones, eventos contra contrato, carreras, SSR por módulo) con corrección | revisor A (Opus) | hecho (2026-09-15, ADR-045) |
-| 2 | Revisión adversaria de las 36 hojas: RTL (`dir="rtl"`) con capturas, `forced-colors` en todos los módulos (hoy 13 de 36), impresión, 320 px, `[hidden]`, especificidad | revisor B (Opus) | hecho (2026-09-15, ADR-045) |
+| 1 | Revisión adversaria de los 24 componentes JS (teclado, foco, `destroy`, precedencia de opciones, eventos contra contrato, carreras, SSR por módulo) con corrección | revisor A | hecho (2026-09-15, ADR-045) |
+| 2 | Revisión adversaria de las 36 hojas: RTL (`dir="rtl"`) con capturas, `forced-colors` en todos los módulos (hoy 13 de 36), impresión, 320 px, `[hidden]`, especificidad | revisor B | hecho (2026-09-15, ADR-045) |
 | 3 | Emisión por módulo de `surfaces`, `effects`, `motion` y `text` en `dist/css`; cifras por módulo en `QUALITY.md` | integrador | hecho (2026-09-15) |
 | 4 | Presupuesto de JS: medir importación por módulo y decidir por ADR (subir el umbral o recomendar módulos) | integrador | hecho (2026-09-15) |
 | 5 | Receta showcase: portada con variante de 800 px para móvil (`<picture>`), LCP medido | integrador | hecho (2026-09-15) |
@@ -216,7 +216,7 @@ Hecho: ver `RELEASE.md` §0k y `packages/ivolt/CHANGELOG.md`. Aplazado a 1.2, po
 
 | Elemento | Motivo |
 |---|---|
-| Servidor MCP de documentación y `skills/` para agentes, generados desde `ivolt.manifest.json` | paquete aparte; el manifiesto ya existe |
+| Servidor MCP de documentación y guías de uso, generados desde `ivolt.manifest.json` | paquete aparte; el manifiesto ya existe |
 | CLI opcional `npx @intervolutions/ivolt add <componente>` | nunca obligatoria; pide diseño propio |
 | Componentes con JS: entrada de etiquetas, árbol, OTP, menú contextual, barra de herramientas con `tabindex` itinerante | presupuesto JS (ADR-053): solo como subrutas |
 | Animaciones de pintura continua aún sin componer: `iv-aurora`, `iv-pulse-glow`, `iv-text-glow` | exigen seudoelementos que pueden chocar con el anfitrión; cambio visual |

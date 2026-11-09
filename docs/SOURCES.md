@@ -4,8 +4,6 @@ Fecha de consulta: 2026-09-13. Las páginas del paquete de investigación se rec
 
 ## 1. Documentación oficial usada
 
-Las páginas del proveedor de modelos sobre esfuerzo, prompting, costes y subagentes del paquete de investigación se aplicaron en `WORKFLOW.md`; no se listan aquí porque no forman parte del producto.
-
 | Fuente | Hecho relevante para iVOLT | Origen |
 |---|---|---|
 | MDN `@layer` — https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@layer | Las reglas sin capa prevalecen sobre las de cualquier capa; `!important` invierte el orden | paquete |

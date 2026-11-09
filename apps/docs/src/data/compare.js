@@ -149,7 +149,7 @@ export const competitors = {
         "Prebuilt: link ivolt.min.css from a CDN or your own server and every class already exists. Nothing reads your markup.",
         `${Words(N)} components with their states, focus handling and keyboard support; ${words(J)} gain optional JavaScript.`,
         "Themes through --iv- tokens and data-iv-theme on any element; no variant prefixes in the markup.",
-        "A finite utility matrix (layout, spacing, display, text) with no arbitrary values, so markup stays readable and an assistant cannot invent a class that does not exist.",
+        "A finite utility matrix (layout, spacing, display, text) with no arbitrary values, so markup stays readable and nobody can reach for a class that does not exist.",
         "Everything prefixed iv- and scoped to .iv-root, so the two can share a page while you migrate.",
       ],
       betterThem: [
@@ -180,7 +180,7 @@ export const competitors = {
         "Precompilado: enlazas ivolt.min.css desde un CDN o tu servidor y todas las clases ya existen. Nada lee tu marcado.",
         `${Words(N, "es")} componentes con sus estados, gestión del foco y teclado; ${words(J, "es")} ganan JavaScript opcional.`,
         "Temas con tokens --iv- y data-iv-theme en cualquier elemento; sin prefijos de variante en el marcado.",
-        "Una matriz finita de utilidades (maquetación, espaciado, display, texto) sin valores arbitrarios: el marcado se lee bien y un asistente no puede inventarse una clase que no existe.",
+        "Una matriz finita de utilidades (maquetación, espaciado, display, texto) sin valores arbitrarios: el marcado se lee bien y nadie puede echar mano de una clase que no existe.",
         "Todo lleva prefijo iv- y está acotado a .iv-root, así que los dos pueden compartir página mientras migras.",
       ],
       betterThem: [

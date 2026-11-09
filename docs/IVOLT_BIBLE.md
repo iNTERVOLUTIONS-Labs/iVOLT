@@ -8,7 +8,7 @@ iVOLT es un framework frontend de CSS, HTML y JavaScript de iNTERVOLUTIONS (Tomb
 | [API_CONTRACT.md](API_CONTRACT.md) | gramática congelada de clases, tokens, atributos, JS y eventos |
 | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | paleta, contraste, escalas, estados, arte |
 | [QUALITY.md](QUALITY.md) | presupuestos, navegadores, pruebas, gates |
-| [WORKFLOW.md](WORKFLOW.md) | roles, agentes, propiedad de archivos, coste |
+| [WORKFLOW.md](WORKFLOW.md) | roles, propiedad de archivos, ciclo de integración |
 | [ROADMAP.md](ROADMAP.md) | fases, estimaciones, backlog |
 | [DECISIONS.md](DECISIONS.md) | ADR aceptados y rechazados |
 | [SOURCES.md](SOURCES.md) | fuentes y versiones observadas |

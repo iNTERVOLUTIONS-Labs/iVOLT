@@ -81,7 +81,7 @@ test.describe("SEO and sharing", () => {
     await expect(page.locator("#docs-nav")).not.toHaveAttribute("open", "");
   });
 
-  test("language models get llms.txt, llms-full.txt and a Markdown twin per page", async ({ request }) => {
+  test("the site ships llms.txt, llms-full.txt and a Markdown twin per page", async ({ request }) => {
     const llms = await (await request.get(DOCS + "/llms.txt")).text();
     expect(llms).toMatch(/^# iVOLT\n\n> /);
     expect(llms).toContain(`${SITE}/components/button.md`);

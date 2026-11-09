@@ -55,4 +55,4 @@ Los de R2 §6 íntegros (sin dependencias nuevas, sin recursos remotos, sin WebG
 
 ## 7. Aceptación
 
-Capturas de cada ruta nueva a 1440×900 (completa), 1024×768 y 390×844, claro y oscuro, en ambos idiomas; los cuatro ejemplos a 1440, 1024 y 390, claro y oscuro; `IVOLT_ALL_BROWSERS=1 npm run verify` exit 0; Lighthouse en `/`, `/es`, una página de componente y los cuatro ejemplos; revisión adversaria visual de un revisor Opus con capturas antes del cierre; última palabra del propietario.
+Capturas de cada ruta nueva a 1440×900 (completa), 1024×768 y 390×844, claro y oscuro, en ambos idiomas; los cuatro ejemplos a 1440, 1024 y 390, claro y oscuro; `IVOLT_ALL_BROWSERS=1 npm run verify` exit 0; Lighthouse en `/`, `/es`, una página de componente y los cuatro ejemplos; revisión adversaria visual de un revisor con capturas antes del cierre; última palabra del propietario.
