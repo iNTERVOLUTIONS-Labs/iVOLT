@@ -126,7 +126,7 @@ const llms = `# iVOLT
 
 > iVOLT is an open-source (MIT) CSS framework and design system by iNTERVOLUTIONS: accessible UI components in plain CSS with optional vanilla JavaScript, design tokens, light and dark themes, and no build step or runtime dependencies. Version ${version}.
 
-Use it by linking one stylesheet (\`dist/css/ivolt.min.css\`) on an \`<html class="iv-root">\` page, plus \`dist/js/auto.js\` (ES module) or \`dist/js/ivolt.iife.min.js\` (global \`IVOLT\`) for the interactive components. npm package: \`@intervolutions/ivolt\`.
+Use it by linking one stylesheet (\`dist/css/ivolt.min.css\`) on an \`<html class="iv-root">\` page, plus \`dist/js/auto.min.js\` (one ES module that starts every component; \`dist/js/auto.js\` is the unbundled entry) or \`dist/js/ivolt.iife.min.js\` (global \`IVOLT\`) for the interactive components. npm package: \`@intervolutions/ivolt\`.
 
 Rules an assistant should follow when writing iVOLT markup:
 - Every class starts with \`iv-\`, every custom property with \`--iv-\`, every attribute with \`data-iv-\`, every event with \`iv:\`. Do not invent classes: the full list is in the reference.

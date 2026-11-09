@@ -1,6 +1,6 @@
 # iVOLT — Estado del proyecto
 
-Última actualización: 2026-11-09 · **`1.1.0` «Spark» cerrada en la rama `feat/ivolt-1.1`, sin publicar ni desplegar** (ADR-053–056; gate en Chromium exit 0; `docs/RELEASE.md` §0k) · `1.0.0` en npm bajo `latest` · web en vivo con `1.0.0` (desplegada con Orbit el 2026-09-17)
+Última actualización: 2026-11-09 · **`1.1.0` «Spark» publicada en npm (`latest` y `next`) y desplegada en https://ivolt.intervolutions.com** (ADR-053–057; gate en tres motores; `docs/RELEASE.md` §0k)
 
 ## Estado por fase e hito
 
@@ -147,7 +147,7 @@ Ninguno conocido de severidad alta. Resuelto: `.iv-dialog__title` frente a `.iv-
 
 ## Siguiente acción
 
-`1.1.0` cerrada en `feat/ivolt-1.1` (PR en borrador). Requiere autorización del propietario, por este orden: fusionar y desplegar con Orbit; publicar `1.1.0` en npm (los enlaces de CodePen y de los temas apuntan a jsDelivr `@1.1.0`); purgar `/og.png` en Cloudflare; CSP con `form-action https://codepen.io` y `text/markdown` para `.md` (nginx/Orbit); arreglar la plantilla estática de Orbit (barra final); ficha del repositorio en GitHub (descripción, web, temas, imagen social, release); (hecho el 2026-11-09: librerías de Firefox y WebKit instaladas, gate de nuevo en tres motores).
+`1.1.0` publicada y desplegada. Pendiente del propietario: subir la imagen social del repositorio en GitHub (no tiene API); revocar los tokens de npm y Cloudflare usados en la publicación; decidir el margen de carga de los escenarios en `/blocks` (89–92 en móvil). Desde aquí, correcciones en `1.1.x` y funciones nuevas en `1.2` (`ROADMAP.md` §12).
 
 ## Decisiones que no deben perderse
 
