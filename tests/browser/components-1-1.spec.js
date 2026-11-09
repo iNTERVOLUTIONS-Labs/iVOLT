@@ -42,6 +42,18 @@ test.describe("segmented", () => {
     expect(new Set(faces).size).toBe(2);
     expect(faces[2]).not.toBe(faces[0]);
   });
+
+  test("a badge in the filled brand segment takes the segment's ink in both themes", async ({ page }) => {
+    await page.goto("/fixture/segmented/basic?nojs");
+    for (const theme of ["light", "dark"]) {
+      await page.evaluate((t) => document.documentElement.setAttribute("data-iv-theme", t), theme);
+      const [badge, face] = await page.locator('.iv-segmented--brand input:checked + *').evaluate((el) => [
+        getComputedStyle(el.querySelector(".iv-badge")).color,
+        getComputedStyle(el).color,
+      ]);
+      expect(badge, theme).toBe(face);
+    }
+  });
 });
 
 test.describe("chip", () => {
