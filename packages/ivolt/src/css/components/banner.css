@@ -1,0 +1,173 @@
+/* iVOLT — components/banner
+ * A full-width announcement across the top of a page or a section: one line
+ * of news, an optional action and an optional dismiss button. An alert talks
+ * about the content next to it; a banner talks about the whole site.
+ *
+ *   <div class="iv-banner" role="region" aria-label="Announcement">
+ *     <p class="iv-banner__text">…</p>
+ *     <a class="iv-banner__action" href="…">Read more</a>
+ *   </div>
+ *
+ * Without a tone it is a quiet surface with a brand hairline; `--brand` is the
+ * gradient strip. Dismissing is the author's: a plain button that sets
+ * `hidden` on the banner (the CSS honours it).
+ * Locals: --iv-banner-tone --iv-banner-bg --iv-banner-fg
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-banner {
+  --iv-banner-tone: var(--iv-color-primary);
+  --iv-banner-bg: color-mix(in oklab, var(--iv-banner-tone) 9%, var(--iv-color-surface-raised));
+  --iv-banner-fg: var(--iv-color-text);
+
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--iv-space-2) var(--iv-space-4);
+  padding-block: var(--iv-space-3);
+  padding-inline: var(--iv-space-6);
+  font-size: var(--iv-text-sm);
+  line-height: var(--iv-leading-snug);
+  text-align: center;
+  color: var(--iv-banner-fg);
+  background-color: var(--iv-banner-bg);
+  border-block-end: var(--iv-border-width) solid color-mix(in oklab, var(--iv-banner-tone) 28%, transparent);
+}
+
+.iv-banner[hidden] {
+  display: none;
+}
+
+.iv-banner .iv-banner__text {
+  margin: 0;
+  text-wrap: balance;
+}
+
+.iv-banner__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  color: var(--iv-banner-tone);
+}
+
+/* The action reads as a link with an arrow that steps forward under the pointer. */
+.iv-banner .iv-banner__action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--iv-space-1);
+  font-weight: var(--iv-weight-semibold);
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentColor 40%, transparent);
+  text-underline-offset: 0.2em;
+  white-space: nowrap;
+}
+
+.iv-banner .iv-banner__action::after {
+  content: "→";
+  transition: translate var(--iv-motion-base) var(--iv-ease-out);
+}
+
+:where([dir="rtl"]) .iv-banner .iv-banner__action::after {
+  content: "←";
+}
+
+@media (hover: hover) {
+  .iv-banner__action:hover::after {
+    translate: 0.2em 0;
+  }
+
+  :where([dir="rtl"]) .iv-banner__action:hover::after {
+    translate: -0.2em 0;
+  }
+}
+
+.iv-banner__close {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: var(--iv-space-2);
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: var(--iv-radius-full);
+  cursor: pointer;
+  translate: 0 -50%;
+  opacity: 0.75;
+}
+
+.iv-banner__close:hover {
+  opacity: 1;
+  background-color: color-mix(in oklab, currentColor 10%, transparent);
+}
+
+.iv-banner__close:focus-visible {
+  outline: var(--iv-focus-width) solid var(--iv-color-focus);
+  outline-offset: 0;
+}
+
+.iv-banner__close:empty::before {
+  content: "";
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 4l8 8M12 4l-8 8' stroke='%23000' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Tones ----------------------------------------------------------------- */
+
+.iv-banner--info {
+  --iv-banner-tone: var(--iv-color-info);
+}
+
+.iv-banner--success {
+  --iv-banner-tone: var(--iv-color-success);
+}
+
+.iv-banner--warning {
+  --iv-banner-tone: var(--iv-color-warning);
+}
+
+.iv-banner--danger {
+  --iv-banner-tone: var(--iv-color-danger);
+}
+
+/* Brand: the gradient strip with the text colour drawn on the primary. */
+.iv-banner--brand {
+  --iv-banner-bg: var(--iv-color-primary);
+  --iv-banner-fg: var(--iv-color-on-primary);
+
+  background-image: var(--iv-gradient-primary);
+  border-block-end-color: transparent;
+}
+
+.iv-banner--sticky {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--iv-z-dropdown);
+}
+
+@media (forced-colors: active) {
+  .iv-banner {
+    border-block-end-color: CanvasText;
+  }
+
+  .iv-banner__close:empty::before {
+    background-color: ButtonText;
+    forced-color-adjust: none;
+  }
+}
+
+@media print {
+  .iv-banner__close {
+    display: none;
+  }
+}

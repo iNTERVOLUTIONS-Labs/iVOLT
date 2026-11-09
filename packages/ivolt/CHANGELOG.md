@@ -6,6 +6,10 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 
 ### Added
 - **One-colour theming**: hover, active, subtle, border, focus, focus halo, glows and both brand gradients are mixed in CSS from `--iv-color-primary` (glow-secondary from `--iv-color-accent`) with per-theme recipes, the new `--iv-mix-*` tokens. The defaults resolve to the 1.0 values (ΔE2000 < 1, checked in a browser). Setting `--iv-color-primary` on `:root`, a `[data-iv-theme]` or a `[data-iv-palette]` scope repaints buttons, focus rings, links, badges, progress, switches and gradient text. `tokens.json` keeps the literal values and adds the formula as `css`.
+- Thirteen CSS families, each with a fixture, axe in both themes, forced colours, RTL and reduced motion: `iv-kbd`, `iv-divider`, `iv-spinner`, `iv-segmented` (native radios), `iv-chip` (filter checkbox or removable token), `iv-banner`, `iv-empty`, `iv-list` and `iv-dl`, `iv-meter` (native `<meter>`), `iv-rating` (radio input and read-only display), `iv-code` (code frame with a copy button), `iv-mockup` (browser and phone frames), `iv-sidebar` and `iv-shell` (app frame whose side column is a `Drawer` below `lg`).
+- Modern CSS on existing families, progressive: `iv-card--responsive`, `iv-card--link` (+ `__link`, `__raise`), `iv-grid--subgrid`, `iv-defer`, `iv-scroll-reveal` (view timeline, no JavaScript), `<details>` that glide open (`::details-content`), dialog and drawer exit transitions.
+- JavaScript, as subpaths only (ADR-053): `@intervolutions/ivolt/copy` (`Copy`, events `iv:copy` and `iv:copied`), `@intervolutions/ivolt/theme-transition` (`setThemeWithTransition`), and `dist/js/auto.min.js` (export `./auto.min`): the auto-start entry plus `Copy` in one file for a CDN.
+- Tooling: `dist/ivolt.manifest.json` and `dist/vscode.html-data.json` generated at build, typed `iv:*` events (`dist/types/events.d.ts`) and `window.IVOLT` (`dist/types/global.d.ts`); `package.json` gains `style`, `unpkg`, `jsdelivr` and keywords.
 - `data-iv-palette="accent|success|warning|danger|info|neutral"` on any subtree points the primary (and the colour drawn on it) at another role; every derived token follows. Fixture `theme/one-colour`.
 
 ### Fixed
@@ -18,6 +22,7 @@ All notable changes to `@intervolutions/ivolt`. Dates are added when a version i
 - Dead selectors: the print rule reaches `.iv-parallax` (it only named `.iv-parallax__layer`, which is kept); forced colours switch off `.iv-texture-mesh`/`.iv-texture-aurora` (the rule named a non-existent `.iv-mesh`).
 - Composited motion: the skeleton sweep is a translated layer instead of an animated background position; the switch thumb slides with `translate`; the floating label rises with `scale`/`translate` instead of animating `font-size` and `inset-block-start`.
 - `Popover` without anchor positioning follows a scroll of the page or of any container, once per frame.
+- Layer-free sheet, again: `code`, `kbd`, `samp`, `pre` and `hr` of the base weigh (0,1,0) too, so component rules on those elements win by order.
 - Modal scroll lock in CSS: while an `.iv-dialog` or `.iv-drawer` is modal the root stops scrolling; dialog panels and the drawer body contain overscroll.
 
 ## 1.0.0 — 2026-09-16 (npm, tag `latest`)

@@ -1,0 +1,170 @@
+/* iVOLT — components/shell
+ * Two layouts that respond to the room they get, not to the viewport.
+ *
+ * `iv-sidebar` — a side column next to the content. The side keeps
+ * `--iv-sidebar-width`; the content takes the rest. When the content would
+ * fall under `--iv-sidebar-min` of the container, both wrap and stack. No
+ * breakpoint: the same block works in a page, a card or a dialog.
+ *   <div class="iv-sidebar"><aside>…</aside><div>…</div></div>
+ * `--end` puts the side column after the content.
+ *
+ * `iv-shell` — an application frame: `__top` bar across, `__side` column,
+ * `__main` content. From `lg` the side is a sticky column the height of the
+ * viewport under the bar; below it the column collapses, and a `Drawer`
+ * inside it (`data-iv-static-from="lg"`) becomes the off-canvas menu.
+ *   <div class="iv-shell"><header class="iv-shell__top">…</header>
+ *     <aside class="iv-shell__side"><dialog class="iv-drawer" …>…</dialog></aside>
+ *     <main class="iv-shell__main">…</main></div>
+ *
+ * Also `iv-grid--subgrid` (see below).
+ *
+ * Locals: --iv-sidebar-width --iv-sidebar-min --iv-sidebar-gap
+ *         --iv-shell-side --iv-shell-top
+ * Declares no @layer and imports nothing: the entry point does that.
+ * Highest specificity used: (0,2,0).
+ */
+
+.iv-sidebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--iv-sidebar-gap, var(--iv-space-6));
+}
+
+.iv-sidebar > :first-child {
+  flex-basis: var(--iv-sidebar-width, 16rem);
+  flex-grow: 1;
+}
+
+.iv-sidebar > :last-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: var(--iv-sidebar-min, 55%);
+}
+
+/* Side column last: the first child is the content. */
+.iv-sidebar--end > :first-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-inline-size: var(--iv-sidebar-min, 55%);
+}
+
+.iv-sidebar--end > :last-child {
+  flex-basis: var(--iv-sidebar-width, 16rem);
+  flex-grow: 1;
+  min-inline-size: 0;
+}
+
+/* Shell ------------------------------------------------------------------- */
+
+.iv-shell {
+  --iv-shell-side: 16rem;
+  --iv-shell-top: 3.75rem;
+
+  display: grid;
+  grid-template-areas:
+    "top"
+    "main";
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  min-block-size: 100vh;
+  min-block-size: 100dvh;
+}
+
+.iv-shell__top {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: calc(var(--iv-z-dropdown) - 1);
+  grid-area: top;
+  display: flex;
+  align-items: center;
+  gap: var(--iv-space-4);
+  min-block-size: var(--iv-shell-top);
+  padding-inline: var(--iv-space-4);
+  background-color: var(--iv-glass-bg-strong);
+  border-block-end: var(--iv-border-width) solid var(--iv-color-border);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .iv-shell__top {
+    -webkit-backdrop-filter: blur(var(--iv-blur-md)) saturate(140%);
+    backdrop-filter: blur(var(--iv-blur-md)) saturate(140%);
+  }
+}
+
+/* Below lg the side region takes no room: its drawer is a modal. */
+.iv-shell__side {
+  grid-area: main;
+  inline-size: 0;
+  min-inline-size: 0;
+}
+
+.iv-shell__main {
+  grid-area: main;
+  min-inline-size: 0;
+  padding: var(--iv-space-6) var(--iv-space-4);
+}
+
+@media (--iv-lg) {
+  .iv-shell {
+    grid-template-areas:
+      "top top"
+      "side main";
+    grid-template-columns: var(--iv-shell-side) minmax(0, 1fr);
+  }
+
+  .iv-shell__side {
+    position: sticky;
+    inset-block-start: var(--iv-shell-top);
+    grid-area: side;
+    inline-size: auto;
+    max-block-size: calc(100dvh - var(--iv-shell-top));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-inline-end: var(--iv-border-width) solid var(--iv-color-border);
+    background-color: color-mix(in srgb, var(--iv-color-surface) 60%, transparent);
+  }
+
+  /* A static drawer inside fills the column without a second edge. */
+  .iv-shell__side .iv-drawer {
+    inline-size: 100%;
+    block-size: 100%;
+    background-color: transparent;
+    border-inline-end: 0;
+    box-shadow: none;
+  }
+
+  .iv-shell__main {
+    padding: var(--iv-space-8);
+  }
+}
+
+/* Subgrid (1.1), with `iv-grid`: a child spanning several rows lines its own children up with
+   the parent tracks, so the titles, texts and footers of a row of cards align
+   across cards. Engines without subgrid keep a plain grid inside the child.
+   Set the span with `--iv-subgrid-rows`. */
+.iv-grid--subgrid > * {
+  display: grid;
+  grid-row: span var(--iv-subgrid-rows, 3);
+  grid-template-rows: subgrid;
+  gap: var(--iv-subgrid-gap, var(--iv-space-3));
+}
+
+/* It lives here, in the components layer, because the children it reshapes
+   are components (`iv-card` sets its own display). */
+
+@media (forced-colors: active) {
+  .iv-shell__top {
+    border-block-end-color: CanvasText;
+  }
+}
+
+@media print {
+  .iv-shell {
+    display: block;
+  }
+
+  .iv-shell__top,
+  .iv-shell__side {
+    display: none;
+  }
+}

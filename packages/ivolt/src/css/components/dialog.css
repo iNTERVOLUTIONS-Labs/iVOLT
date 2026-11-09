@@ -57,9 +57,38 @@
   }
 }
 
+/* Exit (1.1, progressive): closing used to cut to nothing. Where `display`
+   and `overlay` can be transitioned the panel and its backdrop fade out while
+   the dialog stays in the top layer; the entrance keeps its keyframes. Closed
+   is matched at (0,0,0) and never covers the no-JS `:target` fallback. */
+@supports (transition-behavior: allow-discrete) {
+  .iv-dialog,
+  .iv-dialog::backdrop {
+    transition:
+      opacity var(--iv-motion-fast) var(--iv-ease-out),
+      translate var(--iv-motion-fast) var(--iv-ease-out),
+      display var(--iv-motion-fast) allow-discrete,
+      overlay var(--iv-motion-fast) allow-discrete;
+  }
+
+  :where(.iv-dialog:not([open]):not(:target)) {
+    opacity: 0;
+    translate: 0 0.5rem;
+  }
+
+  :where(.iv-dialog:not([open]))::backdrop {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .iv-dialog[open] {
     animation: none;
+  }
+
+  .iv-dialog,
+  .iv-dialog::backdrop {
+    transition: none;
   }
 }
 

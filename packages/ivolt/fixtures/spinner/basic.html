@@ -1,0 +1,27 @@
+<div class="iv-stack iv-u-gap-5">
+  <div class="iv-cluster iv-u-items-center iv-u-gap-6">
+    <span class="iv-spinner iv-spinner--sm" role="status"><span class="iv-u-sr-only">Loading (small)</span></span>
+    <span class="iv-spinner" role="status"><span class="iv-u-sr-only">Loading</span></span>
+    <span class="iv-spinner iv-spinner--lg" role="status"><span class="iv-u-sr-only">Loading (large)</span></span>
+  </div>
+
+  <div class="iv-cluster iv-u-items-center">
+    <button class="iv-button iv-button--primary" type="button" disabled>
+      <span class="iv-spinner iv-spinner--sm iv-spinner--current" aria-hidden="true"></span>
+      Publishing…
+    </button>
+    <span class="iv-u-text-sm iv-u-text-muted">The button is disabled while it works; its text says what is happening.</span>
+  </div>
+
+  <section class="iv-card" aria-busy="true" aria-labelledby="spinner-card">
+    <div class="iv-card__body iv-cluster iv-u-items-center iv-u-gap-3">
+      <span class="iv-spinner" aria-hidden="true"></span>
+      <div>
+        <h3 class="iv-card__title iv-u-m-0" id="spinner-card">Building the preview</h3>
+        <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted" role="status">Step 2 of 3: bundling the stylesheet.</p>
+      </div>
+    </div>
+  </section>
+
+  <p class="iv-u-m-0 iv-u-text-sm iv-u-text-muted">Demo: nothing is loading. Under reduced motion the arc stops turning and breathes instead.</p>
+</div>

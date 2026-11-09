@@ -95,6 +95,36 @@
   line-height: var(--iv-leading-relaxed);
 }
 
+/* Opening and closing glide (1.1, progressive): where the engine exposes the
+   content of `<details>` as `::details-content` and can interpolate to `auto`,
+   the panel grows to its height and folds back. Elsewhere it opens at once, as
+   in 1.0. `content-visibility` is discrete; `allow-discrete` keeps the content
+   painted until the fold has finished. Native `<details name>` makes a group
+   exclusive without JavaScript. */
+@supports selector(::details-content) {
+  .iv-disclosure {
+    interpolate-size: allow-keywords;
+  }
+
+  .iv-disclosure::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size var(--iv-motion-slow) var(--iv-ease-out),
+      content-visibility var(--iv-motion-slow) allow-discrete;
+  }
+
+  .iv-disclosure[open]::details-content {
+    block-size: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iv-disclosure::details-content {
+    transition: none;
+  }
+}
+
 /* Accordion ---------------------------------------------------------- */
 
 .iv-accordion {
