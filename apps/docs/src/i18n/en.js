@@ -105,7 +105,10 @@ export const nav = [
   ] },
   { group: "Components", items: ["button", "card", "form", "validation", "combobox", "datepicker", "datatable", "picker", "carousel", "lightbox", "navbar", "megamenu", "hero", "stepper", "popover", "command", "dialog", "badge", "alert", "table", "timeline", "stat", "avatar", "breadcrumb", "pagination", "progress", "skeleton", "countup", "disclosure", "tabs", "dropdown", "drawer", "toast"].map((c) => ({ href: `/components/${c}`, label: c[0].toUpperCase() + c.slice(1) })) },
   { group: "Explore", items: [
+    { href: "/blocks", label: "Blocks" },
     { href: "/themes", label: "Theme gallery" },
+    { href: "/effects", label: "Effects gallery" },
+    { href: "/showcase", label: "Made with iVOLT" },
     { href: "/compare", label: "Compare" },
   ] },
   { group: "Project", items: [

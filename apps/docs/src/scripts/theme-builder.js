@@ -1,5 +1,12 @@
 // Theme builder: edits a handful of tokens live on a preview scope and prints the CSS to copy.
-// Everything happens in the page; nothing is stored or sent anywhere.
+// Everything happens in the page; nothing is stored or sent anywhere. Since 1.1 the state also
+// lives in the URL hash (#theme=dark&primary=ff6600&…), so a theme is a link anyone can open, and
+// the colours touched are expanded into the full 1.0 token set (hover, subtle, border, focus,
+// glow, gradients) with the same derivation as the theme gallery: setting the primary alone left
+// the cobalt gradient on every primary button.
+import { tokens as deriveTokens, fontKeys } from "../data/themes.js";
+const FONT_OF = (v) => (/Outfit/.test(v) ? "outfit" : /Georgia|serif/.test(v) && !/sans-serif/.test(v) ? "serif" : /monospace/.test(v) ? "mono" : "system");
+const DERIVED = ["--iv-color-primary-hover", "--iv-color-primary-active", "--iv-color-primary-subtle", "--iv-color-primary-border", "--iv-color-on-accent", "--iv-color-text-muted", "--iv-color-border", "--iv-color-border-strong", "--iv-color-hover-surface", "--iv-color-focus", "--iv-focus-halo", "--iv-glow-primary", "--iv-glow-secondary", "--iv-gradient-brand", "--iv-gradient-primary"];
 const FIELDS = [
   { key: "primary", token: "--iv-color-primary", label: "primary" },
   { key: "on-primary", token: "--iv-color-on-primary", label: "text on primary" },
@@ -20,6 +27,12 @@ function rgbToHex(value) {
   }
   const parts = m[1].split(/[\s,\/]+/).filter(Boolean).slice(0, 3).map((n) => Math.round(parseFloat(n)));
   return "#" + parts.map((n) => n.toString(16).padStart(2, "0")).join("");
+}
+
+function mixHex(a, b, t) {
+  const p = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const x = p(a), y = p(b);
+  return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join("");
 }
 
 export function mountThemeBuilder(root) {
@@ -54,6 +67,12 @@ export function mountThemeBuilder(root) {
         state[f.token] = input.value;
       }
     }
+    // A touched colour brings its dependants: the full token set derived from the current fields.
+    if (FIELDS.some((f) => form.querySelector(`[name="${f.key}"]`)?.dataset.touched === "true")) {
+      const v = (k) => form.querySelector(`[name="${k}"]`)?.value || "#000000";
+      const derived = deriveTokens({ mode: themeValue(), primary: v("primary"), onPrimary: v("on-primary"), accent: v("accent"), bg: v("bg"), surface: v("surface"), raised: v("surface-raised"), text: v("text"), muted: mixHex(v("text"), v("bg"), 0.32), radius: 0.875, font: "outfit" });
+      for (const k of DERIVED) { scope.style.setProperty(k, derived[k]); state[k] = derived[k]; }
+    }
     if (radius && radius.dataset.touched === "true") {
       const md = `${radius.value}rem`;
       scope.style.setProperty("--iv-radius-sm", `${(radius.value / 2).toFixed(3)}rem`);
@@ -75,8 +94,43 @@ export function mountThemeBuilder(root) {
     }
     const selector = theme === "dark" ? '[data-iv-theme="dark"]' : ':root, [data-iv-theme="light"], [data-iv-theme="system"]';
     const body = Object.entries(state).map(([k, v]) => `  ${k}: ${v};`).join("\n");
+    writeHash();
     output.textContent = body ? `/* iVOLT theme overrides: load after ivolt.css, or inside @layer iv.overrides */\n${selector} {\n${body}\n}` : "/* Change a control to see the overrides here. */";
   };
+  // ---- the URL hash: read once on mount, rewritten on every change ----
+  const writeHash = () => {
+    const q = new URLSearchParams();
+    const touched = [...form.querySelectorAll("[name]")].filter((i) => i.dataset.touched === "true");
+    if (!touched.length) { if (/[=&]/.test(location.hash)) history.replaceState(history.state, "", location.pathname + location.search); return; }
+    q.set("theme", themeValue());
+    for (const f of FIELDS) { const i = form.querySelector(`[name="${f.key}"]`); if (i && i.dataset.touched === "true") q.set(f.key, i.value.replace(/^#/, "")); }
+    if (radius && radius.dataset.touched === "true") q.set("radius", radius.value);
+    if (font && font.dataset.touched === "true") q.set("font", FONT_OF(font.value));
+    history.replaceState(history.state, "", `${location.pathname}${location.search}#${q}`);
+  };
+  const readHash = () => {
+    const raw = location.hash.slice(1);
+    if (!/(^|&)(theme|primary|radius|font|bg|accent)=/.test(raw)) return;
+    const q = new URLSearchParams(raw);
+    const theme = q.get("theme");
+    if (theme === "light" || theme === "dark") { const r = form.querySelector(`[name="theme"][value="${theme}"]`); if (r) r.checked = true; scope.setAttribute("data-iv-theme", theme); seed(); }
+    for (const f of FIELDS) {
+      const val = q.get(f.key); const i = form.querySelector(`[name="${f.key}"]`);
+      if (i && val && /^[0-9a-f]{6}$/i.test(val)) { i.value = `#${val.toLowerCase()}`; i.dataset.touched = "true"; }
+    }
+    const r = Number(q.get("radius"));
+    if (radius && q.has("radius") && r >= 0 && r <= 1.5) { radius.value = String(r); radius.dataset.touched = "true"; }
+    const fk = q.get("font");
+    if (font && fk && fontKeys.includes(fk)) { const opt = [...font.options].find((o) => FONT_OF(o.value) === fk); if (opt) { font.value = opt.value; font.dataset.touched = "true"; } }
+  };
+  const share = root.ownerDocument.querySelector("[data-tb-share]");
+  const onShare = async () => {
+    const label = share.textContent;
+    try { await navigator.clipboard.writeText(location.href); share.textContent = share.dataset.labelDone || "Copied"; }
+    catch { share.textContent = location.href; }
+    setTimeout(() => { share.textContent = label; }, 2000);
+  };
+  if (share) { share.hidden = false; share.addEventListener("click", onShare); }
   const onInput = (e) => {
     if (e.target && e.target.name) e.target.dataset.touched = "true";
     render();
@@ -98,6 +152,7 @@ export function mountThemeBuilder(root) {
   // Seed every colour field from the theme the preview starts in, so the reader edits what they see.
   scope.setAttribute("data-iv-theme", themeValue());
   seed();
+  readHash();
   render();
-  return () => { form.removeEventListener("input", onInput); form.removeEventListener("change", onInput); if (reset) reset.removeEventListener("click", onReset); };
+  return () => { if (share) share.removeEventListener("click", onShare); form.removeEventListener("input", onInput); form.removeEventListener("change", onInput); if (reset) reset.removeEventListener("click", onReset); };
 }

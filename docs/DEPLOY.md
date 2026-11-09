@@ -13,6 +13,15 @@ npm run build:docs    # construye el paquete si falta y después la web (Astro +
 
 Salida: `apps/docs/dist` (~43 MB con fotografías, capturas y descargas). Si no hay navegadores de Playwright en el servidor, `build-shots.mjs` avisa y conserva las capturas versionadas en `apps/docs/public/shots`; el build termina igual.
 
+Desde 1.1 el build escribe además, sin navegador:
+
+- **Tarjetas para compartir** (`scripts/build-og.mjs`): `og.png`, `og/es.png` y una tarjeta JPEG por página en `og/…`, más `favicon.ico`, `apple-touch-icon.png`, iconos de instalación y `manifest.webmanifest`. Se dibujan con `@resvg/resvg-js` (binario precompilado que instala `npm ci`) y Outfit en TTF (`apps/docs/og-fonts`); **si no puede dibujarlas, el build falla**: en 1.0 el script avisaba y salía con 0, y todas las páginas publicaban un `og:image` que daba 404.
+- **Versiones AVIF/WebP de las capturas** (`scripts/build-images.mjs`, con el `sharp` que ya instala Astro).
+- **Gemelos Markdown, `llms.txt` y `llms-full.txt`** (`scripts/build-llms.mjs`, tras Astro): `/components/button.md` junto a `/components/button`, etc.
+- **Hojas de la galería de temas**: `/themes/<tema>.css`.
+
+La cifra de estrellas de GitHub del botón de la portada se pide **en el build** (3 s de límite; sin red, el botón sale sin número; `IVOLT_NO_NETWORK=1` lo omite). El visitante nunca pide nada a otro dominio.
+
 **Con Orbit** ([iNTERVOLUTIONS-Labs/orbit](https://github.com/iNTERVOLUTIONS-Labs/orbit)) no hay que configurar nada: el repositorio trae `orbit.json` en la raíz y Orbit lo lee en lugar de adivinar. Sin él, la detección automática del monorepo lanzaba `npm run build` desde la raíz, que solo construye el paquete, y nginx apuntaba a una carpeta vacía.
 
 ```json
@@ -31,9 +40,10 @@ Lo que Orbit ya hace por su cuenta con ese descriptor: build desde la raíz de l
 |---|---|
 | URL limpias: `/getting-started` sirve `getting-started.html`, `/es` sirve `es.html`, sin barra final | el build usa `format: "file"` y `trailingSlash: "never"`; los enlaces internos no llevan extensión. Orbit, Netlify, Cloudflare Pages, Vercel y GitHub Pages lo hacen solos; en nginx a mano: `try_files $uri $uri.html $uri/index.html =404;` |
 | `404.html` como página de error | Astro la genera en la raíz |
-| `Cache-Control: public, max-age=31536000, immutable` para `/_astro/*`, `/fonts/*`, `/photos/*`, `/shots/*`, `/examples/ivolt/*` | nombres con hash o activos que solo cambian con versión |
+| `Cache-Control: public, max-age=31536000, immutable` para `/_astro/*`, `/fonts/*`, `/photos/*`, `/shots/*`, `/examples/ivolt/*`, `/badge/*` |  nombres con hash o activos que solo cambian con versión |
 | `Cache-Control: no-cache` (o `max-age=0, must-revalidate`) para `*.html`, `robots.txt`, `sitemap*.xml` | para que una publicación se vea al instante |
-| Tipos MIME correctos para `.woff2` (`font/woff2`), `.mjs`/`.js` (`text/javascript`), `.json` | Outfit y los módulos del paquete |
+| Tipos MIME correctos para `.woff2` (`font/woff2`), `.mjs`/`.js` (`text/javascript`), `.json`, `.md` y `llms*.txt` (`text/markdown; charset=utf-8` y `text/plain; charset=utf-8`), `.webmanifest` (`application/manifest+json`), `.avif` (`image/avif`) | Outfit, los módulos del paquete, los gemelos Markdown (nginx no trae `md` en `mime.types`: sin la línea `types { text/markdown md; }` los sirve como descarga) y el manifiesto |
+| `Cache-Control` corto (p. ej. `max-age=3600`) para `/og/*`, `/og.png`, `/themes/*.css` | sus nombres no cambian entre versiones; tras publicar conviene purgar `/og.png` en Cloudflare |
 | HTTPS con redirección desde HTTP y desde `www.` si se usa | canónicas absolutas en `https://ivolt.intervolutions.com` |
 
 ## 3. Cabeceras recomendadas
@@ -48,10 +58,10 @@ Permissions-Policy: camera=(), microphone=(), geolocation=()
 `Content-Security-Policy`: la web lleva un único script en línea ejecutable (el que aplica el tema antes del primer pintado); su hash SHA-256 se muestra en `/foundations/coexistence` (`#csp-hash`) y `tests/browser/site-shell.spec.js` comprueba que sigue siendo el publicado. Los bloques JSON-LD son datos, no scripts, y no entran en la política. Política mínima que funciona con el build actual:
 
 ```
-Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-<hash de /foundations/coexistence>'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'
+Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-<hash de /foundations/coexistence>'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://codepen.io
 ```
 
-(`style-src 'unsafe-inline'` cubre los `style=` de las fixtures y los escenarios; `frame-src 'self'` cubre los escenarios y las recetas embebidas). Verifica en el navegador tras desplegar: consola sin violaciones en `/`, `/components/button` y `/examples/studio/index.html`.
+(`form-action https://codepen.io` permite el botón «CodePen» de los escenarios, un formulario POST a `codepen.io/pen/define` que abre una pestaña nueva; la web no carga nada de CodePen. `style-src 'unsafe-inline'` cubre los `style=` de las fixtures y los escenarios; `frame-src 'self'` cubre los escenarios y las recetas embebidas). Verifica en el navegador tras desplegar: consola sin violaciones en `/`, `/components/button` y `/examples/studio/index.html`.
 
 ## 4. Comprobación tras desplegar
 

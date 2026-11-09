@@ -325,6 +325,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
     )}
   </div>
 
+  <p class="iv-u-sr-only" id="docs-live" role="status" aria-live="polite"></p>
   <footer class="docs-footer" data-pagefind-ignore>
     <div class="iv-container iv-container--wide">
       <a class="docs-lockup" href={base || "/"} aria-label={t.brandHome}>
@@ -380,7 +381,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
 
       // The stage driver (frames, controls, the showreel tabs) only travels with the pages that
       // have a stage: every other page stops paying for it.
-      if (document.querySelector("[data-stage], [data-showreel]")) {
+      if (document.querySelector("[data-stage], [data-showreel], [data-code-tabs]")) {
         // A page transition can cancel an in-flight chunk; that is not an error of the page.
         import("../scripts/stage.js").then((m) => { if (epoch === mine) teardown.push(m.mountStage(document)); }).catch(() => {});
       }
@@ -440,6 +441,30 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
           const a = document.createElement("a"); a.className = "docs-anchor"; a.href = `#${h.id}`; a.textContent = "#"; a.setAttribute("aria-label", tr().anchor);
           h.append(" ", a);
         }
+      });
+      // The # beside a heading still jumps to the section, and now also copies its full address:
+      // the link people paste in a chat is the one they wanted to share.
+      const live = document.getElementById("docs-live");
+      const say = (msg) => { if (live) { live.textContent = msg; setTimeout(() => { if (live.textContent === msg) live.textContent = ""; }, 2500); } };
+      const copyText = async (text) => { try { await navigator.clipboard.writeText(text); return true; } catch { return false; } };
+      document.querySelectorAll(".docs-anchor").forEach((a) => {
+        const onClick = () => {
+          const url = new URL(a.getAttribute("href"), location.href).href;
+          copyText(url).then((ok) => { if (!ok) return; a.dataset.copied = ""; say(tr().linkCopied); setTimeout(() => delete a.dataset.copied, 1600); });
+        };
+        a.addEventListener("click", onClick);
+        teardown.push(() => a.removeEventListener("click", onClick));
+      });
+      // Buttons that copy a fixed text (share links): only shown when a script can run them.
+      document.querySelectorAll(".docs-copy-text[data-copy-text]").forEach((btn) => {
+        btn.hidden = false;
+        const label = btn.textContent;
+        const onClick = () => copyText(btn.dataset.copyText).then((ok) => {
+          btn.textContent = ok ? tr().linkCopied : btn.dataset.copyText; say(ok ? tr().linkCopied : "");
+          setTimeout(() => { btn.textContent = label; }, 2000);
+        });
+        btn.addEventListener("click", onClick);
+        teardown.push(() => btn.removeEventListener("click", onClick));
       });
       const toc = document.querySelector(".docs-toc"), tocList = document.getElementById("docs-toc-list");
       if (toc && tocList) {
