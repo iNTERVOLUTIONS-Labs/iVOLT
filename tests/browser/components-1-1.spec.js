@@ -43,6 +43,22 @@ test.describe("segmented", () => {
     expect(faces[2]).not.toBe(faces[0]);
   });
 
+  test("the group keeps its own width inside a stack; the block variant fills the row", async ({ page }) => {
+    await page.goto("/fixture/segmented/basic?nojs");
+    const widths = await page.evaluate(() => {
+      const stack = document.createElement("div");
+      stack.className = "iv-stack";
+      stack.style.inlineSize = "600px";
+      stack.innerHTML = '<fieldset class="iv-segmented"><label class="iv-segmented__item"><input type="radio" name="w" checked><span>A</span></label><label class="iv-segmented__item"><input type="radio" name="w"><span>B</span></label></fieldset>'
+        + '<fieldset class="iv-segmented iv-segmented--block"><label class="iv-segmented__item"><input type="radio" name="v" checked><span>A</span></label></fieldset>';
+      document.body.append(stack);
+      const [plain, block] = stack.querySelectorAll(".iv-segmented");
+      return [plain.getBoundingClientRect().width, block.getBoundingClientRect().width];
+    });
+    expect(widths[0]).toBeLessThan(300);
+    expect(widths[1]).toBe(600);
+  });
+
   test("a badge in the filled brand segment takes the segment's ink in both themes", async ({ page }) => {
     await page.goto("/fixture/segmented/basic?nojs");
     for (const theme of ["light", "dark"]) {
