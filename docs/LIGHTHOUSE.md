@@ -375,3 +375,24 @@ Mismo método y entorno (Lighthouse 13.4.1, HeadlessChrome `--headless=new --no-
 
 JSON en el directorio temporal del trabajo (`lh-100-*.json`); no se versionan.
 
+
+## 1.1 «Spark» — pista W de la web (2026-11-09)
+
+Lighthouse 13.4.1 (devDependency del repositorio), Chromium 1252 `--headless=new --no-sandbox`, `scripts/docs-server.mjs` con `DOCS_SKIP_BUILD=1` sirviendo el build de la rama, una pasada por ruta y preajuste. **Máquina compartida**: otro implementador ejecutaba Playwright a la vez (carga media 5–11 en 6 núcleos); una primera tanda a carga 19 dio 65–73 en móvil por TBT y se descartó. Las cifras de antes son las de la auditoría sobre la web publicada (1.0.0, mismo día).
+
+| Ruta | Preajuste | Antes (publicada) | Rendimiento | Accesibilidad | Buenas prácticas | SEO | LCP | TBT | CLS |
+|---|---|---|---|---|---|---|---|---|---|
+| `/` | móvil | 90 (TBT 400 ms) | 96 | 100 | 100 | 100 | 2,1 s | 140 ms | 0,006 |
+| `/` | escritorio | 100 | 100 | 100 | 100 | 100 | 0,6 s | 0 ms | 0,02 |
+| `/es` | móvil | 87 (TBT 500 ms) | 97 | 100 | 100 | 100 | 2,1 s | 110 ms | 0,005 |
+| `/es` | escritorio | 100 | 100 | 100 | 100 | 100 | 0,5 s | 0 ms | 0,024 |
+| `/components/button` | móvil | 83 (TBT 640 ms) | 96 | 100 | 100 | 100 | 2,1 s | 40 ms | 0,078 |
+| `/components/button` | escritorio | 100 | 100 | 100 | 100 | 100 | 0,5 s | 0 ms | 0,033 |
+| `/compare` | móvil | — (nueva) | 99 | 100 | 100 | 100 | 1,7 s | 60 ms | 0 |
+| `/compare` | escritorio | — | 100 | 100 | 100 | 100 | 0,4 s | 0 ms | 0 |
+| `/themes` | móvil | — (nueva) | 99 | 100 | 100 | 100 | 1,7 s | 20 ms | 0 |
+| `/themes` | escritorio | — | 100 | 100 | 100 | 100 | 0,5 s | 0 ms | 0 |
+| `/blocks` | móvil | — (nueva) | 96 | 100 | 100 | 100 | 1,8 s | 170 ms | 0 |
+| `/blocks` | escritorio | — | 100 | 100 | 100 | 100 | 0,5 s | 0 ms | 0 |
+
+Qué movió la aguja: el script del layout pasó de 48 KB gzip a 11 KB (solo diálogo, megamenú y tema; el resto de componentes se carga por página), los escenarios de fixtures solo CSS ya no cargan el IIFE de 46 KB (46 de 93), y las capturas de las recetas salen en AVIF/WebP con `srcset`. Una pasada de `/es` en móvil dio accesibilidad 97 por dos elementos a mitad de su entrada (`docs-reveal`, opacidad en transición); la repetición dio 100. Pendiente: el CLS de `/components/button` (0,078) es el mismo de 1.0, el marco del primer escenario reserva 16 rem y encoge al recibir su altura; reservar la altura medida exigiría medirla en el build.
