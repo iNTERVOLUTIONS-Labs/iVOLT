@@ -2,5 +2,7 @@
   "type": "static",
   "build": "npm ci --include=dev && npm run build:docs",
   "outdir": "apps/docs/dist",
-  "spa": false
+  "spa": false,
+  "csp": "default-src 'self'; script-src 'self' 'sha256-jUAUQ8+jWVPo7EbSE9FVWWmn/FVSalWrOarVKCFs7BU=' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; frame-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://codepen.io; object-src 'none'",
+  "csp_report_only": true
 }

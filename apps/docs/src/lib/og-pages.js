@@ -51,11 +51,10 @@ export function ogPages() {
   return out;
 }
 
-/** File (relative to public/) of the card for a URL path: the homes are PNG (og.png keeps the URL
- *  every share made so far points at), the pages JPEG, e.g. /es/components/button →
+/** File (relative to public/) of the card for a URL path: the homes are PNG, the pages JPEG, e.g. /es/components/button →
  *  og/es/components/button.jpg. */
 export function ogFile(path) {
-  if (path === "/") return "og.png";
+  if (path === "/") return "og/index.png";
   if (path === "/es") return "og/es.png";
   return `og${path}.jpg`;
 }

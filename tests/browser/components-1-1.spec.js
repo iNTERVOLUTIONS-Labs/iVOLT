@@ -121,9 +121,24 @@ test.describe("rating", () => {
 
   test("the group carries the focus ring of its radios", async ({ page }) => {
     await page.goto("/fixture/rating/basic?nojs");
-    await page.locator("#rt-4").focus();
-    await page.keyboard.press("ArrowLeft");
+    // Reached the way a reader does, with Tab: WebKit does not count a scripted focus() as
+    // visible focus, even after an arrow key, so a focus() call measured nothing there.
+    await page.evaluate(() => {
+      const start = document.createElement("button");
+      start.id = "probe-start";
+      start.textContent = "start";
+      document.querySelector(".iv-rating").before(start);
+    });
+    await page.locator("#probe-start").focus();
+    await page.keyboard.press("Tab");
     expect(await css(page, ".iv-rating", "outlineStyle")).toBe("solid");
+    await page.keyboard.press("ArrowLeft");
+    await expect(page.locator("#rt-3")).toBeFocused();
+    // WebKit stops matching :focus-visible on a radio moved to with an arrow key (any ring built
+    // on :focus-visible disappears there); where the engine keeps it, the ring follows.
+    if (await page.locator("#rt-3").evaluate((el) => el.matches(":focus-visible"))) {
+      expect(await css(page, ".iv-rating", "outlineStyle")).toBe("solid");
+    }
   });
 });
 
@@ -169,6 +184,9 @@ test.describe("drawer and dialog", () => {
 
   test("closing a dialog fades it out instead of cutting it", async ({ page }) => {
     await page.goto("/fixture/dialog/basic");
+    // The exit needs `overlay` to keep the dialog in the top layer while it fades; without it
+    // (Firefox and Safari today) the dialog closes at once, exactly as in 1.0.
+    test.skip(!(await page.evaluate(() => CSS.supports("overlay", "auto"))), "no overlay property in this engine");
     await page.locator('[data-iv-open="signup"]').click();
     await expect(page.locator("#signup")).toBeVisible();
     await page.waitForTimeout(400);
@@ -272,8 +290,10 @@ test.describe("motion", () => {
 
   test("details glide open where ::details-content exists", async ({ page }) => {
     await page.goto("/fixture/disclosure/accordion?nojs");
-    const supported = await page.evaluate(() => CSS.supports("selector(::details-content)"));
-    test.skip(!supported, "no ::details-content in this engine: the panel opens at once, as in 1.0");
+    // Gliding needs both: the pseudo-element to transition and interpolate-size to reach auto.
+    // Firefox and Safari have ::details-content but not interpolate-size; there it opens at once.
+    const supported = await page.evaluate(() => CSS.supports("selector(::details-content)") && CSS.supports("interpolate-size", "allow-keywords"));
+    test.skip(!supported, "no ::details-content or interpolate-size in this engine: the panel opens at once, as in 1.0");
     expect(await css(page, ".iv-disclosure", "interpolateSize")).toBe("allow-keywords");
     expect(await css(page, ".iv-disclosure", "transitionProperty", "::details-content")).toContain("block-size");
   });

@@ -147,7 +147,7 @@ Ninguno conocido de severidad alta. Resuelto: `.iv-dialog__title` frente a `.iv-
 
 ## Siguiente acción
 
-`1.1.0` cerrada en `feat/ivolt-1.1` (PR en borrador). Requiere autorización del propietario, por este orden: fusionar y desplegar con Orbit; publicar `1.1.0` en npm (los enlaces de CodePen y de los temas apuntan a jsDelivr `@1.1.0`); purgar `/og.png` en Cloudflare; CSP con `form-action https://codepen.io` y `text/markdown` para `.md` (nginx/Orbit); arreglar la plantilla estática de Orbit (barra final); ficha del repositorio en GitHub (descripción, web, temas, imagen social, release); instalar las dependencias de Firefox y WebKit en el servidor para recuperar el gate en tres motores.
+`1.1.0` cerrada en `feat/ivolt-1.1` (PR en borrador). Requiere autorización del propietario, por este orden: fusionar y desplegar con Orbit; publicar `1.1.0` en npm (los enlaces de CodePen y de los temas apuntan a jsDelivr `@1.1.0`); purgar `/og.png` en Cloudflare; CSP con `form-action https://codepen.io` y `text/markdown` para `.md` (nginx/Orbit); arreglar la plantilla estática de Orbit (barra final); ficha del repositorio en GitHub (descripción, web, temas, imagen social, release); (hecho el 2026-11-09: librerías de Firefox y WebKit instaladas, gate de nuevo en tres motores).
 
 ## Decisiones que no deben perderse
 

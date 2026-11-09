@@ -48,7 +48,8 @@ test.describe("1.1 component pages", () => {
     }
   });
 
-  test("the code block's copy button appears on its stage and copies", async ({ page, context }) => {
+  test("the code block's copy button appears on its stage and copies", async ({ page, context, browserName }) => {
+    test.skip(browserName !== "chromium", "clipboard permissions are a Chromium feature of Playwright");
     await context.grantPermissions(["clipboard-read", "clipboard-write"], { origin: DOCS });
     await page.goto(DOCS + "/stage/code/basic.html");
     const button = page.locator(".iv-code__copy").first();
