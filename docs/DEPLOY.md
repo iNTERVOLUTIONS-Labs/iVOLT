@@ -72,3 +72,8 @@ La política vive en `orbit.json` (`"csp"`, Orbit ≥ 1.5.1), así que viaja con
 3. Ver código fuente de `/`: `canonical`, `hreflang`, `og:image` absolutos; `application/ld+json` con `"url": "https://ivolt.intervolutions.com/"`.
 4. Lighthouse en móvil sobre la URL real (`docs/LIGHTHOUSE.md` recoge las cifras del build local: 97–100).
 5. Registrar el dominio en Google Search Console y enviar el sitemap.
+
+## Caché de los ficheros sin huella
+
+Astro pone huella a lo que empaqueta (`/_astro/…`), pero el script y la hoja de los escenarios (`/stage/boot.js`, `/stage/stage-frame.css`), la copia del framework en `/examples/ivolt/` y las descargas de `/themes/*.css` conservan su nombre entre versiones, y Cloudflare los guarda un día. El 2026-11-10 un arreglo de `boot.js` estaba en el origen y no se veía tras la caché. Desde entonces `scripts/version-assets.mjs`, el último paso del build, enlaza cada uno con `?v=<10 hex del sha256 de su contenido>`: un despliegue que cambia un fichero cambia su URL y no hace falta purgar. `site-shell.spec.js` comprueba que toda referencia local sin huella lleva la versión de su contenido actual.
+
