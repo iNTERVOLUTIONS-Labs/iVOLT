@@ -135,7 +135,7 @@ export class Lightbox extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Lightbox[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Lightbox[]} */ (super.initAll(root));
   }
 

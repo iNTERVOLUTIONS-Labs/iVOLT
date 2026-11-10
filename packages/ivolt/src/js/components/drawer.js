@@ -122,7 +122,7 @@ export class Drawer extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Drawer[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Drawer[]} */ (super.initAll(root));
   }
 

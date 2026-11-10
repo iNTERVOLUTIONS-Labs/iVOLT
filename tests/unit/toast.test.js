@@ -56,7 +56,7 @@ describe("Toast", () => {
     expect(node.querySelector(".iv-toast__message").textContent).toBe("<b>Saved</b>");
     expect(node.querySelector(".iv-toast__title").textContent).toBe("Done");
     expect(node.className).toBe("iv-toast iv-toast--info");
-    expect(node.getAttribute("role")).toBe("status");
+    expect(node.hasAttribute("role")).toBe(false); // 1.1.2: the region is the one live region
     expect(node.getAttribute("tabindex")).toBe("0");
     expect(node.querySelector(".iv-toast__dismiss").getAttribute("aria-label")).toBe("Dismiss");
     expect(item.isOpen).toBe(true);
@@ -477,5 +477,25 @@ describe("Toast dismissText", () => {
     expect(document.querySelector(".iv-toast__dismiss").getAttribute("aria-label")).toBe("Cerrar");
     overridden.destroy();
     expect(document.querySelectorAll(".iv-toast").length).toBe(0);
+  });
+
+  it("announces through one live region only (1.1.2)", () => {
+    const { region, el } = setup();
+    expect(el.getAttribute("aria-live")).toBe("polite");
+    const live = (node) => {
+      const roots = [];
+      for (let n = node; n; n = n.parentElement) {
+        if (n.hasAttribute("aria-live") || ["status", "alert", "log"].includes(n.getAttribute("role") ?? "")) roots.push(n);
+      }
+      return roots;
+    };
+    const info = region.show({ message: "Saved", variant: "success" });
+    expect(info.element.hasAttribute("role")).toBe(false);
+    expect(live(info.element.querySelector(".iv-toast__message"))).toEqual([el]);
+    const danger = region.show({ message: "Failed", variant: "danger" });
+    expect(danger.element.getAttribute("role")).toBe("alert");
+    // The alert interrupts on its own; the polite region must not announce it a second time.
+    expect(danger.element.getAttribute("aria-live")).toBe("assertive");
+    region.destroy();
   });
 });

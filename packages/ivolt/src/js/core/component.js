@@ -36,6 +36,38 @@ function markJsFlag() {
 }
 
 /**
+ * Resolves the root a scan runs on: the one given, else `document`.
+ *
+ * Called on a server (or in a test runner without a DOM), the default used to
+ * end in `ReferenceError: document is not defined`, which names neither iVOLT
+ * nor the fix (1.1.2). A root that cannot be scanned (a selector string, say)
+ * failed the same way one line later.
+ *
+ * @internal Not part of the public API; may change without an ADR.
+ * @param {ParentNode|undefined|null} root Root given by the caller.
+ * @returns {ParentNode} A root that can be scanned.
+ * @throws {IvError} `missing-target` without a document; `invalid-element` for a root that is not a node.
+ */
+export function resolveRoot(root) {
+  if (root == null) {
+    if (typeof document === "undefined") {
+      throw new IvError(
+        "missing-target",
+        "iVOLT found no document: call init() in the browser once the page has loaded, or pass the element to scan."
+      );
+    }
+    return document;
+  }
+  if (typeof (/** @type {any} */ (root)).querySelectorAll !== "function") {
+    throw new IvError(
+      "invalid-element",
+      "iVOLT needs an element, a document or a shadow root to scan, not a selector or another value."
+    );
+  }
+  return root;
+}
+
+/**
  * Tells whether a node is an element.
  *
  * @param {unknown} node Candidate.
@@ -100,7 +132,8 @@ export class IvComponent {
    * @param {ParentNode} [root] Subtree to scan. Defaults to `document`.
    * @returns {IvComponent[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
+    root = resolveRoot(root);
     const name = this.componentName;
     if (!name) return [];
     const selector = `[data-iv-component="${name}"]`;

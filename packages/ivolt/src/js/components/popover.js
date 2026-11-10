@@ -115,7 +115,7 @@ export class Popover extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Popover[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Popover[]} */ (super.initAll(root));
   }
 

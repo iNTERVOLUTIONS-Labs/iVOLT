@@ -180,7 +180,7 @@ export class Toast extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Toast[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Toast[]} */ (super.initAll(root));
   }
 
@@ -399,8 +399,15 @@ export class Toast extends IvComponent {
   _createNode({ message, title, variant, dismissible }) {
     const el = document.createElement("div");
     el.className = `iv-toast iv-toast--${variant}`;
-    // A danger toast interrupts; the rest are announced politely.
-    el.setAttribute("role", variant === "danger" ? "alert" : "status");
+    // The region is the one polite live region: it exists before the item does,
+    // which is what makes the announcement reliable. A `role="status"` on the
+    // item nested a second live region inside it, and some screen readers read
+    // the message twice (1.1.2). A danger toast interrupts: it is an alert and
+    // its own assertive live root, so the polite region does not repeat it.
+    if (variant === "danger") {
+      el.setAttribute("role", "alert");
+      el.setAttribute("aria-live", "assertive");
+    }
     el.setAttribute("tabindex", "0");
 
     const body = document.createElement("div");

@@ -267,7 +267,7 @@ export class Command extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Command[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Command[]} */ (super.initAll(root));
   }
 

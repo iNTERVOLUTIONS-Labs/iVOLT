@@ -20,7 +20,7 @@
  * @module components/proximity
  */
 
-import { IvComponent, isElement } from "../core/component.js";
+import { IvComponent, isElement, resolveRoot } from "../core/component.js";
 
 /**
  * @typedef {object} ProximityOptions
@@ -147,7 +147,8 @@ export class Proximity extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Proximity[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
+    root = resolveRoot(root);
     /** @type {Proximity[]} */
     const generated = [];
     const declared =
