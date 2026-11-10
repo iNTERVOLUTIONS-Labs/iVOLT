@@ -63,7 +63,7 @@ export { getTheme, setTheme, resolveTheme, restoreTheme } from "./theme.js";
 export { breakpoints } from "./core/breakpoints.js";
 
 /** Package version, kept in sync with `package.json`. */
-export const version = "1.1.1";
+export const version = "1.1.2";
 
 /**
  * Component classes initialised by `init` when no explicit list is given.
@@ -80,7 +80,7 @@ export const components = Object.freeze([Dialog, Disclosure, Tabs, Dropdown, Dra
  * @param {{ components?: ReadonlyArray<typeof IvComponent> }} [options] Options.
  * @returns {IvComponent[]} Newly created instances.
  */
-export function init(root = document, options) {
+export function init(root, options) {
   const list = (options && options.components) || components;
   return initComponents(root, [...list]);
 }
@@ -91,7 +91,7 @@ export function init(root = document, options) {
  * @param {ParentNode} [root] Subtree to clean up. Defaults to `document`.
  * @returns {void}
  */
-export function destroy(root = document) {
+export function destroy(root) {
   destroyComponents(root);
 }
 

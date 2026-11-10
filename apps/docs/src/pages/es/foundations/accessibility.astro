@@ -38,7 +38,7 @@ import Stage from "../../../components/Stage.astro";
         </table>
       </div>
       <p>El peor caso real es <code>surface-raised</code>, donde <code>border-strong</code> mide 4,13 en oscuro y 4,12 sobre <code>surface</code> en claro; los dos quedan muy por encima de 3:1. Cada fondo <code>*-subtle</code> va emparejado con su propio primer plano y se midió contra él, así que una alerta o una insignia nunca es una superficie de color con texto ilegible encima.</p>
-      <p>Hay una consecuencia que conviene conocer: <code>primary</code> y <code>focus</code> comparten el mismo cobalto, y en el tema oscuro <code>focus</code> coincide con <code>accent</code>. Es intencionado: el foco y el primario se distinguen por la forma (una insignia o una alerta con fondo suave, un anillo de foco separado), no por el tono. Si tu interfaz necesita separarlos por color, redefine <code>--iv-color-success</code>. Y en general, no dejes nunca que el color sea lo único que transmite un significado: un estado de error necesita texto, un icono o ambos.</p>
+      <p>Hay una consecuencia que conviene conocer: <code>primary</code> y <code>focus</code> comparten el mismo cobalto, y en el tema oscuro <code>focus</code> coincide con <code>accent</code>. Es intencionado: el foco y el primario se distinguen por la forma (una insignia o una alerta con fondo suave, un anillo de foco separado), no por el tono. Si tu interfaz necesita separarlos por color, redefine <code>--iv-color-focus</code>. Y en general, no dejes nunca que el color sea lo único que transmite un significado: un estado de error necesita texto, un icono o ambos.</p>
       <p>Estas cifras describen los tokens. Si sobrescribes un token con el color de tu marca, dejan de valer: vuelve a medir.</p>
 
       <h3>Tamaño de las áreas interactivas</h3>
@@ -47,11 +47,13 @@ import Stage from "../../../components/Stage.astro";
       <h3>Teclado y ARIA en los componentes con JavaScript</h3>
       <p>Seis familias necesitan JavaScript: desplegable, pestañas, diálogo, panel lateral, menú desplegable y aviso. <code>init(document)</code> — llamado de forma explícita o al cargar a través de la entrada <code>auto</code> — encuentra los elementos marcados con <code>data-iv-component</code> y se hace cargo de su teclado y de su estado ARIA. Los roles y estados que necesita se añaden cuando faltan, de modo que el marcado que escribes sigue siendo pequeño, y <code>destroy()</code> restaura los atributos exactamente como los encontró.</p>
       <p>El vocabulario de teclado compartido es el de la plataforma: <kbd>Tab</kbd> para moverse, <kbd>Enter</kbd> y <kbd>Espacio</kbd> para activar, <kbd>Escape</kbd> para descartar lo que se puede descartar, y las flechas con <kbd>Inicio</kbd> y <kbd>Fin</kbd> para moverse dentro de un widget compuesto como las pestañas o un menú. Cada página de componente documenta sus propias teclas; esa es la lista de referencia.</p>
+      <p>Esta web sigue la misma regla en su buscador: se abre con <kbd>Ctrl</kbd>+<kbd>K</kbd> (<kbd>⌘</kbd>+<kbd>K</kbd> en un Mac) o con el botón de búsqueda. No hay atajos de una sola tecla como <kbd>/</kbd>, que el dictado por voz o una pulsación perdida podrían disparar sin querer (WCAG 2.1.4).</p>
       <p>Dos decisiones estructurales ayudan aquí. El diálogo y el panel lateral son elementos <code>&lt;dialog&gt;</code> de verdad, así que la contención del foco en modal, <kbd>Escape</kbd> y la capa superior vienen del navegador y no de una trampa de foco escrita a mano. El menú desplegable se construye sobre <code>&lt;details&gt;</code>, así que se abre y se cierra con el teclado incluso antes de que el script se ejecute. A la región de avisos se le da <code>role="region"</code> cuando no tiene ninguno, porque un elemento etiquetado sin rol no anuncia nada.</p>
 
       <h3>Preferencias de movimiento y contraste</h3>
       <p><code>@media (prefers-reduced-motion: reduce)</code> pone <code>--iv-motion-fast</code>, <code>--iv-motion-base</code> y <code>--iv-motion-slow</code> a <code>0ms</code>, y los componentes que animan — botón, diálogo, menú desplegable, progreso y esqueleto — además abandonan sus transformaciones y sus animaciones en bucle dentro de la misma consulta. Los estados siguen siendo perfectamente visibles: la reducción de movimiento quita el movimiento, no la respuesta visual.</p>
-      <p>Con <code>prefers-contrast: more</code>, la hoja de tokens sube los bordes decorativos (<code>--iv-color-border</code>) al valor de los controles (<code>--iv-color-border-strong</code>), de modo que los bordes de tarjetas y tablas llegan a 3:1. No cambia nada más; el modo de colores forzados está sin probar en esta fase.</p>
+      <p>Con <code>prefers-contrast: more</code>, la hoja de tokens sube los bordes decorativos (<code>--iv-color-border</code>) al valor de los controles (<code>--iv-color-border-strong</code>), de modo que los bordes de tarjetas y tablas llegan a 3:1. No cambia nada más.</p>
+      <p>Con <code>forced-colors: active</code> (el contraste alto de Windows) la paleta del sistema sustituye a los tokens, y lo que indicaba un estado solo con color recibe una marca que pinta el sistema: el día elegido, el paso actual, la pestaña abierta, la fila resaltada de la paleta de comandos y la opción activa de un combobox conservan una señal visible, el cristal pasa a ser un panel opaco con borde y las barras de progreso siguen mostrando cuánto llevan. Una prueba de navegador emula los colores forzados y comprueba cada uno.</p>
     </Section>
 
     <Section title="De qué se encarga quien escribe la página" num={2} lead={`Estos son los fallos que aparecen en los proyectos reales construidos sobre cualquier framework, iVOLT incluido.`}>
@@ -72,8 +74,9 @@ import Stage from "../../../components/Stage.astro";
         <table>
           <thead><tr><th>Comprobación</th><th>Alcance</th></tr></thead>
           <tbody>
-            <tr><td>axe-core a través de Playwright</td><td>24 fixtures × temas claro y oscuro, más el diálogo abierto; etiquetas <code>wcag2a wcag2aa wcag21aa wcag22aa</code>; la puerta falla ante cualquier hallazgo grave o crítico</td></tr>
+            <tr><td>axe-core a través de Playwright</td><td>Todas las fixtures del paquete × temas claro y oscuro, más el diálogo abierto; etiquetas <code>wcag2a wcag2aa wcag21aa wcag22aa</code>; la puerta falla ante cualquier hallazgo grave o crítico</td></tr>
             <tr><td>Revisión manual de teclado</td><td>Todas las familias interactivas: llegar, activar, descartar y dónde queda el foco después</td></tr>
+            <tr><td>Colores forzados</td><td><code>forced-colors: active</code> emulado sobre los componentes cuyo estado se ve por el color, y sobre los controles pulsados y seleccionados de esta misma web</td></tr>
             <tr><td>Tres motores</td><td>La suite de navegador se ejecuta en Chromium, Firefox y WebKit (<code>IVOLT_ALL_BROWSERS=1</code>)</td></tr>
             <tr><td>Desbordamiento y RTL</td><td>De 320 a 1920 px sin desbordamiento horizontal, y renderizado de derecha a izquierda, porque las propiedades lógicas son lo que hace que eso funcione</td></tr>
             <tr><td>Las fixtures como fuente única</td><td>El mismo archivo de fixture es la vista previa de la documentación, el fragmento copiable y el sujeto de la prueba, así que lo que se prueba es lo que se documenta</td></tr>
@@ -86,8 +89,8 @@ import Stage from "../../../components/Stage.astro";
     <Section title="Qué no afirmamos" num={4}>
       <ul>
         <li>Ni «100 % accesible», ni «certificado WCAG», ni «conforme» como propiedad del framework. La conformidad es una propiedad de una página terminada, y la mayor parte de esa página es tuya.</li>
-        <li><strong>Las pruebas con lector de pantalla no se han hecho.</strong> Las pasadas con NVDA y VoiceOver están en la lista de pendientes como punto P1 y constan como no verificadas. Hasta entonces, los anuncios se deducen del ARIA que ponemos, no se han observado.</li>
-        <li>Sin ejecución de Lighthouse todavía; está prevista para una fase posterior.</li>
+        <li><strong>No hay registrada una pasada completa con lector de pantalla.</strong> Las pruebas comprueban el ARIA que pone cada componente y el árbol de accesibilidad de las páginas de la documentación se ha revisado, pero una sesión con NVDA, JAWS o VoiceOver por todos los componentes sigue pendiente y consta como no verificada. Hasta entonces, los anuncios se deducen del ARIA que ponemos, no se han observado.</li>
+        <li>Lighthouse se ejecuta sobre esta web de documentación, en móvil y en escritorio, y las cifras quedan registradas en el repositorio (<code>docs/LIGHTHOUSE.md</code>). Su puntuación de accesibilidad es una suma de comprobaciones automáticas, no una declaración de conformidad.</li>
         <li>La cobertura de pruebas es Chromium, Firefox y WebKit a través de Playwright, que no es lo mismo que probar dispositivos físicos, tecnologías asistivas o navegadores antiguos.</li>
         <li>Los hallazgos en tus propias páginas no quedan cubiertos por nada de lo anterior. Ejecuta axe sobre la página que publiques.</li>
       </ul>

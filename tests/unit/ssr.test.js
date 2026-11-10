@@ -76,4 +76,19 @@ describe("SSR safety", () => {
       expect(Object.keys(mod).length, `dist ${entry} exports nothing`).toBeGreaterThan(0);
     }
   });
+
+  it("throws a clear IvError when init() runs without a document (1.1.2)", async () => {
+    const mod = await import("../../packages/ivolt/src/js/index.js");
+    for (const call of [() => mod.init(), () => mod.destroy(), () => mod.Carousel.initAll(), () => mod.Tooltip.initAll(), () => mod.Picker.initAll()]) {
+      let error;
+      try { call(); } catch (e) { error = e; }
+      expect(error).toBeInstanceOf(mod.IvError);
+      expect(error.code).toBe("missing-target");
+      expect(error.message).toMatch(/document/);
+    }
+    let bad;
+    try { mod.init(/** @type {any} */ ("#app")); } catch (e) { bad = e; }
+    expect(bad).toBeInstanceOf(mod.IvError);
+    expect(bad.code).toBe("invalid-element");
+  });
 });

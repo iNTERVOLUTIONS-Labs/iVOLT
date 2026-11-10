@@ -49,8 +49,7 @@ import {
  * @property {string} nextText Accessible name of the next month button.
  * @property {string} todayText Label of the "today" button.
  * @property {string} clearText Label of the "clear" button.
- * @property {string} dialogText Accessible name of the calendar dialog.
- */
+ * @property {string} dialogText Accessible name of the calendar dialog. */
 
 /**
  * Why the calendar opened or closed.
@@ -345,7 +344,7 @@ export class Datepicker extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Datepicker[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Datepicker[]} */ (super.initAll(root));
   }
 
@@ -856,8 +855,16 @@ export class Datepicker extends IvComponent {
         day.className = className;
         day.setAttribute("data-iv-date", formatIso(date));
         day.setAttribute("aria-label", this._dayFormat.format(date));
-        // `aria-selected` belongs to the grid cell, not to the button (axe: aria-allowed-attr).
-        cell.setAttribute("aria-selected", sameDay(date, selected) ? "true" : "false");
+        // Focus sits on the button, and a screen reader reads the state of what
+        // has focus, not of its cell: with `aria-selected` on the `<td>` the
+        // chosen day sounded like any other (1.1.2). The button is the grid cell
+        // (a role HTML allows on `<button>`, so `aria-selected` is valid on it,
+        // axe aria-allowed-attr) and the `<td>` steps aside. Only the chosen day
+        // carries the state, as in the APG date picker dialog, so the others are
+        // not read out as "not selected" one by one.
+        cell.setAttribute("role", "presentation");
+        day.setAttribute("role", "gridcell");
+        if (sameDay(date, selected)) day.setAttribute("aria-selected", "true");
         day.tabIndex = sameDay(date, this._cursor) ? 0 : -1;
         if (!this._allowed(date)) day.disabled = true;
         day.textContent = String(date.getDate());

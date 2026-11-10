@@ -23,7 +23,7 @@ const {
   width: initialWidth = "full",
 } = Astro.props;
 
-const lang = Astro.url.pathname === "/es" || Astro.url.pathname.startsWith("/es/") ? "es" : "en";
+const lang = /^\/es(\.html|\/|$)/.test(Astro.url.pathname) ? "es" : "en";
 const t = lang === "es" ? es : en;
 const html = readFixture(name);
 const contract = readContract(html);
@@ -105,6 +105,7 @@ const widths = [
         data-stage-max={String(maxHeight)}
         style={`min-block-size:${minHeight}`}
       ></iframe>
+      <p class="docs-stage__fail" data-stage-fail hidden>{t.stageFail} <a href={src} target="_blank" rel="noopener">{t.stageOpen}<span class="iv-u-sr-only"> — {title}</span></a></p>
     </div>
   </div>
 

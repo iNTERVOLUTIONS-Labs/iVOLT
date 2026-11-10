@@ -4,28 +4,34 @@
 // your page. Nothing here needs JavaScript except the copy buttons.
 import Base from "../layouts/Base.astro";
 import Section from "./Section.astro";
-import { presets, tokens, checks, builderHash } from "../data/themes.js";
+import { presets, tokens, checks, builderHash, inMode } from "../data/themes.js";
 import "../styles/themes.css";
 const { lang = "en" } = Astro.props;
 const es = lang === "es";
 const base = es ? "/es" : "";
 const site = Astro.site ? Astro.site.href.replace(/\/$/, "") : "";
-const style = (p) => Object.entries(tokens(p)).map(([k, v]) => `${k}:${v}`).join(";");
+// Every card carries both modes of its preset; the stage shows the one the site is showing (a
+// small script keeps its data-iv-theme in step with the header switch) and, without JavaScript,
+// the mode the preset is known for. The tokens are rules per mode, not an inline style, so the
+// same card can be either.
+const decl = (p) => Object.entries(tokens(p)).map(([k, v]) => `${k}:${v}`).join(";");
+const cardCss = presets.map((p) => ["light", "dark"].map((m) => `#${p.slug} .docs-tcard__stage[data-iv-theme="${m}"]{${decl(inMode(p, m))}}`).join("")).join("\n");
 const label = es ? { text: "Texto", muted: "Secundario", button: "Botón", link: "Enlace" } : { text: "Text", muted: "Muted", button: "Button", link: "Link" };
 const L = es
   ? { title: "Galería de temas: doce temas para iVOLT", description: "Doce temas listos para iVOLT, del clásico al terminal: míralos con componentes reales, comparte el enlace, descarga theme.css o ábrelos en el constructor.", h1: "Galería de temas", lead: "Doce temas hechos solo con tokens. Cada tarjeta es el framework de verdad con ese tema aplicado: los mismos componentes que usarás tú. Descarga el CSS, comparte el enlace o ábrelo en el constructor para retocarlo.", open: "Abrir en el constructor", download: "Descargar theme.css", copy: "Copiar enlace", dark: "oscuro", light: "claro", demo: "Vista previa", email: "Correo", save: "Guardar", cancel: "Cancelar", new: "Nuevo", heading: "Panel de ventas", body: "Tres cuentas nuevas esta semana.", how: "Cómo usar un tema", contrast: "Contraste medido (WCAG 2): texto sobre fondo, secundario sobre superficie, texto del botón sobre el botón (en reposo y al pasar el puntero) y el color primario como enlace sobre el fondo.", builder: "constructor de temas" }
   : { title: "Theme gallery: twelve themes for iVOLT", description: "Twelve ready-made themes for iVOLT, from classic to terminal: see them on real components, share the link, download theme.css or open them in the builder.", h1: "Theme gallery", lead: "Twelve themes made of tokens alone. Every card is the real framework with that theme applied: the same components you will use. Download the CSS, share the link, or open it in the builder to tweak it.", open: "Open in the builder", download: "Download theme.css", copy: "Copy link", dark: "dark", light: "light", demo: "Preview", email: "Email", save: "Save", cancel: "Cancel", new: "New", heading: "Sales overview", body: "Three new accounts this week.", how: "How to use a theme", contrast: "Measured contrast (WCAG 2): text on background, muted on surface, button text on the button (at rest and on hover) and the primary colour as a link on the background.", builder: "theme builder" };
 ---
 <Base lang={lang} title={L.title} description={L.description}>
+  <style is:inline set:html={cardCss}></style>
   <article class="docs-prose docs-themes">
     <h1>{L.h1}</h1>
     <p>{L.lead}</p>
-    <p class="docs-meta"><strong>{es ? "Formato" : "Format"}:</strong> {es ? "propiedades personalizadas --iv-, un bloque por tema" : "--iv- custom properties, one block per theme"}. <strong>{es ? "Contraste" : "Contrast"}:</strong> {es ? "medido en cada tarjeta" : "measured on every card"}.</p>
+    <p class="docs-meta"><strong>{es ? "Formato" : "Format"}:</strong> {es ? "propiedades personalizadas --iv-, un bloque por modo, claro y oscuro" : "--iv- custom properties, one block per mode, light and dark"}. <strong>{es ? "Contraste" : "Contrast"}:</strong> {es ? "medido en cada tarjeta" : "measured on every card"}.</p>
 
     <ul class="docs-themes__grid">
       {presets.map((p) => (
         <li class="docs-tcard" id={p.slug}>
-          <div class="docs-tcard__stage" data-iv-theme={p.mode} style={style(p)} role="img" aria-label={`${L.demo}: ${es ? p.es : p.name}`}>
+          <div class="docs-tcard__stage" data-iv-theme={p.mode} data-tcard-stage role="img" aria-label={`${L.demo}: ${es ? p.es : p.name}`}>
             <div class="docs-tcard__ui" aria-hidden="true" inert>
               <div class="iv-card"><div class="iv-card__body">
                 <p class="docs-tcard__row"><strong>{L.heading}</strong><span class="iv-badge iv-badge--primary">{L.new}</span></p>
@@ -36,7 +42,7 @@ const L = es
             </div>
           </div>
           <div class="docs-tcard__meta">
-            <h2 class="docs-tcard__name"><a href={`#${p.slug}`}>{es ? p.es : p.name}</a> <small>{p.mode === "dark" ? L.dark : L.light}</small></h2>
+            <h2 class="docs-tcard__name"><a href={`#${p.slug}`}>{es ? p.es : p.name}</a> <small>{L.light} + {L.dark}</small></h2>
             <p>{p.note[lang]}</p>
             <ul class="docs-tcard__checks" aria-label={es ? "Contraste" : "Contrast"}>
               {checks(p).map((c) => <li class:list={[c.ratio >= 4.5 ? "is-pass" : "is-low"]}>{label[c.key]} <b>{(Math.floor(c.ratio * 10) / 10).toFixed(1).replace(".", es ? "," : ".")}:1</b></li>)}
@@ -52,11 +58,26 @@ const L = es
     </ul>
 
     <Section title={L.how} num={1}>
-      <p>{es ? "Enlaza el fichero después de la hoja de iVOLT. Fija el tema de toda la página; para limitarlo a una parte, cambia el selector por la clase o el id de ese elemento." : "Link the file after the iVOLT stylesheet. It sets the theme for the whole page; to limit it to one part, change the selector to that element's class or id."}</p>
+      <p>{es ? "Enlaza el fichero después de la hoja de iVOLT. Cada tema trae su versión clara y su versión oscura, y sigue el data-iv-theme de la página: light, dark o system (la preferencia del sistema), así que tu interruptor de tema sigue funcionando. Las tarjetas de arriba muestran el modo que tiene la web en este momento: cámbialo en la cabecera para ver el otro." : "Link the file after the iVOLT stylesheet. Every theme carries a light and a dark version and follows the page's data-iv-theme: light, dark or system (the system preference), so your theme switch keeps working. The cards above show the mode the site is in right now: switch it in the header to see the other."}</p>
       <pre tabindex="0"><code>&lt;link rel="stylesheet" href="ivolt/css/ivolt.min.css"&gt;
 &lt;link rel="stylesheet" href="ivolt-theme-ocean.css"&gt;
-&lt;html class="iv-root" data-iv-theme="dark"&gt;</code></pre>
-      <p>{L.contrast} {es ? "Un valor por debajo de 4,5:1 se marca; ninguno de estos doce lo está." : "A value under 4.5:1 is flagged; none of these twelve is."} {es ? "Desde 1.1 cada tema escribe solo sus semillas —primario, la tinta que va encima, acento, superficies y texto— y dos recetas de degradado; el hover, el foco, los brillos y los degradados los mezcla iVOLT (tema de un color), así que el fichero necesita iVOLT 1.1 y que la página lleve el data-iv-theme del tema. El hover medido es el que mezcla el paquete." : "Since 1.1 each theme writes only its seeds — primary, the ink on it, accent, surfaces and text — and two gradient recipes; hover, focus, glows and gradients are mixed by iVOLT (one-colour theming), so the file needs iVOLT 1.1 and the page to carry the theme’s data-iv-theme. The hover measured is the one the package mixes."} {es ? "Para crear el tuyo, usa el " : "To make your own, use the "}<a href={`${base}/foundations/theme-builder`}>{L.builder}</a>.</p>
+&lt;html class="iv-root" data-iv-theme="system"&gt;</code></pre>
+      <p>{L.contrast} {es ? "Cada cifra es la menor de las dos versiones, clara y oscura. Un valor por debajo de 4,5:1 se marca; ninguno de estos doce lo está." : "Each figure is the lower of the two versions, light and dark. A value under 4.5:1 is flagged; none of these twelve is."} {es ? "Desde 1.1 cada tema escribe solo sus semillas —primario, la tinta que va encima, acento, superficies y texto— y dos recetas de degradado; el hover, el foco, los brillos y los degradados los mezcla iVOLT (tema de un color), así que el fichero necesita iVOLT 1.1 y que la página lleve un data-iv-theme. El hover medido es el que mezcla el paquete." : "Since 1.1 each theme writes only its seeds — primary, the ink on it, accent, surfaces and text — and two gradient recipes; hover, focus, glows and gradients are mixed by iVOLT (one-colour theming), so the file needs iVOLT 1.1 and the page to carry a data-iv-theme. The hover measured is the one the package mixes."} {es ? "Para crear el tuyo, usa el " : "To make your own, use the "}<a href={`${base}/foundations/theme-builder`}>{L.builder}</a>.</p>
     </Section>
   </article>
 </Base>
+<script>
+  // The card stages follow the theme the site is showing, both ways: a light page shows every
+  // preset's light version, a dark page its dark one. Without this script each card stays in the
+  // mode its preset is known for.
+  import { resolveTheme } from "@intervolutions/ivolt/theme";
+  const sync = () => {
+    const mode = resolveTheme();
+    document.querySelectorAll("[data-tcard-stage]").forEach((el) => el.setAttribute("data-iv-theme", mode));
+  };
+  const mount = () => { if (document.querySelector("[data-tcard-stage]")) sync(); };
+  mount();
+  document.addEventListener("astro:page-load", mount);
+  document.addEventListener("iv:themechange", mount);
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", mount);
+</script>

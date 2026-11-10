@@ -73,15 +73,17 @@ export function mountStage(root = document) {
   // Below `sm` a fixed 544 px cap cut every example in half — on a 390 phone the frame showed a
   // third of the navbar and two thirds of nothing. There the cap follows the screen instead, and
   // "Show all" is still the way to the rest.
+  // On a phone the cap went in the end: a frame that scrolls inside a page that scrolls is a trap
+  // for a thumb, and "Show all" sat three rows of controls above the cut, out of sight (a form
+  // stopped at 681 px with nothing saying there was more). Below `sm` the frame is as tall as its page.
   const capOf = (frame) => {
     const declared = Number(frame.dataset.stageMax) || 544;
-    if (innerWidth >= 640) return declared;
-    return Math.round(Math.min(innerHeight * 0.8, 720));
+    return innerWidth >= 640 ? declared : Infinity;
   };
 
   const applyHeight = (entry) => {
     if (!entry.reported) return;
-    const cap = capOf(entry.frame);
+    const cap = entry.overlay ? Infinity : capOf(entry.frame);
     const capped = entry.reported > cap + 1;
     const h = Math.max(120, entry.expanded ? entry.reported : Math.min(cap, entry.reported));
     entry.frame.style.blockSize = `${h}px`;
@@ -89,6 +91,10 @@ export function mountStage(root = document) {
     // Once the page inside has measured itself, a 16rem floor is just a hole under the example.
     entry.frame.style.minBlockSize = "0px";
     entry.stage.toggleAttribute("data-stage-capped", capped && !entry.expanded);
+    // Only a capped frame may scroll inside; told only when it changes (the frame answers every
+    // message with a fresh report, so an unconditional post would never stop).
+    const clip = !capped || entry.expanded;
+    if (entry.clip !== clip) { entry.clip = clip; entry.post({ clip }); }
     const button = entry.stage.querySelector("[data-stage-all]");
     if (!button) return;
     button.hidden = !capped;
@@ -156,7 +162,30 @@ export function mountStage(root = document) {
     // an eager frame can finish loading before this module runs: the page announces itself when it
     // boots (stage-ready), the load event covers a frame that arrives later, and this first call
     // covers a frame that was already complete and had announced itself before anyone listened.
-    frame.addEventListener("load", () => post({}));
+    // A frame that could not load (offline, blocked by an extension or a proxy) shows the browser's
+    // own error page: a white 384 px box on a dark page, with nothing saying what it was. Its
+    // document is not ours, so it cannot be read; then the frame steps aside for a line that says
+    // so and the link to the stage page on its own.
+    // Chromium hands back no document at all for its error page and Firefox and WebKit an empty
+    // about:blank, and a failed load may fire no event, so the test is the stage page itself:
+    // once the frame has been asked for, either it announced itself or its #stage can be read.
+    const fail = stage.querySelector("[data-stage-fail]");
+    const showFailed = (failed) => {
+      stage.toggleAttribute("data-stage-failed", failed);
+      if (fail) fail.hidden = !failed;
+    };
+    entry.markReady = () => { entry.ready = true; showFailed(false); };
+    const check = () => {
+      if (entry.ready) return;
+      let ok;
+      try { ok = Boolean(frame.contentDocument?.getElementById("stage")); } catch { ok = false; }
+      showFailed(!ok);
+    };
+    let watchdog = 0;
+    entry.watch = () => { clearTimeout(watchdog); watchdog = setTimeout(check, 8000); };
+    cleanup.push(() => clearTimeout(watchdog));
+    if (frame.loading !== "lazy") entry.watch();
+    frame.addEventListener("load", () => { setTimeout(check, 1500); post({}); });
     post({});
   }
 
@@ -166,7 +195,10 @@ export function mountStage(root = document) {
   const lazy = stages.map((s) => s.querySelector('[data-stage-frame][loading="lazy"]')).filter(Boolean);
   if (lazy.length && typeof IntersectionObserver === "function") {
     const io = new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) { e.target.loading = "eager"; io.unobserve(e.target); }
+      for (const e of entries) if (e.isIntersecting) {
+        e.target.loading = "eager"; io.unobserve(e.target);
+        byId.get(e.target.closest("[data-stage]")?.id)?.watch?.();
+      }
     }, { rootMargin: "1200px 0px 1200px 0px" });
     lazy.forEach((f) => io.observe(f));
     cleanup.push(() => io.disconnect());
@@ -186,9 +218,11 @@ export function mountStage(root = document) {
     if (e.origin !== location.origin || !e.data) return;
     const entry = byId.get(e.data.id);
     if (!entry) return;
-    if (e.data.type === "stage-ready") { entry.post({}); return; }
+    if (e.data.type === "stage-ready") { entry.markReady?.(); entry.post({}); return; }
     if (e.data.type !== "stage-height") return;
+    entry.markReady?.();
     entry.reported = Number(e.data.height) || 0;
+    entry.overlay = Boolean(e.data.overlay);
     applyHeight(entry);
   };
   addEventListener("message", onMessage);

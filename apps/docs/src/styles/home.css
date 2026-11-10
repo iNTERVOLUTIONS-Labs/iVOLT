@@ -23,7 +23,9 @@
 }
 .docs-hero__kicker::before { content: ""; inline-size: .5rem; block-size: .5rem; border-radius: 50%; background: var(--iv-color-accent); box-shadow: 0 0 10px var(--iv-glow-secondary); }
 .docs-hero__kicker b { color: var(--iv-color-primary); font-weight: var(--iv-weight-bold); }
-.docs-hero__title { font-family: var(--docs-display); font-weight: 800; font-size: clamp(3.25rem, 10.5vw, 10rem); line-height: 0.9; letter-spacing: -0.035em; margin: 0; max-inline-size: 16ch; }
+/* The floor is also capped at 14vw: with a 150 % text setting 3.25rem is 78 px and "framework"
+   ran past a 390 px screen. At the default text size the floor is unchanged (52 px < 14vw). */
+.docs-hero__title { font-family: var(--docs-display); font-weight: 800; font-size: clamp(min(3.25rem, 14vw), 10.5vw, 10rem); line-height: 0.9; letter-spacing: -0.035em; margin: 0; max-inline-size: 16ch; }
 .docs-hero__title em { font-style: normal; background: var(--iv-gradient-primary); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
 @supports not (background-clip: text) { .docs-hero__title em { color: var(--iv-color-primary); -webkit-text-fill-color: currentColor; } }
 /* the full stop after the accent, in coral: the one warm note of the palette, as on intervolutions.com */
@@ -270,6 +272,7 @@
 .docs-showreel__tabs { display: flex; flex-wrap: wrap; gap: var(--iv-space-2); margin-block-end: var(--iv-space-4); }
 .docs-showreel__tab { appearance: none; border: 0; cursor: pointer; font: inherit; font-family: var(--docs-display); font-weight: var(--iv-weight-medium); font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); background: var(--docs-card-bg); padding: .45rem 1.1rem; border-radius: var(--iv-radius-full); box-shadow: 0 0 1px 1px var(--docs-card-stroke) inset; transition: color var(--iv-motion-fast) var(--docs-ease), background-color var(--iv-motion-fast) var(--docs-ease); }
 .docs-showreel__tab:hover { color: var(--iv-color-text); }
-.docs-showreel__tab[aria-selected="true"] { background: var(--iv-gradient-primary); color: #06122b; box-shadow: var(--docs-soft-halo); }
+/* The ink is the on-primary of the theme: a fixed navy read 2.6:1 on the light cobalt. */
+.docs-showreel__tab[aria-selected="true"] { background: var(--iv-gradient-primary); color: var(--iv-color-on-primary); box-shadow: var(--docs-soft-halo); }
 .docs-showreel__panel[hidden] { display: none; }
 .docs-hero__def { color: var(--iv-color-text); font-weight: var(--iv-weight-semibold); }

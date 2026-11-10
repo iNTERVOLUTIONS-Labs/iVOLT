@@ -88,7 +88,7 @@ const items = nav.flatMap((g) => g.items);
 // "css" or "js" beside a component link: 33 entries are only scannable when the kind is visible.
 const isFresh = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return Boolean(m && freshSet.has(m[1])); };
 const kindOf = (href) => { const m = /\/components\/([^/]+)$/.exec(href); return m ? families[m[1]] : null; };
-const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/foundations/stability", "/changelog", "/roadmap", "/contributing"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
+const footerLinks = [items.find((i) => i.href === `${base}/getting-started`), { href: `${base}/components/button`, label: t.components }, ...["/examples", "/foundations/stability", "/changelog", "/roadmap", "/contributing", "/maintenance"].map((h) => items.find((i) => i.href === base + h))].filter(Boolean);
 // The footer carries the real sitemap: four columns taken from the same navigation as the
 // sidebar, so a link can never exist in one and be missing from the other. The long column
 // takes two tracks and lists its links in two files instead of being cut short.
@@ -264,7 +264,7 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
           ))}
         </ul>
       </nav>
-      <button class="iv-button iv-button--secondary iv-button--sm docs-search-open" type="button" data-iv-open="docs-search" aria-keyshortcuts="/ Control+K" aria-label={t.search}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="docs-search-text">{t.search}</span><kbd class="docs-kbd" aria-hidden="true">/</kbd></button>
+      <button class="iv-button iv-button--secondary iv-button--sm docs-search-open" type="button" data-iv-open="docs-search" aria-keyshortcuts="Control+K Meta+K" aria-label={t.search}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span class="docs-search-text">{t.search}</span><kbd class="docs-kbd" aria-hidden="true" data-kbd-search>Ctrl K</kbd></button>
       <a class="docs-lang" href={otherHref} hreflang={other} lang={other} data-astro-reload>{t.langSwitch}</a>
       <div class="docs-theme" role="group" aria-label={t.theme}>
         <button class="iv-button iv-button--ghost iv-button--sm" type="button" data-set-theme="light" aria-pressed="false">{t.light}</button>
@@ -389,6 +389,11 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
         import("../scripts/stage.js").then((m) => { if (epoch === mine) teardown.push(m.mountStage(document)); }).catch(() => {});
       }
 
+      // The search hint shows the key this platform uses: ⌘K on Apple devices, Ctrl K elsewhere.
+      if (/Mac|iPhone|iPad|iPod/.test(navigator.userAgentData?.platform || navigator.platform || navigator.userAgent)) {
+        document.querySelectorAll("[data-kbd-search]").forEach((k) => { k.textContent = "⌘K"; });
+      }
+
       // Theme switch (persisted opt-in), both header and nav dialog groups.
       const buttons = document.querySelectorAll("[data-set-theme]");
       const paint = () => buttons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setTheme === getTheme())));
@@ -415,6 +420,15 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
 
       // A block that scrolls is a scrollable region: WCAG 2.1.1 asks for a keyboard to reach it.
       // Measured after the fonts settle, so only the blocks that really overflow take a tab stop.
+      // On a phone a table of three or more columns is read as cards: each row a block, each cell
+      // with its column name beside it. The options tables of the component pages ran four
+      // columns wide, and at 150 % text the description sat a full screen to the right of the name.
+      document.querySelectorAll(".docs-prose .docs-scroller > table:not([data-stack])").forEach((table) => {
+        const heads = [...table.querySelectorAll("thead th")].map((th) => th.textContent.trim());
+        if (heads.length < 3) return;
+        table.setAttribute("data-stack", "");
+        table.querySelectorAll("tbody tr").forEach((tr) => [...tr.children].forEach((cell, i) => { if (heads[i]) cell.setAttribute("data-label", heads[i]); }));
+      });
       const markScrollers = () => {
         document.querySelectorAll(".docs-prose pre:not([tabindex])").forEach((pre) => {
           if (pre.scrollWidth > pre.clientWidth + 1 || pre.scrollHeight > pre.clientHeight + 1) pre.tabIndex = 0;
@@ -440,9 +454,14 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
       headings.forEach((h) => {
         if (!h.id) { let id = slug(h.textContent) || "section"; let n = 2; while (seen.has(id) || document.getElementById(id)) id = `${slug(h.textContent)}-${n++}`; h.id = id; }
         seen.add(h.id);
-        if (!h.querySelector(".docs-anchor")) {
-          const a = document.createElement("a"); a.className = "docs-anchor"; a.href = `#${h.id}`; a.textContent = "#"; a.setAttribute("aria-label", tr().anchor);
-          h.append(" ", a);
+        // The heading's own text is the link to its section (the "#" is drawn by CSS and hidden
+        // from assistive tech). A separate "#" link labelled "Link to this section" inside the
+        // heading made every heading read as "Install from npm, Link to this section".
+        // A heading that already holds a link keeps its text as it is (links cannot nest).
+        if (!h.querySelector(".docs-anchor") && !h.querySelector("a")) {
+          const a = document.createElement("a"); a.className = "docs-anchor"; a.href = `#${h.id}`;
+          a.append(...h.childNodes);
+          h.append(a);
         }
       });
       // The # beside a heading still jumps to the section, and now also copies its full address:
@@ -519,12 +538,13 @@ const otherHref = twinExists ? (lang === "es" ? altEn : altEs) : (lang === "es" 
       teardown.push(() => searchEl?.removeEventListener("iv:opened", onSearchOpen));
     }
 
-    // Global shortcuts are bound once per site load (they survive view transitions).
+    // Global shortcuts are bound once per site load (they survive view transitions). Ctrl/⌘+K only:
+    // the old "/" was a single-character shortcut (WCAG 2.1.4) that speech input and a stray key
+    // press fired by accident, and that nobody could turn off.
     if (!window.__docsShortcuts) {
       window.__docsShortcuts = true;
       document.addEventListener("keydown", (e) => {
-        const typing = /^(input|textarea|select)$/i.test(document.activeElement?.tagName || "") || document.activeElement?.isContentEditable;
-        if ((e.key === "/" && !typing) || (e.key.toLowerCase() === "k" && (e.ctrlKey || e.metaKey))) {
+        if (e.key.toLowerCase() === "k" && (e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey) {
           const el = document.getElementById("docs-search"); if (!el) return;
           e.preventDefault(); Dialog.getOrCreate(el).open();
         }

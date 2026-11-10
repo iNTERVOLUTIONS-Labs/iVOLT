@@ -17,7 +17,7 @@
  * @module components/reveal
  */
 
-import { IvComponent, isElement } from "../core/component.js";
+import { IvComponent, isElement, resolveRoot } from "../core/component.js";
 
 /**
  * @typedef {object} RevealOptions
@@ -93,7 +93,8 @@ export class Reveal extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Reveal[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
+    root = resolveRoot(root);
     /** @type {Reveal[]} */
     const generated = [];
     const declared =

@@ -26,7 +26,7 @@
  * @module components/picker
  */
 
-import { IvComponent, isElement } from "../core/component.js";
+import { IvComponent, isElement, resolveRoot } from "../core/component.js";
 import { IvError, getInstance } from "../core/registry.js";
 import { emit } from "../core/events.js";
 import {
@@ -270,7 +270,8 @@ export class Picker extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Picker[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
+    root = resolveRoot(root);
     // Every `select.iv-select` is enhanced when JavaScript runs (ADR-032). A bare select gets a
     // generated root that `destroy` removes again; `data-iv-native` on the select or an ancestor
     // keeps the native control. Options written on the select (`data-iv-*`) move to the root.

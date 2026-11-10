@@ -111,7 +111,7 @@ export class Counter extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Counter[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Counter[]} */ (super.initAll(root));
   }
 

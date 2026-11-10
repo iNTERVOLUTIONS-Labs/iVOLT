@@ -18,7 +18,8 @@ try { sharp = (await import("sharp")).default; }
 catch { console.warn("images: sharp is not installed, the device frames keep the JPEGs"); process.exit(0); }
 
 /** Widths per source width: what a frame draws on a phone, a tablet and a desktop, at 1x and 2x. */
-export const SHOT_WIDTHS = { 1440: [480, 800, 1440], 390: [390] };
+// A phone shot is captured at 2x (780 px for a 390 viewport); one still at 1x keeps its 390.
+export const SHOT_WIDTHS = { 1440: [480, 800, 1440], 780: [390, 780], 390: [390] };
 
 let made = 0;
 for (const name of readdirSync(dir).filter((f) => f.endsWith(".jpg"))) {

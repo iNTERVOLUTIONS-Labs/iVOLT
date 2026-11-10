@@ -37,8 +37,7 @@ import {
  * @property {string} pauseText Label of the toggle while the carousel rotates.
  * @property {string} playText Label of the toggle while the carousel is stopped.
  * @property {string} slideText Accessible name of a slide; `{index}` and `{total}` are replaced.
- * @property {string} counterText Visible counter; `{index}` and `{total}` are replaced with two-digit numerals in the language of the carousel.
- */
+ * @property {string} counterText Visible counter; `{index}` and `{total}` are replaced with two-digit numerals in the language of the carousel. */
 
 /**
  * An anchor of `__dots` and the button that replaced it.
@@ -175,7 +174,7 @@ export class Carousel extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Carousel[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Carousel[]} */ (super.initAll(root));
   }
 
@@ -353,6 +352,28 @@ export class Carousel extends IvComponent {
     this._describeSlides();
 
     this._set(this._viewport, "tabindex", "0");
+    // A focus stop with no role and no name reads as the text of every slide at
+    // once (1.1.2, found with a screen reader): a named group says what the arrow
+    // keys move. The name is text the author already wrote, so it is translated
+    // with the page and a patch adds no option: the `__dots` label ("Slides"),
+    // else the carousel's own label. A label on the viewport itself wins.
+    // Without a `__viewport` the track stands in and stays presentational for
+    // its tabpanels, so it is left alone.
+    if (this._viewport !== track) {
+      this._set(this._viewport, "role", "group");
+      if (
+        !this._viewport.hasAttribute("aria-label") &&
+        !this._viewport.hasAttribute("aria-labelledby")
+      ) {
+        const dots = findOwn(root, DOTS_SELECTOR);
+        const source =
+          dots && (dots.hasAttribute("aria-label") || dots.hasAttribute("aria-labelledby"))
+            ? dots
+            : root;
+        if (!source.id) this._set(source, "id", `iv-carousel-label-${++uid}`);
+        this._set(this._viewport, "aria-labelledby", source.id);
+      }
+    }
 
     this._prev = findOwn(root, PREV_SELECTOR);
     this._next = findOwn(root, NEXT_SELECTOR);

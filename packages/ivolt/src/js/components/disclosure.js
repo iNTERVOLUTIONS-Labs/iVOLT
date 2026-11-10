@@ -91,7 +91,7 @@ export class Disclosure extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Disclosure[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Disclosure[]} */ (super.initAll(root));
   }
 

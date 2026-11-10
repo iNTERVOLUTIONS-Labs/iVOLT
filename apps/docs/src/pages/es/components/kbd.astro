@@ -11,7 +11,7 @@ import Stage from "../../../components/Stage.astro";
     <Stage primary name="kbd/basic" title="Teclas, atajos y tamaños" minHeight="14rem" />
 
     <Section title="Cuándo usarla" num={1}>
-      <p>Usa <code>iv-kbd</code> siempre que una frase nombre una tecla: un atajo en un elemento de menú, una pista bajo un buscador («pulsa <kbd class="iv-kbd iv-kbd--sm">/</kbd> para buscar»), la tabla de teclado de un componente o el pie de una paleta de comandos. Es texto, no un control: pulsarla no hace nada, y nunca debería ser la única forma de enterarse de que existe un atajo.</p>
+      <p>Usa <code>iv-kbd</code> siempre que una frase nombre una tecla: un atajo en un elemento de menú, una pista bajo un buscador («pulsa <kbd class="iv-kbd iv-kbd--sm">Ctrl</kbd>+<kbd class="iv-kbd iv-kbd--sm">K</kbd> para buscar»), la tabla de teclado de un componente o el pie de una paleta de comandos. Es texto, no un control: pulsarla no hace nada, y nunca debería ser la única forma de enterarse de que existe un atajo.</p>
       <p>Un atajo de varias teclas va dentro de <code>iv-kbd-group</code>, que separa las teclas y las mantiene en una línea. El <code>+</code> entre ellas lo escribes tú, como texto normal, para que se lea en voz alta y se copie con el resto de la frase. Para una secuencia (pulsa <kbd class="iv-kbd iv-kbd--sm">G</kbd> y luego <kbd class="iv-kbd iv-kbd--sm">H</kbd>) escribe «y luego» en lugar del signo más.</p>
     </Section>
 

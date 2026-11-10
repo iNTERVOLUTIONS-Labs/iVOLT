@@ -229,7 +229,7 @@ export class Megamenu extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Megamenu[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Megamenu[]} */ (super.initAll(root));
   }
 

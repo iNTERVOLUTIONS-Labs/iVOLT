@@ -2,6 +2,16 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
+## 1.1.2 — 2026-11-10 (npm, tag `latest`)
+
+Accessibility patch. Every fix comes from a screen reader and keyboard review of the 1.1.1 site and has a test that failed on 1.1.1 (`tests/browser/a11y-1-1-2.spec.js` in Chromium, Firefox and WebKit, plus unit tests). No option, class, token or event is added or removed; the generated markup changes as `docs/API_CONTRACT.md` §9.6 records.
+
+### Fixed
+- `Carousel`: the focusable `__viewport` had no role and no name, so reaching it with Tab read the text of every slide in one breath. It is now `role="group"` named by the `__dots` label the author already wrote ("Slides"), or by the carousel's own label when there is no labelled dots nav; a label written on the viewport wins. `destroy` removes both attributes and any id it generated.
+- `Toast`: a message sat inside two live regions (the polite region and a `role="status"` item), and some screen readers read it twice. The region is now the only live region for info, success and warning items, which carry no `role`; a danger item stays `role="alert"` and is its own assertive live root (`aria-live="assertive"`).
+- `Datepicker`: the selected day did not say it was selected. Focus sits on the day button, and the state lived on its `<td>`. The button is now the grid cell (`role="gridcell"`, allowed on `<button>`) and carries `aria-selected="true"` when it is the chosen day; the `<td>` is `role="presentation"`, and the other days no longer carry `aria-selected="false"`. The stylesheet follows the attribute (`.iv-datepicker__day[aria-selected="true"]`); a theme that styled `[aria-selected="true"] > .iv-datepicker__day` should move to the new selector.
+- `init()`, `destroy()` and every `Component.initAll()` called without a document (on a server, in a test runner without a DOM) threw `ReferenceError: document is not defined`. They now throw `IvError` with code `missing-target` and a message that says what to do; a root that is not a node (a selector string, for instance) throws `IvError` with code `invalid-element` instead of a `TypeError`.
+
 ## 1.1.1 — 2026-11-09 (npm, tag `latest`)
 
 ### Fixed

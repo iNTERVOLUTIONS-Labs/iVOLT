@@ -190,7 +190,7 @@ export class Form extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Form[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Form[]} */ (super.initAll(root));
   }
 

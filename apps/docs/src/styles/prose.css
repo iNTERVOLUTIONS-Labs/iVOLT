@@ -117,11 +117,14 @@
 .docs-prose ul li::marker { color: var(--iv-color-accent); }
 .docs-prose ol li::marker { color: var(--iv-color-primary); font-family: var(--iv-font-mono); font-size: .9em; }
 .docs-prose code:not(pre code) { background: var(--iv-color-surface); border: 1px solid var(--iv-color-border); border-radius: var(--iv-radius-sm); padding: 0 .3em; font-size: .9em; overflow-wrap: anywhere; }
-.docs-anchor { opacity: 0; text-decoration: none; color: var(--iv-color-primary); font-size: .7em; padding-inline: .25em; transition: opacity var(--iv-motion-fast) var(--docs-ease); }
-.docs-prose h2:hover .docs-anchor, .docs-prose h3:hover .docs-anchor, .docs-anchor:focus-visible { opacity: 1; }
-/* Clicking the # also copies the address of the section; a tick confirms it for a moment. */
-.docs-anchor[data-copied] { opacity: 1; }
-.docs-anchor[data-copied]::after { content: "\2713"; margin-inline-start: .2em; color: var(--iv-color-success); }
+/* The heading text is the link; it reads as the heading it is, and the # appears beside it on
+   hover and focus. The glyph is generated content with empty alternative text, so a screen reader
+   hears the heading once ("/ ''" is ignored where unsupported, and the # alone is read). */
+.docs-anchor { color: inherit; text-decoration: none; }
+.docs-anchor::after { content: "#"; content: "#" / ""; opacity: 0; color: var(--iv-color-primary); font-size: .7em; padding-inline: .25em; transition: opacity var(--iv-motion-fast) var(--docs-ease); }
+.docs-prose h2:hover .docs-anchor::after, .docs-prose h3:hover .docs-anchor::after, .docs-anchor:focus-visible::after { opacity: 1; }
+/* Clicking the heading also copies the address of the section; a tick confirms it for a moment. */
+.docs-anchor[data-copied]::after { content: "\2713"; content: "\2713" / ""; opacity: 1; color: var(--iv-color-success); }
 
 /* ---------- a quiet callout for warnings and asides ---------- */
 .docs-note {
@@ -157,6 +160,18 @@
   background-repeat: no-repeat;
   background-size: 2.5rem 100%, 2.5rem 100%, 1.25rem 100%, 1.25rem 100%;
   background-attachment: local, local, scroll, scroll;
+}
+@media (max-width: 40em) {
+  .docs-scroller:has(> table[data-stack]) { background-image: none; overflow-x: visible; }
+  .docs-scroller > table[data-stack] { display: block; min-inline-size: 0; }
+  .docs-scroller > table[data-stack] thead { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .docs-scroller > table[data-stack] :is(tbody, tr, td, th) { display: block; }
+  .docs-scroller > table[data-stack] tr { padding-block: var(--iv-space-2); border-block-end: 1px solid var(--iv-color-border); }
+  .docs-scroller > table[data-stack] tr:last-child { border-block-end: 0; }
+  .docs-scroller > table[data-stack] :is(td, th) { border: 0; padding-block: var(--iv-space-1); min-inline-size: 0; overflow-wrap: anywhere; }
+  /* The column name is drawn, not read: a screen reader still has the cell's own text, and the
+     header row stays in the table (visually hidden) for whoever reads it as a table. */
+  .docs-scroller > table[data-stack] td[data-label]::before { content: attr(data-label); content: attr(data-label) / ""; display: block; font-family: var(--docs-display); font-size: var(--iv-text-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--iv-color-text-muted); }
 }
 .docs-scroller > table {
   inline-size: 100%;
@@ -389,6 +404,12 @@
 }
 .docs-code__panel--fold[data-expanded] > pre { max-block-size: none; overflow: auto; padding-block-end: var(--iv-space-8, 3rem); }
 .docs-code__panel--fold[data-expanded]::after { content: none; }
+/* Folded on phones only: from sm up the panel is whole and the button goes. */
+@media (min-width: 40em) {
+  .docs-code__panel--fold-sm > pre { max-block-size: none; overflow: auto; padding-block-end: var(--iv-space-4); }
+  .docs-code__panel--fold-sm::after { content: none; }
+  .docs-code__panel--fold-sm > .docs-code__expand { display: none; }
+}
 .docs-code__expand {
   position: absolute; inset-block-end: var(--iv-space-3); inset-inline-start: 50%; translate: -50% 0; z-index: 1;
   appearance: none; border: 0; cursor: pointer; font: inherit;

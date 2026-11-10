@@ -1,7 +1,13 @@
 // Measures the files a visitor downloads to use iVOLT and four other CSS frameworks, so the
 // comparison pages quote sizes that anyone can reproduce instead of estimates.
 //
-//   node scripts/measure-competitors.mjs
+//   node scripts/measure-competitors.mjs              everything (needs the network)
+//   node scripts/measure-competitors.mjs --ivolt-only  only iVOLT, from the local build, offline
+//
+// iVOLT is measured from packages/ivolt/dist at the version in its package.json, not downloaded:
+// the bytes are the ones npm publishes, and a release can be measured before it is on the CDN.
+// The pages quoted iVOLT 1.0.0 on the 1.1 site because the version was typed here by hand;
+// tests/contracts/competitor-sizes.test.js now fails when the JSON and the package disagree.
 //
 // Downloads pinned versions from jsDelivr (the npm tarball contents, unmodified), compresses each
 // file with gzip level 9 and Brotli quality 11 (Node's zlib, the same settings for every file),
@@ -9,19 +15,22 @@
 // every file. The site renders from that JSON at build time and never fetches anything: this
 // script needs the network, the build does not. Re-run it to refresh the figures, commit the JSON.
 import { createHash } from "node:crypto";
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync, brotliCompressSync, constants } from "node:zlib";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const out = join(root, "apps/docs/src/data/competitor-sizes.json");
+const ivoltOnly = process.argv.includes("--ivolt-only");
+const ivoltVersion = JSON.parse(readFileSync(join(root, "packages/ivolt/package.json"), "utf8")).version;
 
 // What each framework asks a page to load in its documented no-build (CDN) setup. Pinned.
 const frameworks = [
-  { id: "ivolt", name: "iVOLT", version: "1.0.0", pkg: "@intervolutions/ivolt", files: [
+  { id: "ivolt", name: "iVOLT", version: ivoltVersion, pkg: "@intervolutions/ivolt", local: join(root, "packages/ivolt"), files: [
     { role: "css", path: "dist/css/ivolt.min.css", note: "every component, utility and theme" },
-    { role: "js", path: "dist/js/ivolt.iife.min.js", note: "all 24 interactive behaviours, optional" },
+    // No count here: the site states the number of components from its own single source.
+    { role: "js", path: "dist/js/ivolt.iife.min.js", note: "every interactive component, optional" },
     { role: "classless", path: "dist/css/core.min.css", note: "tokens, reset and element styles only" },
   ] },
   { id: "bootstrap", name: "Bootstrap", version: "5.3.8", pkg: "bootstrap", files: [
@@ -48,13 +57,19 @@ const frameworks = [
   ] },
 ];
 
-const rows = [];
+const previous = JSON.parse(readFileSync(out, "utf8"));
+const rows = ivoltOnly ? previous.files.filter((r) => r.id !== "ivolt") : [];
 for (const fw of frameworks) {
+  if (ivoltOnly && !fw.local) continue;
   for (const f of fw.files) {
     const url = `https://cdn.jsdelivr.net/npm/${fw.pkg}@${fw.version}/${f.path}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
-    const buf = Buffer.from(await res.arrayBuffer());
+    let buf;
+    if (fw.local) buf = readFileSync(join(fw.local, f.path));
+    else {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`${url} → HTTP ${res.status}`);
+      buf = Buffer.from(await res.arrayBuffer());
+    }
     const gzip = gzipSync(buf, { level: 9 }).length;
     const brotli = brotliCompressSync(buf, { params: { [constants.BROTLI_PARAM_QUALITY]: 11, [constants.BROTLI_PARAM_SIZE_HINT]: buf.length } }).length;
     rows.push({ id: fw.id, name: fw.name, version: fw.version, package: fw.pkg, role: f.role, file: f.path, note: f.note || null, url, bytes: buf.length, gzip, brotli, sha256: createHash("sha256").update(buf).digest("hex") });
@@ -62,9 +77,11 @@ for (const fw of frameworks) {
   }
 }
 
+// iVOLT first, as the pages list it.
+rows.sort((a, b) => (a.id === "ivolt" ? 0 : 1) - (b.id === "ivolt" ? 0 : 1));
 writeFileSync(out, JSON.stringify({
-  measured: new Date().toISOString().slice(0, 10),
-  method: "Files downloaded from cdn.jsdelivr.net at the pinned versions; sizes in bytes, raw and compressed with Node zlib: gzip level 9, Brotli quality 11.",
+  measured: ivoltOnly ? previous.measured : new Date().toISOString().slice(0, 10),
+  method: "Files downloaded from cdn.jsdelivr.net at the pinned versions (iVOLT: the files of the local build, the bytes npm publishes); sizes in bytes, raw and compressed with Node zlib: gzip level 9, Brotli quality 11.",
   script: "scripts/measure-competitors.mjs",
   files: rows,
 }, null, 2) + "\n");

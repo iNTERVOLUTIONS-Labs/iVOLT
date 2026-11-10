@@ -11,3 +11,9 @@
 .docs-tb__preview { min-width: 0; padding: var(--iv-space-4); border-radius: var(--iv-radius-lg); border: 1px solid var(--iv-color-border); }
 .docs-tb__preview .docs-fixture { margin-block: 0 var(--iv-space-4); }
 .docs-tb__preview .docs-fixture__code { display: none; }
+/* The measured ratio of the ink on the primary: a status line under the colours. Under 4.5:1 it
+   keeps the text colour (a red line on a dark surface would fail the very check it reports) and
+   carries the warning in its words and a danger rule beside them. */
+.docs-tb__ratio { margin: var(--iv-space-3) 0 0; font-size: var(--iv-text-sm); font-variant-numeric: tabular-nums; }
+.docs-tb__ratio:empty { display: none; }
+.docs-tb__ratio.is-low { padding-inline-start: var(--iv-space-2); border-inline-start: 3px solid var(--iv-color-danger); font-weight: var(--iv-weight-medium); }

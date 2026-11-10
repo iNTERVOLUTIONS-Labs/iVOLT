@@ -248,7 +248,7 @@ th.iv-datepicker__weekday {
   box-shadow: inset 0 0 0 var(--iv-focus-width) var(--iv-color-accent);
 }
 
-[aria-selected="true"] > .iv-datepicker__day {
+.iv-datepicker__day[aria-selected="true"] {
   font-weight: var(--iv-weight-semibold);
   color: var(--iv-color-on-primary);
   background-color: var(--iv-color-primary);
@@ -288,7 +288,7 @@ th.iv-datepicker__weekday {
    selected day and today would melt into the grid. */
 
 @media (forced-colors: active) {
-  [aria-selected="true"] > .iv-datepicker__day {
+  .iv-datepicker__day[aria-selected="true"] {
     color: HighlightText;
     background-color: Highlight;
   }

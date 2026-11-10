@@ -34,7 +34,7 @@ import Stage from "../../components/Stage.astro";
     </Section>
 
     <Section title="Keyboard and assistive technology" num={4}>
-      <p>Left and Right move a day, Up and Down a week, Home and End to the ends of the week, Page Up and Page Down a month, with Shift a year; Enter or Space selects and closes; Escape closes and returns focus to the button. The grid is a real table with one tab stop, the dialog is non-modal and labelled, disabled days are real disabled buttons and the month title is announced when it changes.</p>
+      <p>Left and Right move a day, Up and Down a week, Home and End to the ends of the week, Page Up and Page Down a month, with Shift a year; Enter or Space selects and closes; Escape closes and returns focus to the button. The grid is a real table with one tab stop, the dialog is non-modal and labelled, disabled days are real disabled buttons and the month title is announced when it changes. Since 1.1.2 each day button is the grid cell itself (<code>role="gridcell"</code>, its <code>&lt;td&gt;</code> is presentational) and the chosen day carries <code>aria-selected="true"</code>, so a screen reader says which day is selected; style it with <code>.iv-datepicker__day[aria-selected="true"]</code>.</p>
     </Section>
 
     <Section title="Without JavaScript" num={5}>

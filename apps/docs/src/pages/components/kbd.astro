@@ -11,7 +11,7 @@ import Stage from "../../components/Stage.astro";
     <Stage primary name="kbd/basic" title="Keys, shortcuts and sizes" minHeight="14rem" />
 
     <Section title="When to use it" num={1}>
-      <p>Use <code>iv-kbd</code> wherever a sentence names a key: a shortcut in a menu item, a hint under a search field (“press <kbd class="iv-kbd iv-kbd--sm">/</kbd> to search”), the keyboard table of a component page, the footer of a command palette. It is text, not a control: nothing happens when it is clicked, and it should never be the only way to learn that a shortcut exists.</p>
+      <p>Use <code>iv-kbd</code> wherever a sentence names a key: a shortcut in a menu item, a hint under a search field (“press <kbd class="iv-kbd iv-kbd--sm">Ctrl</kbd>+<kbd class="iv-kbd iv-kbd--sm">K</kbd> to search”), the keyboard table of a component page, the footer of a command palette. It is text, not a control: nothing happens when it is clicked, and it should never be the only way to learn that a shortcut exists.</p>
       <p>A shortcut made of several keys goes in <code>iv-kbd-group</code>, which spaces the caps and keeps them on one line. The <code>+</code> between them is written by you, as plain text, so it is read aloud and copied with the rest of the sentence. For a sequence (press <kbd class="iv-kbd iv-kbd--sm">G</kbd> then <kbd class="iv-kbd iv-kbd--sm">H</kbd>) write “then” instead of a plus sign.</p>
     </Section>
 

@@ -90,7 +90,7 @@ export class Tabs extends IvComponent {
    * @param {ParentNode} [root] Subtree to scan.
    * @returns {Tabs[]} Newly created instances.
    */
-  static initAll(root = document) {
+  static initAll(root) {
     return /** @type {Tabs[]} */ (super.initAll(root));
   }
 

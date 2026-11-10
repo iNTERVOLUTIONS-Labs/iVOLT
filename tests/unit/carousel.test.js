@@ -589,4 +589,34 @@ describe("Carousel: slideText and counterText", () => {
     translated.destroy();
     vi.useRealTimers();
   });
+
+  it("names the focusable viewport as a group (1.1.2)", () => {
+    const root = mount();
+    const viewport = /** @type {HTMLElement} */ (root.querySelector(".iv-carousel__viewport"));
+    const dots = /** @type {HTMLElement} */ (root.querySelector(".iv-carousel__dots"));
+    const carousel = new Carousel(root);
+    expect(viewport.getAttribute("tabindex")).toBe("0");
+    expect(viewport.getAttribute("role")).toBe("group");
+    // The name is the dots label the author wrote ("Slides"), so it is translated with the page.
+    expect(dots.id).not.toBe("");
+    expect(viewport.getAttribute("aria-labelledby")).toBe(dots.id);
+    carousel.destroy();
+    expect(viewport.hasAttribute("role")).toBe(false);
+    expect(viewport.hasAttribute("aria-labelledby")).toBe(false);
+    expect(dots.hasAttribute("id")).toBe(false);
+
+    // Without a labelled dots nav, the carousel's own label names it.
+    dots.removeAttribute("aria-label");
+    const unlabelled = new Carousel(root);
+    expect(viewport.getAttribute("aria-labelledby")).toBe("c1");
+    unlabelled.destroy();
+    dots.setAttribute("aria-label", "Slides");
+
+    viewport.setAttribute("aria-label", "Projects");
+    const authored = new Carousel(root);
+    expect(viewport.getAttribute("aria-label")).toBe("Projects");
+    expect(viewport.hasAttribute("aria-labelledby")).toBe(false);
+    authored.destroy();
+    expect(viewport.getAttribute("aria-label")).toBe("Projects");
+  });
 });

@@ -38,7 +38,7 @@ import Stage from "../../components/Stage.astro";
         </table>
       </div>
       <p>The worst real case is <code>surface-raised</code>, where <code>border-strong</code> measures 4.13 in dark and 4.12 over <code>surface</code> in light; both stay well above 3:1. Each <code>*-subtle</code> background is paired with its own foreground and was measured against it, so an alert or badge is never a coloured surface with unreadable text on top.</p>
-      <p>One consequence to know about: <code>primary</code> and <code>focus</code> share the same cobalt, and in dark <code>focus</code> matches <code>accent</code> instead. That is intentional — focus and the primary are distinguished by shape (a subtle-background badge or alert, an offset focus ring), not by hue. If your interface needs colour to separate them, redefine <code>--iv-color-success</code>. More generally, never let colour be the only thing carrying a meaning: an error state needs text, an icon or both.</p>
+      <p>One consequence to know about: <code>primary</code> and <code>focus</code> share the same cobalt, and in dark <code>focus</code> matches <code>accent</code> instead. That is intentional — focus and the primary are distinguished by shape (a subtle-background badge or alert, an offset focus ring), not by hue. If your interface needs colour to separate them, redefine <code>--iv-color-focus</code>. More generally, never let colour be the only thing carrying a meaning: an error state needs text, an icon or both.</p>
       <p>These numbers describe the tokens. Override a token with your own brand colour and they no longer apply — re-measure.</p>
 
       <h3>Target size</h3>
@@ -47,11 +47,13 @@ import Stage from "../../components/Stage.astro";
       <h3>Keyboard and ARIA on the JavaScript components</h3>
       <p>Six families need JavaScript: disclosure, tabs, dialog, drawer, dropdown and toast. <code>init(document)</code> — called explicitly, or on load through the <code>auto</code> entry — finds elements marked with <code>data-iv-component</code> and takes over their keyboard and ARIA state. Roles and states it needs are added when missing, so the markup you write stays small, and <code>destroy()</code> restores the attributes exactly as it found them.</p>
       <p>The shared keyboard vocabulary is the platform one: <kbd>Tab</kbd> to move, <kbd>Enter</kbd> and <kbd>Space</kbd> to activate, <kbd>Escape</kbd> to dismiss what is dismissible, arrow keys with <kbd>Home</kbd> and <kbd>End</kbd> to move inside a composite widget such as tabs or a menu. Each component page documents its own keys; that is the authoritative list.</p>
+      <p>This site follows the same rule for its own search: it opens with <kbd>Ctrl</kbd>+<kbd>K</kbd> (<kbd>⌘</kbd>+<kbd>K</kbd> on a Mac) or the search button. There is no single-key shortcut such as <kbd>/</kbd>, which speech input and a stray key press could trigger by accident (WCAG 2.1.4).</p>
       <p>Two structural choices help here. Dialog and drawer are real <code>&lt;dialog&gt;</code> elements, so modal focus containment, <kbd>Escape</kbd> and the top layer come from the browser rather than from a hand-written focus trap. The dropdown is built on <code>&lt;details&gt;</code>, so it opens and closes with the keyboard even before the script runs. The toast region is given <code>role="region"</code> when it lacks one, because a labelled element with no role announces nothing.</p>
 
       <h3>Motion and contrast preferences</h3>
       <p><code>@media (prefers-reduced-motion: reduce)</code> sets <code>--iv-motion-fast</code>, <code>--iv-motion-base</code> and <code>--iv-motion-slow</code> to <code>0ms</code>, and the components that animate — button, dialog, dropdown, progress, skeleton — additionally drop their transforms and looping animations in the same query. States remain fully visible: reduced motion removes the movement, not the feedback.</p>
-      <p>Under <code>prefers-contrast: more</code> the token stylesheet raises decorative borders (<code>--iv-color-border</code>) to the control-strength value (<code>--iv-color-border-strong</code>), so card and table edges reach 3:1. Nothing else changes; forced-colors mode is untested at this stage.</p>
+      <p>Under <code>prefers-contrast: more</code> the token stylesheet raises decorative borders (<code>--iv-color-border</code>) to the control-strength value (<code>--iv-color-border-strong</code>), so card and table edges reach 3:1. Nothing else changes.</p>
+      <p>Under <code>forced-colors: active</code> (Windows high contrast) the system palette replaces the tokens, and what carried a state by colour alone gets a mark the system paints: a selected day, the current step, the open tab, the highlighted row of the command palette and the active option of a combobox keep a visible marker, glass becomes an opaque panel with an edge, and progress bars still show how far they got. A browser spec emulates forced colours and checks each of those.</p>
     </Section>
 
     <Section title="What the author has to do" num={2} lead={`These are the failures that show up in real projects built on any framework, iVOLT included.`}>
@@ -72,8 +74,9 @@ import Stage from "../../components/Stage.astro";
         <table>
           <thead><tr><th>Check</th><th>Scope</th></tr></thead>
           <tbody>
-            <tr><td>axe-core through Playwright</td><td>24 fixtures × light and dark themes, plus the dialog in its open state; tags <code>wcag2a wcag2aa wcag21aa wcag22aa</code>; the gate fails on any serious or critical finding</td></tr>
+            <tr><td>axe-core through Playwright</td><td>Every fixture of the package × light and dark themes, plus the dialog in its open state; tags <code>wcag2a wcag2aa wcag21aa wcag22aa</code>; the gate fails on any serious or critical finding</td></tr>
             <tr><td>Manual keyboard review</td><td>Every interactive family: reach, activate, dismiss, and where focus lands afterwards</td></tr>
+            <tr><td>Forced colours</td><td>Emulated <code>forced-colors: active</code> on the components whose state is shown by colour, and on this site's own pressed and selected controls</td></tr>
             <tr><td>Three engines</td><td>The browser suite runs in Chromium, Firefox and WebKit (<code>IVOLT_ALL_BROWSERS=1</code>)</td></tr>
             <tr><td>Overflow and RTL</td><td>320–1920px with no horizontal overflow, and right-to-left rendering, because logical properties are what make that work</td></tr>
             <tr><td>Fixtures as the single source</td><td>The same fixture file is the docs preview, the copyable snippet and the test subject, so what is tested is what is documented</td></tr>
@@ -86,8 +89,8 @@ import Stage from "../../components/Stage.astro";
     <Section title="What we do not claim" num={4}>
       <ul>
         <li>Not “100% accessible”, not “WCAG certified”, not “conformant” as a property of the framework. Conformance is a property of a finished page, and most of that page is yours.</li>
-        <li><strong>Screen reader testing has not been run.</strong> NVDA and VoiceOver passes are on the backlog as a P1 item and are recorded as not verified. Until then, announcements are inferred from the ARIA we set, not observed.</li>
-        <li>No Lighthouse run yet; that is scheduled for a later phase.</li>
+        <li><strong>No full screen reader pass has been recorded.</strong> The ARIA each component sets is checked by tests, and the accessibility tree of the documentation pages has been reviewed, but a session with NVDA, JAWS or VoiceOver across every component is still pending and is recorded as not verified. Until then, announcements are inferred from the ARIA we set, not observed.</li>
+        <li>Lighthouse is run on this documentation site, on mobile and desktop, and the scores are recorded in the repository (<code>docs/LIGHTHOUSE.md</code>). Its accessibility score is a sum of automated checks, not a statement about conformance.</li>
         <li>Test coverage is Chromium, Firefox and WebKit through Playwright, which is not the same as testing physical devices, assistive technologies or older browsers.</li>
         <li>Findings in your own pages are not covered by any of the above. Run axe on the page you ship.</li>
       </ul>

@@ -44,7 +44,10 @@ catch (err) {
 }
 for (const slug of present) {
   for (const [w, h] of [[1440, 900], [390, 844]]) {
-    const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: "reduce" });
+    // The phone frame is drawn up to 60vw on a phone, ~234 CSS px: a 390 px picture was blurry on
+    // every 2x screen. Phones are captured at 2x (780 px wide); desktops at 1x already cover a
+    // 2x laptop, where the frame is at most ~650 CSS px.
+    const page = await browser.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: w === 390 ? 2 : 1, reducedMotion: "reduce" });
     await page.goto(`http://127.0.0.1:${port}/examples/recipes/${slug}/index.html`, { waitUntil: "load" });
     await page.waitForTimeout(700);
     // JPEG, not PNG: these are photographs of photographic pages. The studio cover alone was
