@@ -13,10 +13,17 @@ const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.jso
 <Base lang="es" title="Instala el framework CSS en minutos" description="Instala iVOLT desde npm o copia dos archivos ya compilados junto a tu página. Sin paso de build, sin configuración y sin dependencias de ejecución.">
   <article class="docs-prose">
     <h1>Primeros pasos</h1>
-    <p>iVOLT se distribuye como CSS y JavaScript ya compilados. Con dos archivos basta: una hoja de estilo y un módulo. Sin paso de compilación, sin archivo de configuración y sin dependencias en ejecución; y esos dos archivos valen igual en HTML plano, WordPress, Astro o cualquier empaquetador.</p>
+    <p>iVOLT se distribuye como CSS y JavaScript ya compilados. Con dos archivos basta: una hoja de estilo y un script. Sin paso de compilación, sin archivo de configuración y sin dependencias en ejecución; y esos dos archivos valen igual en HTML plano, WordPress, Astro o cualquier empaquetador.</p>
     <p class="docs-meta"><strong>Versión:</strong> <code>{version}</code>. <strong>Licencia:</strong> MIT. <strong>Motores probados:</strong> Chromium, Firefox, WebKit.</p>
 
     <Stage primary name="button/variants" title="El framework, funcionando en su propia página" />
+
+    <Section title="Desde un CDN" lead="Dos líneas en tu página y nada que instalar. Es la forma más rápida de probarlo.">
+      <Code label="html" panels={[{ key: "src", label: "HTML", code: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@intervolutions/ivolt@1/dist/css/ivolt.min.css">
+<${"script"} type="module" src="https://cdn.jsdelivr.net/npm/@intervolutions/ivolt@1/dist/js/auto.min.js"></${"script"}>` }]} />
+      <p>Pon las dos en el <code>&lt;head&gt;</code> y añade <code>class="iv-root"</code> a <code>&lt;html&gt;</code>. <code>auto.min.js</code> arranca por sí solo todos los componentes de la página; si lo quitas, todo se sigue viendo, como HTML plano. <code>@1</code> sigue la última 1.x; en producción fija la versión exacta (<code>@{version}</code>).</p>
+      <p>¿Prefieres partir de una página entera? <a href="/downloads/ivolt-starter-plain-html.zip" download>Descarga la plantilla de HTML plano</a> (zip): descomprímela y abre <code>index.html</code> con doble clic. Funciona desde el disco, sin servidor y sin Node. ¿Usas React, Vue o Astro? Mira <a href="/es/foundations/frameworks">iVOLT con un framework</a>.</p>
+    </Section>
 
     <Section title="Instalar desde npm" lead="Un solo comando y ninguna dependencia que resolver.">
       <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `npm install @intervolutions/ivolt` }]} />
@@ -36,9 +43,11 @@ npm run build          # escribe packages/ivolt/dist` }]} />
 <html lang="es" class="iv-root" data-iv-theme="system">
 <head>
   <link rel="stylesheet" href="ivolt/css/ivolt.min.css">
-  <${"script"} type="module" src="ivolt/js/auto.js"></${"script"}>
+  <${"script"} type="module" src="ivolt/js/auto.min.js"></${"script"}>
 </head>` }]} />
-      <p>¿Prefieres un script clásico? <code>ivolt/js/ivolt.iife.min.js</code> expone un único global, <code>IVOLT</code>, y no inicializa nada hasta que llamas a <code>IVOLT.init()</code>.</p>
+      <p>¿Abres la página con doble clic (<code>file://</code>)? Los navegadores no ejecutan módulos desde el disco. Usa entonces el script clásico, como hace la plantilla: <code>ivolt/js/ivolt.iife.min.js</code> expone un único global, <code>IVOLT</code>, y no arranca nada hasta que llamas a <code>IVOLT.init()</code>.</p>
+      <Code label="index.html" panels={[{ key: "src", label: "FILE://", code: `<${"script"} src="ivolt/js/ivolt.iife.min.js"></${"script"}>
+<${"script"}>document.addEventListener("DOMContentLoaded", () => IVOLT.init(document));</${"script"}>` }]} />
     </Section>
 
     <Section title="Módulos ES con un empaquetador" lead="Los exports del paquete son la API pública; las rutas profundas dentro de dist/ no lo son.">
@@ -65,6 +74,17 @@ const dialog = Dialog.get(document.querySelector("#signup"));` }]} />
         </table>
       </div>
       <p>Las dos hojas están en el escenario de arriba: el control <b>hoja plana</b> cambia la hoja en capas por la hoja sin capas en una página que ya está funcionando.</p>
+    </Section>
+
+    <Section title="La tipografía">
+      <p>La pila tipográfica empieza por Outfit, la letra de esta web, y cae en la fuente del sistema: <code>"Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code>. El paquete no incluye ficheros de fuentes, así que, si no cargas Outfit, tus páginas usan la del sistema, que es un buen punto de partida. Para usar Outfit, aloja tú el fichero (tiene licencia SIL Open Font License; esta web sirve el fichero variable latino, de 32 KB) y declárala antes de la hoja de iVOLT:</p>
+      <Code label="css" panels={[{ key: "src", label: "CSS", code: `@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-latin-variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-display: swap;
+}` }]} />
+      <p>Cualquier otra letra se usa igual: define <code>--iv-font-sans</code> en <code>:root</code> después de la hoja. iVOLT nunca pide una fuente a otro dominio.</p>
     </Section>
 
     <Section title="Convivir con tu CSS">

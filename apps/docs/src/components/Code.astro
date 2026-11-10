@@ -4,7 +4,7 @@
 import { t as en } from "../i18n/en.js";
 import { t as es } from "../i18n/es.js";
 const { panels = [], label = "", id, copy = true, tabs: tabsClass = "docs-code__tabs" } = Astro.props;
-const lang = Astro.url.pathname === "/es" || Astro.url.pathname.startsWith("/es/") ? "es" : "en";
+const lang = /^\/es(\.html|\/|$)/.test(Astro.url.pathname) ? "es" : "en";
 const t = lang === "es" ? es : en;
 const list = panels.filter((p) => p && p.code);
 const base = id || `code-${Math.abs([...label].reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 7))}`;
@@ -13,6 +13,10 @@ const base = id || `code-${Math.abs([...label].reduce((a, c) => (a * 31 + c.char
 // threshold the panel is folded to a readable height with an edge that says so, and a button
 // opens it. Copy is untouched: it always writes the whole block, folded or not.
 const FOLD_LINES = 24;
+// On a phone a dozen lines of markup wrap into fifty: there the panel folds from 12 lines (the
+// effects gallery showed a whole fixture, unfolded, under every stage). Above `sm` it stays open.
+const FOLD_LINES_SM = 12;
+const foldOf = (code) => { const n = code.split("\n").length; return n > FOLD_LINES ? "all" : n > FOLD_LINES_SM ? "sm" : null; };
 ---
 {list.length > 0 && (
   <div class="docs-code-block" data-code-block>
@@ -24,9 +28,9 @@ const FOLD_LINES = 24;
       </div>
     )}
     {list.map((p, i) => (
-      <div class:list={["docs-code__panel", p.code.split("\n").length > FOLD_LINES && "docs-code__panel--fold"]} id={`${base}-panel-${p.key}`} role={list.length > 1 ? "tabpanel" : undefined} aria-labelledby={list.length > 1 ? `${base}-tab-${p.key}` : undefined} data-code-panel={p.key}>
+      <div class:list={["docs-code__panel", foldOf(p.code) && "docs-code__panel--fold", foldOf(p.code) === "sm" && "docs-code__panel--fold-sm"]} id={`${base}-panel-${p.key}`} role={list.length > 1 ? "tabpanel" : undefined} aria-labelledby={list.length > 1 ? `${base}-tab-${p.key}` : undefined} data-code-panel={p.key}>
         <pre tabindex="0" aria-label={`${p.label}${label ? ` — ${label}` : ""}`}><code id={`${base}-code-${p.key}`}>{p.code}</code></pre>
-        {p.code.split("\n").length > FOLD_LINES && (
+        {foldOf(p.code) && (
           <button class="docs-code__expand" type="button" data-code-expand aria-expanded="false" aria-controls={`${base}-panel-${p.key}`} data-label-more={t.codeExpand} data-label-less={t.codeCollapse}>{t.codeExpand}</button>
         )}
         {copy && <button class="iv-button iv-button--secondary iv-button--sm docs-copy docs-code__copy" type="button" data-copy-target={`${base}-code-${p.key}`} aria-describedby={`${base}-status-${p.key}`}>{t.copyCode}</button>}

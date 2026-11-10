@@ -1,19 +1,21 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Section from "../../components/Section.astro";
+import { componentCount, cssCount, jsCount } from "../../lib/count.js";
+import { version } from "../../lib/version.js";
 ---
-<Base lang="es" title="Hoja de ruta: qué trae la 1.0 y qué viene" description="Qué trae iVOLT 1.0, qué queda fuera de su alcance a propósito y qué se está considerando después, por orden de prioridad y sin fechas ni compromisos.">
+<Base lang="es" title="Hoja de ruta: qué trae iVOLT hoy y qué viene" description="Qué trae iVOLT hoy, qué queda fuera de su alcance a propósito y qué se está considerando después, por orden de prioridad y sin fechas ni compromisos.">
   <article class="docs-prose">
     <h1>Hoja de ruta</h1>
     <p>Esta página declara un orden, no unas fechas. Nada de lo que hay aquí es un compromiso de entregar en un plazo, y los puntos se mueven cuando la evidencia lo pide. Lo que está marcado como hecho está hecho y se puede comprobar hoy; todo lo demás, no.</p>
     <p class="docs-meta"><strong>Orden:</strong> prioridad, no fechas. <strong>Compromisos:</strong> ninguno. <strong>Hecho:</strong> significa comprobable hoy.</p>
 
-    <Section title="Qué trae la 1.0" num={1}>
+    <Section title={`Qué trae hoy (${version})`} num={1}>
       <div class="docs-scroller">
         <table>
           <thead><tr><th>Área</th><th>Estado</th><th>Contenido</th></tr></thead>
           <tbody>
-            <tr><td>Componentes</td><td>hecho</td><td>33 familias: 14 solo CSS y 19 con JavaScript opcional, cada una con sus estados, su comportamiento de teclado y una alternativa que funciona sin script</td></tr>
+            <tr><td>Componentes</td><td>hecho</td><td>{componentCount} componentes: {cssCount} solo CSS y {jsCount} con JavaScript opcional, cada una con sus estados, su comportamiento de teclado y una alternativa que funciona sin script</td></tr>
             <tr><td>Tokens y temas</td><td>hecho</td><td>Tokens de diseño como contrato visual, temas claro, oscuro y del sistema, ámbitos anidados, derecha a izquierda, colores forzados, impresión y movimiento reducido</td></tr>
             <tr><td>Distribución</td><td>hecho</td><td>CSS en capas y plano, una hoja por componente, módulos ES con exports reales, un IIFE con un solo global, tipos de TypeScript y los tokens en JSON</td></tr>
             <tr><td>Documentación</td><td>hecho</td><td>Esta web en inglés y español, una referencia generada desde las fuentes, un playground y un constructor de temas</td></tr>

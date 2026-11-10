@@ -1,19 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
 import Section from "../components/Section.astro";
+import { componentCount, cssCount, jsCount } from "../lib/count.js";
+import { version } from "../lib/version.js";
 ---
-<Base title="Roadmap: what 1.0 ships and what is next" description="What iVOLT 1.0 ships, what is deliberately out of scope, and what is under consideration next — ordered by priority, with no dates and no commitments.">
+<Base title="Roadmap: what iVOLT ships today and what is next" description="What iVOLT ships today, what is deliberately out of scope, and what is under consideration next — ordered by priority, with no dates and no commitments.">
   <article class="docs-prose">
     <h1>Roadmap</h1>
     <p>This page states an order, not a schedule. Nothing here is a commitment to ship by a given date, and items move when evidence says they should. What is marked done is done and testable today; everything else is not.</p>
     <p class="docs-meta"><strong>Order:</strong> priority, not dates. <strong>Commitments:</strong> none. <strong>Done:</strong> means testable today.</p>
 
-    <Section title="What 1.0 ships" num={1}>
+    <Section title={`What ships today (${version})`} num={1}>
       <div class="docs-scroller">
         <table>
           <thead><tr><th>Area</th><th>State</th><th>Contents</th></tr></thead>
           <tbody>
-            <tr><td>Components</td><td>done</td><td>33 families: 14 CSS-only and 19 with optional JavaScript, each with states, keyboard behaviour and a fallback that works without a script</td></tr>
+            <tr><td>Components</td><td>done</td><td>{componentCount} components: {cssCount} CSS-only and {jsCount} with optional JavaScript, each with states, keyboard behaviour and a fallback that works without a script</td></tr>
             <tr><td>Tokens and themes</td><td>done</td><td>Design tokens as the visual contract, light, dark and system themes, nested scopes, right-to-left, forced colours, print and reduced motion</td></tr>
             <tr><td>Delivery</td><td>done</td><td>Layered and flat CSS, one stylesheet per component, ES modules with real exports, an IIFE with one global, TypeScript types and the tokens as JSON</td></tr>
             <tr><td>Documentation</td><td>done</td><td>This site in English and Spanish, a reference generated from the sources, a playground and a theme builder</td></tr>

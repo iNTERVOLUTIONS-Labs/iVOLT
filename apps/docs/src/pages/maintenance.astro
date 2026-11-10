@@ -1,0 +1,48 @@
+---
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import { version } from "../lib/version.js";
+const REPO = "https://github.com/iNTERVOLUTIONS-Labs/iVOLT";
+---
+<Base title="Support and maintenance" description="Who maintains iVOLT, how long each major version gets fixes, how to report a bug or a vulnerability, and how releases are made and checked.">
+  <article class="docs-prose">
+    <h1>Support and maintenance</h1>
+    <p>Before you build on a framework you want to know who is behind it and for how long. This page says it plainly.</p>
+    <p class="docs-meta"><strong>Maintainer:</strong> iNTERVOLUTIONS. <strong>Current version:</strong> <code>{version}</code>. <strong>Licence:</strong> MIT.</p>
+
+    <Section title="Who maintains it" num={1}>
+      <p>iVOLT is built and maintained by <a href="https://intervolutions.com" rel="noopener">iNTERVOLUTIONS</a>, which uses it in its own client work. The source, the issues and every release are public on <a href={REPO} rel="noopener">GitHub</a>.</p>
+    </Section>
+
+    <Section title="How long a version is supported" num={2}>
+      <div class="docs-scroller">
+        <table>
+          <thead><tr><th scope="col">Line</th><th scope="col">Status</th><th scope="col">Gets</th></tr></thead>
+          <tbody>
+            <tr><td><code>1.x</code></td><td>Current</td><td>New features in minor releases, fixes in patch releases, security fixes</td></tr>
+            <tr><td><code>1.x</code> once 2.0 is out</td><td>Maintained</td><td>Bug and security fixes for at least 12 months after 2.0 ships</td></tr>
+            <tr><td><code>0.x</code> betas</td><td>Not supported</td><td>Nothing: upgrade to 1.x</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>There is no 2.0 planned yet. When there is one, its date and the end of fixes for 1.x will be written here and in the <a href="/changelog">changelog</a>. What a major version may change, and what it may not, is set out in <a href="/foundations/stability">stability</a>.</p>
+    </Section>
+
+    <Section title="Report a bug" num={3}>
+      <p>Open an issue on <a href={`${REPO}/issues`} rel="noopener">GitHub</a> with the version, the browser and the smallest HTML that shows the problem (a CodePen from any stage on this site is a good start: every stage has a button that opens one). Questions are welcome there too.</p>
+    </Section>
+
+    <Section title="Report a vulnerability" num={4}>
+      <p>Do not open a public issue. Report it privately through <a href={`${REPO}/security/advisories/new`} rel="noopener">GitHub's private vulnerability reporting</a>: only the maintainers see it. You get an answer, the fix ships in a patch release for every supported line, and the advisory is published with the release. The repository's <code>SECURITY.md</code> has the details.</p>
+    </Section>
+
+    <Section title="Releases" num={5}>
+      <ul>
+        <li><strong>Patch</strong> releases ship when a fix is ready; there is no fixed calendar.</li>
+        <li><strong>Minor</strong> releases group new components, tokens and options once they are finished and tested.</li>
+        <li>Every release is listed in the <a href="/changelog">changelog</a> and published to npm as <code>@intervolutions/ivolt</code>.</li>
+        <li>Before a release, one command builds the package, runs the unit tests and the browser suite in Chromium, Firefox and WebKit, checks the size budgets and installs the packed tarball into a clean project. The <a href={`${REPO}/actions`} rel="noopener">continuous integration</a> runs on GitHub.</li>
+      </ul>
+    </Section>
+  </article>
+</Base>

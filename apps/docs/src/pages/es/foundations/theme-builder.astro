@@ -13,7 +13,7 @@ import "../../../styles/theme-builder.css";
     <div class="docs-tb" data-theme-builder>
       <form class="docs-tb__form docs-tb__controls iv-stack" data-tb-form>
         <fieldset class="iv-fieldset">
-          <legend class="iv-fieldset__legend">Tema de la previsualización</legend>
+          <legend class="iv-fieldset__legend">Modo que editas</legend>
           <div class="iv-checks iv-checks--inline">
             <label class="iv-check"><input type="radio" name="theme" value="light"> Claro</label>
             <label class="iv-check"><input type="radio" name="theme" value="dark" checked> Oscuro</label>
@@ -23,13 +23,15 @@ import "../../../styles/theme-builder.css";
           <legend class="iv-fieldset__legend">Colores</legend>
           <div class="docs-tb__grid">
             <label class="docs-tb__color"><input type="color" name="primary"> Primario</label>
-            <label class="docs-tb__color"><input type="color" name="on-primary"> Texto sobre primario</label>
+            <label class="docs-tb__color"><input type="color" name="on-primary" aria-describedby="tb-ratio"> Texto sobre primario</label>
             <label class="docs-tb__color"><input type="color" name="accent"> Acento</label>
             <label class="docs-tb__color"><input type="color" name="bg"> Fondo</label>
             <label class="docs-tb__color"><input type="color" name="surface"> Superficie</label>
             <label class="docs-tb__color"><input type="color" name="surface-raised"> Superficie elevada</label>
             <label class="docs-tb__color"><input type="color" name="text"> Texto</label>
           </div>
+          <p class="docs-tb__ratio" id="tb-ratio" data-tb-ratio role="status" data-decimal="," data-label-ok="Texto sobre primario: {ratio}:1" data-label-low="Texto sobre primario: {ratio}:1, por debajo de 4,5:1. Elige otra tinta o un primario más profundo."></p>
+          <p class="iv-field__help iv-u-m-0">El claro y el oscuro van por separado: define uno, cambia el modo de arriba y define el otro. Un primario nuevo trae la tinta que mejor se lee encima (blanco o azul marino profundo) hasta que elijas una tú.</p>
         </fieldset>
         <div class="iv-field">
           <label class="iv-label" for="tb-radius">Radio de las esquinas (medio)</label>
@@ -48,6 +50,7 @@ import "../../../styles/theme-builder.css";
         <div class="iv-cluster">
           <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-tb-reset>Restablecer</button>
           <button class="iv-button iv-button--primary iv-button--sm" type="button" data-tb-share data-label-done="Enlace copiado" hidden>Copiar enlace para compartir</button>
+          <button class="iv-button iv-button--secondary iv-button--sm" type="button" data-tb-download hidden>Descargar theme.css</button>
           <a class="iv-button iv-button--ghost iv-button--sm" href="/es/themes">Partir de un tema</a>
         </div>
       </form>
@@ -59,10 +62,10 @@ import "../../../styles/theme-builder.css";
       </div>
     </div>
     <Section title="Tus personalizaciones" num={1}>
-      <p>Pega esto después de <code>ivolt.css</code>, o dentro de <code>@layer iv.overrides</code> cuando uses la hoja en capas. Los ámbitos anidados siguen funcionando: pon el bloque en cualquier elemento en vez de en <code>:root</code> para tematizar solo esa parte de la página.</p>
+      <p>Pega esto después de <code>ivolt.css</code>, o dentro de <code>@layer iv.overrides</code> cuando uses la hoja en capas. Sale un bloque por cada modo que hayas cambiado, y el oscuro otra vez para <code>data-iv-theme="system"</code> cuando el sistema está en oscuro, así que un interruptor claro/oscuro sigue funcionando. Los ámbitos anidados también: cualquier elemento con <code>data-iv-theme</code> toma el bloque de su modo.</p>
       <div class="docs-code-block" data-code-block>
         <div class="docs-code__panel" data-code-panel="css">
-          <pre tabindex="0" aria-label="CSS de personalización del tema"><code id="tb-output" data-tb-output>/* tokens.overrides.css — cambia un control para ver aquí tus personalizaciones. */</code></pre>
+          <pre tabindex="0" aria-label="CSS de personalización del tema"><code id="tb-output" data-tb-output data-empty="/* Cambia un control para ver aquí tus personalizaciones. */" data-head="/* Personalización del tema de iVOLT: cárgala después de ivolt.css o dentro de @layer iv.overrides.&#10;   Sigue a data-iv-theme: &quot;light&quot;, &quot;dark&quot; o &quot;system&quot;. */">/* tokens.overrides.css — cambia un control para ver aquí tus personalizaciones. */</code></pre>
           <button class="iv-button iv-button--secondary iv-button--sm docs-copy docs-code__copy" type="button" data-copy-target="tb-output" aria-describedby="tb-output-status">Copiar CSS</button>
           <span class="iv-u-sr-only" id="tb-output-status" role="status" aria-live="polite"></span>
         </div>
@@ -72,7 +75,7 @@ import "../../../styles/theme-builder.css";
     <Section title="Lo que no hace" num={2}>
       <ul>
         <li>Edita un puñado de tokens. El conjunto completo vive en <code>tokens.json</code> y <code>tokens.css</code>; cualquiera se sobrescribe igual.</li>
-        <li>No comprueba el contraste por ti. Prueba el resultado con la herramienta de accesibilidad que prefieras; los temas incluidos se prueban con axe.</li>
+        <li>Mide una pareja por ti, el texto sobre el botón primario, en reposo y al pasar el puntero. Todo lo demás, pruébalo con la herramienta de accesibilidad que prefieras; los temas incluidos se prueban con axe.</li>
         <li>No reconstruye el paquete. Las personalizaciones bastan para la mayoría de marcas; un fork de <code>tokens.json</code> es el camino para una paleta completa.</li>
       </ul>
     </Section>

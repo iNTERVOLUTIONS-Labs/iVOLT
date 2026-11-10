@@ -270,6 +270,7 @@
 .docs-showreel__tabs { display: flex; flex-wrap: wrap; gap: var(--iv-space-2); margin-block-end: var(--iv-space-4); }
 .docs-showreel__tab { appearance: none; border: 0; cursor: pointer; font: inherit; font-family: var(--docs-display); font-weight: var(--iv-weight-medium); font-size: var(--iv-text-sm); color: var(--iv-color-text-muted); background: var(--docs-card-bg); padding: .45rem 1.1rem; border-radius: var(--iv-radius-full); box-shadow: 0 0 1px 1px var(--docs-card-stroke) inset; transition: color var(--iv-motion-fast) var(--docs-ease), background-color var(--iv-motion-fast) var(--docs-ease); }
 .docs-showreel__tab:hover { color: var(--iv-color-text); }
-.docs-showreel__tab[aria-selected="true"] { background: var(--iv-gradient-primary); color: #06122b; box-shadow: var(--docs-soft-halo); }
+/* The ink is the on-primary of the theme: a fixed navy read 2.6:1 on the light cobalt. */
+.docs-showreel__tab[aria-selected="true"] { background: var(--iv-gradient-primary); color: var(--iv-color-on-primary); box-shadow: var(--docs-soft-halo); }
 .docs-showreel__panel[hidden] { display: none; }
 .docs-hero__def { color: var(--iv-color-text); font-weight: var(--iv-weight-semibold); }

@@ -169,7 +169,7 @@ const recipes = [
     </div>
     <div class="docs-wrap">
       <nav class="docs-families" aria-label="Components">
-        {components.map(([c, kind]) => <a href={`/components/${c}`}>{c[0].toUpperCase() + c.slice(1)}<small>{kind}</small></a>)}
+        {components.map(([c, kind]) => <a href={`/components/${c}`}>{c[0].toUpperCase() + c.slice(1)}<small aria-hidden="true">{kind}</small><span class="iv-u-sr-only">{kind === "css" ? ", CSS only" : ", with JavaScript"}</span></a>)}
       </nav>
     </div>
   </section>

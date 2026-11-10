@@ -145,7 +145,10 @@ const bundles = [];
   const entries = [];
   file(join(plain, "index.html"), "index.html", entries);
   file(join(plain, "README.md"), "README.md", entries);
+  // Source maps are for whoever debugs the package, not for someone starting a page: they were a
+  // third of the starter's files and the first thing a reader of the folder asked about.
   walk(join(plain, "ivolt"), "ivolt", entries);
+  for (let i = entries.length - 1; i >= 0; i--) if (entries[i].name.endsWith(".map")) entries.splice(i, 1);
   bundles.push({ name: "ivolt-starter-plain-html.zip", entries });
 }
 

@@ -35,7 +35,7 @@ export const t = {
   onThisPage: "On this page",
   langSwitch: "Español",
   brandHome: "iVOLT CSS, home",
-  openComponents: "Open the components menu",
+  openComponents: "Components menu",
   mmContent: "Content families",
   mmInteractive: "Interactive",
   mmBrowse: "Browse all components",
@@ -54,7 +54,7 @@ export const t = {
   mmFoundations: "Foundations",
   mmReference: "Reference",
   mmHint: "Esc to close",
-  mmPicks: { card: "Surfaces, media and actions", hero: "Full-bleed openings", timeline: "Ordered events, one rail", carousel: "Cinema effect, autoplay, thumbnails", datatable: "Sort, filter, select, paginate", megamenu: "This very menu" },
+  mmPicks: { card: "Surfaces, media and actions", hero: "Full-bleed openings", timeline: "Ordered events, one rail", carousel: "Cinema effect, autoplay, thumbnails", datatable: "Sort and filter rows, with a live count", megamenu: "This very menu" },
   fixtureHtml: (title) => `HTML for ${title}`,
   fixturePort: (title) => `Preview of ${title}, scrollable`,
   copied: "Copied",
@@ -66,6 +66,7 @@ export const t = {
   // The live stage (round 3): a fixture running in its own page with real controls over it.
   tableScroll: "Table, scrollable",
   stageOpen: "Open alone",
+  stageFail: "Couldn't load the demo.",
   stageDirection: "Text direction",
   stageWidth: "Stage width",
   stageWidthPhone: "Phone, 390 pixels",
@@ -94,6 +95,7 @@ export const nav = [
     { href: "/getting-started", label: "Getting started" },
     { href: "/playground", label: "Playground" },
     { href: "/examples", label: "Examples" },
+    { href: "/foundations/frameworks", label: "React, Vue & Astro" },
   ] },
   { group: "Foundations", items: [
     { href: "/foundations/tokens-and-themes", label: "Tokens & themes" },
@@ -122,6 +124,7 @@ export const nav = [
     { href: "/changelog", label: "Changelog" },
     { href: "/roadmap", label: "Roadmap" },
     { href: "/contributing", label: "Contributing" },
+    { href: "/maintenance", label: "Support & maintenance" },
   ] },
 ];
 

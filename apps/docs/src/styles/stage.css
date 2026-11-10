@@ -26,30 +26,32 @@
 .docs-stage--primary { box-shadow: 0 1px 0 var(--docs-line) inset, 0 60px 110px -60px var(--docs-halo), 0 0 1px 1px var(--docs-hair); }
 
 /* ---------- bar: what this is, where it lives, how to open it alone ---------- */
+/* A row that wraps, not a two-column grid: with the links fixed at their width the title took
+   what was left, and at 150 % text on a phone what was left was nothing — the title stood on its
+   end, one letter per line. Now the links drop below the title when both do not fit. */
 .docs-stage__bar {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   column-gap: var(--iv-space-3);
   row-gap: 2px;
   padding: var(--iv-space-3) var(--iv-space-4) var(--iv-space-2);
 }
-.docs-stage__title { font-family: var(--docs-display); font-weight: var(--iv-weight-medium); letter-spacing: -.01em; min-inline-size: 0; overflow-wrap: anywhere; }
+.docs-stage__title { flex: 1 1 6rem; font-family: var(--docs-display); font-weight: var(--iv-weight-medium); letter-spacing: -.01em; min-inline-size: 0; overflow-wrap: break-word; }
 /* A path is one token: it is truncated with an ellipsis, never broken mid-word, and below sm
    it steps aside entirely — the title and "open alone" already say which fixture this is. */
 .docs-stage__path {
-  grid-column: 1; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs);
+  order: 3; flex: 1 1 100%; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs);
   color: var(--iv-color-text-muted); min-inline-size: 0;
   overflow-wrap: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 @media (max-width: 30em) { .docs-stage__path { display: none; } }
 .docs-stage__open, .docs-stage__penbtn {
-  grid-column: 2; grid-row: 1 / span 2; align-self: center;
   font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); letter-spacing: .12em; text-transform: uppercase;
   color: var(--iv-color-text-muted); text-decoration: none; white-space: nowrap;
   padding: .35rem .6rem; border-radius: var(--iv-radius-full);
 }
-.docs-stage__links { grid-column: 2; grid-row: 1 / span 2; align-self: center; display: flex; align-items: center; gap: 2px; }
+.docs-stage__links { order: 2; margin-inline-start: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 2px; }
 .docs-stage__pen { display: contents; }
 .docs-stage__pen[hidden] { display: none; }
 .docs-stage__penbtn { background: none; border: 0; cursor: pointer; font: inherit; font-family: var(--iv-font-mono); font-size: var(--iv-text-xs); }
@@ -143,6 +145,17 @@
 @media (max-width: 40em) {
   .docs-stage__controls { gap: var(--iv-space-2); }
   .docs-stage__toggles { margin-inline-start: 0; }
+}
+
+/* The frame that could not load: it steps aside, and a line in the theme's colours says so. */
+.docs-stage[data-stage-failed] .docs-stage__frame { display: none; }
+.docs-stage__fail { margin: 0; padding: var(--iv-space-6) var(--iv-space-4); text-align: center; color: var(--iv-color-text-muted); background: var(--iv-color-bg); }
+.docs-stage__fail[hidden] { display: none; }
+.docs-stage__fail a { color: var(--iv-color-primary); }
+
+/* Touch: every control of the bar is a 44 px target (WCAG 2.5.5); the bar grows, the type does not. */
+@media (pointer: coarse) {
+  .docs-stage__seg button, .docs-stage__all, .docs-stage__open, .docs-stage__penbtn { min-block-size: 44px; min-inline-size: 44px; display: inline-flex; align-items: center; justify-content: center; }
 }
 
 /* A stage taller than its cap scrolls inside its own frame; the edge says so. */

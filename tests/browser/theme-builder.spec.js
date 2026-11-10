@@ -20,8 +20,12 @@ test("the theme builder applies overrides to the preview and prints the CSS", as
   await page.locator('input[name="theme"][value="dark"]').check();
   await expect(preview).toHaveAttribute("data-iv-theme", "dark");
   await expect(preview).toHaveCSS("background-color", "rgb(4, 7, 15)");
+  // Since the two-mode builder the light block appears once a light colour is set, and the dark
+  // one stays (site-themes-modes.spec.js covers the pair in full).
   await page.locator('input[name="theme"][value="light"]').check();
+  await page.locator('input[name="primary"]').evaluate((el) => { el.value = "#1d4fc4"; el.dispatchEvent(new Event("input", { bubbles: true })); });
   await expect(page.locator("[data-tb-output]")).toContainText(':root, [data-iv-theme="light"]');
+  await expect(page.locator("[data-tb-output]")).toContainText("#ff6600");
   await page.locator("[data-tb-reset]").click();
   await expect(page.locator("[data-tb-output]")).not.toContainText("#ff6600");
   const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);

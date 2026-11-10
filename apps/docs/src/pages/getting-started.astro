@@ -13,10 +13,17 @@ const version = JSON.parse(readFileSync(resolve(dir, "packages/ivolt/package.jso
 <Base title="Install the CSS framework in minutes" description="Install iVOLT from npm, or drop two prebuilt files next to your page. No build step, no configuration file and no runtime dependencies. Start in minutes.">
   <article class="docs-prose">
     <h1>Getting started</h1>
-    <p>iVOLT ships as prebuilt CSS and JavaScript. Two files are enough: a stylesheet and a module. No build step, no configuration file, no runtime dependency — and the same two files work in plain HTML, WordPress, Astro or any bundler.</p>
+    <p>iVOLT ships as prebuilt CSS and JavaScript. Two files are enough: a stylesheet and a script. No build step, no configuration file, no runtime dependency — and the same two files work in plain HTML, WordPress, Astro or any bundler.</p>
     <p class="docs-meta"><strong>Version:</strong> <code>{version}</code>. <strong>Licence:</strong> MIT. <strong>Engines tested:</strong> Chromium, Firefox, WebKit.</p>
 
     <Stage primary name="button/variants" title="The framework, running on its own page" />
+
+    <Section title="From a CDN" lead="Two lines in your page, nothing to install. This is the fastest way to try it.">
+      <Code label="html" panels={[{ key: "src", label: "HTML", code: `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@intervolutions/ivolt@1/dist/css/ivolt.min.css">
+<${"script"} type="module" src="https://cdn.jsdelivr.net/npm/@intervolutions/ivolt@1/dist/js/auto.min.js"></${"script"}>` }]} />
+      <p>Put both in <code>&lt;head&gt;</code> and add <code>class="iv-root"</code> to <code>&lt;html&gt;</code>. <code>auto.min.js</code> starts every component on the page by itself; leave it out and everything still renders, as plain HTML. <code>@1</code> follows the latest 1.x; pin an exact version (<code>@{version}</code>) in production.</p>
+      <p>Rather start from a whole page? <a href="/downloads/ivolt-starter-plain-html.zip" download>Download the plain HTML starter</a> (zip): unzip it and open <code>index.html</code> with a double click. It works from your disk, with no server and no Node. Using React, Vue or Astro? See <a href="/foundations/frameworks">using iVOLT with a framework</a>.</p>
+    </Section>
 
     <Section title="Install from npm" lead="One command, no peer dependencies to resolve.">
       <Code label="shell" panels={[{ key: "src", label: "SHELL", code: `npm install @intervolutions/ivolt` }]} />
@@ -36,9 +43,11 @@ npm run build          # writes packages/ivolt/dist` }]} />
 <html lang="en" class="iv-root" data-iv-theme="system">
 <head>
   <link rel="stylesheet" href="ivolt/css/ivolt.min.css">
-  <${"script"} type="module" src="ivolt/js/auto.js"></${"script"}>
+  <${"script"} type="module" src="ivolt/js/auto.min.js"></${"script"}>
 </head>` }]} />
-      <p>Prefer a classic script? <code>ivolt/js/ivolt.iife.min.js</code> exposes one global, <code>IVOLT</code>, and does not initialise anything until you call <code>IVOLT.init()</code>.</p>
+      <p>Opening the page with a double click (<code>file://</code>)? Browsers do not run modules from disk. Use the classic script instead, as the starter does: <code>ivolt/js/ivolt.iife.min.js</code> exposes one global, <code>IVOLT</code>, and starts nothing until you call <code>IVOLT.init()</code>.</p>
+      <Code label="index.html" panels={[{ key: "src", label: "FILE://", code: `<${"script"} src="ivolt/js/ivolt.iife.min.js"></${"script"}>
+<${"script"}>document.addEventListener("DOMContentLoaded", () => IVOLT.init(document));</${"script"}>` }]} />
     </Section>
 
     <Section title="ES modules with a bundler" lead="The package exports are the public API; deep paths into dist/ are not.">
@@ -65,6 +74,17 @@ const dialog = Dialog.get(document.querySelector("#signup"));` }]} />
         </table>
       </div>
       <p>Both sheets are on the stage above: the <b>flat sheet</b> control swaps the layered stylesheet for the unlayered one on a page that is already running.</p>
+    </Section>
+
+    <Section title="The font">
+      <p>The type stack starts with Outfit, the face this site is set in, and falls back to the system font: <code>"Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif</code>. The package does not ship font files, so unless you load Outfit your pages use the system font, which is a fine default. To use Outfit, host the file yourself (it is under the SIL Open Font License; this site serves the latin variable file, 32 KB) and declare it before the iVOLT stylesheet:</p>
+      <Code label="css" panels={[{ key: "src", label: "CSS", code: `@font-face {
+  font-family: "Outfit";
+  src: url("/fonts/Outfit-latin-variable.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-display: swap;
+}` }]} />
+      <p>Any other face works the same way: set <code>--iv-font-sans</code> on <code>:root</code> after the stylesheet. iVOLT never fetches a font from another domain.</p>
     </Section>
 
     <Section title="Coexisting with existing CSS">
