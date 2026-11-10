@@ -185,6 +185,32 @@ test.describe("Site shell", () => {
     expect([...missing].map(([h, f]) => `${h} (${f})`)).toEqual([]);
   });
 
+  test("every unhashed local script and stylesheet is linked with its current content version", async () => {
+    // The CDN keeps /stage/boot.js and friends for a day; without a version in the URL a deploy
+    // that changes them is invisible for hours (scripts/version-assets.mjs).
+    const { createHash } = await import("node:crypto");
+    const { readdirSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const dist = new URL("../../apps/docs/dist/", import.meta.url).pathname;
+    const wrong = new Set();
+    let seen = 0;
+    const walk = (dir) => {
+      for (const e of readdirSync(dir, { withFileTypes: true })) {
+        const file = join(dir, e.name);
+        if (e.isDirectory()) { walk(file); continue; }
+        if (!file.endsWith(".html")) continue;
+        for (const m of readFileSync(file, "utf8").matchAll(/\s(?:src|href)="(\/(?!_astro\/)[^"?#]+\.(?:js|mjs|css))(\?v=([0-9a-f]+))?"/g)) {
+          seen++;
+          const want = createHash("sha256").update(readFileSync(join(dist, m[1]))).digest("hex").slice(0, 10);
+          if (m[3] !== want) wrong.add(`${m[1]}${m[2] ?? ""} (want ?v=${want})`);
+        }
+      }
+    };
+    walk(dist);
+    expect(seen).toBeGreaterThan(100);
+    expect([...wrong]).toEqual([]);
+  });
+
   test("a migrated page is built from sections and code blocks that copy themselves", async ({ page, context, browserName }) => {
     if (browserName === "chromium") await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await page.setViewportSize({ width: 1440, height: 900 });

@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "node scripts/prebuild.mjs && astro build && pagefind --site dist && node ../../scripts/build-llms.mjs",
+    "build": "node scripts/prebuild.mjs && astro build && pagefind --site dist && node ../../scripts/build-llms.mjs && node ../../scripts/version-assets.mjs",
     "preview": "astro preview"
   },
   "dependencies": {
