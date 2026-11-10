@@ -2,7 +2,7 @@
 
 All notable changes to `@intervolutions/ivolt`. Dates are added when a version is published.
 
-## 1.1.2 — unreleased
+## 1.1.2 — 2026-11-10 (npm, tag `latest`)
 
 Accessibility patch. Every fix comes from a screen reader and keyboard review of the 1.1.1 site and has a test that failed on 1.1.1 (`tests/browser/a11y-1-1-2.spec.js` in Chromium, Firefox and WebKit, plus unit tests). No option, class, token or event is added or removed; the generated markup changes as `docs/API_CONTRACT.md` §9.6 records.
 
