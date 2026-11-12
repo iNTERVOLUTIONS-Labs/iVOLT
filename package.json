@@ -22,7 +22,7 @@
     "@playwright/test": "^1.63.0",
     "browserslist": "^4.28.9",
     "esbuild": "^0.28.2",
-    "jsdom": "^30.0.1",
+    "jsdom": "^31.0.0",
     "lighthouse": "^13.4.1",
     "lightningcss": "^1.33.0",
     "typescript": "^5.9.3",
