@@ -1,7 +1,7 @@
 # iVOLT
 
 [![CI](https://github.com/iNTERVOLUTIONS-Labs/iVOLT/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iNTERVOLUTIONS-Labs/iVOLT/actions/workflows/ci.yml)
-
+[![Socket Badge](https://badge.socket.dev/npm/package/@intervolutions/ivolt/1.1.2)](https://badge.socket.dev/npm/package/@intervolutions/ivolt/1.1.2)
 **A CSS framework and design system by iNTERVOLUTIONS.** Semantic components as the fast path, a finite utility set for composition, design tokens as the visual contract and optional JavaScript for behaviour. No runtime dependencies, no build step, light and dark themes, accessible components tested in three engines. This repository holds the package, its documentation site, the examples and the tests.
 
 Install it with `npm install @intervolutions/ivolt`, or copy `packages/ivolt/dist` next to your page. Package documentation: [`packages/ivolt/README.md`](packages/ivolt/README.md).
