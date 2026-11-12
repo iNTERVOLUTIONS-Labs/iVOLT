@@ -3,6 +3,10 @@
   "version": "1.1.2",
   "description": "Accessible CSS framework and design system: semantic components, design tokens, light and dark themes and optional JavaScript. No runtime dependencies, no build step.",
   "license": "MIT",
+  "author": {
+    "name": "iNTERVOLUTIONS",
+    "url": "https://intervolutions.com"
+  },
   "type": "module",
   "style": "./dist/css/ivolt.min.css",
   "unpkg": "./dist/js/ivolt.iife.min.js",
@@ -164,7 +168,14 @@
   "homepage": "https://ivolt.intervolutions.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iNTERVOLUTIONS-Labs/iVOLT.git"
+    "url": "git+https://github.com/iNTERVOLUTIONS-Labs/iVOLT.git",
+    "directory": "packages/ivolt"
+  },
+  "bugs": {
+    "url": "https://github.com/iNTERVOLUTIONS-Labs/iVOLT/issues"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
     "css",

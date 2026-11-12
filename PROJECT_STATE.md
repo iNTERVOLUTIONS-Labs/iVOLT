@@ -23,7 +23,7 @@ Petición del propietario: «mejora la web de ivolt, lanza 5 agentes adversos us
 | `1.1.1`: `auto.min.js` no arrancaba los componentes (el empaquetador quitaba `init(document)` por `sideEffects`) | `auto-min.spec.js` falla en 1.1.0; snippet del héroe probado contra jsDelivr `@1` |
 | `1.1.2`: carrusel con `role="group"`, una sola región viva en los toasts, día elegido del datepicker con `aria-selected`, `init()` sin documento lanza `IvError` | `a11y-1-1-2.spec.js` en tres motores; contrato §9.6 |
 | Web: snippets que funcionan tal cual, escenarios que crecen al abrir un diálogo en móvil, temas como pares claro/oscuro, constructor con los dos modos y descarga, comparativas medidas a la versión del paquete, guía React/Vue/Astro, página de mantenimiento, colores forzados, encabezados que se oyen una vez, tablas como tarjetas en móvil, héroe que cabe al 150 % | `site-stage-mobile`, `site-snippets`, `site-themes-modes`, `site-polish`, `competitor-sizes.test.js`; Chromium 730, Firefox y WebKit 113 |
-| Repositorio: CI pública, `SECURITY.md`, `CONTRIBUTING.md`, aviso privado de vulnerabilidades activado, flujo de publicación con procedencia (necesita el secreto `NPM_TOKEN`) | YAML validado; CI en el PR |
+| Repositorio: CI pública, `SECURITY.md`, `CONTRIBUTING.md`, aviso privado de vulnerabilidades activado, flujo de publicación con procedencia por trusted publishing (necesita el trusted publisher en npmjs.com), acciones fijadas por SHA, Dependabot | YAML validado; CI en el PR |
 
 ## `1.1.0` «Spark» (2026-11-09, ADR-053–056)
 
@@ -158,7 +158,7 @@ Ninguno conocido de severidad alta. Resuelto: `.iv-dialog__title` frente a `.iv-
 
 ## Siguiente acción
 
-`1.1.2` publicada y desplegada. Pendiente del propietario: añadir el secreto `NPM_TOKEN` para publicar desde la CI con procedencia; subir la imagen social del repositorio; revocar los tokens de npm y Cloudflare usados a mano; decidir el margen de carga de los escenarios en `/blocks`. Aplazado a 1.2: combobox asíncrono, envoltorios React/Vue, `on-primary` automático en el paquete, `body { margin: 0 }` en la base, tipos de `detail` por evento.
+`1.1.2` publicada y desplegada. Pendiente del propietario: configurar el trusted publisher en npmjs.com (`docs/RELEASE.md` §5) para publicar desde la CI con procedencia; subir la imagen social del repositorio; revocar los tokens de npm y Cloudflare usados a mano; decidir el margen de carga de los escenarios en `/blocks`. Aplazado a 1.2: combobox asíncrono, envoltorios React/Vue, `on-primary` automático en el paquete, `body { margin: 0 }` en la base, tipos de `detail` por evento.
 
 ## Decisiones que no deben perderse
 
