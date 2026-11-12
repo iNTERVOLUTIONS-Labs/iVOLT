@@ -1,7 +1,7 @@
 # Publishes @intervolutions/ivolt to npm with a provenance statement when a GitHub release is
-# published. Needs the repository secret NPM_TOKEN (an npm automation or granular token with
-# publish rights on @intervolutions/ivolt); see docs/RELEASE.md §5. Without it the job stops at
-# the first step and says so.
+# published. Authentication is npm trusted publishing (OIDC): npmjs.com trusts this workflow file
+# in this repository, so no long-lived token is stored anywhere; see docs/RELEASE.md §5. If the
+# repository secret NPM_TOKEN exists it is the fallback while the trusted publisher is not set up.
 name: Release
 
 on:
@@ -22,22 +22,18 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
-      - name: Check the npm token
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          if [ -z "$NPM_TOKEN" ]; then
-            echo "::error title=NPM_TOKEN missing::Add the repository secret NPM_TOKEN (Settings > Secrets and variables > Actions) with an npm token that can publish @intervolutions/ivolt, then re-run this job. Nothing was published."
-            exit 1
-          fi
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
-          cache: npm
           registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or later; Node 22 ships npm 10.
+      - name: Update npm
+        run: npm install -g npm@^11.5.1
 
       - name: Install
         run: npm ci --no-audit --no-fund
@@ -77,7 +73,8 @@ jobs:
           node scripts/sync-examples.mjs
           npm run pack-smoke
 
-      # A prerelease on GitHub goes to the `next` tag, a release to `latest`.
+      # A prerelease on GitHub goes to the `next` tag, a release to `latest`. npm tries the OIDC
+      # exchange first and only uses the token when no trusted publisher answers.
       - name: Publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,21 @@
+# Weekly dependency updates. The published package has no runtime dependencies, so this keeps the
+# build and test toolchain and the pinned GitHub Actions current.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      toolchain:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
